@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Button } from 'antd';
 
+import { isArray } from './utils/';
 import ContentItem from './ContentItem';
 import './css/Content.css';
 
@@ -20,7 +21,14 @@ export default class Content extends Component {
             {this.props.viewType}
           </Button>
         </div>
-        <p>{explain}</p>
+        {
+          isArray(explain) 
+          ? (
+            explain.map((explainItem, i) => <p key={i}>{explainItem}</p>)
+          ) : (
+            <p>{explain}</p>
+          )
+        }
         <ContentItem 
           diff={diff} 
           commit={commit}
