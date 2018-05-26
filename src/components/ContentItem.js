@@ -136,7 +136,11 @@ export default class ContentItem extends Component {
                 </main>
               </article>
               <div>
-                <div style={{ marginTop: '20px' }}>{file.explain}</div>
+                <div style={{ marginTop: '20px' }}>
+                  {
+                    this.props.renderExplain(file.explain)
+                  }
+                </div>
               </div>
             </div>
           ))
