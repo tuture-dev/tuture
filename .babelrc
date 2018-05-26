@@ -1,0 +1,10 @@
+{
+  "presets": [
+    "react-app"
+  ],
+  "plugins": [
+    "react-require",
+    ["import", { "libraryName": "antd", "libraryDirectory": "es", "style": "css" }],
+    "babel-plugin-styled-components"
+  ]
+}

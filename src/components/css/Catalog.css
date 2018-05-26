@@ -1,0 +1,10 @@
+.Catalog {
+  width: 20%;
+  height: 100%;
+  overflow-Y: scroll;
+  border-right: 1px solid #e8e8e8;
+}
+
+.ant-menu-inline {
+  border-right: none;
+}
