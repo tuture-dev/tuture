@@ -1,5 +1,4 @@
-import React, { Component } from 'react';
-import { Button } from 'antd';
+import React from 'react';
 
 import { isArray } from './utils/';
 import ContentItem from './ContentItem';
@@ -7,7 +6,7 @@ import './css/Content.css';
 
 
 
-export default class Content extends Component {
+export default class Content extends React.Component {
   renderExplain = (explain) => {
     return (
       isArray(explain)
@@ -22,12 +21,11 @@ export default class Content extends Component {
       <div className="Content">
         <div className="Content-header">
           <h1>{name}</h1>
-          <Button
-            type="primary"
+          <button
             onClick={this.props.changeViewType}
           >
             {this.props.viewType}
-          </Button>
+          </button>
         </div>
         {this.renderExplain(explain)}
         <ContentItem

@@ -10,8 +10,13 @@ const WatchMissingNodeModulesPlugin = require('react-dev-utils/WatchMissingNodeM
 const eslintFormatter = require('react-dev-utils/eslintFormatter');
 const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const FilewatcherPlugin = require("filewatcher-webpack-plugin");
+
 const getClientEnvironment = require('./env');
 const paths = require('./paths');
+
+// tuture path
+const tuturePath = require('../src/path.json');
 
 // Webpack uses `publicPath` to determine where the app is being served from.
 // In development, we always serve from the root. This makes config easier.
@@ -203,6 +208,13 @@ module.exports = {
     ],
   },
   plugins: [
+    new FilewatcherPlugin({
+      watchFileRegex: `${tuturePath.path}/tuture.yml`,
+      depth: 1,
+      persistent: false,
+      awaitWriteFinish: true,
+      ignored: `${tuturePath.path}/node_modules/`,
+    }),
     // Makes some environment variables available in index.html.
     // The public URL is available as %PUBLIC_URL% in index.html, e.g.:
     // <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
@@ -214,8 +226,8 @@ module.exports = {
       template: paths.appHtml,
     }),
     new CopyWebpackPlugin([
-      { from: '../../tuture.yml', to: './tuture.yml'},
-      { from: '../diff/', to: './diff'}
+      { from: `${tuturePath.path}/tuture.yml`, to: './tuture.yml' },
+      { from: `${tuturePath.path}/.tuture/diff`, to: './diff' },
     ]),
     // Add module names to factory functions so they appear in browser profiler.
     new webpack.NamedModulesPlugin(),

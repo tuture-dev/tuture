@@ -112,6 +112,7 @@ export default class ContentItem extends Component {
   render() {
     const { files, diff, collapseObj } = this.state;
     const needRenderFiles = this.getEndRenderContent(diff, files);
+    console.log('needRenderFiles', needRenderFiles);
 
     return (
       <div className="ContentItem">
