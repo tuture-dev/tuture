@@ -1,20 +1,16 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Helmet } from 'react-helmet';
 import yaml from 'js-yaml';
-import styled from 'styled-components';
-
 // TODO: hackable method to solve tuture.yml update not update browser
-import tutureYml from '../../../tuture.yml';
 
 import './App.css';
+import tuturePath from './path.json';
 
 // import conponents
-import {
-  Content,
-  Catalog,
-} from './components/index';
+import Content from './components/Content';
+import Catalog from './components/Catalog';
 
-class App extends Component {
+class App extends React.Component {
   state = {
     selectKey: '0',
     tuture: null,
@@ -39,7 +35,7 @@ class App extends Component {
     const that = this;
 
     // Use frontend get data method to get tuture.yml
-    const response = await fetch('./tuture.yml');
+    const response = await fetch(`./tuture.yml`);
     const content = await response.text();
 
     // use js-yaml read yamm as js object

@@ -1,12 +1,8 @@
-import React, { Component } from 'react';
-import { Menu, Icon, Affix } from 'antd';
+import React from 'react';
 
 import './css/Catalog.css';
 
-const SubMenu = Menu.SubMenu;
-const MenuItemGroup = Menu.ItemGroup;
-
-export default class Catalog extends Component {
+export default class Catalog extends React.Component {
   handleClick = (e) => {
     this.props.updateSelect(e.key);
   }
@@ -20,17 +16,17 @@ export default class Catalog extends Component {
 
     return (
       <div className="Catalog">
-          <Menu
+          <ul
             onClick={this.handleClick}
             defaultSelectedKeys={[selectKey]}
             mode='inline'
           >
           {
             catalogs.map((item, key) => (
-              <Menu.Item key={key}>{item.name}</Menu.Item>
+              <li key={key}>{item.name}</li>
             ))
           }
-          </Menu>
+          </ul>
       </div>
     );
   }
