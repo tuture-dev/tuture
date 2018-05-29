@@ -18,7 +18,7 @@ const rendererPath = cp.execSync('pwd', { encoding: 'utf-8' });
 const dirname = __dirname;
 
 const execulatePath = process.cwd();
-fs.writeFileSync(dirname + '/src/path.json', `{ "path": "${execulatePath}" }`);
+fs.writeFileSync(dirname + '/src/path.json', `{\n "path": "${execulatePath}" \n}`);
 
 process.chdir(dirname);
 cp.execSync('npm start');
