@@ -52,7 +52,6 @@ class App extends React.Component {
 
   render() {
     const { tuture } = this.state;
-    console.log('tuture', tuture);
     if (!tuture) {
       return null;
     }

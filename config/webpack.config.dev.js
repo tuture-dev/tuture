@@ -208,6 +208,7 @@ module.exports = {
     ],
   },
   plugins: [
+    // for watch user's folder tuture.yml change
     new FilewatcherPlugin({
       watchFileRegex: `${tuturePath.path}/tuture.yml`,
       depth: 1,
@@ -225,6 +226,7 @@ module.exports = {
       inject: true,
       template: paths.appHtml,
     }),
+    // copy user's tuture.yml and .tuture to now execulate folder
     new CopyWebpackPlugin([
       { from: `${tuturePath.path}/tuture.yml`, to: './tuture.yml' },
       { from: `${tuturePath.path}/.tuture/diff`, to: './diff' },
