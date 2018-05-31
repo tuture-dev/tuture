@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { parseDiff, Diff, HunkHeader } from 'react-diff-view';
+import { Diff, parseDiff } from 'react-diff-view';
 
-import { isArray } from './utils/';
+import { isArray } from './utils/common';
 
 import './css/ContentItem.css';
 import './css/Hunk.css';
