@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { property, union, isArray } from 'lodash/fp';
 import { parseDiff, Diff, HunkHeader } from 'react-diff-view';
+
+import { isArray } from './utils/';
 
 import './css/ContentItem.css';
 import './css/Hunk.css';
