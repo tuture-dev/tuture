@@ -3,11 +3,6 @@ import React from 'react';
 import './css/Catalog.css';
 
 export default class Catalog extends React.Component {
-  handleClick = (e) => {
-    console.log(e);
-    this.props.updateSelect(e.key);
-  }
-
   render() {
     const {
       catalogs,
