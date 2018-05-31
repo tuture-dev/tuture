@@ -12,7 +12,7 @@ import Catalog from './components/Catalog';
 
 class App extends React.Component {
   state = {
-    selectKey: '0',
+    selectKey: 0,
     tuture: null,
     viewType: 'unified',
   };
@@ -67,8 +67,7 @@ class App extends React.Component {
       maintainer,
       topics,
     };
-    const nowSelectKeyNumber = Number(this.state.selectKey);
-    const nowRenderContent = tuture.steps[nowSelectKeyNumber];
+    const nowRenderContent = tuture.steps[this.state.selectKey];
 
     return (
       <div style={{ height: '100%', width: '100%', display: 'flex' }}>

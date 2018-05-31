@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import { property, union, isArray } from 'lodash/fp';
-import { Input, Button, Icon } from 'antd';
 import { parseDiff, Diff, HunkHeader } from 'react-diff-view';
 
 import './css/ContentItem.css';
 import './css/Hunk.css';
 import './css/Change.css';
 import './css/Diff.css';
+
+import up from './img/up.svg';
+import down from './img/down.svg';
 
 
 export default class ContentItem extends Component {
@@ -100,6 +102,16 @@ export default class ContentItem extends Component {
     return endRenderContent;
   }
 
+  renderIcon = (type) => {
+    console.log('type', type);
+    const mapTypeToSvg = {
+      up,
+      down,
+    };
+
+    return <img src={mapTypeToSvg[type]} className="indicate-icon" />;
+  }
+
   toggleCollapse = (fileName) => {
     const { collapseObj } = this.state;
     const newCollapseObj = { ...collapseObj, [fileName]: !collapseObj[fileName] };
@@ -121,11 +133,11 @@ export default class ContentItem extends Component {
               <article className="diff-file" key={i}>
                 <header className="diff-file-header">
                     <strong className="filename">{this.extractFileName(file)}</strong>
-                    <Button
+                    <button
                       onClick={() => this.toggleCollapse(file.file)}
                     >
-                    {<Icon type={collapseObj[file.file] ? 'up' : 'down'} />}
-                    </Button>
+                    {this.renderIcon(collapseObj[file.file] ? 'up' : 'down')}
+                    </button>
                 </header>
                 <main>
                   {
