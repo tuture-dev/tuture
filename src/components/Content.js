@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { isArray } from './utils/';
+import { isArray } from './utils/common';
 import ContentItem from './ContentItem';
 import './css/Content.css';
 
