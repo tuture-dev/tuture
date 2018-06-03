@@ -1,0 +1,30 @@
+<%- include('header', { headerTitle: tuture.name }) %>
+  <div class="tuture-catalog">
+    <ul class="tuture-menu">
+      <% tuture.steps.forEach(function (step, key) { %>
+        <li"><%= step.name %></li>
+      <% }); %>
+    </ul>
+  </div>
+  <div class="tuture-content">
+    <% files.forEach(function (file) { %>
+      <div>
+        <article class="diff-file" key={i}>
+          <header class="diff-file-header">
+            <strong class="filename"><%= file.type === 'delete' ? file.oldPath : file.newPath %></strong>
+          </header>
+          <main>
+            <%- include('diffView', { hunks: file.hunks, viewType: viewType })%>
+          </main>
+        </article>
+        <div>
+          <div style="margin-top: 20px;">
+            <%= file.explain %>
+          </div>
+        </div>
+      </div>
+    <% }); %>
+  </div>
+  <script>
+  </script>
+<%- include('footer') %>

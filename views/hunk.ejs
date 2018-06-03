@@ -1,0 +1,5 @@
+<% if (viewType === 'unified') { %>
+  <%- include('unifiedHunk', { hunk: hunk }) %>
+<% } else { %>
+  <%- include('splitHunk', { hunk: hunk }) %>
+<% } %>
