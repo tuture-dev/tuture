@@ -23,7 +23,7 @@ module.exports = (ymlPath) => {
       tuture: tuture, 
       selectedCatalogItem: selectedCatalogItem,
       files: files,
-      viewType: 'unified',
+      viewType: 'split',
     });
   };
 

@@ -1,8 +1,9 @@
 <%- include('header', { headerTitle: tuture.name }) %>
+<div class="tuture">
   <div class="tuture-catalog">
     <ul class="tuture-menu">
       <% tuture.steps.forEach(function (step, key) { %>
-        <li"><%= step.name %></li>
+        <li class="tuture-menu-item"><%= step.name %></li>
       <% }); %>
     </ul>
   </div>
@@ -25,6 +26,5 @@
       </div>
     <% }); %>
   </div>
-  <script>
-  </script>
+</div>
 <%- include('footer') %>

@@ -22,20 +22,19 @@
       var current = changes[i];
 
       if (current.isNormal) {
-        elements.push(['change', current, current]);
+        elements.push([current, current]);
       } else if (current.isDelete) {
         var next = changes[i + 1];
         if (next && next.isInsert) {
           i = i + 1;
-          elements.push(['change', current, next]);
+          elements.push([current, next]);
         } else {
-          elements.push(['change', current, null])
+          elements.push([current, null])
         }
       } else {
-        elements.push(['change', null, current]);
+        elements.push([null, current]);
       }
     }
-
     return elements;
   }
 
@@ -58,36 +57,17 @@
 
 <tbody class="diff-hunk">
   <% groupElements(hunk.changes).forEach(function (element) { %>
-    <tr class="diff-line <%= lineTypeClassName(element.oldChange, element.newChange) %>">
-      <% if (element.oldChange) { %>
-        <td 
-          key="gutter"
-          class="diff-gutter diff-gutter-<%= element.type %>"
-          data-line-number="<%= computeOldLineNumber(element) === -1 ? undefined : computeOldLineNumber(element)%>"
-        />
-        <td 
-          key="code" 
-          class="diff-code diff-code-<%= change.type %>"
-        >
-          <%= element.content %>
-        </td>
+    <tr class="diff-line <%= lineTypeClassName(element[0], element[1]) %>">
+      <% if (element[0]) { %>
+        <td key="gutter" class="diff-gutter diff-gutter-<%= element[0].type %>" data-line-number="<%= computeOldLineNumber(element[0]) === -1 ? undefined : computeOldLineNumber(element[0])%>"/>
+        <td key="code" class="diff-code diff-code-<%= element[0].type %>"><%= element[0].content %></td>
       <% } else { %>
         <td key="gutter" class="diff-gutter diff-gutter-omit"></td>
         <td key="code" class="diff-code diff-code-omit"></td>
       <% } %>
-
-      <% if (element.newChange) { %>
-        <td 
-          key="gutter"
-          class="diff-gutter diff-gutter-<%= element.type %>"
-          data-line-number="<%= computeNewLineNumber(element) === -1 ? undefined : computeNewLineNumber(element)%>"
-        />
-        <td 
-          key="code" 
-          class="diff-code diff-code-<%= change.type %>"
-        >
-          <%= element.content %>
-        </td>
+      <% if (element[1]) { %>
+        <td key="gutter" class="diff-gutter diff-gutter-<%= element[1].type %>" data-line-number="<%= computeNewLineNumber(element[1]) === -1 ? undefined : computeNewLineNumber(element[1])%>"/>
+        <td key="code" class="diff-code diff-code-<%= element[1].type %>"><%= element[1].content %></td>
       <% } else { %>
         <td key="gutter" class="diff-gutter diff-gutter-omit"></td>
         <td key="code" class="diff-code diff-code-omit"></td>
