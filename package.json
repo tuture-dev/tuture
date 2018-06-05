@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "bin": {
-    "tuture-renderer": "./index.js"
+    "tuture-renderer": "./test.index.js"
   },
   "dependencies": {
     "autoprefixer": "7.1.6",
@@ -18,6 +18,7 @@
     "css-loader": "0.28.7",
     "dotenv": "4.0.0",
     "dotenv-expand": "4.2.0",
+    "ejs": "^2.6.1",
     "eslint": "4.10.0",
     "eslint-config-react-app": "^2.1.0",
     "eslint-loader": "1.9.0",
@@ -25,8 +26,10 @@
     "eslint-plugin-import": "2.8.0",
     "eslint-plugin-jsx-a11y": "5.1.1",
     "eslint-plugin-react": "7.4.0",
+    "express": "^4.16.3",
     "extract-text-webpack-plugin": "3.0.2",
     "file-loader": "1.1.5",
+    "gitdiff-parser": "^0.0.8",
     "html-webpack-plugin": "2.29.0",
     "jest": "20.0.4",
     "js-yaml": "^3.11.0",

@@ -1,0 +1,18 @@
+<table class="diff">
+  <% if (viewType === 'unified') { %>
+    <colgroup>
+      <col class="diff-gutter-col"/>
+      <col class="diff-gutter-col"/>
+    </colgroup>
+  <% } else { %>
+    <colgroup>
+      <col class="diff-gutter-col"/>
+      <col />
+      <col class="diff-gutter-col"/>
+      <col />
+    </colgroup>
+  <% } %>
+  <% hunks.forEach(function (hunk) { %>
+    <%- include('hunk', { hunk: hunk, viewType: viewType })%>
+  <% }) %>
+</table>
