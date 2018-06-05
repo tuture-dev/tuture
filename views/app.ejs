@@ -3,14 +3,14 @@
   <div class="tuture-catalog">
     <ul class="tuture-menu">
       <% tuture.steps.forEach(function (step, key) { %>
-        <li class="tuture-menu-item"><%= step.name %></li>
+        <li class="tuture-menu-item" data-item="<%= key %>"><%= step.name %></li>
       <% }); %>
     </ul>
   </div>
   <div class="tuture-content">
     <% files.forEach(function (file) { %>
       <div>
-        <article class="diff-file" key={i}>
+        <article class="diff-file">
           <header class="diff-file-header">
             <strong class="filename"><%= file.type === 'delete' ? file.oldPath : file.newPath %></strong>
           </header>
@@ -27,4 +27,18 @@
     <% }); %>
   </div>
 </div>
+<script src="js/jquery-3.3.1.min.js"></script>
+<script>
+  $('.tuture-menu-item').each(function (index, menuItem) {
+    $(menuItem).click(function () {
+      var item = $(this).data('item');
+      $.ajax({
+        method: "GET",
+        url: "http://localhost:3000/changeSelectedCatalogItem/" + item,
+      }).done(function (msg) {
+        location.href = "http://localhost:3000/";
+      });
+    });
+  });
+</script>
 <%- include('footer') %>
