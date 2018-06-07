@@ -3243,7 +3243,7 @@ getpass@^0.1.1:
   dependencies:
     assert-plus "^1.0.0"
 
-gitdiff-parser@0.0.8, gitdiff-parser@^0.0.8:
+gitdiff-parser@0.0.8:
   version "0.0.8"
   resolved "http://registry.npm.taobao.org/gitdiff-parser/download/gitdiff-parser-0.0.8.tgz#d1634950ffe09aec2909ae83fe1e72f5613ab8b9"
 
