@@ -1,14 +1,9 @@
 #!/usr/bin/env node
 
-const path = require('path');
-const fs = require('fs');
 const cp = require('child_process');
 
-// TODO: Turn to server to avoid all this inconveniences.
-fs.writeFileSync(
-  path.join(__dirname, 'src', 'path.json'),
-  `{\n "path": "${process.cwd()}" \n}`,
-);
+const tuturePath = process.cwd();
 
 process.chdir(__dirname);
-cp.execSync('npm start');
+cp.execSync(`TUTURE_PATH=${tuturePath} npm start`);
+process.chdir(tuturePath);

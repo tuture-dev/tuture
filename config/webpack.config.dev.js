@@ -16,7 +16,7 @@ const getClientEnvironment = require('./env');
 const paths = require('./paths');
 
 // tuture path
-const tuturePath = require('../src/path.json');
+const tuturePath = process.env.TUTURE_PATH;
 
 // Webpack uses `publicPath` to determine where the app is being served from.
 // In development, we always serve from the root. This makes config easier.
@@ -210,11 +210,11 @@ module.exports = {
   plugins: [
     // for watch user's folder tuture.yml change
     new FilewatcherPlugin({
-      watchFileRegex: `${tuturePath.path}/tuture.yml`,
+      watchFileRegex: `${tuturePath}/tuture.yml`,
       depth: 1,
       persistent: false,
       awaitWriteFinish: true,
-      ignored: `${tuturePath.path}/node_modules/`,
+      ignored: `${tuturePath}/node_modules/`,
     }),
     // Makes some environment variables available in index.html.
     // The public URL is available as %PUBLIC_URL% in index.html, e.g.:
@@ -228,8 +228,8 @@ module.exports = {
     }),
     // copy user's tuture.yml and .tuture to now execulate folder
     new CopyWebpackPlugin([
-      { from: `${tuturePath.path}/tuture.yml`, to: './tuture.yml' },
-      { from: `${tuturePath.path}/.tuture/diff`, to: './diff' },
+      { from: `${tuturePath}/tuture.yml`, to: './tuture.yml' },
+      { from: `${tuturePath}/.tuture/diff`, to: './diff' },
     ]),
     // Add module names to factory functions so they appear in browser profiler.
     new webpack.NamedModulesPlugin(),
