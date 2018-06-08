@@ -1,12 +1,13 @@
 .Catalog {
   width: 20%;
   height: 100%;
-  overflow-y: scroll;
-  overflow-x: hidden;
+  overflow: scroll;
   border-right: 1px solid #e8e8e8;
 }
 
 .tuture-menu {
+  height: 100%;
+  overflow: scroll;
   font-size: 14px;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
