@@ -28,7 +28,7 @@ export default class Catalog extends React.Component {
                   : basicMenuItemClassName
                 }
                 style={{
-                  paddingLeft: "48px",
+                  paddingLeft: "30px",
                 }}
               >
               {item.name}
