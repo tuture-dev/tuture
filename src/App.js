@@ -4,7 +4,6 @@ import yaml from 'js-yaml';
 // TODO: hackable method to solve tuture.yml update not update browser
 
 import './App.css';
-import tuturePath from './path.json';
 
 // import conponents
 import Content from './components/Content';
