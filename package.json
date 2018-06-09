@@ -1,6 +1,6 @@
 {
   "name": "tuture-renderer",
-  "version": "0.1.0",
+  "version": "0.1.9",
   "preferGlobal": true,
   "license": "MIT",
   "keywords": [
@@ -15,16 +15,18 @@
   },
   "homepage": "https://github.com/tutureproject/renderer",
   "bin": {
-    "tuture-renderer": "./index.js"
+    "tuture-renderer": "./bin/index.js"
   },
-  "files": [
-    "index.js",
-    "src/components"
-  ],
   "dependencies": {
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.4",
+    "babel-plugin-react-require": "^3.0.0",
     "babel-preset-react-app": "^3.1.1",
+    "copy-webpack-plugin": "^4.5.1",
     "css-loader": "0.28.7",
     "file-loader": "1.1.5",
+    "filewatcher-webpack-plugin": "^1.2.0",
+    "html-webpack-plugin": "^3.2.0",
     "js-yaml": "^3.11.0",
     "object-assign": "^4.1.1",
     "promise": "^8.0.1",
@@ -42,11 +44,5 @@
     "start": "node scripts/start.js",
     "test": "echo Test Passed!"
   },
-  "devDependencies": {
-    "babel-loader": "^7.1.4",
-    "babel-plugin-react-require": "^3.0.0",
-    "copy-webpack-plugin": "^4.5.1",
-    "filewatcher-webpack-plugin": "^1.2.0",
-    "html-webpack-plugin": "^3.2.0"
-  }
+  "devDependencies": {}
 }
