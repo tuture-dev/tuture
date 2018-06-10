@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { Diff, parseDiff } from 'react-diff-view';
+
+import Diff from './DiffView/';
 
 import { isArray } from './utils/common';
+import parseDiff from './utils/parseDiff';
 
 import './css/ContentItem.css';
 import './css/Hunk.css';
-import './css/Change.css';
 import './css/Diff.css';
 
 import up from './img/up.svg';
