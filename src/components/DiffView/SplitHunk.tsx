@@ -4,16 +4,21 @@ import classnames from 'classnames';
 import SplitChange from './SplitChange';
 
 import { getChangeKey } from './utils';
+import { Hunk as HunkType, Change as ChangeType } from '../ContentItem';
 
-export default class SplitHunk extends PureComponent {
-  keyForPair = (x, y) => {
+interface SplitHunkProps {
+  hunk: HunkType;
+}
+
+export default class SplitHunk extends PureComponent<SplitHunkProps> {
+  keyForPair = (x: ChangeType, y: ChangeType): string => {
     const keyForX = x ? getChangeKey(x) : '00';
     const keyForY = y ? getChangeKey(y) : '00';
 
-    return keyForX + keyForY;
+    return keyForX as string + keyForY as string;
   };
 
-  groupElements = (changes) => {
+  groupElements = (changes: ChangeType[]): (string | ChangeType)[][] => {
     let elements = [];
 
     for (let i = 0; i < changes.length; i++) {
@@ -48,13 +53,13 @@ export default class SplitHunk extends PureComponent {
     return elements;
   }
 
-  renderRow = ([type, key, oldValue, newValue], i) => {
+  renderRow = ([type, key, oldValue, newValue]: (string | ChangeType)[], i: number) => {
     if (type === 'change') {
       return (
         <SplitChange
           key={`change${key}`}
-          oldChange={oldValue}
-          newChange={newValue}
+          oldChange={oldValue as ChangeType}
+          newChange={newValue as ChangeType}
         />
       );
     }

@@ -1,20 +1,27 @@
 import React, { PureComponent } from 'react';
 import classnames from 'classnames';
 
+import { Change as ChangeType } from '../ContentItem';
+import { Cell } from './SplitChange';
+
 import {
   computeOldLineNumber,
   computeNewLineNumber,
 } from './utils';
 
-export default class UnifiedChange extends PureComponent {
+interface UnifiedChangeProps {
+  change: ChangeType;
+}
+
+export default class UnifiedChange extends PureComponent<UnifiedChangeProps> {
   renderGutterCell = ({
     hide,
     className,
     lineNumber,
     gutterAnchor,
     anchorID,
-    ...props,
-  }) => {
+    ...props
+  }: Cell): React.ReactNode => {
     if (hide) {
       return null;
     }

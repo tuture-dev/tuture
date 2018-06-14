@@ -2,7 +2,14 @@ import React, { Component } from 'react';
 
 import Hunk from './Hunk';
 
-export default class DiffView extends Component {
+import { Hunk as HunkType } from '../ContentItem';
+
+interface DiffViewProps {
+  viewType: string;
+  hunks: HunkType[];
+}
+
+export default class DiffView extends Component<DiffViewProps> {
   render() {
     const { viewType, hunks } = this.props;
 
@@ -27,7 +34,7 @@ export default class DiffView extends Component {
       <table className="diff">
         {gutterContent}
         {
-          hunks.map((hunk, key) => (
+          hunks.map((hunk: HunkType, key: number) => (
             <Hunk key={key} viewType={viewType} hunk={hunk} />
           ))
         }

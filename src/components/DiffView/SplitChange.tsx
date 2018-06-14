@@ -6,7 +6,30 @@ import {
   computeNewLineNumber,
 } from './utils';
 
-export default class SplitChange extends PureComponent {
+import { Change as ChangeType } from '../ContentItem';
+
+export interface SplitChangeProps {
+  oldChange: ChangeType;
+  newChange: ChangeType;
+}
+
+export interface Cell {
+  side?: number;
+  change?: ChangeType;
+  gutterAnchor?: string;
+  hideGutter?: boolean;
+  gutterAnchorTarget?: string;
+  anchorID?: number;
+  lineNumber?: number;
+  hide?: boolean;
+  className?: string;
+}
+
+export default class SplitChange extends PureComponent<SplitChangeProps> {
+  constructor(props: SplitChangeProps) {
+    super(props);
+  }
+
   SIDE_OLD = 0;
   SIDE_NEW = 1;
 
@@ -16,7 +39,7 @@ export default class SplitChange extends PureComponent {
     gutterAnchor,
     hideGutter,
     gutterAnchorTarget
-  }) => {
+  }: Cell): React.ReactNode => {
     if (!change) {
       const gutterClassName = classnames('diff-gutter', 'diff-gutter-omit');
       const codeClassName = classnames('diff-code', 'diff-code-omit');
