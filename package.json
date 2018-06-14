@@ -17,10 +17,6 @@
   "bin": {
     "tuture-renderer": "./index.js"
   },
-  "files": [
-    "index.js",
-    "src/components"
-  ],
   "dependencies": {
     "@types/classnames": "^2.2.4",
     "@types/js-yaml": "^3.11.1",
