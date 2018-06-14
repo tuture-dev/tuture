@@ -3,14 +3,20 @@ import classnames from 'classnames';
 
 import UnifiedChange from './UnifiedChange';
 
+import { Hunk as HunkType, Change as ChangeType } from '../ContentItem';
+
 import {
   computeOldLineNumber,
   computeNewLineNumber,
   getChangeKey,
 } from './utils';
 
-export default class UnifiedHunk extends PureComponent {
-  groupElements = (changes) => changes.reduce((elements, change) => {
+interface UnifiedHunkProps {
+  hunk: HunkType;
+}
+
+export default class UnifiedHunk extends PureComponent<UnifiedHunkProps> {
+  groupElements = (changes: ChangeType[]) => changes.reduce((elements: (string | ChangeType)[][], change: ChangeType) => {
     const key = getChangeKey(change);
 
     elements.push(['change', key, change]);
@@ -19,12 +25,12 @@ export default class UnifiedHunk extends PureComponent {
     return elements;
   }, []);
 
-  renderRow = ([type, key, value], i) => {
+  renderRow = ([type, key, value]: (string | ChangeType)[], i: number) => {
     if (type === 'change') {
       return (
         <UnifiedChange
           key={`change${key}`}
-          change={value}
+          change={value as ChangeType}
         />
       );
     }
@@ -36,13 +42,12 @@ export default class UnifiedHunk extends PureComponent {
   render() {
     const {
       hunk,
-      className,
     } = this.props;
 
     const elements = this.groupElements(hunk.changes);
 
     return (
-      <tbody className={classnames('diff-hunk', className)}>
+      <tbody className={classnames('diff-hunk')}>
         {
           elements.map((element, i) => this.renderRow(element, i))
         }

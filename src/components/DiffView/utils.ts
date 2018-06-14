@@ -1,4 +1,6 @@
-function computeOldLineNumber(change) {
+import { Change as ChangeType } from '../ContentItem';
+
+function computeOldLineNumber(change: ChangeType): number {
   if (change.isInsert) {
     return -1;
   }
@@ -6,7 +8,7 @@ function computeOldLineNumber(change) {
   return change.isNormal ? change.oldLineNumber : change.lineNumber;
 }
 
-function computeNewLineNumber(change) {
+function computeNewLineNumber(change: ChangeType): number {
   if (change.isDelete) {
     return -1;
   }
@@ -14,7 +16,7 @@ function computeNewLineNumber(change) {
   return change.isNormal ? change.newLineNumber : change.lineNumber;
 }
 
-function getChangeKey(change) {
+function getChangeKey(change: ChangeType): string {
   if (!change) {
     throw new Error('change is not provided');
   }

@@ -1,31 +1,90 @@
-import React, { Component } from 'react';
+import React from 'react';
+import styled from 'styled-components';
 
-import Diff from './DiffView/';
+import DiffView from './DiffView/';
 
-import { isArray } from './utils/common';
-import parseDiff from './utils/parseDiff';
-
-import './css/ContentItem.css';
-import './css/Hunk.css';
-import './css/Diff.css';
+import { Diff } from './App';
+import parseDiff from '../utils/parseDiff';
+import tutureUtilities from '../utils/';
 
 import up from './img/up.svg';
 import down from './img/down.svg';
 
+interface renderExplainFunc {
+  (explain: string | string[]): React.ReactNode | React.ReactNodeArray;
+}
 
-export default class ContentItem extends Component {
-  state = {
-    diffText: '',
-    collapseObj: {},
-    diff: [],
-    files: [],
-  };
+interface ContentItemProps {
+  diff: Diff[];
+  commit: string;
+  viewType: string;
+  renderExplain: renderExplainFunc;
+}
 
-  async setDiffAndFiles(commit, diff) {
+export interface Change {
+  content: string;
+  type: string;
+  isInsert?: boolean;
+  isNormal?: boolean;
+  isDelete?: boolean;
+  lineNumber?: number;
+  oldLineNumber?: number;
+  newLineNumber?: number;
+}
+
+export interface Hunk {
+  content: string;
+  newLines: number;
+  oldLines: number;
+  oldStart: number;
+  newStart: number;
+  changes: Change[];
+}
+
+export interface File {
+  oldPath: string;
+  newPath: string;
+  type: string;
+  oldRevision: string;
+  newRevision: string;
+  hunks: Hunk[];
+}
+
+interface ContentItemState {
+  diffText: string;
+  collapseObj: CollapseObj;
+  diff: Diff[];
+  files: File[];
+}
+
+interface CollapseObj {
+  [index: string]: boolean;
+}
+
+interface ResObj {
+  [index: string]: Diff[] | File[];
+}
+
+const Image = styled.img`
+  width: 10px;
+`;
+
+export default class ContentItem extends React.Component<ContentItemProps, ContentItemState> {
+  constructor(props: ContentItemProps) {
+    super(props);
+    this.state = {
+      diffText: '',
+      collapseObj: {},
+      diff: [],
+      files: [],
+    };
+  }
+
+  async setDiffAndFiles(commit: string, diff: Diff[]): Promise<void> {
     const that = this;
     const response = await fetch(`diff/${commit}.diff`);
     const diffText = await response.text();
-    let files = [];
+    let files: File[] = [];
 
     if (diffText) {
       files = parseDiff(diffText);
@@ -37,10 +96,10 @@ export default class ContentItem extends Component {
     });
   }
 
-  getCollapseObj = (arr) => {
+  getCollapseObj = (arr: Diff[]): CollapseObj => {
     // write a new func for reduce repeat work
-    let constructNewCollapseObj = {};
-    if (isArray(arr)) {
+    let constructNewCollapseObj: CollapseObj = {};
+    if (tutureUtilities.isArray(arr)) {
       arr.map(arrItem => {
         constructNewCollapseObj[arrItem.file] = arrItem.collapse;
       });
@@ -49,7 +108,7 @@ export default class ContentItem extends Component {
     return constructNewCollapseObj;
   }
 
-  componentDidMount() {
+  componentDidMount(): void {
     const { commit, diff } = this.props;
     this.setDiffAndFiles(commit, diff);
 
@@ -60,7 +119,7 @@ export default class ContentItem extends Component {
     });
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps: ContentItemProps): void {
     if (nextProps.commit !== this.props.commit) {
       this.setDiffAndFiles(nextProps.commit, nextProps.diff);
     }
@@ -73,15 +132,15 @@ export default class ContentItem extends Component {
     }
   }
 
-  extractFileName({ type, oldPath, newPath }) {
+  extractFileName({ type, oldPath, newPath }: File): string {
     return type === 'delete' ? oldPath : newPath;
   }
 
-  mapArrItemToObjValue = (property, arr) => {
-    let resObj = {};
+  mapArrItemToObjValue = (property: string, arr: any[]): ResObj => {
+    let resObj: ResObj = {};
 
     if (Array.isArray(arr)) {
-      arr.map(item => {
+      arr.map((item) => {
         resObj[item[property]] = item;
       });
     }
@@ -89,7 +148,7 @@ export default class ContentItem extends Component {
     return resObj;
   }
 
-  getEndRenderContent = (diff, files) => {
+  getEndRenderContent = (diff: Diff[], files: File[]): any[] => {
     // use fileName key map it belongs obj
     const mapedFiles = this.mapArrItemToObjValue('newPath', files);
     const mapedDiff = this.mapArrItemToObjValue('file', diff);
@@ -104,17 +163,18 @@ export default class ContentItem extends Component {
     return endRenderContent;
   }
 
-  renderIcon = (type) => {
-    console.log('type', type);
-    const mapTypeToSvg = {
+  renderIcon = (type: string): React.ReactNode => {
+    const mapTypeToSvg: {
+      [index: string]: string;
+    } = {
       up,
       down,
     };
 
-    return <img src={mapTypeToSvg[type]} className="indicate-icon" />;
+    return <Image src={mapTypeToSvg[type]} />;
   }
 
-  toggleCollapse = (fileName) => {
+  toggleCollapse = (fileName: string): void => {
     const { collapseObj } = this.state;
     const newCollapseObj = { ...collapseObj, [fileName]: !collapseObj[fileName] };
 
@@ -130,7 +190,7 @@ export default class ContentItem extends Component {
     return (
       <div className="ContentItem">
         {
-          needRenderFiles.map((file, i) => (
+          needRenderFiles.map((file: File & Diff, i) => (
             <div key={i}>
               <article className="diff-file" key={i}>
                 <header className="diff-file-header">
@@ -144,7 +204,7 @@ export default class ContentItem extends Component {
                 <main>
                   {
                     file && !collapseObj[file.file] && (
-                      <Diff key={i} hunks={file.hunks} viewType={this.props.viewType} />
+                      <DiffView key={i} hunks={file.hunks} viewType={this.props.viewType} />
                     )
                   }
                 </main>

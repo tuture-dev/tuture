@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "jsx": "react",
+    "noImplicitAny": true,
+    "target": "es5",
+    "lib": [
+      "es2015",
+      "dom"
+    ],
+    "sourceMap": true,
+    "allowSyntheticDefaultImports": true,
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "allowJs": true,
+    "outDir": "./dist/"
+  },
+  "exclude": [
+    "node_modules"
+  ]
+}
