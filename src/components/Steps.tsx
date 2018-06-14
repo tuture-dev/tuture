@@ -17,7 +17,7 @@ interface catalog {
   commit: string;
 }
 
-interface CatalogProps {
+interface StepsProps {
   selectKey: number;
   updateSelect: updateSelectFunc;
   catalogs: catalog[];
@@ -70,7 +70,7 @@ const TutureMenuItem = styled.li`
   background-color: ${(props: any) => props.selected ? '#e6f7ff' : '#FFFFFF'};
 `;
 
-export default class Steps extends React.Component<CatalogProps> {
+export default class Steps extends React.Component<StepsProps> {
   render() {
     const {
       catalogs,
