@@ -65,9 +65,9 @@ const TutureMenuItem = styled.li`
   margin: 0;
   display: block;
   white-space: nowrap;
-  border-right: ${(props: any) => props.selected ? '4px solid #1890ff' : 'none'};
-  color: ${(props: any) => props.selected ? '#1890ff' : '#000000'};
-  background-color: ${(props: any) => props.selected ? '#e6f7ff' : '#FFFFFF'};
+  border-right: ${(props: any) => props.className === 'selected' ? '4px solid #1890ff' : 'none'};
+  color: ${(props: any) => props.className === 'selected' ? '#1890ff' : '#000000'};
+  background-color: ${(props: any) => props.className === 'selected' ? '#e6f7ff' : '#FFFFFF'};
 `;
 
 export default class Steps extends React.Component<StepsProps> {
@@ -85,7 +85,7 @@ export default class Steps extends React.Component<StepsProps> {
           {
             catalogs.map((item, key) => (
               <TutureMenuItem
-                selected={key === selectKey}
+                className={key === selectKey ? 'selected' : ''}
                 onClick={() => { this.props.updateSelect(key) }}
                 key={key}
               >

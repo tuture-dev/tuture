@@ -3,7 +3,7 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const FileWatcherWebpackPlugin = require('filewatcher-webpack-plugin');
+const WatchExternalFilesPlugin = require('webpack-watch-files-plugin').default;
 
 // get tuture path
 const tuturePath = process.env.TUTURE_PATH;
@@ -13,7 +13,6 @@ module.exports = {
     './scripts/polyfills.js',
     './src/index.tsx',
   ],
-  mode: 'development',
   devtool: 'inline-source-map',
   output: {
     filename: '[name].bundle.js',
@@ -23,12 +22,10 @@ module.exports = {
     extensions: ['.js', '.json', '.ts', '.tsx'],
   },
   plugins: [
-    new FileWatcherWebpackPlugin({
-      watchFileRegex: `${tuturePath}/tuture.yml`,
-      depth: 1,
-      persistent: false,
-      awaitWriteFinish: true,
-      ignored: `${tuturePath}/node_modules/`,
+    new WatchExternalFilesPlugin({
+      files: [
+        `${tuturePath}/tuture.yml`,
+      ],
     }),
     new CopyWebpackPlugin([
       { from: `${tuturePath}/tuture.yml`, to: './tuture.yml' },
@@ -50,7 +47,7 @@ module.exports = {
       },
       {
         test: /\.(ts|tsx)$/,
-        loader: 'awesome-typescript-loader',
+        loader: 'ts-loader',
         exclude: /node_modules/,
       },
       {
