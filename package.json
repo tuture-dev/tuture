@@ -74,7 +74,10 @@
       "node"
     ],
     "moduleNameMapper": {
-    "\\.(css|jpg|png|svg)$": "<rootDir>/testConfigs/empty-module.js"
-  }
+      "\\.(css|jpg|png|svg)$": "<rootDir>/src/components/tests/testConfigs/empty-module.js"
+    },
+    "setupFiles": [
+      "./src/components/tests/testConfigs/env.js"
+    ]
   }
 }
