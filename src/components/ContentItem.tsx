@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import DiffView from './DiffView/';
 
-import { Diff } from './App';
+import { Diff, Hunk } from '../types/';
 import parseDiff from '../utils/parseDiff';
 import tutureUtilities from '../utils/';
 
@@ -19,26 +19,6 @@ interface ContentItemProps {
   commit: string;
   viewType: string;
   renderExplain: renderExplainFunc;
-}
-
-export interface Change {
-  content: string;
-  type: string;
-  isInsert?: boolean;
-  isNormal?: boolean;
-  isDelete?: boolean;
-  lineNumber?: number;
-  oldLineNumber?: number;
-  newLineNumber?: number;
-}
-
-export interface Hunk {
-  content: string;
-  newLines: number;
-  oldLines: number;
-  oldStart: number;
-  newStart: number;
-  changes: Change[];
 }
 
 export interface File {

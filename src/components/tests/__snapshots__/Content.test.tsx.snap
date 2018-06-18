@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test Content render successfully 1`] = `
+<div
+  className="sc-bwzfXH jUaPTe"
+>
+  <div
+    className="sc-htpNat huQAjV"
+  >
+    <h1>
+      my first commit
+    </h1>
+    <button
+      onClick={[Function]}
+    >
+      unified
+    </button>
+  </div>
+  <p>
+    tuture is cool ? yes! absolutly
+  </p>
+  <div
+    className="ContentItem"
+  />
+</div>
+`;

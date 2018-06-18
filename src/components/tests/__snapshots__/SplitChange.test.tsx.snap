@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test SplitChange render successfully 1`] = `
+<tr
+  className="diff-line"
+>
+  <td
+    className="diff-gutter diff-gutter-isdelete"
+    data-line-number={-1}
+  />
+  <td
+    className="diff-code diff-code-isdelete"
+  >
+    I am the coolest one
+  </td>
+  <td
+    className="diff-gutter diff-gutter-isinsert"
+    data-line-number={1}
+  />
+  <td
+    className="diff-code diff-code-isinsert"
+  >
+    Come and play it
+  </td>
+</tr>
+`;

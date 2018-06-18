@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import SplitChange from './SplitChange';
 
 import { getChangeKey } from './utils';
-import { Hunk as HunkType, Change as ChangeType } from '../ContentItem';
+import { Change as ChangeType, Hunk as HunkType } from '../../types/index';
 
 interface SplitHunkProps {
   hunk: HunkType;

@@ -8,29 +8,8 @@ import Steps from './Steps';
 import Content from './Content';
 
 import tutureUtilities from '../utils/';
-
-export interface Diff {
-  file: string;
-  explain: string;
-  collapse?: boolean;
-}
-
-export interface Step {
-  name: string;
-  commit: string;
-  explain: string;
-  diff: Diff[];
-}
-
-interface Tuture {
-  name: string;
-  language: string;
-  version: string;
-  topics: string[];
-  description: string;
-  maintainer: string;
-  steps: Step[];
-}
+import { Tuture } from '../types/index';
+import { handleSteps, handleStepsInfo } from '../utils/handleTuture';
 
 interface AppState {
   selectKey: number;
@@ -161,17 +140,8 @@ export default class App extends React.Component<AppProps, AppState> {
     if (!tuture || tutureUtilities.isObjectEmpty(tuture)) {
       bodyContent = null;
     } else {
-      const catalogs = tuture.steps.map((item: Step) => ({
-        name: item.name,
-        commit: item.commit,
-      }));
-      const { name, language, maintainer, topics } = tuture;
-      const catalogsInfo = {
-        name,
-        language,
-        maintainer,
-        topics,
-      };
+      const catalogs = handleSteps(tuture);
+      const catalogsInfo = handleStepsInfo(tuture);
       const { selectKey, viewType } = this.state;
       const nowRenderContent = tuture.steps[this.state.selectKey];
       bodyContent = [

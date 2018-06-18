@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test DiffView render successfully 1`] = `
+<table
+  className="diff"
+>
+  <colgroup>
+    <col
+      className="diff-gutter-col"
+    />
+    <col
+      className="diff-gutter-col"
+    />
+  </colgroup>
+</table>
+`;

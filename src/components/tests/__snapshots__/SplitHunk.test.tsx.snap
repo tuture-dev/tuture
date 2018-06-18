@@ -1,0 +1,46 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test SplitHunk render successfully 1`] = `
+<tbody
+  className="diff-hunk"
+>
+  <tr
+    className="diff-line"
+  >
+    <td
+      className="diff-gutter diff-gutter-omit"
+    />
+    <td
+      className="diff-code diff-code-omit"
+    />
+    <td
+      className="diff-gutter diff-gutter-insert"
+      data-line-number={1}
+    />
+    <td
+      className="diff-code diff-code-insert"
+    >
+      I am the coolest one
+    </td>
+  </tr>
+  <tr
+    className="diff-line"
+  >
+    <td
+      className="diff-gutter diff-gutter-omit"
+    />
+    <td
+      className="diff-code diff-code-omit"
+    />
+    <td
+      className="diff-gutter diff-gutter-insert"
+      data-line-number={2}
+    />
+    <td
+      className="diff-code diff-code-insert"
+    >
+      I am the coolest one
+    </td>
+  </tr>
+</tbody>
+`;

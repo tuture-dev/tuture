@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import ContentItem from './ContentItem';
 
-import { Step } from './App';
+import { Step } from '../types/index';
 
 import tutureUtilities from '../utils/';
 
