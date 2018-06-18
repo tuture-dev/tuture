@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Test App render successfully 1`] = `
+exports[`App render successfully 1`] = `
 <div
   className="sc-bZQynM bmKOqU"
 />

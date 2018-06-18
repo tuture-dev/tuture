@@ -3,7 +3,7 @@ import renderer from 'react-test-renderer';
 
 import App from '../App';
 
-test('Test App render successfully', () => {
+test('App render successfully', () => {
   const component = renderer.create(
     <App />
   );

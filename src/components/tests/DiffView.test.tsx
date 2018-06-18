@@ -2,10 +2,10 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 
 import DiffView from '../DiffView/index';
-import { hunk } from './utils/hunData';
+import { hunk } from './utils/hunkData';
 import { Hunk } from '../../types/index';
 
-test('Test DiffView render successfully', () => {
+test('DiffView render successfully', () => {
   let hunks: Hunk[]  = [];
   Array(10).map(item => hunks.push(hunk));
 

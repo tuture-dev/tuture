@@ -4,9 +4,9 @@ import renderer from 'react-test-renderer';
 import Content from '../Content';
 import tutureUtilities from '../../utils/index';
 import { Step } from '../../types/index';
-import { diff } from './utils/hunData';
+import { diff } from './utils/hunkData';
 
-test('Test Content render successfully', () => {
+test('Content render successfully', () => {
   const content = {
     name: 'my first commit',
     commit: '1bd58a3',

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Test SplitHunk render successfully 1`] = `
+exports[`SplitHunk render successfully 1`] = `
 <tbody
   className="diff-hunk"
 >

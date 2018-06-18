@@ -4,7 +4,7 @@ import renderer from 'react-test-renderer';
 import SplitChange from '../DiffView/SplitChange';
 import { Change } from '../../types/index';
 
-test('Test SplitChange render successfully', () => {
+test('SplitChange render successfully', () => {
   const oldChange: Change = {
     type: 'isdelete',
     content: 'I am the coolest one',

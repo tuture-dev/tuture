@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Test Steps render successfully 1`] = `
+exports[`Steps render successfully 1`] = `
 <div
   className="sc-bdVaJa cSstg"
 >

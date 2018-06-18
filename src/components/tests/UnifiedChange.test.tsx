@@ -4,7 +4,7 @@ import renderer from 'react-test-renderer';
 import UnifiedChange from '../DiffView/UnifiedChange';
 import { Change } from '../../types/index';
 
-test('Test UnifiedChange render successfully', () => {
+test('UnifiedChange render successfully', () => {
   const change: Change = {
     type: 'insert',
     content: 'I am the coolest one',

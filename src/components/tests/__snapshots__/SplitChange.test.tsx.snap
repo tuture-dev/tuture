@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Test SplitChange render successfully 1`] = `
+exports[`SplitChange render successfully 1`] = `
 <tr
   className="diff-line"
 >

@@ -2,9 +2,9 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 
 import Hunk from '../DiffView/Hunk';
-import { hunk } from './utils/hunData';
+import { hunk } from './utils/hunkData';
 
-test('Test Hunk render successfully', () => {
+test('Hunk render successfully', () => {
   const component = renderer.create(
     <Hunk
       hunk={hunk}

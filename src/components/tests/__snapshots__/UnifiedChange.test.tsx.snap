@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Test UnifiedChange render successfully 1`] = `
+exports[`UnifiedChange render successfully 1`] = `
 <tr
   className="diff-line"
 >

@@ -2,9 +2,9 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 
 import UnifiedHunk from '../DiffView/UnifiedHunk';
-import { hunk } from './utils/hunData';
+import { hunk } from './utils/hunkData';
 
-test('Test UnifiedHunk render successfully', () => {
+test('UnifiedHunk render successfully', () => {
   const component = renderer.create(
     <UnifiedHunk
       hunk={hunk}

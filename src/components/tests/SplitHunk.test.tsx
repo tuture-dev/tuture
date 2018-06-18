@@ -2,9 +2,9 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 
 import SplitHunk from '../DiffView/SplitHunk';
-import { hunk } from './utils/hunData';
+import { hunk } from './utils/hunkData';
 
-test('Test SplitHunk render successfully', () => {
+test('SplitHunk render successfully', () => {
 
   const component = renderer.create(
     <SplitHunk
