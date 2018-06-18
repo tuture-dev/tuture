@@ -12,7 +12,8 @@
     "module": "ESNext",
     "moduleResolution": "node",
     "allowJs": true,
-    "outDir": "./dist/"
+    "outDir": "./dist/",
+    "skipLibCheck": true
   },
   "exclude": [
     "node_modules"

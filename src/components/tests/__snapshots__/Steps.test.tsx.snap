@@ -1,0 +1,138 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Steps render successfully 1`] = `
+<div
+  className="sc-bdVaJa cSstg"
+>
+  <ul
+    className="sc-bwzfXH cHPvXJ"
+  >
+    <li
+      className="selected sc-htpNat iRATYX"
+      onClick={[Function]}
+    >
+      sssssssssssssssssssss
+    </li>
+    <li
+      className="sc-htpNat dFEOip"
+      onClick={[Function]}
+    >
+      服务器端依赖安装
+    </li>
+    <li
+      className="sc-htpNat dFEOip"
+      onClick={[Function]}
+    >
+      数据库的配置与数据表的设计
+    </li>
+    <li
+      className="sc-htpNat dFEOip"
+      onClick={[Function]}
+    >
+      编写 User 表路由和处理文件
+    </li>
+    <li
+      className="sc-htpNat dFEOip"
+      onClick={[Function]}
+    >
+      编写 Topics 路由极其处理文件
+    </li>
+    <li
+      className="sc-htpNat dFEOip"
+      onClick={[Function]}
+    >
+      编写 Notifications 路由及其处理文件
+    </li>
+    <li
+      className="sc-htpNat dFEOip"
+      onClick={[Function]}
+    >
+      使用 Postman 测试结果
+    </li>
+    <li
+      className="sc-htpNat dFEOip"
+      onClick={[Function]}
+    >
+      初始化 Client 工程
+    </li>
+    <li
+      className="sc-htpNat dFEOip"
+      onClick={[Function]}
+    >
+      Eject 项目，加入必要依赖
+    </li>
+    <li
+      className="sc-htpNat dFEOip"
+      onClick={[Function]}
+    >
+      构建主页
+    </li>
+    <li
+      className="sc-htpNat dFEOip"
+      onClick={[Function]}
+    >
+      编写 Main 页面
+    </li>
+    <li
+      className="sc-htpNat dFEOip"
+      onClick={[Function]}
+    >
+      编写 Notifications 组件
+    </li>
+    <li
+      className="sc-htpNat dFEOip"
+      onClick={[Function]}
+    >
+      编写 Topic 组件
+    </li>
+    <li
+      className="sc-htpNat dFEOip"
+      onClick={[Function]}
+    >
+      编写 Topics 组件
+    </li>
+    <li
+      className="sc-htpNat dFEOip"
+      onClick={[Function]}
+    >
+      修改 App，完成整个项目
+    </li>
+    <li
+      className="sc-htpNat dFEOip"
+      onClick={[Function]}
+    >
+      add content for debug
+    </li>
+    <li
+      className="sc-htpNat dFEOip"
+      onClick={[Function]}
+    >
+      renderer: completed new features
+    </li>
+    <li
+      className="sc-htpNat dFEOip"
+      onClick={[Function]}
+    >
+      add switch view and hide files
+    </li>
+    <li
+      className="sc-htpNat dFEOip"
+      onClick={[Function]}
+    >
+      addjust stylesheet
+    </li>
+    <li
+      className="sc-htpNat dFEOip"
+      onClick={[Function]}
+    >
+      test for renderer
+    </li>
+    <li
+      className="sc-htpNat dFEOip"
+      onClick={[Function]}
+    >
+      add global tuture-renderer command
+    </li>
+  </ul>
+</div>
+`;

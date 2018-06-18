@@ -6,7 +6,7 @@ import {
   computeNewLineNumber,
 } from './utils';
 
-import { Change as ChangeType } from '../ContentItem';
+import { Change as ChangeType } from '../../types/index';
 
 export interface SplitChangeProps {
   oldChange: ChangeType;

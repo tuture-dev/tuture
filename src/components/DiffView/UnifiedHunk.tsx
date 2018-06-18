@@ -3,7 +3,7 @@ import classnames from 'classnames';
 
 import UnifiedChange from './UnifiedChange';
 
-import { Hunk as HunkType, Change as ChangeType } from '../ContentItem';
+import { Change as ChangeType, Hunk as HunkType } from '../../types/index';
 
 import {
   computeOldLineNumber,
@@ -20,6 +20,7 @@ export default class UnifiedHunk extends PureComponent<UnifiedHunkProps> {
     const key = getChangeKey(change);
 
     elements.push(['change', key, change]);
+    console.log('change', change);
 
     // later will add widget content
     return elements;
@@ -43,6 +44,7 @@ export default class UnifiedHunk extends PureComponent<UnifiedHunkProps> {
     const {
       hunk,
     } = this.props;
+    console.log('hunk', hunk);
 
     const elements = this.groupElements(hunk.changes);
 
