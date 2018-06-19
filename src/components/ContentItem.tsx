@@ -61,19 +61,23 @@ export default class ContentItem extends React.Component<ContentItemProps, Conte
   }
 
   async setDiffAndFiles(commit: string, diff: Diff[]): Promise<void> {
-    const that = this;
-    const response = await fetch(`diff/${commit}.diff`);
-    const diffText = await response.text();
-    let files: File[] = [];
+    try {
+      const that = this;
+      const response = await fetch(`diff/${commit}.diff`);
+      const diffText = await response.text();
+      let files: File[] = [];
 
-    if (diffText) {
-      files = parseDiff(diffText);
+      if (diffText) {
+        files = parseDiff(diffText);
+      }
+
+      that.setState({
+        files,
+        diff,
+      });
+    } catch (err) {
+      // silent failed
     }
-
-    that.setState({
-      files,
-      diff,
-    });
   }
 
   getCollapseObj = (arr: Diff[]): CollapseObj => {

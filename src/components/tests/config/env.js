@@ -1,1 +1,1 @@
-require('whatwg-fetch');
+require('isomorphic-fetch');

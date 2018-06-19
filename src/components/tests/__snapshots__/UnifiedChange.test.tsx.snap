@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`UnifiedChange render successfully 1`] = `
+exports[`Steps component/dom/functionality/events level behave normally component-level behave normally UnifiedChange render successfully 1`] = `
 <tr
   className="diff-line"
 >

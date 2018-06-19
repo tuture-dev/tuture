@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Steps render successfully 1`] = `
+exports[`Steps component/dom/events level behave normally component-level behave normally Snapshot of Steps behave normally 1`] = `
 <div
   className="sc-bdVaJa cSstg"
 >

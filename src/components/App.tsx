@@ -118,15 +118,18 @@ export default class App extends React.Component<AppProps, AppState> {
   async loadTuture(): Promise<void> {
     const that = this;
 
-    // Use frontend get data method to get tuture.yml
-    const response = await fetch('./tuture.yml');
-    const content = await response.text();
-
-    // use js-yaml read yamm as js object
-    const tuture = yaml.safeLoad(content);
-    that.setState({
-      tuture: tuture as Tuture,
-    });
+    try {
+      // Use frontend get data method to get tuture.yml
+      const response = await fetch('./tuture.yml');
+      const content = await response.text();
+      // use js-yaml read yamm as js object
+      const tuture = yaml.safeLoad(content);
+      that.setState({
+        tuture: tuture as Tuture,
+      });
+    } catch (err) {
+      // silent failed
+    }
   }
 
   componentDidMount() {

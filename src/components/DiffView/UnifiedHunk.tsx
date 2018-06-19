@@ -20,7 +20,6 @@ export default class UnifiedHunk extends PureComponent<UnifiedHunkProps> {
     const key = getChangeKey(change);
 
     elements.push(['change', key, change]);
-    console.log('change', change);
 
     // later will add widget content
     return elements;
@@ -44,7 +43,6 @@ export default class UnifiedHunk extends PureComponent<UnifiedHunkProps> {
     const {
       hunk,
     } = this.props;
-    console.log('hunk', hunk);
 
     const elements = this.groupElements(hunk.changes);
 

@@ -98,3 +98,9 @@ export default class Steps extends React.Component<StepsProps> {
     );
   }
 }
+
+export {
+  TutureSteps,
+  TutureMenu,
+  TutureMenuItem,
+}
