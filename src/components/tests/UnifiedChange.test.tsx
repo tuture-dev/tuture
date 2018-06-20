@@ -5,7 +5,7 @@ import UnifiedChange from '../DiffView/UnifiedChange';
 import { Change } from '../../types/index';
 import { shallow } from 'enzyme';
 
-describe('Steps component/dom/functionality/events level behave normally', () => {
+describe('Steps behave normally on component/dom/functionality/events level', () => {
   const change: Change = {
     type: 'insert',
     content: 'I am the coolest one',

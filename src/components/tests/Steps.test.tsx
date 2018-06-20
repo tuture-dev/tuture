@@ -9,7 +9,7 @@ import Steps, {
 } from '../Steps';
 import { catalogs, catalogsInfo } from './utils/data';
 
-describe('Steps component/dom/events level behave normally', () => {
+describe('Steps behave normally on component/dom/events level ', () => {
   // init every test block need use content
   let selectKey = 0;
   const mockUpdateSelect = jest.fn();
