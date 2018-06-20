@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Steps component/dom/events level behave normally component-level behave normally Snapshot of Steps behave normally 1`] = `
+exports[`Steps behave normally on component/dom/events level  component-level behave normally Snapshot of Steps behave normally 1`] = `
 <div
   className="sc-bdVaJa cSstg"
 >
