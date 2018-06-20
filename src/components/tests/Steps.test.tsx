@@ -18,22 +18,6 @@ describe('Steps behave normally on component/dom/events level ', () => {
     selectKey = 0;
   });
 
-  describe('component-level behave normally', () => {
-    test('Snapshot of Steps behave normally', () => {
-      const component = renderer.create(
-        <Steps
-          catalogs={catalogs}
-          catalogsInfo={catalogsInfo}
-          selectKey={selectKey}
-          updateSelect={mockUpdateSelect}
-        />
-      );
-
-      let tree = component.toJSON();
-      expect(tree).toMatchSnapshot();
-    });
-  });
-
   describe('dom-level behave normally', () => {
     const wrapper = shallow(
       <Steps

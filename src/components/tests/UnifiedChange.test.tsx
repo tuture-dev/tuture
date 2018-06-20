@@ -13,18 +13,6 @@ describe('Steps behave normally on component/dom/functionality/events level', ()
     lineNumber: 0,
   };
 
-  describe('component-level behave normally', () => {
-    test('UnifiedChange render successfully', () => {
-      const component = renderer.create(
-        <UnifiedChange
-          change={change}
-        />
-      );
-      let tree = component.toJSON();
-      expect(tree).toMatchSnapshot();
-    });
-  });
-
   describe('dom-level behave normally', () => {
     const wrapper = shallow(
       <UnifiedChange
