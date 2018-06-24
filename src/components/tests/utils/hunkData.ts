@@ -1,4 +1,4 @@
-import { Hunk, Diff } from '../../../types/index';
+import { Hunk, ChangedFile } from '../../../types';
 
 const hunk: Hunk = {
   changes: [
@@ -23,12 +23,12 @@ const hunk: Hunk = {
   oldLines: 1,
 };
 
-const diffItem: Diff = {
+const diffItem: ChangedFile = {
   file: 'cool.ts',
   explain: 'Can you be more funny?',
   collapse: false,
 };
-let diff: Diff[] = [];
+let diff: ChangedFile[] = [];
 Array(10).map(item => diff.push(diffItem));
 
 export {

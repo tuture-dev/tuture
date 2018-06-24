@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import classnames from 'classnames';
 
-import { Change as ChangeType } from '../../types/index';
+import { Change as ChangeType } from '../../types';
 import { Cell } from './SplitChange';
 
 import {

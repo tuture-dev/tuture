@@ -3,8 +3,8 @@ import parser from 'gitdiff-parser';
 
 import {
   File,
-} from '../components/ContentItem';
-import { Hunk } from '../types/index';
+} from '../components/StepDiff';
+import { Hunk } from '../types';
 
 const parseDiff = (text: string, options = {}) => {
     let files: File[] = parser.parse(text);

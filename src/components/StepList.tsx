@@ -1,27 +1,17 @@
 import React from 'react';
 import styled from 'styled-components';
 
-interface updateSelectFunc {
+import { TutureMeta, Commit } from '../types';
+
+interface UpdateSelectFunc {
   (key: number): void;
 }
 
-interface catalogsInfo {
-  name: string;
-  language: string;
-  maintainer: string;
-  topics: string[];
-}
-
-interface catalog {
-  name: string;
-  commit: string;
-}
-
-interface StepsProps {
+interface StepListProps {
   selectKey: number;
-  updateSelect: updateSelectFunc;
-  catalogs: catalog[];
-  catalogsInfo: catalogsInfo;
+  updateSelect: UpdateSelectFunc;
+  commits: Commit[];
+  metadata: TutureMeta;
 }
 
 const TutureSteps = styled.div`
@@ -70,11 +60,11 @@ const TutureMenuItem = styled.li`
   background-color: ${(props: any) => props.className === 'selected' ? '#e6f7ff' : '#FFFFFF'};
 `;
 
-export default class Steps extends React.Component<StepsProps> {
+export default class StepList extends React.Component<StepListProps> {
   render() {
     const {
-      catalogs,
-      catalogsInfo,
+      commits,
+      metadata,
       selectKey,
       updateSelect,
     } = this.props;
@@ -83,7 +73,7 @@ export default class Steps extends React.Component<StepsProps> {
       <TutureSteps>
         <TutureMenu>
           {
-            catalogs.map((item, key) => (
+            commits.map((item, key) => (
               <TutureMenuItem
                 className={key === selectKey ? 'selected' : ''}
                 onClick={() => { this.props.updateSelect(key) }}

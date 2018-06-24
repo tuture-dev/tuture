@@ -1,4 +1,4 @@
-import { Change as ChangeType } from '../../types/index';
+import { Change as ChangeType } from '../../types';
 
 function computeOldLineNumber(change: ChangeType): number {
   if (change.isInsert) {

@@ -4,12 +4,12 @@ import styled, { injectGlobal } from 'styled-components';
 import { Helmet } from 'react-helmet';
 import yaml from 'js-yaml';
 
-import Steps from './Steps';
-import Content from './Content';
+import StepList from './StepList';
+import StepContent from './StepContent';
 
-import tutureUtilities from '../utils/';
-import { Tuture } from '../types/index';
-import { handleSteps, handleStepsInfo } from '../utils/handleTuture';
+import tutureUtilities from '../utils';
+import { Tuture } from '../types';
+import { extractCommits, extractMetaData } from '../utils/extractors';
 
 interface AppState {
   selectKey: number;
@@ -141,19 +141,19 @@ export default class App extends React.Component<AppProps, AppState> {
     if (!tuture || tutureUtilities.isObjectEmpty(tuture)) {
       bodyContent = null;
     } else {
-      const catalogs = handleSteps(tuture);
-      const catalogsInfo = handleStepsInfo(tuture);
+      const commits = extractCommits(tuture);
+      const metadata = extractMetaData(tuture);
       const { selectKey, viewType } = this.state;
       const nowRenderContent = tuture.steps[this.state.selectKey];
       bodyContent = [
-        <Steps
+        <StepList
           key="steps"
-          catalogs={catalogs}
-          catalogsInfo={catalogsInfo}
+          commits={commits}
+          metadata={metadata}
           selectKey={selectKey}
           updateSelect={this.updateSelect}
         />,
-        <Content
+        <StepContent
           key="content"
           content={nowRenderContent}
           viewType={viewType}

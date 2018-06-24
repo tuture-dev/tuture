@@ -1,23 +1,29 @@
-interface Diff {
+interface ChangedFile {
   file: string;
   explain: string;
   collapse?: boolean;
 }
 
-interface Step {
-  name: string;
-  commit: string;
-  explain: string;
-  diff: Diff[];
-}
-
-interface Tuture {
+interface TutureMeta {
   name: string;
   language: string;
   version: string;
-  topics: string[];
   description: string;
   maintainer: string;
+  topics: string[];
+}
+
+interface Commit {
+  name: string;
+  commit: string;
+}
+
+interface Step extends Commit {
+  explain: string;
+  diff: ChangedFile[];
+}
+
+interface Tuture extends TutureMeta {
   steps: Step[];
 }
 
@@ -43,7 +49,9 @@ interface Hunk {
 }
 
 export {
-  Diff,
+  ChangedFile,
+  TutureMeta,
+  Commit,
   Step,
   Tuture,
   Change,

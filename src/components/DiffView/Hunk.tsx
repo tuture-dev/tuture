@@ -4,7 +4,7 @@ import { injectGlobal } from 'styled-components';
 import UnifiedHunk from './UnifiedHunk';
 import SplitHunk from './SplitHunk';
 
-import { Hunk as HunkType } from '../../types/index';
+import { Hunk as HunkType } from '../../types';
 
 interface HunkProps {
   viewType: string;

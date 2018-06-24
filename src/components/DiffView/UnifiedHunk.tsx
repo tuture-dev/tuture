@@ -3,7 +3,7 @@ import classnames from 'classnames';
 
 import UnifiedChange from './UnifiedChange';
 
-import { Change as ChangeType, Hunk as HunkType } from '../../types/index';
+import { Change as ChangeType, Hunk as HunkType } from '../../types';
 
 import {
   computeOldLineNumber,

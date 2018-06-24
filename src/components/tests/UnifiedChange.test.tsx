@@ -2,7 +2,7 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 
 import UnifiedChange from '../DiffView/UnifiedChange';
-import { Change } from '../../types/index';
+import { Change } from '../../types';
 import { shallow } from 'enzyme';
 
 describe('Steps behave normally on component/dom/functionality/events level', () => {
