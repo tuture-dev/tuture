@@ -1,24 +1,24 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import DiffView from './DiffView/';
+import DiffView from './DiffView';
 
-import { Diff, Hunk } from '../types/';
+import { ChangedFile, Hunk } from '../types';
 import parseDiff from '../utils/parseDiff';
-import tutureUtilities from '../utils/';
+import tutureUtilities from '../utils';
 
 import up from './img/up.svg';
 import down from './img/down.svg';
 
-interface renderExplainFunc {
+interface RenderExplainFunc {
   (explain: string | string[]): React.ReactNode | React.ReactNodeArray;
 }
 
-interface ContentItemProps {
-  diff: Diff[];
+interface StepDiffProps {
+  diff: ChangedFile[];
   commit: string;
   viewType: string;
-  renderExplain: renderExplainFunc;
+  renderExplain: RenderExplainFunc;
 }
 
 export interface File {
@@ -30,10 +30,10 @@ export interface File {
   hunks: Hunk[];
 }
 
-interface ContentItemState {
+interface StepDiffState {
   diffText: string;
   collapseObj: CollapseObj;
-  diff: Diff[];
+  diff: ChangedFile[];
   files: File[];
 }
 
@@ -42,15 +42,15 @@ interface CollapseObj {
 }
 
 interface ResObj {
-  [index: string]: Diff[] | File[];
+  [index: string]: ChangedFile[] | File[];
 }
 
 const Image = styled.img`
   width: 10px;
 `;
 
-export default class ContentItem extends React.Component<ContentItemProps, ContentItemState> {
-  constructor(props: ContentItemProps) {
+export default class StepDiff extends React.Component<StepDiffProps, StepDiffState> {
+  constructor(props: StepDiffProps) {
     super(props);
     this.state = {
       diffText: '',
@@ -60,7 +60,7 @@ export default class ContentItem extends React.Component<ContentItemProps, Conte
     };
   }
 
-  async setDiffAndFiles(commit: string, diff: Diff[]): Promise<void> {
+  async setDiffAndFiles(commit: string, diff: ChangedFile[]): Promise<void> {
     try {
       const that = this;
       const response = await fetch(`diff/${commit}.diff`);
@@ -80,7 +80,7 @@ export default class ContentItem extends React.Component<ContentItemProps, Conte
     }
   }
 
-  getCollapseObj = (arr: Diff[]): CollapseObj => {
+  getCollapseObj = (arr: ChangedFile[]): CollapseObj => {
     // write a new func for reduce repeat work
     let constructNewCollapseObj: CollapseObj = {};
     if (tutureUtilities.isArray(arr)) {
@@ -103,7 +103,7 @@ export default class ContentItem extends React.Component<ContentItemProps, Conte
     });
   }
 
-  componentWillReceiveProps(nextProps: ContentItemProps): void {
+  componentWillReceiveProps(nextProps: StepDiffProps): void {
     if (nextProps.commit !== this.props.commit) {
       this.setDiffAndFiles(nextProps.commit, nextProps.diff);
     }
@@ -132,7 +132,7 @@ export default class ContentItem extends React.Component<ContentItemProps, Conte
     return resObj;
   }
 
-  getEndRenderContent = (diff: Diff[], files: File[]): any[] => {
+  getEndRenderContent = (diff: ChangedFile[], files: File[]): any[] => {
     // use fileName key map it belongs obj
     const mapedFiles = this.mapArrItemToObjValue('newPath', files);
     const mapedDiff = this.mapArrItemToObjValue('file', diff);
@@ -174,7 +174,7 @@ export default class ContentItem extends React.Component<ContentItemProps, Conte
     return (
       <div className="ContentItem">
         {
-          needRenderFiles.map((file: File & Diff, i) => (
+          needRenderFiles.map((file: File & ChangedFile, i) => (
             <div key={i}>
               <article className="diff-file" key={i}>
                 <header className="diff-file-header">

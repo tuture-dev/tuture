@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import Hunk from './Hunk';
 
-import { Hunk as HunkType } from '../../types/index';
+import { Hunk as HunkType } from '../../types';
 
 interface DiffViewProps {
   viewType: string;

@@ -2,12 +2,12 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 import { shallow } from 'enzyme';
 
-import Steps, {
+import StepList, {
   TutureMenu,
   TutureMenuItem,
   TutureSteps,
-} from '../Steps';
-import { catalogs, catalogsInfo } from './utils/data';
+} from '../StepList';
+import { commits, metadata } from './utils/data';
 
 describe('Steps behave normally on component/dom/events level ', () => {
   // init every test block need use content
@@ -20,16 +20,16 @@ describe('Steps behave normally on component/dom/events level ', () => {
 
   describe('dom-level behave normally', () => {
     const wrapper = shallow(
-      <Steps
-        catalogs={catalogs}
-        catalogsInfo={catalogsInfo}
+      <StepList
+        commits={commits}
+        metadata={metadata}
         selectKey={selectKey}
         updateSelect={mockUpdateSelect}
       />
     );
     test('should render related TutureMenu/TutureMenuItem/TutureSteps times', () => {
       expect(wrapper.find(TutureMenu)).toHaveLength(1);
-      expect(wrapper.find(TutureMenuItem)).toHaveLength(catalogs.length);
+      expect(wrapper.find(TutureMenuItem)).toHaveLength(commits.length);
       expect(wrapper.find(TutureSteps)).toHaveLength(1);
     });
 
@@ -41,9 +41,9 @@ describe('Steps behave normally on component/dom/events level ', () => {
 
   describe('events-level behave normally', () => {
     const wrapper = shallow(
-      <Steps
-        catalogs={catalogs}
-        catalogsInfo={catalogsInfo}
+      <StepList
+        commits={commits}
+        metadata={metadata}
         selectKey={selectKey}
         updateSelect={mockUpdateSelect}
       />

@@ -1,19 +1,19 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import ContentItem from './ContentItem';
+import StepDiff from './StepDiff';
 
-import { Step } from '../types/index';
+import { Step } from '../types';
 
-import tutureUtilities from '../utils/';
+import tutureUtilities from '../utils';
 
-interface changeViewFunc {
+interface ChangeViewFunc {
   (): void;
 }
 
-interface ContentProps {
+interface StepContentProps {
   viewType: string;
-  changeViewType: changeViewFunc;
+  changeViewType: ChangeViewFunc;
   content: Step;
 }
 
@@ -33,7 +33,7 @@ const TutureContentHeader = styled.div`
   justify-content: space-between;
 `;
 
-export default class Content extends React.Component<ContentProps> {
+export default class StepContent extends React.Component<StepContentProps> {
   renderExplain = (explain: string[] | string): React.ReactNode | React.ReactNodeArray => {
     if (tutureUtilities.isArray(explain)) {
       const arrExplain = explain as string[];
@@ -66,7 +66,7 @@ export default class Content extends React.Component<ContentProps> {
           <button onClick={changeViewType}>{viewType}</button>
         </TutureContentHeader>
         {this.renderExplain(explain)}
-        <ContentItem
+        <StepDiff
           diff={diff}
           commit={commit}
           viewType={viewType}
