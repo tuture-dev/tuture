@@ -33,11 +33,11 @@ const TutureMenu = styled.ul`
   margin-bottom: 0;
   padding-left: 0;
   list-style: none;
-  color: rgba(0, 0, 0, .65);
+  color: rgba(0, 0, 0, 0.65);
   line-height: 0;
   background: #fff;
-  -webkit-transition: background .3s, width .2s;
-  transition: background .3s, width .2s;
+  -webkit-transition: background 0.3s, width 0.2s;
+  transition: background 0.3s, width 0.2s;
   zoom: 1;
 `;
 
@@ -55,42 +55,35 @@ const TutureMenuItem = styled.li`
   margin: 0;
   display: block;
   white-space: nowrap;
-  border-right: ${(props: any) => props.className === 'selected' ? '4px solid #1890ff' : 'none'};
-  color: ${(props: any) => props.className === 'selected' ? '#1890ff' : '#000000'};
-  background-color: ${(props: any) => props.className === 'selected' ? '#e6f7ff' : '#FFFFFF'};
+  border-right: ${(props: any) =>
+    props.className === 'selected' ? '4px solid #1890ff' : 'none'};
+  color: ${(props: any) =>
+    props.className === 'selected' ? '#1890ff' : '#000000'};
+  background-color: ${(props: any) =>
+    props.className === 'selected' ? '#e6f7ff' : '#FFFFFF'};
 `;
 
 export default class StepList extends React.Component<StepListProps> {
   render() {
-    const {
-      commits,
-      metadata,
-      selectKey,
-      updateSelect,
-    } = this.props;
+    const { commits, metadata, selectKey, updateSelect } = this.props;
 
     return (
       <TutureSteps>
         <TutureMenu>
-          {
-            commits.map((item, key) => (
-              <TutureMenuItem
-                className={key === selectKey ? 'selected' : ''}
-                onClick={() => { this.props.updateSelect(key) }}
-                key={key}
-              >
+          {commits.map((item, key) => (
+            <TutureMenuItem
+              className={key === selectKey ? 'selected' : ''}
+              onClick={() => {
+                this.props.updateSelect(key);
+              }}
+              key={key}>
               {item.name}
-              </TutureMenuItem>
-            ))
-          }
+            </TutureMenuItem>
+          ))}
         </TutureMenu>
       </TutureSteps>
     );
   }
 }
 
-export {
-  TutureSteps,
-  TutureMenu,
-  TutureMenuItem,
-}
+export { TutureSteps, TutureMenu, TutureMenuItem };

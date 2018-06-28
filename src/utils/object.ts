@@ -3,6 +3,4 @@ const isObjectEmpty = (obj: any): boolean => {
   return keyArray.length === 0;
 };
 
-export {
-  isObjectEmpty,
-};
+export { isObjectEmpty };

@@ -34,30 +34,22 @@ const TutureContentHeader = styled.div`
 `;
 
 export default class StepContent extends React.Component<StepContentProps> {
-  renderExplain = (explain: string[] | string): React.ReactNode | React.ReactNodeArray => {
+  renderExplain = (
+    explain: string[] | string
+  ): React.ReactNode | React.ReactNodeArray => {
     if (tutureUtilities.isArray(explain)) {
       const arrExplain = explain as string[];
-      return (
-        arrExplain.map((explainItem: string, i: number) =>
-          <p key={i}>{explainItem}</p>)
-      );
+      return arrExplain.map((explainItem: string, i: number) => (
+        <p key={i}>{explainItem}</p>
+      ));
     }
 
     return <p>{explain}</p>;
-  }
+  };
   render() {
-    const {
-      content,
-      viewType,
-      changeViewType,
-    } = this.props;
+    const { content, viewType, changeViewType } = this.props;
 
-    const {
-      name,
-      explain,
-      diff,
-      commit,
-    } = content;
+    const { name, explain, diff, commit } = content;
 
     return (
       <TutureContent>

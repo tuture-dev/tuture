@@ -2,11 +2,7 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 import { shallow } from 'enzyme';
 
-import StepList, {
-  TutureMenu,
-  TutureMenuItem,
-  TutureSteps,
-} from '../StepList';
+import StepList, { TutureMenu, TutureMenuItem, TutureSteps } from '../StepList';
 import { commits, metadata } from './utils/data';
 
 describe('Steps behave normally on component/dom/events level ', () => {
@@ -34,7 +30,12 @@ describe('Steps behave normally on component/dom/events level ', () => {
     });
 
     test('initial TutureMenuItems should have related classname', () => {
-      expect(wrapper.find(TutureMenuItem).first().hasClass('selected')).toBeTruthy();
+      expect(
+        wrapper
+          .find(TutureMenuItem)
+          .first()
+          .hasClass('selected')
+      ).toBeTruthy();
       expect(wrapper.find(TutureMenuItem).filter('.selected')).toHaveLength(1);
     });
   });
@@ -55,5 +56,4 @@ describe('Steps behave normally on component/dom/events level ', () => {
       expect(mockUpdateSelect.mock.calls[0][0]).toBe(2);
     });
   });
-})
-
+});

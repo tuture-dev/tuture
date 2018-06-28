@@ -134,10 +134,6 @@ export default class Hunk extends Component<HunkProps> {
     const { viewType, hunk } = this.props;
     const RenderingHunk = viewType === 'unified' ? UnifiedHunk : SplitHunk;
 
-    return (
-      <RenderingHunk
-        hunk={hunk}
-      />
-    );
+    return <RenderingHunk hunk={hunk} />;
   }
 }

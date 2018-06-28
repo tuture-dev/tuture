@@ -14,11 +14,7 @@ describe('Steps behave normally on component/dom/functionality/events level', ()
   };
 
   describe('dom-level behave normally', () => {
-    const wrapper = shallow(
-      <UnifiedChange
-        change={change}
-      />
-    );
+    const wrapper = shallow(<UnifiedChange change={change} />);
 
     test('should render realted dom node', () => {
       expect(wrapper.find('.diff-line')).toHaveLength(1);

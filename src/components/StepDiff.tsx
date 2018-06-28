@@ -49,7 +49,10 @@ const Image = styled.img`
   width: 10px;
 `;
 
-export default class StepDiff extends React.Component<StepDiffProps, StepDiffState> {
+export default class StepDiff extends React.Component<
+  StepDiffProps,
+  StepDiffState
+> {
   constructor(props: StepDiffProps) {
     super(props);
     this.state = {
@@ -90,7 +93,7 @@ export default class StepDiff extends React.Component<StepDiffProps, StepDiffSta
     }
 
     return constructNewCollapseObj;
-  }
+  };
 
   componentDidMount(): void {
     const { commit, diff } = this.props;
@@ -124,13 +127,13 @@ export default class StepDiff extends React.Component<StepDiffProps, StepDiffSta
     let resObj: ResObj = {};
 
     if (Array.isArray(arr)) {
-      arr.map((item) => {
+      arr.map(item => {
         resObj[item[property]] = item;
       });
     }
 
     return resObj;
-  }
+  };
 
   getEndRenderContent = (diff: ChangedFile[], files: File[]): any[] => {
     // use fileName key map it belongs obj
@@ -145,7 +148,7 @@ export default class StepDiff extends React.Component<StepDiffProps, StepDiffSta
     });
 
     return endRenderContent;
-  }
+  };
 
   renderIcon = (type: string): React.ReactNode => {
     const mapTypeToSvg: {
@@ -156,16 +159,19 @@ export default class StepDiff extends React.Component<StepDiffProps, StepDiffSta
     };
 
     return <Image src={mapTypeToSvg[type]} />;
-  }
+  };
 
   toggleCollapse = (fileName: string): void => {
     const { collapseObj } = this.state;
-    const newCollapseObj = { ...collapseObj, [fileName]: !collapseObj[fileName] };
+    const newCollapseObj = {
+      ...collapseObj,
+      [fileName]: !collapseObj[fileName],
+    };
 
     this.setState({
       collapseObj: newCollapseObj,
     });
-  }
+  };
 
   render() {
     const { files, diff, collapseObj } = this.state;
@@ -173,36 +179,35 @@ export default class StepDiff extends React.Component<StepDiffProps, StepDiffSta
 
     return (
       <div className="ContentItem">
-        {
-          needRenderFiles.map((file: File & ChangedFile, i) => (
-            <div key={i}>
-              <article className="diff-file" key={i}>
-                <header className="diff-file-header">
-                    <strong className="filename">{this.extractFileName(file)}</strong>
-                    <button
-                      onClick={() => this.toggleCollapse(file.file)}
-                    >
-                    {this.renderIcon(collapseObj[file.file] ? 'up' : 'down')}
-                    </button>
-                </header>
-                <main>
-                  {
-                    file && !collapseObj[file.file] && (
-                      <DiffView key={i} hunks={file.hunks} viewType={this.props.viewType} />
-                    )
-                  }
-                </main>
-              </article>
-              <div>
-                <div style={{ marginTop: '20px' }}>
-                  {
-                    this.props.renderExplain(file.explain)
-                  }
-                </div>
+        {needRenderFiles.map((file: File & ChangedFile, i) => (
+          <div key={i}>
+            <article className="diff-file" key={i}>
+              <header className="diff-file-header">
+                <strong className="filename">
+                  {this.extractFileName(file)}
+                </strong>
+                <button onClick={() => this.toggleCollapse(file.file)}>
+                  {this.renderIcon(collapseObj[file.file] ? 'up' : 'down')}
+                </button>
+              </header>
+              <main>
+                {file &&
+                  !collapseObj[file.file] && (
+                    <DiffView
+                      key={i}
+                      hunks={file.hunks}
+                      viewType={this.props.viewType}
+                    />
+                  )}
+              </main>
+            </article>
+            <div>
+              <div style={{ marginTop: '20px' }}>
+                {this.props.renderExplain(file.explain)}
               </div>
             </div>
-          ))
-        }
+          </div>
+        ))}
       </div>
     );
   }
