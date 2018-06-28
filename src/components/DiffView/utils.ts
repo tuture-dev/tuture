@@ -21,12 +21,7 @@ function getChangeKey(change: ChangeType): string {
     throw new Error('change is not provided');
   }
 
-  const {
-    isNormal,
-    isInsert,
-    lineNumber,
-    oldLineNumber,
-  } = change;
+  const { isNormal, isInsert, lineNumber, oldLineNumber } = change;
 
   if (isNormal) {
     return 'N' + oldLineNumber;
@@ -36,8 +31,4 @@ function getChangeKey(change: ChangeType): string {
   return prefix + lineNumber;
 }
 
-export {
-  computeOldLineNumber,
-  computeNewLineNumber,
-  getChangeKey,
-}
+export { computeOldLineNumber, computeNewLineNumber, getChangeKey };

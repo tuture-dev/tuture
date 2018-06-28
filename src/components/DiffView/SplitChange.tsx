@@ -1,10 +1,7 @@
 import React, { PureComponent } from 'react';
 import classnames from 'classnames';
 
-import {
-  computeOldLineNumber,
-  computeNewLineNumber,
-} from './utils';
+import { computeOldLineNumber, computeNewLineNumber } from './utils';
 
 import { Change as ChangeType } from '../../types';
 
@@ -38,7 +35,7 @@ export default class SplitChange extends PureComponent<SplitChangeProps> {
     change,
     gutterAnchor,
     hideGutter,
-    gutterAnchorTarget
+    gutterAnchorTarget,
   }: Cell): React.ReactNode => {
     if (!change) {
       const gutterClassName = classnames('diff-gutter', 'diff-gutter-omit');
@@ -51,42 +48,33 @@ export default class SplitChange extends PureComponent<SplitChangeProps> {
     }
 
     const { type, content } = change;
-    const line = side === this.SIDE_OLD
-      ? computeOldLineNumber(change)
-      : computeNewLineNumber(change)
-    ;
-    const gutterClassName = classnames(
-      'diff-gutter',
-      `diff-gutter-${type}`,
-    );
+    const line =
+      side === this.SIDE_OLD
+        ? computeOldLineNumber(change)
+        : computeNewLineNumber(change);
+    const gutterClassName = classnames('diff-gutter', `diff-gutter-${type}`);
     const gutterProps = {
       className: gutterClassName,
       'data-line-number': line,
-      children: (
-        gutterAnchor
-        ? <a href={`#${gutterAnchorTarget}`} data-line-number={line} />
-        : null
-      ),
+      children: gutterAnchor ? (
+        <a href={`#${gutterAnchorTarget}`} data-line-number={line} />
+      ) : null,
     };
-    const codeClassName = classnames(
-      'diff-code',
-      `diff-code-${type}`,
-    );
+    const codeClassName = classnames('diff-code', `diff-code-${type}`);
     const codeProps = {
       className: codeClassName,
     };
 
     return [
       !hideGutter && <td key="gutter" {...gutterProps} />,
-      <td key="code" {...codeProps}>{content}</td>
+      <td key="code" {...codeProps}>
+        {content}
+      </td>,
     ];
-  }
+  };
 
   render() {
-    const {
-      oldChange,
-      newChange,
-    } = this.props;
+    const { oldChange, newChange } = this.props;
 
     const oldArgs = {
       change: oldChange,

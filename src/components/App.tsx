@@ -107,13 +107,13 @@ export default class App extends React.Component<AppProps, AppState> {
     this.setState({
       viewType: viewType === 'unified' ? 'split' : 'unified',
     });
-  }
+  };
 
   updateSelect = (key: number): void => {
     this.setState({
       selectKey: key,
     });
-  }
+  };
 
   async loadTuture(): Promise<void> {
     const that = this;

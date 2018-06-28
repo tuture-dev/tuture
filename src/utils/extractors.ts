@@ -21,9 +21,6 @@ const extractMetaData = (tuture: Tuture) => {
   };
 
   return metadata;
-}
+};
 
-export {
-  extractCommits,
-  extractMetaData,
-}
+export { extractCommits, extractMetaData };

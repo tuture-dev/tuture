@@ -48,12 +48,4 @@ interface Hunk {
   isPlain?: boolean;
 }
 
-export {
-  ChangedFile,
-  TutureMeta,
-  Commit,
-  Step,
-  Tuture,
-  Change,
-  Hunk,
-}
+export { ChangedFile, TutureMeta, Commit, Step, Tuture, Change, Hunk };
