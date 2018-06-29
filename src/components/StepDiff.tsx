@@ -45,6 +45,7 @@ interface ResObj {
   [index: string]: ChangedFile[] | File[];
 }
 
+/* tslint:disable-next-line */
 const Image = styled.img`
   width: 10px;
 `;
@@ -85,9 +86,9 @@ export default class StepDiff extends React.Component<
 
   getCollapseObj = (arr: ChangedFile[]): CollapseObj => {
     // write a new func for reduce repeat work
-    let constructNewCollapseObj: CollapseObj = {};
+    const constructNewCollapseObj: CollapseObj = {};
     if (tutureUtilities.isArray(arr)) {
-      arr.map(arrItem => {
+      arr.map((arrItem) => {
         constructNewCollapseObj[arrItem.file] = arrItem.collapse;
       });
     }
@@ -124,10 +125,10 @@ export default class StepDiff extends React.Component<
   }
 
   mapArrItemToObjValue = (property: string, arr: any[]): ResObj => {
-    let resObj: ResObj = {};
+    const resObj: ResObj = {};
 
     if (Array.isArray(arr)) {
-      arr.map(item => {
+      arr.map((item) => {
         resObj[item[property]] = item;
       });
     }
@@ -139,7 +140,7 @@ export default class StepDiff extends React.Component<
     // use fileName key map it belongs obj
     const mapedFiles = this.mapArrItemToObjValue('newPath', files);
     const mapedDiff = this.mapArrItemToObjValue('file', diff);
-    const endRenderContent = diff.map(diffItem => {
+    const endRenderContent = diff.map((diffItem) => {
       const fileName = diffItem.file;
       return {
         ...mapedDiff[fileName],
