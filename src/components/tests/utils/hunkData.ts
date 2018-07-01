@@ -28,10 +28,7 @@ const diffItem: ChangedFile = {
   explain: 'Can you be more funny?',
   collapse: false,
 };
-let diff: ChangedFile[] = [];
-Array(10).map(item => diff.push(diffItem));
+const diff: ChangedFile[] = [];
+Array(10).map(() => diff.push(diffItem));
 
-export {
-  hunk,
-  diff,
-}
+export { hunk, diff };

@@ -103,6 +103,13 @@ export default class App extends React.Component<AppProps, AppState> {
     };
   }
 
+  changeViewType = (): void => {
+    const { viewType } = this.state;
+    this.setState({
+      viewType: viewType === 'unified' ? 'split' : 'unified',
+    });
+  };
+
   updateSelect = (key: number): void => {
     this.setState({
       selectKey: key,

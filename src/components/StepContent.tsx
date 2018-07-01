@@ -17,10 +17,6 @@ interface StepContentProps {
   content: Step;
 }
 
-interface StepContentState {
-  viewType: string;
-}
-
 /* tslint:disable-next-line */
 const TutureContent = styled.div`
   width: 80%;
@@ -39,18 +35,7 @@ const TutureContentHeader = styled.div`
   justify-content: space-between;
 `;
 
-export default class StepContent extends React.Component<
-  StepContentProps,
-  StepContentState
-> {
-  constructor(props: StepContentProps) {
-    super(props);
-
-    this.state = {
-      viewType: 'unified',
-    };
-  }
-
+export default class StepContent extends React.Component<StepContentProps> {
   renderExplain = (
     explain: string[] | string,
   ): React.ReactNode | React.ReactNodeArray => {
@@ -62,13 +47,6 @@ export default class StepContent extends React.Component<
     }
 
     return <p>{explain}</p>;
-  };
-
-  changeViewType = (): void => {
-    const { viewType } = this.state;
-    this.setState({
-      viewType: viewType === 'unified' ? 'split' : 'unified',
-    });
   };
 
   render() {
