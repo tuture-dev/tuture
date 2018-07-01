@@ -37,14 +37,12 @@
   "scripts": {
     "start": "node scripts/start.js",
     "test": "jest",
-    "lint": "tslint src/**/*.{ts,tsx}",
+    "lint": "tslint src/**/*.{ts,tsx,js}",
     "precommit": "lint-staged"
   },
   "lint-staged": {
-    "./**/*.{ts,tsx,js,json,css,md}": [
-      "yarn run test",
+    "./**/*.{ts,tsx,js,css,md}": [
       "prettier --write",
-      "yarn run lint",
       "git add"
     ]
   },
