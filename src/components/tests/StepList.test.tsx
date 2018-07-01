@@ -21,7 +21,7 @@ describe('Steps behave normally on component/dom/events level ', () => {
         metadata={metadata}
         selectKey={selectKey}
         updateSelect={mockUpdateSelect}
-      />
+      />,
     );
     test('should render related TutureMenu/TutureMenuItem/TutureSteps times', () => {
       expect(wrapper.find(TutureMenu)).toHaveLength(1);
@@ -34,7 +34,7 @@ describe('Steps behave normally on component/dom/events level ', () => {
         wrapper
           .find(TutureMenuItem)
           .first()
-          .hasClass('selected')
+          .hasClass('selected'),
       ).toBeTruthy();
       expect(wrapper.find(TutureMenuItem).filter('.selected')).toHaveLength(1);
     });
@@ -47,7 +47,7 @@ describe('Steps behave normally on component/dom/events level ', () => {
         metadata={metadata}
         selectKey={selectKey}
         updateSelect={mockUpdateSelect}
-      />
+      />,
     );
     test('When related node clicked, it should trigger updateSelect correctlly', () => {
       const needTestNode = wrapper.find(TutureMenuItem).at(2);

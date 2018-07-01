@@ -19,9 +19,9 @@ export default class SplitHunk extends PureComponent<SplitHunkProps> {
   };
 
   groupElements = (changes: ChangeType[]): (string | ChangeType)[][] => {
-    let elements = [];
+    const elements = [];
 
-    for (let i = 0; i < changes.length; i++) {
+    for (let i = 0; i < changes.length; i = i + 1) {
       const current = changes[i];
 
       if (current.isNormal) {
@@ -67,7 +67,7 @@ export default class SplitHunk extends PureComponent<SplitHunkProps> {
 
   renderRow = (
     [type, key, oldValue, newValue]: (string | ChangeType)[],
-    i: number
+    i: number,
   ) => {
     if (type === 'change') {
       return (

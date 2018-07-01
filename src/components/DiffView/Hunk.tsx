@@ -132,6 +132,8 @@ injectGlobal`
 export default class Hunk extends Component<HunkProps> {
   render() {
     const { viewType, hunk } = this.props;
+
+    /* tslint:disable-next-line */
     const RenderingHunk = viewType === 'unified' ? UnifiedHunk : SplitHunk;
 
     return <RenderingHunk hunk={hunk} />;

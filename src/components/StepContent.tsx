@@ -17,6 +17,7 @@ interface StepContentProps {
   content: Step;
 }
 
+/* tslint:disable-next-line */
 const TutureContent = styled.div`
   width: 80%;
   padding: 30px;
@@ -24,6 +25,7 @@ const TutureContent = styled.div`
   overflow-y: scroll;
 `;
 
+/* tslint:disable-next-line */
 const TutureContentHeader = styled.div`
   display: -webkit-box;
   display: -ms-flexbox;
@@ -35,7 +37,7 @@ const TutureContentHeader = styled.div`
 
 export default class StepContent extends React.Component<StepContentProps> {
   renderExplain = (
-    explain: string[] | string
+    explain: string[] | string,
   ): React.ReactNode | React.ReactNodeArray => {
     if (tutureUtilities.isArray(explain)) {
       const arrExplain = explain as string[];
@@ -46,9 +48,9 @@ export default class StepContent extends React.Component<StepContentProps> {
 
     return <p>{explain}</p>;
   };
+
   render() {
     const { content, viewType, changeViewType } = this.props;
-
     const { name, explain, diff, commit } = content;
 
     return (

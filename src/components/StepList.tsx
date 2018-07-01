@@ -14,6 +14,7 @@ interface StepListProps {
   metadata: TutureMeta;
 }
 
+/* tslint:disable-next-line */
 const TutureSteps = styled.div`
   width: 20%;
   height: 100%;
@@ -21,6 +22,7 @@ const TutureSteps = styled.div`
   border-right: 1px solid #e8e8e8;
 `;
 
+/* tslint:disable-next-line */
 const TutureMenu = styled.ul`
   height: 100%;
   overflow: scroll;
@@ -41,6 +43,7 @@ const TutureMenu = styled.ul`
   zoom: 1;
 `;
 
+/* tslint:disable-next-line */
 const TutureMenuItem = styled.li`
   padding: 0 16px 0 30px;
   width: calc(100% + 1px);

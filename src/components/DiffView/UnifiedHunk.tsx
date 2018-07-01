@@ -26,7 +26,7 @@ export default class UnifiedHunk extends PureComponent<UnifiedHunkProps> {
         // later will add widget content
         return elements;
       },
-      []
+      [],
     );
 
   renderRow = ([type, key, value]: (string | ChangeType)[], i: number) => {

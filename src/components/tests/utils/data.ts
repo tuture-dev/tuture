@@ -15,7 +15,4 @@ const tuture = yaml.safeLoad(tutureYaml);
 const commits = extractCommits(tuture as Tuture);
 const metadata = extractMetaData(tuture as Tuture);
 
-export {
-  commits,
-  metadata,
-}
+export { commits, metadata };

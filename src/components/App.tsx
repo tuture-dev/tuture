@@ -22,6 +22,7 @@ interface AppProps {
   name?: string;
 }
 
+/* tslint:disable-next-line */
 const AppWrapper = styled.div`
   height: 100%;
   width: 100%;
