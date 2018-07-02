@@ -12,9 +12,12 @@ interface ChangeViewFunc {
 }
 
 interface StepContentProps {
-  viewType: string;
-  changeViewType: ChangeViewFunc;
+  viewType: 'unified' | 'split';
   content: Step;
+}
+
+interface StepContentState {
+  viewType: 'unified' | 'split';
 }
 
 /* tslint:disable-next-line */
@@ -35,7 +38,21 @@ const TutureContentHeader = styled.div`
   justify-content: space-between;
 `;
 
-export default class StepContent extends React.Component<StepContentProps> {
+export default class StepContent extends React.Component<
+  StepContentProps,
+  StepContentState
+> {
+  static defaultProps = {
+    viewType: 'unified',
+  };
+
+  constructor(props: StepContentProps) {
+    super(props);
+    this.state = {
+      viewType: this.props.viewType,
+    };
+  }
+
   renderExplain = (
     explain: string[] | string,
   ): React.ReactNode | React.ReactNodeArray => {
@@ -49,15 +66,22 @@ export default class StepContent extends React.Component<StepContentProps> {
     return <p>{explain}</p>;
   };
 
+  changeViewType = (): void => {
+    const { viewType } = this.state;
+    this.setState({
+      viewType: viewType === 'unified' ? 'split' : 'unified',
+    });
+  };
+
   render() {
-    const { content, viewType, changeViewType } = this.props;
+    const { content, viewType } = this.props;
     const { name, explain, diff, commit } = content;
 
     return (
       <TutureContent>
         <TutureContentHeader>
           <h1>{name}</h1>
-          <button onClick={changeViewType}>{viewType}</button>
+          <button onClick={this.changeViewType}>{viewType}</button>
         </TutureContentHeader>
         {this.renderExplain(explain)}
         <StepDiff
