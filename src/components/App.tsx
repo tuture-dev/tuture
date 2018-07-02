@@ -14,7 +14,6 @@ import { extractCommits, extractMetaData } from '../utils/extractors';
 interface AppState {
   selectKey: number;
   tuture: Tuture;
-  viewType: string;
 }
 
 interface AppProps {
@@ -99,16 +98,8 @@ export default class App extends React.Component<AppProps, AppState> {
     this.state = {
       selectKey: 0,
       tuture: null,
-      viewType: 'unified',
     };
   }
-
-  changeViewType = (): void => {
-    const { viewType } = this.state;
-    this.setState({
-      viewType: viewType === 'unified' ? 'split' : 'unified',
-    });
-  };
 
   updateSelect = (key: number): void => {
     this.setState({
@@ -144,7 +135,7 @@ export default class App extends React.Component<AppProps, AppState> {
     } else {
       const commits = extractCommits(tuture);
       const metadata = extractMetaData(tuture);
-      const { selectKey, viewType } = this.state;
+      const { selectKey } = this.state;
       const nowRenderContent = tuture.steps[this.state.selectKey];
       bodyContent = [
         <StepList
@@ -157,8 +148,7 @@ export default class App extends React.Component<AppProps, AppState> {
         <StepContent
           key="content"
           content={nowRenderContent}
-          viewType={viewType}
-          changeViewType={this.changeViewType}
+          viewType="unified"
         />,
       ];
     }
