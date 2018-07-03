@@ -7006,9 +7006,9 @@ watch@~0.18.0:
     exec-sh "^0.2.0"
     minimist "^1.2.0"
 
-watchpack@^1.5.0:
+watchpack@^1.5.0, watchpack@^1.6.0:
   version "1.6.0"
-  resolved "http://registry.npm.taobao.org/watchpack/download/watchpack-1.6.0.tgz#4bc12c2ebe8aa277a71f1d3f14d685c7b446cd00"
+  resolved "https://registry.npmjs.org/watchpack/-/watchpack-1.6.0.tgz#4bc12c2ebe8aa277a71f1d3f14d685c7b446cd00"
   dependencies:
     chokidar "^2.0.2"
     graceful-fs "^4.1.2"
@@ -7072,13 +7072,6 @@ webpack-sources@^1.0.1, webpack-sources@^1.1.0:
   dependencies:
     source-list-map "^2.0.0"
     source-map "~0.6.1"
-
-webpack-watch-files-plugin@^1.0.2:
-  version "1.0.2"
-  resolved "http://registry.npm.taobao.org/webpack-watch-files-plugin/download/webpack-watch-files-plugin-1.0.2.tgz#f134f6729e10a39d928282c699a659b81ab0b6e6"
-  dependencies:
-    glob "^7.1.2"
-    lodash "^4.17.5"
 
 webpack@^4.12.0:
   version "4.12.0"

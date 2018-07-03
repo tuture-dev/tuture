@@ -3,17 +3,23 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const WatchExternalFilesPlugin = require('webpack-watch-files-plugin').default;
+const Watchpack = require('watchpack');
 
 // get tuture path
 const tuturePath = process.env.TUTURE_PATH;
 
+const wp = new Watchpack({
+  aggregateTimeout: 1000,
+  poll: true,
+  ignored: /node_modules/,
+});
+
+wp.watch([`${tuturePath}/tuture.yml`], [], Date.now() - 10000);
+
 module.exports = {
-  entry: [
-    './scripts/polyfills.js',
-    './src/index.tsx',
-  ],
+  entry: ['./scripts/polyfills.js', './src/index.tsx'],
   devtool: 'inline-source-map',
+  mode: 'development',
   output: {
     filename: '[name].bundle.js',
     path: path.resolve(__dirname, 'dist'),
@@ -22,17 +28,15 @@ module.exports = {
     extensions: ['.js', '.json', '.ts', '.tsx'],
   },
   plugins: [
-    new WatchExternalFilesPlugin({
-      files: [
-        `${tuturePath}/tuture.yml`,
-      ],
+    new HtmlWebpackPlugin({
+      filename: 'index.html',
+      template: 'dist/index.html',
     }),
     new CopyWebpackPlugin([
       { from: `${tuturePath}/tuture.yml`, to: './tuture.yml' },
       { from: `${tuturePath}/.tuture/diff`, to: './diff' },
     ]),
     new webpack.NamedModulesPlugin(),
-    new webpack.HotModuleReplacementPlugin(),
   ],
   module: {
     strictExportPresence: true,
@@ -47,16 +51,11 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        use: [
-          'style-loader',
-          'css-loader',
-        ],
+        use: ['style-loader', 'css-loader'],
       },
       {
         test: /\.(png|svg|jpg|gif)$/,
-        use: [
-          'file-loader',
-        ],
+        use: ['file-loader'],
       },
       {
         test: /\.(ts|tsx)$/,

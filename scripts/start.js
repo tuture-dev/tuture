@@ -9,7 +9,6 @@ process.env.NODE_ENV = 'development';
 
 const options = {
   contentBase: './dist',
-  hot: true,
   host: 'localhost',
 };
 

@@ -32,7 +32,8 @@
     "react": "^16.3.2",
     "react-dom": "^16.3.2",
     "react-helmet": "^5.2.0",
-    "styled-components": "^3.3.2"
+    "styled-components": "^3.3.2",
+    "watchpack": "^1.6.0"
   },
   "scripts": {
     "start": "node scripts/start.js",
@@ -70,8 +71,7 @@
     "typescript": "^2.9.1",
     "url-loader": "^1.0.1",
     "webpack": "^4.12.0",
-    "webpack-dev-server": "2.9.4",
-    "webpack-watch-files-plugin": "^1.0.2"
+    "webpack-dev-server": "2.9.4"
   },
   "jest": {
     "transform": {
