@@ -1,8 +1,10 @@
 {
   "name": "tuture-renderer",
-  "version": "0.1.14",
+  "version": "0.1.16",
   "preferGlobal": true,
+  "description": "tuture-renderer is an offical renderer of Tuture tutorials",
   "license": "MIT",
+  "main": "index.js",
   "keywords": [
     "renderer"
   ],
