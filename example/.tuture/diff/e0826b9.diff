@@ -1,0 +1,15 @@
+diff --git a/webpack.config.js b/webpack.config.js
+new file mode 100644
+index 0000000..2daae3a
+--- /dev/null
++++ b/webpack.config.js
+@@ -0,0 +1,9 @@
++const path = require('path');
++
++module.exports = {
++  entry: './src/index.js',
++  output: {
++    filename: 'main.js',
++    path: path.resolve(__dirname, 'dist')
++  }
++};
