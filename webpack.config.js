@@ -17,7 +17,7 @@ const wp = new Watchpack({
 wp.watch([`${tuturePath}/tuture.yml`], [], Date.now() - 10000);
 
 module.exports = {
-  entry: ['./scripts/polyfills.js', './src/index.tsx'],
+  entry: './src/index.tsx',
   devtool: 'inline-source-map',
   mode: 'development',
   output: {
@@ -60,7 +60,6 @@ module.exports = {
       {
         test: /\.(ts|tsx)$/,
         loader: 'ts-loader',
-        exclude: /node_modules/,
       },
     ],
   },
