@@ -3,8 +3,7 @@ import styled from 'styled-components';
 
 import DiffView from './DiffView';
 
-import { ChangedFile, Hunk } from '../types';
-import parseDiff from '../utils/parseDiff';
+import { ChangedFile, File, DiffItem } from '../types';
 import tutureUtilities from '../utils';
 
 import up from './img/up.svg';
@@ -18,23 +17,12 @@ interface StepDiffProps {
   diff: ChangedFile[];
   commit: string;
   viewType: string;
+  diffItem: DiffItem;
   renderExplain: RenderExplainFunc;
 }
 
-export interface File {
-  oldPath: string;
-  newPath: string;
-  type: string;
-  oldRevision: string;
-  newRevision: string;
-  hunks: Hunk[];
-}
-
 interface StepDiffState {
-  diffText: string;
   collapseObj: CollapseObj;
-  diff: ChangedFile[];
-  files: File[];
 }
 
 interface CollapseObj {
@@ -50,55 +38,18 @@ const Image = styled.img`
   width: 10px;
 `;
 
-export default class StepDiff extends React.Component<
+export default class StepDiff extends React.PureComponent<
   StepDiffProps,
   StepDiffState
 > {
   constructor(props: StepDiffProps) {
     super(props);
     this.state = {
-      diffText: '',
       collapseObj: {},
-      diff: [],
-      files: [],
     };
   }
-
-  async setDiffAndFiles(commit: string, diff: ChangedFile[]): Promise<void> {
-    try {
-      const that = this;
-      const response = await fetch(`diff/${commit}.diff`);
-      const diffText = await response.text();
-      let files: File[] = [];
-
-      if (diffText) {
-        files = parseDiff(diffText);
-      }
-
-      that.setState({
-        files,
-        diff,
-      });
-    } catch (err) {
-      // silent failed
-    }
-  }
-
-  getCollapseObj = (arr: ChangedFile[]): CollapseObj => {
-    // write a new func for reduce repeat work
-    const constructNewCollapseObj: CollapseObj = {};
-    if (tutureUtilities.isArray(arr)) {
-      arr.map((arrItem) => {
-        constructNewCollapseObj[arrItem.file] = arrItem.collapse;
-      });
-    }
-
-    return constructNewCollapseObj;
-  };
-
   componentDidMount(): void {
-    const { commit, diff } = this.props;
-    this.setDiffAndFiles(commit, diff);
+    const { diff } = this.props;
 
     // construct collapsed arr
     const newCollapseObj = this.getCollapseObj(diff);
@@ -108,10 +59,6 @@ export default class StepDiff extends React.Component<
   }
 
   componentWillReceiveProps(nextProps: StepDiffProps): void {
-    if (nextProps.commit !== this.props.commit) {
-      this.setDiffAndFiles(nextProps.commit, nextProps.diff);
-    }
-
     if (nextProps.diff !== this.props.diff) {
       const newCollapseObj = this.getCollapseObj(nextProps.diff);
       this.setState({
@@ -119,7 +66,6 @@ export default class StepDiff extends React.Component<
       });
     }
   }
-
   extractFileName({ type, oldPath, newPath }: File): string {
     return type === 'delete' ? oldPath : newPath;
   }
@@ -163,6 +109,7 @@ export default class StepDiff extends React.Component<
   };
 
   toggleCollapse = (fileName: string): void => {
+    console.log(fileName);
     const { collapseObj } = this.state;
     const newCollapseObj = {
       ...collapseObj,
@@ -174,9 +121,22 @@ export default class StepDiff extends React.Component<
     });
   };
 
+  getCollapseObj = (arr: ChangedFile[]): CollapseObj => {
+    // write a new func for reduce repeat work
+    const constructNewCollapseObj: CollapseObj = {};
+    if (tutureUtilities.isArray(arr)) {
+      arr.map((arrItem) => {
+        constructNewCollapseObj[arrItem.file] = arrItem.collapse;
+      });
+    }
+
+    return constructNewCollapseObj;
+  };
+
   render() {
-    const { files, diff, collapseObj } = this.state;
-    const needRenderFiles = this.getEndRenderContent(diff, files);
+    const { diff, diffItem } = this.props;
+    const { collapseObj } = this.state;
+    const needRenderFiles = this.getEndRenderContent(diff, diffItem.diff);
 
     return (
       <div className="ContentItem">

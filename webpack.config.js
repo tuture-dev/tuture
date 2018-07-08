@@ -33,8 +33,14 @@ module.exports = {
       template: 'dist/index.html',
     }),
     new CopyWebpackPlugin([
-      { from: `${tuturePath}/tuture.yml`, to: './tuture.yml' },
-      { from: `${tuturePath}/.tuture/diff`, to: './diff' },
+      {
+        from: `${tuturePath}/.tuture/tuture.json`,
+        to: './tuture.json',
+      },
+      {
+        from: `${tuturePath}/.tuture/diff.json`,
+        to: './diff.json',
+      },
     ]),
     new webpack.NamedModulesPlugin(),
   ],

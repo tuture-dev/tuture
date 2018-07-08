@@ -2,18 +2,18 @@
 import React from 'react';
 import styled, { injectGlobal } from 'styled-components';
 import { Helmet } from 'react-helmet';
-import yaml from 'js-yaml';
 
 import StepList from './StepList';
 import StepContent from './StepContent';
 
 import tutureUtilities from '../utils';
-import { Tuture } from '../types';
+import { Tuture, DiffItem } from '../types/';
 import { extractCommits, extractMetaData } from '../utils/extractors';
 
 interface AppState {
   selectKey: number;
   tuture: Tuture;
+  diff: DiffItem[];
 }
 
 interface AppProps {
@@ -98,6 +98,7 @@ export default class App extends React.Component<AppProps, AppState> {
     this.state = {
       selectKey: 0,
       tuture: null,
+      diff: null,
     };
   }
 
@@ -107,13 +108,11 @@ export default class App extends React.Component<AppProps, AppState> {
     });
   };
 
-  async loadTuture(): Promise<void> {
-    const that = this;
-
+  async loadTuture() {
     try {
-      const response = await fetch('./tuture.yml');
-      const content = await response.text();
-      const tuture = yaml.safeLoad(content);
+      const that = this;
+      const response = await fetch('./tuture.json');
+      const tuture = await response.json();
       that.setState({
         tuture: tuture as Tuture,
       });
@@ -122,21 +121,41 @@ export default class App extends React.Component<AppProps, AppState> {
     }
   }
 
+  async loadDiff() {
+    try {
+      const that = this;
+      const response = await fetch('./diff.json');
+      const diff = await response.json();
+      that.setState({
+        diff: diff as DiffItem[],
+      });
+    } catch (err) {
+      // silent failed
+    }
+  }
+
   componentDidMount() {
     this.loadTuture();
+    this.loadDiff();
   }
 
   render() {
-    const { tuture } = this.state;
     let bodyContent: React.ReactNode;
+    const { tuture, diff } = this.state;
 
-    if (!tuture || tutureUtilities.isObjectEmpty(tuture)) {
+    if (
+      !tuture ||
+      tutureUtilities.isObjectEmpty(tuture) ||
+      !diff ||
+      !tutureUtilities.isArray(diff)
+    ) {
       bodyContent = null;
     } else {
       const commits = extractCommits(tuture);
       const metadata = extractMetaData(tuture);
       const { selectKey } = this.state;
-      const nowRenderContent = tuture.steps[this.state.selectKey];
+      const nowRenderContent = tuture.steps[selectKey];
+      const diffItem = diff[selectKey];
       bodyContent = [
         <StepList
           key="steps"
@@ -148,6 +167,7 @@ export default class App extends React.Component<AppProps, AppState> {
         <StepContent
           key="content"
           content={nowRenderContent}
+          diffItem={diffItem}
           viewType="unified"
         />,
       ];

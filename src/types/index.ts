@@ -48,4 +48,28 @@ interface Hunk {
   isPlain?: boolean;
 }
 
-export { ChangedFile, TutureMeta, Commit, Step, Tuture, Change, Hunk };
+interface File {
+  oldPath: string;
+  newPath: string;
+  type: string;
+  oldRevision: string;
+  newRevision: string;
+  hunks: Hunk[];
+}
+
+interface DiffItem {
+  commit: string;
+  diff: File[];
+}
+
+export {
+  ChangedFile,
+  TutureMeta,
+  Commit,
+  Step,
+  Tuture,
+  Change,
+  Hunk,
+  File,
+  DiffItem,
+};
