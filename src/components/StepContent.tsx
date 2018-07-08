@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import StepDiff from './StepDiff';
 
-import { Step } from '../types';
+import { Step, DiffItem } from '../types';
 
 import tutureUtilities from '../utils';
 
@@ -14,6 +14,7 @@ interface ChangeViewFunc {
 interface StepContentProps {
   viewType: 'unified' | 'split';
   content: Step;
+  diffItem: DiffItem;
 }
 
 interface StepContentState {
@@ -74,7 +75,7 @@ export default class StepContent extends React.Component<
   };
 
   render() {
-    const { content, viewType } = this.props;
+    const { content, viewType, diffItem } = this.props;
     const { name, explain, diff, commit } = content;
 
     return (
@@ -86,6 +87,7 @@ export default class StepContent extends React.Component<
         {this.renderExplain(explain)}
         <StepDiff
           diff={diff}
+          diffItem={diffItem}
           commit={commit}
           viewType={viewType}
           renderExplain={this.renderExplain}
