@@ -6,9 +6,6 @@ import DiffView from './DiffView';
 import { ChangedFile, File, DiffItem } from '../types';
 import tutureUtilities from '../utils';
 
-import up from './img/up.svg';
-import down from './img/down.svg';
-
 interface RenderExplainFunc {
   (explain: string | string[]): React.ReactNode | React.ReactNodeArray;
 }
@@ -19,10 +16,6 @@ interface StepDiffProps {
   viewType: string;
   diffItem: DiffItem;
   renderExplain: RenderExplainFunc;
-}
-
-interface StepDiffState {
-  collapseObj: CollapseObj;
 }
 
 interface CollapseObj {
@@ -38,34 +31,7 @@ const Image = styled.img`
   width: 10px;
 `;
 
-export default class StepDiff extends React.PureComponent<
-  StepDiffProps,
-  StepDiffState
-> {
-  constructor(props: StepDiffProps) {
-    super(props);
-    this.state = {
-      collapseObj: {},
-    };
-  }
-  componentDidMount(): void {
-    const { diff } = this.props;
-
-    // construct collapsed arr
-    const newCollapseObj = this.getCollapseObj(diff);
-    this.setState({
-      collapseObj: newCollapseObj,
-    });
-  }
-
-  componentWillReceiveProps(nextProps: StepDiffProps): void {
-    if (nextProps.diff !== this.props.diff) {
-      const newCollapseObj = this.getCollapseObj(nextProps.diff);
-      this.setState({
-        collapseObj: newCollapseObj,
-      });
-    }
-  }
+export default class StepDiff extends React.PureComponent<StepDiffProps> {
   extractFileName({ type, oldPath, newPath }: File): string {
     return type === 'delete' ? oldPath : newPath;
   }
@@ -97,30 +63,6 @@ export default class StepDiff extends React.PureComponent<
     return endRenderContent;
   };
 
-  renderIcon = (type: string): React.ReactNode => {
-    const mapTypeToSvg: {
-      [index: string]: string;
-    } = {
-      up,
-      down,
-    };
-
-    return <Image src={mapTypeToSvg[type]} />;
-  };
-
-  toggleCollapse = (fileName: string): void => {
-    console.log(fileName);
-    const { collapseObj } = this.state;
-    const newCollapseObj = {
-      ...collapseObj,
-      [fileName]: !collapseObj[fileName],
-    };
-
-    this.setState({
-      collapseObj: newCollapseObj,
-    });
-  };
-
   getCollapseObj = (arr: ChangedFile[]): CollapseObj => {
     // write a new func for reduce repeat work
     const constructNewCollapseObj: CollapseObj = {};
@@ -135,40 +77,38 @@ export default class StepDiff extends React.PureComponent<
 
   render() {
     const { diff, diffItem } = this.props;
-    const { collapseObj } = this.state;
+    const collapseObj = this.getCollapseObj(diff);
     const needRenderFiles = this.getEndRenderContent(diff, diffItem.diff);
 
     return (
       <div className="ContentItem">
-        {needRenderFiles.map((file: File & ChangedFile, i) => (
-          <div key={i}>
-            <article className="diff-file" key={i}>
-              <header className="diff-file-header">
-                <strong className="filename">
-                  {this.extractFileName(file)}
-                </strong>
-                <button onClick={() => this.toggleCollapse(file.file)}>
-                  {this.renderIcon(collapseObj[file.file] ? 'up' : 'down')}
-                </button>
-              </header>
-              <main>
-                {file &&
-                  !collapseObj[file.file] && (
+        {needRenderFiles.map(
+          (file: File & ChangedFile, i) =>
+            file &&
+            !collapseObj[file.file] && (
+              <div key={i}>
+                <article className="diff-file" key={i}>
+                  <header className="diff-file-header">
+                    <strong className="filename">
+                      {this.extractFileName(file)}
+                    </strong>
+                  </header>
+                  <main>
                     <DiffView
                       key={i}
                       hunks={file.hunks}
                       viewType={this.props.viewType}
                     />
-                  )}
-              </main>
-            </article>
-            <div>
-              <div style={{ marginTop: '20px' }}>
-                {this.props.renderExplain(file.explain)}
+                  </main>
+                </article>
+                <div>
+                  <div style={{ marginTop: '20px' }}>
+                    {this.props.renderExplain(file.explain)}
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-        ))}
+            ),
+        )}
       </div>
     );
   }
