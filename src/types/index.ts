@@ -1,7 +1,6 @@
 interface ChangedFile {
   file: string;
   explain: string;
-  collapse?: boolean;
 }
 
 interface TutureMeta {
