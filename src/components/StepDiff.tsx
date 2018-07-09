@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import DiffView from './DiffView';
 
 import { ChangedFile, File, DiffItem } from '../types';
-import tutureUtilities from '../utils';
 
 interface RenderExplainFunc {
   (explain: string | string[]): React.ReactNode | React.ReactNodeArray;
