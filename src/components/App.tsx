@@ -183,3 +183,6 @@ export default class App extends React.Component<AppProps, AppState> {
     );
   }
 }
+
+/* tslint:disable-next-line */
+export const LanguageContext = React.createContext('textile');

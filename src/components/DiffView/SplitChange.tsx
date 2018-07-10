@@ -1,6 +1,8 @@
 import React, { PureComponent } from 'react';
 import classnames from 'classnames';
 
+import Snippet from './Snippet';
+
 import { computeOldLineNumber, computeNewLineNumber } from './utils';
 
 import { Change as ChangeType } from '../../types';
@@ -68,7 +70,7 @@ export default class SplitChange extends PureComponent<SplitChangeProps> {
     return [
       !hideGutter && <td key="gutter" {...gutterProps} />,
       <td key="code" {...codeProps}>
-        {content}
+        <Snippet code={content} />
       </td>,
     ];
   };
