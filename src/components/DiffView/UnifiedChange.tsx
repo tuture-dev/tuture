@@ -3,6 +3,7 @@ import classnames from 'classnames';
 
 import { Change as ChangeType } from '../../types';
 import { Cell } from './SplitChange';
+import Snippet from './Snippet';
 
 import { computeOldLineNumber, computeNewLineNumber } from './utils';
 
@@ -54,7 +55,9 @@ export default class UnifiedChange extends PureComponent<UnifiedChangeProps> {
           className: gutterClassName,
           lineNumber: newLineNumber,
         })}
-        <td className={codeClassName}>{content}</td>
+        <td className={codeClassName}>
+          <Snippet code={content} />
+        </td>
       </tr>
     );
   }

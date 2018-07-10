@@ -2,6 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 
 import DiffView from './DiffView';
+import { LanguageContext } from './App';
+import { extractLanguageType } from '../utils/extractors';
 
 import { ChangedFile, File, DiffItem } from '../types';
 
@@ -64,29 +66,33 @@ export default class StepDiff extends React.PureComponent<StepDiffProps> {
 
     return (
       <div className="ContentItem">
-        {needRenderFiles.map((file: File & ChangedFile, i) => (
-          <div key={i}>
-            <article className="diff-file" key={i}>
-              <header className="diff-file-header">
-                <strong className="filename">
-                  {this.extractFileName(file)}
-                </strong>
-              </header>
-              <main>
-                <DiffView
-                  key={i}
-                  hunks={file.hunks}
-                  viewType={this.props.viewType}
-                />
-              </main>
-            </article>
-            <div>
-              <div style={{ marginTop: '20px' }}>
-                {this.props.renderExplain(file.explain)}
+        {needRenderFiles.map((file: File & ChangedFile, i) => {
+          const fileName = this.extractFileName(file);
+          return (
+            <div key={i}>
+              <article className="diff-file" key={i}>
+                <header className="diff-file-header">
+                  <strong className="filename">{fileName}</strong>
+                </header>
+                <main>
+                  <LanguageContext.Provider
+                    value={extractLanguageType(fileName)}>
+                    <DiffView
+                      key={i}
+                      hunks={file.hunks}
+                      viewType={this.props.viewType}
+                    />
+                  </LanguageContext.Provider>
+                </main>
+              </article>
+              <div>
+                <div style={{ marginTop: '20px' }}>
+                  {this.props.renderExplain(file.explain)}
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     );
   }
