@@ -75,8 +75,9 @@ export default class StepContent extends React.Component<
   };
 
   render() {
-    const { content, viewType, diffItem } = this.props;
+    const { content, diffItem } = this.props;
     const { name, explain, diff, commit } = content;
+    const { viewType } = this.state;
 
     return (
       <TutureContent>
