@@ -17,8 +17,6 @@ interface StepListProps {
 /* tslint:disable-next-line */
 const TutureSteps = styled.div`
   width: 20%;
-  overflow-y: scroll;
-  overflow-x: hidden;
   border-right: 1px solid #e8e8e8;
 `;
 
