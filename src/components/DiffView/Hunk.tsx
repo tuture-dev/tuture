@@ -134,7 +134,7 @@ export default class Hunk extends Component<HunkProps> {
     const { viewType, hunk } = this.props;
 
     /* tslint:disable-next-line */
-    const RenderingHunk = viewType === 'unified' ? UnifiedHunk : SplitHunk;
+    const RenderingHunk = viewType === 'Unified' ? UnifiedHunk : SplitHunk;
 
     return <RenderingHunk hunk={hunk} />;
   }
