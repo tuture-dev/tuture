@@ -23,7 +23,6 @@ const TutureSteps = styled.div`
 /* tslint:disable-next-line */
 const TutureMenu = styled.ul`
   height: 100%;
-  overflow-y: scroll;
   overflow-x: hidden;
   font-size: 14px;
   -webkit-box-sizing: border-box;
