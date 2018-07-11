@@ -17,15 +17,16 @@ interface StepListProps {
 /* tslint:disable-next-line */
 const TutureSteps = styled.div`
   width: 20%;
-  height: 100%;
-  overflow: scroll;
+  overflow-y: scroll;
+  overflow-x: hidden;
   border-right: 1px solid #e8e8e8;
 `;
 
 /* tslint:disable-next-line */
 const TutureMenu = styled.ul`
   height: 100%;
-  overflow: scroll;
+  overflow-y: scroll;
+  overflow-x: hidden;
   font-size: 14px;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
