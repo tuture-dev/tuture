@@ -17,53 +17,62 @@ export interface StepListProps {
 /* tslint:disable-next-line */
 const TutureSteps = styled.div`
   width: 100%;
-  height: 100%;
-  overflow: scroll;
-  border-right: 1px solid #e8e8e8;
+  height: 637px;
+  min-width: 328px;
+`;
+
+/* tslint:disable-next-line */
+const MenuHeader = styled.div`
+  width: 100%;
+  height: 134px;
+  background-color: #d7efee;
+`;
+
+/* tslint:disable-next-line */
+const MenuHeaderText = styled.p`
+  font-family: STSongti-SC-Bold;
+  font-size: 24px;
+  color: rgba(0, 0, 0, 0.84);
+  width: 53px;
+  margin: 0;
+  padding-left: 24px;
+  padding-top: 44px;
 `;
 
 /* tslint:disable-next-line */
 const TutureMenu = styled.ul`
-  height: 100%;
-  overflow: scroll;
+  height: 503px;
+  background-color: rgba(216, 216, 216, 0.1);
+  overflow-y: scroll;
+  overflow-x: hidden;
   font-size: 14px;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   margin: 0;
   padding: 0;
+  padding-top: 10px;
   outline: none;
-  margin-bottom: 0;
-  padding-left: 0;
   list-style: none;
   color: rgba(0, 0, 0, 0.65);
-  line-height: 0;
-  background: #fff;
-  -webkit-transition: background 0.3s, width 0.2s;
-  transition: background 0.3s, width 0.2s;
-  zoom: 1;
 `;
 
 /* tslint:disable-next-line */
 const TutureMenuItem = styled.li`
-  padding: 0 16px 0 30px;
-  width: calc(100% + 1px);
+  width: 100%;
+  font-family: STSongti-SC-Bold;
   font-size: 16px;
-  line-height: 40px;
-  height: 40px;
-  margin-top: 4px;
-  margin-right: 2px;
+  margin: 8px 0;
+  padding-left: ${(props: any) =>
+    props.className === 'selected' ? '38px' : '41px'};
   overflow: hidden;
   text-overflow: ellipsis;
   cursor: pointer;
-  margin: 0;
   display: block;
   white-space: nowrap;
-  border-right: ${(props: any) =>
-    props.className === 'selected' ? '4px solid #1890ff' : 'none'};
   color: ${(props: any) =>
-    props.className === 'selected' ? '#1890ff' : '#000000'};
-  background-color: ${(props: any) =>
-    props.className === 'selected' ? '#e6f7ff' : '#FFFFFF'};
+    props.className === 'selected'
+      ? 'rgba(0, 0, 0, 0.84)'
+      : 'rgba(0, 0, 0, 0.54)'};
+  border-left: ${(props: any) =>
+    props.className === 'selected' ? '3px solid rgba(0, 0, 0,0.84)' : 'none'};
 `;
 
 export default class StepList extends React.Component<StepListProps> {
@@ -72,6 +81,9 @@ export default class StepList extends React.Component<StepListProps> {
 
     return (
       <TutureSteps>
+        <MenuHeader>
+          <MenuHeaderText>教程目录</MenuHeaderText>
+        </MenuHeader>
         <TutureMenu>
           {commits.map((item, key) => (
             <TutureMenuItem
