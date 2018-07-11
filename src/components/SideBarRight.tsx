@@ -10,7 +10,7 @@ export interface SideBarRightProps extends StepListProps {
 
 /* tslint:disable-next-line */
 const SideBarRightWrapper = styled.div`
-  width: 20%;
+  min-width: 328px;
 `;
 
 /* tslint:disable-next-line */
@@ -20,7 +20,7 @@ const ButtonWrapper = styled.div`
 
 /* tslint:disable-next-line */
 const Button = styled.button`
-  min-width: 328px;
+  width: 100%;
   background: #ffffff;
   border: 1px solid rgba(0, 0, 0, 0.54);
   box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.04);
