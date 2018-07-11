@@ -35,7 +35,8 @@ injectGlobal`
 
   body {
     height: 100%;
-    font-size: 10px;
+    font-size: 16px;
+    line-height: 1.5;
     margin: 0;
     padding: 0;
   }
@@ -49,11 +50,13 @@ injectGlobal`
   }
 
   .diff-file {
+    font-size: 12px;
     margin-top: 2em;
     border: 1px solid #e1e1e1;
   }
 
   .diff-file-header {
+    font-size: 14px;
     background-color: #f7f7fa;
     line-height: 3;
     padding-left: 1em;
