@@ -47,7 +47,7 @@ const TutureMenu = styled.ul`
 const TutureMenuItem = styled.li`
   padding: 0 16px 0 30px;
   width: calc(100% + 1px);
-  font-size: 14px;
+  font-size: 16px;
   line-height: 40px;
   height: 40px;
   margin-top: 4px;
