@@ -29,7 +29,6 @@ const TutureContent = styled.div`
   width: 80%;
   padding: 30px;
   height: 100%;
-  overflow-y: scroll;
 `;
 
 /* tslint:disable-next-line */
