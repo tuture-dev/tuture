@@ -7,7 +7,7 @@ interface UpdateSelectFunc {
   (key: number): void;
 }
 
-interface StepListProps {
+export interface StepListProps {
   selectKey: number;
   updateSelect: UpdateSelectFunc;
   commits: Commit[];
@@ -16,7 +16,7 @@ interface StepListProps {
 
 /* tslint:disable-next-line */
 const TutureSteps = styled.div`
-  width: 20%;
+  width: 100%;
   height: 100%;
   overflow: scroll;
   border-right: 1px solid #e8e8e8;

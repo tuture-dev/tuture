@@ -3,7 +3,7 @@ import React from 'react';
 import styled, { injectGlobal } from 'styled-components';
 import { Helmet } from 'react-helmet';
 
-import StepList from './StepList';
+import SideBarRight from './SideBarRight';
 import StepContent from './StepContent';
 
 import tutureUtilities from '../utils';
@@ -14,6 +14,7 @@ interface AppState {
   selectKey: number;
   tuture: Tuture;
   diff: DiffItem[];
+  viewType: 'unified' | 'split';
 }
 
 interface AppProps {
@@ -24,6 +25,11 @@ interface AppProps {
 /* tslint:disable-next-line */
 const AppWrapper = styled.div`
   height: 100%;
+  width: 100%;
+`;
+
+/* tslint:disable-next-line */
+const AppContent = styled.div`
   width: 100%;
   display: flex;
 `;
@@ -102,12 +108,20 @@ export default class App extends React.Component<AppProps, AppState> {
       selectKey: 0,
       tuture: null,
       diff: null,
+      viewType: 'unified',
     };
   }
 
   updateSelect = (key: number): void => {
     this.setState({
       selectKey: key,
+    });
+  };
+
+  changeViewType = (): void => {
+    const { viewType } = this.state;
+    this.setState({
+      viewType: viewType === 'unified' ? 'split' : 'unified',
     });
   };
 
@@ -156,22 +170,23 @@ export default class App extends React.Component<AppProps, AppState> {
     } else {
       const commits = extractCommits(tuture);
       const metadata = extractMetaData(tuture);
-      const { selectKey } = this.state;
+      const { selectKey, viewType } = this.state;
       const nowRenderContent = tuture.steps[selectKey];
       const diffItem = diff[selectKey];
       bodyContent = [
-        <StepList
-          key="steps"
-          commits={commits}
-          metadata={metadata}
-          selectKey={selectKey}
-          updateSelect={this.updateSelect}
-        />,
         <StepContent
           key="content"
           content={nowRenderContent}
           diffItem={diffItem}
-          viewType="unified"
+          viewType={viewType}
+        />,
+        <SideBarRight
+          commits={commits}
+          metadata={metadata}
+          selectKey={selectKey}
+          updateSelect={this.updateSelect}
+          viewType={viewType}
+          changeViewType={this.changeViewType}
         />,
       ];
     }
@@ -181,7 +196,7 @@ export default class App extends React.Component<AppProps, AppState> {
         <Helmet>
           <title>{name}</title>
         </Helmet>
-        {bodyContent}
+        <AppContent>{bodyContent}</AppContent>
       </AppWrapper>
     );
   }
