@@ -10,10 +10,6 @@ import { Step, DiffItem } from '../types';
 
 import tutureUtilities from '../utils';
 
-interface ChangeViewFunc {
-  (): void;
-}
-
 interface StepContentProps {
   viewType: 'unified' | 'split';
   content: Step;
@@ -46,17 +42,6 @@ export default class StepContent extends React.Component<
   StepContentProps,
   StepContentState
 > {
-  static defaultProps = {
-    viewType: 'unified',
-  };
-
-  constructor(props: StepContentProps) {
-    super(props);
-    this.state = {
-      viewType: this.props.viewType,
-    };
-  }
-
   renderExplain = (
     explain: string[] | string,
   ): React.ReactNode | React.ReactNodeArray => {
@@ -70,23 +55,15 @@ export default class StepContent extends React.Component<
     return <Markdown source={explain as string} />;
   };
 
-  changeViewType = (): void => {
-    const { viewType } = this.state;
-    this.setState({
-      viewType: viewType === 'unified' ? 'split' : 'unified',
-    });
-  };
-
   render() {
     const { content, diffItem } = this.props;
     const { name, explain, diff, commit } = content;
-    const { viewType } = this.state;
+    const { viewType } = this.props;
 
     return (
       <TutureContent>
         <TutureContentHeader>
           <h1>{name}</h1>
-          <button onClick={this.changeViewType}>{viewType}</button>
         </TutureContentHeader>
         {this.renderExplain(explain)}
         <StepDiff
