@@ -13,6 +13,24 @@ const SideBarRightWrapper = styled.div`
   width: 20%;
 `;
 
+/* tslint:disable-next-line */
+const ButtonWrapper = styled.div`
+  margin-top: 41px;
+`;
+
+/* tslint:disable-next-line */
+const Button = styled.button`
+  min-width: 328px;
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.09);
+  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.04);
+  border-radius: 3px;
+  font-family: PingFangSC-Medium;
+  font-size: 23px;
+  padding: 30px 0;
+  color: rgba(0, 0, 0, 0.54);
+`;
+
 export default class SideBar extends React.Component<SideBarRightProps> {
   render() {
     const {
@@ -31,9 +49,9 @@ export default class SideBar extends React.Component<SideBarRightProps> {
           selectKey={selectKey}
           updateSelect={updateSelect}
         />
-        <div>
-          <button onClick={changeViewType}>{viewType}</button>
-        </div>
+        <ButtonWrapper>
+          <Button onClick={changeViewType}>{viewType}</Button>
+        </ButtonWrapper>
       </SideBarRightWrapper>
     );
   }
