@@ -61,7 +61,7 @@ export default class StepDiff extends React.PureComponent<StepDiffProps> {
   };
 
   render() {
-    const { diff, diffItem } = this.props;
+    const { diff, diffItem, viewType } = this.props;
     const needRenderFiles = this.getEndRenderContent(diff, diffItem.diff);
 
     return (
@@ -77,11 +77,7 @@ export default class StepDiff extends React.PureComponent<StepDiffProps> {
                 <main>
                   <LanguageContext.Provider
                     value={extractLanguageType(fileName)}>
-                    <DiffView
-                      key={i}
-                      hunks={file.hunks}
-                      viewType={this.props.viewType}
-                    />
+                    <DiffView key={i} hunks={file.hunks} viewType={viewType} />
                   </LanguageContext.Provider>
                 </main>
               </article>

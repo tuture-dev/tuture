@@ -14,7 +14,7 @@ interface AppState {
   selectKey: number;
   tuture: Tuture;
   diff: DiffItem[];
-  viewType: 'unified' | 'split';
+  viewType: 'Unified' | 'Split';
 }
 
 interface AppProps {
@@ -108,7 +108,7 @@ export default class App extends React.Component<AppProps, AppState> {
       selectKey: 0,
       tuture: null,
       diff: null,
-      viewType: 'unified',
+      viewType: 'Unified',
     };
   }
 
@@ -121,7 +121,7 @@ export default class App extends React.Component<AppProps, AppState> {
   changeViewType = (): void => {
     const { viewType } = this.state;
     this.setState({
-      viewType: viewType === 'unified' ? 'split' : 'unified',
+      viewType: viewType === 'Unified' ? 'Split' : 'Unified',
     });
   };
 

@@ -11,13 +11,9 @@ import { Step, DiffItem } from '../types';
 import tutureUtilities from '../utils';
 
 interface StepContentProps {
-  viewType: 'unified' | 'split';
+  viewType: 'Unified' | 'Split';
   content: Step;
   diffItem: DiffItem;
-}
-
-interface StepContentState {
-  viewType: 'unified' | 'split';
 }
 
 /* tslint:disable-next-line */
@@ -38,10 +34,7 @@ const TutureContentHeader = styled.div`
   justify-content: space-between;
 `;
 
-export default class StepContent extends React.Component<
-  StepContentProps,
-  StepContentState
-> {
+export default class StepContent extends React.Component<StepContentProps> {
   renderExplain = (
     explain: string[] | string,
   ): React.ReactNode | React.ReactNodeArray => {
