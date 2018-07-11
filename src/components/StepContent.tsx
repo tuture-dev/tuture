@@ -1,6 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 
+// @ts-ignore
+import Markdown from 'react-markdown';
+
 import StepDiff from './StepDiff';
 
 import { Step, DiffItem } from '../types';
@@ -60,11 +63,11 @@ export default class StepContent extends React.Component<
     if (tutureUtilities.isArray(explain)) {
       const arrExplain = explain as string[];
       return arrExplain.map((explainItem: string, i: number) => (
-        <p key={i}>{explainItem}</p>
+        <Markdown key={i} source={explainItem} />
       ));
     }
 
-    return <p>{explain}</p>;
+    return <Markdown source={explain as string} />;
   };
 
   changeViewType = (): void => {
