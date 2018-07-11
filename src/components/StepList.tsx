@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { TutureMeta, Commit } from '../types';
-import { MenuHeader, MenuHeaderText } from './SideBarLeft';
 
 interface UpdateSelectFunc {
   (key: number): void;
@@ -42,7 +41,6 @@ const MenuHeaderText = styled.p`
 /* tslint:disable-next-line */
 const TutureMenu = styled.ul`
   height: 503px;
-  background-color: rgba(216, 216, 216, 0.1);
   overflow-y: scroll;
   overflow-x: hidden;
   font-size: 14px;
@@ -56,7 +54,8 @@ const TutureMenu = styled.ul`
 
 /* tslint:disable-next-line */
 const TutureMenuItem = styled.li`
-  width: 100%;
+  width: ${(props: any) =>
+    props.className === 'selected' ? 'calc(100% -38px)' : 'calc(100% -41px)'};
   font-family: STSongti-SC-Bold;
   font-size: 16px;
   margin: 8px 0;
