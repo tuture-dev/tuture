@@ -3,6 +3,7 @@ import React from 'react';
 import styled, { injectGlobal } from 'styled-components';
 import { Helmet } from 'react-helmet';
 
+import SideBarLeft from './SideBarLeft';
 import SideBarRight from './SideBarRight';
 import StepContent from './StepContent';
 
@@ -26,11 +27,14 @@ interface AppProps {
 const AppWrapper = styled.div`
   height: 100%;
   width: 100%;
+  display: flex;
+  justify-content: center;
 `;
 
 /* tslint:disable-next-line */
 const AppContent = styled.div`
-  width: 100%;
+  max-width: 1355px;
+  width: 1355px;
   display: flex;
 `;
 
@@ -174,6 +178,7 @@ export default class App extends React.Component<AppProps, AppState> {
       const nowRenderContent = tuture.steps[selectKey];
       const diffItem = diff[selectKey];
       bodyContent = [
+        <SideBarLeft />,
         <StepContent
           key="content"
           content={nowRenderContent}

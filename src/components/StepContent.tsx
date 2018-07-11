@@ -18,10 +18,9 @@ interface StepContentProps {
 
 /* tslint:disable-next-line */
 const TutureContent = styled.div`
-  width: 80%;
-  padding: 30px;
-  height: 100%;
-  overflow-y: scroll;
+  max-width: 700px;
+  padding-left: 49px;
+  padding-right: 49px;
 `;
 
 /* tslint:disable-next-line */

@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { TutureMeta, Commit } from '../types';
+import { MenuHeader, MenuHeaderText } from './SideBarLeft';
 
 interface UpdateSelectFunc {
   (key: number): void;
@@ -18,7 +19,6 @@ export interface StepListProps {
 const TutureSteps = styled.div`
   width: 100%;
   height: 637px;
-  min-width: 328px;
 `;
 
 /* tslint:disable-next-line */
