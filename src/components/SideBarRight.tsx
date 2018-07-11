@@ -11,6 +11,8 @@ export interface SideBarRightProps extends StepListProps {
 /* tslint:disable-next-line */
 const SideBarRightWrapper = styled.div`
   min-width: 328px;
+  background-color: rgba(216, 216, 216, 0.1);
+  height: 637px;
 `;
 
 /* tslint:disable-next-line */
