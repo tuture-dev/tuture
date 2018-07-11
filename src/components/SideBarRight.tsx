@@ -22,13 +22,18 @@ const ButtonWrapper = styled.div`
 const Button = styled.button`
   min-width: 328px;
   background: #ffffff;
-  border: 1px solid rgba(0, 0, 0, 0.09);
+  border: 1px solid rgba(0, 0, 0, 0.54);
   box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.04);
   border-radius: 3px;
   font-family: Avenir-Medium;
   font-size: 23px;
   padding: 30px 0;
   color: rgba(0, 0, 0, 0.54);
+  outline: none;
+  &:hover {
+    cursor: pointer;
+    border: 1px solid rgba(0, 0, 0, 0.09);
+  }
 `;
 
 export default class SideBar extends React.Component<SideBarRightProps> {
