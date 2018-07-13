@@ -42,7 +42,6 @@ export default class SideBar extends React.Component<SideBarRightProps> {
   render() {
     const {
       commits,
-      metadata,
       selectKey,
       updateSelect,
       viewType,
@@ -52,7 +51,6 @@ export default class SideBar extends React.Component<SideBarRightProps> {
       <SideBarRightWrapper>
         <StepList
           commits={commits}
-          metadata={metadata}
           selectKey={selectKey}
           updateSelect={updateSelect}
         />

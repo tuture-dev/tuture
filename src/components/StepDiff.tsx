@@ -28,6 +28,15 @@ const Image = styled.img`
   width: 10px;
 `;
 
+/* tslint:disable-next-line */
+const StepDiffExplain = styled.div`
+  font-family: STSongti-SC-Regular;
+  font-size: 21px;
+  line-height: 1.58;
+  margin: 16px 0;
+  color: rgba(0, 0, 0, 0.84);
+`;
+
 export default class StepDiff extends React.PureComponent<StepDiffProps> {
   extractFileName({ type, oldPath, newPath }: File): string {
     return type === 'delete' ? oldPath : newPath;
@@ -61,35 +70,26 @@ export default class StepDiff extends React.PureComponent<StepDiffProps> {
   };
 
   render() {
-    const { diff, diffItem, viewType } = this.props;
+    const { diff, diffItem, viewType, renderExplain } = this.props;
     const needRenderFiles = this.getEndRenderContent(diff, diffItem.diff);
 
-    return (
-      <div className="ContentItem">
-        {needRenderFiles.map((file: File & ChangedFile, i) => {
-          const fileName = this.extractFileName(file);
-          return (
-            <div key={i}>
-              <article className="diff-file" key={i}>
-                <header className="diff-file-header">
-                  <strong className="filename">{fileName}</strong>
-                </header>
-                <main>
-                  <LanguageContext.Provider
-                    value={extractLanguageType(fileName)}>
-                    <DiffView key={i} hunks={file.hunks} viewType={viewType} />
-                  </LanguageContext.Provider>
-                </main>
-              </article>
-              <div>
-                <div style={{ marginTop: '20px' }}>
-                  {this.props.renderExplain(file.explain)}
-                </div>
-              </div>
-            </div>
-          );
-        })}
-      </div>
-    );
+    return [
+      needRenderFiles.map((file: File & ChangedFile, i) => {
+        const fileName = this.extractFileName(file);
+        return (
+          <div key={i}>
+            <article className="diff-file" key={i}>
+              <header className="diff-file-header">{fileName}</header>
+              <main>
+                <LanguageContext.Provider value={extractLanguageType(fileName)}>
+                  <DiffView key={i} hunks={file.hunks} viewType={viewType} />
+                </LanguageContext.Provider>
+              </main>
+            </article>
+            {renderExplain(file.explain)}
+          </div>
+        );
+      }),
+    ];
   }
 }

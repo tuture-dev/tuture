@@ -53,6 +53,7 @@ injectGlobal`
 
   #root {
     height: 100%;
+    margin-top: 200px;
   }
 `;
 
@@ -143,7 +144,6 @@ export default class App extends React.Component<AppProps, AppState> {
         />,
         <SideBarRight
           commits={commits}
-          metadata={metadata}
           selectKey={selectKey}
           updateSelect={this.updateSelect}
           viewType={viewType}
