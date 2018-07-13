@@ -36,13 +36,14 @@ injectGlobal`
   .markdown p {
     font-family: STSongti-SC-Regular;
     font-size: 21px;
-    line-height: 30px;
+    line-height: 1.58;
     margin: 16px 0;
     color: rgba(0,0,0,0.84);
   }
 
+
   .markdown pre {
-    font-family: Monaco;
+    font-family: Monaco,Menlo,"Courier New",Courier,monospace;
     font-size: 16px;
     font-weight: 400;
     color: rgba(0,0,0,0.84);
@@ -63,6 +64,32 @@ injectGlobal`
       cursor: pointer;
     }
   }
+
+  .markdown :not(pre) > code {
+    font-family: Monaco,Monaco,"Courier New",Courier,monospace;
+    background-color: rgba(0, 0, 0, .05);
+    padding: 3px 4px;
+    margin: 0 2px;
+    font-size: 16px;
+  }
+
+  .markdown blockquote {
+    font-style: italic;
+    margin-top: 28px;
+    border-left: 3px solid rgba(0,0,0,.84);
+    padding-left: 20px;
+    margin-left: -23px;
+    padding-bottom: 2px;
+  }
+
+  .markdown blockquote p {
+    margin: 0;
+    line-height: 1.58;
+  }
+
+  .markdown blockquote :not(pre) > code {
+    font-style: normal;
+  }
 `;
 
 export default class StepContent extends React.Component<StepContentProps> {
@@ -76,7 +103,7 @@ export default class StepContent extends React.Component<StepContentProps> {
       ));
     }
 
-    return <Markdown source={explain as string} />;
+    return <Markdown source={explain as string} className="markdown" />;
   };
 
   render() {
@@ -85,7 +112,7 @@ export default class StepContent extends React.Component<StepContentProps> {
     const { viewType } = this.props;
 
     return (
-      <TutureContent className="StepContent">
+      <TutureContent>
         <TutureContentHeader>{name}</TutureContentHeader>
         {this.renderExplain(explain)}
         <StepDiff
