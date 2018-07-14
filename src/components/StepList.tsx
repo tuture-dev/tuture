@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import { TutureMeta, Commit } from '../types';
 import ReactSVG from 'react-svg';
 import catalogImage from './images/catalog-image.svg';
-import alreadReadIcon from './images/alread-read.svg';
 
 interface UpdateSelectFunc {
   (key: number): void;
@@ -14,11 +13,6 @@ export interface StepListProps {
   selectKey: number;
   updateSelect: UpdateSelectFunc;
   commits: Commit[];
-}
-
-interface MenuItemProps {
-  isReaded: boolean;
-  isSelected: boolean;
 }
 
 /* tslint:disable-next-line */
@@ -67,14 +61,15 @@ const TutureMenu = styled.ul`
 `;
 
 /* tslint:disable-next-line */
-const TutureMenuItem = styled.li<MenuItemProps>`
+const TutureMenuItem = styled.li`
   width: ${(props) =>
-    props.isSelected ? 'calc(100% -38px)' : 'calc(100% -41px)'};
+    props.className === 'selected' ? 'calc(100% -38px)' : 'calc(100% -41px)'};
   font-family: STSongti-SC-Bold;
   font-size: 16px;
   margin: 8px 0;
   padding-right: 40px;
-  padding-left: ${(props) => (props.isSelected ? '38px' : '41px')};
+  padding-left: ${(props: any) =>
+    props.className === 'selected' ? '38px' : '41px'};
   overflow: hidden;
   text-overflow: ellipsis;
   cursor: pointer;
@@ -120,18 +115,12 @@ export default class StepList extends React.Component<StepListProps> {
         <TutureMenu>
           {commits.map((item, key) => (
             <TutureMenuItem
-              isSelected={key === selectKey}
+              className={key === selectKey ? 'selected' : ''}
               onClick={() => {
                 updateSelect(key);
               }}
-              isReaded={key <= selectKey}
               key={key}>
-              <MenuItemContent>
-                {key <= selectKey && (
-                  <MenuItemIcon src={alreadReadIcon} alt="" />
-                )}
-                {item.name}
-              </MenuItemContent>
+              <MenuItemContent>{item.name}</MenuItemContent>
             </TutureMenuItem>
           ))}
         </TutureMenu>
