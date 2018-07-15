@@ -2,12 +2,10 @@ import React, { Component } from 'react';
 import { injectGlobal } from 'styled-components';
 
 import UnifiedHunk from './UnifiedHunk';
-import SplitHunk from './SplitHunk';
 
 import { Hunk as HunkType } from '../../types';
 
 interface HunkProps {
-  viewType: string;
   hunk: HunkType;
 }
 
@@ -149,11 +147,8 @@ injectGlobal`
 
 export default class Hunk extends Component<HunkProps> {
   render() {
-    const { viewType, hunk } = this.props;
+    const { hunk } = this.props;
 
-    /* tslint:disable-next-line */
-    const RenderingHunk = viewType === 'Unified' ? UnifiedHunk : SplitHunk;
-
-    return <RenderingHunk hunk={hunk} />;
+    return <UnifiedHunk hunk={hunk} />;
   }
 }
