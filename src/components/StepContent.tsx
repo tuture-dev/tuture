@@ -11,7 +11,6 @@ import { Step, DiffItem } from '../types';
 import tutureUtilities from '../utils';
 
 interface StepContentProps {
-  viewType: 'Unified' | 'Split';
   content: Step;
   diffItem: DiffItem;
 }
@@ -109,7 +108,6 @@ export default class StepContent extends React.Component<StepContentProps> {
   render() {
     const { content, diffItem } = this.props;
     const { name, explain, diff, commit } = content;
-    const { viewType } = this.props;
 
     return (
       <TutureContent>
@@ -119,7 +117,6 @@ export default class StepContent extends React.Component<StepContentProps> {
           diff={diff}
           diffItem={diffItem}
           commit={commit}
-          viewType={viewType}
           renderExplain={this.renderExplain}
         />
       </TutureContent>

@@ -14,7 +14,6 @@ interface RenderExplainFunc {
 interface StepDiffProps {
   diff: ChangedFile[];
   commit: string;
-  viewType: string;
   diffItem: DiffItem;
   renderExplain: RenderExplainFunc;
 }
@@ -70,7 +69,7 @@ export default class StepDiff extends React.PureComponent<StepDiffProps> {
   };
 
   render() {
-    const { diff, diffItem, viewType, renderExplain } = this.props;
+    const { diff, diffItem, renderExplain } = this.props;
     const needRenderFiles = this.getEndRenderContent(diff, diffItem.diff);
 
     return [
@@ -82,7 +81,7 @@ export default class StepDiff extends React.PureComponent<StepDiffProps> {
               <header className="diff-file-header">{fileName}</header>
               <main>
                 <LanguageContext.Provider value={extractLanguageType(fileName)}>
-                  <DiffView key={i} hunks={file.hunks} viewType={viewType} />
+                  <DiffView key={i} hunks={file.hunks} />
                 </LanguageContext.Provider>
               </main>
             </article>

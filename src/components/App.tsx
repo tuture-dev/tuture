@@ -15,7 +15,6 @@ interface AppState {
   selectKey: number;
   tuture: Tuture;
   diff: DiffItem[];
-  viewType: 'Unified' | 'Split';
 }
 
 interface AppProps {
@@ -69,20 +68,12 @@ export default class App extends React.Component<AppProps, AppState> {
       selectKey: 0,
       tuture: null,
       diff: null,
-      viewType: 'Unified',
     };
   }
 
   updateSelect = (key: number): void => {
     this.setState({
       selectKey: key,
-    });
-  };
-
-  changeViewType = (): void => {
-    const { viewType } = this.state;
-    this.setState({
-      viewType: viewType === 'Unified' ? 'Split' : 'Unified',
     });
   };
 
@@ -131,7 +122,7 @@ export default class App extends React.Component<AppProps, AppState> {
     } else {
       const commits = extractCommits(tuture);
       const metadata = extractMetaData(tuture);
-      const { selectKey, viewType } = this.state;
+      const { selectKey } = this.state;
       const nowRenderContent = tuture.steps[selectKey];
       const diffItem = diff[selectKey];
       bodyContent = [
@@ -140,14 +131,11 @@ export default class App extends React.Component<AppProps, AppState> {
           key="content"
           content={nowRenderContent}
           diffItem={diffItem}
-          viewType={viewType}
         />,
         <SideBarRight
           commits={commits}
           selectKey={selectKey}
           updateSelect={this.updateSelect}
-          viewType={viewType}
-          changeViewType={this.changeViewType}
         />,
       ];
     }
