@@ -2,6 +2,7 @@
 import React from 'react';
 import styled, { injectGlobal } from 'styled-components';
 import { Helmet } from 'react-helmet';
+import yaml from 'js-yaml';
 
 import SideBarLeft from './SideBarLeft';
 import SideBarRight from './SideBarRight';
@@ -80,8 +81,9 @@ export default class App extends React.Component<AppProps, AppState> {
   async loadTuture() {
     try {
       const that = this;
-      const response = await fetch('./tuture.json');
-      const tuture = await response.json();
+      const response = await fetch('./tuture.yml');
+      const tutureYAML = await response.text();
+      const tuture = yaml.safeLoad(tutureYAML);
       that.setState({
         tuture: tuture as Tuture,
       });
