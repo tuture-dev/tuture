@@ -3,7 +3,7 @@ import renderer from 'react-test-renderer';
 import { shallow } from 'enzyme';
 
 import StepList, { TutureMenu, TutureMenuItem, TutureSteps } from '../StepList';
-import { commits, metadata } from './utils/data';
+import { commits } from './utils/data';
 
 describe('Steps behave normally on component/dom/events level ', () => {
   // init every test block need use content
@@ -18,7 +18,6 @@ describe('Steps behave normally on component/dom/events level ', () => {
     const wrapper = shallow(
       <StepList
         commits={commits}
-        metadata={metadata}
         selectKey={selectKey}
         updateSelect={mockUpdateSelect}
       />,
@@ -44,7 +43,6 @@ describe('Steps behave normally on component/dom/events level ', () => {
     const wrapper = shallow(
       <StepList
         commits={commits}
-        metadata={metadata}
         selectKey={selectKey}
         updateSelect={mockUpdateSelect}
       />,

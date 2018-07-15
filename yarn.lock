@@ -119,6 +119,10 @@
   dependencies:
     any-observable "^0.3.0"
 
+"@tanem/svg-injector@^1.2.1":
+  version "1.2.1"
+  resolved "https://registry.npmjs.org/@tanem/svg-injector/-/svg-injector-1.2.1.tgz#3120e90246d0eb3c4fc6c61586a6f028a3c658ae"
+
 "@types/cheerio@*":
   version "0.22.7"
   resolved "http://registry.npm.taobao.org/@types/cheerio/download/@types/cheerio-0.22.7.tgz#4a92eafedfb2b9f4437d3a4410006d81114c66ce"
@@ -160,6 +164,12 @@
 "@types/react-helmet@^5.0.6":
   version "5.0.6"
   resolved "http://registry.npm.taobao.org/@types/react-helmet/download/@types/react-helmet-5.0.6.tgz#49607cbb72e1bb7dcefa9174cb591434d3b6f0af"
+  dependencies:
+    "@types/react" "*"
+
+"@types/react-svg@^3.0.0":
+  version "3.0.0"
+  resolved "https://registry.npmjs.org/@types/react-svg/-/react-svg-3.0.0.tgz#ebbd0a095339ba20d9ba1d8fb3441eef9aeb5d11"
   dependencies:
     "@types/react" "*"
 
@@ -5742,6 +5752,12 @@ react-side-effect@^1.1.0:
   dependencies:
     exenv "^1.2.1"
     shallowequal "^1.0.1"
+
+react-svg@^4.1.8:
+  version "4.1.8"
+  resolved "https://registry.npmjs.org/react-svg/-/react-svg-4.1.8.tgz#7b870c9587661ec17b6ef8c1a324540123133f77"
+  dependencies:
+    "@tanem/svg-injector" "^1.2.1"
 
 react-test-renderer@^16.0.0-0, react-test-renderer@^16.4.1:
   version "16.4.1"

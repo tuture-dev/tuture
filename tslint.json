@@ -18,7 +18,8 @@
           "typeLiterals": "ignore"
         }
       }
-    ]
+    ],
+    "ter-arrow-parens": true
   },
   "rulesDirectory": []
 }

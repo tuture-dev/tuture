@@ -3,7 +3,8 @@ import React from 'react';
 import styled, { injectGlobal } from 'styled-components';
 import { Helmet } from 'react-helmet';
 
-import StepList from './StepList';
+import SideBarLeft from './SideBarLeft';
+import SideBarRight from './SideBarRight';
 import StepContent from './StepContent';
 
 import tutureUtilities from '../utils';
@@ -14,6 +15,7 @@ interface AppState {
   selectKey: number;
   tuture: Tuture;
   diff: DiffItem[];
+  viewType: 'Unified' | 'Split';
 }
 
 interface AppProps {
@@ -25,6 +27,14 @@ interface AppProps {
 const AppWrapper = styled.div`
   height: 100%;
   width: 100%;
+  display: flex;
+  justify-content: center;
+`;
+
+/* tslint:disable-next-line */
+const AppContent = styled.div`
+  max-width: 1355px;
+  width: 1355px;
   display: flex;
 `;
 
@@ -43,50 +53,7 @@ injectGlobal`
 
   #root {
     height: 100%;
-  }
-
-  .diff-hunk-header {
-    display: none;
-  }
-
-  .diff-file {
-    font-size: 12px;
-    margin-top: 2em;
-    border: 1px solid #e1e1e1;
-  }
-
-  .diff-file-header {
-    font-size: 14px;
-    background-color: #f7f7fa;
-    line-height: 3;
-    padding-left: 1em;
-    border-bottom: 1px solid #e1e1e1;
-
-    display: -webkit-box;
-
-    display: -ms-flexbox;
-
-    display: flex;
-    -webkit-box-pack: justify;
-    -ms-flex-pack: justify;
-    justify-content: space-between;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
-    align-items: center;
-  }
-
-  .filename {
-    margin-right: 1em;
-  }
-
-  .addition-count {
-    margin-right: 1em;
-    color: #88b149;
-  }
-
-  .deletion-count {
-    margin-right: 1em;
-    color: #ee5b60;
+    margin-top: 200px;
   }
 `;
 
@@ -102,12 +69,20 @@ export default class App extends React.Component<AppProps, AppState> {
       selectKey: 0,
       tuture: null,
       diff: null,
+      viewType: 'Unified',
     };
   }
 
   updateSelect = (key: number): void => {
     this.setState({
       selectKey: key,
+    });
+  };
+
+  changeViewType = (): void => {
+    const { viewType } = this.state;
+    this.setState({
+      viewType: viewType === 'Unified' ? 'Split' : 'Unified',
     });
   };
 
@@ -156,22 +131,23 @@ export default class App extends React.Component<AppProps, AppState> {
     } else {
       const commits = extractCommits(tuture);
       const metadata = extractMetaData(tuture);
-      const { selectKey } = this.state;
+      const { selectKey, viewType } = this.state;
       const nowRenderContent = tuture.steps[selectKey];
       const diffItem = diff[selectKey];
       bodyContent = [
-        <StepList
-          key="steps"
-          commits={commits}
-          metadata={metadata}
-          selectKey={selectKey}
-          updateSelect={this.updateSelect}
-        />,
+        <SideBarLeft />,
         <StepContent
           key="content"
           content={nowRenderContent}
           diffItem={diffItem}
-          viewType="unified"
+          viewType={viewType}
+        />,
+        <SideBarRight
+          commits={commits}
+          selectKey={selectKey}
+          updateSelect={this.updateSelect}
+          viewType={viewType}
+          changeViewType={this.changeViewType}
         />,
       ];
     }
@@ -181,7 +157,7 @@ export default class App extends React.Component<AppProps, AppState> {
         <Helmet>
           <title>{name}</title>
         </Helmet>
-        {bodyContent}
+        <AppContent>{bodyContent}</AppContent>
       </AppWrapper>
     );
   }

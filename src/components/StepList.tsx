@@ -2,83 +2,125 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { TutureMeta, Commit } from '../types';
+import ReactSVG from 'react-svg';
+import catalogImage from './images/catalog-image.svg';
 
 interface UpdateSelectFunc {
   (key: number): void;
 }
 
-interface StepListProps {
+export interface StepListProps {
   selectKey: number;
   updateSelect: UpdateSelectFunc;
   commits: Commit[];
-  metadata: TutureMeta;
 }
 
 /* tslint:disable-next-line */
 const TutureSteps = styled.div`
-  width: 20%;
-  border-right: 1px solid #e8e8e8;
+  width: 100%;
+  height: 637px;
+`;
+
+/* tslint:disable-next-line */
+const MenuHeader = styled.div`
+  width: 100%;
+  height: 134px;
+  background-color: #d7efee;
+  display: flex;
+  align-items: flex-end;
+  padding-left: 24px;
+  padding-right: 21px;
+  padding-bottom: 14px;
+  box-sizing: border-box;
+`;
+
+/* tslint:disable-next-line */
+const MenuHeaderText = styled.p`
+  font-family: STSongti-SC-Bold;
+  font-size: 24px;
+  color: rgba(0, 0, 0, 0.84);
+  width: 53px;
+  margin: 0;
+  padding-top: 44px;
+  padding-right: 66px;
+  padding-bottom: 10px;
 `;
 
 /* tslint:disable-next-line */
 const TutureMenu = styled.ul`
-  height: 100%;
+  height: 503px;
+  overflow-y: scroll;
   overflow-x: hidden;
   font-size: 14px;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
   margin: 0;
   padding: 0;
+  padding-top: 10px;
   outline: none;
-  margin-bottom: 0;
-  padding-left: 0;
   list-style: none;
   color: rgba(0, 0, 0, 0.65);
-  line-height: 0;
-  background: #fff;
-  -webkit-transition: background 0.3s, width 0.2s;
-  transition: background 0.3s, width 0.2s;
-  zoom: 1;
 `;
 
 /* tslint:disable-next-line */
 const TutureMenuItem = styled.li`
-  padding: 0 16px 0 30px;
-  width: calc(100% + 1px);
+  width: ${(props) =>
+    props.className === 'selected' ? 'calc(100% -38px)' : 'calc(100% -41px)'};
+  font-family: STSongti-SC-Bold;
   font-size: 16px;
-  line-height: 40px;
-  height: 40px;
-  margin-top: 4px;
-  margin-right: 2px;
+  margin: 8px 0;
+  padding-right: 40px;
+  padding-left: ${(props: any) =>
+    props.className === 'selected' ? '38px' : '41px'};
   overflow: hidden;
   text-overflow: ellipsis;
   cursor: pointer;
-  margin: 0;
   display: block;
+  text-align: center;
   white-space: nowrap;
-  border-right: ${(props: any) =>
-    props.className === 'selected' ? '4px solid #1890ff' : 'none'};
   color: ${(props: any) =>
-    props.className === 'selected' ? '#1890ff' : '#000000'};
-  background-color: ${(props: any) =>
-    props.className === 'selected' ? '#e6f7ff' : '#FFFFFF'};
+    props.className === 'selected'
+      ? 'rgba(0, 0, 0, 0.84)'
+      : 'rgba(0, 0, 0, 0.54)'};
+  border-left: ${(props: any) =>
+    props.className === 'selected' ? '3px solid rgba(0, 0, 0,0.84)' : 'none'};
+`;
+
+/* tslint:disable-next-line */
+const MenuItemContent = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+/* tslint:disable-next-line */
+const MenuHeaderImage = styled(ReactSVG)`
+  width: 158px;
+  margin-bottom: -7px;
+`;
+
+/* tslint:disable-next-line */
+const MenuItemIcon = styled.img`
+  width: 22px;
+  margin: 3px 16px 3px 0;
 `;
 
 export default class StepList extends React.Component<StepListProps> {
   render() {
-    const { commits, metadata, selectKey, updateSelect } = this.props;
+    const { commits, selectKey, updateSelect } = this.props;
 
     return (
       <TutureSteps>
+        <MenuHeader>
+          <MenuHeaderText>教程目录</MenuHeaderText>
+          <MenuHeaderImage path={catalogImage} />
+        </MenuHeader>
         <TutureMenu>
           {commits.map((item, key) => (
             <TutureMenuItem
               className={key === selectKey ? 'selected' : ''}
               onClick={() => {
-                this.props.updateSelect(key);
+                updateSelect(key);
               }}
               key={key}>
-              {item.name}
+              <MenuItemContent>{item.name}</MenuItemContent>
             </TutureMenuItem>
           ))}
         </TutureMenu>

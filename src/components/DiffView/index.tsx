@@ -14,7 +14,7 @@ export default class DiffView extends Component<DiffViewProps> {
     const { viewType, hunks } = this.props;
 
     const gutterContent =
-      viewType === 'unified' ? (
+      viewType === 'Unified' ? (
         <colgroup>
           <col className="diff-gutter-col" />
           <col className="diff-gutter-col" />
