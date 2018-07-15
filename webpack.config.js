@@ -34,8 +34,8 @@ module.exports = {
     }),
     new CopyWebpackPlugin([
       {
-        from: `${tuturePath}/.tuture/tuture.json`,
-        to: './tuture.json',
+        from: `${tuturePath}/tuture.yml`,
+        to: './tuture.yml',
       },
       {
         from: `${tuturePath}/.tuture/diff.json`,
