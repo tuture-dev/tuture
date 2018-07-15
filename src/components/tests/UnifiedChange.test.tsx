@@ -19,7 +19,6 @@ describe('Steps behave normally on component/dom/functionality/events level', ()
     test('should render realted dom node', () => {
       expect(wrapper.find('.diff-line')).toHaveLength(1);
       expect(wrapper.find('.diff-code-insert')).toHaveLength(1);
-      expect(wrapper.find('.diff-gutter-insert')).toHaveLength(2);
     });
   });
 });

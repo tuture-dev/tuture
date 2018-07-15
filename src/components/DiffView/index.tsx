@@ -12,16 +12,8 @@ export default class DiffView extends Component<DiffViewProps> {
   render() {
     const { hunks } = this.props;
 
-    const gutterContent = (
-      <colgroup>
-        <col className="diff-gutter-col" />
-        <col className="diff-gutter-col" />
-      </colgroup>
-    );
-
     return (
       <table className="diff">
-        {gutterContent}
         {hunks.map((hunk: HunkType, key: number) => (
           <Hunk key={key} hunk={hunk} />
         ))}

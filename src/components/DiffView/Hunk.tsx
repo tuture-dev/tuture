@@ -85,7 +85,6 @@ injectGlobal`
 
   .diff-code {
     padding: 0;
-    padding-left: .5em;
     max-width: 557px;
   }
 
@@ -121,7 +120,7 @@ injectGlobal`
   .diff-file {
     color: rgba(0,0,0,0.84);
     display: block;
-    padding: 8px 20px 20px 0;
+    padding: 8px 20px 20px 20px;
     background-color: rgba(0, 0, 0, .05);
     margin: 44px 0;
   }

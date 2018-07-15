@@ -5,11 +5,7 @@ import UnifiedChange from './UnifiedChange';
 
 import { Change as ChangeType, Hunk as HunkType } from '../../types';
 
-import {
-  computeOldLineNumber,
-  computeNewLineNumber,
-  getChangeKey,
-} from './utils';
+import { getChangeKey } from './utils';
 
 interface UnifiedHunkProps {
   hunk: HunkType;

@@ -37,15 +37,15 @@ injectGlobal`
     font-size: 21px;
     line-height: 1.58;
     margin: 16px 0;
-    color: rgba(0,0,0,0.84);
+    color: rgba(0,0,0,0.66);
   }
 
 
   .markdown pre {
     font-family: Monaco,Menlo,"Courier New",Courier,monospace;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 400;
-    color: rgba(0,0,0,0.84);
+    color: rgba(0,0,0,0.66);
     display: block;
     padding: 20px;
     background-color: rgba(0, 0, 0, .05);
@@ -69,7 +69,7 @@ injectGlobal`
     background-color: rgba(0, 0, 0, .05);
     padding: 3px 4px;
     margin: 0 2px;
-    font-size: 16px;
+    font-size: 14px;
   }
 
   .markdown blockquote {
