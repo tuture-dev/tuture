@@ -18,7 +18,7 @@ injectGlobal`
     word-break: break-all;
     font-family: Monaco,Menlo,"Courier New",Courier,monospace;
     font-size: 16px;
-    color: rgba(0,0,0,0.84);
+    color: rgba(0,0,0,0.66);
   }
 
   /* Code blocks */
