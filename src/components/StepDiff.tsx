@@ -53,16 +53,25 @@ export default class StepDiff extends React.PureComponent<StepDiffProps> {
   getEndRenderContent = (diff: ChangedFile[], files: File[]): any[] => {
     // use fileName key map it belongs obj
     const mapedFiles = this.mapArrItemToObjValue('newPath', files);
-    const mapedDiff = this.mapArrItemToObjValue('file', diff);
     const endRenderContent = diff.map((item) => {
       const fileName = item.file;
       return {
-        ...mapedDiff[fileName],
+        ...item,
         ...mapedFiles[fileName],
       };
     });
 
     return endRenderContent;
+  };
+
+  getRenderedHunks = (file: File & ChangedFile) => {
+    if (file.section) {
+      const changes = file.hunks[0].changes.slice(
+        ...[file.section.start, file.section.end],
+      );
+      file.hunks[0].changes = changes;
+    }
+    return file.hunks;
   };
 
   render() {
@@ -71,16 +80,17 @@ export default class StepDiff extends React.PureComponent<StepDiffProps> {
 
     return [
       needRenderFiles.map((file: File & ChangedFile, i) => {
-        const fileName = this.extractFileName(file);
+        const fileCopy: File & ChangedFile = JSON.parse(JSON.stringify(file));
+        const fileName = this.extractFileName(fileCopy);
         return (
           <div key={i}>
-            <ExplainedItem explain={file.explain}>
+            <ExplainedItem explain={fileCopy.explain}>
               <article className="diff-file" key={i}>
                 <header className="diff-file-header">{fileName}</header>
                 <main>
                   <LanguageContext.Provider
                     value={extractLanguageType(fileName)}>
-                    <DiffView key={i} hunks={file.hunks} />
+                    <DiffView key={i} hunks={this.getRenderedHunks(fileCopy)} />
                   </LanguageContext.Provider>
                 </main>
               </article>
