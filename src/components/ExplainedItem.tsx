@@ -12,14 +12,13 @@ interface ExplainedItemProps {
 }
 
 injectGlobal`
-  .markdown p {
+  .markdown p, li {
     font-family: STSongti-SC-Regular;
     font-size: 21px;
     line-height: 1.58;
     margin: 16px 0;
     color: rgba(0,0,0,0.66);
   }
-
 
   .markdown pre {
     font-family: Monaco,Menlo,"Courier New",Courier,monospace;
