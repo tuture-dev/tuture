@@ -28,7 +28,7 @@ injectGlobal`
     display: block;
     padding: 20px;
     background-color: rgba(0, 0, 0, .05);
-    margin: 44px 0;
+    margin: 32px 0 !important;
   }
 
   .markdown a {
