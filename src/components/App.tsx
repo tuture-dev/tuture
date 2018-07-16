@@ -4,7 +4,6 @@ import styled, { injectGlobal } from 'styled-components';
 import { Helmet } from 'react-helmet';
 import yaml from 'js-yaml';
 
-import SideBarLeft from './SideBarLeft';
 import SideBarRight from './SideBarRight';
 import StepContent from './StepContent';
 
@@ -129,7 +128,6 @@ export default class App extends React.Component<AppProps, AppState> {
       const nowRenderContent = tuture.steps[selectKey];
       const diffItem = diff[selectKey];
       bodyContent = [
-        <SideBarLeft />,
         <StepContent
           key="content"
           content={nowRenderContent}
