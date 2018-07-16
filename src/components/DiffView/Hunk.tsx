@@ -122,7 +122,7 @@ injectGlobal`
     display: block;
     padding: 8px 20px 20px 20px;
     background-color: rgba(0, 0, 0, .05);
-    margin: 44px 0;
+    margin: 32px 0;
   }
 
   .diff-file-header {

@@ -1,15 +1,28 @@
+interface ExplainObj {
+  pre?: string | string[];
+  post?: string | string[];
+}
+
+type Explain = string | string[] | ExplainObj;
+
+interface CodeSection {
+  start?: number;
+  end?: number;
+}
+
 interface ChangedFile {
   file: string;
-  explain: string;
+  explain?: string;
+  section?: CodeSection;
 }
 
 interface TutureMeta {
   name: string;
   language: string;
   version: string;
-  description: string;
-  maintainer: string;
-  topics: string[];
+  description?: string;
+  maintainer?: string;
+  topics?: string[];
 }
 
 interface Commit {
@@ -18,7 +31,7 @@ interface Commit {
 }
 
 interface Step extends Commit {
-  explain: string;
+  explain?: string;
   diff: ChangedFile[];
 }
 
@@ -62,6 +75,9 @@ interface DiffItem {
 }
 
 export {
+  Explain,
+  ExplainObj,
+  CodeSection,
   ChangedFile,
   TutureMeta,
   Commit,

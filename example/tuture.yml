@@ -9,12 +9,32 @@ steps:
   - name: Basic Setup
     commit: 90ef523
     explain:
-      - "First let's create a directory, initialize npm, [install webpack locally](https://webpack.js.org/guides/installation#local-installation), and install the **webpack-cli** (the tool used to run webpack on the command line):"
-      - "```bash\nmkdir webpack-demo && cd webpack-demo\nnpm init -y\nnpm install webpack webpack-cli --save-dev\n```"
-      - "Now we'll create the following directory structure, files and their contents:"
+      pre:
+        - "First let's create a directory, initialize npm, [install webpack locally](https://webpack.js.org/guides/installation#local-installation), and install the **webpack-cli** (the tool used to run webpack on the command line):"
+        - "```bash\nmkdir webpack-demo && cd webpack-demo\nnpm init -y\nnpm install webpack webpack-cli --save-dev\n```"
+        - "Now we'll create the following directory structure, files and their contents."
+      post:
+        - "In this example, there are implicit dependencies between the `<script>` tags. Our `index.js` file depends on `lodash` being included in the page before it runs. This is because `index.js` never explicitly declared a need for `lodash`; it just assumes that the global variable `_` exists."
+        - "There are problems with managing JavaScript projects this way:"
+        - "- It is not immediately apparent that the script depends on an external library."
+        - "- If a dependency is missing, or included in the wrong order, the application will not function properly."
+        - "- If a dependency is included but not used, the browser will be forced to download unnecessary code."
+        - "Let's use webpack to manage these scripts instead."
     diff:
       - file: index.html
+        section:
+          start: 0
+          end: 6
+        explain: "This is the first part of `index.html`. It's very cool:"
+      - file: index.html
+        section:
+          start: 6
+          end: 10
+        explain: "Neat. The second part of `index.html`:"
+      - file: index.html
+        explain: "The entire `index.html` looks like this:"
       - file: src/index.js
+        explain: "This is the entry file we're working upon:"
       - file: package.json
         explain:
           - We also need to adjust our `package.json` file in order to make sure we mark our package as `private`, as well as removing the `main` entry. This is to *prevent an accidental publish of your code*.
@@ -22,17 +42,29 @@ steps:
   - name: Creating a Bundle
     commit: cfadaa6
     explain:
-      - First we'll tweak our directory structure slightly, separating the "source" code (`/src`) from our "distribution" code (`/dist`). The "source" code is the code that we'll write and edit. The "distribution" code is the **minimized** and **optimized** `output` of our build process that will eventually be loaded in the browser.
-      - "To bundle the `lodash` dependency with `index.js`, we'll need to install the library locally:"
-      - "```bash\nnpm install --save lodash\n```"
-      - "> When installing a package that will be bundled into your production bundle, you should use `npm install --save`. If you're installing a package for *development purposes* (e.g. a linter, testing libraries, etc.) then you should use `npm install --save-dev`. More information can be found in the [npm documentation](https://docs.npmjs.com/cli/install)."
+      pre:
+        - First we'll tweak our directory structure slightly, separating the "source" code (`/src`) from our "distribution" code (`/dist`). The "source" code is the code that we'll write and edit. The "distribution" code is the **minimized** and **optimized** `output` of our build process that will eventually be loaded in the browser.
+        - "To bundle the `lodash` dependency with `index.js`, we'll need to install the library locally:"
+        - "```bash\nnpm install --save lodash\n```"
+        - "> When installing a package that will be bundled into your production bundle, you should use `npm install --save`. If you're installing a package for *development purposes* (e.g. a linter, testing libraries, etc.) then you should use `npm install --save-dev`. More information can be found in the [npm documentation](https://docs.npmjs.com/cli/install)."
+      post:
+        - "In this setup, `index.js` explicitly requires `lodash` to be present, and binds it as `_` (no global scope pollution). By stating what dependencies a module needs, webpack can use this information to build a dependency graph. It then uses the graph to generate an optimized bundle where scripts will be executed in the correct order."
+        - "With that said, let's run `npx webpack`, which will take our script at `src/index.js` as the entry point, and will generate `dist/main.js` as the output. The `npx` command, which ships with Node 8.2/npm 5.2.0 or higher, runs the webpack binary (`./node_modules/.bin/webpack`) of the webpack package we installed in the beginning:"
+        - "```bash\nnpx webpack\n```"
+        - "Open `index.html` in your browser and, if everything went right, you should see the following text: 'Hello webpack'."
     diff:
       - file: src/index.js
-        explain: Import `lodash` in our script.
+        explain: "Now, lets import `lodash` in our script:"
       - file: dist/index.html
-        explain: Since we'll be bundling our scripts, we have to update our index.html file. Let's remove the lodash `<script>`, as we now import it, and modify the other `<script>` tag to load the bundle, instead of the raw `/src` file.
+        explain: "Now, since we'll be bundling our scripts, we have to update our `index.html` file. Let's remove the lodash `<script>`, as we now `import` it, and modify the other `<script>` tag to load the bundle, instead of the raw `/src` file:"
   - name: Using a Configuration
     commit: e0826b9
-    explain: As of version 4, webpack doesn't require any configuration, but most projects will need a more complex setup, which is why webpack supports a [configuration file](https://webpack.js.org/concepts/configuration). This is much more efficient than having to manually type in a lot of commands in the terminal, so let's create one to replace the CLI line options used above.
+    explain:
+      pre: As of version 4, webpack doesn't require any configuration, but most projects will need a more complex setup, which is why webpack supports a [configuration file](https://webpack.js.org/concepts/configuration). This is much more efficient than having to manually type in a lot of commands in the terminal, so let's create one to replace the CLI line options used above.
+      post:
+        - "Now, let's run the build again but instead using our new configuration file:"
+        - "```bash\nnpx webpack --config webpack.config.js\n```"
+        - "> If a `webpack.config.js` is present, the `webpack` command picks it up by default. We use the `--config` option here only to show that you can pass a config of any name. This will be useful for more complex configurations that need to be split into multiple files."
+        - "A configuration file allows far more flexibility than simple CLI usage. We can specify loader rules, plugins, resolve options and many other enhancements this way."
     diff:
       - file: webpack.config.js

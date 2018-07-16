@@ -11,7 +11,6 @@ interface SnippetProps {
 injectGlobal`
   code[class*="language-"],
   pre[class*="language-"] {
-    background: none;
     text-align: left;
     white-space: pre-wrap;
     word-wrap: break-word;
@@ -32,30 +31,6 @@ injectGlobal`
     padding: .1em;
     border-radius: .3em;
     white-space: normal;
-  }
-
-  .token.comment,
-  .token.prolog,
-  .token.doctype,
-  .token.cdata {
-    color: slategray;
-  }
-
-  .namespace {
-    opacity: .7;
-  }
-
-  .token.important,
-  .token.bold {
-    font-weight: bold;
-  }
-
-  .token.italic {
-    font-style: italic;
-  }
-
-  .token.entity {
-    cursor: help;
   }
 `;
 
