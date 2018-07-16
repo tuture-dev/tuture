@@ -1,21 +1,18 @@
 import React from 'react';
 import styled from 'styled-components';
 
+import ExplainedItem from './ExplainedItem';
 import DiffView from './DiffView';
+
 import { LanguageContext } from './App';
 import { extractLanguageType } from '../utils/extractors';
 
 import { ChangedFile, File, DiffItem } from '../types';
 
-interface RenderExplainFunc {
-  (explain: string | string[]): React.ReactNode | React.ReactNodeArray;
-}
-
 interface StepDiffProps {
   diff: ChangedFile[];
   commit: string;
   diffItem: DiffItem;
-  renderExplain: RenderExplainFunc;
 }
 
 interface ResObj {
@@ -69,7 +66,7 @@ export default class StepDiff extends React.PureComponent<StepDiffProps> {
   };
 
   render() {
-    const { diff, diffItem, renderExplain } = this.props;
+    const { diff, diffItem } = this.props;
     const needRenderFiles = this.getEndRenderContent(diff, diffItem.diff);
 
     return [
@@ -77,15 +74,17 @@ export default class StepDiff extends React.PureComponent<StepDiffProps> {
         const fileName = this.extractFileName(file);
         return (
           <div key={i}>
-            <article className="diff-file" key={i}>
-              <header className="diff-file-header">{fileName}</header>
-              <main>
-                <LanguageContext.Provider value={extractLanguageType(fileName)}>
-                  <DiffView key={i} hunks={file.hunks} />
-                </LanguageContext.Provider>
-              </main>
-            </article>
-            {renderExplain(file.explain)}
+            <ExplainedItem explain={file.explain}>
+              <article className="diff-file" key={i}>
+                <header className="diff-file-header">{fileName}</header>
+                <main>
+                  <LanguageContext.Provider
+                    value={extractLanguageType(fileName)}>
+                    <DiffView key={i} hunks={file.hunks} />
+                  </LanguageContext.Provider>
+                </main>
+              </article>
+            </ExplainedItem>
           </div>
         );
       }),

@@ -1,3 +1,10 @@
+interface ExplainObj {
+  pre?: string | string[];
+  post?: string | string[];
+}
+
+type Explain = string | string[] | ExplainObj;
+
 interface ChangedFile {
   file: string;
   explain: string;
@@ -62,6 +69,8 @@ interface DiffItem {
 }
 
 export {
+  Explain,
+  ExplainObj,
   ChangedFile,
   TutureMeta,
   Commit,
