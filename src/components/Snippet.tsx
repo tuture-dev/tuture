@@ -2,7 +2,7 @@ import Prism from 'prismjs';
 import React, { PureComponent } from 'react';
 import { injectGlobal } from 'styled-components';
 
-import { LanguageContext } from '../App';
+import { LanguageContext } from './App';
 
 interface SnippetProps {
   code: string;
