@@ -41,6 +41,10 @@ module.exports = {
         from: `${tuturePath}/.tuture/diff.json`,
         to: './diff.json',
       },
+      {
+        from: `${tuturePath}/`,
+        to: `./`,
+      },
     ]),
     new webpack.NamedModulesPlugin(),
   ],

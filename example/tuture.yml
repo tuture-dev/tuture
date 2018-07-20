@@ -10,6 +10,7 @@ steps:
     commit: 90ef523
     explain:
       pre:
+        - "![banner](./assets/banner.png)"
         - "First let's create a directory, initialize npm, [install webpack locally](https://webpack.js.org/guides/installation#local-installation), and install the **webpack-cli** (the tool used to run webpack on the command line):"
         - "```bash\nmkdir webpack-demo && cd webpack-demo\nnpm init -y\nnpm install webpack webpack-cli --save-dev\n```"
         - "Now we'll create the following directory structure, files and their contents."

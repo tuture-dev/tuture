@@ -43,6 +43,12 @@ injectGlobal`
     }
   }
 
+  .markdown img {
+    display: block;
+    width: 700px;
+    margin: 44px 0;
+  }
+
   .markdown :not(pre) > code {
     font-family: Monaco,Monaco,"Courier New",Courier,monospace;
     background-color: rgba(0, 0, 0, .05);
