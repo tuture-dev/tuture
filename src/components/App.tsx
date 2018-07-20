@@ -4,7 +4,7 @@ import styled, { injectGlobal } from 'styled-components';
 import { Helmet } from 'react-helmet';
 import yaml from 'js-yaml';
 
-import SideBarRight from './SideBarRight';
+import SideBarLeft from './SideBarLeft';
 import StepContent from './StepContent';
 
 import tutureUtilities from '../utils';
@@ -25,16 +25,7 @@ interface AppProps {
 /* tslint:disable-next-line */
 const AppWrapper = styled.div`
   height: 100%;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-`;
-
-/* tslint:disable-next-line */
-const AppContent = styled.div`
   max-width: 1355px;
-  width: 1355px;
-  display: flex;
 `;
 
 injectGlobal`
@@ -54,7 +45,18 @@ injectGlobal`
     height: 100%;
     margin-top: 70px;
     margin-bottom: 70px;
+    display: flex;
+    justify-content: center;
   }
+`;
+
+/* tslint:disable-next-line */
+const SideBarRight = styled.div`
+  width: 180px;
+  float: left;
+  margin-left: -180px;
+  background-color: transparent;
+  height: 637px;
 `;
 
 export default class App extends React.Component<AppProps, AppState> {
@@ -133,11 +135,12 @@ export default class App extends React.Component<AppProps, AppState> {
           content={nowRenderContent}
           diffItem={diffItem}
         />,
-        <SideBarRight
+        <SideBarLeft
           commits={commits}
           selectKey={selectKey}
           updateSelect={this.updateSelect}
         />,
+        <SideBarRight />,
       ];
     }
 
@@ -146,7 +149,7 @@ export default class App extends React.Component<AppProps, AppState> {
         <Helmet>
           <title>{name}</title>
         </Helmet>
-        <AppContent>{bodyContent}</AppContent>
+        {bodyContent}
       </AppWrapper>
     );
   }
