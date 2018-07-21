@@ -24,8 +24,10 @@ interface AppProps {
 
 /* tslint:disable-next-line */
 const AppWrapper = styled.div`
-  height: 100%;
-  max-width: 1355px;
+  max-width: 970px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
 `;
 
 injectGlobal`
@@ -45,18 +47,7 @@ injectGlobal`
     height: 100%;
     margin-top: 70px;
     margin-bottom: 70px;
-    display: flex;
-    justify-content: center;
   }
-`;
-
-/* tslint:disable-next-line */
-const SideBarRight = styled.div`
-  width: 180px;
-  float: left;
-  margin-left: -180px;
-  background-color: transparent;
-  height: 637px;
 `;
 
 export default class App extends React.Component<AppProps, AppState> {
@@ -130,17 +121,16 @@ export default class App extends React.Component<AppProps, AppState> {
       const nowRenderContent = tuture.steps[selectKey];
       const diffItem = diff[selectKey];
       bodyContent = [
-        <StepContent
-          key="content"
-          content={nowRenderContent}
-          diffItem={diffItem}
-        />,
         <SideBarLeft
           commits={commits}
           selectKey={selectKey}
           updateSelect={this.updateSelect}
         />,
-        <SideBarRight />,
+        <StepContent
+          key="content"
+          content={nowRenderContent}
+          diffItem={diffItem}
+        />,
       ];
     }
 

@@ -15,14 +15,7 @@ interface StepContentProps {
 
 /* tslint:disable-next-line */
 const TutureWrapper = styled.div`
-  width: 100%;
-  float: left;
-`;
-
-/* tslint:disable-next-line */
-const TutureContent = styled.div`
-  margin: 0 327px;
-  min-width: 700px;
+  max-width: 680px;
 `;
 
 /* tslint:disable-next-line */
@@ -41,12 +34,10 @@ export default class StepContent extends React.Component<StepContentProps> {
 
     return (
       <TutureWrapper>
-        <TutureContent>
-          <TutureContentHeader>{name}</TutureContentHeader>
-          <ExplainedItem explain={explain}>
-            <StepDiff diff={diff} diffItem={diffItem} commit={commit} />
-          </ExplainedItem>
-        </TutureContent>
+        <TutureContentHeader>{name}</TutureContentHeader>
+        <ExplainedItem explain={explain}>
+          <StepDiff diff={diff} diffItem={diffItem} commit={commit} />
+        </ExplainedItem>
       </TutureWrapper>
     );
   }
