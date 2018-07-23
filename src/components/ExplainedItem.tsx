@@ -20,6 +20,10 @@ injectGlobal`
     color: rgba(0,0,0,0.66);
   }
 
+  .markdown li {
+    margin: 8px 0;
+  }
+
   .markdown pre {
     font-family: Monaco,Menlo,"Courier New",Courier,monospace;
     font-size: 14px;
