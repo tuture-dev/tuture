@@ -14,9 +14,16 @@ const options = {
 
 webpackDevServer.addDevServerEntrypoints(config, options);
 const compiler = webpack(config);
-const server = new webpackDevServer(compiler, options);
+const devServer = new webpackDevServer(compiler, options);
 
-server.listen(3000, 'localhost', () => {
+devServer.listen(3000, 'localhost', () => {
   console.log('Happy Writing!');
   openBrowser('http://localhost:3000/');
+});
+
+['SIGINT', 'SIGTERM'].forEach(function(sig) {
+  process.on(sig, function() {
+    devServer.close();
+    process.exit();
+  });
 });
