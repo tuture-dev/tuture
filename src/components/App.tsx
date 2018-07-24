@@ -82,6 +82,7 @@ export default class App extends React.Component<AppProps, AppState> {
       });
     } catch (err) {
       // silent failed
+      console.log('tuture.yml is not exists or tuture.yml format errors');
     }
   }
 
@@ -95,6 +96,7 @@ export default class App extends React.Component<AppProps, AppState> {
       });
     } catch (err) {
       // silent failed
+      console.log('diff.json is not exists or diff.json format errors');
     }
   }
 
