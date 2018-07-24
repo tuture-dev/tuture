@@ -8,7 +8,7 @@ const SideBarRightWrapper = styled.div`
   width: 220px;
   background-color: rgba(216, 216, 216, 0.1);
   height: 637px;
-  margin-top: 90px;
+  margin-top: 40px;
   position: fixed;
 `;
 
