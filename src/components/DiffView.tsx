@@ -68,12 +68,14 @@ injectGlobal`
     content: attr(data-line-number);
   }
 
-  .diff-gutter-insert {
-    color: rgba(79,201,79,0.84);
+  .diff-code-insert {
+    font-weight: 700;
+    background-color: rgba(0, 0, 0, .07);
   }
 
-  .diff-gutter-delete {
-    color: rgba(239,91,108,0.84);
+  .diff-code-delete {
+    opacity: 0.3;
+    background-color: rgba(0, 0, 0, .07);
   }
 
   .diff-gutter-omit {
@@ -85,16 +87,8 @@ injectGlobal`
   }
 
   .diff-code {
-    padding: 0;
+    padding: 0 20px;
     max-width: 557px;
-  }
-
-  .diff-code-insert code {
-    color: rgba(79,201,79,0.84);
-  }
-
-  .diff-code-delete code {
-    color: rgba(239,91,108,0.84);
   }
 
   .diff-code-selected {
@@ -121,7 +115,8 @@ injectGlobal`
   .diff-file {
     color: rgba(0,0,0,0.84);
     display: block;
-    padding: 8px 20px 20px 20px;
+    padding-top: 8px;
+    padding-bottom: 20px;
     background-color: rgba(0, 0, 0, .05);
     margin: 32px 0;
   }
@@ -131,6 +126,7 @@ injectGlobal`
     font-size: 16px;
     color: rgba(0,0,0,0.24);
     text-align: right;
+    padding-right: 20px;
   }
 
   .addition-count {
