@@ -42,7 +42,7 @@ const MenuHeaderText = styled.p`
 /* tslint:disable-next-line */
 const TutureMenu = styled.ul`
   height: 503px;
-  overflow-y: scroll;
+  overflow-y: auto;
   overflow-x: hidden;
   font-size: 14px;
   margin: 0;
