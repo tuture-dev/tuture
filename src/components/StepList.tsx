@@ -26,12 +26,10 @@ const MenuHeader = styled.div`
   width: 100%;
   height: 134px;
   background-color: #d7efee;
-  display: flex;
-  align-items: flex-end;
-  padding-left: 24px;
-  padding-right: 21px;
-  padding-bottom: 14px;
   box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 /* tslint:disable-next-line */
@@ -39,17 +37,12 @@ const MenuHeaderText = styled.p`
   font-family: STSongti-SC-Bold;
   font-size: 24px;
   color: rgba(0, 0, 0, 0.84);
-  width: 53px;
-  margin: 0;
-  padding-top: 44px;
-  padding-right: 66px;
-  padding-bottom: 10px;
 `;
 
 /* tslint:disable-next-line */
 const TutureMenu = styled.ul`
   height: 503px;
-  overflow-y: scroll;
+  overflow-y: auto;
   overflow-x: hidden;
   font-size: 14px;
   margin: 0;
@@ -74,8 +67,6 @@ const TutureMenuItem = styled.li`
   text-overflow: ellipsis;
   cursor: pointer;
   display: block;
-  text-align: center;
-  white-space: nowrap;
   color: ${(props: any) =>
     props.className === 'selected'
       ? 'rgba(0, 0, 0, 0.84)'
@@ -86,8 +77,10 @@ const TutureMenuItem = styled.li`
 
 /* tslint:disable-next-line */
 const MenuItemContent = styled.div`
-  display: flex;
-  align-items: center;
+  width: 159px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  word-break: break-all;
 `;
 
 /* tslint:disable-next-line */
@@ -110,7 +103,6 @@ export default class StepList extends React.Component<StepListProps> {
       <TutureSteps>
         <MenuHeader>
           <MenuHeaderText>教程目录</MenuHeaderText>
-          <MenuHeaderImage path={catalogImage} />
         </MenuHeader>
         <TutureMenu>
           {commits.map((item, key) => (

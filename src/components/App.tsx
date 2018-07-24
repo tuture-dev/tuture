@@ -4,7 +4,7 @@ import styled, { injectGlobal } from 'styled-components';
 import { Helmet } from 'react-helmet';
 import yaml from 'js-yaml';
 
-import SideBarRight from './SideBarRight';
+import SideBarLeft from './SideBarLeft';
 import StepContent from './StepContent';
 
 import tutureUtilities from '../utils';
@@ -24,17 +24,10 @@ interface AppProps {
 
 /* tslint:disable-next-line */
 const AppWrapper = styled.div`
-  height: 100%;
-  width: 100%;
+  max-width: 970px;
+  margin: 0 auto;
   display: flex;
-  justify-content: center;
-`;
-
-/* tslint:disable-next-line */
-const AppContent = styled.div`
-  max-width: 1355px;
-  width: 1355px;
-  display: flex;
+  justify-content: space-between;
 `;
 
 injectGlobal`
@@ -128,15 +121,15 @@ export default class App extends React.Component<AppProps, AppState> {
       const nowRenderContent = tuture.steps[selectKey];
       const diffItem = diff[selectKey];
       bodyContent = [
+        <SideBarLeft
+          commits={commits}
+          selectKey={selectKey}
+          updateSelect={this.updateSelect}
+        />,
         <StepContent
           key="content"
           content={nowRenderContent}
           diffItem={diffItem}
-        />,
-        <SideBarRight
-          commits={commits}
-          selectKey={selectKey}
-          updateSelect={this.updateSelect}
         />,
       ];
     }
@@ -146,7 +139,7 @@ export default class App extends React.Component<AppProps, AppState> {
         <Helmet>
           <title>{name}</title>
         </Helmet>
-        <AppContent>{bodyContent}</AppContent>
+        {bodyContent}
       </AppWrapper>
     );
   }
