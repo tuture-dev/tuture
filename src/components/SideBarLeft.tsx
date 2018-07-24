@@ -5,10 +5,11 @@ import StepList, { StepListProps } from './StepList';
 
 /* tslint:disable-next-line */
 const SideBarRightWrapper = styled.div`
-  width: 240px;
+  width: 220px;
   background-color: rgba(216, 216, 216, 0.1);
   height: 637px;
   margin-top: 90px;
+  position: fixed;
 `;
 
 export default class SideBarLeft extends React.Component<StepListProps> {
