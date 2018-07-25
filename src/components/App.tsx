@@ -51,10 +51,6 @@ injectGlobal`
 `;
 
 export default class App extends React.Component<AppProps, AppState> {
-  static defaultProps = {
-    name: 'My Awesome Tutorial',
-  };
-
   constructor(props: AppProps) {
     super(props);
 
@@ -106,6 +102,7 @@ export default class App extends React.Component<AppProps, AppState> {
   }
 
   render() {
+    let tutorialTitle: string;
     let bodyContent: React.ReactNode;
     const { tuture, diff } = this.state;
 
@@ -118,7 +115,8 @@ export default class App extends React.Component<AppProps, AppState> {
       bodyContent = null;
     } else {
       const commits = extractCommits(tuture);
-      const metadata = extractMetaData(tuture);
+      tutorialTitle = extractMetaData(tuture).name;
+
       const { selectKey } = this.state;
       const nowRenderContent = tuture.steps[selectKey];
       const diffItem = diff[selectKey];
@@ -139,7 +137,7 @@ export default class App extends React.Component<AppProps, AppState> {
     return (
       <AppWrapper>
         <Helmet>
-          <title>{name}</title>
+          <title>{tutorialTitle}</title>
         </Helmet>
         {bodyContent}
       </AppWrapper>
