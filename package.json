@@ -1,6 +1,6 @@
 {
   "name": "tuture-renderer",
-  "version": "0.1.25",
+  "version": "0.2.0",
   "preferGlobal": true,
   "description": "tuture-renderer is an offical renderer of Tuture tutorials",
   "license": "MIT",
