@@ -37,7 +37,7 @@ injectGlobal`
 
   body {
     height: 100%;
-    font-size: 16px;
+    font-size: 14px;
     line-height: 1.5;
     margin: 0;
     padding: 0;
@@ -47,6 +47,10 @@ injectGlobal`
     height: 100%;
     margin-top: 70px;
     margin-bottom: 70px;
+  }
+
+  h1 {
+    font-size: 45px;
   }
 `;
 
