@@ -14,14 +14,34 @@ interface ExplainedItemProps {
 injectGlobal`
   .markdown p, li {
     font-family: STSongti-SC-Regular;
-    font-size: 21px;
+    font-size: 18px;
     line-height: 1.58;
     margin: 16px 0;
-    color: rgba(0,0,0,0.66);
+    color: rgba(0,0,0,0.84);
   }
 
   .markdown li {
     margin: 8px 0;
+  }
+
+  .markdown h1 {
+    font-size: 45px;
+  }
+
+  .markdown h2 {
+    font-size: 37px;
+  }
+
+  .markdown h3 {
+    font-size: 31px;
+  }
+
+  .markdown h4 {
+    font-size: 26px;
+  }
+
+  .markdown h5 {
+    font-size: 21px;
   }
 
   .markdown pre {
