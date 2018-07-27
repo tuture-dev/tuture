@@ -78,40 +78,10 @@ injectGlobal`
     background-color: rgba(0, 0, 0, .07);
   }
 
-  .diff-gutter-omit {
-    cursor: default;
-  }
-
-  .diff-gutter-selected {
-    background-color: #fef6b9;
-  }
-
   .diff-code {
     padding: 0 20px;
     max-width: 557px;
   }
-
-  .diff-code-selected {
-    color: #fffce0;
-  }
-
-  .diff-omit {
-    color: #fafbfc;
-  }
-
-  .diff-hunk-header {
-    line-height: 1.5;
-  }
-
-  .diff-hunk-header-content {
-    font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, Courier, monospace;
-    padding: 0;
-  }
-
-  .diff-hunk-header {
-    display: none;
-  }
-
   .diff-file {
     color: rgba(0,0,0,0.84);
     display: block;
@@ -123,7 +93,7 @@ injectGlobal`
 
   .diff-file-header {
     font-family: Monaco;
-    font-size: 16px;
+    font-size: 14px;
     color: rgba(0,0,0,0.24);
     text-align: right;
     padding-right: 20px;

@@ -22,7 +22,7 @@ const TutureWrapper = styled.div`
 /* tslint:disable-next-line */
 const TutureContentHeader = styled.h1`
   font-family: STSongti-SC-Bold;
-  font-size: 42px;
+  font-size: 45px;
   color: rgba(0, 0, 0, 0.84);
   margin-top: 0;
   margin-bottom: 14px;

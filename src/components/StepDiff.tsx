@@ -27,7 +27,7 @@ const Image = styled.img`
 /* tslint:disable-next-line */
 const StepDiffExplain = styled.div`
   font-family: STSongti-SC-Regular;
-  font-size: 21px;
+  font-size: 18px;
   line-height: 1.58;
   margin: 16px 0;
   color: rgba(0, 0, 0, 0.84);
