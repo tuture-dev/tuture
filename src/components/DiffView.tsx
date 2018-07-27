@@ -7,6 +7,7 @@ import Snippet from './Snippet';
 import { Change as ChangeType, Hunk as HunkType } from '../types';
 
 interface DiffViewProps {
+  startLine: number;
   hunks: HunkType[];
 }
 
@@ -167,7 +168,7 @@ export default class DiffView extends Component<DiffViewProps> {
       const codeClassName = classnames('diff-code', `diff-code-${type}`);
       return (
         <tr key={`change${key}`} className={classnames('diff-line')}>
-          {this.renderLineNumber(lineNumberClassName, i + 1)}
+          {this.renderLineNumber(lineNumberClassName, this.props.startLine + i)}
           <td className={codeClassName}>
             <Snippet code={content} />
           </td>

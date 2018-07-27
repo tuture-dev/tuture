@@ -67,7 +67,7 @@ export default class StepDiff extends React.PureComponent<StepDiffProps> {
   getRenderedHunks = (file: File & ChangedFile) => {
     if (file.section) {
       const changes = file.hunks[0].changes.slice(
-        ...[file.section.start, file.section.end],
+        ...[file.section.start - 1, file.section.end],
       );
       file.hunks[0].changes = changes;
     }
@@ -82,6 +82,7 @@ export default class StepDiff extends React.PureComponent<StepDiffProps> {
       needRenderFiles.map((file: File & ChangedFile, i) => {
         const fileCopy: File & ChangedFile = JSON.parse(JSON.stringify(file));
         const fileName = this.extractFileName(fileCopy);
+        const startLine = fileCopy.section ? fileCopy.section.start : 1;
         return (
           <div key={i}>
             <ExplainedItem explain={fileCopy.explain}>
@@ -90,7 +91,11 @@ export default class StepDiff extends React.PureComponent<StepDiffProps> {
                 <main>
                   <LanguageContext.Provider
                     value={extractLanguageType(fileName)}>
-                    <DiffView key={i} hunks={this.getRenderedHunks(fileCopy)} />
+                    <DiffView
+                      key={i}
+                      hunks={this.getRenderedHunks(fileCopy)}
+                      startLine={startLine}
+                    />
                   </LanguageContext.Provider>
                 </main>
               </article>
