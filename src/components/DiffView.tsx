@@ -21,20 +21,6 @@ injectGlobal`
     width: 50px;
   }
 
-  .diff-gutter-omit {
-    height: 0;
-  }
-
-  .diff-gutter-omit:before {
-    content: " ";
-    display: block;
-    white-space: pre;
-    width: 2px;
-    height: 100%;
-    margin-left: 2.2em;
-    overflow: hidden;
-  }
-
   .diff td {
     vertical-align: top;
   }
@@ -44,27 +30,20 @@ injectGlobal`
   }
 
   .diff-gutter {
-    max-width: 50px;
+    width: 8px;
     padding: 0 16px;
+    color: rgba(0, 0, 0, .24);
   }
 
-  .diff-gutter > a {
-    color: inherit;
-    display: block;
+  .diff-gutter-insert {
+    background-color: rgba(0, 0, 0, .07);
   }
 
-  .diff-gutter:empty,
-  .diff-gutter > a {
-    text-align: right;
-    cursor: pointer;
-    -webkit-user-select: none;
-      -moz-user-select: none;
-        -ms-user-select: none;
-            user-select: none;
+  .diff-gutter-delete {
+    background-color: rgba(0, 0, 0, .021);
   }
 
-  .diff-gutter:empty:before,
-  .diff-gutter > a:before {
+  .diff-gutter:empty:before {
     content: attr(data-line-number);
   }
 
@@ -88,7 +67,7 @@ injectGlobal`
 
   .diff-code {
     padding: 0 20px;
-    max-width: 557px;
+    width: 557px;
   }
 
   .diff-code-selected {
@@ -170,13 +149,25 @@ export default class DiffView extends Component<DiffViewProps> {
       [],
     );
 
+  renderLineNumber = (
+    lineNumberClassName: string,
+    lineNumber: number,
+  ): React.ReactNode => {
+    return <td className={lineNumberClassName} data-line-number={lineNumber} />;
+  };
+
   renderRow = ([type, key, value]: (string | ChangeType)[], i: number) => {
     if (type === 'change') {
       const change = value as ChangeType;
       const { type, content } = change;
+      const lineNumberClassName = classnames(
+        'diff-gutter',
+        `diff-gutter-${type}`,
+      );
       const codeClassName = classnames('diff-code', `diff-code-${type}`);
       return (
         <tr key={`change${key}`} className={classnames('diff-line')}>
+          {this.renderLineNumber(lineNumberClassName, i + 1)}
           <td className={codeClassName}>
             <Snippet code={content} />
           </td>
