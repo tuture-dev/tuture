@@ -21,12 +21,12 @@ steps:
     diff:
       - file: index.html
         section:
-          start: 0
+          start: 1
           end: 6
         explain: "This is the first part of `index.html`. It's very cool:"
       - file: index.html
         section:
-          start: 6
+          start: 7
           end: 10
         explain: "Neat. The second part of `index.html`:"
       - file: index.html
