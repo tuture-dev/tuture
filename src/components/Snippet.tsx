@@ -101,6 +101,10 @@ export default class Snippet extends PureComponent<SnippetProps> {
     Prism.highlightAll();
   }
 
+  componentDidUpdate() {
+    Prism.highlightAll();
+  }
+
   render() {
     return (
       <LanguageContext.Consumer>
