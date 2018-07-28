@@ -53,7 +53,8 @@
   },
   "scripts": {
     "start": "node scripts/start.js",
-    "dev": "TUTURE_PATH=example npm start",
+    "dev": "TUTURE_PATH=example/en npm start",
+    "dev:cn": "TUTURE_PATH=example/cn npm start",
     "test": "jest",
     "lint": "tslint 'src/**/*.{ts,tsx,js}' --project tsconfig.json",
     "precommit": "lint-staged"
