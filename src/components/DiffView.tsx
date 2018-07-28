@@ -7,6 +7,7 @@ import Snippet from './Snippet';
 import { Change as ChangeType, Hunk as HunkType } from '../types';
 
 interface DiffViewProps {
+  startLine: number;
   hunks: HunkType[];
 }
 
@@ -21,20 +22,6 @@ injectGlobal`
     width: 50px;
   }
 
-  .diff-gutter-omit {
-    height: 0;
-  }
-
-  .diff-gutter-omit:before {
-    content: " ";
-    display: block;
-    white-space: pre;
-    width: 2px;
-    height: 100%;
-    margin-left: 2.2em;
-    overflow: hidden;
-  }
-
   .diff td {
     vertical-align: top;
   }
@@ -44,27 +31,20 @@ injectGlobal`
   }
 
   .diff-gutter {
-    max-width: 50px;
+    width: 8px;
     padding: 0 16px;
+    color: rgba(0, 0, 0, .24);
   }
 
-  .diff-gutter > a {
-    color: inherit;
-    display: block;
+  .diff-gutter-insert {
+    background-color: rgba(0, 0, 0, .07);
   }
 
-  .diff-gutter:empty,
-  .diff-gutter > a {
-    text-align: right;
-    cursor: pointer;
-    -webkit-user-select: none;
-      -moz-user-select: none;
-        -ms-user-select: none;
-            user-select: none;
+  .diff-gutter-delete {
+    background-color: rgba(0, 0, 0, .021);
   }
 
-  .diff-gutter:empty:before,
-  .diff-gutter > a:before {
+  .diff-gutter:empty:before {
     content: attr(data-line-number);
   }
 
@@ -80,7 +60,7 @@ injectGlobal`
 
   .diff-code {
     padding: 0 20px;
-    max-width: 557px;
+    width: 557px;
   }
   .diff-file {
     color: rgba(0,0,0,0.84);
@@ -112,13 +92,24 @@ injectGlobal`
 `;
 
 export default class DiffView extends Component<DiffViewProps> {
-  renderRow = (change: ChangeType, isAllInsert: Boolean, key: number) => {
+  renderLineNumber = (
+    lineNumberClassName: string,
+    lineNumber: number,
+  ): React.ReactNode => {
+    return <td className={lineNumberClassName} data-line-number={lineNumber} />;
+  };
+
+  renderRow = (change: ChangeType, isAllInsert: Boolean, i: number) => {
     const { type, content } = change;
+    const lineNumberClassName = classnames('diff-gutter', {
+      [`diff-gutter-${type}`]: !isAllInsert,
+    });
     const codeClassName = classnames('diff-code', {
       [`diff-code-${type}`]: !isAllInsert,
     });
     return (
-      <tr key={`change${key}`} className={classnames('diff-line')}>
+      <tr key={`change${i}`} className={classnames('diff-line')}>
+        {this.renderLineNumber(lineNumberClassName, this.props.startLine + i)}
         <td className={codeClassName}>
           <Snippet code={content} />
         </td>

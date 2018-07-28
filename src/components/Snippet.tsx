@@ -11,6 +11,7 @@ interface SnippetProps {
 injectGlobal`
   code[class*="language-"],
   pre[class*="language-"] {
+    line-height: 2;
     text-align: left;
     white-space: pre-wrap;
     word-wrap: break-word;
