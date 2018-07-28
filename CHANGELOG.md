@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.2.1
+
+### New Features
+
+- Add line number for code blocks
+
+### Improvements
+
+- Disable code emphasis when the entire diff file is newly added
+
+### Bug Fixes
+
+- Fix broken syntax highlight in some cases
+
 ## 0.2.0
 
 ### New Features
