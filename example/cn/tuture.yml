@@ -1,0 +1,74 @@
+name: 学习 Webpack
+version: 0.0.1
+language: zh-CN
+topics:
+  - webpack
+email: me@example.com
+steps:
+  - name: 基础设置
+    commit: f3ab4f9
+    explain:
+      pre:
+        - 首先我们创建一个目录，初始化 npm 并本地安装 webpack 和 webpack-cli：
+        - |-
+          ```bash
+          mkdir webpack-demo && cd webpack-demo
+          ```
+        - 接下来我们创建以下文件：
+      post:
+        - >-
+          在这个例子中，`<script>` 标签之间存在隐含的依赖。在运行之前，我们的 `index.js` 文件依赖于包括在页面中的
+          `lodash` 库。这是因为 `index.js` 从未显式声明对 `lodash` 的依赖，它认为全局变量 `_` 已经存在。
+        - 这种管理 JavaScript 项目存在许多问题，让我们试着用 webpack 来解决。
+    diff:
+      - file: index.html
+      - file: src/index.js
+      - file: package.json
+        explain:
+          post: 注意到我们把这个包标记为 `private`，并且去掉了原来的 `main` 字段，这是为了防止意外发布我们的代码。
+  - name: 使用 Webpack 管理依赖
+    commit: 001b0ea
+    explain:
+      pre:
+        - >-
+          首先我们要微调项目结构，把源代码(`/src`)和发布代码(`/dist`)分开来。源代码是我们要编辑的代码。发布代码是构建过程产生的最小化、最优化的输出结果，并将最终被浏览器加载。
+        - 为了让 `lodash` 打包进 `index.js`，我们需要本地安装这个库：
+        - |-
+          ```bash
+          npm install --save lodash
+          ```
+      post: 一切完成后，运行 `npx webpack` 进行打包。在浏览器中打开 `index.html` 文件，就可以看到 Hello webpack！
+    diff:
+      - file: index.html
+      - file: src/index.js
+        explain: 让我们把 `lodash` 导入进来：
+      - file: package.json
+        explain: >-
+          既然我们已经决定把所有脚本打包，我们需要更新 `index.html` 文件。删除掉引入 lodash 的 `<script>`
+          标签，并且修改另一个 `<script>` 标签来将我们打包后的脚本添加进来：
+  - name: 使用 Webpack 配置文件
+    commit: 04b7660
+    explain:
+      pre: >-
+        到了版本 4，webpack 可以不需要任何配置。但是通过配置文件，我们能实现非常复杂的设定功能，这比在命令行中指定要方便的多。让我们创建一个
+        webpack 配置文件：
+      post:
+        - 最后，我们开始用配置文件开始构建：
+        - |-
+          ```bash
+          npx webpack --config webpack.config.js
+          ```
+        - >-
+          配置文件是 webpack 如此强大的关键因素，我们可以在配置中指定
+          loader、插件等等。参考[这篇文档](https://webpack.js.org/configuration)以学习更多配置。
+    diff:
+      - file: webpack.config.js
+        section:
+          start: 1
+          end: 4
+        explain:
+          post: '`entry` 指定了打包的入口，告诉 webpack 依赖图的起点。'
+      - file: webpack.config.js
+        section:
+          start: 5
+        explain: '`output` 指定了打包后输出文件的设置，这里我们设定打包后的文件名为 `main.js`，放在 `dist` 目录下。'
