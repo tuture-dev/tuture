@@ -2,7 +2,6 @@
 import React from 'react';
 import styled, { injectGlobal } from 'styled-components';
 import { Helmet } from 'react-helmet';
-import yaml from 'js-yaml';
 
 import SideBarLeft from './SideBarLeft';
 import StepContent from './StepContent';
@@ -17,9 +16,11 @@ interface AppState {
   diff: DiffItem[];
 }
 
-interface AppProps {
+export interface AppProps {
   // Page's title
   name?: string;
+  tuture?: Tuture;
+  diff?: string | DiffItem[];
 }
 
 /* tslint:disable-next-line */
@@ -71,44 +72,11 @@ export default class App extends React.Component<AppProps, AppState> {
     });
   };
 
-  async loadTuture() {
-    try {
-      const that = this;
-      const response = await fetch('./tuture.yml');
-      const tutureYAML = await response.text();
-      const tuture = yaml.safeLoad(tutureYAML);
-      that.setState({
-        tuture: tuture as Tuture,
-      });
-    } catch (err) {
-      // silent failed
-      console.log('tuture.yml is not exists or tuture.yml format errors');
-    }
-  }
-
-  async loadDiff() {
-    try {
-      const that = this;
-      const response = await fetch('./diff.json');
-      const diff = await response.json();
-      that.setState({
-        diff: diff as DiffItem[],
-      });
-    } catch (err) {
-      // silent failed
-      console.log('diff.json is not exists or diff.json format errors');
-    }
-  }
-
-  componentDidMount() {
-    this.loadTuture();
-    this.loadDiff();
-  }
-
   render() {
     let tutorialTitle: string;
     let bodyContent: React.ReactNode;
-    const { tuture, diff } = this.state;
+
+    const { tuture, diff, name } = this.props;
 
     if (
       !tuture ||
@@ -116,7 +84,7 @@ export default class App extends React.Component<AppProps, AppState> {
       !diff ||
       !tutureUtilities.isArray(diff)
     ) {
-      bodyContent = null;
+      bodyContent = <div>SSR is done!</div>;
     } else {
       const commits = extractCommits(tuture);
       tutorialTitle = extractMetaData(tuture).name;
@@ -143,6 +111,7 @@ export default class App extends React.Component<AppProps, AppState> {
         <Helmet>
           <title>{tutorialTitle}</title>
         </Helmet>
+        <div>{name}</div>
         {bodyContent}
       </AppWrapper>
     );
