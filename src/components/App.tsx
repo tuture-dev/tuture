@@ -19,8 +19,8 @@ interface AppState {
 export interface AppProps {
   // Page's title
   name?: string;
-  tuture?: Tuture;
-  diff?: string | DiffItem[];
+  tuture?: Tuture | string;
+  diff?: string | DiffItem[] | string;
 }
 
 /* tslint:disable-next-line */
@@ -76,7 +76,10 @@ export default class App extends React.Component<AppProps, AppState> {
     let tutorialTitle: string;
     let bodyContent: React.ReactNode;
 
-    const { tuture, diff, name } = this.props;
+    let { tuture, diff } = this.props;
+
+    tuture = JSON.parse(tuture as string);
+    diff = JSON.parse(diff as string);
 
     if (
       !tuture ||
@@ -86,11 +89,11 @@ export default class App extends React.Component<AppProps, AppState> {
     ) {
       bodyContent = <div>SSR is done!</div>;
     } else {
-      const commits = extractCommits(tuture);
-      tutorialTitle = extractMetaData(tuture).name;
+      const commits = extractCommits(tuture as Tuture);
+      tutorialTitle = extractMetaData(tuture as Tuture).name;
 
       const { selectKey } = this.state;
-      const nowRenderContent = tuture.steps[selectKey];
+      const nowRenderContent = (tuture as Tuture).steps[selectKey];
       const diffItem = diff[selectKey];
       bodyContent = [
         <SideBarLeft

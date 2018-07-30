@@ -7,7 +7,7 @@ import fs from 'fs';
 
 import App from '../components/App';
 import html from './html';
-import { Tuture, DiffItem } from '../types/';
+import { Tuture } from '../types/';
 
 const port = 3000;
 const server = express();
@@ -25,14 +25,13 @@ server.get('/', (req, res) => {
   });
 
   // 这里是渲染成 HTML，会动态插入 data-react-id 等属性，便于 client 端的 react 使用
-  const body = renderToString(
-    React.createElement(App, { name: 'Test Header' }),
-  );
+  const body = renderToString(React.createElement(App, { tuture, diff }));
 
   res.send(
     html({
       body,
-      initialProps: { tuture, diff },
+      diff,
+      tuture: JSON.stringify(tuture),
     }),
   );
 });
