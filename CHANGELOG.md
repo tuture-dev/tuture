@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.1
+
+Rename the global binary to `tuture-server`.
+
 ## 0.3.0
 
 _This package has been renamed to **tuture**._
