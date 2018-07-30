@@ -1,8 +1,8 @@
 {
-  "name": "tuture-renderer",
-  "version": "0.2.1",
+  "name": "tuture",
+  "version": "0.3.0",
   "preferGlobal": true,
-  "description": "tuture-renderer is an offical renderer of Tuture tutorials",
+  "description": "Tuture magically turns your repositories into juicy tutorials.",
   "license": "MIT",
   "main": "index.js",
   "keywords": [

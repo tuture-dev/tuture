@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.0
+
+_This package has been renamed to **tuture**._
+
 ## 0.2.1
 
 ### New Features
