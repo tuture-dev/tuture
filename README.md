@@ -48,25 +48,7 @@ $ npm i -g
 
 ## Documentation
 
-- [CLI Commands](docs/CLI_COMMANDS.md) is a detailed manual on using Tuture CLI.
-
-- [tuture.yml Specification](docs/TUTURE_YML_SPEC.md) is a complete specification of **tuture.yml**.
-
-## How to write a Tuture tutorial
-
-Writing a Tuture tutorial is incredibly simple and delightful.
-
-1.  Initialize a Git repo (or start from an existing one)
-
-2.  Write some code and commit with a meaningful message
-
-3.  Run `tuture init` to initialize a Tuture tutorial
-
-4.  Write some instructions in related `explain` fields in **tuture.yml**
-
-5.  Run `tuture up` to see your tutorial live in the browser
-
-6.  Edit **tuture.yml** and save to change something
+View all documentation [here](https://github.com/tutureproject/docs).
 
 ## Why this name, Tuture?
 
