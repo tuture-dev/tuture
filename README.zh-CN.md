@@ -46,9 +46,7 @@ $ npm i -g
 
 ## 文档
 
-- [如何写 Tuture 教程](docs/HOWTO.zh-CN.md) 通过一个实例讲解用两种方式写 Tuture 教程
-- [CLI 命令](docs/CLI_COMMANDS.zh-CN.md) 详细地介绍了 Tuture 命令行工具的使用
-- [tuture.yml 规格说明](docs/TUTURE_YML_SPEC.zh-CN.md) 是关于 tuture.yml 的详尽说明
+在[这里](https://github.com/tutureproject/docs)查看所有文档。
 
 ## 为何取名叫 Tuture？
 
