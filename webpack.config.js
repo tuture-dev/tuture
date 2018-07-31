@@ -23,7 +23,7 @@ const base = {
 
 const serverConfig = {
   target: 'node',
-  entry: './src/server/index.ts',
+  entry: './src/server/index.tsx',
   output: {
     filename: 'server.js',
     path: path.resolve(__dirname, 'dist', 'js'),
