@@ -5,6 +5,7 @@ import express from 'express';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import yaml from 'js-yaml';
+import { ServerStyleSheet, StyleSheetManager } from 'styled-components';
 
 import App from '../components/App';
 import html from './html';
@@ -26,12 +27,19 @@ server.get('/', (req, res) => {
   const diff = fs.readFileSync(diffPath, {
     encoding: 'utf8',
   });
+
+  // add SSR style
+  const sheet = new ServerStyleSheet();
   const body = renderToString(
-    React.createElement(App, { diff, tuture: JSON.stringify(tuture) }),
+    <StyleSheetManager sheet={sheet.instance}>
+      <App diff={diff} tuture={JSON.stringify(tuture)} />
+    </StyleSheetManager>,
   );
+  const styleTags = sheet.getStyleTags();
 
   res.send(
     html({
+      css: styleTags,
       body,
       diff,
       tuture: JSON.stringify(tuture),

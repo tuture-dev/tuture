@@ -2,7 +2,7 @@ const path = require('path');
 
 module.exports = (env, argv) => {
   const base = {
-    entry: './src/server/index.ts',
+    entry: './src/server/index.tsx',
     output: {
       filename: 'js/server.js',
       path: path.resolve(__dirname, 'dist'),
