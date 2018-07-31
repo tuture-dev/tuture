@@ -1,10 +1,12 @@
+import fs from 'fs';
+import path from 'path';
+
 import express from 'express';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import opn from 'opn';
 import yaml from 'js-yaml';
-
-import fs from 'fs';
+import { ServerStyleSheet, StyleSheetManager } from 'styled-components';
 
 import App from '../components/App';
 import html from './html';
@@ -17,21 +19,30 @@ const tuturePath = process.env.TUTURE_PATH;
 server.use(express.static('dist'));
 
 server.get('/', (req, res) => {
-  const tutureYAML = fs.readFileSync(`${tuturePath}/tuture.yml`, {
+  const tutureYAMLPath = path.join(tuturePath, 'tuture.yml');
+  const tutureYAML = fs.readFileSync(tutureYAMLPath, {
     encoding: 'utf8',
   });
   const tuture = yaml.safeLoad(tutureYAML) as Tuture;
-  const diff = fs.readFileSync(`${tuturePath}/.tuture/diff.json`, {
+  const diffPath = path.join(tuturePath, '.tuture', 'diff.json');
+  const diff = fs.readFileSync(diffPath, {
     encoding: 'utf8',
   });
+
+  // add SSR style
+  const sheet = new ServerStyleSheet();
   const body = renderToString(
-    React.createElement(App, { diff, tuture: JSON.stringify(tuture) }),
+    <StyleSheetManager sheet={sheet.instance}>
+      <App diff={diff} tuture={JSON.stringify(tuture)} />
+    </StyleSheetManager>,
   );
+  const styleTags = sheet.getStyleTags();
 
   res.send(
     html({
       body,
       diff,
+      css: styleTags,
       tuture: JSON.stringify(tuture),
     }),
   );

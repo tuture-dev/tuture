@@ -9,10 +9,12 @@ import { Tuture } from '../types/';
 
 const html = ({
   body,
+  css,
   tuture,
   diff,
 }: {
   body: string;
+  css: string;
   tuture: string;
   diff: string;
 }) => `
@@ -23,6 +25,7 @@ const html = ({
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>My Awesome Tutorial</title>
+    ${css}
     <script>
       window.__APP_INITIAL_TUTURE__ = ${escape(tuture)};
       window.__APP_INITIAL_DIFF__ = ${escape(diff)};
