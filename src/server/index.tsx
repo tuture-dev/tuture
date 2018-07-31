@@ -49,6 +49,9 @@ server.get('/', (req, res) => {
 });
 
 server.listen(port, () => {
-  console.log(`App is listening on port ${port}`);
-  opn('http://localhost:3000');
+  console.log(`Tutorial is served on http://localhost:${port}`);
+
+  if (!process.env.WATCHING) {
+    opn('http://localhost:3000');
+  }
 });
