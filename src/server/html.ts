@@ -1,6 +1,3 @@
-// @ts-ignore
-import htmlEscaper from 'html-escaper';
-
 function escape(s: any) {
   return s
     .replace(/&/g, '&amp;')

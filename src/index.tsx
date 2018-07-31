@@ -2,9 +2,6 @@
 import React from 'react';
 import { render } from 'react-dom';
 
-// @ts-ignore
-import htmlEscaper from 'html-escaper';
-
 function unescape(s: any) {
   return s
     .replace(/&amp;/g, '&')

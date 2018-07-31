@@ -25,7 +25,9 @@ server.get('/', (req, res) => {
   });
 
   // 这里是渲染成 HTML，会动态插入 data-react-id 等属性，便于 client 端的 react 使用
-  const body = renderToString(React.createElement(App, { tuture, diff }));
+  const body = renderToString(
+    React.createElement(App, { diff, tuture: JSON.stringify(tuture) }),
+  );
 
   res.send(
     html({

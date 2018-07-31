@@ -12,13 +12,9 @@ import { extractCommits, extractMetaData } from '../utils/extractors';
 
 interface AppState {
   selectKey: number;
-  tuture: Tuture;
-  diff: DiffItem[];
 }
 
 export interface AppProps {
-  // Page's title
-  name?: string;
   tuture?: Tuture | string;
   diff?: string | DiffItem[] | string;
 }
@@ -61,8 +57,6 @@ export default class App extends React.Component<AppProps, AppState> {
 
     this.state = {
       selectKey: 0,
-      tuture: null,
-      diff: null,
     };
   }
 
@@ -87,7 +81,7 @@ export default class App extends React.Component<AppProps, AppState> {
       !diff ||
       !tutureUtilities.isArray(diff)
     ) {
-      bodyContent = <div>SSR is done!</div>;
+      bodyContent = null;
     } else {
       const commits = extractCommits(tuture as Tuture);
       tutorialTitle = extractMetaData(tuture as Tuture).name;
@@ -114,7 +108,6 @@ export default class App extends React.Component<AppProps, AppState> {
         <Helmet>
           <title>{tutorialTitle}</title>
         </Helmet>
-        <div>{name}</div>
         {bodyContent}
       </AppWrapper>
     );

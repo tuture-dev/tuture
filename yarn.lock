@@ -2994,10 +2994,6 @@ html-entities@^1.2.0:
   version "1.2.1"
   resolved "http://registry.npm.taobao.org/html-entities/download/html-entities-1.2.1.tgz#0df29351f0721163515dfb9e5543e5f6eed5162f"
 
-html-escaper@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.npmjs.org/html-escaper/-/html-escaper-1.0.1.tgz#ee029e2862674017941355a7f61fc2c7c0a6fd72"
-
 html-minifier@^3.2.3:
   version "3.5.16"
   resolved "http://registry.npm.taobao.org/html-minifier/download/html-minifier-3.5.16.tgz#39f5aabaf78bdfc057fe67334226efd7f3851175"
