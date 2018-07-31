@@ -1,9 +1,10 @@
+import fs from 'fs';
+import path from 'path';
+
 import express from 'express';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import yaml from 'js-yaml';
-
-import fs from 'fs';
 
 import App from '../components/App';
 import html from './html';
@@ -16,11 +17,13 @@ const tuturePath = process.env.TUTURE_PATH;
 server.use(express.static('dist'));
 
 server.get('/', (req, res) => {
-  const tutureYAML = fs.readFileSync(`${tuturePath}/tuture.yml`, {
+  const tutureYAMLPath = path.join(tuturePath, 'tuture.yml');
+  const tutureYAML = fs.readFileSync(tutureYAMLPath, {
     encoding: 'utf8',
   });
   const tuture = yaml.safeLoad(tutureYAML) as Tuture;
-  const diff = fs.readFileSync(`${tuturePath}/.tuture/diff.json`, {
+  const diffPath = path.join(tuturePath, '.tuture', 'diff.json');
+  const diff = fs.readFileSync(diffPath, {
     encoding: 'utf8',
   });
   const body = renderToString(
