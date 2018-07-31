@@ -1,6 +1,7 @@
 import express from 'express';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
+import opn from 'opn';
 import yaml from 'js-yaml';
 
 import fs from 'fs';
@@ -36,4 +37,7 @@ server.get('/', (req, res) => {
   );
 });
 
-server.listen(port, () => console.log(`App is listening on port ${port}`));
+server.listen(port, () => {
+  console.log(`App is listening on port ${port}`);
+  opn('http://localhost:3000');
+});
