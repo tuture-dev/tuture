@@ -2,7 +2,6 @@
 import React from 'react';
 import styled, { injectGlobal } from 'styled-components';
 import { Helmet } from 'react-helmet';
-import yaml from 'js-yaml';
 
 import SideBarLeft from './SideBarLeft';
 import StepContent from './StepContent';
@@ -13,13 +12,11 @@ import { extractCommits, extractMetaData } from '../utils/extractors';
 
 interface AppState {
   selectKey: number;
-  tuture: Tuture;
-  diff: DiffItem[];
 }
 
-interface AppProps {
-  // Page's title
-  name?: string;
+export interface AppProps {
+  tuture?: Tuture | string;
+  diff?: string | DiffItem[] | string;
 }
 
 /* tslint:disable-next-line */
@@ -60,8 +57,6 @@ export default class App extends React.Component<AppProps, AppState> {
 
     this.state = {
       selectKey: 0,
-      tuture: null,
-      diff: null,
     };
   }
 
@@ -71,44 +66,14 @@ export default class App extends React.Component<AppProps, AppState> {
     });
   };
 
-  async loadTuture() {
-    try {
-      const that = this;
-      const response = await fetch('./tuture.yml');
-      const tutureYAML = await response.text();
-      const tuture = yaml.safeLoad(tutureYAML);
-      that.setState({
-        tuture: tuture as Tuture,
-      });
-    } catch (err) {
-      // silent failed
-      console.log('tuture.yml is not exists or tuture.yml format errors');
-    }
-  }
-
-  async loadDiff() {
-    try {
-      const that = this;
-      const response = await fetch('./diff.json');
-      const diff = await response.json();
-      that.setState({
-        diff: diff as DiffItem[],
-      });
-    } catch (err) {
-      // silent failed
-      console.log('diff.json is not exists or diff.json format errors');
-    }
-  }
-
-  componentDidMount() {
-    this.loadTuture();
-    this.loadDiff();
-  }
-
   render() {
     let tutorialTitle: string;
     let bodyContent: React.ReactNode;
-    const { tuture, diff } = this.state;
+
+    let { tuture, diff } = this.props;
+
+    tuture = JSON.parse(tuture as string);
+    diff = JSON.parse(diff as string);
 
     if (
       !tuture ||
@@ -118,11 +83,11 @@ export default class App extends React.Component<AppProps, AppState> {
     ) {
       bodyContent = null;
     } else {
-      const commits = extractCommits(tuture);
-      tutorialTitle = extractMetaData(tuture).name;
+      const commits = extractCommits(tuture as Tuture);
+      tutorialTitle = extractMetaData(tuture as Tuture).name;
 
       const { selectKey } = this.state;
-      const nowRenderContent = tuture.steps[selectKey];
+      const nowRenderContent = (tuture as Tuture).steps[selectKey];
       const diffItem = diff[selectKey];
       bodyContent = [
         <SideBarLeft

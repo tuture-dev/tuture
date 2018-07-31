@@ -12,7 +12,7 @@ import { ChangedFile, File, DiffItem } from '../types';
 interface StepDiffProps {
   diff: ChangedFile[];
   commit: string;
-  diffItem: DiffItem;
+  diffItem: DiffItem | string;
 }
 
 interface ResObj {
@@ -76,7 +76,10 @@ export default class StepDiff extends React.PureComponent<StepDiffProps> {
 
   render() {
     const { diff, diffItem } = this.props;
-    const needRenderFiles = this.getEndRenderContent(diff, diffItem.diff);
+    const needRenderFiles = this.getEndRenderContent(
+      diff,
+      (diffItem as DiffItem).diff,
+    );
 
     return [
       needRenderFiles.map((file: File & ChangedFile, i) => {

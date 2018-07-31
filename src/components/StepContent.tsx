@@ -10,7 +10,7 @@ import tutureUtilities from '../utils';
 
 interface StepContentProps {
   content: Step;
-  diffItem: DiffItem;
+  diffItem: DiffItem | string;
 }
 
 /* tslint:disable-next-line */

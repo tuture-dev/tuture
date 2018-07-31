@@ -2,9 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { TutureMeta, Commit } from '../types';
-import ReactSVG from 'react-svg';
-import catalogImage from './images/catalog-image.svg';
-
 interface UpdateSelectFunc {
   (key: number): void;
 }
@@ -81,12 +78,6 @@ const MenuItemContent = styled.div`
   white-space: pre-wrap;
   word-wrap: break-word;
   word-break: break-all;
-`;
-
-/* tslint:disable-next-line */
-const MenuHeaderImage = styled(ReactSVG)`
-  width: 158px;
-  margin-bottom: -7px;
 `;
 
 /* tslint:disable-next-line */
