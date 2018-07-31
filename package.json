@@ -4,7 +4,7 @@
   "preferGlobal": true,
   "description": "Tuture magically turns your repositories into juicy tutorials.",
   "license": "MIT",
-  "main": "index.js",
+  "main": "bin/tuture-server",
   "keywords": [
     "tutorial",
     "step-by-step",
@@ -20,7 +20,7 @@
   },
   "homepage": "https://github.com/tutureproject/tuture#readme",
   "bin": {
-    "tuture-server": "./index.js"
+    "tuture-server": "bin/tuture-server"
   },
   "dependencies": {
     "@types/classnames": "^2.2.4",
@@ -58,7 +58,7 @@
     "webpack-dev-server": "2.9.4"
   },
   "scripts": {
-    "start": "concurrently \"webpack -w\" \"nodemon dist/js/server.js\"",
+    "start": "webpack -w & WATCHING=true nodemon bin/tuture-server",
     "build": "webpack --mode=production",
     "dev": "TUTURE_PATH=example/en npm start",
     "dev:cn": "TUTURE_PATH=example/cn npm start",
@@ -76,7 +76,6 @@
     "@types/enzyme": "^3.1.10",
     "@types/jest": "^23.1.0",
     "@types/react-test-renderer": "^16.0.1",
-    "concurrently": "^3.6.1",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
     "husky": "^0.14.3",
