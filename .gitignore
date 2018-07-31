@@ -23,5 +23,5 @@ yarn-error.log*
 # not use npm
 package-lock.json
 
-# extra generate files
-/src/path.json
+# dist files should not include to the SCM
+/dist
