@@ -39,9 +39,9 @@ server.get('/', (req, res) => {
 
   res.send(
     html({
-      css: styleTags,
       body,
       diff,
+      css: styleTags,
       tuture: JSON.stringify(tuture),
     }),
   );
