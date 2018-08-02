@@ -5,6 +5,7 @@ import ExplainedItem from './ExplainedItem';
 import StepDiff from './StepDiff';
 
 import { Step, DiffItem } from '../types';
+import { handleAnchor } from '../utils/common';
 
 import tutureUtilities from '../utils';
 
@@ -32,7 +33,7 @@ export default class StepContent extends React.Component<StepContentProps> {
   render() {
     const { content, diffItem } = this.props;
     const { name, explain, diff, commit } = content;
-    const anchorClassName = name.toLowerCase().replace(/ /g, '-');
+    const anchorClassName = handleAnchor(name);
 
     return (
       <TutureWrapper id={anchorClassName}>
