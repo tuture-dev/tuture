@@ -14,14 +14,10 @@ const SideBarLeftWrapper = styled.div`
 
 export default class SideBarLeft extends React.Component<StepListProps> {
   render() {
-    const { commits, selectKey, updateSelect } = this.props;
+    const { commits } = this.props;
     return (
       <SideBarLeftWrapper>
-        <StepList
-          commits={commits}
-          selectKey={selectKey}
-          updateSelect={updateSelect}
-        />
+        <StepList commits={commits} />
       </SideBarLeftWrapper>
     );
   }

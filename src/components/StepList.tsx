@@ -2,13 +2,9 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { TutureMeta, Commit } from '../types';
-interface UpdateSelectFunc {
-  (key: number): void;
-}
+import { handleAnchor } from '../utils/common';
 
 export interface StepListProps {
-  selectKey: number;
-  updateSelect: UpdateSelectFunc;
   commits: Commit[];
 }
 
@@ -73,8 +69,11 @@ const TutureMenuItem = styled.li`
 `;
 
 /* tslint:disable-next-line */
-const MenuItemContent = styled.div`
+const MenuItemContent = styled.a`
+  display: block;
   width: 159px;
+  text-decoration: none;
+  color: rgba(0, 0, 0, 0.54);
   white-space: pre-wrap;
   word-wrap: break-word;
   word-break: break-all;
@@ -88,7 +87,7 @@ const MenuItemIcon = styled.img`
 
 export default class StepList extends React.Component<StepListProps> {
   render() {
-    const { commits, selectKey, updateSelect } = this.props;
+    const { commits } = this.props;
 
     return (
       <TutureSteps>
@@ -97,13 +96,10 @@ export default class StepList extends React.Component<StepListProps> {
         </MenuHeader>
         <TutureMenu>
           {commits.map((item, key) => (
-            <TutureMenuItem
-              className={key === selectKey ? 'selected' : ''}
-              onClick={() => {
-                updateSelect(key);
-              }}
-              key={key}>
-              <MenuItemContent>{item.name}</MenuItemContent>
+            <TutureMenuItem key={key}>
+              <MenuItemContent href={`#${handleAnchor(item.name)}`}>
+                {item.name}
+              </MenuItemContent>
             </TutureMenuItem>
           ))}
         </TutureMenu>

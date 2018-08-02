@@ -24,7 +24,7 @@ const TutureContentHeader = styled.h1`
   font-family: STSongti-SC-Bold;
   font-size: 45px;
   color: rgba(0, 0, 0, 0.84);
-  margin-top: 0;
+  margin-top: 44px;
   margin-bottom: 14px;
 `;
 
@@ -32,9 +32,10 @@ export default class StepContent extends React.Component<StepContentProps> {
   render() {
     const { content, diffItem } = this.props;
     const { name, explain, diff, commit } = content;
+    const anchorClassName = name.toLowerCase().replace(/ /g, '-');
 
     return (
-      <TutureWrapper>
+      <TutureWrapper id={anchorClassName}>
         <TutureContentHeader>{name}</TutureContentHeader>
         <ExplainedItem explain={explain}>
           <StepDiff diff={diff} diffItem={diffItem} commit={commit} />
