@@ -2,4 +2,8 @@ function handleAnchor(origin: string) {
   return origin.toLowerCase().replace(/ /g, '-');
 }
 
-export { handleAnchor };
+function isClientOrServer() {
+  return typeof window !== 'undefined' && window.document ? 'client' : 'server';
+}
+
+export { handleAnchor, isClientOrServer };

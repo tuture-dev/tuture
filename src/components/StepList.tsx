@@ -2,10 +2,14 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { TutureMeta, Commit } from '../types';
-import { handleAnchor } from '../utils/common';
+import { handleAnchor, isClientOrServer } from '../utils/common';
 
 export interface StepListProps {
   commits: Commit[];
+}
+export interface StepListState {
+  nowSelected: string;
+  itemTopOffsets: HTMLElement[];
 }
 
 /* tslint:disable-next-line */
@@ -85,7 +89,57 @@ const MenuItemIcon = styled.img`
   margin: 3px 16px 3px 0;
 `;
 
-export default class StepList extends React.Component<StepListProps> {
+export default class StepList extends React.Component<
+  StepListProps,
+  StepListState
+> {
+  constructor(props: StepListProps) {
+    super(props);
+
+    const { commits } = this.props;
+    this.state = {
+      nowSelected: handleAnchor(commits[0].name),
+      itemTopOffsets: [],
+    };
+  }
+
+  updateSelect = (anchor: string) => {
+    this.setState({ nowSelected: anchor });
+  };
+
+  handleScroll = () => {
+    const { itemTopOffsets } = this.state;
+    const item = itemTopOffsets.find((itemTopOffset, i) => {
+      const nextItemTopOffset = itemTopOffsets[i + 1];
+      if (nextItemTopOffset) {
+        return (
+          window.scrollY >= itemTopOffset.offsetTop &&
+          window.scrollY < nextItemTopOffset.offsetTop
+        );
+      }
+      return window.scrollY >= itemTopOffset.offsetTop;
+    });
+    this.setState({
+      nowSelected: item ? item.id : '',
+    });
+  };
+
+  componentDidMount() {
+    const { commits } = this.props;
+    if (isClientOrServer()) {
+      this.setState({
+        itemTopOffsets: commits.map((commit) =>
+          document.getElementById(handleAnchor(commit.name)),
+        ),
+      });
+    }
+    window.addEventListener('scroll', this.handleScroll);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this.handleScroll);
+  }
+
   render() {
     const { commits } = this.props;
 
@@ -96,8 +150,16 @@ export default class StepList extends React.Component<StepListProps> {
         </MenuHeader>
         <TutureMenu>
           {commits.map((item, key) => (
-            <TutureMenuItem key={key}>
-              <MenuItemContent href={`#${handleAnchor(item.name)}`}>
+            <TutureMenuItem
+              key={key}
+              className={
+                this.state.nowSelected === handleAnchor(item.name)
+                  ? 'selected'
+                  : ''
+              }>
+              <MenuItemContent
+                href={`#${handleAnchor(item.name)}`}
+                onClick={() => this.updateSelect(handleAnchor(item.name))}>
                 {item.name}
               </MenuItemContent>
             </TutureMenuItem>
