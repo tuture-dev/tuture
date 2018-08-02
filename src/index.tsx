@@ -1,6 +1,7 @@
 /* tslint:disable-next-line */
 import React from 'react';
 import { render } from 'react-dom';
+import hljs from 'highlight.js';
 
 function unescape(s: any) {
   return s
@@ -20,3 +21,5 @@ render(
   />,
   document.getElementById('root'),
 );
+
+hljs.initHighlightingOnLoad();

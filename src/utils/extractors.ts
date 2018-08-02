@@ -23,13 +23,4 @@ const extractMetaData = (tuture: Tuture) => {
   return metadata;
 };
 
-const extractLanguageType = (fileName: string): string => {
-  const extenstionToLanguage: { [index: string]: string } = {
-    css: 'css',
-    html: 'markup',
-    js: 'javascript',
-  };
-  return extenstionToLanguage[fileName.split('.').pop()];
-};
-
-export { extractCommits, extractMetaData, extractLanguageType };
+export { extractCommits, extractMetaData };
