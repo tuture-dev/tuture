@@ -2,14 +2,14 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { TutureMeta, Commit } from '../types';
-interface UpdateSelectFunc {
-  (key: number): void;
-}
+import { handleAnchor, isClientOrServer } from '../utils/common';
 
 export interface StepListProps {
-  selectKey: number;
-  updateSelect: UpdateSelectFunc;
   commits: Commit[];
+}
+export interface StepListState {
+  nowSelected: string;
+  itemTopOffsets: HTMLElement[];
 }
 
 /* tslint:disable-next-line */
@@ -54,10 +54,11 @@ const TutureMenu = styled.ul`
 const TutureMenuItem = styled.li`
   width: ${(props) =>
     props.className === 'selected' ? 'calc(100% -38px)' : 'calc(100% -41px)'};
-  font-family: STSongti-SC-Bold;
+  font-family: STSongti-SC;
   font-size: 16px;
   margin: 8px 0;
   padding-right: 40px;
+  font-weight: ${(props) => (props.className === 'selected' ? 700 : 500)};
   padding-left: ${(props: any) =>
     props.className === 'selected' ? '38px' : '41px'};
   overflow: hidden;
@@ -73,8 +74,14 @@ const TutureMenuItem = styled.li`
 `;
 
 /* tslint:disable-next-line */
-const MenuItemContent = styled.div`
-  width: 159px;
+const MenuItemContent = styled.a`
+  display: block;
+  width: 210px;
+  text-decoration: none;
+  color: ${(props: any) =>
+    props.className === 'selected'
+      ? 'rgba(0, 0, 0, 0.84)'
+      : 'rgba(0, 0, 0, 0.54)'};
   white-space: pre-wrap;
   word-wrap: break-word;
   word-break: break-all;
@@ -86,9 +93,59 @@ const MenuItemIcon = styled.img`
   margin: 3px 16px 3px 0;
 `;
 
-export default class StepList extends React.Component<StepListProps> {
+export default class StepList extends React.Component<
+  StepListProps,
+  StepListState
+> {
+  constructor(props: StepListProps) {
+    super(props);
+
+    const { commits } = this.props;
+    this.state = {
+      nowSelected: handleAnchor(commits[0].name),
+      itemTopOffsets: [],
+    };
+  }
+
+  updateSelect = (anchor: string) => {
+    this.setState({ nowSelected: anchor });
+  };
+
+  handleScroll = () => {
+    const { itemTopOffsets } = this.state;
+    const item = itemTopOffsets.find((itemTopOffset, i) => {
+      const nextItemTopOffset = itemTopOffsets[i + 1];
+      if (nextItemTopOffset) {
+        return (
+          window.scrollY >= itemTopOffset.offsetTop &&
+          window.scrollY < nextItemTopOffset.offsetTop
+        );
+      }
+      return window.scrollY >= itemTopOffset.offsetTop;
+    });
+    this.setState({
+      nowSelected: item ? item.id : '',
+    });
+  };
+
+  componentDidMount() {
+    const { commits } = this.props;
+    if (isClientOrServer()) {
+      this.setState({
+        itemTopOffsets: commits.map((commit) =>
+          document.getElementById(handleAnchor(commit.name)),
+        ),
+      });
+    }
+    window.addEventListener('scroll', this.handleScroll);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this.handleScroll);
+  }
+
   render() {
-    const { commits, selectKey, updateSelect } = this.props;
+    const { commits } = this.props;
 
     return (
       <TutureSteps>
@@ -98,12 +155,22 @@ export default class StepList extends React.Component<StepListProps> {
         <TutureMenu>
           {commits.map((item, key) => (
             <TutureMenuItem
-              className={key === selectKey ? 'selected' : ''}
-              onClick={() => {
-                updateSelect(key);
-              }}
-              key={key}>
-              <MenuItemContent>{item.name}</MenuItemContent>
+              key={key}
+              className={
+                this.state.nowSelected === handleAnchor(item.name)
+                  ? 'selected'
+                  : ''
+              }>
+              <MenuItemContent
+                className={
+                  this.state.nowSelected === handleAnchor(item.name)
+                    ? 'selected'
+                    : ''
+                }
+                href={`#${handleAnchor(item.name)}`}
+                onClick={() => this.updateSelect(handleAnchor(item.name))}>
+                {item.name}
+              </MenuItemContent>
             </TutureMenuItem>
           ))}
         </TutureMenu>

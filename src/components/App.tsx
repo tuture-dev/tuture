@@ -4,7 +4,7 @@ import styled, { injectGlobal } from 'styled-components';
 import { Helmet } from 'react-helmet';
 
 import SideBarLeft from './SideBarLeft';
-import StepContent from './StepContent';
+import Content from './Content';
 
 import tutureUtilities from '../utils';
 import { Tuture, DiffItem } from '../types/';
@@ -52,20 +52,6 @@ injectGlobal`
 `;
 
 export default class App extends React.Component<AppProps, AppState> {
-  constructor(props: AppProps) {
-    super(props);
-
-    this.state = {
-      selectKey: 0,
-    };
-  }
-
-  updateSelect = (key: number): void => {
-    this.setState({
-      selectKey: key,
-    });
-  };
-
   render() {
     let tutorialTitle: string;
     let bodyContent: React.ReactNode;
@@ -85,21 +71,9 @@ export default class App extends React.Component<AppProps, AppState> {
     } else {
       const commits = extractCommits(tuture as Tuture);
       tutorialTitle = extractMetaData(tuture as Tuture).name;
-
-      const { selectKey } = this.state;
-      const nowRenderContent = (tuture as Tuture).steps[selectKey];
-      const diffItem = diff[selectKey];
       bodyContent = [
-        <SideBarLeft
-          commits={commits}
-          selectKey={selectKey}
-          updateSelect={this.updateSelect}
-        />,
-        <StepContent
-          key="content"
-          content={nowRenderContent}
-          diffItem={diffItem}
-        />,
+        <SideBarLeft commits={commits} />,
+        <Content tuture={tuture} diff={diff} />,
       ];
     }
 
