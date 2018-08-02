@@ -17,7 +17,7 @@ interface StepContentProps {
 /* tslint:disable-next-line */
 const TutureWrapper = styled.div`
   max-width: 680px;
-  margin-left: 270px;
+  margin-left: 320px;
 `;
 
 /* tslint:disable-next-line */

@@ -54,10 +54,11 @@ const TutureMenu = styled.ul`
 const TutureMenuItem = styled.li`
   width: ${(props) =>
     props.className === 'selected' ? 'calc(100% -38px)' : 'calc(100% -41px)'};
-  font-family: STSongti-SC-Bold;
+  font-family: STSongti-SC;
   font-size: 16px;
   margin: 8px 0;
   padding-right: 40px;
+  font-weight: ${(props) => (props.className === 'selected' ? 700 : 500)};
   padding-left: ${(props: any) =>
     props.className === 'selected' ? '38px' : '41px'};
   overflow: hidden;
@@ -75,9 +76,12 @@ const TutureMenuItem = styled.li`
 /* tslint:disable-next-line */
 const MenuItemContent = styled.a`
   display: block;
-  width: 159px;
+  width: 210px;
   text-decoration: none;
-  color: rgba(0, 0, 0, 0.54);
+  color: ${(props: any) =>
+    props.className === 'selected'
+      ? 'rgba(0, 0, 0, 0.84)'
+      : 'rgba(0, 0, 0, 0.54)'};
   white-space: pre-wrap;
   word-wrap: break-word;
   word-break: break-all;
@@ -158,6 +162,11 @@ export default class StepList extends React.Component<
                   : ''
               }>
               <MenuItemContent
+                className={
+                  this.state.nowSelected === handleAnchor(item.name)
+                    ? 'selected'
+                    : ''
+                }
                 href={`#${handleAnchor(item.name)}`}
                 onClick={() => this.updateSelect(handleAnchor(item.name))}>
                 {item.name}
