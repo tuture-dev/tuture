@@ -73,7 +73,6 @@ interface DiffItem {
   commit: string;
   diff: File[];
 }
-
 export {
   Explain,
   ExplainObj,
