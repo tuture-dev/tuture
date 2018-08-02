@@ -2,21 +2,24 @@
 import React from 'react';
 import styled, { injectGlobal } from 'styled-components';
 import { Helmet } from 'react-helmet';
+import { Route, Switch, Redirect } from 'react-router-dom';
 
+import Introduction from './Introduction';
 import SideBarLeft from './SideBarLeft';
 import StepContent from './StepContent';
 
 import tutureUtilities from '../utils';
-import { Tuture, DiffItem } from '../types/';
-import { extractCommits, extractMetaData } from '../utils/extractors';
+import { Commit, TutureMeta, Step, DiffItem } from '../types/';
 
 interface AppState {
   selectKey: number;
 }
 
 export interface AppProps {
-  tuture?: Tuture | string;
-  diff?: string | DiffItem[] | string;
+  introduction?: string | TutureMeta;
+  commits?: string | Commit[];
+  content?: string | Step;
+  diffItem?: string | DiffItem;
 }
 
 /* tslint:disable-next-line */
@@ -67,41 +70,48 @@ export default class App extends React.Component<AppProps, AppState> {
   };
 
   render() {
-    let tutorialTitle: string;
     let bodyContent: React.ReactNode;
 
-    let { tuture, diff } = this.props;
+    let { commits, introduction, content, diffItem } = this.props;
 
-    tuture = JSON.parse(tuture as string);
-    diff = JSON.parse(diff as string);
-
-    if (
-      !tuture ||
-      tutureUtilities.isObjectEmpty(tuture) ||
-      !diff ||
-      !tutureUtilities.isArray(diff)
-    ) {
-      bodyContent = null;
+    if (content) {
+      commits = JSON.parse(commits as string);
+      introduction = JSON.parse(introduction as string);
+      content = JSON.parse(content as string);
+      diffItem = JSON.parse(diffItem as string);
     } else {
-      const commits = extractCommits(tuture as Tuture);
-      tutorialTitle = extractMetaData(tuture as Tuture).name;
-
-      const { selectKey } = this.state;
-      const nowRenderContent = (tuture as Tuture).steps[selectKey];
-      const diffItem = diff[selectKey];
-      bodyContent = [
-        <SideBarLeft
-          commits={commits}
-          selectKey={selectKey}
-          updateSelect={this.updateSelect}
-        />,
-        <StepContent
-          key="content"
-          content={nowRenderContent}
-          diffItem={diffItem}
-        />,
-      ];
+      commits = JSON.parse(commits as string);
+      introduction = JSON.parse(introduction as string);
     }
+
+    const { selectKey } = this.state;
+    bodyContent = [
+      <SideBarLeft
+        commits={commits as Commit[]}
+        selectKey={selectKey}
+        updateSelect={this.updateSelect}
+      />,
+      <Switch>
+        <Route
+          exact={true}
+          path="/steps"
+          render={() => <Introduction introduction={introduction} />}
+        />
+        <Route
+          exact={true}
+          path="/steps/:commit/"
+          render={() => (
+            <StepContent
+              content={content as Step}
+              diffItem={diffItem as DiffItem}
+            />
+          )}
+        />
+        <Redirect from="/" to="/steps" />
+      </Switch>,
+    ];
+
+    const tutorialTitle = (introduction as TutureMeta).name;
 
     return (
       <AppWrapper>

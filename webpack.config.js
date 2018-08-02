@@ -1,4 +1,5 @@
 const path = require('path');
+const webpack = require('webpack');
 
 const base = {
   mode: 'development',
@@ -28,6 +29,11 @@ const serverConfig = {
     filename: 'server.js',
     path: path.resolve(__dirname, 'dist', 'js'),
   },
+  plugins: [
+    new webpack.DefinePlugin({
+      __isBrowser__: 'false',
+    }),
+  ],
 };
 
 const clientConfig = {
@@ -36,6 +42,11 @@ const clientConfig = {
     filename: 'client.js',
     path: path.resolve(__dirname, 'dist', 'js'),
   },
+  plugins: [
+    new webpack.DefinePlugin({
+      __isBrowser__: 'true',
+    }),
+  ],
 };
 
 module.exports = [

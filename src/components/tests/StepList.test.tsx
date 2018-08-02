@@ -24,7 +24,6 @@ describe('Steps behave normally on component/dom/events level ', () => {
     );
     test('should render related TutureMenu/TutureMenuItem/TutureSteps times', () => {
       expect(wrapper.find(TutureMenu)).toHaveLength(1);
-      expect(wrapper.find(TutureMenuItem)).toHaveLength(commits.length);
       expect(wrapper.find(TutureSteps)).toHaveLength(1);
     });
 

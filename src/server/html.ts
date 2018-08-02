@@ -5,18 +5,20 @@ function escape(s: any) {
     .replace(/>/g, '&gt;');
 }
 
-import { Tuture } from '../types/';
-
 const html = ({
   body,
   css,
-  tuture,
-  diff,
+  commits,
+  introduction,
+  content,
+  diffItem,
 }: {
   body: string;
   css: string;
-  tuture: string;
-  diff: string;
+  commits?: string;
+  introduction?: string;
+  content?: string;
+  diffItem?: string;
 }) => `
   <!DOCTYPE html>
   <html lang="en">
@@ -27,8 +29,10 @@ const html = ({
     <title>My Awesome Tutorial</title>
     ${css}
     <script>
-      window.__APP_INITIAL_TUTURE__ = ${escape(tuture)};
-      window.__APP_INITIAL_DIFF__ = ${escape(diff)};
+      window.__APP_INITIAL_COMMITS__ = ${escape(commits)};
+      window.__APP_INITIAL_INTRODUCTION__ = ${escape(introduction)};
+      window.__APP_INITIAL_CONTENT__ = ${escape(content)};
+      window.__APP_INITIAL_DIFFITEM__ = ${escape(diffItem)};
     </script>
   </head>
   <body>

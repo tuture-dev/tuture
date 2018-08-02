@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { NavLink } from 'react-router-dom';
 
 import { TutureMeta, Commit } from '../types';
 interface UpdateSelectFunc {
@@ -89,6 +90,7 @@ const MenuItemIcon = styled.img`
 export default class StepList extends React.Component<StepListProps> {
   render() {
     const { commits, selectKey, updateSelect } = this.props;
+    const newSteps = [{ commit: '', name: '前言' }].concat(commits);
 
     return (
       <TutureSteps>
@@ -96,14 +98,20 @@ export default class StepList extends React.Component<StepListProps> {
           <MenuHeaderText>教程目录</MenuHeaderText>
         </MenuHeader>
         <TutureMenu>
-          {commits.map((item, key) => (
+          {newSteps.map((item, key) => (
             <TutureMenuItem
               className={key === selectKey ? 'selected' : ''}
               onClick={() => {
                 updateSelect(key);
               }}
               key={key}>
-              <MenuItemContent>{item.name}</MenuItemContent>
+              <MenuItemContent>
+                {item.commit ? (
+                  <NavLink to={`/steps/${item.commit}/`}>{item.name}</NavLink>
+                ) : (
+                  <NavLink to="/steps/">{item.name}</NavLink>
+                )}
+              </MenuItemContent>
             </TutureMenuItem>
           ))}
         </TutureMenu>
