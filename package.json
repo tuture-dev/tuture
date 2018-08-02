@@ -23,10 +23,9 @@
     "tuture-server": "bin/tuture-server"
   },
   "scripts": {
-    "start": "webpack -w & WATCHING=true nodemon bin/tuture-server",
     "build": "webpack --mode=production",
-    "dev": "TUTURE_PATH=example/en npm start",
-    "dev:cn": "TUTURE_PATH=example/cn npm start",
+    "dev": "webpack -w & TUTURE_PATH=example/en WATCHING=true nodemon bin/tuture-server",
+    "dev:cn": "webpack -w & TUTURE_PATH=example/cn WATCHING=true nodemon bin/tuture-server",
     "test": "jest",
     "lint": "tslint 'src/**/*.{ts,tsx,js}' --project tsconfig.json",
     "precommit": "lint-staged"
