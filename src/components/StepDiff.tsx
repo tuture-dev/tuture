@@ -4,9 +4,6 @@ import styled from 'styled-components';
 import ExplainedItem from './ExplainedItem';
 import DiffView from './DiffView';
 
-import { LanguageContext } from './App';
-import { extractLanguageType } from '../utils/extractors';
-
 import { ChangedFile, File, DiffItem } from '../types';
 
 interface StepDiffProps {
@@ -92,14 +89,15 @@ export default class StepDiff extends React.PureComponent<StepDiffProps> {
               <article className="diff-file" key={i}>
                 <header className="diff-file-header">{fileName}</header>
                 <main>
-                  <LanguageContext.Provider
-                    value={extractLanguageType(fileName)}>
-                    <DiffView
-                      key={i}
-                      hunks={this.getRenderedHunks(fileCopy)}
-                      startLine={startLine}
-                    />
-                  </LanguageContext.Provider>
+                  <DiffView
+                    key={i}
+                    lang={fileName
+                      .split('.')
+                      .pop()
+                      .toLowerCase()}
+                    hunks={this.getRenderedHunks(fileCopy)}
+                    startLine={startLine}
+                  />
                 </main>
               </article>
             </ExplainedItem>

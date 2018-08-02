@@ -1,13 +1,11 @@
 import React from 'react';
-import styled, { injectGlobal } from 'styled-components';
+import styled from 'styled-components';
 
 import ExplainedItem from './ExplainedItem';
 import StepDiff from './StepDiff';
 
 import { Step, DiffItem } from '../types';
 import { handleAnchor } from '../utils/common';
-
-import tutureUtilities from '../utils';
 
 interface StepContentProps {
   content: Step;

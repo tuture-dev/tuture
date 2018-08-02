@@ -1,16 +1,14 @@
-import Prism from 'prismjs';
 import React, { PureComponent } from 'react';
 import { injectGlobal } from 'styled-components';
 
-import { LanguageContext } from './App';
-
 interface SnippetProps {
   code: string;
+  lang: string;
 }
 
 injectGlobal`
-  code[class*="language-"],
-  pre[class*="language-"] {
+  code,
+  pre {
     line-height: 2;
     text-align: left;
     white-space: pre-wrap;
@@ -22,100 +20,96 @@ injectGlobal`
   }
 
   /* Code blocks */
-  pre[class*="language-"] {
+  pre {
     margin: 0;
-    overflow: auto;
   }
 
   /* Inline code */
-  :not(pre) > code[class*="language-"] {
+  :not(pre) > code {
     padding: .1em;
     border-radius: .3em;
     white-space: normal;
   }
 
-  .token.comment,
-  .token.prolog,
-  .token.doctype,
-  .token.cdata {
-    color: slategray;
+  .hljs,
+  .hljs-subst {
+    color: #444;
   }
-  .token.punctuation {
-    color: #999;
+
+  .hljs-comment {
+    color: #888888;
   }
-  .namespace {
-    opacity: .7;
-  }
-  .token.property,
-  .token.tag,
-  .token.boolean,
-  .token.number,
-  .token.constant,
-  .token.symbol,
-  .token.deleted {
-    color: #905;
-  }
-  .token.selector,
-  .token.attr-name,
-  .token.string,
-  .token.char,
-  .token.builtin,
-  .token.inserted {
-    color: #690;
-  }
-  .token.operator,
-  .token.entity,
-  .token.url,
-  .language-css .token.string,
-  .style .token.string {
-    color: #9a6e3a;
-  }
-  .token.atrule,
-  .token.attr-value,
-  .token.keyword {
-    color: #07a;
-  }
-  .token.function,
-  .token.class-name {
-    color: #DD4A68;
-  }
-  .token.regex,
-  .token.important,
-  .token.variable {
-    color: #e90;
-  }
-  .token.important,
-  .token.bold {
+
+  .hljs-keyword,
+  .hljs-attribute,
+  .hljs-selector-tag,
+  .hljs-meta-keyword,
+  .hljs-doctag,
+  .hljs-name {
     font-weight: bold;
   }
-  .token.italic {
+
+  .hljs-type,
+  .hljs-string,
+  .hljs-number,
+  .hljs-selector-id,
+  .hljs-selector-class,
+  .hljs-quote,
+  .hljs-template-tag,
+  .hljs-deletion {
+    color: #880000;
+  }
+
+  .hljs-title,
+  .hljs-section {
+    color: #880000;
+    font-weight: bold;
+  }
+
+  .hljs-regexp,
+  .hljs-symbol,
+  .hljs-variable,
+  .hljs-template-variable,
+  .hljs-link,
+  .hljs-selector-attr,
+  .hljs-selector-pseudo {
+    color: #BC6060;
+  }
+
+  .hljs-literal {
+    color: #78A960;
+  }
+
+  .hljs-built_in,
+  .hljs-bullet,
+  .hljs-code,
+  .hljs-addition {
+    color: #397300;
+  }
+
+  .hljs-meta {
+    color: #1f7199;
+  }
+
+  .hljs-meta-string {
+    color: #4d99bf;
+  }
+
+  .hljs-emphasis {
     font-style: italic;
   }
-  .token.entity {
-    cursor: help;
+
+  .hljs-strong {
+    font-weight: bold;
   }
 `;
 
 export default class Snippet extends PureComponent<SnippetProps> {
-  componentDidMount() {
-    Prism.highlightAll();
-  }
-
-  componentDidUpdate() {
-    Prism.highlightAll();
-  }
-
   render() {
     return (
-      <LanguageContext.Consumer>
-        {(lang) => {
-          return (
-            <pre>
-              <code className={`language-${lang}`}>{this.props.code}</code>
-            </pre>
-          );
-        }}
-      </LanguageContext.Consumer>
+      <pre>
+        <code className={this.props.lang}>{this.props.code}</code>
+      </pre>
     );
   }
 }
