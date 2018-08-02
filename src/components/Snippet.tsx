@@ -1,5 +1,3 @@
-import hljs from 'highlight.js';
-
 import React, { PureComponent } from 'react';
 import { injectGlobal } from 'styled-components';
 
