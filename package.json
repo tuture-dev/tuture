@@ -25,7 +25,7 @@
   "scripts": {
     "prestart": "rm -rf dist",
     "prestart:cn": "rm -rf dist",
-    "start": "webpack -w & TUTURE_PATH=example/en ./scripts/watch.js",
+    "start": "TUTURE_PATH=example/en webpack -w",
     "start:cn": "webpack -w & TUTURE_PATH=example/cn ./scripts/watch.js",
     "build": "webpack --mode=production",
     "test": "jest",
@@ -42,6 +42,8 @@
     "react-dom": "^16.3.2",
     "react-helmet": "^5.2.0",
     "react-markdown": "^3.3.4",
+    "socket.io": "^2.1.1",
+    "socket.io-client": "^2.1.1",
     "styled-components": "^3.3.2"
   },
   "devDependencies": {
@@ -56,6 +58,8 @@
     "@types/react-dom": "^16.0.6",
     "@types/react-helmet": "^5.0.6",
     "@types/react-test-renderer": "^16.0.1",
+    "@types/socket.io": "^1.4.36",
+    "@types/socket.io-client": "^1.4.32",
     "cross-spawn": "^6.0.5",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",

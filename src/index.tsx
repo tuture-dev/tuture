@@ -2,6 +2,7 @@
 import React from 'react';
 import { render } from 'react-dom';
 import hljs from 'highlight.js';
+import io from 'socket.io-client';
 
 function unescape(s: any) {
   return s
@@ -22,4 +23,16 @@ render(
   document.getElementById('root'),
 );
 
+// Syntax highlight on pageload
 hljs.initHighlightingOnLoad();
+
+// Add socket.io client implementation.
+const socket = io();
+
+socket.on('connect', () => {
+  console.log('connected to tuture-server!');
+});
+
+socket.on('reload', () => {
+  document.location.reload(true);
+});
