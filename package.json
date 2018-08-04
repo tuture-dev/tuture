@@ -23,10 +23,11 @@
     "tuture-server": "bin/tuture-server"
   },
   "scripts": {
-    "start": "webpack -w & WATCHING=true nodemon bin/tuture-server",
+    "prestart": "rm -rf dist",
+    "prestart:cn": "rm -rf dist",
+    "start": "webpack -w & TUTURE_PATH=example/en ./scripts/watch.js",
+    "start:cn": "webpack -w & TUTURE_PATH=example/cn ./scripts/watch.js",
     "build": "webpack --mode=production",
-    "dev": "TUTURE_PATH=example/en npm start",
-    "dev:cn": "TUTURE_PATH=example/cn npm start",
     "test": "jest",
     "lint": "tslint 'src/**/*.{ts,tsx,js}' --project tsconfig.json",
     "precommit": "lint-staged"
@@ -55,6 +56,7 @@
     "@types/react-dom": "^16.0.6",
     "@types/react-helmet": "^5.0.6",
     "@types/react-test-renderer": "^16.0.1",
+    "cross-spawn": "^6.0.5",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
     "file-loader": "^1.1.11",
@@ -77,6 +79,9 @@
       "prettier --write",
       "git add"
     ]
+  },
+  "nodemonConfig": {
+    "delay": "400"
   },
   "jest": {
     "transform": {
