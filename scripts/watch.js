@@ -2,8 +2,8 @@
 
 const fs = require('fs');
 const nodemon = require('nodemon');
-const opn = require('opn');
 const path = require('path');
+const openBrowser = require('./openBrowser');
 
 process.env.WATCHING = true;
 
@@ -26,7 +26,7 @@ nodemon({ script: 'bin/tuture-server' }).on('restart', () => {
   restartCounter++;
   if (restartCounter === 1) {
     setTimeout(() => {
-      opn('http://localhost:3000');
+      openBrowser('http://localhost:3000');
     }, 500);
   }
 });
