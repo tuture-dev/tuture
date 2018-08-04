@@ -1,4 +1,13 @@
+const fs = require('fs');
 const path = require('path');
+const WebpackShellPlugin = require('webpack-shell-plugin');
+
+const nodeModules = {};
+fs.readdirSync('node_modules')
+  .filter((x) => ['.bin'].indexOf(x) === -1)
+  .forEach((mod) => {
+    nodeModules[mod] = 'commonjs ' + mod;
+  });
 
 const base = {
   mode: 'development',
@@ -28,6 +37,12 @@ const serverConfig = {
     filename: 'server.js',
     path: path.resolve(__dirname, 'dist', 'js'),
   },
+  plugins: [
+    new WebpackShellPlugin({
+      onBuildEnd: ['./scripts/watch.js'],
+    }),
+  ],
+  externals: nodeModules,
 };
 
 const clientConfig = {

@@ -23,8 +23,8 @@
     "tuture-server": "bin/tuture-server"
   },
   "scripts": {
-    "prestart": "rm -rf dist",
-    "prestart:cn": "rm -rf dist",
+    "prestart": "rimraf dist",
+    "prestart:cn": "rimraf dist",
     "start": "TUTURE_PATH=example/en webpack -w",
     "start:cn": "webpack -w & TUTURE_PATH=example/cn ./scripts/watch.js",
     "build": "webpack --mode=production",
@@ -70,13 +70,15 @@
     "nodemon": "^1.18.3",
     "prettier": "^1.13.6",
     "react-test-renderer": "^16.4.1",
+    "rimraf": "^2.6.2",
     "ts-jest": "^22.4.6",
     "ts-loader": "^4.4.1",
     "tslint": "^5.10.0",
     "tslint-config-airbnb": "^5.9.2",
     "typescript": "^2.9.1",
     "webpack": "^4.12.0",
-    "webpack-cli": "^3.1.0"
+    "webpack-cli": "^3.1.0",
+    "webpack-shell-plugin": "^0.5.0"
   },
   "lint-staged": {
     "./**/*.{ts,tsx,js,css,md}": [
