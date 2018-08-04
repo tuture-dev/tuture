@@ -19,10 +19,6 @@ const base = {
     strictExportPresence: true,
     rules: [
       {
-        test: /\.(png|svg|jpg|gif)$/,
-        use: ['file-loader'],
-      },
-      {
         test: /\.tsx?$/,
         loader: 'ts-loader',
       },
