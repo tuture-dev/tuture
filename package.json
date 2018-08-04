@@ -23,9 +23,11 @@
     "tuture-server": "bin/tuture-server"
   },
   "scripts": {
+    "prestart": "rm -rf dist",
+    "prestart:cn": "rm -rf dist",
+    "start": "webpack -w & TUTURE_PATH=example/en ./scripts/watch.js",
+    "start:cn": "webpack -w & TUTURE_PATH=example/cn ./scripts/watch.js",
     "build": "webpack --mode=production",
-    "dev": "webpack -w & TUTURE_PATH=example/en WATCHING=true nodemon bin/tuture-server",
-    "dev:cn": "webpack -w & TUTURE_PATH=example/cn WATCHING=true nodemon bin/tuture-server",
     "test": "jest",
     "lint": "tslint 'src/**/*.{ts,tsx,js}' --project tsconfig.json",
     "precommit": "lint-staged"
@@ -76,6 +78,9 @@
       "prettier --write",
       "git add"
     ]
+  },
+  "nodemonConfig": {
+    "delay": "400"
   },
   "jest": {
     "transform": {
