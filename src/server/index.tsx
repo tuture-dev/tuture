@@ -24,7 +24,7 @@ const io = socketio(server);
 let reloadCounter = 0;
 
 io.on('connection', (socket) => {
-  reloadCounter++;
+  reloadCounter += 1;
   console.log('browser connected!');
 
   // Server has just been restarted.
