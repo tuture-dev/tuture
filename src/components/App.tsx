@@ -89,8 +89,13 @@ export default class App extends React.Component<AppProps, AppState> {
       const commits = extractCommits(tuture as Tuture);
       tutorialTitle = extractMetaData(tuture as Tuture).name;
       bodyContent = [
-        <SideBarLeft commits={commits} />,
-        <Content tuture={tuture} diff={diff} isEditMode={isEditMode} />,
+        <SideBarLeft commits={commits} key="SiderbarLeft" />,
+        <Content
+          tuture={tuture}
+          diff={diff}
+          isEditMode={isEditMode}
+          key="Content"
+        />,
       ];
     }
 

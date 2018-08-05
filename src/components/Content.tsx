@@ -23,7 +23,7 @@ export default class Content extends React.Component<ContentProps> {
       const diffItem = diff[index];
       renderContent.push(
         <StepContent
-          key="content"
+          key={index}
           content={step}
           diffItem={diffItem}
           isEditMode={isEditMode}

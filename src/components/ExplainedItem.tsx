@@ -161,12 +161,20 @@ export default class ExplainedItem extends PureComponent<
   constructor(props: ExplainedItemProps) {
     super(props);
 
+    if (isClientOrServer() === 'client') {
+      const textareaArr = document.getElementsByTagName('textarea');
+      Array.from(textareaArr).map((textarea) => {
+        console.log(textarea.scrollHeight);
+        textarea.style.height = textarea.scrollHeight + 'px';
+      });
+    }
+
     const { explain } = this.props;
     this.state = {
       ...explain,
       nowTab: 'edit',
-      preHeight: '200px',
-      postHeight: '200px',
+      preHeight: 'auto',
+      postHeight: 'auto',
     };
   }
 
