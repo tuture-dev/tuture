@@ -11,13 +11,13 @@ import { Tuture, DiffItem } from '../types/';
 import { extractCommits, extractMetaData } from '../utils/extractors';
 import Header from './Header';
 
-interface AppState {
-  isEditMode: boolean;
-}
-
 export interface AppProps {
   tuture?: Tuture | string;
   diff?: string | DiffItem[] | string;
+}
+
+interface AppState extends AppProps {
+  isEditMode: boolean;
 }
 
 /* tslint:disable-next-line */
@@ -26,6 +26,7 @@ const AppContent = styled.div`
   margin: 0 auto;
   display: flex;
   justify-content: space-between;
+  margin-top: 92px;
 `;
 
 injectGlobal`
@@ -43,7 +44,7 @@ injectGlobal`
 
   #root {
     height: 100%;
-    margin-top: 70px;
+    margin-top: 10px;
     margin-bottom: 70px;
   }
 
@@ -56,7 +57,12 @@ export default class App extends React.Component<AppProps, AppState> {
   constructor(props: AppProps) {
     super(props);
 
+    let { tuture, diff } = this.props;
+    tuture = JSON.parse(tuture as string);
+    diff = JSON.parse(diff as string);
     this.state = {
+      tuture,
+      diff,
       isEditMode: false,
     };
   }
@@ -68,13 +74,17 @@ export default class App extends React.Component<AppProps, AppState> {
     });
   };
 
+  updateTuture = () => {
+    this.setState;
+  };
+
   render() {
     let tutorialTitle: string;
     let bodyContent: React.ReactNode;
 
-    let { tuture, diff } = this.props;
     const { isEditMode } = this.state;
 
+    let { tuture, diff } = this.props;
     tuture = JSON.parse(tuture as string);
     diff = JSON.parse(diff as string);
 
@@ -93,6 +103,7 @@ export default class App extends React.Component<AppProps, AppState> {
         <Content
           tuture={tuture}
           diff={diff}
+          updateTuture={this.updateTuture}
           isEditMode={isEditMode}
           key="Content"
         />,

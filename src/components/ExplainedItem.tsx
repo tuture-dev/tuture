@@ -12,6 +12,7 @@ interface ExplainedItemProps {
   explain: Explain;
   isRoot: boolean;
   isEditMode: boolean;
+  updateTuture: () => void;
 }
 
 interface ExplainedItemState extends Explain {
@@ -131,6 +132,11 @@ injectGlobal`
     font-size: 14px;
     border: 1px solid #d1d5da;
     box-shadow: inset 0 1px 2px rgba(27,31,35,0.075);
+    &: focus {
+      border-color: #03a87c;
+      outline: none;
+      box-shadow: inset 0 1px 2px rgba(27,31,35,0.075), 0 0 0 0.2em rgba(3,168,124,0.3);
+    }
   }
 `;
 
@@ -139,14 +145,19 @@ const Button = styled.button`
   border: ${(props: { selected: boolean }) =>
     props.selected ? '1px solid #03a87c;' : '1px solid rgba(0, 0, 0, 0.15)'};
   border-radius: 4px;
-  height: 37px;
-  line-height: 37px;
+  height: 30px;
+  line-height: 30px;
   padding: 0 18px;
-  font-size: 17px;
+  font-size: 12px;
+  box-sizing: border-box;
   color: ${(props: { selected: boolean }) =>
     props.selected ? '#03a87c' : 'rgba(0,0,0,.54)'};
   background: rgba(0, 0, 0, 0);
   margin-right: 8px;
+  &: hover {
+    cursor: pointer;
+    outline: none;
+  }
 `;
 
 /* tslint:disable-next-line */
@@ -160,14 +171,6 @@ export default class ExplainedItem extends PureComponent<
 > {
   constructor(props: ExplainedItemProps) {
     super(props);
-
-    if (isClientOrServer() === 'client') {
-      const textareaArr = document.getElementsByTagName('textarea');
-      Array.from(textareaArr).map((textarea) => {
-        console.log(textarea.scrollHeight);
-        textarea.style.height = textarea.scrollHeight + 'px';
-      });
-    }
 
     const { explain } = this.props;
     this.state = {

@@ -21,6 +21,7 @@ interface StepDiffProps {
   commit: string;
   diffItem: DiffItem | string;
   isEditMode: boolean;
+  updateTuture: () => void;
 }
 
 interface StepDiffState {

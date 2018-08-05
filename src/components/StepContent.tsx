@@ -11,6 +11,7 @@ interface StepContentProps {
   content: Step;
   diffItem: DiffItem | string;
   isEditMode: boolean;
+  updateTuture: () => void;
 }
 /* tslint:disable-next-line */
 const TutureWrapper = styled.div`
@@ -39,19 +40,24 @@ const TutureContentHeader = styled.h1`
 
 export default class StepContent extends React.Component<StepContentProps> {
   render() {
-    const { content, diffItem, isEditMode } = this.props;
+    const { content, diffItem, isEditMode, updateTuture } = this.props;
     const { name, explain, diff, commit } = content;
     const anchorClassName = handleAnchor(name);
 
     return (
       <TutureWrapper id={anchorClassName} isEditMode={isEditMode}>
         <TutureContentHeader>{name}</TutureContentHeader>
-        <ExplainedItem explain={explain} isRoot={true} isEditMode={isEditMode}>
+        <ExplainedItem
+          explain={explain}
+          isRoot={true}
+          isEditMode={isEditMode}
+          updateTuture={updateTuture}>
           <StepDiff
             diff={diff}
             diffItem={diffItem}
             commit={commit}
             isEditMode={isEditMode}
+            updateTuture={updateTuture}
           />
         </ExplainedItem>
       </TutureWrapper>

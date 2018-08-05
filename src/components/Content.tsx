@@ -7,6 +7,7 @@ import { Tuture, Step } from '../types/';
 
 interface ContentProps extends AppProps {
   isEditMode: boolean;
+  updateTuture: () => void;
 }
 
 /* tslint:disable-next-line */
@@ -16,7 +17,7 @@ const ContentWrapper = styled.div`
 
 export default class Content extends React.Component<ContentProps> {
   public render() {
-    const { tuture, diff, isEditMode } = this.props;
+    const { tuture, diff, isEditMode, updateTuture } = this.props;
     const renderContent: any = [];
 
     (tuture as Tuture).steps.map((step, index: number) => {
@@ -27,6 +28,7 @@ export default class Content extends React.Component<ContentProps> {
           content={step}
           diffItem={diffItem}
           isEditMode={isEditMode}
+          updateTuture={updateTuture}
         />,
       );
     });
