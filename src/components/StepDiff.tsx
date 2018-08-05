@@ -3,13 +3,13 @@ import styled from 'styled-components';
 
 import ExplainedItem from './ExplainedItem';
 import DiffView from './DiffView';
-
 import { ChangedFile, File, DiffItem } from '../types';
 
 interface StepDiffProps {
   diff: ChangedFile[];
   commit: string;
   diffItem: DiffItem | string;
+  isEditMode: boolean;
 }
 
 interface ResObj {
@@ -17,17 +17,16 @@ interface ResObj {
 }
 
 /* tslint:disable-next-line */
-const Image = styled.img`
-  width: 10px;
-`;
-
-/* tslint:disable-next-line */
-const StepDiffExplain = styled.div`
-  font-family: STSongti-SC-Regular;
-  font-size: 18px;
-  line-height: 1.58;
-  margin: 16px 0;
-  color: rgba(0, 0, 0, 0.84);
+const DiffWrapper = styled.div`
+  padding: ${(props: { isEditMode: boolean }) =>
+    props.isEditMode ? '1px 24px' : '0px 24px'};
+  &:hover {
+    box-shadow: ${(props: { isEditMode: boolean }) =>
+      props.isEditMode
+        ? '0 1px 4px rgba(0, 0, 0, 0.04), inset 0 0 0 1px rgba(0, 0, 0, 0.09)'
+        : 'none'};
+    transition: box-shadow 100ms;
+  }
 `;
 
 export default class StepDiff extends React.PureComponent<StepDiffProps> {
@@ -72,7 +71,7 @@ export default class StepDiff extends React.PureComponent<StepDiffProps> {
   };
 
   render() {
-    const { diff, diffItem } = this.props;
+    const { diff, diffItem, isEditMode } = this.props;
     const needRenderFiles = this.getEndRenderContent(
       diff,
       (diffItem as DiffItem).diff,
@@ -84,8 +83,11 @@ export default class StepDiff extends React.PureComponent<StepDiffProps> {
         const fileName = this.extractFileName(fileCopy);
         const startLine = fileCopy.section ? fileCopy.section.start : 1;
         return (
-          <div key={i}>
-            <ExplainedItem explain={fileCopy.explain}>
+          <DiffWrapper key={i} isEditMode={isEditMode}>
+            <ExplainedItem
+              explain={fileCopy.explain}
+              isRoot={false}
+              isEditMode={isEditMode}>
               <article className="diff-file" key={i}>
                 <header className="diff-file-header">{fileName}</header>
                 <main>
@@ -101,7 +103,7 @@ export default class StepDiff extends React.PureComponent<StepDiffProps> {
                 </main>
               </article>
             </ExplainedItem>
-          </div>
+          </DiffWrapper>
         );
       }),
     ];

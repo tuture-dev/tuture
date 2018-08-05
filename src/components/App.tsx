@@ -9,9 +9,10 @@ import Content from './Content';
 import tutureUtilities from '../utils';
 import { Tuture, DiffItem } from '../types/';
 import { extractCommits, extractMetaData } from '../utils/extractors';
+import Header from './Header';
 
 interface AppState {
-  selectKey: number;
+  isEditMode: boolean;
 }
 
 export interface AppProps {
@@ -20,8 +21,8 @@ export interface AppProps {
 }
 
 /* tslint:disable-next-line */
-const AppWrapper = styled.div`
-  max-width: 970px;
+const AppContent = styled.div`
+  max-width: 1080px;
   margin: 0 auto;
   display: flex;
   justify-content: space-between;
@@ -52,11 +53,27 @@ injectGlobal`
 `;
 
 export default class App extends React.Component<AppProps, AppState> {
+  constructor(props: AppProps) {
+    super(props);
+
+    this.state = {
+      isEditMode: false,
+    };
+  }
+
+  toggleEditMode = () => {
+    const { isEditMode } = this.state;
+    this.setState({
+      isEditMode: !isEditMode,
+    });
+  };
+
   render() {
     let tutorialTitle: string;
     let bodyContent: React.ReactNode;
 
     let { tuture, diff } = this.props;
+    const { isEditMode } = this.state;
 
     tuture = JSON.parse(tuture as string);
     diff = JSON.parse(diff as string);
@@ -73,17 +90,21 @@ export default class App extends React.Component<AppProps, AppState> {
       tutorialTitle = extractMetaData(tuture as Tuture).name;
       bodyContent = [
         <SideBarLeft commits={commits} />,
-        <Content tuture={tuture} diff={diff} />,
+        <Content tuture={tuture} diff={diff} isEditMode={isEditMode} />,
       ];
     }
 
     return (
-      <AppWrapper>
+      <div>
         <Helmet>
           <title>{tutorialTitle}</title>
         </Helmet>
-        {bodyContent}
-      </AppWrapper>
+        <Header
+          toggleEditMode={this.toggleEditMode}
+          isEditMode={this.state.isEditMode}
+        />
+        <AppContent>{bodyContent}</AppContent>
+      </div>
     );
   }
 }

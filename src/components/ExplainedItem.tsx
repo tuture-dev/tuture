@@ -1,17 +1,27 @@
 import React, { PureComponent } from 'react';
 import { injectGlobal } from 'styled-components';
+import classnames from 'classnames';
 
 // @ts-ignore
 import Markdown from 'react-markdown';
 
 import tutureUtilities from '../utils';
-import { Explain, ExplainObj } from '../types';
+import { Explain } from '../types';
 
 interface ExplainedItemProps {
   explain: Explain;
+  isRoot: boolean;
+  isEditMode: boolean;
 }
 
+interface ExplainedItemState extends Explain {}
+
 injectGlobal`
+  .is-root {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+
   .markdown p, li {
     font-family: STSongti-SC-Regular;
     font-size: 18px;
@@ -98,53 +108,99 @@ injectGlobal`
   .markdown blockquote :not(pre) > code {
     font-style: normal;
   }
+
+  #editor {
+    margin: 0;
+    height: 100%;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    color: #333;
+  }
+
+  textarea, #editor > div {
+    display: inline-block;
+    width: 49%;
+    height: 100%;
+    vertical-align: top;
+    box-sizing: border-box;
+    padding: 0 20px;
+  }
+
+  textarea {
+    border: none;
+    border-right: 1px solid #ccc;
+    resize: none;
+    outline: none;
+    background-color: #f6f6f6;
+    font-size: 14px;
+    font-family: 'Monaco', courier, monospace;
+    padding: 20px;
+  }
+
+  code {
+    color: #f66;
+  }
 `;
 
-export default class ExplainedItem extends PureComponent<ExplainedItemProps> {
-  renderExplainStr = (explain: string): React.ReactNode => {
-    return <Markdown source={explain} className="markdown" />;
+export default class ExplainedItem extends PureComponent<
+  ExplainedItemProps,
+  ExplainedItemState
+> {
+  constructor(props: ExplainedItemProps) {
+    super(props);
+
+    const { explain } = this.props;
+    this.state = { ...explain };
+  }
+
+  handleUpdate = (e: React.FormEvent<HTMLTextAreaElement>) => {
+    this.setState({
+      [e.currentTarget.name]: e.currentTarget.value,
+    });
   };
 
-  renderExplainArr = (explain: string[]): React.ReactNodeArray => {
-    return explain.map((explainItem: string, i: number) => (
-      <Markdown key={i} source={explainItem} className="markdown" />
-    ));
+  renderExplainStr = (type: 'pre' | 'post'): React.ReactNode => {
+    const { isRoot } = this.props;
+    return (
+      <Markdown
+        source={this.state[type]}
+        className={classnames('markdown', { 'is-root': isRoot })}
+      />
+    );
   };
 
-  renderPreExplain = (
-    explain: Explain,
-  ): React.ReactNode | React.ReactNodeArray => {
-    if (tutureUtilities.isArray(explain)) {
-      return this.renderExplainArr(explain as string[]);
-    }
-
-    if (typeof explain === 'object') {
-      return this.renderPreExplain((explain as ExplainObj).pre);
-    }
-
-    return this.renderExplainStr(explain as string);
+  renderEditExplainStr = (type: 'pre' | 'post'): React.ReactNode => {
+    const { isRoot } = this.props;
+    return (
+      <div id="editor">
+        <textarea
+          name={type}
+          value={this.state[type]}
+          onInput={this.handleUpdate}
+        />
+        <Markdown
+          source={this.state[type]}
+          className={classnames('markdown', { 'is-root': isRoot })}
+        />
+      </div>
+    );
   };
 
-  renderPostExplain = (
-    explain: Explain,
-  ): React.ReactNode | React.ReactNodeArray => {
-    const explainObj = explain as ExplainObj;
-    if (explainObj) {
-      const post = explainObj.post;
-      if (tutureUtilities.isArray(post)) {
-        return this.renderExplainArr(post as string[]);
-      }
-      return this.renderExplainStr(post as string);
-    }
-    return null;
+  renderExplain = (
+    type: 'pre' | 'post',
+    isEditMode: boolean,
+  ): React.ReactNode => {
+    return isEditMode
+      ? this.renderEditExplainStr(type)
+      : this.renderExplainStr(type);
   };
 
   render() {
+    const { isEditMode } = this.props;
     return (
       <div>
-        {this.renderPreExplain(this.props.explain)}
+        {this.renderExplain('pre', isEditMode)}
         {this.props.children}
-        {this.renderPostExplain(this.props.explain)}
+        {this.renderExplain('post', isEditMode)}
       </div>
     );
   }
