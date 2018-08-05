@@ -1,5 +1,16 @@
 import React from 'react';
 import styled from 'styled-components';
+import {
+  DragDropContext,
+  DropResult,
+  DragStart,
+  Droppable,
+  DroppableProvided,
+  DroppableStateSnapshot,
+  Draggable,
+  DraggableProvided,
+  DraggableStateSnapshot,
+} from 'react-beautiful-dnd';
 
 import ExplainedItem from './ExplainedItem';
 import DiffView from './DiffView';
@@ -10,6 +21,10 @@ interface StepDiffProps {
   commit: string;
   diffItem: DiffItem | string;
   isEditMode: boolean;
+}
+
+interface StepDiffState {
+  needRenderFiles: (File & ChangedFile)[];
 }
 
 interface ResObj {
@@ -29,7 +44,26 @@ const DiffWrapper = styled.div`
   }
 `;
 
-export default class StepDiff extends React.PureComponent<StepDiffProps> {
+/* tslint:disable-next-line */
+const InnerList = styled.div``;
+
+export default class StepDiff extends React.PureComponent<
+  StepDiffProps,
+  StepDiffState
+> {
+  constructor(props: StepDiffProps) {
+    super(props);
+
+    const { diff, diffItem } = this.props;
+    const needRenderFiles = this.getEndRenderContent(
+      diff,
+      (diffItem as DiffItem).diff,
+    );
+    this.state = {
+      needRenderFiles,
+    };
+  }
+
   extractFileName({ type, oldPath, newPath }: File): string {
     return type === 'delete' ? oldPath : newPath;
   }
@@ -70,42 +104,108 @@ export default class StepDiff extends React.PureComponent<StepDiffProps> {
     return file.hunks;
   };
 
-  render() {
-    const { diff, diffItem, isEditMode } = this.props;
-    const needRenderFiles = this.getEndRenderContent(
-      diff,
-      (diffItem as DiffItem).diff,
+  reorder = (list: any[], startIndex: number, endIndex: number): any[] => {
+    const result = Array.from(list);
+    const [removed] = result.splice(startIndex, 1);
+    result.splice(endIndex, 0, removed);
+
+    return result;
+  };
+
+  onDragStart = (initial: DragStart) => {
+    console.log('hhhh');
+    // Add a little vibration if the browser supports it.
+    // Add's a nice little physical feedback
+    if (window.navigator.vibrate) {
+      window.navigator.vibrate(100);
+    }
+  };
+
+  onDragEnd = (result: DropResult) => {
+    // dropped outside the list
+    if (!result.destination) {
+      return;
+    }
+
+    if (result.destination.index === result.source.index) {
+      return;
+    }
+
+    const needRenderFiles = this.reorder(
+      this.state.needRenderFiles,
+      result.source.index,
+      result.destination.index,
     );
 
-    return [
-      needRenderFiles.map((file: File & ChangedFile, i) => {
-        const fileCopy: File & ChangedFile = JSON.parse(JSON.stringify(file));
-        const fileName = this.extractFileName(fileCopy);
-        const startLine = fileCopy.section ? fileCopy.section.start : 1;
-        return (
-          <DiffWrapper key={i} isEditMode={isEditMode}>
-            <ExplainedItem
-              explain={fileCopy.explain}
-              isRoot={false}
-              isEditMode={isEditMode}>
-              <article className="diff-file" key={i}>
-                <header className="diff-file-header">{fileName}</header>
-                <main>
-                  <DiffView
-                    key={i}
-                    lang={fileName
-                      .split('.')
-                      .pop()
-                      .toLowerCase()}
-                    hunks={this.getRenderedHunks(fileCopy)}
-                    startLine={startLine}
-                  />
-                </main>
-              </article>
-            </ExplainedItem>
-          </DiffWrapper>
-        );
-      }),
-    ];
+    this.setState({
+      needRenderFiles,
+    });
+  };
+
+  render() {
+    const { needRenderFiles } = this.state;
+    const { isEditMode } = this.props;
+
+    const renderList = needRenderFiles.map((file: File & ChangedFile, i) => {
+      const fileCopy: File & ChangedFile = JSON.parse(JSON.stringify(file));
+      const fileName = this.extractFileName(fileCopy);
+      const startLine = fileCopy.section ? fileCopy.section.start : 1;
+      return (
+        <Draggable key={i} draggableId={file.file} index={i}>
+          {(
+            dragProvided: DraggableProvided,
+            dragSnapshot: DraggableStateSnapshot,
+          ) => (
+            <DiffWrapper
+              isEditMode={isEditMode}
+              innerRef={dragProvided.innerRef}
+              {...dragProvided.draggableProps}
+              {...dragProvided.dragHandleProps}>
+              <ExplainedItem
+                explain={fileCopy.explain}
+                isRoot={false}
+                isEditMode={isEditMode}>
+                <article className="diff-file" key={i}>
+                  <header className="diff-file-header">{fileName}</header>
+                  <main>
+                    <DiffView
+                      key={i}
+                      lang={fileName
+                        .split('.')
+                        .pop()
+                        .toLowerCase()}
+                      hunks={this.getRenderedHunks(fileCopy)}
+                      startLine={startLine}
+                    />
+                  </main>
+                </article>
+              </ExplainedItem>
+            </DiffWrapper>
+          )}
+        </Draggable>
+      );
+    });
+
+    return (
+      <DragDropContext
+        onDragStart={this.onDragStart}
+        onDragEnd={this.onDragEnd}>
+        <Droppable droppableId="diff" isDropDisabled={!isEditMode}>
+          {(
+            dropProvided: DroppableProvided,
+            dropSnapshot: DroppableStateSnapshot,
+          ) => (
+            <div>
+              <InnerList
+                {...dropProvided.droppableProps}
+                innerRef={dropProvided.innerRef}>
+                {renderList}
+                {dropProvided.placeholder}
+              </InnerList>
+            </div>
+          )}
+        </Droppable>
+      </DragDropContext>
+    );
   }
 }
