@@ -1,12 +1,12 @@
 import React, { PureComponent } from 'react';
-import { injectGlobal } from 'styled-components';
+import styled, { injectGlobal } from 'styled-components';
 import classnames from 'classnames';
 
 // @ts-ignore
 import Markdown from 'react-markdown';
 
-import tutureUtilities from '../utils';
 import { Explain } from '../types';
+import { isClientOrServer } from '../utils/common';
 
 interface ExplainedItemProps {
   explain: Explain;
@@ -14,14 +14,14 @@ interface ExplainedItemProps {
   isEditMode: boolean;
 }
 
-interface ExplainedItemState extends Explain {}
+interface ExplainedItemState extends Explain {
+  nowTab: 'edit' | 'preview';
+  preHeight: string;
+  postHeight: string;
+  [key: string]: string;
+}
 
 injectGlobal`
-  .is-root {
-    padding-left: 24px;
-    padding-right: 24px;
-  }
-
   .markdown p, li {
     font-family: STSongti-SC-Regular;
     font-size: 18px;
@@ -109,36 +109,49 @@ injectGlobal`
     font-style: normal;
   }
 
-  #editor {
-    margin: 0;
-    height: 100%;
-    font-family: 'Helvetica Neue', Arial, sans-serif;
-    color: #333;
+  .is-root {
+    padding: 0 24px 12px;
   }
 
-  textarea, #editor > div {
-    display: inline-block;
-    width: 49%;
-    height: 100%;
-    vertical-align: top;
-    box-sizing: border-box;
-    padding: 0 20px;
+  .editor > .is-root {
+    padding-left: 0;
+    padding-right: 0;
   }
 
   textarea {
-    border: none;
-    border-right: 1px solid #ccc;
-    resize: none;
-    outline: none;
-    background-color: #f6f6f6;
-    font-size: 14px;
+    display: block;
+    width: 100%;
+    height: auto;
+    overflow-y: hidden;
+    vertical-align: top;
+    box-sizing: border-box;
     font-family: 'Monaco', courier, monospace;
     padding: 20px;
+    resize: none;
+    font-size: 14px;
+    border: 1px solid #d1d5da;
+    box-shadow: inset 0 1px 2px rgba(27,31,35,0.075);
   }
+`;
 
-  code {
-    color: #f66;
-  }
+/* tslint:disable-next-line */
+const Button = styled.button`
+  border: ${(props: { selected: boolean }) =>
+    props.selected ? '1px solid #03a87c;' : '1px solid rgba(0, 0, 0, 0.15)'};
+  border-radius: 4px;
+  height: 37px;
+  line-height: 37px;
+  padding: 0 18px;
+  font-size: 17px;
+  color: ${(props: { selected: boolean }) =>
+    props.selected ? '#03a87c' : 'rgba(0,0,0,.54)'};
+  background: rgba(0, 0, 0, 0);
+  margin-right: 8px;
+`;
+
+/* tslint:disable-next-line */
+const TabWrapper = styled.div`
+  margin-bottom: 10px;
 `;
 
 export default class ExplainedItem extends PureComponent<
@@ -149,14 +162,13 @@ export default class ExplainedItem extends PureComponent<
     super(props);
 
     const { explain } = this.props;
-    this.state = { ...explain };
+    this.state = {
+      ...explain,
+      nowTab: 'edit',
+      preHeight: '200px',
+      postHeight: '200px',
+    };
   }
-
-  handleUpdate = (e: React.FormEvent<HTMLTextAreaElement>) => {
-    this.setState({
-      [e.currentTarget.name]: e.currentTarget.value,
-    });
-  };
 
   renderExplainStr = (type: 'pre' | 'post'): React.ReactNode => {
     const { isRoot } = this.props;
@@ -168,19 +180,49 @@ export default class ExplainedItem extends PureComponent<
     );
   };
 
+  handleChange = (e: React.FormEvent<HTMLTextAreaElement>) => {
+    const { name, value, scrollHeight } = e.currentTarget;
+    const explainState = { [name]: value } as Explain;
+    this.setState({ ...explainState, [`${name}Height`]: scrollHeight });
+  };
+
+  handleTabClick = (nowTab: 'edit' | 'preview') => {
+    this.setState({ nowTab });
+  };
+
   renderEditExplainStr = (type: 'pre' | 'post'): React.ReactNode => {
     const { isRoot } = this.props;
+    const { nowTab } = this.state;
     return (
-      <div id="editor">
-        <textarea
-          name={type}
-          value={this.state[type]}
-          onInput={this.handleUpdate}
-        />
-        <Markdown
-          source={this.state[type]}
-          className={classnames('markdown', { 'is-root': isRoot })}
-        />
+      <div className={classnames('editor', { 'is-root': isRoot })}>
+        <TabWrapper>
+          <Button
+            name="edit"
+            onClick={() => this.handleTabClick('edit')}
+            selected={nowTab === 'edit'}>
+            编写
+          </Button>
+          <Button
+            name="preview"
+            onClick={() => this.handleTabClick('preview')}
+            selected={nowTab === 'preview'}>
+            预览
+          </Button>
+        </TabWrapper>
+        {nowTab === 'edit' ? (
+          <textarea
+            name={type}
+            value={this.state[type]}
+            placeholder="写一点解释..."
+            onChange={this.handleChange}
+            style={{ height: this.state[`${type}Height`] }}
+          />
+        ) : (
+          <Markdown
+            source={this.state[type]}
+            className={classnames('markdown', { 'is-root': isRoot })}
+          />
+        )}
       </div>
     );
   };

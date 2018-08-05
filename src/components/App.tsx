@@ -57,7 +57,7 @@ export default class App extends React.Component<AppProps, AppState> {
     super(props);
 
     this.state = {
-      isEditMode: false,
+      isEditMode: true,
     };
   }
 

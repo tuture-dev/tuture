@@ -19,7 +19,7 @@ interface ResObj {
 /* tslint:disable-next-line */
 const DiffWrapper = styled.div`
   padding: ${(props: { isEditMode: boolean }) =>
-    props.isEditMode ? '1px 24px' : '0px 24px'};
+    props.isEditMode ? '24px' : '0px 24px'};
   &:hover {
     box-shadow: ${(props: { isEditMode: boolean }) =>
       props.isEditMode
