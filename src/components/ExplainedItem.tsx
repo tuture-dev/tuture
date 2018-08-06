@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import styled, { injectGlobal } from 'styled-components';
 import classnames from 'classnames';
+import _ from 'lodash';
 
 // @ts-ignore
 import Markdown from 'react-markdown';
@@ -12,14 +13,21 @@ interface ExplainedItemProps {
   explain: Explain;
   isRoot: boolean;
   isEditMode: boolean;
-  updateTuture: () => void;
+  commit: string;
+  diffKey: string;
+  updateTutureExplain: (
+    commit: string,
+    diffKey: string,
+    name: 'pre' | 'post',
+    value: string,
+  ) => void;
 }
 
 interface ExplainedItemState extends Explain {
   nowTab: 'edit' | 'preview';
-  preHeight: string;
-  postHeight: string;
-  [key: string]: string;
+  preHeight: number;
+  postHeight: number;
+  [key: string]: string | number;
 }
 
 injectGlobal`
@@ -154,9 +162,9 @@ const Button = styled.button`
     props.selected ? '#03a87c' : 'rgba(0,0,0,.54)'};
   background: rgba(0, 0, 0, 0);
   margin-right: 8px;
+  outline: none;
   &: hover {
     cursor: pointer;
-    outline: none;
   }
 `;
 
@@ -176,8 +184,8 @@ export default class ExplainedItem extends PureComponent<
     this.state = {
       ...explain,
       nowTab: 'edit',
-      preHeight: 'auto',
-      postHeight: 'auto',
+      preHeight: 200,
+      postHeight: 200,
     };
   }
 
@@ -194,7 +202,12 @@ export default class ExplainedItem extends PureComponent<
   handleChange = (e: React.FormEvent<HTMLTextAreaElement>) => {
     const { name, value, scrollHeight } = e.currentTarget;
     const explainState = { [name]: value } as Explain;
-    this.setState({ ...explainState, [`${name}Height`]: scrollHeight });
+    this.setState({
+      ...explainState,
+      [`${name}Height`]: scrollHeight <= 200 ? 200 : scrollHeight,
+    });
+    const { updateTutureExplain, commit, diffKey } = this.props;
+    updateTutureExplain(commit, diffKey, name as 'pre' | 'post', value);
   };
 
   handleTabClick = (nowTab: 'edit' | 'preview') => {

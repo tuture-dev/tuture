@@ -7,17 +7,33 @@ import { Tuture, Step } from '../types/';
 
 interface ContentProps extends AppProps {
   isEditMode: boolean;
-  updateTuture: () => void;
+  updateTutureExplain: (
+    commit: string,
+    diffKey: string,
+    name: 'pre' | 'post',
+    value: string,
+  ) => void;
+  updateTutureDiffOrder: (
+    commit: string,
+    sourceIndex: number,
+    destinationIndex: number,
+  ) => void;
 }
 
 /* tslint:disable-next-line */
 const ContentWrapper = styled.div`
-  margin-top: -44px;
+  margin-top: -32px;
 `;
 
 export default class Content extends React.Component<ContentProps> {
   public render() {
-    const { tuture, diff, isEditMode, updateTuture } = this.props;
+    const {
+      tuture,
+      diff,
+      isEditMode,
+      updateTutureExplain,
+      updateTutureDiffOrder,
+    } = this.props;
     const renderContent: any = [];
 
     (tuture as Tuture).steps.map((step, index: number) => {
@@ -28,7 +44,8 @@ export default class Content extends React.Component<ContentProps> {
           content={step}
           diffItem={diffItem}
           isEditMode={isEditMode}
-          updateTuture={updateTuture}
+          updateTutureExplain={updateTutureExplain}
+          updateTutureDiffOrder={updateTutureDiffOrder}
         />,
       );
     });

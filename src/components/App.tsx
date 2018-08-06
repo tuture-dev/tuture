@@ -2,14 +2,16 @@
 import React from 'react';
 import styled, { injectGlobal } from 'styled-components';
 import { Helmet } from 'react-helmet';
+import _ from 'lodash';
+import fetch from 'isomorphic-fetch';
 
 import SideBarLeft from './SideBarLeft';
 import Content from './Content';
-
 import tutureUtilities from '../utils';
 import { Tuture, DiffItem } from '../types/';
 import { extractCommits, extractMetaData } from '../utils/extractors';
 import Header from './Header';
+import { reorder } from '../utils/common';
 
 export interface AppProps {
   tuture?: Tuture | string;
@@ -58,6 +60,7 @@ export default class App extends React.Component<AppProps, AppState> {
     super(props);
 
     let { tuture, diff } = this.props;
+    ``;
     tuture = JSON.parse(tuture as string);
     diff = JSON.parse(diff as string);
     this.state = {
@@ -67,15 +70,64 @@ export default class App extends React.Component<AppProps, AppState> {
     };
   }
 
+  saveTuture = () => {
+    const { tuture } = this.state;
+    console.log(tuture);
+    fetch('http://localhost:3000/save', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+      body: JSON.stringify(tuture),
+    });
+  };
+
   toggleEditMode = () => {
     const { isEditMode } = this.state;
+    if (isEditMode) {
+      this.saveTuture();
+    }
     this.setState({
       isEditMode: !isEditMode,
     });
   };
 
-  updateTuture = () => {
-    this.setState;
+  updateTutureExplain = (
+    commit: string,
+    diffKey: string,
+    name: 'pre' | 'post',
+    value: string,
+  ) => {
+    let { tuture } = this.state;
+    tuture = tuture as Tuture;
+    const stepIndex = _.findIndex(tuture.steps, (step) => {
+      return step.commit === commit;
+    });
+    const step = tuture.steps[stepIndex];
+    if (diffKey === 'root') {
+      step.explain = { ...step.explain, [name]: value };
+    } else {
+      const diff = step.diff[parseInt(diffKey, 10)];
+      diff.explain = { ...diff.explain, [name]: value };
+    }
+    console.log('tuture', tuture);
+    this.setState({ tuture });
+  };
+
+  updateTutureDiffOrder = (
+    commit: string,
+    sourceIndex: number,
+    destinationIndex: number,
+  ) => {
+    let { tuture } = this.state;
+    tuture = tuture as Tuture;
+    const stepIndex = _.findIndex(tuture.steps, (step) => {
+      return step.commit === commit;
+    });
+    const step = tuture.steps[stepIndex];
+    step.diff = reorder(step.diff, sourceIndex, destinationIndex);
+    this.setState({ tuture });
   };
 
   render() {
@@ -103,7 +155,8 @@ export default class App extends React.Component<AppProps, AppState> {
         <Content
           tuture={tuture}
           diff={diff}
-          updateTuture={this.updateTuture}
+          updateTutureExplain={this.updateTutureExplain}
+          updateTutureDiffOrder={this.updateTutureDiffOrder}
           isEditMode={isEditMode}
           key="Content"
         />,

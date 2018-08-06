@@ -11,7 +11,17 @@ interface StepContentProps {
   content: Step;
   diffItem: DiffItem | string;
   isEditMode: boolean;
-  updateTuture: () => void;
+  updateTutureExplain: (
+    commit: string,
+    diffKey: string,
+    name: 'pre' | 'post',
+    value: string,
+  ) => void;
+  updateTutureDiffOrder: (
+    commit: string,
+    sourceIndex: number,
+    destinationIndex: number,
+  ) => void;
 }
 /* tslint:disable-next-line */
 const TutureWrapper = styled.div`
@@ -32,7 +42,6 @@ const TutureContentHeader = styled.h1`
   font-family: STSongti-SC-Bold;
   font-size: 45px;
   color: rgba(0, 0, 0, 0.84);
-  margin-top: 44px;
   margin-bottom: 14px;
   padding-left: 20px;
   padding-right: 20px;
@@ -40,7 +49,13 @@ const TutureContentHeader = styled.h1`
 
 export default class StepContent extends React.Component<StepContentProps> {
   render() {
-    const { content, diffItem, isEditMode, updateTuture } = this.props;
+    const {
+      content,
+      diffItem,
+      isEditMode,
+      updateTutureExplain,
+      updateTutureDiffOrder,
+    } = this.props;
     const { name, explain, diff, commit } = content;
     const anchorClassName = handleAnchor(name);
 
@@ -51,13 +66,16 @@ export default class StepContent extends React.Component<StepContentProps> {
           explain={explain}
           isRoot={true}
           isEditMode={isEditMode}
-          updateTuture={updateTuture}>
+          commit={commit}
+          diffKey="root"
+          updateTutureExplain={updateTutureExplain}>
           <StepDiff
             diff={diff}
             diffItem={diffItem}
             commit={commit}
             isEditMode={isEditMode}
-            updateTuture={updateTuture}
+            updateTutureExplain={updateTutureExplain}
+            updateTutureDiffOrder={updateTutureDiffOrder}
           />
         </ExplainedItem>
       </TutureWrapper>

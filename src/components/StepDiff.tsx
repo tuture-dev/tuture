@@ -15,13 +15,24 @@ import {
 import ExplainedItem from './ExplainedItem';
 import DiffView from './DiffView';
 import { ChangedFile, File, DiffItem } from '../types';
+import { reorder } from '../utils/common';
 
 interface StepDiffProps {
   diff: ChangedFile[];
   commit: string;
   diffItem: DiffItem | string;
   isEditMode: boolean;
-  updateTuture: () => void;
+  updateTutureExplain: (
+    commit: string,
+    diffKey: string,
+    name: 'pre' | 'post',
+    value: string,
+  ) => void;
+  updateTutureDiffOrder: (
+    commit: string,
+    sourceIndex: number,
+    destinationIndex: number,
+  ) => void;
 }
 
 interface StepDiffState {
@@ -105,14 +116,6 @@ export default class StepDiff extends React.PureComponent<
     return file.hunks;
   };
 
-  reorder = (list: any[], startIndex: number, endIndex: number): any[] => {
-    const result = Array.from(list);
-    const [removed] = result.splice(startIndex, 1);
-    result.splice(endIndex, 0, removed);
-
-    return result;
-  };
-
   onDragStart = (initial: DragStart) => {
     console.log('hhhh');
     // Add a little vibration if the browser supports it.
@@ -132,8 +135,15 @@ export default class StepDiff extends React.PureComponent<
       return;
     }
 
-    const needRenderFiles = this.reorder(
+    const needRenderFiles = reorder(
       this.state.needRenderFiles,
+      result.source.index,
+      result.destination.index,
+    );
+
+    const { updateTutureDiffOrder, commit } = this.props;
+    updateTutureDiffOrder(
+      commit,
       result.source.index,
       result.destination.index,
     );
@@ -145,7 +155,7 @@ export default class StepDiff extends React.PureComponent<
 
   render() {
     const { needRenderFiles } = this.state;
-    const { isEditMode } = this.props;
+    const { isEditMode, updateTutureExplain, commit } = this.props;
 
     const renderList = needRenderFiles.map((file: File & ChangedFile, i) => {
       const fileCopy: File & ChangedFile = JSON.parse(JSON.stringify(file));
@@ -165,6 +175,9 @@ export default class StepDiff extends React.PureComponent<
               <ExplainedItem
                 explain={fileCopy.explain}
                 isRoot={false}
+                commit={commit}
+                diffKey={String(i)}
+                updateTutureExplain={updateTutureExplain}
                 isEditMode={isEditMode}>
                 <article className="diff-file" key={i}>
                   <header className="diff-file-header">{fileName}</header>

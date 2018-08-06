@@ -41,9 +41,9 @@ const Button = styled.button`
     props.isEditMode ? 'transparent' : 'rgba(0, 0, 0, 0.68)'};
   background-color: ${(props: { isEditMode: boolean }) =>
     props.isEditMode ? 'rgba(0,0,0,.54)' : 'white'};
+  outline: none;
   &: hover {
     cursor: pointer;
-    outline: none;
   }
 `;
 
