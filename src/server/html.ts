@@ -5,15 +5,15 @@ function escape(s: any) {
     .replace(/>/g, '&gt;');
 }
 
-import { Tuture } from '../types/';
-
 const html = ({
   body,
+  title,
   css,
   tuture,
   diff,
 }: {
   body: string;
+  title: string;
   css: string;
   tuture: string;
   diff: string;
@@ -24,7 +24,7 @@ const html = ({
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>My Awesome Tutorial</title>
+    <title>${title}</title>
     ${css}
     <script>
       window.__APP_INITIAL_TUTURE__ = ${escape(tuture)};
