@@ -408,11 +408,11 @@ export default class ExplainedItem extends PureComponent<
   render() {
     const { isEditMode } = this.props;
     return (
-      <div>
+      <React.Fragment>
         {this.renderExplain('pre', isEditMode)}
         {this.props.children}
         {this.renderExplain('post', isEditMode)}
-      </div>
+      </React.Fragment>
     );
   }
 }
