@@ -13,8 +13,8 @@ import {
 } from 'react-beautiful-dnd';
 
 import ExplainedItem from './ExplainedItem';
-import DiffView from './DiffView';
-import { ChangedFile, File, DiffItem } from '../types';
+import DiffView, { File, DiffItem } from './DiffView';
+import { ChangedFile } from '../types';
 import { reorder } from '../utils/common';
 
 interface StepDiffProps {
@@ -36,7 +36,7 @@ interface StepDiffProps {
 }
 
 interface StepDiffState {
-  needRenderFiles: (File & ChangedFile)[];
+  filesToBeRendered: (File & ChangedFile)[];
 }
 
 interface ResObj {
@@ -67,53 +67,41 @@ export default class StepDiff extends React.PureComponent<
     super(props);
 
     const { diff, diffItem } = this.props;
-    const needRenderFiles = this.getEndRenderContent(
+    const filesToBeRendered = this.getRenderedContent(
       diff,
       (diffItem as DiffItem).diff,
     );
     this.state = {
-      needRenderFiles,
+      filesToBeRendered,
     };
   }
 
-  extractFileName({ type, oldPath, newPath }: File): string {
-    return type === 'delete' ? oldPath : newPath;
-  }
+  getRenderedContent = (
+    diff: ChangedFile[],
+    files: File[],
+  ): (ChangedFile & File)[] => {
+    const filesMap: { [path: string]: File } = {};
+    files.forEach((file) => {
+      filesMap[file.to] = file;
+    });
 
-  mapArrItemToObjValue = (property: string, arr: any[]): ResObj => {
-    const resObj: ResObj = {};
-
-    if (Array.isArray(arr)) {
-      arr.map((item) => {
-        resObj[item[property]] = item;
-      });
-    }
-
-    return resObj;
-  };
-
-  getEndRenderContent = (diff: ChangedFile[], files: File[]): any[] => {
-    // use fileName key map it belongs obj
-    const mapedFiles = this.mapArrItemToObjValue('newPath', files);
-    const endRenderContent = diff.map((item) => {
+    return diff.map((item) => {
       const fileName = item.file;
       return {
         ...item,
-        ...mapedFiles[fileName],
+        ...filesMap[fileName],
       };
     });
-
-    return endRenderContent;
   };
 
   getRenderedHunks = (file: File & ChangedFile) => {
     if (file.section) {
-      const changes = file.hunks[0].changes.slice(
+      const changes = file.chunks[0].changes.slice(
         ...[file.section.start - 1, file.section.end],
       );
-      file.hunks[0].changes = changes;
+      file.chunks[0].changes = changes;
     }
-    return file.hunks;
+    return file.chunks;
   };
 
   onDragStart = (initial: DragStart) => {
@@ -134,8 +122,8 @@ export default class StepDiff extends React.PureComponent<
       return;
     }
 
-    const needRenderFiles = reorder(
-      this.state.needRenderFiles,
+    const filesToBeRendered = reorder(
+      this.state.filesToBeRendered,
       result.source.index,
       result.destination.index,
     );
@@ -148,17 +136,17 @@ export default class StepDiff extends React.PureComponent<
     );
 
     this.setState({
-      needRenderFiles,
+      filesToBeRendered,
     });
   };
 
   render() {
-    const { needRenderFiles } = this.state;
+    const { filesToBeRendered } = this.state;
     const { isEditMode, updateTutureExplain, commit } = this.props;
 
-    const renderList = needRenderFiles.map((file: File & ChangedFile, i) => {
+    const renderList = filesToBeRendered.map((file: File & ChangedFile, i) => {
       const fileCopy: File & ChangedFile = JSON.parse(JSON.stringify(file));
-      const fileName = this.extractFileName(fileCopy);
+      const fileName = fileCopy.file;
       const startLine = fileCopy.section ? fileCopy.section.start : 1;
       return (
         <Draggable key={i} draggableId={file.file} index={i}>
@@ -187,7 +175,7 @@ export default class StepDiff extends React.PureComponent<
                         .split('.')
                         .pop()
                         .toLowerCase()}
-                      hunks={this.getRenderedHunks(fileCopy)}
+                      chunks={this.getRenderedHunks(fileCopy)}
                       startLine={startLine}
                     />
                   </main>

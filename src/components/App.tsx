@@ -5,9 +5,10 @@ import _ from 'lodash';
 import fetch from 'isomorphic-fetch';
 
 import SideBarLeft from './SideBarLeft';
+import { DiffItem } from './DiffView';
 import Content from './Content';
 import tutureUtilities from '../utils';
-import { Tuture, DiffItem } from '../types/';
+import { Tuture } from '../types/';
 import { extractCommits, extractMetaData } from '../utils/extractors';
 import Header from './Header';
 import { reorder } from '../utils/common';

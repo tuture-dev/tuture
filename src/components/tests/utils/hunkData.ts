@@ -1,22 +1,22 @@
-import { Hunk, ChangedFile } from '../../../types';
+import { Chunk } from '../../DiffView';
+import { ChangedFile } from '../../../types';
 
-const hunk: Hunk = {
+const chunk: Chunk = {
   changes: [
     {
-      type: 'insert',
+      type: 'add',
+      add: true,
       content: 'I am the coolest one',
-      isInsert: true,
-      lineNumber: 1,
+      ln: 1,
     },
     {
-      type: 'insert',
+      type: 'add',
+      add: true,
       content: 'I am the coolest one',
-      isInsert: true,
-      lineNumber: 2,
+      ln: 2,
     },
   ],
   content: 'I am the coolest one',
-  isPlain: false,
   newStart: 1,
   oldStart: 0,
   newLines: 5,
@@ -33,4 +33,4 @@ const diffItem: ChangedFile = {
 const diff: ChangedFile[] = [];
 Array(10).map(() => diff.push(diffItem));
 
-export { hunk, diff };
+export { chunk, diff };

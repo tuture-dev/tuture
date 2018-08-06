@@ -1,10 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
 
+import { DiffItem } from './DiffView';
 import ExplainedItem from './ExplainedItem';
 import StepDiff from './StepDiff';
 
-import { Step, DiffItem } from '../types';
+import { Step } from '../types';
 import { handleAnchor } from '../utils/common';
 
 interface StepContentProps {
