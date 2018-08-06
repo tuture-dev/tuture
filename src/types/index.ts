@@ -1,9 +1,7 @@
-interface ExplainObj {
-  pre?: string | string[];
-  post?: string | string[];
+interface Explain {
+  pre?: string;
+  post?: string;
 }
-
-type Explain = string | string[] | ExplainObj;
 
 interface CodeSection {
   start?: number;
@@ -12,7 +10,7 @@ interface CodeSection {
 
 interface ChangedFile {
   file: string;
-  explain?: string;
+  explain?: Explain;
   section?: CodeSection;
 }
 
@@ -31,7 +29,7 @@ interface Commit {
 }
 
 interface Step extends Commit {
-  explain?: string;
+  explain?: Explain;
   diff: ChangedFile[];
 }
 
@@ -76,7 +74,6 @@ interface DiffItem {
 
 export {
   Explain,
-  ExplainObj,
   CodeSection,
   ChangedFile,
   TutureMeta,

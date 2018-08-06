@@ -1,14 +1,33 @@
 import React, { PureComponent } from 'react';
-import { injectGlobal } from 'styled-components';
+import styled, { injectGlobal } from 'styled-components';
+import classnames from 'classnames';
+import _ from 'lodash';
 
 // @ts-ignore
 import Markdown from 'react-markdown';
 
-import tutureUtilities from '../utils';
-import { Explain, ExplainObj } from '../types';
+import { Explain } from '../types';
+import { isClientOrServer } from '../utils/common';
 
 interface ExplainedItemProps {
   explain: Explain;
+  isRoot: boolean;
+  isEditMode: boolean;
+  commit: string;
+  diffKey: string;
+  updateTutureExplain: (
+    commit: string,
+    diffKey: string,
+    name: 'pre' | 'post',
+    value: string,
+  ) => void;
+}
+
+interface ExplainedItemState extends Explain {
+  nowTab: 'edit' | 'preview';
+  preHeight: number;
+  postHeight: number;
+  [key: string]: string | number;
 }
 
 injectGlobal`
@@ -98,53 +117,156 @@ injectGlobal`
   .markdown blockquote :not(pre) > code {
     font-style: normal;
   }
+
+  .is-root {
+    padding: 0 24px 12px;
+  }
+
+  .editor > .is-root {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  textarea {
+    display: block;
+    width: 100%;
+    height: auto;
+    overflow-y: hidden;
+    vertical-align: top;
+    box-sizing: border-box;
+    font-family: 'Monaco', courier, monospace;
+    padding: 20px;
+    resize: none;
+    font-size: 14px;
+    border: 1px solid #d1d5da;
+    box-shadow: inset 0 1px 2px rgba(27,31,35,0.075);
+    &: focus {
+      border-color: #03a87c;
+      outline: none;
+      box-shadow: inset 0 1px 2px rgba(27,31,35,0.075), 0 0 0 0.2em rgba(3,168,124,0.3);
+    }
+  }
 `;
 
-export default class ExplainedItem extends PureComponent<ExplainedItemProps> {
-  renderExplainStr = (explain: string): React.ReactNode => {
-    return <Markdown source={explain} className="markdown" />;
+/* tslint:disable-next-line */
+const Button = styled.button`
+  border: ${(props: { selected: boolean }) =>
+    props.selected ? '1px solid #03a87c;' : '1px solid rgba(0, 0, 0, 0.15)'};
+  border-radius: 4px;
+  height: 30px;
+  line-height: 30px;
+  padding: 0 18px;
+  font-size: 12px;
+  box-sizing: border-box;
+  color: ${(props: { selected: boolean }) =>
+    props.selected ? '#03a87c' : 'rgba(0,0,0,.54)'};
+  background: rgba(0, 0, 0, 0);
+  margin-right: 8px;
+  outline: none;
+  &: hover {
+    cursor: pointer;
+  }
+`;
+
+/* tslint:disable-next-line */
+const TabWrapper = styled.div`
+  margin-bottom: 10px;
+`;
+
+export default class ExplainedItem extends PureComponent<
+  ExplainedItemProps,
+  ExplainedItemState
+> {
+  constructor(props: ExplainedItemProps) {
+    super(props);
+
+    const { explain } = this.props;
+    this.state = {
+      ...explain,
+      nowTab: 'edit',
+      preHeight: 200,
+      postHeight: 200,
+    };
+  }
+
+  renderExplainStr = (type: 'pre' | 'post'): React.ReactNode => {
+    const { isRoot } = this.props;
+    return (
+      <Markdown
+        source={this.state[type]}
+        className={classnames('markdown', { 'is-root': isRoot })}
+      />
+    );
   };
 
-  renderExplainArr = (explain: string[]): React.ReactNodeArray => {
-    return explain.map((explainItem: string, i: number) => (
-      <Markdown key={i} source={explainItem} className="markdown" />
-    ));
+  handleChange = (e: React.FormEvent<HTMLTextAreaElement>) => {
+    const { name, value, scrollHeight } = e.currentTarget;
+    const explainState = { [name]: value } as Explain;
+    this.setState({
+      ...explainState,
+      [`${name}Height`]: scrollHeight <= 200 ? 200 : scrollHeight,
+    });
+    const { updateTutureExplain, commit, diffKey } = this.props;
+    updateTutureExplain(commit, diffKey, name as 'pre' | 'post', value);
   };
 
-  renderPreExplain = (
-    explain: Explain,
-  ): React.ReactNode | React.ReactNodeArray => {
-    if (tutureUtilities.isArray(explain)) {
-      return this.renderExplainArr(explain as string[]);
-    }
-
-    if (typeof explain === 'object') {
-      return this.renderPreExplain((explain as ExplainObj).pre);
-    }
-
-    return this.renderExplainStr(explain as string);
+  handleTabClick = (nowTab: 'edit' | 'preview') => {
+    this.setState({ nowTab });
   };
 
-  renderPostExplain = (
-    explain: Explain,
-  ): React.ReactNode | React.ReactNodeArray => {
-    const explainObj = explain as ExplainObj;
-    if (explainObj) {
-      const post = explainObj.post;
-      if (tutureUtilities.isArray(post)) {
-        return this.renderExplainArr(post as string[]);
-      }
-      return this.renderExplainStr(post as string);
-    }
-    return null;
+  renderEditExplainStr = (type: 'pre' | 'post'): React.ReactNode => {
+    const { isRoot } = this.props;
+    const { nowTab } = this.state;
+    return (
+      <div className={classnames('editor', { 'is-root': isRoot })}>
+        <TabWrapper>
+          <Button
+            name="edit"
+            onClick={() => this.handleTabClick('edit')}
+            selected={nowTab === 'edit'}>
+            编写
+          </Button>
+          <Button
+            name="preview"
+            onClick={() => this.handleTabClick('preview')}
+            selected={nowTab === 'preview'}>
+            预览
+          </Button>
+        </TabWrapper>
+        {nowTab === 'edit' ? (
+          <textarea
+            name={type}
+            value={this.state[type]}
+            placeholder="写一点解释..."
+            onChange={this.handleChange}
+            style={{ height: this.state[`${type}Height`] }}
+          />
+        ) : (
+          <Markdown
+            source={this.state[type]}
+            className={classnames('markdown', { 'is-root': isRoot })}
+          />
+        )}
+      </div>
+    );
+  };
+
+  renderExplain = (
+    type: 'pre' | 'post',
+    isEditMode: boolean,
+  ): React.ReactNode => {
+    return isEditMode
+      ? this.renderEditExplainStr(type)
+      : this.renderExplainStr(type);
   };
 
   render() {
+    const { isEditMode } = this.props;
     return (
       <div>
-        {this.renderPreExplain(this.props.explain)}
+        {this.renderExplain('pre', isEditMode)}
         {this.props.children}
-        {this.renderPostExplain(this.props.explain)}
+        {this.renderExplain('post', isEditMode)}
       </div>
     );
   }

@@ -2,29 +2,33 @@
 import React from 'react';
 import styled, { injectGlobal } from 'styled-components';
 import { Helmet } from 'react-helmet';
+import _ from 'lodash';
+import fetch from 'isomorphic-fetch';
 
 import SideBarLeft from './SideBarLeft';
 import Content from './Content';
-
 import tutureUtilities from '../utils';
 import { Tuture, DiffItem } from '../types/';
 import { extractCommits, extractMetaData } from '../utils/extractors';
-
-interface AppState {
-  selectKey: number;
-}
+import Header from './Header';
+import { reorder } from '../utils/common';
 
 export interface AppProps {
   tuture?: Tuture | string;
   diff?: string | DiffItem[] | string;
 }
 
+interface AppState extends AppProps {
+  isEditMode: boolean;
+}
+
 /* tslint:disable-next-line */
-const AppWrapper = styled.div`
-  max-width: 970px;
+const AppContent = styled.div`
+  max-width: 1080px;
   margin: 0 auto;
   display: flex;
   justify-content: space-between;
+  margin-top: 92px;
 `;
 
 injectGlobal`
@@ -42,7 +46,7 @@ injectGlobal`
 
   #root {
     height: 100%;
-    margin-top: 70px;
+    margin-top: 10px;
     margin-bottom: 70px;
   }
 
@@ -52,12 +56,85 @@ injectGlobal`
 `;
 
 export default class App extends React.Component<AppProps, AppState> {
+  constructor(props: AppProps) {
+    super(props);
+
+    let { tuture, diff } = this.props;
+    ``;
+    tuture = JSON.parse(tuture as string);
+    diff = JSON.parse(diff as string);
+    this.state = {
+      tuture,
+      diff,
+      isEditMode: false,
+    };
+  }
+
+  saveTuture = () => {
+    const { tuture } = this.state;
+    fetch('http://localhost:3000/save', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+      body: JSON.stringify(tuture),
+    });
+  };
+
+  toggleEditMode = () => {
+    const { isEditMode } = this.state;
+    if (isEditMode) {
+      this.saveTuture();
+    }
+    this.setState({
+      isEditMode: !isEditMode,
+    });
+  };
+
+  updateTutureExplain = (
+    commit: string,
+    diffKey: string,
+    name: 'pre' | 'post',
+    value: string,
+  ) => {
+    let { tuture } = this.state;
+    tuture = tuture as Tuture;
+    const stepIndex = _.findIndex(tuture.steps, (step) => {
+      return step.commit === commit;
+    });
+    const step = tuture.steps[stepIndex];
+    if (diffKey === 'root') {
+      step.explain = { ...step.explain, [name]: value };
+    } else {
+      const diff = step.diff[parseInt(diffKey, 10)];
+      diff.explain = { ...diff.explain, [name]: value };
+    }
+    this.setState({ tuture });
+  };
+
+  updateTutureDiffOrder = (
+    commit: string,
+    sourceIndex: number,
+    destinationIndex: number,
+  ) => {
+    let { tuture } = this.state;
+    tuture = tuture as Tuture;
+    const stepIndex = _.findIndex(tuture.steps, (step) => {
+      return step.commit === commit;
+    });
+    const step = tuture.steps[stepIndex];
+    step.diff = reorder(step.diff, sourceIndex, destinationIndex);
+    this.setState({ tuture });
+  };
+
   render() {
     let tutorialTitle: string;
     let bodyContent: React.ReactNode;
 
-    let { tuture, diff } = this.props;
+    const { isEditMode } = this.state;
 
+    let { tuture, diff } = this.props;
     tuture = JSON.parse(tuture as string);
     diff = JSON.parse(diff as string);
 
@@ -72,18 +149,29 @@ export default class App extends React.Component<AppProps, AppState> {
       const commits = extractCommits(tuture as Tuture);
       tutorialTitle = extractMetaData(tuture as Tuture).name;
       bodyContent = [
-        <SideBarLeft commits={commits} />,
-        <Content tuture={tuture} diff={diff} />,
+        <SideBarLeft commits={commits} key="SiderbarLeft" />,
+        <Content
+          tuture={tuture}
+          diff={diff}
+          updateTutureExplain={this.updateTutureExplain}
+          updateTutureDiffOrder={this.updateTutureDiffOrder}
+          isEditMode={isEditMode}
+          key="Content"
+        />,
       ];
     }
 
     return (
-      <AppWrapper>
+      <div>
         <Helmet>
           <title>{tutorialTitle}</title>
         </Helmet>
-        {bodyContent}
-      </AppWrapper>
+        <Header
+          toggleEditMode={this.toggleEditMode}
+          isEditMode={this.state.isEditMode}
+        />
+        <AppContent>{bodyContent}</AppContent>
+      </div>
     );
   }
 }

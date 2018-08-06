@@ -1,6 +1,6 @@
 /* tslint:disable-next-line */
 import React from 'react';
-import { render } from 'react-dom';
+import { hydrate } from 'react-dom';
 import hljs from 'highlight.js';
 import io from 'socket.io-client';
 
@@ -15,7 +15,7 @@ import App from './components/App';
 
 const diff = window.__APP_INITIAL_DIFF__;
 const tuture = window.__APP_INITIAL_TUTURE__;
-render(
+hydrate(
   <App
     tuture={unescape(JSON.stringify(tuture))}
     diff={unescape(JSON.stringify(diff))}

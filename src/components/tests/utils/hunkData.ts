@@ -25,7 +25,10 @@ const hunk: Hunk = {
 
 const diffItem: ChangedFile = {
   file: 'cool.ts',
-  explain: 'Can you be more funny?',
+  explain: {
+    pre: 'Can you be more funny?',
+    post: 'Oh yes',
+  },
 };
 const diff: ChangedFile[] = [];
 Array(10).map(() => diff.push(diffItem));

@@ -19,7 +19,8 @@
         }
       }
     ],
-    "ter-arrow-parens": true
+    "ter-arrow-parens": true,
+    "align": [false, "arguments"]
   },
   "rulesDirectory": []
 }
