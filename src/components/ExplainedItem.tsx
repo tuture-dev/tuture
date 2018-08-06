@@ -9,6 +9,9 @@ import Markdown from 'react-markdown';
 import { Explain } from '../types';
 import { isClientOrServer } from '../utils/common';
 
+type Type = 'pre' | 'post';
+type EditMode = 'edit' | 'preview';
+
 interface ExplainedItemProps {
   explain: Explain;
   isRoot: boolean;
@@ -18,16 +21,18 @@ interface ExplainedItemProps {
   updateTutureExplain: (
     commit: string,
     diffKey: string,
-    name: 'pre' | 'post',
+    name: Type,
     value: string,
   ) => void;
 }
 
 interface ExplainedItemState extends Explain {
-  nowTab: 'edit' | 'preview';
+  nowTab: EditMode;
   preHeight: number;
   postHeight: number;
-  [key: string]: string | number;
+  preNowEdit: boolean;
+  postNowEdit: boolean;
+  [key: string]: string | number | boolean;
 }
 
 injectGlobal`
@@ -139,38 +144,116 @@ injectGlobal`
     resize: none;
     font-size: 14px;
     border: 1px solid #d1d5da;
-    box-shadow: inset 0 1px 2px rgba(27,31,35,0.075);
-    &: focus {
-      border-color: #03a87c;
+    border-radius: 0 4px 4px;
+    &:focus {
       outline: none;
-      box-shadow: inset 0 1px 2px rgba(27,31,35,0.075), 0 0 0 0.2em rgba(3,168,124,0.3);
     }
   }
 `;
 
 /* tslint:disable-next-line */
-const Button = styled.button`
-  border: ${(props: { selected: boolean }) =>
-    props.selected ? '1px solid #03a87c;' : '1px solid rgba(0, 0, 0, 0.15)'};
-  border-radius: 4px;
+const BasicButton = styled.button`
   height: 30px;
   line-height: 30px;
   padding: 0 18px;
   font-size: 12px;
   box-sizing: border-box;
-  color: ${(props: { selected: boolean }) =>
-    props.selected ? '#03a87c' : 'rgba(0,0,0,.54)'};
-  background: rgba(0, 0, 0, 0);
-  margin-right: 8px;
+  position: relative;
+  background-color: white;
   outline: none;
-  &: hover {
+  &:hover {
+    outline: none;
     cursor: pointer;
   }
 `;
 
 /* tslint:disable-next-line */
+const SaveButton = styled(BasicButton)`
+  color: #00b887;
+  border: none;
+`;
+
+/* tslint:disable-next-line */
+const Button = styled(BasicButton)`
+  border: ${(props: { selected?: boolean; color?: string }) =>
+    props.color
+      ? `1px solid ${props.color}`
+      : props.selected
+        ? '1px solid #d1d5da;'
+        : '1px solid transparent'};
+  border-bottom: ${(props: { selected?: boolean; color?: string }) =>
+    props.color ? `1px solid ${props.color}` : props.selected && '0'};
+  border-radius: ${(props: { selected?: boolean; color?: string }) =>
+    props.color ? '4px' : '3px 3px 0 0'};
+  color: ${(props: { selected?: boolean; color?: string }) =>
+    props.color
+      ? props.color
+      : props.selected
+        ? 'rgba(0,0,0,.84)'
+        : 'rgba(0,0,0,.84)'};
+  bottom: ${(props: { selected?: boolean; color?: string }) =>
+    props.selected ? '-1px' : 0};
+`;
+
+/* tslint:disable-next-line */
 const TabWrapper = styled.div`
-  margin-bottom: 10px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+`;
+
+/* tslint:disable-next-line */
+const EditExplainWrapper = styled.div`
+  width: 100%;
+  position: relative;
+`;
+
+/* tslint:disable-next-line */
+const HasExplainWrapper = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  padding: 10px 0;
+  background-color: rgba(255, 255, 255, 0.7);
+  &:hover {
+    opacity: 1;
+    transition: opacity 0.3s;
+    border: 1px solid #00b887;
+  }
+`;
+
+/* tslint:disable-next-line */
+const HasExplainButton = styled(BasicButton)`
+  color: ${(props: { color: string; border: string }) => props.color};
+  border: ${(props: { color: string; border: string }) => props.border};
+  border-radius: 4px;
+  margin-right: 30px;
+`;
+
+/* tslint:disable-next-line */
+const NoExplainWrapper = styled.div`
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #00b887;
+  color: #00b887;
+  padding: 0;
+  opacity: 0;
+  border-radius: 3px;
+  text-align: center;
+  cursor: pointer;
+  &:hover {
+    opacity: 1;
+    transition: opacity 0.3s;
+    padding: 20px;
+    transition: padding 0.3s;
+  }
 `;
 
 export default class ExplainedItem extends PureComponent<
@@ -186,10 +269,21 @@ export default class ExplainedItem extends PureComponent<
       nowTab: 'edit',
       preHeight: 200,
       postHeight: 200,
+      preNowEdit: false,
+      postNowEdit: false,
     };
   }
 
-  renderExplainStr = (type: 'pre' | 'post'): React.ReactNode => {
+  componentWillReceiveProps(nextProps: ExplainedItemProps) {
+    if (nextProps.isEditMode !== this.props.isEditMode) {
+      this.setState({
+        preNowEdit: false,
+        postNowEdit: false,
+      });
+    }
+  }
+
+  renderExplainStr = (type: Type): React.ReactNode => {
     const { isRoot } = this.props;
     return (
       <Markdown
@@ -207,31 +301,83 @@ export default class ExplainedItem extends PureComponent<
       [`${name}Height`]: scrollHeight <= 200 ? 200 : scrollHeight,
     });
     const { updateTutureExplain, commit, diffKey } = this.props;
-    updateTutureExplain(commit, diffKey, name as 'pre' | 'post', value);
+    updateTutureExplain(commit, diffKey, name as Type, value);
   };
 
-  handleTabClick = (nowTab: 'edit' | 'preview') => {
+  handleTabClick = (nowTab: EditMode) => {
     this.setState({ nowTab });
   };
 
-  renderEditExplainStr = (type: 'pre' | 'post'): React.ReactNode => {
+  handleAddExplain = (type: Type) => {
+    this.setState({
+      [`${type}NowEdit`]: true,
+    });
+  };
+
+  handleDelete = (type: Type) => {
+    const { updateTutureExplain, commit, diffKey } = this.props;
+    updateTutureExplain(commit, diffKey, type, '');
+    this.setState({ [type]: '' });
+  };
+
+  renderEditExplainStr = (type: Type): React.ReactNode => {
+    const explainContent = this.state[type];
+    return (
+      <EditExplainWrapper>
+        {this.renderExplainStr(type)}
+        {explainContent ? (
+          <HasExplainWrapper>
+            <div>
+              <HasExplainButton
+                color="rgba(0,0,0,0.84)"
+                border="1px solid rgba(0,0,0,0.84)"
+                onClick={() => this.handleAddExplain(type)}>
+                编辑
+              </HasExplainButton>
+              <HasExplainButton
+                color="#cb2431"
+                border="1px solid #cb2431"
+                onClick={() => this.handleDelete(type)}>
+                删除
+              </HasExplainButton>
+            </div>
+          </HasExplainWrapper>
+        ) : (
+          <NoExplainWrapper onClick={() => this.handleAddExplain(type)}>
+            加一点解释 +
+          </NoExplainWrapper>
+        )}
+      </EditExplainWrapper>
+    );
+  };
+
+  handleSave = (type: Type) => {
+    this.setState({
+      [`${type}NowEdit`]: false,
+    });
+  };
+
+  nowEditFrame = (type: Type): React.ReactNode => {
     const { isRoot } = this.props;
     const { nowTab } = this.state;
     return (
       <div className={classnames('editor', { 'is-root': isRoot })}>
         <TabWrapper>
-          <Button
-            name="edit"
-            onClick={() => this.handleTabClick('edit')}
-            selected={nowTab === 'edit'}>
-            编写
-          </Button>
-          <Button
-            name="preview"
-            onClick={() => this.handleTabClick('preview')}
-            selected={nowTab === 'preview'}>
-            预览
-          </Button>
+          <div>
+            <Button
+              name="edit"
+              onClick={() => this.handleTabClick('edit')}
+              selected={nowTab === 'edit'}>
+              编写
+            </Button>
+            <Button
+              name="preview"
+              onClick={() => this.handleTabClick('preview')}
+              selected={nowTab === 'preview'}>
+              预览
+            </Button>
+          </div>
+          <SaveButton onClick={() => this.handleSave(type)}>确定</SaveButton>
         </TabWrapper>
         {nowTab === 'edit' ? (
           <textarea
@@ -239,7 +385,7 @@ export default class ExplainedItem extends PureComponent<
             value={this.state[type]}
             placeholder="写一点解释..."
             onChange={this.handleChange}
-            style={{ height: this.state[`${type}Height`] }}
+            style={{ height: this.state[`${type}Height`] as number }}
           />
         ) : (
           <Markdown
@@ -251,12 +397,11 @@ export default class ExplainedItem extends PureComponent<
     );
   };
 
-  renderExplain = (
-    type: 'pre' | 'post',
-    isEditMode: boolean,
-  ): React.ReactNode => {
+  renderExplain = (type: Type, isEditMode: boolean): React.ReactNode => {
     return isEditMode
-      ? this.renderEditExplainStr(type)
+      ? this.state[`${type}NowEdit`]
+        ? this.nowEditFrame(type)
+        : this.renderEditExplainStr(type)
       : this.renderExplainStr(type);
   };
 
