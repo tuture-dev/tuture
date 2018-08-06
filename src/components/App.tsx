@@ -72,7 +72,6 @@ export default class App extends React.Component<AppProps, AppState> {
 
   saveTuture = () => {
     const { tuture } = this.state;
-    console.log(tuture);
     fetch('http://localhost:3000/save', {
       method: 'POST',
       headers: {
@@ -111,7 +110,6 @@ export default class App extends React.Component<AppProps, AppState> {
       const diff = step.diff[parseInt(diffKey, 10)];
       diff.explain = { ...diff.explain, [name]: value };
     }
-    console.log('tuture', tuture);
     this.setState({ tuture });
   };
 

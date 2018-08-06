@@ -23,10 +23,10 @@
     "tuture-server": "bin/tuture-server"
   },
   "scripts": {
-    "prestart": "rm -rf dist",
-    "prestart:cn": "rm -rf dist",
-    "start": "webpack -w & TUTURE_PATH=example/en ./scripts/watch.js",
-    "start:cn": "webpack -w & TUTURE_PATH=example/cn ./scripts/watch.js",
+    "prestart": "rimraf dist",
+    "prestart:cn": "rimraf dist",
+    "start": "TUTURE_PATH=example/en webpack -w",
+    "start:cn": "TUTURE_PATH=example/cn webpack -w",
     "build": "webpack --mode=production",
     "test": "jest",
     "lint": "tslint 'src/**/*.{ts,tsx,js}' --project tsconfig.json",
@@ -52,6 +52,8 @@
     "react-dom": "^16.3.2",
     "react-helmet": "^5.2.0",
     "react-markdown": "^3.3.4",
+    "socket.io": "^2.1.1",
+    "socket.io-client": "^2.1.1",
     "styled-components": "^3.3.2"
   },
   "devDependencies": {
@@ -66,23 +68,26 @@
     "@types/react-dom": "^16.0.6",
     "@types/react-helmet": "^5.0.6",
     "@types/react-test-renderer": "^16.0.1",
+    "@types/socket.io": "^1.4.36",
+    "@types/socket.io-client": "^1.4.32",
     "cross-spawn": "^6.0.5",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
-    "file-loader": "^1.1.11",
     "husky": "^0.14.3",
     "jest": "^23.1.0",
     "lint-staged": "^7.2.0",
     "nodemon": "^1.18.3",
     "prettier": "^1.13.6",
     "react-test-renderer": "^16.4.1",
+    "rimraf": "^2.6.2",
     "ts-jest": "^22.4.6",
     "ts-loader": "^4.4.1",
     "tslint": "^5.10.0",
     "tslint-config-airbnb": "^5.9.2",
     "typescript": "^2.9.1",
     "webpack": "^4.12.0",
-    "webpack-cli": "^3.1.0"
+    "webpack-cli": "^3.1.0",
+    "webpack-shell-plugin": "^0.5.0"
   },
   "lint-staged": {
     "./**/*.{ts,tsx,js,css,md}": [

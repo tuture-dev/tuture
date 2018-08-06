@@ -1,4 +1,5 @@
 import fs from 'fs';
+import http from 'http';
 import path from 'path';
 
 import express from 'express';
@@ -6,6 +7,7 @@ import logger from 'morgan';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import opn from 'opn';
+import socketio from 'socket.io';
 import yaml from 'js-yaml';
 import { ServerStyleSheet, StyleSheetManager } from 'styled-components';
 
@@ -14,23 +16,40 @@ import html from './html';
 import { Tuture } from '../types/';
 
 const port = 3000;
-const server = express();
+const app = express();
+const server = http.createServer(app);
 const tuturePath = process.env.TUTURE_PATH;
-
-server.use(logger('dev'));
-server.use(express.json());
-server.use(express.urlencoded({ extended: false }));
-server.use(express.static('dist'));
-
 const tutureYAMLPath = path.join(tuturePath, 'tuture.yml');
 const diffPath = path.join(tuturePath, '.tuture', 'diff.json');
+const io = socketio(server);
+let reloadCounter = 0;
 
-server.get('/', (req, res) => {
+app.use(logger('dev'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(express.static('dist'));
+
+io.on('connection', (socket) => {
+  reloadCounter += 1;
+  console.log('browser connected!');
+
+  // Server has just been restarted.
+  if (reloadCounter === 1) {
+    socket.emit('reload');
+  }
+
+  socket.on('disconnect', () => {
+    console.log('browser disconnected!');
+  });
+});
+
+app.use(express.static('dist'));
+
+app.get('/', (req, res) => {
   const tutureYAML = fs.readFileSync(tutureYAMLPath, {
     encoding: 'utf8',
   });
   const tuture = yaml.safeLoad(tutureYAML) as Tuture;
-  console.log(tuture.steps[0]);
   const diff = fs.readFileSync(diffPath, {
     encoding: 'utf8',
   });
@@ -53,25 +72,28 @@ server.get('/', (req, res) => {
   );
 });
 
-server.post('/save', (req, res) => {
+app.post('/save', (req, res) => {
   const body = req.body;
   try {
-    console.log(body);
     const tuture = yaml.safeDump(body);
     fs.writeFileSync(tutureYAMLPath, tuture);
     res.status(200);
     res.end();
   } catch (err) {
-    console.log(err);
     res.status(500);
     res.send({ msg: err.message });
   }
 });
 
-server.listen(port, () => {
-  console.log(`Tutorial is served on http://localhost:${port}`);
+app.get('/reload', (req, res) => {
+  io.emit('reload');
+  res.status(200);
+  res.end();
+});
 
+server.listen(port, () => {
   if (!process.env.WATCHING) {
+    console.log(`Tutorial is served on http://localhost:${port}`);
     opn('http://localhost:3000');
   }
 });

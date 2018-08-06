@@ -117,7 +117,6 @@ export default class StepDiff extends React.PureComponent<
   };
 
   onDragStart = (initial: DragStart) => {
-    console.log('hhhh');
     // Add a little vibration if the browser supports it.
     // Add's a nice little physical feedback
     if (window.navigator.vibrate) {

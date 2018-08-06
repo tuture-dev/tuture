@@ -23,7 +23,7 @@ const HeaderWrapper = styled.div`
   left: 0;
   height: 60px;
   width: 100%;
-  background-color: white;
+  background-color: rgba(255, 255, 255, 0.4);
 `;
 
 /* tslint:disable-next-line */
