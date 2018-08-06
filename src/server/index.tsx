@@ -51,9 +51,11 @@ app.get('/', (req, res) => {
     encoding: 'utf8',
   });
   const tuture = yaml.safeLoad(tutureYAML) as Tuture;
+  const title = tuture.name;
   const diff = fs.readFileSync(diffPath, {
     encoding: 'utf8',
   });
+
   // add SSR style
   const sheet = new ServerStyleSheet();
   const body = renderToString(
@@ -66,6 +68,7 @@ app.get('/', (req, res) => {
   res.send(
     html({
       body,
+      title,
       diff,
       css: styleTags,
       tuture: JSON.stringify(tuture),

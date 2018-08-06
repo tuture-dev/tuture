@@ -1,7 +1,6 @@
 /* tslint:disable-next-line */
 import React from 'react';
 import styled, { injectGlobal } from 'styled-components';
-import { Helmet } from 'react-helmet';
 import _ from 'lodash';
 import fetch from 'isomorphic-fetch';
 
@@ -163,9 +162,6 @@ export default class App extends React.Component<AppProps, AppState> {
 
     return (
       <div>
-        <Helmet>
-          <title>{tutorialTitle}</title>
-        </Helmet>
         <Header
           toggleEditMode={this.toggleEditMode}
           isEditMode={this.state.isEditMode}
