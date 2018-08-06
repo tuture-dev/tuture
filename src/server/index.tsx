@@ -18,16 +18,13 @@ import { Tuture } from '../types/';
 const port = 3000;
 const app = express();
 const server = http.createServer(app);
+
 const tuturePath = process.env.TUTURE_PATH;
 const tutureYAMLPath = path.join(tuturePath, 'tuture.yml');
 const diffPath = path.join(tuturePath, '.tuture', 'diff.json');
+
 const io = socketio(server);
 let reloadCounter = 0;
-
-app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(express.static('dist'));
 
 io.on('connection', (socket) => {
   reloadCounter += 1;
@@ -43,6 +40,10 @@ io.on('connection', (socket) => {
   });
 });
 
+app.use(logger('dev'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(express.static('dist'));
 app.use(express.static('dist'));
 
 app.get('/', (req, res) => {
