@@ -162,10 +162,7 @@ export default class StepDiff extends React.PureComponent<
       const startLine = fileCopy.section ? fileCopy.section.start : 1;
       return (
         <Draggable key={i} draggableId={file.file} index={i}>
-          {(
-            dragProvided: DraggableProvided,
-            dragSnapshot: DraggableStateSnapshot,
-          ) => (
+          {(dragProvided: DraggableProvided) => (
             <DiffWrapper
               isEditMode={isEditMode}
               innerRef={dragProvided.innerRef}
@@ -204,10 +201,7 @@ export default class StepDiff extends React.PureComponent<
         onDragStart={this.onDragStart}
         onDragEnd={this.onDragEnd}>
         <Droppable droppableId="diff" isDropDisabled={!isEditMode}>
-          {(
-            dropProvided: DroppableProvided,
-            dropSnapshot: DroppableStateSnapshot,
-          ) => (
+          {(dropProvided: DroppableProvided) => (
             <div>
               <InnerList
                 {...dropProvided.droppableProps}
