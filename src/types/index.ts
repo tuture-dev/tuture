@@ -3,15 +3,15 @@ interface Explain {
   post?: string;
 }
 
-interface CodeSection {
+interface Section {
   start?: number;
   end?: number;
 }
 
-interface ChangedFile {
+interface Diff {
   file: string;
   explain?: Explain;
-  section?: CodeSection;
+  section?: Section;
 }
 
 interface TutureMeta {
@@ -30,11 +30,11 @@ interface Commit {
 
 interface Step extends Commit {
   explain?: Explain;
-  diff: ChangedFile[];
+  diff: Diff[];
 }
 
 interface Tuture extends TutureMeta {
   steps: Step[];
 }
 
-export { Explain, CodeSection, ChangedFile, TutureMeta, Commit, Step, Tuture };
+export { Explain, Section, Diff, TutureMeta, Commit, Step, Tuture };

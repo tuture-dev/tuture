@@ -14,11 +14,11 @@ import {
 
 import ExplainedItem from './ExplainedItem';
 import DiffView, { File, DiffItem } from './DiffView';
-import { ChangedFile } from '../types';
+import { Diff } from '../types';
 import { reorder } from '../utils/common';
 
 interface StepDiffProps {
-  diff: ChangedFile[];
+  diff: Diff[];
   commit: string;
   diffItem: DiffItem | string;
   isEditMode: boolean;
@@ -36,11 +36,7 @@ interface StepDiffProps {
 }
 
 interface StepDiffState {
-  filesToBeRendered: (File & ChangedFile)[];
-}
-
-interface ResObj {
-  [index: string]: ChangedFile[] | File[];
+  filesToBeRendered: (File & Diff)[];
 }
 
 /* tslint:disable-next-line */
@@ -76,10 +72,7 @@ export default class StepDiff extends React.PureComponent<
     };
   }
 
-  getRenderedContent = (
-    diff: ChangedFile[],
-    files: File[],
-  ): (ChangedFile & File)[] => {
+  getRenderedContent = (diff: Diff[], files: File[]): (Diff & File)[] => {
     const filesMap: { [path: string]: File } = {};
     files.forEach((file) => {
       filesMap[file.to] = file;
@@ -94,7 +87,7 @@ export default class StepDiff extends React.PureComponent<
     });
   };
 
-  getRenderedHunks = (file: File & ChangedFile) => {
+  getRenderedHunks = (file: File & Diff) => {
     if (file.section) {
       const changes = file.chunks[0].changes.slice(
         ...[file.section.start - 1, file.section.end],
@@ -144,8 +137,8 @@ export default class StepDiff extends React.PureComponent<
     const { filesToBeRendered } = this.state;
     const { isEditMode, updateTutureExplain, commit } = this.props;
 
-    const renderList = filesToBeRendered.map((file: File & ChangedFile, i) => {
-      const fileCopy: File & ChangedFile = JSON.parse(JSON.stringify(file));
+    const renderList = filesToBeRendered.map((file: File & Diff, i) => {
+      const fileCopy: File & Diff = JSON.parse(JSON.stringify(file));
       const fileName = fileCopy.file;
       const startLine = fileCopy.section ? fileCopy.section.start : 1;
       return (

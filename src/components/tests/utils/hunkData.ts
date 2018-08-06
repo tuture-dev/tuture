@@ -1,5 +1,5 @@
 import { Chunk } from '../../DiffView';
-import { ChangedFile } from '../../../types';
+import { Diff } from '../../../types';
 
 const chunk: Chunk = {
   changes: [
@@ -23,14 +23,14 @@ const chunk: Chunk = {
   oldLines: 1,
 };
 
-const diffItem: ChangedFile = {
+const diffItem: Diff = {
   file: 'cool.ts',
   explain: {
     pre: 'Can you be more funny?',
     post: 'Oh yes',
   },
 };
-const diff: ChangedFile[] = [];
+const diff: Diff[] = [];
 Array(10).map(() => diff.push(diffItem));
 
 export { chunk, diff };
