@@ -106,7 +106,7 @@ app.get('/reload', (req, res) => {
 });
 
 server.listen(port, () => {
-  if (!process.env.WATCHING) {
+  if (process.env.NODE_ENV !== 'development') {
     console.log(`Tutorial is served on http://localhost:${port}`);
     opn('http://localhost:3000');
   }

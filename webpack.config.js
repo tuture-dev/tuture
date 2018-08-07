@@ -37,11 +37,6 @@ const serverConfig = {
     filename: 'server.js',
     path: path.resolve(__dirname, 'dist', 'js'),
   },
-  plugins: [
-    new WebpackShellPlugin({
-      onBuildEnd: ['./scripts/watch.js'],
-    }),
-  ],
   externals: nodeModules,
 };
 
@@ -52,6 +47,14 @@ const clientConfig = {
     path: path.resolve(__dirname, 'dist', 'js'),
   },
 };
+
+if (process.env.NODE_ENV === 'development') {
+  serverConfig.plugins = [
+    new WebpackShellPlugin({
+      onBuildEnd: ['./scripts/watch.js'],
+    }),
+  ];
+}
 
 module.exports = [
   Object.assign(serverConfig, base),
