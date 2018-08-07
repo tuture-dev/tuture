@@ -6,10 +6,8 @@ import {
   DragStart,
   Droppable,
   DroppableProvided,
-  DroppableStateSnapshot,
   Draggable,
   DraggableProvided,
-  DraggableStateSnapshot,
 } from 'react-beautiful-dnd';
 
 import ExplainedItem from './ExplainedItem';

@@ -44,7 +44,7 @@ const TutureMenu = styled.ul`
   font-size: 14px;
   margin: 0;
   padding: 0;
-  padding-top: 10px;
+  margin-top: 10px;
   outline: none;
   list-style: none;
   color: rgba(0, 0, 0, 0.65);
