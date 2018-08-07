@@ -22,6 +22,10 @@
   "bin": {
     "tuture-server": "bin/tuture-server"
   },
+  "files": [
+    "/bin",
+    "/dist"
+  ],
   "scripts": {
     "prestart": "rimraf dist",
     "prestart:cn": "rimraf dist",
