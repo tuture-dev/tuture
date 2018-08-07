@@ -6,12 +6,14 @@ topics:
 email: me@example.com
 steps:
   - name: 基础设置
-    commit: f3ab4f9
+    commit: 4a7abcd
     explain:
       pre: |+
         首先我们创建一个目录，初始化 npm 并本地安装 webpack 和 webpack-cli：
         ```bash
         mkdir webpack-demo && cd webpack-demo
+        npm init -y
+        npm install webpack webpack-cli --save-dev
         ```
         接下来我们创建以下文件：
 
@@ -29,7 +31,7 @@ steps:
         explain:
           post: 注意到我们把这个包标记为 `private`，并且去掉了原来的 `main` 字段，这是为了防止意外发布我们的代码。
   - name: 使用 Webpack 管理依赖
-    commit: 001b0ea
+    commit: e2d7672
     explain:
       pre: >-
         首先我们要微调项目结构，把源代码(`/src`)和发布代码(`/dist`)分开来。源代码是我们要编辑的代码。发布代码是构建过程产生的最小化、最优化的输出结果，并将最终被浏览器加载。
@@ -51,7 +53,7 @@ steps:
           既然我们已经决定把所有脚本打包，我们需要更新 `index.html` 文件。删除掉引入 lodash 的
           `<script>`标签，并且修改另一个 `<script>` 标签来将我们打包后的脚本添加进来：
   - name: 使用 Webpack 配置文件
-    commit: 04b7660
+    commit: 7cf6480
     explain:
       pre: >-
         到了版本 4，webpack

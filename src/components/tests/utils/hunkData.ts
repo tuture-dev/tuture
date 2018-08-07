@@ -1,36 +1,36 @@
-import { Hunk, ChangedFile } from '../../../types';
+import { Chunk } from '../../DiffView';
+import { Diff } from '../../../types';
 
-const hunk: Hunk = {
+const chunk: Chunk = {
   changes: [
     {
-      type: 'insert',
+      type: 'add',
+      add: true,
       content: 'I am the coolest one',
-      isInsert: true,
-      lineNumber: 1,
+      ln: 1,
     },
     {
-      type: 'insert',
+      type: 'add',
+      add: true,
       content: 'I am the coolest one',
-      isInsert: true,
-      lineNumber: 2,
+      ln: 2,
     },
   ],
   content: 'I am the coolest one',
-  isPlain: false,
   newStart: 1,
   oldStart: 0,
   newLines: 5,
   oldLines: 1,
 };
 
-const diffItem: ChangedFile = {
+const diffItem: Diff = {
   file: 'cool.ts',
   explain: {
     pre: 'Can you be more funny?',
     post: 'Oh yes',
   },
 };
-const diff: ChangedFile[] = [];
+const diff: Diff[] = [];
 Array(10).map(() => diff.push(diffItem));
 
-export { hunk, diff };
+export { chunk, diff };

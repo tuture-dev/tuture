@@ -4,12 +4,59 @@ import classnames from 'classnames';
 
 import Snippet from './Snippet';
 
-import { Change as ChangeType, Hunk as HunkType } from '../types';
+interface NormalChange {
+  type: 'normal';
+  ln1: number;
+  ln2: number;
+  normal: true;
+  content: string;
+}
+
+interface AddChange {
+  type: 'add';
+  add: true;
+  ln: number;
+  content: string;
+}
+
+interface DeleteChange {
+  type: 'del';
+  del: true;
+  ln: number;
+  content: string;
+}
+
+type Change = NormalChange | AddChange | DeleteChange;
+
+export interface Chunk {
+  content: string;
+  changes: Change[];
+  oldStart: number;
+  oldLines: number;
+  newStart: number;
+  newLines: number;
+}
+
+export interface File {
+  chunks: Chunk[];
+  deletions: number;
+  additions: number;
+  from?: string;
+  to?: string;
+  index?: string[];
+  deleted?: true;
+  new?: true;
+}
+
+export interface DiffItem {
+  commit: string;
+  diff: File[];
+}
 
 interface DiffViewProps {
   lang: string;
   startLine: number;
-  hunks: HunkType[];
+  chunks: Chunk[];
 }
 
 injectGlobal`
@@ -37,11 +84,11 @@ injectGlobal`
     color: rgba(0, 0, 0, .24);
   }
 
-  .diff-gutter-insert {
+  .diff-gutter-add {
     background-color: rgba(0, 0, 0, .07);
   }
 
-  .diff-gutter-delete {
+  .diff-gutter-del {
     background-color: rgba(0, 0, 0, .021);
   }
 
@@ -49,12 +96,12 @@ injectGlobal`
     content: attr(data-line-number);
   }
 
-  .diff-code-insert {
+  .diff-code-add {
     font-weight: 700;
     background-color: rgba(0, 0, 0, .07);
   }
 
-  .diff-code-delete {
+  .diff-code-del {
     opacity: 0.3;
     background-color: rgba(0, 0, 0, .07);
   }
@@ -63,6 +110,7 @@ injectGlobal`
     padding: 0 20px;
     width: 557px;
   }
+
   .diff-file {
     color: rgba(0,0,0,0.84);
     display: block;
@@ -89,7 +137,6 @@ injectGlobal`
     margin-right: 1em;
     color: #ee5b60;
   }
-
 `;
 
 export default class DiffView extends Component<DiffViewProps> {
@@ -100,7 +147,7 @@ export default class DiffView extends Component<DiffViewProps> {
     return <td className={lineNumberClassName} data-line-number={lineNumber} />;
   };
 
-  renderRow = (change: ChangeType, isAllInsert: Boolean, i: number) => {
+  renderRow = (change: Change, isAllInsert: Boolean, i: number) => {
     const { type, content } = change;
     const lineNumberClassName = classnames('diff-gutter', {
       [`diff-gutter-${type}`]: !isAllInsert,
@@ -112,17 +159,17 @@ export default class DiffView extends Component<DiffViewProps> {
       <tr key={`change${i}`} className={classnames('diff-line')}>
         {this.renderLineNumber(lineNumberClassName, this.props.startLine + i)}
         <td className={codeClassName}>
-          <Snippet code={content} lang={this.props.lang} />
+          <Snippet code={content.slice(1)} lang={this.props.lang} />
         </td>
       </tr>
     );
   };
 
-  judgeAllRowInsertState = (changes: ChangeType[]) => {
+  judgeAllRowInsertState = (changes: Change[]) => {
     let isAllInsert = true;
-    changes.map((change: ChangeType) => {
+    changes.map((change) => {
       const { type } = change;
-      if (type !== 'insert') {
+      if (type !== 'add') {
         isAllInsert = false;
       }
     });
@@ -132,13 +179,13 @@ export default class DiffView extends Component<DiffViewProps> {
   };
 
   render() {
-    const { hunks } = this.props;
+    const { chunks } = this.props;
 
     return (
       <table className="diff">
-        {hunks.map((hunk: HunkType, key: number) => (
+        {chunks.map((chunk: Chunk, key: number) => (
           <tbody key={key} className={classnames('diff-hunk')}>
-            {this.judgeAllRowInsertState(hunk.changes)}
+            {this.judgeAllRowInsertState(chunk.changes)}
           </tbody>
         ))}
       </table>

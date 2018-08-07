@@ -3,15 +3,15 @@ interface Explain {
   post?: string;
 }
 
-interface CodeSection {
+interface Section {
   start?: number;
   end?: number;
 }
 
-interface ChangedFile {
+interface Diff {
   file: string;
   explain?: Explain;
-  section?: CodeSection;
+  section?: Section;
 }
 
 interface TutureMeta {
@@ -30,58 +30,11 @@ interface Commit {
 
 interface Step extends Commit {
   explain?: Explain;
-  diff: ChangedFile[];
+  diff: Diff[];
 }
 
 interface Tuture extends TutureMeta {
   steps: Step[];
 }
 
-interface Change {
-  content: string;
-  type: string;
-  isInsert?: boolean;
-  isNormal?: boolean;
-  isDelete?: boolean;
-  lineNumber?: number;
-  oldLineNumber?: number;
-  newLineNumber?: number;
-}
-
-interface Hunk {
-  content: string;
-  newLines: number;
-  oldLines: number;
-  oldStart: number;
-  newStart: number;
-  changes: Change[];
-  isPlain?: boolean;
-}
-
-interface File {
-  oldPath: string;
-  newPath: string;
-  type: string;
-  oldRevision: string;
-  newRevision: string;
-  hunks: Hunk[];
-}
-
-interface DiffItem {
-  commit: string;
-  diff: File[];
-}
-
-export {
-  Explain,
-  CodeSection,
-  ChangedFile,
-  TutureMeta,
-  Commit,
-  Step,
-  Tuture,
-  Change,
-  Hunk,
-  File,
-  DiffItem,
-};
+export { Explain, Section, Diff, TutureMeta, Commit, Step, Tuture };
