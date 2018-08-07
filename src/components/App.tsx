@@ -66,7 +66,7 @@ export default class App extends React.Component<AppProps, AppState> {
     this.state = {
       tuture,
       diff,
-      isEditMode: true,
+      isEditMode: false,
     };
   }
 

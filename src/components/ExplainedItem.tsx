@@ -37,10 +37,10 @@ interface ExplainedItemState extends Explain {
 
 injectGlobal`
   .markdown p, li {
-    font-family: STSongti-SC-Regular;
+    font-family: Georgia;
     font-size: 18px;
     line-height: 1.58;
-    margin: 16px 0;
+    margin: 24px 0 0 0;
     color: rgba(0,0,0,0.84);
   }
 
@@ -49,23 +49,18 @@ injectGlobal`
   }
 
   .markdown h1 {
-    font-size: 45px;
+    font-size: 3px;
+    font-family: LucidaGrande-Bold;
   }
 
   .markdown h2 {
-    font-size: 37px;
+    font-size: 31px;
+    font-family: LucidaGrande-Bold;
   }
 
   .markdown h3 {
-    font-size: 31px;
-  }
-
-  .markdown h4 {
     font-size: 26px;
-  }
-
-  .markdown h5 {
-    font-size: 21px;
+    font-family: LucidaGrande-Bold;
   }
 
   .markdown pre {
@@ -123,6 +118,29 @@ injectGlobal`
     font-style: normal;
   }
 
+  .markdown.preview-markdown {
+    box-sizing: border-box;
+    padding: 20px;
+    border: 1px solid #d1d5da;
+    border-radius: 0 4px 4px;
+  }
+
+  .markdown.preview-markdown p:first-child {
+    margin-top: 0;
+  }
+
+  .markdown.preview-markdown li:first-child {
+    margin-top: 0;
+  }
+
+  .markdown.preview-markdown h1:first-child {
+    margin-top: 0;
+  }
+
+  .markdown.preview-markdown h2:first-child {
+    margin-top: 0;
+  }
+
   .is-root {
     padding: 0 24px 12px;
   }
@@ -139,10 +157,10 @@ injectGlobal`
     overflow-y: hidden;
     vertical-align: top;
     box-sizing: border-box;
-    font-family: 'Monaco', courier, monospace;
+    font-family: Georgia;
     padding: 20px;
     resize: none;
-    font-size: 14px;
+    font-size: 18px;
     border: 1px solid #d1d5da;
     border-radius: 0 4px 4px;
     &:focus {
@@ -219,7 +237,6 @@ const HasExplainWrapper = styled.div`
   top: 0;
   left: 0;
   opacity: 0;
-  padding: 10px 0;
   background-color: rgba(255, 255, 255, 0.7);
   &:hover {
     opacity: 1;
@@ -243,16 +260,17 @@ const NoExplainWrapper = styled.div`
   box-sizing: border-box;
   border: 1px solid #00b887;
   color: #00b887;
-  padding: 0;
-  opacity: 0;
+  padding: 20px;
+  opacity: 0.3;
   border-radius: 3px;
   text-align: center;
   cursor: pointer;
-  &:hover {
+`;
+
+/* tslint:disable-next-line */
+const StyledExplainedItem = styled.div`
+  &:hover ${NoExplainWrapper} {
     opacity: 1;
-    transition: opacity 0.3s;
-    padding: 20px;
-    transition: padding 0.3s;
   }
 `;
 
@@ -390,7 +408,9 @@ export default class ExplainedItem extends PureComponent<
         ) : (
           <Markdown
             source={this.state[type]}
-            className={classnames('markdown', { 'is-root': isRoot })}
+            className={classnames('markdown', 'preview-markdown', {
+              'is-root': isRoot,
+            })}
           />
         )}
       </div>
@@ -408,11 +428,11 @@ export default class ExplainedItem extends PureComponent<
   render() {
     const { isEditMode } = this.props;
     return (
-      <React.Fragment>
+      <StyledExplainedItem>
         {this.renderExplain('pre', isEditMode)}
         {this.props.children}
         {this.renderExplain('post', isEditMode)}
-      </React.Fragment>
+      </StyledExplainedItem>
     );
   }
 }
