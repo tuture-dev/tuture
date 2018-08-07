@@ -118,6 +118,29 @@ injectGlobal`
     font-style: normal;
   }
 
+  .markdown.preview-markdown {
+    box-sizing: border-box;
+    padding: 20px;
+    border: 1px solid #d1d5da;
+    border-radius: 0 4px 4px;
+  }
+
+  .markdown.preview-markdown p:first-child {
+    margin-top: 0;
+  }
+
+  .markdown.preview-markdown li:first-child {
+    margin-top: 0;
+  }
+
+  .markdown.preview-markdown h1:first-child {
+    margin-top: 0;
+  }
+
+  .markdown.preview-markdown h2:first-child {
+    margin-top: 0;
+  }
+
   .is-root {
     padding: 0 24px 12px;
   }
@@ -134,10 +157,10 @@ injectGlobal`
     overflow-y: hidden;
     vertical-align: top;
     box-sizing: border-box;
-    font-family: 'Monaco', courier, monospace;
+    font-family: Georgia;
     padding: 20px;
     resize: none;
-    font-size: 14px;
+    font-size: 18px;
     border: 1px solid #d1d5da;
     border-radius: 0 4px 4px;
     &:focus {
@@ -385,7 +408,9 @@ export default class ExplainedItem extends PureComponent<
         ) : (
           <Markdown
             source={this.state[type]}
-            className={classnames('markdown', { 'is-root': isRoot })}
+            className={classnames('markdown', 'preview-markdown', {
+              'is-root': isRoot,
+            })}
           />
         )}
       </div>
