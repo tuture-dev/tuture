@@ -28,6 +28,10 @@ const base = {
 
 const serverConfig = {
   target: 'node',
+  node: {
+    __dirname: false,
+    __filename: false,
+  },
   entry: './src/server/index.tsx',
   output: {
     filename: 'server.js',
