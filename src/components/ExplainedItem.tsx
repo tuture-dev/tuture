@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import styled, { injectGlobal } from 'styled-components';
 import classnames from 'classnames';
 import _ from 'lodash';
+import fetch from 'isomorphic-fetch';
 
 // @ts-ignore
 import Markdown from 'react-markdown';
@@ -283,16 +284,6 @@ export default class ExplainedItem extends PureComponent<
     }
   }
 
-  renderExplainStr = (type: Type): React.ReactNode => {
-    const { isRoot } = this.props;
-    return (
-      <Markdown
-        source={this.state[type]}
-        className={classnames('markdown', { 'is-root': isRoot })}
-      />
-    );
-  };
-
   handleChange = (e: React.FormEvent<HTMLTextAreaElement>) => {
     const { name, value, scrollHeight } = e.currentTarget;
     const explainState = { [name]: value } as Explain;
@@ -302,6 +293,63 @@ export default class ExplainedItem extends PureComponent<
     });
     const { updateTutureExplain, commit, diffKey } = this.props;
     updateTutureExplain(commit, diffKey, name as Type, value);
+  };
+
+  handleImageUpload(
+    e: React.SyntheticEvent<HTMLTextAreaElement>,
+    eventType: 'paste' | 'drop',
+  ) {
+    const files =
+      eventType === 'paste'
+        ? (e as React.ClipboardEvent<HTMLTextAreaElement>).clipboardData.files
+        : (e as React.DragEvent<HTMLTextAreaElement>).dataTransfer.files;
+
+    if (files.length === 0 || !/\.(png|jpe?g|bmp)$/.test(files[0].name)) {
+      // Not a valid image.
+      return;
+    }
+
+    // Prevent default behaviors of pasting and dropping events.
+    e.preventDefault();
+
+    // Upload the first images to server.
+    const data = new FormData();
+    const that = this;
+    data.append('file', files[0]);
+
+    console.log(`handleImageUpload before fetch: ${e.currentTarget.name}`);
+    const explainType = e.currentTarget.name;
+
+    fetch('http://localhost:3000/upload', {
+      method: 'POST',
+      body: data,
+    })
+      .then((res) => res.json())
+      .then((resObj) => {
+        const savePath = resObj.path;
+        console.log(savePath);
+
+        // Add markdown image element to current explain.
+        console.log(e);
+        console.log(`handleImageUpload getSavePath: ${explainType}`);
+        let currentExplain = that.state[explainType] as string;
+        currentExplain += `![](${savePath})`;
+        console.log(currentExplain);
+        const explainState = {
+          [explainType]: currentExplain,
+        };
+        this.setState({ ...explainState });
+        const { updateTutureExplain, commit, diffKey } = that.props;
+        updateTutureExplain(commit, diffKey, name as Type, currentExplain);
+      });
+  }
+
+  handlePaste = (e: React.ClipboardEvent<HTMLTextAreaElement>) => {
+    this.handleImageUpload(e, 'paste');
+  };
+
+  handleDrop = (e: React.DragEvent<HTMLTextAreaElement>) => {
+    this.handleImageUpload(e, 'drop');
   };
 
   handleTabClick = (nowTab: EditMode) => {
@@ -318,6 +366,16 @@ export default class ExplainedItem extends PureComponent<
     const { updateTutureExplain, commit, diffKey } = this.props;
     updateTutureExplain(commit, diffKey, type, '');
     this.setState({ [type]: '' });
+  };
+
+  renderExplainStr = (type: Type): React.ReactNode => {
+    const { isRoot } = this.props;
+    return (
+      <Markdown
+        source={this.state[type]}
+        className={classnames('markdown', { 'is-root': isRoot })}
+      />
+    );
   };
 
   renderEditExplainStr = (type: Type): React.ReactNode => {
@@ -385,6 +443,8 @@ export default class ExplainedItem extends PureComponent<
             value={this.state[type]}
             placeholder="写一点解释..."
             onChange={this.handleChange}
+            onPaste={this.handlePaste}
+            onDrop={this.handleDrop}
             style={{ height: this.state[`${type}Height`] as number }}
           />
         ) : (
