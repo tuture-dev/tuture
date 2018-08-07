@@ -151,6 +151,10 @@ injectGlobal`
     padding-right: 0;
   }
 
+  .editor > .is-root.preview-markdown {
+    padding: 20px;
+  }
+
   textarea {
     display: block;
     width: 100%;
