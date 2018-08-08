@@ -27,11 +27,10 @@
     "/dist"
   ],
   "scripts": {
-    "prestart": "rimraf dist",
-    "prestart:cn": "rimraf dist",
     "start": "TUTURE_PATH=example/en NODE_ENV=development webpack -w",
     "start:cn": "TUTURE_PATH=example/cn NODE_ENV=development webpack -w",
     "build": "webpack --mode=production",
+    "prepublishOnly": "webpack --mode=production",
     "test": "jest",
     "lint": "tslint 'src/**/*.{ts,tsx,js}' --project tsconfig.json",
     "precommit": "lint-staged"
@@ -75,6 +74,7 @@
     "@types/react-test-renderer": "^16.0.1",
     "@types/socket.io": "^1.4.36",
     "@types/socket.io-client": "^1.4.32",
+    "clean-webpack-plugin": "^0.1.19",
     "cross-spawn": "^6.0.5",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
@@ -84,7 +84,6 @@
     "nodemon": "^1.18.3",
     "prettier": "^1.13.6",
     "react-test-renderer": "^16.4.1",
-    "rimraf": "^2.6.2",
     "ts-jest": "^22.4.6",
     "ts-loader": "^4.4.1",
     "tslint": "^5.10.0",

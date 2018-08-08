@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 const WebpackShellPlugin = require('webpack-shell-plugin');
 
 const nodeModules = {};
@@ -24,7 +25,16 @@ const base = {
       },
     ],
   },
+  plugins: [new CleanWebpackPlugin(['dist'])],
 };
+
+if (process.env.NODE_ENV === 'development') {
+  base.plugins.push(
+    new WebpackShellPlugin({
+      onBuildEnd: ['./scripts/watch.js'],
+    }),
+  );
+}
 
 const serverConfig = {
   target: 'node',
@@ -47,14 +57,6 @@ const clientConfig = {
     path: path.resolve(__dirname, 'dist', 'js'),
   },
 };
-
-if (process.env.NODE_ENV === 'development') {
-  serverConfig.plugins = [
-    new WebpackShellPlugin({
-      onBuildEnd: ['./scripts/watch.js'],
-    }),
-  ];
-}
 
 module.exports = [
   Object.assign(serverConfig, base),
