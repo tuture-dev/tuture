@@ -30,6 +30,7 @@ interface Commit {
 
 interface Step extends Commit {
   explain?: Explain;
+  outdated?: boolean;
   diff: Diff[];
 }
 

@@ -78,10 +78,7 @@ injectGlobal`
   .markdown a {
     color: rgba(0,0,0,0.84);
     text-decoration: none;
-    background-image: linear-gradient(to bottom,rgba(0,0,0,.68) 50%,rgba(0,0,0,0) 50%);
-    background-repeat: repeat-x;
-    background-size: 2px .1em;
-    background-position: 0 1.07em;
+    border-bottom: 1px solid rgba(0,0,0,0.84);
     &:hover {
       cursor: pointer;
     }
@@ -106,7 +103,7 @@ injectGlobal`
     margin-top: 28px;
     border-left: 3px solid rgba(0,0,0,.84);
     padding-left: 20px;
-    margin-left: -23px;
+    margin-left: -21px;
     padding-bottom: 2px;
   }
 

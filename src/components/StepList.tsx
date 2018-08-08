@@ -31,7 +31,7 @@ const MenuHeader = styled.div`
 
 /* tslint:disable-next-line */
 const MenuHeaderText = styled.p`
-  font-family: STSongti-SC-Bold;
+  font-family: LucidaGrande-Bold;
   font-size: 24px;
   color: rgba(0, 0, 0, 0.84);
 `;
@@ -54,7 +54,7 @@ const TutureMenu = styled.ul`
 const TutureMenuItem = styled.li`
   width: ${(props) =>
     props.className === 'selected' ? 'calc(100% -38px)' : 'calc(100% -41px)'};
-  font-family: STSongti-SC;
+  font-family: Georgia;
   font-size: 16px;
   margin: 8px 0;
   padding-right: 40px;
@@ -85,12 +85,6 @@ const MenuItemContent = styled.a`
   white-space: pre-wrap;
   word-wrap: break-word;
   word-break: break-all;
-`;
-
-/* tslint:disable-next-line */
-const MenuItemIcon = styled.img`
-  width: 22px;
-  margin: 3px 16px 3px 0;
 `;
 
 export default class StepList extends React.Component<
@@ -130,7 +124,7 @@ export default class StepList extends React.Component<
 
   componentDidMount() {
     const { commits } = this.props;
-    if (isClientOrServer()) {
+    if (isClientOrServer() === 'client') {
       this.setState({
         itemTopOffsets: commits.map((commit) =>
           document.getElementById(handleAnchor(commit.name)),
