@@ -1,6 +1,6 @@
 {
   "name": "tuture",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "preferGlobal": true,
   "description": "Tuture magically turns your repositories into juicy tutorials.",
   "license": "MIT",

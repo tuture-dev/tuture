@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.1
+
+Bump version due to a historical mistake.
+
 ## 1.0.0
 
 ### New Features
