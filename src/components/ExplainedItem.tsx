@@ -10,7 +10,7 @@ import Markdown from 'react-markdown';
 import { Explain } from '../types';
 import { isClientOrServer } from '../utils/common';
 
-type Type = 'pre' | 'post';
+type ExplainType = 'pre' | 'post';
 type EditMode = 'edit' | 'preview';
 
 interface ExplainedItemProps {
@@ -22,7 +22,7 @@ interface ExplainedItemProps {
   updateTutureExplain: (
     commit: string,
     diffKey: string,
-    name: Type,
+    name: ExplainType,
     value: string,
   ) => void;
 }
@@ -78,10 +78,7 @@ injectGlobal`
   .markdown a {
     color: rgba(0,0,0,0.84);
     text-decoration: none;
-    background-image: linear-gradient(to bottom,rgba(0,0,0,.68) 50%,rgba(0,0,0,0) 50%);
-    background-repeat: repeat-x;
-    background-size: 2px .1em;
-    background-position: 0 1.07em;
+    border-bottom: 1px solid rgba(0,0,0,0.84);
     &:hover {
       cursor: pointer;
     }
@@ -89,7 +86,7 @@ injectGlobal`
 
   .markdown img {
     display: block;
-    width: 700px;
+    width: 680px;
     margin: 44px 0;
   }
 
@@ -106,7 +103,7 @@ injectGlobal`
     margin-top: 28px;
     border-left: 3px solid rgba(0,0,0,.84);
     padding-left: 20px;
-    margin-left: -23px;
+    margin-left: -21px;
     padding-bottom: 2px;
   }
 
@@ -149,6 +146,10 @@ injectGlobal`
   .editor > .is-root {
     padding-left: 0;
     padding-right: 0;
+  }
+
+  .editor > .is-root.preview-markdown {
+    padding: 20px;
   }
 
   textarea {
@@ -309,8 +310,6 @@ export default class ExplainedItem extends PureComponent<
       ...explainState,
       [`${name}Height`]: scrollHeight <= 200 ? 200 : scrollHeight,
     });
-    const { updateTutureExplain, commit, diffKey } = this.props;
-    updateTutureExplain(commit, diffKey, name as Type, value);
   };
 
   handleImageUpload(
@@ -358,7 +357,12 @@ export default class ExplainedItem extends PureComponent<
         };
         this.setState({ ...explainState });
         const { updateTutureExplain, commit, diffKey } = that.props;
-        updateTutureExplain(commit, diffKey, name as Type, currentExplain);
+        updateTutureExplain(
+          commit,
+          diffKey,
+          name as ExplainType,
+          currentExplain,
+        );
       });
   }
 
@@ -374,19 +378,19 @@ export default class ExplainedItem extends PureComponent<
     this.setState({ nowTab });
   };
 
-  handleAddExplain = (type: Type) => {
+  handleAddExplain = (type: ExplainType) => {
     this.setState({
       [`${type}NowEdit`]: true,
     });
   };
 
-  handleDelete = (type: Type) => {
+  handleDelete = (type: ExplainType) => {
     const { updateTutureExplain, commit, diffKey } = this.props;
     updateTutureExplain(commit, diffKey, type, '');
     this.setState({ [type]: '' });
   };
 
-  renderExplainStr = (type: Type): React.ReactNode => {
+  renderExplainStr = (type: ExplainType): React.ReactNode => {
     const { isRoot } = this.props;
     return (
       <Markdown
@@ -396,7 +400,7 @@ export default class ExplainedItem extends PureComponent<
     );
   };
 
-  renderEditExplainStr = (type: Type): React.ReactNode => {
+  renderEditExplainStr = (type: ExplainType): React.ReactNode => {
     const explainContent = this.state[type];
     return (
       <EditExplainWrapper>
@@ -427,13 +431,16 @@ export default class ExplainedItem extends PureComponent<
     );
   };
 
-  handleSave = (type: Type) => {
+  handleSave = (type: ExplainType) => {
     this.setState({
       [`${type}NowEdit`]: false,
     });
+
+    const { updateTutureExplain, commit, diffKey } = this.props;
+    updateTutureExplain(commit, diffKey, type, this.state[type]);
   };
 
-  nowEditFrame = (type: Type): React.ReactNode => {
+  nowEditFrame = (type: ExplainType): React.ReactNode => {
     const { isRoot } = this.props;
     const { nowTab } = this.state;
     return (
@@ -477,7 +484,7 @@ export default class ExplainedItem extends PureComponent<
     );
   };
 
-  renderExplain = (type: Type, isEditMode: boolean): React.ReactNode => {
+  renderExplain = (type: ExplainType, isEditMode: boolean): React.ReactNode => {
     return isEditMode
       ? this.state[`${type}NowEdit`]
         ? this.nowEditFrame(type)

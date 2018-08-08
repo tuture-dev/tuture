@@ -140,7 +140,11 @@ export default class StepDiff extends React.PureComponent<
       const fileName = fileCopy.file;
       const startLine = fileCopy.section ? fileCopy.section.start : 1;
       return (
-        <Draggable key={i} draggableId={file.file} index={i}>
+        <Draggable
+          key={i}
+          draggableId={file.file}
+          index={i}
+          isDragDisabled={!isEditMode}>
           {(dragProvided: DraggableProvided) => (
             <DiffWrapper
               isEditMode={isEditMode}
