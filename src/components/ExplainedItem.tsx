@@ -10,7 +10,7 @@ import Markdown from 'react-markdown';
 import { Explain } from '../types';
 import { isClientOrServer } from '../utils/common';
 
-type Type = 'pre' | 'post';
+type ExplainType = 'pre' | 'post';
 type EditMode = 'edit' | 'preview';
 
 interface ExplainedItemProps {
@@ -22,7 +22,7 @@ interface ExplainedItemProps {
   updateTutureExplain: (
     commit: string,
     diffKey: string,
-    name: Type,
+    name: ExplainType,
     value: string,
   ) => void;
 }
@@ -89,7 +89,7 @@ injectGlobal`
 
   .markdown img {
     display: block;
-    width: 700px;
+    width: 680px;
     margin: 44px 0;
   }
 
@@ -313,8 +313,6 @@ export default class ExplainedItem extends PureComponent<
       ...explainState,
       [`${name}Height`]: scrollHeight <= 200 ? 200 : scrollHeight,
     });
-    const { updateTutureExplain, commit, diffKey } = this.props;
-    updateTutureExplain(commit, diffKey, name as Type, value);
   };
 
   handleImageUpload(
@@ -362,7 +360,12 @@ export default class ExplainedItem extends PureComponent<
         };
         this.setState({ ...explainState });
         const { updateTutureExplain, commit, diffKey } = that.props;
-        updateTutureExplain(commit, diffKey, name as Type, currentExplain);
+        updateTutureExplain(
+          commit,
+          diffKey,
+          name as ExplainType,
+          currentExplain,
+        );
       });
   }
 
@@ -378,19 +381,19 @@ export default class ExplainedItem extends PureComponent<
     this.setState({ nowTab });
   };
 
-  handleAddExplain = (type: Type) => {
+  handleAddExplain = (type: ExplainType) => {
     this.setState({
       [`${type}NowEdit`]: true,
     });
   };
 
-  handleDelete = (type: Type) => {
+  handleDelete = (type: ExplainType) => {
     const { updateTutureExplain, commit, diffKey } = this.props;
     updateTutureExplain(commit, diffKey, type, '');
     this.setState({ [type]: '' });
   };
 
-  renderExplainStr = (type: Type): React.ReactNode => {
+  renderExplainStr = (type: ExplainType): React.ReactNode => {
     const { isRoot } = this.props;
     return (
       <Markdown
@@ -400,7 +403,7 @@ export default class ExplainedItem extends PureComponent<
     );
   };
 
-  renderEditExplainStr = (type: Type): React.ReactNode => {
+  renderEditExplainStr = (type: ExplainType): React.ReactNode => {
     const explainContent = this.state[type];
     return (
       <EditExplainWrapper>
@@ -431,13 +434,16 @@ export default class ExplainedItem extends PureComponent<
     );
   };
 
-  handleSave = (type: Type) => {
+  handleSave = (type: ExplainType) => {
     this.setState({
       [`${type}NowEdit`]: false,
     });
+
+    const { updateTutureExplain, commit, diffKey } = this.props;
+    updateTutureExplain(commit, diffKey, type, this.state[type]);
   };
 
-  nowEditFrame = (type: Type): React.ReactNode => {
+  nowEditFrame = (type: ExplainType): React.ReactNode => {
     const { isRoot } = this.props;
     const { nowTab } = this.state;
     return (
@@ -481,7 +487,7 @@ export default class ExplainedItem extends PureComponent<
     );
   };
 
-  renderExplain = (type: Type, isEditMode: boolean): React.ReactNode => {
+  renderExplain = (type: ExplainType, isEditMode: boolean): React.ReactNode => {
     return isEditMode
       ? this.state[`${type}NowEdit`]
         ? this.nowEditFrame(type)
