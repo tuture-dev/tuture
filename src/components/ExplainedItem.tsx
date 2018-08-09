@@ -264,16 +264,11 @@ const NoExplainWrapper = styled.div`
   border: 1px solid #00b887;
   color: #00b887;
   padding: 10px;
-  padding-top: 12px;
+  font-size: 20px;
   opacity: 0.3;
   border-radius: 3px;
   text-align: center;
   cursor: pointer;
-`;
-
-/* tslint:disable-next-line */
-const NoExplainImg = styled.img`
-  width: 24px;
 `;
 
 /* tslint:disable-next-line */
@@ -431,7 +426,7 @@ export default class ExplainedItem extends PureComponent<
           </HasExplainWrapper>
         ) : (
           <NoExplainWrapper onClick={() => this.handleAddExplain(type)}>
-            <NoExplainImg src={`/js/${write}`} />
+            +
           </NoExplainWrapper>
         )}
       </EditExplainWrapper>
