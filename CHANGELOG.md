@@ -1,5 +1,24 @@
 # Changelog
 
+## 1.0.1
+
+Bump version due to a historical mistake.
+
+## 1.0.0
+
+### New Features
+
+Edit your tutorial just in browser!
+
+- Smooth transition between edit and preview mode
+- Full-fledged markdown support (Yes! We support image uploading)
+- Move all steps into one page
+
+### Improvements
+
+- Ridiculously fast launch speed, due to our new SSR (Server-Side Rendering) architecture
+- Syntax highlighting support for nearly all languages
+
 ## 0.3.1
 
 Rename the global binary to `tuture-server`.

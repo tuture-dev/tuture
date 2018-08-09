@@ -28,7 +28,6 @@ interface StepContentProps {
 const TutureWrapper = styled.div`
   max-width: 788px;
   margin-left: 282px;
-  padding: 10px;
   &:hover {
     box-shadow: ${(props: { isEditMode: boolean }) =>
       props.isEditMode
@@ -40,12 +39,13 @@ const TutureWrapper = styled.div`
 
 /* tslint:disable-next-line */
 const TutureContentHeader = styled.h1`
-  font-family: STSongti-SC-Bold;
-  font-size: 45px;
+  font-family: LucidaGrande-Bold;
+  font-size: 37px;
   color: rgba(0, 0, 0, 0.84);
-  margin-bottom: 14px;
   padding-left: 20px;
   padding-right: 20px;
+  margin-top: 44px;
+  margin-bottom: 0;
 `;
 
 export default class StepContent extends React.Component<StepContentProps> {
@@ -58,10 +58,9 @@ export default class StepContent extends React.Component<StepContentProps> {
       updateTutureDiffOrder,
     } = this.props;
     const { name, explain, diff, commit } = content;
-    const anchorClassName = handleAnchor(name);
 
     return (
-      <TutureWrapper id={anchorClassName} isEditMode={isEditMode}>
+      <TutureWrapper id={handleAnchor(name)} isEditMode={isEditMode}>
         <TutureContentHeader>{name}</TutureContentHeader>
         <ExplainedItem
           explain={explain}

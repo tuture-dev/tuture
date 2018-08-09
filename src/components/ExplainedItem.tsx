@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import styled, { injectGlobal } from 'styled-components';
 import classnames from 'classnames';
 import _ from 'lodash';
+import fetch from 'isomorphic-fetch';
 
 // @ts-ignore
 import Markdown from 'react-markdown';
@@ -9,7 +10,7 @@ import Markdown from 'react-markdown';
 import { Explain } from '../types';
 import { isClientOrServer } from '../utils/common';
 
-type Type = 'pre' | 'post';
+type ExplainType = 'pre' | 'post';
 type EditMode = 'edit' | 'preview';
 type ToolType =
   | 'b'
@@ -30,7 +31,7 @@ interface ExplainedItemProps {
   updateTutureExplain: (
     commit: string,
     diffKey: string,
-    name: Type,
+    name: ExplainType,
     value: string,
   ) => void;
 }
@@ -47,10 +48,10 @@ interface ExplainedItemState extends Explain {
 
 injectGlobal`
   .markdown p, li {
-    font-family: STSongti-SC-Regular;
+    font-family: Georgia;
     font-size: 18px;
     line-height: 1.58;
-    margin: 16px 0;
+    margin: 24px 0 0 0;
     color: rgba(0,0,0,0.84);
   }
 
@@ -59,23 +60,18 @@ injectGlobal`
   }
 
   .markdown h1 {
-    font-size: 45px;
+    font-size: 3px;
+    font-family: LucidaGrande-Bold;
   }
 
   .markdown h2 {
-    font-size: 37px;
+    font-size: 31px;
+    font-family: LucidaGrande-Bold;
   }
 
   .markdown h3 {
-    font-size: 31px;
-  }
-
-  .markdown h4 {
     font-size: 26px;
-  }
-
-  .markdown h5 {
-    font-size: 21px;
+    font-family: LucidaGrande-Bold;
   }
 
   .markdown pre {
@@ -92,10 +88,7 @@ injectGlobal`
   .markdown a {
     color: rgba(0,0,0,0.84);
     text-decoration: none;
-    background-image: linear-gradient(to bottom,rgba(0,0,0,.68) 50%,rgba(0,0,0,0) 50%);
-    background-repeat: repeat-x;
-    background-size: 2px .1em;
-    background-position: 0 1.07em;
+    border-bottom: 1px solid rgba(0,0,0,0.84);
     &:hover {
       cursor: pointer;
     }
@@ -103,7 +96,7 @@ injectGlobal`
 
   .markdown img {
     display: block;
-    width: 700px;
+    width: 680px;
     margin: 44px 0;
   }
 
@@ -120,7 +113,7 @@ injectGlobal`
     margin-top: 28px;
     border-left: 3px solid rgba(0,0,0,.84);
     padding-left: 20px;
-    margin-left: -23px;
+    margin-left: -21px;
     padding-bottom: 2px;
   }
 
@@ -133,6 +126,29 @@ injectGlobal`
     font-style: normal;
   }
 
+  .markdown.preview-markdown {
+    box-sizing: border-box;
+    padding: 20px;
+    border: 1px solid #d1d5da;
+    border-radius: 0 4px 4px;
+  }
+
+  .markdown.preview-markdown p:first-child {
+    margin-top: 0;
+  }
+
+  .markdown.preview-markdown li:first-child {
+    margin-top: 0;
+  }
+
+  .markdown.preview-markdown h1:first-child {
+    margin-top: 0;
+  }
+
+  .markdown.preview-markdown h2:first-child {
+    margin-top: 0;
+  }
+
   .is-root {
     padding: 0 24px 12px;
   }
@@ -142,6 +158,10 @@ injectGlobal`
     padding-right: 0;
   }
 
+  .editor > .is-root.preview-markdown {
+    padding: 20px;
+  }
+
   textarea {
     display: block;
     width: 100%;
@@ -149,10 +169,10 @@ injectGlobal`
     overflow-y: hidden;
     vertical-align: top;
     box-sizing: border-box;
-    font-family: 'Monaco', courier, monospace;
+    font-family: Georgia;
     padding: 20px;
     resize: none;
-    font-size: 14px;
+    font-size: 18px;
     border: 1px solid #d1d5da;
     border-radius: 0 4px 4px;
     &:focus {
@@ -233,7 +253,6 @@ const HasExplainWrapper = styled.div`
   top: 0;
   left: 0;
   opacity: 0;
-  padding: 10px 0;
   background-color: rgba(255, 255, 255, 0.7);
   &:hover {
     opacity: 1;
@@ -257,16 +276,17 @@ const NoExplainWrapper = styled.div`
   box-sizing: border-box;
   border: 1px solid #00b887;
   color: #00b887;
-  padding: 0;
-  opacity: 0;
+  padding: 20px;
+  opacity: 0.3;
   border-radius: 3px;
   text-align: center;
   cursor: pointer;
-  &:hover {
+`;
+
+/* tslint:disable-next-line */
+const StyledExplainedItem = styled.div`
+  &:hover ${NoExplainWrapper} {
     opacity: 1;
-    transition: opacity 0.3s;
-    padding: 20px;
-    transition: padding 0.3s;
   }
 `;
 
@@ -325,7 +345,94 @@ export default class ExplainedItem extends PureComponent<
     }
   }
 
-  renderExplainStr = (type: Type): React.ReactNode => {
+  handleChange = (e: React.FormEvent<HTMLTextAreaElement>) => {
+    const { name, value, scrollHeight } = e.currentTarget;
+    const explainState = { [name]: value } as Explain;
+    this.setState({
+      ...explainState,
+      [`${name}Height`]: scrollHeight <= 200 ? 200 : scrollHeight,
+    });
+  };
+
+  handleImageUpload(
+    e: React.SyntheticEvent<HTMLTextAreaElement>,
+    eventType: 'paste' | 'drop',
+  ) {
+    const files =
+      eventType === 'paste'
+        ? (e as React.ClipboardEvent<HTMLTextAreaElement>).clipboardData.files
+        : (e as React.DragEvent<HTMLTextAreaElement>).dataTransfer.files;
+
+    if (files.length === 0 || !/\.(png|jpe?g|bmp)$/.test(files[0].name)) {
+      // Not a valid image.
+      return;
+    }
+
+    // Prevent default behaviors of pasting and dropping events.
+    e.preventDefault();
+
+    // Upload the first images to server.
+    const data = new FormData();
+    const that = this;
+    data.append('file', files[0]);
+
+    console.log(`handleImageUpload before fetch: ${e.currentTarget.name}`);
+    const explainType = e.currentTarget.name;
+
+    fetch('http://localhost:3000/upload', {
+      method: 'POST',
+      body: data,
+    })
+      .then((res) => res.json())
+      .then((resObj) => {
+        const savePath = resObj.path;
+        console.log(savePath);
+
+        // Add markdown image element to current explain.
+        console.log(e);
+        console.log(`handleImageUpload getSavePath: ${explainType}`);
+        let currentExplain = that.state[explainType] as string;
+        currentExplain += `![](${savePath})`;
+        console.log(currentExplain);
+        const explainState = {
+          [explainType]: currentExplain,
+        };
+        this.setState({ ...explainState });
+        const { updateTutureExplain, commit, diffKey } = that.props;
+        updateTutureExplain(
+          commit,
+          diffKey,
+          name as ExplainType,
+          currentExplain,
+        );
+      });
+  }
+
+  handlePaste = (e: React.ClipboardEvent<HTMLTextAreaElement>) => {
+    this.handleImageUpload(e, 'paste');
+  };
+
+  handleDrop = (e: React.DragEvent<HTMLTextAreaElement>) => {
+    this.handleImageUpload(e, 'drop');
+  };
+
+  handleTabClick = (nowTab: EditMode) => {
+    this.setState({ nowTab });
+  };
+
+  handleAddExplain = (type: ExplainType) => {
+    this.setState({
+      [`${type}NowEdit`]: true,
+    });
+  };
+
+  handleDelete = (type: ExplainType) => {
+    const { updateTutureExplain, commit, diffKey } = this.props;
+    updateTutureExplain(commit, diffKey, type, '');
+    this.setState({ [type]: '' });
+  };
+
+  renderExplainStr = (type: ExplainType): React.ReactNode => {
     const { isRoot } = this.props;
     return (
       <Markdown
@@ -335,34 +442,7 @@ export default class ExplainedItem extends PureComponent<
     );
   };
 
-  handleChange = (e: React.FormEvent<HTMLTextAreaElement>) => {
-    const { name, value, scrollHeight } = e.currentTarget;
-    const explainState = { [name]: value } as Explain;
-    this.setState({
-      ...explainState,
-      [`${name}Height`]: scrollHeight <= 200 ? 200 : scrollHeight,
-    });
-    const { updateTutureExplain, commit, diffKey } = this.props;
-    updateTutureExplain(commit, diffKey, name as Type, value);
-  };
-
-  handleTabClick = (nowTab: EditMode) => {
-    this.setState({ nowTab });
-  };
-
-  handleAddExplain = (type: Type) => {
-    this.setState({
-      [`${type}NowEdit`]: true,
-    });
-  };
-
-  handleDelete = (type: Type) => {
-    const { updateTutureExplain, commit, diffKey } = this.props;
-    updateTutureExplain(commit, diffKey, type, '');
-    this.setState({ [type]: '' });
-  };
-
-  renderEditExplainStr = (type: Type): React.ReactNode => {
+  renderEditExplainStr = (type: ExplainType): React.ReactNode => {
     const explainContent = this.state[type];
     return (
       <EditExplainWrapper>
@@ -393,10 +473,13 @@ export default class ExplainedItem extends PureComponent<
     );
   };
 
-  handleSave = (type: Type) => {
+  handleSave = (type: ExplainType) => {
     this.setState({
       [`${type}NowEdit`]: false,
     });
+
+    const { updateTutureExplain, commit, diffKey } = this.props;
+    updateTutureExplain(commit, diffKey, type, this.state[type]);
   };
 
   spliceStr = (str: string, typeStr: string, start: number, end: number) => {
@@ -410,7 +493,7 @@ export default class ExplainedItem extends PureComponent<
       );
   };
 
-  handleMdTool = (type: Type, toolType: ToolType) => {
+  handleMdTool = (type: ExplainType, toolType: ToolType) => {
     if (this.state[`${type}NowEdit`]) {
       const explainContent = this.state[type];
       const explainTextarea = this.explainContentRef.current;
@@ -550,7 +633,7 @@ export default class ExplainedItem extends PureComponent<
     }
   };
 
-  nowEditFrame = (type: Type): React.ReactNode => {
+  nowEditFrame = (type: ExplainType): React.ReactNode => {
     const { isRoot } = this.props;
     const { nowTab } = this.state;
     return (
@@ -614,6 +697,8 @@ export default class ExplainedItem extends PureComponent<
               value={this.state[type]}
               placeholder="写一点解释..."
               onChange={this.handleChange}
+              onPaste={this.handlePaste}
+              onDrop={this.handleDrop}
               style={{ height: this.state[`${type}Height`] as number }}
               ref={this.explainContentRef}
             />
@@ -621,14 +706,16 @@ export default class ExplainedItem extends PureComponent<
         ) : (
           <Markdown
             source={this.state[type]}
-            className={classnames('markdown', { 'is-root': isRoot })}
+            className={classnames('markdown', 'preview-markdown', {
+              'is-root': isRoot,
+            })}
           />
         )}
       </div>
     );
   };
 
-  renderExplain = (type: Type, isEditMode: boolean): React.ReactNode => {
+  renderExplain = (type: ExplainType, isEditMode: boolean): React.ReactNode => {
     return isEditMode
       ? this.state[`${type}NowEdit`]
         ? this.nowEditFrame(type)
@@ -639,11 +726,11 @@ export default class ExplainedItem extends PureComponent<
   render() {
     const { isEditMode } = this.props;
     return (
-      <React.Fragment>
+      <StyledExplainedItem>
         {this.renderExplain('pre', isEditMode)}
         {this.props.children}
         {this.renderExplain('post', isEditMode)}
-      </React.Fragment>
+      </StyledExplainedItem>
     );
   }
 }

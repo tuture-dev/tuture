@@ -38,16 +38,19 @@ export default class Content extends React.Component<ContentProps> {
 
     (tuture as Tuture).steps.map((step, index: number) => {
       const diffItem = diff[index];
-      renderContent.push(
-        <StepContent
-          key={index}
-          content={step}
-          diffItem={diffItem}
-          isEditMode={isEditMode}
-          updateTutureExplain={updateTutureExplain}
-          updateTutureDiffOrder={updateTutureDiffOrder}
-        />,
-      );
+
+      if (!step.outdated) {
+        renderContent.push(
+          <StepContent
+            key={index}
+            content={step}
+            diffItem={diffItem}
+            isEditMode={isEditMode}
+            updateTutureExplain={updateTutureExplain}
+            updateTutureDiffOrder={updateTutureDiffOrder}
+          />,
+        );
+      }
     });
     return <ContentWrapper>{renderContent}</ContentWrapper>;
   }

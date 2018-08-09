@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 const WebpackShellPlugin = require('webpack-shell-plugin');
 
 const nodeModules = {};
@@ -24,20 +25,28 @@ const base = {
       },
     ],
   },
+  plugins: [new CleanWebpackPlugin(['dist'])],
 };
+
+if (process.env.NODE_ENV === 'development') {
+  base.plugins.push(
+    new WebpackShellPlugin({
+      onBuildEnd: ['./scripts/watch.js'],
+    }),
+  );
+}
 
 const serverConfig = {
   target: 'node',
+  node: {
+    __dirname: false,
+    __filename: false,
+  },
   entry: './src/server/index.tsx',
   output: {
     filename: 'server.js',
     path: path.resolve(__dirname, 'dist', 'js'),
   },
-  plugins: [
-    new WebpackShellPlugin({
-      onBuildEnd: ['./scripts/watch.js'],
-    }),
-  ],
   externals: nodeModules,
 };
 

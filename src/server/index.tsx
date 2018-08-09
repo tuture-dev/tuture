@@ -4,6 +4,7 @@ import path from 'path';
 
 import express from 'express';
 import logger from 'morgan';
+import multer from 'multer';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import opn from 'opn';
@@ -19,9 +20,12 @@ const port = 3000;
 const app = express();
 const server = http.createServer(app);
 
-const tuturePath = process.env.TUTURE_PATH;
+const tuturePath = process.env.TUTURE_PATH || process.cwd();
 const tutureYAMLPath = path.join(tuturePath, 'tuture.yml');
 const diffPath = path.join(tuturePath, '.tuture', 'diff.json');
+const assetsPath = path.join(tuturePath, 'tuture-assets');
+
+const upload = multer({ dest: assetsPath });
 
 const io = socketio(server);
 let reloadCounter = 0;
@@ -43,8 +47,8 @@ io.on('connection', (socket) => {
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(express.static('dist'));
-app.use(express.static('dist'));
+app.use(express.static(path.join(__dirname, '..')));
+app.use('/tuture-assets', express.static(assetsPath));
 
 app.get('/', (req, res) => {
   const tutureYAML = fs.readFileSync(tutureYAMLPath, {
@@ -89,6 +93,12 @@ app.post('/save', (req, res) => {
   }
 });
 
+app.post('/upload', upload.single('file'), (req, res) => {
+  const savePath = path.join('tuture-assets', req.file.filename);
+  res.json({ path: savePath });
+  res.end();
+});
+
 app.get('/reload', (req, res) => {
   io.emit('reload');
   res.status(200);
@@ -96,7 +106,7 @@ app.get('/reload', (req, res) => {
 });
 
 server.listen(port, () => {
-  if (!process.env.WATCHING) {
+  if (process.env.NODE_ENV !== 'development') {
     console.log(`Tutorial is served on http://localhost:${port}`);
     opn('http://localhost:3000');
   }
