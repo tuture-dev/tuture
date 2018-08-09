@@ -11,6 +11,15 @@ import { isClientOrServer } from '../utils/common';
 
 type Type = 'pre' | 'post';
 type EditMode = 'edit' | 'preview';
+type ToolType =
+  | 'b'
+  | 'i'
+  | 'h'
+  | 'list'
+  | 'blockquotes'
+  | 'link'
+  | 'img'
+  | 'code';
 
 interface ExplainedItemProps {
   explain: Explain;
@@ -32,6 +41,7 @@ interface ExplainedItemState extends Explain {
   postHeight: number;
   preNowEdit: boolean;
   postNowEdit: boolean;
+  mdToolType?: ToolType | null;
   [key: string]: string | number | boolean;
 }
 
@@ -173,6 +183,10 @@ const SaveButton = styled(BasicButton)`
   border: none;
 `;
 
+const ToolButton = styled.button`
+  margin-right: 10px;
+`;
+
 /* tslint:disable-next-line */
 const Button = styled(BasicButton)`
   border: ${(props: { selected?: boolean; color?: string }) =>
@@ -260,6 +274,7 @@ export default class ExplainedItem extends PureComponent<
   ExplainedItemProps,
   ExplainedItemState
 > {
+  private explainContentRef: React.RefObject<HTMLTextAreaElement>;
   constructor(props: ExplainedItemProps) {
     super(props);
 
@@ -272,6 +287,8 @@ export default class ExplainedItem extends PureComponent<
       preNowEdit: false,
       postNowEdit: false,
     };
+
+    this.explainContentRef = React.createRef();
   }
 
   componentWillReceiveProps(nextProps: ExplainedItemProps) {
@@ -279,6 +296,31 @@ export default class ExplainedItem extends PureComponent<
       this.setState({
         preNowEdit: false,
         postNowEdit: false,
+      });
+    }
+  }
+
+  componentDidUpdate(
+    prevProps: ExplainedItemProps,
+    prevState: ExplainedItemState,
+  ) {
+    if (
+      this.state.mdToolType &&
+      prevState.mdToolType !== this.state.mdToolType
+    ) {
+      const explainTextarea = this.explainContentRef.current;
+      const explainLen = explainTextarea.value.length;
+      explainTextarea.focus();
+      if (this.state.mdToolType === 'b') {
+        explainTextarea.setSelectionRange(explainLen - 2, explainLen - 2);
+      } else if (
+        this.state.mdToolType === 'i' ||
+        this.state.mdToolType === 'code'
+      ) {
+        explainTextarea.setSelectionRange(explainLen - 1, explainLen - 1);
+      }
+      this.setState({
+        mdToolType: null,
       });
     }
   }
@@ -357,6 +399,157 @@ export default class ExplainedItem extends PureComponent<
     });
   };
 
+  spliceStr = (str: string, typeStr: string, start: number, end: number) => {
+    return str
+      .slice(0, start)
+      .concat(
+        typeStr,
+        str.slice(start, end),
+        typeStr,
+        str.slice(end, str.length),
+      );
+  };
+
+  handleMdTool = (type: Type, toolType: ToolType) => {
+    if (this.state[`${type}NowEdit`]) {
+      const explainContent = this.state[type];
+      const explainTextarea = this.explainContentRef.current;
+      const selectedContent = explainContent.slice(
+        explainTextarea.selectionStart,
+        explainTextarea.selectionEnd,
+      );
+      let resultContent = '';
+      switch (toolType) {
+        case 'b':
+          if (selectedContent) {
+            this.setState({
+              [type]: this.spliceStr(
+                explainContent,
+                '**',
+                explainTextarea.selectionStart,
+                explainTextarea.selectionEnd,
+              ),
+            });
+          } else {
+            this.setState({
+              [type]: `${explainContent}****`,
+              mdToolType: 'b',
+            });
+          }
+          break;
+        case 'i':
+          if (selectedContent) {
+            this.setState({
+              [type]: this.spliceStr(
+                explainContent,
+                '*',
+                explainTextarea.selectionStart,
+                explainTextarea.selectionEnd,
+              ),
+            });
+          } else {
+            this.setState({
+              [type]: `${explainContent}**`,
+              mdToolType: 'i',
+            });
+          }
+          break;
+        case 'h':
+          explainContent.endsWith('\n')
+            ? this.setState({
+                [type]: `${explainContent}#### `,
+              })
+            : this.setState({
+                [type]: `${explainContent}\n#### `,
+              });
+          break;
+        case 'list':
+          if (selectedContent) {
+            let resultContent = '';
+            const listItems = selectedContent.split('\n');
+            listItems.map((item) => {
+              if (item) {
+                resultContent += `- ${item}\n`;
+              }
+            });
+            this.setState({
+              [type]: explainContent
+                .slice(0, explainTextarea.selectionStart)
+                .concat(
+                  resultContent,
+                  explainContent.slice(
+                    explainTextarea.selectionEnd,
+                    explainContent.length,
+                  ),
+                ),
+            });
+          } else {
+            explainContent.endsWith('\n')
+              ? this.setState({
+                  [type]: `${explainContent}- `,
+                })
+              : this.setState({
+                  [type]: `${explainContent}\n- `,
+                });
+          }
+          break;
+        case 'blockquotes':
+          explainContent.endsWith('\n')
+            ? this.setState({
+                [type]: `${explainContent}> `,
+              })
+            : this.setState({
+                [type]: `${explainContent}\n> `,
+              });
+          break;
+        case 'code':
+          if (selectedContent) {
+            this.setState({
+              [type]: this.spliceStr(
+                explainContent,
+                '`',
+                explainTextarea.selectionStart,
+                explainTextarea.selectionEnd,
+              ),
+            });
+          } else {
+            this.setState({
+              [type]: explainContent + '``',
+              mdToolType: 'code',
+            });
+          }
+          break;
+        case 'link':
+          if (selectedContent) {
+            resultContent = `${explainContent.slice(
+              0,
+              explainTextarea.selectionStart,
+            )}[${selectedContent}]()${explainContent.slice(
+              explainTextarea.selectionEnd,
+              explainContent.length,
+            )}`;
+            this.setState({
+              [type]: resultContent,
+            });
+          } else {
+            this.setState({
+              [type]: `${explainContent}[example](http://example.com/)`,
+            });
+          }
+
+          break;
+        case 'img':
+          this.setState({
+            [type]: explainContent + '',
+          });
+          break;
+        default:
+          break;
+      }
+      explainTextarea.focus();
+    }
+  };
+
   nowEditFrame = (type: Type): React.ReactNode => {
     const { isRoot } = this.props;
     const { nowTab } = this.state;
@@ -380,13 +573,51 @@ export default class ExplainedItem extends PureComponent<
           <SaveButton onClick={() => this.handleSave(type)}>确定</SaveButton>
         </TabWrapper>
         {nowTab === 'edit' ? (
-          <textarea
-            name={type}
-            value={this.state[type]}
-            placeholder="写一点解释..."
-            onChange={this.handleChange}
-            style={{ height: this.state[`${type}Height`] as number }}
-          />
+          <div>
+            <div
+              className="markdown-toolbar"
+              style={{
+                border: '1px solid #d1d5da',
+                borderBottom: 'none',
+                height: '30px',
+                padding: '5px 10px',
+                lineHeight: '30px',
+              }}>
+              <ToolButton onClick={() => this.handleMdTool(type, 'b')}>
+                <b>B</b>
+              </ToolButton>
+              <ToolButton onClick={() => this.handleMdTool(type, 'i')}>
+                <i>I</i>
+              </ToolButton>
+              <ToolButton onClick={() => this.handleMdTool(type, 'h')}>
+                H
+              </ToolButton>
+              <ToolButton onClick={() => this.handleMdTool(type, 'list')}>
+                List
+              </ToolButton>
+              <ToolButton
+                onClick={() => this.handleMdTool(type, 'blockquotes')}>
+                Blockquotes
+              </ToolButton>
+              <ToolButton onClick={() => this.handleMdTool(type, 'code')}>
+                Code
+              </ToolButton>
+              <ToolButton onClick={() => this.handleMdTool(type, 'link')}>
+                Link
+              </ToolButton>
+              <ToolButton onClick={() => this.handleMdTool(type, 'img')}>
+                Img
+              </ToolButton>
+            </div>
+            <textarea
+              name={type}
+              value={this.state[type]}
+              placeholder="写一点解释..."
+              onChange={this.handleChange}
+              style={{ height: this.state[`${type}Height`] as number }}
+              ref={this.explainContentRef}
+            />
+          </div>
         ) : (
           <Markdown
             source={this.state[type]}
