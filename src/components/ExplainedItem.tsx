@@ -602,12 +602,8 @@ export default class ExplainedItem extends PureComponent<
           } else {
             this.mdToolType = 'block code';
             !explainContent || explainContent.endsWith('\n')
-              ? this.setState({
-                  [type]: explainContent + '```\n\n```',
-                })
-              : this.setState({
-                  [type]: explainContent + '\n```\n\n```',
-                });
+              ? this.setState({ [type]: explainContent + '```\n\n```' })
+              : this.setState({ [type]: explainContent + '\n```\n\n```' });
           }
           break;
         case 'link':
