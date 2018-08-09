@@ -9,6 +9,7 @@ import Markdown from 'react-markdown';
 
 import { Explain } from '../types';
 import { isClientOrServer } from '../utils/common';
+import write from './write.png';
 
 type ExplainType = 'pre' | 'post';
 type EditMode = 'edit' | 'preview';
@@ -262,11 +263,17 @@ const NoExplainWrapper = styled.div`
   box-sizing: border-box;
   border: 1px solid #00b887;
   color: #00b887;
-  padding: 20px;
+  padding: 10px;
+  padding-top: 12px;
   opacity: 0.3;
   border-radius: 3px;
   text-align: center;
   cursor: pointer;
+`;
+
+/* tslint:disable-next-line */
+const NoExplainImg = styled.img`
+  width: 24px;
 `;
 
 /* tslint:disable-next-line */
@@ -424,7 +431,7 @@ export default class ExplainedItem extends PureComponent<
           </HasExplainWrapper>
         ) : (
           <NoExplainWrapper onClick={() => this.handleAddExplain(type)}>
-            加一点解释 +
+            <NoExplainImg src={`/js/${write}`} />
           </NoExplainWrapper>
         )}
       </EditExplainWrapper>
