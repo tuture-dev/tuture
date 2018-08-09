@@ -16,7 +16,7 @@ import App from '../components/App';
 import html from './html';
 import { Tuture } from '../types/';
 
-const port = 3000;
+const port = process.env.TUTURE_PORT || 3000;
 const app = express();
 const server = http.createServer(app);
 
@@ -107,7 +107,8 @@ app.get('/reload', (req, res) => {
 
 server.listen(port, () => {
   if (process.env.NODE_ENV !== 'development') {
-    console.log(`Tutorial is served on http://localhost:${port}`);
-    opn('http://localhost:3000');
+    const url = `http://localhost:${port}`;
+    console.log(`Tutorial is served on ${url}`);
+    opn(url);
   }
 });
