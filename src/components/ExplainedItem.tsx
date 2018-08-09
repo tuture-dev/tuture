@@ -203,6 +203,7 @@ const SaveButton = styled(BasicButton)`
   border: none;
 `;
 
+/* tslint:disable-next-line */
 const ToolButton = styled.button`
   margin-right: 10px;
 `;
@@ -503,7 +504,7 @@ export default class ExplainedItem extends PureComponent<
       );
       let resultContent = '';
       switch (toolType) {
-        case 'b':
+        case 'b': {
           if (selectedContent) {
             this.setState({
               [type]: this.spliceStr(
@@ -520,6 +521,7 @@ export default class ExplainedItem extends PureComponent<
             });
           }
           break;
+        }
         case 'i':
           if (selectedContent) {
             this.setState({
@@ -537,15 +539,11 @@ export default class ExplainedItem extends PureComponent<
             });
           }
           break;
-        case 'h':
+        case 'h': {
           explainContent.endsWith('\n')
-            ? this.setState({
-                [type]: `${explainContent}#### `,
-              })
-            : this.setState({
-                [type]: `${explainContent}\n#### `,
-              });
-          break;
+            ? this.setState({ [type]: `${explainContent}#### ` })
+            : this.setState({ [type]: `${explainContent}\n#### ` });
+        }
         case 'list':
           if (selectedContent) {
             let resultContent = '';
@@ -568,22 +566,14 @@ export default class ExplainedItem extends PureComponent<
             });
           } else {
             explainContent.endsWith('\n')
-              ? this.setState({
-                  [type]: `${explainContent}- `,
-                })
-              : this.setState({
-                  [type]: `${explainContent}\n- `,
-                });
+              ? this.setState({ [type]: `${explainContent}- ` })
+              : this.setState({ [type]: `${explainContent}\n- ` });
           }
           break;
         case 'blockquotes':
           explainContent.endsWith('\n')
-            ? this.setState({
-                [type]: `${explainContent}> `,
-              })
-            : this.setState({
-                [type]: `${explainContent}\n> `,
-              });
+            ? this.setState({ [type]: `${explainContent}> ` })
+            : this.setState({ [type]: `${explainContent}\n> ` });
           break;
         case 'code':
           if (selectedContent) {
