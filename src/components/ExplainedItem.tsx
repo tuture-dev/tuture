@@ -20,7 +20,8 @@ type ToolType =
   | 'blockquotes'
   | 'link'
   | 'img'
-  | 'code';
+  | 'code'
+  | 'block code';
 
 interface ExplainedItemProps {
   explain: Explain;
@@ -42,7 +43,6 @@ interface ExplainedItemState extends Explain {
   postHeight: number;
   preNowEdit: boolean;
   postNowEdit: boolean;
-  mdToolType?: ToolType | null;
   [key: string]: string | number | boolean;
 }
 
@@ -296,12 +296,14 @@ export default class ExplainedItem extends PureComponent<
   ExplainedItemState
 > {
   private explainContentRef: React.RefObject<HTMLTextAreaElement>;
+  private mdToolType: string = null;
   constructor(props: ExplainedItemProps) {
     super(props);
+    const { pre, post } = props.explain || { pre: '', post: '' };
 
-    const { explain } = this.props;
     this.state = {
-      ...explain,
+      pre,
+      post,
       nowTab: 'edit',
       preHeight: 200,
       postHeight: 200,
@@ -325,24 +327,18 @@ export default class ExplainedItem extends PureComponent<
     prevProps: ExplainedItemProps,
     prevState: ExplainedItemState,
   ) {
-    if (
-      this.state.mdToolType &&
-      prevState.mdToolType !== this.state.mdToolType
-    ) {
+    if (this.mdToolType && prevState.mdToolType !== this.mdToolType) {
       const explainTextarea = this.explainContentRef.current;
       const explainLen = explainTextarea.value.length;
       explainTextarea.focus();
-      if (this.state.mdToolType === 'b') {
+      if (this.mdToolType === 'b') {
         explainTextarea.setSelectionRange(explainLen - 2, explainLen - 2);
-      } else if (
-        this.state.mdToolType === 'i' ||
-        this.state.mdToolType === 'code'
-      ) {
+      } else if (this.mdToolType === 'i' || this.mdToolType === 'code') {
         explainTextarea.setSelectionRange(explainLen - 1, explainLen - 1);
+      } else if (this.mdToolType === 'block code') {
+        explainTextarea.setSelectionRange(explainLen - 4, explainLen - 4);
       }
-      this.setState({
-        mdToolType: null,
-      });
+      this.mdToolType = null;
     }
   }
 
@@ -483,7 +479,7 @@ export default class ExplainedItem extends PureComponent<
     updateTutureExplain(commit, diffKey, type, this.state[type]);
   };
 
-  spliceStr = (str: string, typeStr: string, start: number, end: number) => {
+  spliceStr = (str = '', typeStr: string, start: number, end: number) => {
     return str
       .slice(0, start)
       .concat(
@@ -515,9 +511,9 @@ export default class ExplainedItem extends PureComponent<
               ),
             });
           } else {
+            this.mdToolType = 'b';
             this.setState({
               [type]: `${explainContent}****`,
-              mdToolType: 'b',
             });
           }
           break;
@@ -533,16 +529,17 @@ export default class ExplainedItem extends PureComponent<
               ),
             });
           } else {
+            this.mdToolType = 'i';
             this.setState({
               [type]: `${explainContent}**`,
-              mdToolType: 'i',
             });
           }
           break;
         case 'h': {
-          explainContent.endsWith('\n')
+          !explainContent || explainContent.endsWith('\n')
             ? this.setState({ [type]: `${explainContent}#### ` })
             : this.setState({ [type]: `${explainContent}\n#### ` });
+          break;
         }
         case 'list':
           if (selectedContent) {
@@ -565,13 +562,13 @@ export default class ExplainedItem extends PureComponent<
                 ),
             });
           } else {
-            explainContent.endsWith('\n')
+            !explainContent || explainContent.endsWith('\n')
               ? this.setState({ [type]: `${explainContent}- ` })
               : this.setState({ [type]: `${explainContent}\n- ` });
           }
           break;
         case 'blockquotes':
-          explainContent.endsWith('\n')
+          !explainContent || explainContent.endsWith('\n')
             ? this.setState({ [type]: `${explainContent}> ` })
             : this.setState({ [type]: `${explainContent}\n> ` });
           break;
@@ -586,10 +583,31 @@ export default class ExplainedItem extends PureComponent<
               ),
             });
           } else {
+            this.mdToolType = 'code';
             this.setState({
               [type]: explainContent + '``',
-              mdToolType: 'code',
             });
+          }
+          break;
+        case 'block code':
+          if (selectedContent) {
+            this.setState({
+              [type]: this.spliceStr(
+                explainContent,
+                '\n```\n',
+                explainTextarea.selectionStart,
+                explainTextarea.selectionEnd,
+              ),
+            });
+          } else {
+            this.mdToolType = 'block code';
+            !explainContent || explainContent.endsWith('\n')
+              ? this.setState({
+                  [type]: explainContent + '```\n\n```',
+                })
+              : this.setState({
+                  [type]: explainContent + '\n```\n\n```',
+                });
           }
           break;
         case 'link':
@@ -674,6 +692,9 @@ export default class ExplainedItem extends PureComponent<
               </ToolButton>
               <ToolButton onClick={() => this.handleMdTool(type, 'code')}>
                 Code
+              </ToolButton>
+              <ToolButton onClick={() => this.handleMdTool(type, 'block code')}>
+                Block Code
               </ToolButton>
               <ToolButton onClick={() => this.handleMdTool(type, 'link')}>
                 Link
