@@ -330,7 +330,7 @@ export default class ExplainedItem extends PureComponent<
     prevProps: ExplainedItemProps,
     prevState: ExplainedItemState,
   ) {
-    if (this.cursorPosition != -1) {
+    if (this.cursorPosition !== -1) {
       const explainTextarea = this.explainContentRef.current;
       explainTextarea.focus();
       if (this.cursorPosition) {
