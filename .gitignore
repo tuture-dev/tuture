@@ -25,3 +25,6 @@ package-lock.json
 
 # dist files should not include to the SCM
 /dist
+
+# assets uploaded in example
+tuture-assets/
