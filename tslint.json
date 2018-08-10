@@ -20,7 +20,8 @@
       }
     ],
     "ter-arrow-parens": true,
-    "align": [false, "arguments"]
+    "align": [false, "arguments"],
+    "variable-name": false
   },
   "rulesDirectory": []
 }
