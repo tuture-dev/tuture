@@ -37,8 +37,7 @@ interface StepDiffState {
   filesToBeRendered: (File & Diff)[];
 }
 
-/* tslint:disable-next-line */
-const DiffWrapper = styled.div`
+export const DiffWrapper = styled.div`
   padding: ${(props: { isEditMode: boolean }) =>
     props.isEditMode ? '24px' : '0px 24px'};
   &:hover {
@@ -52,6 +51,23 @@ const DiffWrapper = styled.div`
 
 /* tslint:disable-next-line */
 const InnerList = styled.div``;
+
+const DiffArticle = styled.article`
+  color: rgba(0, 0, 0, 0.84);
+  display: block;
+  padding-top: 8px;
+  padding-bottom: 20px;
+  background-color: rgba(0, 0, 0, 0.05);
+  margin: 32px 0;
+`;
+
+const DiffHeader = styled.header`
+  font-family: Monaco;
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.24);
+  text-align: right;
+  padding-right: 20px;
+`;
 
 export default class StepDiff extends React.PureComponent<
   StepDiffProps,
@@ -140,62 +156,31 @@ export default class StepDiff extends React.PureComponent<
       const fileName = fileCopy.file;
       const startLine = fileCopy.section ? fileCopy.section.start : 1;
       return (
-        <Draggable
-          key={i}
-          draggableId={file.file}
-          index={i}
-          isDragDisabled={!isEditMode}>
-          {(dragProvided: DraggableProvided) => (
-            <DiffWrapper
-              isEditMode={isEditMode}
-              innerRef={dragProvided.innerRef}
-              {...dragProvided.draggableProps}
-              {...dragProvided.dragHandleProps}>
-              <ExplainedItem
-                explain={fileCopy.explain}
-                isRoot={false}
-                commit={commit}
-                diffKey={String(i)}
-                updateTutureExplain={updateTutureExplain}
-                isEditMode={isEditMode}>
-                <article className="diff-file" key={i}>
-                  <header className="diff-file-header">{fileName}</header>
-                  <main>
-                    <DiffView
-                      key={i}
-                      lang={fileName
-                        .split('.')
-                        .pop()
-                        .toLowerCase()}
-                      chunks={this.getRenderedHunks(fileCopy)}
-                      startLine={startLine}
-                    />
-                  </main>
-                </article>
-              </ExplainedItem>
-            </DiffWrapper>
-          )}
-        </Draggable>
+        <DiffWrapper isEditMode={isEditMode}>
+          <ExplainedItem
+            explain={fileCopy.explain}
+            isRoot={false}
+            commit={commit}
+            diffKey={String(i)}
+            updateTutureExplain={updateTutureExplain}
+            isEditMode={isEditMode}>
+            <DiffArticle key={i}>
+              <DiffHeader>{fileName}</DiffHeader>
+              <DiffView
+                key={i}
+                lang={fileName
+                  .split('.')
+                  .pop()
+                  .toLowerCase()}
+                chunks={this.getRenderedHunks(fileCopy)}
+                startLine={startLine}
+              />
+            </DiffArticle>
+          </ExplainedItem>
+        </DiffWrapper>
       );
     });
 
-    return (
-      <DragDropContext
-        onDragStart={this.onDragStart}
-        onDragEnd={this.onDragEnd}>
-        <Droppable droppableId="diff" isDropDisabled={!isEditMode}>
-          {(dropProvided: DroppableProvided) => (
-            <div>
-              <InnerList
-                {...dropProvided.droppableProps}
-                innerRef={dropProvided.innerRef}>
-                {renderList}
-                {dropProvided.placeholder}
-              </InnerList>
-            </div>
-          )}
-        </Droppable>
-      </DragDropContext>
-    );
+    return renderList;
   }
 }

@@ -6253,6 +6253,10 @@ trough@^1.0.0:
   version "1.0.2"
   resolved "http://registry.npm.taobao.org/trough/download/trough-1.0.2.tgz#7f1663ec55c480139e2de5e486c6aef6cc24a535"
 
+ts-is-kind@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.npmjs.org/ts-is-kind/-/ts-is-kind-1.0.0.tgz#f9ca9c1af07ddb82d7a06744d8928952d4bd2426"
+
 ts-jest@^22.4.6:
   version "22.4.6"
   resolved "http://registry.npm.taobao.org/ts-jest/download/ts-jest-22.4.6.tgz#a5d7f5e8b809626d1f4143209d301287472ec344"
@@ -6380,6 +6384,12 @@ type-is@^1.6.4, type-is@~1.6.15, type-is@~1.6.16:
 typedarray@^0.0.6:
   version "0.0.6"
   resolved "http://registry.npm.taobao.org/typedarray/download/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
+
+typescript-plugin-styled-components@^0.0.6:
+  version "0.0.6"
+  resolved "https://registry.npmjs.org/typescript-plugin-styled-components/-/typescript-plugin-styled-components-0.0.6.tgz#e8489b72436aa1780e859243b519230b2c6b53d1"
+  dependencies:
+    ts-is-kind "^1.0.0"
 
 typescript@^2.9.1:
   version "2.9.1"

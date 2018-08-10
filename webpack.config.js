@@ -2,6 +2,10 @@ const fs = require('fs');
 const path = require('path');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const WebpackShellPlugin = require('webpack-shell-plugin');
+const createStyledComponentsTransformer = require('typescript-plugin-styled-components')
+  .default;
+
+const styledComponentsTransformer = createStyledComponentsTransformer();
 
 const nodeModules = {};
 fs.readdirSync('node_modules')
@@ -26,6 +30,11 @@ const base = {
       {
         test: /\.tsx?$/,
         loader: 'ts-loader',
+        options: {
+          getCustomTransformers: () => ({
+            before: [styledComponentsTransformer],
+          }),
+        },
       },
     ],
   },

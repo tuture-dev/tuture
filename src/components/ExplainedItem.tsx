@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import styled, { injectGlobal } from 'styled-components';
+import styled, { injectGlobal, css } from 'styled-components';
 import classnames from 'classnames';
 import _ from 'lodash';
 import fetch from 'isomorphic-fetch';
@@ -8,8 +8,6 @@ import fetch from 'isomorphic-fetch';
 import Markdown from 'react-markdown';
 
 import { Explain } from '../types';
-import { isClientOrServer } from '../utils/common';
-import write from './write.png';
 
 type ExplainType = 'pre' | 'post';
 type EditMode = 'edit' | 'preview';
@@ -172,7 +170,6 @@ injectGlobal`
   }
 `;
 
-/* tslint:disable-next-line */
 const BasicButton = styled.button`
   height: 30px;
   line-height: 30px;
@@ -188,13 +185,11 @@ const BasicButton = styled.button`
   }
 `;
 
-/* tslint:disable-next-line */
 const SaveButton = styled(BasicButton)`
   color: #00b887;
   border: none;
 `;
 
-/* tslint:disable-next-line */
 const Button = styled(BasicButton)`
   border: ${(props: { selected?: boolean; color?: string }) =>
     props.color
@@ -216,20 +211,17 @@ const Button = styled(BasicButton)`
     props.selected ? '-1px' : 0};
 `;
 
-/* tslint:disable-next-line */
 const TabWrapper = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
 `;
 
-/* tslint:disable-next-line */
 const EditExplainWrapper = styled.div`
   width: 100%;
   position: relative;
 `;
 
-/* tslint:disable-next-line */
 const HasExplainWrapper = styled.div`
   width: 100%;
   height: 100%;
@@ -248,7 +240,6 @@ const HasExplainWrapper = styled.div`
   }
 `;
 
-/* tslint:disable-next-line */
 const HasExplainButton = styled(BasicButton)`
   color: ${(props: { color: string; border: string }) => props.color};
   border: ${(props: { color: string; border: string }) => props.border};
@@ -256,7 +247,6 @@ const HasExplainButton = styled(BasicButton)`
   margin-right: 30px;
 `;
 
-/* tslint:disable-next-line */
 const NoExplainWrapper = styled.div`
   display: block;
   width: 100%;
@@ -265,15 +255,11 @@ const NoExplainWrapper = styled.div`
   color: #00b887;
   padding: 10px;
   font-size: 20px;
-  opacity: 0.3;
+  opacity: 0;
   border-radius: 3px;
   text-align: center;
   cursor: pointer;
-`;
-
-/* tslint:disable-next-line */
-const StyledExplainedItem = styled.div`
-  &:hover ${NoExplainWrapper} {
+  &:hover {
     opacity: 1;
   }
 `;
@@ -403,6 +389,7 @@ export default class ExplainedItem extends PureComponent<
   };
 
   renderEditExplainStr = (type: ExplainType): React.ReactNode => {
+    const { isRoot } = this.props;
     const explainContent = this.state[type];
     return (
       <EditExplainWrapper>
@@ -497,11 +484,11 @@ export default class ExplainedItem extends PureComponent<
   render() {
     const { isEditMode } = this.props;
     return (
-      <StyledExplainedItem>
+      <div>
         {this.renderExplain('pre', isEditMode)}
         {this.props.children}
         {this.renderExplain('post', isEditMode)}
-      </StyledExplainedItem>
+      </div>
     );
   }
 }
