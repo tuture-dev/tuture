@@ -6,6 +6,8 @@ import fetch from 'isomorphic-fetch';
 
 // @ts-ignore
 import Markdown from 'react-markdown';
+// @ts-ignore
+import Upload from 'rc-upload';
 
 import { Explain } from '../types';
 import { isClientOrServer } from '../utils/common';
@@ -695,9 +697,18 @@ export default class ExplainedItem extends PureComponent<
               <ToolButton onClick={() => this.handleMdTool(type, 'link')}>
                 Link
               </ToolButton>
-              <ToolButton onClick={() => this.handleMdTool(type, 'img')}>
-                Img
-              </ToolButton>
+              <Upload
+                name="file"
+                action="http://localhost:3000/upload"
+                accept=".jpg,.jpeg,.png,.gif"
+                onSuccess={(body: { path: string }) => {
+                  const explainContent = this.state[type];
+                  this.setState({
+                    [type]: explainContent + `![](${body.path})`,
+                  });
+                }}>
+                <ToolButton>Img</ToolButton>
+              </Upload>
             </div>
             <textarea
               name={type}
