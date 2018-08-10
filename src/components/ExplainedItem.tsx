@@ -8,6 +8,7 @@ import fetch from 'isomorphic-fetch';
 import Markdown from 'react-markdown';
 
 import { Explain } from '../types';
+import { isClientOrServer } from '../utils/common';
 
 type ExplainType = 'pre' | 'post';
 type EditMode = 'edit' | 'preview';
@@ -272,6 +273,8 @@ export default class ExplainedItem extends PureComponent<
     super(props);
 
     const { explain } = this.props;
+    // let preHeight = 200;
+    // let postHeight = 200;
     this.state = {
       ...explain,
       nowTab: 'edit',
@@ -294,9 +297,15 @@ export default class ExplainedItem extends PureComponent<
   handleChange = (e: React.FormEvent<HTMLTextAreaElement>) => {
     const { name, value, scrollHeight } = e.currentTarget;
     const explainState = { [name]: value } as Explain;
+    let needRenderScrollHeight = scrollHeight;
+    if (needRenderScrollHeight <= 200) {
+      needRenderScrollHeight = 200;
+    } else if (needRenderScrollHeight >= 400) {
+      needRenderScrollHeight = 400;
+    }
     this.setState({
       ...explainState,
-      [`${name}Height`]: scrollHeight <= 200 ? 200 : scrollHeight,
+      [`${name}Height`]: needRenderScrollHeight,
     });
   };
 
@@ -391,6 +400,7 @@ export default class ExplainedItem extends PureComponent<
   renderEditExplainStr = (type: ExplainType): React.ReactNode => {
     const { isRoot } = this.props;
     const explainContent = this.state[type];
+
     return (
       <EditExplainWrapper>
         {this.renderExplainStr(type)}
@@ -432,6 +442,9 @@ export default class ExplainedItem extends PureComponent<
   nowEditFrame = (type: ExplainType): React.ReactNode => {
     const { isRoot } = this.props;
     const { nowTab } = this.state;
+
+    const dom = document.getElementsByTagName('textarea');
+    console.log(dom);
     return (
       <div className={classnames('editor', { 'is-root': isRoot })}>
         <TabWrapper>
@@ -459,7 +472,10 @@ export default class ExplainedItem extends PureComponent<
             onChange={this.handleChange}
             onPaste={this.handlePaste}
             onDrop={this.handleDrop}
-            style={{ height: this.state[`${type}Height`] as number }}
+            style={{
+              height: this.state[`${type}Height`] as number,
+              overflow: 'auto',
+            }}
           />
         ) : (
           <Markdown
