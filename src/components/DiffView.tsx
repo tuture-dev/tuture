@@ -110,24 +110,6 @@ injectGlobal`
     padding: 0 20px;
     width: 557px;
   }
-
-  .diff-file {
-    color: rgba(0,0,0,0.84);
-    display: block;
-    padding-top: 8px;
-    padding-bottom: 20px;
-    background-color: rgba(0, 0, 0, .05);
-    margin: 32px 0;
-  }
-
-  .diff-file-header {
-    font-family: Monaco;
-    font-size: 14px;
-    color: rgba(0,0,0,0.24);
-    text-align: right;
-    padding-right: 20px;
-  }
-
   .addition-count {
     margin-right: 1em;
     color: #88b149;

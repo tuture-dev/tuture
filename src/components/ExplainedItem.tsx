@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import styled, { injectGlobal } from 'styled-components';
+import styled, { injectGlobal, css } from 'styled-components';
 import classnames from 'classnames';
 import _ from 'lodash';
 import fetch from 'isomorphic-fetch';
@@ -184,7 +184,6 @@ injectGlobal`
   }
 `;
 
-/* tslint:disable-next-line */
 const BasicButton = styled.button`
   height: 30px;
   line-height: 30px;
@@ -200,7 +199,6 @@ const BasicButton = styled.button`
   }
 `;
 
-/* tslint:disable-next-line */
 const SaveButton = styled(BasicButton)`
   color: #00b887;
   border: none;
@@ -233,20 +231,17 @@ const Button = styled(BasicButton)`
     props.selected ? '-1px' : 0};
 `;
 
-/* tslint:disable-next-line */
 const TabWrapper = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
 `;
 
-/* tslint:disable-next-line */
 const EditExplainWrapper = styled.div`
   width: 100%;
   position: relative;
 `;
 
-/* tslint:disable-next-line */
 const HasExplainWrapper = styled.div`
   width: 100%;
   height: 100%;
@@ -265,7 +260,6 @@ const HasExplainWrapper = styled.div`
   }
 `;
 
-/* tslint:disable-next-line */
 const HasExplainButton = styled(BasicButton)`
   color: ${(props: { color: string; border: string }) => props.color};
   border: ${(props: { color: string; border: string }) => props.border};
@@ -273,23 +267,19 @@ const HasExplainButton = styled(BasicButton)`
   margin-right: 30px;
 `;
 
-/* tslint:disable-next-line */
 const NoExplainWrapper = styled.div`
   display: block;
   width: 100%;
   box-sizing: border-box;
   border: 1px solid #00b887;
   color: #00b887;
-  padding: 20px;
-  opacity: 0.3;
+  padding: 10px;
+  font-size: 20px;
+  opacity: 0;
   border-radius: 3px;
   text-align: center;
   cursor: pointer;
-`;
-
-/* tslint:disable-next-line */
-const StyledExplainedItem = styled.div`
-  &:hover ${NoExplainWrapper} {
+  &:hover {
     opacity: 1;
   }
 `;
@@ -346,9 +336,15 @@ export default class ExplainedItem extends PureComponent<
   handleChange = (e: React.FormEvent<HTMLTextAreaElement>) => {
     const { name, value, scrollHeight } = e.currentTarget;
     const explainState = { [name]: value } as Explain;
+    let needRenderScrollHeight = scrollHeight;
+    if (needRenderScrollHeight <= 200) {
+      needRenderScrollHeight = 200;
+    } else if (needRenderScrollHeight >= 400) {
+      needRenderScrollHeight = 400;
+    }
     this.setState({
       ...explainState,
-      [`${name}Height`]: scrollHeight <= 200 ? 200 : scrollHeight,
+      [`${name}Height`]: needRenderScrollHeight,
     });
   };
 
@@ -441,7 +437,9 @@ export default class ExplainedItem extends PureComponent<
   };
 
   renderEditExplainStr = (type: ExplainType): React.ReactNode => {
+    const { isRoot } = this.props;
     const explainContent = this.state[type];
+
     return (
       <EditExplainWrapper>
         {this.renderExplainStr(type)}
@@ -464,7 +462,7 @@ export default class ExplainedItem extends PureComponent<
           </HasExplainWrapper>
         ) : (
           <NoExplainWrapper onClick={() => this.handleAddExplain(type)}>
-            加一点解释 +
+            +
           </NoExplainWrapper>
         )}
       </EditExplainWrapper>
@@ -504,6 +502,7 @@ export default class ExplainedItem extends PureComponent<
     if (this.state[`${type}NowEdit`]) {
       const explainContent = this.state[type] || '';
       const explainTextarea = this.explainContentRef.current;
+      console.log(explainTextarea);
       const selectedContent = explainContent.slice(
         explainTextarea.selectionStart,
         explainTextarea.selectionEnd,
@@ -745,6 +744,9 @@ export default class ExplainedItem extends PureComponent<
   nowEditFrame = (type: ExplainType): React.ReactNode => {
     const { isRoot } = this.props;
     const { nowTab } = this.state;
+
+    const dom = document.getElementsByTagName('textarea');
+    console.log(dom);
     return (
       <div className={classnames('editor', { 'is-root': isRoot })}>
         <TabWrapper>
@@ -819,13 +821,16 @@ export default class ExplainedItem extends PureComponent<
             </div>
             <textarea
               name={type}
+              ref={this.explainContentRef}
               value={this.state[type]}
               placeholder="写一点解释..."
               onChange={this.handleChange}
               onPaste={this.handlePaste}
               onDrop={this.handleDrop}
-              style={{ height: this.state[`${type}Height`] as number }}
-              ref={this.explainContentRef}
+              style={{
+                height: this.state[`${type}Height`] as number,
+                overflow: 'auto',
+              }}
             />
           </div>
         ) : (
@@ -851,11 +856,11 @@ export default class ExplainedItem extends PureComponent<
   render() {
     const { isEditMode } = this.props;
     return (
-      <StyledExplainedItem>
+      <div>
         {this.renderExplain('pre', isEditMode)}
         {this.props.children}
         {this.renderExplain('post', isEditMode)}
-      </StyledExplainedItem>
+      </div>
     );
   }
 }
