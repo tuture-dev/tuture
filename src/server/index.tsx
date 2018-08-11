@@ -34,16 +34,11 @@ let reloadCounter = 0;
 
 io.on('connection', (socket) => {
   reloadCounter += 1;
-  console.log('browser connected!');
 
   // Server has just been restarted.
-  if (reloadCounter === 1) {
+  if (reloadCounter === 1 && inDevMode) {
     socket.emit('reload');
   }
-
-  socket.on('disconnect', () => {
-    console.log('browser disconnected!');
-  });
 });
 
 if (inDevMode) {
