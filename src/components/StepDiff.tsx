@@ -1,17 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-import {
-  DragDropContext,
-  DropResult,
-  DragStart,
-  Droppable,
-  DroppableProvided,
-  Draggable,
-  DraggableProvided,
-} from 'react-beautiful-dnd';
 
 import ExplainedItem from './ExplainedItem';
-import DiffView, { File, DiffItem } from './DiffView';
+import DiffView, { Chunk, File, DiffItem } from './DiffView';
 import { Diff } from '../types';
 import { reorder } from '../utils/common';
 
@@ -111,40 +102,21 @@ export default class StepDiff extends React.PureComponent<
     return file.chunks;
   };
 
-  onDragStart = (initial: DragStart) => {
-    // Add a little vibration if the browser supports it.
-    // Add's a nice little physical feedback
-    if (window.navigator.vibrate) {
-      window.navigator.vibrate(100);
-    }
-  };
-
-  onDragEnd = (result: DropResult) => {
-    // dropped outside the list
-    if (!result.destination) {
-      return;
-    }
-
-    if (result.destination.index === result.source.index) {
-      return;
-    }
-
-    const filesToBeRendered = reorder(
-      this.state.filesToBeRendered,
-      result.source.index,
-      result.destination.index,
-    );
-
-    const { updateTutureDiffOrder, commit } = this.props;
-    updateTutureDiffOrder(
-      commit,
-      result.source.index,
-      result.destination.index,
-    );
-
-    this.setState({
-      filesToBeRendered,
+  handleCopy = (chunks: Chunk[]) => {
+    const contentArr: string[] = [];
+    chunks[0].changes.forEach((change) => {
+      contentArr.push(change.content.slice(1));
     });
+    const needClipedString = contentArr.join('\n');
+
+    const textarea = document.createElement('textarea');
+    document.body.appendChild(textarea);
+    textarea.value = needClipedString;
+    textarea.select();
+    if (document.execCommand('copy')) {
+      document.execCommand('copy');
+    }
+    document.body.removeChild(textarea);
   };
 
   render() {
@@ -156,7 +128,7 @@ export default class StepDiff extends React.PureComponent<
       const fileName = fileCopy.file;
       const startLine = fileCopy.section ? fileCopy.section.start : 1;
       return (
-        <DiffWrapper isEditMode={isEditMode} key={i}>
+        <DiffWrapper isEditMode={isEditMode}>
           <ExplainedItem
             explain={fileCopy.explain}
             isRoot={false}
@@ -164,18 +136,30 @@ export default class StepDiff extends React.PureComponent<
             diffKey={String(i)}
             updateTutureExplain={updateTutureExplain}
             isEditMode={isEditMode}>
-            <DiffArticle key={i}>
-              <DiffHeader>{fileName}</DiffHeader>
-              <DiffView
-                key={i}
-                lang={fileName
-                  .split('.')
-                  .pop()
-                  .toLowerCase()}
-                chunks={this.getRenderedHunks(fileCopy)}
-                startLine={startLine}
-              />
-            </DiffArticle>
+            <article className="diff-file" key={i}>
+              <header className="diff-file-header">
+                {fileName}
+                <button
+                  className="diff-file-copyButton"
+                  onClick={(e) => {
+                    this.handleCopy(this.getRenderedHunks(fileCopy));
+                  }}>
+                  Copy
+                </button>
+              </header>
+              <main>
+                <DiffView
+                  key={i}
+                  id={`${commit}-i`}
+                  lang={fileName
+                    .split('.')
+                    .pop()
+                    .toLowerCase()}
+                  chunks={this.getRenderedHunks(fileCopy)}
+                  startLine={startLine}
+                />
+              </main>
+            </article>
           </ExplainedItem>
         </DiffWrapper>
       );

@@ -57,6 +57,7 @@ interface DiffViewProps {
   lang: string;
   startLine: number;
   chunks: Chunk[];
+  id?: string;
 }
 
 injectGlobal`
@@ -110,6 +111,29 @@ injectGlobal`
     padding: 0 20px;
     width: 557px;
   }
+
+  .diff-file {
+    color: rgba(0,0,0,0.84);
+    display: block;
+    padding-top: 8px;
+    padding-bottom: 20px;
+    background-color: rgba(0, 0, 0, .05);
+    margin: 32px 0;
+  }
+
+  .diff-file-header {
+    font-family: Monaco;
+    font-size: 14px;
+    color: rgba(0,0,0,0.24);
+    text-align: left;
+    padding-left: 20px;
+    padding-bottom: 5px;
+  }
+  .diff-file-copyButton{
+    float: right;
+    margin-right: 15px;
+  }
+
   .addition-count {
     margin-right: 1em;
     color: #88b149;
@@ -161,10 +185,10 @@ export default class DiffView extends Component<DiffViewProps> {
   };
 
   render() {
-    const { chunks } = this.props;
+    const { chunks, id } = this.props;
 
     return (
-      <table className="diff">
+      <table className="diff" id={id}>
         {chunks.map((chunk: Chunk, key: number) => (
           <tbody key={key} className={classnames('diff-hunk')}>
             {this.judgeAllRowInsertState(chunk.changes)}
