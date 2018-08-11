@@ -72,7 +72,7 @@ export default class App extends React.Component<AppProps, AppState> {
 
   saveTuture = () => {
     const { tuture } = this.state;
-    fetch('http://localhost:3000/save', {
+    fetch(`http://${location.host}/save`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

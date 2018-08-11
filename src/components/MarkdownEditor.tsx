@@ -112,7 +112,7 @@ export default class MarkdownEditor extends React.Component<
 
     const explainType = e.currentTarget.name;
 
-    fetch('http://localhost:3000/upload', {
+    fetch(`http://${location.host}/upload`, {
       method: 'POST',
       body: data,
     })

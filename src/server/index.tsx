@@ -16,9 +16,11 @@ import App from '../components/App';
 import html from './html';
 import { Tuture } from '../types/';
 
-const port = 3000;
+const port = process.env.TUTURE_PORT || 3000;
 const app = express();
 const server = http.createServer(app);
+
+const inDevMode = process.env.NODE_ENV === 'development';
 
 const tuturePath = process.env.TUTURE_PATH || process.cwd();
 const tutureYAMLPath = path.join(tuturePath, 'tuture.yml');
@@ -32,19 +34,17 @@ let reloadCounter = 0;
 
 io.on('connection', (socket) => {
   reloadCounter += 1;
-  console.log('browser connected!');
 
   // Server has just been restarted.
-  if (reloadCounter === 1) {
+  if (reloadCounter === 1 && inDevMode) {
     socket.emit('reload');
   }
-
-  socket.on('disconnect', () => {
-    console.log('browser disconnected!');
-  });
 });
 
-app.use(logger('dev'));
+if (inDevMode) {
+  app.use(logger('dev'));
+}
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, '..')));
@@ -106,8 +106,9 @@ app.get('/reload', (req, res) => {
 });
 
 server.listen(port, () => {
-  if (process.env.NODE_ENV !== 'development') {
-    console.log(`Tutorial is served on http://localhost:${port}`);
-    opn('http://localhost:3000');
+  if (!inDevMode) {
+    const url = `http://localhost:${port}`;
+    console.log(`Tutorial is served on ${url}`);
+    opn(url);
   }
 });

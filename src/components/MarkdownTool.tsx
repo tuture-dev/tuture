@@ -338,7 +338,7 @@ export default class MarkdownTool extends React.Component<MarkdownToolProps> {
         ))}
         <Upload
           name="file"
-          action="http://localhost:3000/upload"
+          action={`http://${location.host}/upload`}
           accept=".jpg,.jpeg,.png,.gif"
           onSuccess={(body: { path: string }) => {
             const explainContent = this.props.source;
