@@ -20,6 +20,8 @@ const port = process.env.TUTURE_PORT || 3000;
 const app = express();
 const server = http.createServer(app);
 
+const inDevMode = process.env.NODE_ENV === 'development';
+
 const tuturePath = process.env.TUTURE_PATH || process.cwd();
 const tutureYAMLPath = path.join(tuturePath, 'tuture.yml');
 const diffPath = path.join(tuturePath, '.tuture', 'diff.json');
@@ -44,7 +46,10 @@ io.on('connection', (socket) => {
   });
 });
 
-app.use(logger('dev'));
+if (inDevMode) {
+  app.use(logger('dev'));
+}
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, '..')));
@@ -106,7 +111,7 @@ app.get('/reload', (req, res) => {
 });
 
 server.listen(port, () => {
-  if (process.env.NODE_ENV !== 'development') {
+  if (!inDevMode) {
     const url = `http://localhost:${port}`;
     console.log(`Tutorial is served on ${url}`);
     opn(url);
