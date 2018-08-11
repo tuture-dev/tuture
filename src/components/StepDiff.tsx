@@ -9,13 +9,11 @@ import {
   Draggable,
   DraggableProvided,
 } from 'react-beautiful-dnd';
-import clipboardy from 'clipboardy';
 
 import ExplainedItem from './ExplainedItem';
 import DiffView, { Chunk, File, DiffItem } from './DiffView';
 import { Diff } from '../types';
 import { reorder } from '../utils/common';
-import { chunk } from './tests/utils/hunkData';
 
 interface StepDiffProps {
   diff: Diff[];
@@ -134,21 +132,18 @@ export default class StepDiff extends React.PureComponent<
   };
 
   handleCopy = (chunks: Chunk[]) => {
-    console.log('handleCopy called');
-    console.log('chunks', chunks);
     const contentArr: string[] = [];
     chunks[0].changes.forEach((change) => {
       contentArr.push(change.content.slice(1));
     });
     const needClipedString = contentArr.join('\n');
-    console.log('needClipedString', needClipedString);
+
     const textarea = document.createElement('textarea');
     document.body.appendChild(textarea);
     textarea.value = needClipedString;
     textarea.select();
     if (document.execCommand('copy')) {
       document.execCommand('copy');
-      console.log('succeed');
     }
     document.body.removeChild(textarea);
   };
