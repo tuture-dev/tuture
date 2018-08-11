@@ -38,7 +38,7 @@ steps:
 
 
         - It is not immediately apparent that the script depends on an external
-        library. 
+        library.
 
         - If a dependency is missing, or included in the wrong order, the
         application will not function properly.
@@ -49,18 +49,6 @@ steps:
 
         Let's use webpack to manage these scripts instead.
     diff:
-      - file: index.html
-        section:
-          start: 1
-          end: 6
-        explain:
-          pre: 'This is the first part of `index.html`. It''s very cool:'
-      - file: index.html
-        section:
-          start: 7
-          end: 10
-        explain:
-          pre: 'Neat. The second part of `index.html`:'
       - file: index.html
         explain:
           pre: 'The entire `index.html` looks like this:'

@@ -24,20 +24,12 @@ interface StepContentProps {
     destinationIndex: number,
   ) => void;
 }
-/* tslint:disable-next-line */
+
 const TutureWrapper = styled.div`
   max-width: 788px;
   margin-left: 282px;
-  &:hover {
-    box-shadow: ${(props: { isEditMode: boolean }) =>
-      props.isEditMode
-        ? '0 1px 4px rgba(0, 0, 0, 0.04), inset 0 0 0 1px rgba(0, 0, 0, 0.09)'
-        : 'none'};
-    transition: box-shadow 100ms;
-  }
 `;
 
-/* tslint:disable-next-line */
 const TutureContentHeader = styled.h1`
   font-family: LucidaGrande-Bold;
   font-size: 37px;
@@ -60,7 +52,7 @@ export default class StepContent extends React.Component<StepContentProps> {
     const { name, explain, diff, commit } = content;
 
     return (
-      <TutureWrapper id={handleAnchor(name)} isEditMode={isEditMode}>
+      <TutureWrapper id={handleAnchor(name)}>
         <TutureContentHeader>{name}</TutureContentHeader>
         <ExplainedItem
           explain={explain}
