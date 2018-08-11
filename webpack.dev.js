@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const WebpackShellPlugin = require('webpack-shell-plugin');
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const createStyledComponentsTransformer = require('typescript-plugin-styled-components')
   .default;
 
@@ -16,6 +17,7 @@ fs.readdirSync('node_modules')
 
 const base = {
   mode: 'development',
+  context: __dirname,
   devtool: 'cheap-module-eval-source-map',
   resolve: {
     extensions: ['.js', '.json', '.ts', '.tsx'],
@@ -25,12 +27,18 @@ const base = {
     rules: [
       {
         test: /\.(png|svg|jpg|gif)$/,
-        use: ['file-loader'],
+        loader: 'file-loader',
+        options: {
+          name: 'static/media/[name].[ext]',
+        },
       },
       {
         test: /\.tsx?$/,
         loader: 'ts-loader',
+        include: path.resolve(__dirname, 'src'),
         options: {
+          transpileOnly: true,
+          experimentalWatchApi: true,
           getCustomTransformers: () => ({
             before: [styledComponentsTransformer],
           }),
@@ -38,16 +46,22 @@ const base = {
       },
     ],
   },
-  plugins: [new CleanWebpackPlugin(['dist'])],
-};
-
-if (process.env.NODE_ENV === 'development') {
-  base.plugins.push(
+  plugins: [
+    new CleanWebpackPlugin(['dist']),
+    new ForkTsCheckerWebpackPlugin(),
     new WebpackShellPlugin({
       onBuildEnd: ['./scripts/watch.js'],
     }),
-  );
-}
+  ],
+  optimization: {
+    removeAvailableModules: false,
+    removeEmptyChunks: false,
+    splitChunks: false,
+  },
+  performance: {
+    hints: false,
+  },
+};
 
 const serverConfig = {
   target: 'node',
@@ -58,7 +72,7 @@ const serverConfig = {
   entry: './src/server/index.tsx',
   output: {
     filename: 'server.js',
-    path: path.resolve(__dirname, 'dist', 'js'),
+    pathinfo: false,
   },
   externals: nodeModules,
 };
@@ -66,8 +80,8 @@ const serverConfig = {
 const clientConfig = {
   entry: './src/index.tsx',
   output: {
-    filename: 'client.js',
-    path: path.resolve(__dirname, 'dist', 'js'),
+    filename: 'static/js/bundle.js',
+    pathinfo: false,
   },
 };
 
