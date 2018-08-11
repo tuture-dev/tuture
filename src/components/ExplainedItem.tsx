@@ -1,17 +1,30 @@
 import React, { PureComponent } from 'react';
-import styled, { injectGlobal } from 'styled-components';
+import styled, { injectGlobal, css } from 'styled-components';
 import classnames from 'classnames';
 import _ from 'lodash';
 import fetch from 'isomorphic-fetch';
 
 // @ts-ignore
 import Markdown from 'react-markdown';
+// @ts-ignore
+import Upload from 'rc-upload';
 
 import { Explain } from '../types';
 import { isClientOrServer } from '../utils/common';
 
 type ExplainType = 'pre' | 'post';
 type EditMode = 'edit' | 'preview';
+type ToolType =
+  | 'b'
+  | 'i'
+  | 'h'
+  | 'list'
+  | 'numbered list'
+  | 'blockquotes'
+  | 'link'
+  | 'img'
+  | 'code'
+  | 'block code';
 
 interface ExplainedItemProps {
   explain: Explain;
@@ -171,7 +184,6 @@ injectGlobal`
   }
 `;
 
-/* tslint:disable-next-line */
 const BasicButton = styled.button`
   height: 30px;
   line-height: 30px;
@@ -187,10 +199,14 @@ const BasicButton = styled.button`
   }
 `;
 
-/* tslint:disable-next-line */
 const SaveButton = styled(BasicButton)`
   color: #00b887;
   border: none;
+`;
+
+/* tslint:disable-next-line */
+const ToolButton = styled.button`
+  margin-right: 10px;
 `;
 
 /* tslint:disable-next-line */
@@ -215,20 +231,17 @@ const Button = styled(BasicButton)`
     props.selected ? '-1px' : 0};
 `;
 
-/* tslint:disable-next-line */
 const TabWrapper = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
 `;
 
-/* tslint:disable-next-line */
 const EditExplainWrapper = styled.div`
   width: 100%;
   position: relative;
 `;
 
-/* tslint:disable-next-line */
 const HasExplainWrapper = styled.div`
   width: 100%;
   height: 100%;
@@ -247,7 +260,6 @@ const HasExplainWrapper = styled.div`
   }
 `;
 
-/* tslint:disable-next-line */
 const HasExplainButton = styled(BasicButton)`
   color: ${(props: { color: string; border: string }) => props.color};
   border: ${(props: { color: string; border: string }) => props.border};
@@ -255,23 +267,19 @@ const HasExplainButton = styled(BasicButton)`
   margin-right: 30px;
 `;
 
-/* tslint:disable-next-line */
 const NoExplainWrapper = styled.div`
   display: block;
   width: 100%;
   box-sizing: border-box;
   border: 1px solid #00b887;
   color: #00b887;
-  padding: 20px;
-  opacity: 0.3;
+  padding: 10px;
+  font-size: 20px;
+  opacity: 0;
   border-radius: 3px;
   text-align: center;
   cursor: pointer;
-`;
-
-/* tslint:disable-next-line */
-const StyledExplainedItem = styled.div`
-  &:hover ${NoExplainWrapper} {
+  &:hover {
     opacity: 1;
   }
 `;
@@ -280,18 +288,23 @@ export default class ExplainedItem extends PureComponent<
   ExplainedItemProps,
   ExplainedItemState
 > {
+  private explainContentRef: React.RefObject<HTMLTextAreaElement>;
+  private cursorPosition: number = -1;
   constructor(props: ExplainedItemProps) {
     super(props);
+    const { pre, post } = props.explain || { pre: '', post: '' };
 
-    const { explain } = this.props;
     this.state = {
-      ...explain,
+      pre,
+      post,
       nowTab: 'edit',
       preHeight: 200,
       postHeight: 200,
       preNowEdit: false,
       postNowEdit: false,
     };
+
+    this.explainContentRef = React.createRef();
   }
 
   componentWillReceiveProps(nextProps: ExplainedItemProps) {
@@ -303,12 +316,35 @@ export default class ExplainedItem extends PureComponent<
     }
   }
 
+  componentDidUpdate(
+    prevProps: ExplainedItemProps,
+    prevState: ExplainedItemState,
+  ) {
+    if (this.cursorPosition !== -1) {
+      const explainTextarea = this.explainContentRef.current;
+      explainTextarea.focus();
+      if (this.cursorPosition) {
+        explainTextarea.setSelectionRange(
+          this.cursorPosition,
+          this.cursorPosition,
+        );
+      }
+      this.cursorPosition = -1;
+    }
+  }
+
   handleChange = (e: React.FormEvent<HTMLTextAreaElement>) => {
     const { name, value, scrollHeight } = e.currentTarget;
     const explainState = { [name]: value } as Explain;
+    let needRenderScrollHeight = scrollHeight;
+    if (needRenderScrollHeight <= 200) {
+      needRenderScrollHeight = 200;
+    } else if (needRenderScrollHeight >= 400) {
+      needRenderScrollHeight = 400;
+    }
     this.setState({
       ...explainState,
-      [`${name}Height`]: scrollHeight <= 200 ? 200 : scrollHeight,
+      [`${name}Height`]: needRenderScrollHeight,
     });
   };
 
@@ -401,7 +437,9 @@ export default class ExplainedItem extends PureComponent<
   };
 
   renderEditExplainStr = (type: ExplainType): React.ReactNode => {
+    const { isRoot } = this.props;
     const explainContent = this.state[type];
+
     return (
       <EditExplainWrapper>
         {this.renderExplainStr(type)}
@@ -424,7 +462,7 @@ export default class ExplainedItem extends PureComponent<
           </HasExplainWrapper>
         ) : (
           <NoExplainWrapper onClick={() => this.handleAddExplain(type)}>
-            加一点解释 +
+            +
           </NoExplainWrapper>
         )}
       </EditExplainWrapper>
@@ -440,9 +478,275 @@ export default class ExplainedItem extends PureComponent<
     updateTutureExplain(commit, diffKey, type, this.state[type]);
   };
 
+  spliceStr = (str = '', typeStr: string, start: number, end: number) => {
+    return str
+      .slice(0, start)
+      .concat(
+        typeStr,
+        str.slice(start, end),
+        typeStr,
+        str.slice(end, str.length),
+      );
+  };
+
+  isAtBeginning = (explainContent: string, selectedStart: number) =>
+    selectedStart === 0 ||
+    explainContent.slice(0, selectedStart).endsWith('\n');
+
+  isAtEnding = (explainContent: string, selectedEnd: number) =>
+    selectedEnd === explainContent.length ||
+    explainContent.slice(selectedEnd, explainContent.length).indexOf('\n') ===
+      0;
+
+  handleMdTool = (type: ExplainType, toolType: ToolType) => {
+    if (this.state[`${type}NowEdit`]) {
+      const explainContent = this.state[type] || '';
+      const explainTextarea = this.explainContentRef.current;
+      console.log(explainTextarea);
+      const selectedContent = explainContent.slice(
+        explainTextarea.selectionStart,
+        explainTextarea.selectionEnd,
+      );
+      let resultContent = '';
+      switch (toolType) {
+        case 'b': {
+          if (selectedContent) {
+            this.setState({
+              [type]: this.spliceStr(
+                explainContent,
+                '**',
+                explainTextarea.selectionStart,
+                explainTextarea.selectionEnd,
+              ),
+            });
+            this.cursorPosition =
+              explainTextarea.selectionStart + selectedContent.length + 2;
+          } else {
+            this.setState({
+              [type]: `${explainContent}****`,
+            });
+            this.cursorPosition = explainContent.length + 2;
+          }
+          break;
+        }
+        case 'i':
+          if (selectedContent) {
+            this.setState({
+              [type]: this.spliceStr(
+                explainContent,
+                '_',
+                explainTextarea.selectionStart,
+                explainTextarea.selectionEnd,
+              ),
+            });
+            this.cursorPosition =
+              explainTextarea.selectionStart + selectedContent.length + 1;
+          } else {
+            this.setState({
+              [type]: `${explainContent}__`,
+            });
+            this.cursorPosition = explainContent.length + 1;
+          }
+          break;
+        case 'h': {
+          !explainContent || explainContent.endsWith('\n')
+            ? this.setState({ [type]: `${explainContent}#### ` })
+            : this.setState({ [type]: `${explainContent}\n#### ` });
+          this.cursorPosition = 0;
+          break;
+        }
+        case 'list':
+          if (selectedContent) {
+            let resultContent: string = '';
+            const listItems = selectedContent.split('\n');
+            listItems.map((item) => {
+              if (item) {
+                resultContent += `- ${item}\n`;
+              }
+            });
+            this.setState({
+              [type]: explainContent
+                .slice(0, explainTextarea.selectionStart)
+                .concat(
+                  this.isAtBeginning(
+                    explainContent,
+                    explainTextarea.selectionStart,
+                  )
+                    ? ''
+                    : '\n',
+                  resultContent,
+                  this.isAtEnding(explainContent, explainTextarea.selectionEnd)
+                    ? ''
+                    : '\n',
+                  explainContent.slice(
+                    explainTextarea.selectionEnd,
+                    explainContent.length,
+                  ),
+                ),
+            });
+          } else {
+            !explainContent || explainContent.endsWith('\n')
+              ? this.setState({ [type]: `${explainContent}- ` })
+              : this.setState({ [type]: `${explainContent}\n- ` });
+            this.cursorPosition = 0;
+          }
+          break;
+        case 'numbered list':
+          if (selectedContent) {
+            let resultContent: string = '';
+            const listItems = selectedContent.split('\n');
+            listItems.map((item, index) => {
+              if (item) {
+                resultContent += `${index + 1}. ${item}\n`;
+              }
+            });
+            this.setState({
+              [type]: explainContent
+                .slice(0, explainTextarea.selectionStart)
+                .concat(
+                  this.isAtBeginning(
+                    explainContent,
+                    explainTextarea.selectionStart,
+                  )
+                    ? ''
+                    : '\n\n',
+                  resultContent,
+                  this.isAtEnding(explainContent, explainTextarea.selectionEnd)
+                    ? ''
+                    : '\n',
+                  explainContent.slice(
+                    explainTextarea.selectionEnd,
+                    explainContent.length,
+                  ),
+                ),
+            });
+          } else {
+            !explainContent || explainContent.endsWith('\n')
+              ? this.setState({ [type]: `${explainContent}1. ` })
+              : this.setState({ [type]: `${explainContent}\n1. ` });
+            this.cursorPosition = 0;
+          }
+          break;
+        case 'blockquotes':
+          if (selectedContent) {
+            let resultContent: string;
+            if (
+              explainTextarea.selectionStart === 0 ||
+              selectedContent.indexOf('\n') === 0
+            ) {
+              resultContent = '';
+            } else {
+              resultContent = '\n';
+            }
+            const listItems = selectedContent.split('\n');
+            listItems.map((item, index) => {
+              if (item) {
+                resultContent += `> ${item}\n`;
+              }
+            });
+            this.setState({
+              [type]: explainContent
+                .slice(0, explainTextarea.selectionStart)
+                .concat(
+                  this.isAtBeginning(
+                    explainContent,
+                    explainTextarea.selectionStart,
+                  )
+                    ? ''
+                    : '\n',
+                  resultContent,
+                  this.isAtEnding(explainContent, explainTextarea.selectionEnd)
+                    ? ''
+                    : '\n',
+                  explainContent.slice(
+                    explainTextarea.selectionEnd,
+                    explainContent.length,
+                  ),
+                ),
+            });
+          } else {
+            !explainContent || explainContent.endsWith('\n')
+              ? this.setState({ [type]: `${explainContent}> ` })
+              : this.setState({ [type]: `${explainContent}\n> ` });
+            this.cursorPosition = 0;
+          }
+
+          break;
+        case 'code':
+          if (selectedContent) {
+            this.setState({
+              [type]: this.spliceStr(
+                explainContent,
+                '`',
+                explainTextarea.selectionStart,
+                explainTextarea.selectionEnd,
+              ),
+            });
+            this.cursorPosition =
+              explainTextarea.selectionStart + selectedContent.length + 1;
+          } else {
+            this.setState({
+              [type]: explainContent + '``',
+            });
+            this.cursorPosition = explainContent.length + 1;
+          }
+          break;
+        case 'block code':
+          if (selectedContent) {
+            this.setState({
+              [type]: this.spliceStr(
+                explainContent,
+                '\n```\n',
+                explainTextarea.selectionStart,
+                explainTextarea.selectionEnd,
+              ),
+            });
+            this.cursorPosition =
+              explainTextarea.selectionStart + selectedContent.length + 5;
+          } else {
+            if (!explainContent || explainContent.endsWith('\n')) {
+              this.setState({ [type]: explainContent + '```\n\n```' });
+              this.cursorPosition = explainContent.length + 4;
+            } else {
+              this.setState({ [type]: explainContent + '\n```\n\n```' });
+              this.cursorPosition = explainContent.length + 5;
+            }
+          }
+          break;
+        case 'link':
+          if (selectedContent) {
+            resultContent = `${explainContent.slice(
+              0,
+              explainTextarea.selectionStart,
+            )}[${selectedContent}]()${explainContent.slice(
+              explainTextarea.selectionEnd,
+              explainContent.length,
+            )}`;
+            this.setState({
+              [type]: resultContent,
+            });
+            this.cursorPosition =
+              explainTextarea.selectionStart + selectedContent.length + 3;
+          } else {
+            this.setState({
+              [type]: `${explainContent}[](url)`,
+            });
+            this.cursorPosition = explainContent.length + 1;
+          }
+
+          break;
+        default:
+          break;
+      }
+    }
+  };
+
   nowEditFrame = (type: ExplainType): React.ReactNode => {
     const { isRoot } = this.props;
     const { nowTab } = this.state;
+
+    const dom = document.getElementsByTagName('textarea');
+    console.log(dom);
     return (
       <div className={classnames('editor', { 'is-root': isRoot })}>
         <TabWrapper>
@@ -463,15 +767,72 @@ export default class ExplainedItem extends PureComponent<
           <SaveButton onClick={() => this.handleSave(type)}>确定</SaveButton>
         </TabWrapper>
         {nowTab === 'edit' ? (
-          <textarea
-            name={type}
-            value={this.state[type]}
-            placeholder="写一点解释..."
-            onChange={this.handleChange}
-            onPaste={this.handlePaste}
-            onDrop={this.handleDrop}
-            style={{ height: this.state[`${type}Height`] as number }}
-          />
+          <div>
+            <div
+              className="markdown-toolbar"
+              style={{
+                border: '1px solid #d1d5da',
+                borderBottom: 'none',
+                height: '30px',
+                padding: '5px 10px',
+                lineHeight: '30px',
+              }}>
+              <ToolButton onClick={() => this.handleMdTool(type, 'b')}>
+                <b>B</b>
+              </ToolButton>
+              <ToolButton onClick={() => this.handleMdTool(type, 'i')}>
+                <i>I</i>
+              </ToolButton>
+              <ToolButton onClick={() => this.handleMdTool(type, 'h')}>
+                H
+              </ToolButton>
+              <ToolButton onClick={() => this.handleMdTool(type, 'list')}>
+                List
+              </ToolButton>
+              <ToolButton
+                onClick={() => this.handleMdTool(type, 'numbered list')}>
+                Numbered List
+              </ToolButton>
+              <ToolButton
+                onClick={() => this.handleMdTool(type, 'blockquotes')}>
+                Blockquotes
+              </ToolButton>
+              <ToolButton onClick={() => this.handleMdTool(type, 'code')}>
+                Code
+              </ToolButton>
+              <ToolButton onClick={() => this.handleMdTool(type, 'block code')}>
+                Block Code
+              </ToolButton>
+              <ToolButton onClick={() => this.handleMdTool(type, 'link')}>
+                Link
+              </ToolButton>
+              <Upload
+                name="file"
+                action="http://localhost:3000/upload"
+                accept=".jpg,.jpeg,.png,.gif"
+                onSuccess={(body: { path: string }) => {
+                  const explainContent = this.state[type];
+                  this.setState({
+                    [type]: explainContent + `![](${body.path})`,
+                  });
+                }}>
+                <ToolButton>Img</ToolButton>
+              </Upload>
+            </div>
+            <textarea
+              name={type}
+              ref={this.explainContentRef}
+              value={this.state[type]}
+              placeholder="写一点解释..."
+              onChange={this.handleChange}
+              onPaste={this.handlePaste}
+              onDrop={this.handleDrop}
+              style={{
+                height: this.state[`${type}Height`] as number,
+                overflow: 'auto',
+              }}
+            />
+          </div>
         ) : (
           <Markdown
             source={this.state[type]}
@@ -495,11 +856,11 @@ export default class ExplainedItem extends PureComponent<
   render() {
     const { isEditMode } = this.props;
     return (
-      <StyledExplainedItem>
+      <div>
         {this.renderExplain('pre', isEditMode)}
         {this.props.children}
         {this.renderExplain('post', isEditMode)}
-      </StyledExplainedItem>
+      </div>
     );
   }
 }
