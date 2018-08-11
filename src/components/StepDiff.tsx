@@ -1,14 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import {
-  DragDropContext,
-  DropResult,
-  DragStart,
-  Droppable,
-  DroppableProvided,
-  Draggable,
-  DraggableProvided,
-} from 'react-beautiful-dnd';
 
 import ExplainedItem from './ExplainedItem';
 import DiffView, { Chunk, File, DiffItem } from './DiffView';
@@ -109,42 +100,6 @@ export default class StepDiff extends React.PureComponent<
       file.chunks[0].changes = changes;
     }
     return file.chunks;
-  };
-
-  onDragStart = (initial: DragStart) => {
-    // Add a little vibration if the browser supports it.
-    // Add's a nice little physical feedback
-    if (window.navigator.vibrate) {
-      window.navigator.vibrate(100);
-    }
-  };
-
-  onDragEnd = (result: DropResult) => {
-    // dropped outside the list
-    if (!result.destination) {
-      return;
-    }
-
-    if (result.destination.index === result.source.index) {
-      return;
-    }
-
-    const filesToBeRendered = reorder(
-      this.state.filesToBeRendered,
-      result.source.index,
-      result.destination.index,
-    );
-
-    const { updateTutureDiffOrder, commit } = this.props;
-    updateTutureDiffOrder(
-      commit,
-      result.source.index,
-      result.destination.index,
-    );
-
-    this.setState({
-      filesToBeRendered,
-    });
   };
 
   handleCopy = (chunks: Chunk[]) => {
