@@ -5,6 +5,9 @@ import fetch from 'isomorphic-fetch';
 // @ts-ignore
 import Markdown from 'react-markdown';
 
+// @ts-ignore
+import Upload from 'rc-upload';
+
 import { ExplainType, EditMode, ToolType } from '../types/ExplainedItem';
 import {
   TabWrapper,
@@ -14,8 +17,10 @@ import {
   EditExplainWrapper,
   HasExplainButton,
   NoExplainWrapper,
+  ToolButton,
 } from './MarkdownEditor.style';
 import MarkdownTool from './MarkdownTool';
+import { spliceStr, insertStr } from '../utils/common';
 import EditIcon from './write.png';
 
 export interface MarkdownEditorProps {
@@ -63,10 +68,13 @@ export default class MarkdownEditor extends React.Component<
   }
 
   componentDidUpdate() {
+    console.log('reload');
     if (this.cursorPosition !== -1) {
       const explainTextarea = this.explainContentRef.current;
-      explainTextarea.focus();
-      if (this.cursorPosition) {
+      if (explainTextarea) {
+        explainTextarea.focus();
+      }
+      if (this.cursorPosition && explainTextarea) {
         explainTextarea.setSelectionRange(
           this.cursorPosition,
           this.cursorPosition,
@@ -75,6 +83,17 @@ export default class MarkdownEditor extends React.Component<
       this.cursorPosition = -1;
     }
   }
+
+  handleCursor = (position?: number, explainTextarea?: HTMLTextAreaElement) => {
+    console.log('posiion', position);
+    console.log('source', this.state.source.length);
+    if (explainTextarea) {
+      explainTextarea.focus();
+    }
+    if (position && explainTextarea) {
+      explainTextarea.setSelectionRange(position, position);
+    }
+  };
 
   handleTabClick = (nowTab: EditMode) => {
     this.setState({ nowTab });
@@ -121,12 +140,20 @@ export default class MarkdownEditor extends React.Component<
         const savePath = resObj.path;
 
         // Add markdown image element to current explain.
-        let currentExplain = that.state.source as string;
-        currentExplain += `![](${savePath})`;
+        const currentExplain = that.state.source as string;
+        const explainTextarea = this.explainContentRef.current;
+        const newCurrentExplain = insertStr(
+          currentExplain,
+          `![](${savePath})`,
+          explainTextarea.selectionStart,
+        );
 
-        this.setState({ source: currentExplain });
+        this.changePosition(
+          currentExplain.slice(0, explainTextarea.selectionStart).length + 2,
+        );
+        this.setState({ source: newCurrentExplain });
 
-        this.props.handleSave(name, currentExplain);
+        this.props.handleSave(name, newCurrentExplain);
       });
   }
 
@@ -169,7 +196,6 @@ export default class MarkdownEditor extends React.Component<
   };
 
   changeState = (source: string) => {
-    console.log('source', source);
     this.setState({ source });
   };
 
@@ -203,15 +229,39 @@ export default class MarkdownEditor extends React.Component<
     return (
       <div className={classnames('editor', { 'is-root': isRoot })}>
         {this.renderTabWrapper(type)}
+        <MarkdownTool
+          explainContentRef={this.explainContentRef}
+          source={this.state.source}
+          changePosition={this.changePosition}
+          changeState={this.changeState}
+          edit={edit}
+          cursorPosition={this.cursorPosition}
+          handleCursor={this.handleCursor}>
+          <Upload
+            name="file"
+            action={`http://${location.host}/upload`}
+            accept=".jpg,.jpeg,.png,.gif"
+            onSuccess={(body: { path: string }) => {
+              const { source } = this.state;
+              const explainTextarea = this.explainContentRef.current;
+              const newExplainContent = insertStr(
+                source,
+                `![](${body.path})`,
+                explainTextarea.selectionStart,
+              );
+
+              this.changePosition(
+                source.slice(0, explainTextarea.selectionStart).length + 2,
+              );
+              this.setState({ source: newExplainContent });
+
+              this.props.handleSave(name, newExplainContent);
+            }}>
+            <ToolButton>Img</ToolButton>
+          </Upload>
+        </MarkdownTool>
         {nowTab === 'edit' ? (
           <div>
-            <MarkdownTool
-              explainContentRef={this.explainContentRef}
-              source={this.state.source}
-              changePosition={this.changePosition}
-              changeState={this.changeState}
-              edit={edit}
-            />
             <textarea
               name={type}
               ref={this.explainContentRef}
