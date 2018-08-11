@@ -16,6 +16,7 @@ import {
   NoExplainWrapper,
 } from './MarkdownEditor.style';
 import MarkdownTool from './MarkdownTool';
+import EditIcon from './write.png';
 
 export interface MarkdownEditorProps {
   source: string;
@@ -109,7 +110,6 @@ export default class MarkdownEditor extends React.Component<
     const that = this;
     data.append('file', files[0]);
 
-    console.log(`handleImageUpload before fetch: ${e.currentTarget.name}`);
     const explainType = e.currentTarget.name;
 
     fetch('http://localhost:3000/upload', {
@@ -119,14 +119,11 @@ export default class MarkdownEditor extends React.Component<
       .then((res) => res.json())
       .then((resObj) => {
         const savePath = resObj.path;
-        console.log(savePath);
 
         // Add markdown image element to current explain.
-        console.log(e);
-        console.log(`handleImageUpload getSavePath: ${explainType}`);
         let currentExplain = that.state.source as string;
         currentExplain += `![](${savePath})`;
-        console.log(currentExplain);
+
         this.setState({ source: currentExplain });
 
         this.props.handleSave(name, currentExplain);
@@ -265,7 +262,11 @@ export default class MarkdownEditor extends React.Component<
   renderNoExplainWrapper = () => {
     return (
       <NoExplainWrapper onClick={() => this.handleAddExplain()}>
-        +
+        <img
+          src={`js/${EditIcon}`}
+          alt="edit-iconf"
+          style={{ width: '20px' }}
+        />
       </NoExplainWrapper>
     );
   };

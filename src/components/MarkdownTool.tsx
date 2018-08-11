@@ -58,7 +58,6 @@ export default class MarkdownTool extends React.Component<MarkdownToolProps> {
     const explainTextarea = explainContentRef.current;
     if (edit) {
       const explainContent = source || '';
-      console.log(explainTextarea);
       const selectedContent = explainContent.slice(
         explainTextarea.selectionStart,
         explainTextarea.selectionEnd,

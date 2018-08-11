@@ -222,9 +222,9 @@ const NoExplainWrapper = styled.div`
   box-sizing: border-box;
   border: 1px solid #00b887;
   color: #00b887;
-  padding: 10px;
+  padding: 10px 10px 5px 10px;
   font-size: 20px;
-  opacity: 0;
+  opacity: 0.3;
   border-radius: 3px;
   text-align: center;
   cursor: pointer;
