@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.1.0
+
+### New Features
+
+- Add toolbar for markdown editor
+- Add copy-to-clipboard function for each code block
+
+### Improvements
+
+`tuture-server` now fully supports dynamic port usage.
+
 ## 1.0.1
 
 Bump version due to a historical mistake.
