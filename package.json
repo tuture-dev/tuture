@@ -30,7 +30,7 @@
     "start": "TUTURE_PATH=example/en webpack -w --config webpack.dev.js",
     "start:cn": "TUTURE_PATH=example/cn webpack -w --config webpack.dev.js",
     "build": "webpack --config webpack.prod.js",
-    "prepublishOnly": "webpack webpack.prod.js",
+    "prepublishOnly": "webpack --config webpack.prod.js",
     "test": "jest",
     "lint": "tslint 'src/**/*.{ts,tsx,js}' --project tsconfig.json",
     "precommit": "lint-staged"
