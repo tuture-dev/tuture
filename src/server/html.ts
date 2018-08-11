@@ -33,7 +33,7 @@ const html = ({
   </head>
   <body>
     <div id="root">${body}</div>
-    <script src="js/client.js"></script>
+    <script src="static/js/bundle.js"></script>
   </body>
   </html>
 `;

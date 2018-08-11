@@ -2,4 +2,4 @@
 
 process.env.TUTURE_PORT = require('yargs').argv.port || 3000;
 
-require('../dist/js/server');
+require('../dist/server');

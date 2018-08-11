@@ -262,11 +262,7 @@ export default class MarkdownEditor extends React.Component<
   renderNoExplainWrapper = () => {
     return (
       <NoExplainWrapper onClick={() => this.handleAddExplain()}>
-        <img
-          src={`js/${EditIcon}`}
-          alt="edit-iconf"
-          style={{ width: '20px' }}
-        />
+        <img src={EditIcon} alt="edit-iconf" style={{ width: '20px' }} />
       </NoExplainWrapper>
     );
   };
