@@ -128,7 +128,7 @@ export default class StepDiff extends React.PureComponent<
       const fileName = fileCopy.file;
       const startLine = fileCopy.section ? fileCopy.section.start : 1;
       return (
-        <DiffWrapper isEditMode={isEditMode}>
+        <DiffWrapper isEditMode={isEditMode} key={i}>
           <ExplainedItem
             explain={fileCopy.explain}
             isRoot={false}

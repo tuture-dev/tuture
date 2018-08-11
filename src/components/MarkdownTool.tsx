@@ -1,18 +1,21 @@
 import React from 'react';
 import styled from 'styled-components';
 
-// @ts-ignore
-import Upload from 'rc-upload';
-
 import { ToolButton } from './MarkdownEditor.style';
 import { ToolType } from '../types/ExplainedItem';
+import { spliceStr, insertStr } from '../utils/common';
 
 export interface MarkdownToolProps {
   source: string;
   explainContentRef: React.RefObject<HTMLTextAreaElement>;
   edit: boolean;
+  cursorPosition?: number;
   changeState: (content: string) => void;
   changePosition: (position: number) => void;
+  handleCursor: (
+    position?: number,
+    explainTextarea?: HTMLTextAreaElement,
+  ) => void;
 }
 
 const MarkdownToolWrapper = styled.div`
@@ -24,17 +27,6 @@ const MarkdownToolWrapper = styled.div`
 `;
 
 export default class MarkdownTool extends React.Component<MarkdownToolProps> {
-  spliceStr = (str = '', typeStr: string, start: number, end: number) => {
-    return str
-      .slice(0, start)
-      .concat(
-        typeStr,
-        str.slice(start, end),
-        typeStr,
-        str.slice(end, str.length),
-      );
-  };
-
   isAtBeginning = (explainContent: string, selectedStart: number) =>
     selectedStart === 0 ||
     explainContent.slice(0, selectedStart).endsWith('\n');
@@ -66,7 +58,7 @@ export default class MarkdownTool extends React.Component<MarkdownToolProps> {
       switch (toolType) {
         case 'b': {
           if (selectedContent) {
-            const source = this.spliceStr(
+            const source = spliceStr(
               explainContent,
               '**',
               explainTextarea.selectionStart,
@@ -86,7 +78,7 @@ export default class MarkdownTool extends React.Component<MarkdownToolProps> {
         }
         case 'i':
           if (selectedContent) {
-            const source = this.spliceStr(
+            const source = spliceStr(
               explainContent,
               '_',
               explainTextarea.selectionStart,
@@ -219,7 +211,7 @@ export default class MarkdownTool extends React.Component<MarkdownToolProps> {
           break;
         case 'code':
           if (selectedContent) {
-            const source = this.spliceStr(
+            const source = spliceStr(
               explainContent,
               '`',
               explainTextarea.selectionStart,
@@ -235,7 +227,7 @@ export default class MarkdownTool extends React.Component<MarkdownToolProps> {
           break;
         case 'block code':
           if (selectedContent) {
-            const source = this.spliceStr(
+            const source = spliceStr(
               explainContent,
               '\n```\n',
               explainTextarea.selectionStart,
@@ -327,6 +319,7 @@ export default class MarkdownTool extends React.Component<MarkdownToolProps> {
         value: 'Link',
       },
     ];
+    const that = this;
     return (
       <MarkdownToolWrapper>
         {toolArr.map((tool, index) => (
@@ -336,16 +329,7 @@ export default class MarkdownTool extends React.Component<MarkdownToolProps> {
             {tool.children ? tool.children : tool.value}
           </ToolButton>
         ))}
-        <Upload
-          name="file"
-          action={`http://${location.host}/upload`}
-          accept=".jpg,.jpeg,.png,.gif"
-          onSuccess={(body: { path: string }) => {
-            const explainContent = this.props.source;
-            this.changeState(explainContent + `![](${body.path})`);
-          }}>
-          <ToolButton>Img</ToolButton>
-        </Upload>
+        {this.props.children}
       </MarkdownToolWrapper>
     );
   }
