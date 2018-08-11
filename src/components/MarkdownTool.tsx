@@ -265,9 +265,15 @@ export default class MarkdownTool extends React.Component<MarkdownToolProps> {
               explainTextarea.selectionStart + selectedContent.length + 3,
             );
           } else {
+            const newExplainContent = insertStr(
+              explainContent,
+              '[](url)',
+              explainTextarea.selectionStart,
+            );
             this.changeState(
-              `${explainContent}[](url)`,
-              explainContent.length + 1,
+              newExplainContent,
+              explainContent.slice(0, explainTextarea.selectionStart).length +
+                1,
             );
           }
 
