@@ -216,7 +216,7 @@ const HasExplainButton = styled(BasicButton)`
   margin-right: 30px;
 `;
 
-const NoExplainWrapper = styled.div`
+const AddExplainWrapper = styled.div`
   display: block;
   width: 100%;
   box-sizing: border-box;
@@ -246,6 +246,6 @@ export {
   HasExplainWrapper,
   EditExplainWrapper,
   HasExplainButton,
-  NoExplainWrapper,
+  AddExplainWrapper,
   WriteImage,
 };

@@ -1,14 +1,12 @@
 import React from 'react';
 import marked from 'marked';
 
-export interface MarkdownViewerProps {
+export interface ViewerProps {
   source: string;
   classnames?: string;
 }
 
-export default class MarkdownViewer extends React.Component<
-  MarkdownViewerProps
-> {
+export default class Viewer extends React.Component<ViewerProps> {
   getMarkdownText(source: string) {
     if (!source) {
       return;

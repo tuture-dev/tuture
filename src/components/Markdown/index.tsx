@@ -1,8 +1,8 @@
 import React from 'react';
 import classnames from 'classnames';
 
-import MarkdownViewer from './MarkdownViewer';
-import MarkdownEditor from './MarkdownEditor';
+import Viewer from './Viewer';
+import Editor from './Editor';
 import { ExplainType } from '../../types/ExplainedItem';
 
 export interface MarkdownProps {
@@ -19,12 +19,9 @@ export default class Markdown extends React.Component<MarkdownProps> {
     const { isEditMode, source, isRoot } = this.props;
 
     return isEditMode ? (
-      <MarkdownEditor {...this.props} />
+      <Editor {...this.props} />
     ) : (
-      <MarkdownViewer
-        source={source}
-        classnames={classnames('markdown', { isRoot })}
-      />
+      <Viewer source={source} classnames={classnames('markdown', { isRoot })} />
     );
   }
 }

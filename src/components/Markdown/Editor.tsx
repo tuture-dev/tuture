@@ -5,8 +5,8 @@ import fetch from 'isomorphic-fetch';
 // @ts-ignore
 import Upload from 'rc-upload';
 
-import MarkdownViewer from './MarkdownViewer';
-import { ExplainType, EditMode, ToolType } from '../../types/ExplainedItem';
+import Viewer from './Viewer';
+import { ExplainType, EditMode } from '../../types/ExplainedItem';
 import {
   TabWrapper,
   Button,
@@ -14,15 +14,15 @@ import {
   HasExplainWrapper,
   EditExplainWrapper,
   HasExplainButton,
-  NoExplainWrapper,
+  AddExplainWrapper,
   ToolButton,
   WriteImage,
-} from './MarkdownEditor.style';
-import MarkdownTool from './MarkdownTool';
-import { insertStr } from '../../utils/common';
+} from './Editor.style';
+import Toolbar from './Toolbar';
+import { insertStr } from './utils';
 import EditIcon from '../write.png';
 
-export interface MarkdownEditorProps {
+export interface EditorProps {
   source: string;
   type: ExplainType;
   classnames?: string;
@@ -31,63 +31,57 @@ export interface MarkdownEditorProps {
   handleSave?: (explainType: ExplainType, explain: string) => void;
 }
 
-export interface MarkdownEditorState {
+export interface EditorState {
   nowTab: EditMode;
-  edit?: boolean;
+  isEditing?: boolean;
   source?: string;
   editFrameHeight?: number;
 }
 
-export default class MarkdownEditor extends React.Component<
-  MarkdownEditorProps,
-  MarkdownEditorState
-> {
-  private explainContentRef: React.RefObject<HTMLTextAreaElement>;
-  private cursorPosition: number = -1;
+export default class Editor extends React.Component<EditorProps, EditorState> {
+  private contentRef: React.RefObject<HTMLTextAreaElement>;
+  private cursorPos: number = -1;
 
-  constructor(props: MarkdownEditorProps) {
+  constructor(props: EditorProps) {
     super(props);
 
     const { source } = this.props;
     this.state = {
       source,
       nowTab: 'edit',
-      edit: false,
+      isEditing: false,
       editFrameHeight: 200,
     };
-    this.explainContentRef = React.createRef();
+    this.contentRef = React.createRef();
   }
 
-  componentWillReceiveProps(nextProps: MarkdownEditorProps) {
+  componentWillReceiveProps(nextProps: EditorProps) {
     if (nextProps.isEditMode !== this.props.isEditMode) {
       this.setState({
-        edit: false,
+        isEditing: false,
       });
     }
   }
 
   componentDidUpdate() {
-    if (this.cursorPosition !== -1) {
-      const explainTextarea = this.explainContentRef.current;
-      if (explainTextarea) {
-        explainTextarea.focus();
+    if (this.cursorPos !== -1) {
+      const textarea = this.contentRef.current;
+      if (textarea) {
+        textarea.focus();
       }
-      if (this.cursorPosition && explainTextarea) {
-        explainTextarea.setSelectionRange(
-          this.cursorPosition,
-          this.cursorPosition,
-        );
+      if (this.cursorPos && textarea) {
+        textarea.setSelectionRange(this.cursorPos, this.cursorPos);
       }
-      this.cursorPosition = -1;
+      this.cursorPos = -1;
     }
   }
 
-  handleCursor = (position?: number, explainTextarea?: HTMLTextAreaElement) => {
-    if (explainTextarea) {
-      explainTextarea.focus();
+  handleCursor = (position?: number, textarea?: HTMLTextAreaElement) => {
+    if (textarea) {
+      textarea.focus();
     }
-    if (position && explainTextarea) {
-      explainTextarea.setSelectionRange(position, position);
+    if (position && textarea) {
+      textarea.setSelectionRange(position, position);
     }
   };
 
@@ -97,7 +91,7 @@ export default class MarkdownEditor extends React.Component<
 
   handleSave = (type: ExplainType) => {
     this.setState({
-      edit: false,
+      isEditing: false,
     });
 
     this.props.handleSave(type, this.state.source);
@@ -125,8 +119,6 @@ export default class MarkdownEditor extends React.Component<
     const that = this;
     data.append('file', files[0]);
 
-    const explainType = e.currentTarget.name;
-
     fetch(`http://${location.host}/upload`, {
       method: 'POST',
       body: data,
@@ -137,7 +129,7 @@ export default class MarkdownEditor extends React.Component<
 
         // Add markdown image element to current explain.
         const currentExplain = that.state.source as string;
-        const explainTextarea = this.explainContentRef.current;
+        const explainTextarea = this.contentRef.current;
         const newCurrentExplain = insertStr(
           currentExplain,
           `![](${savePath})`,
@@ -183,12 +175,12 @@ export default class MarkdownEditor extends React.Component<
 
   handleAddExplain = () => {
     this.setState({
-      edit: true,
+      isEditing: true,
     });
   };
 
   changePosition = (position: number) => {
-    this.cursorPosition = position;
+    this.cursorPos = position;
   };
 
   changeState = (source: string) => {
@@ -218,20 +210,20 @@ export default class MarkdownEditor extends React.Component<
     );
   };
 
-  renderEditFrame = (): React.ReactNode => {
+  rendorEditor = (): React.ReactNode => {
     const { isRoot, type } = this.props;
-    const { nowTab, edit } = this.state;
+    const { nowTab, isEditing } = this.state;
 
     return (
       <div className={classnames('editor', { isRoot })}>
         {this.renderTabWrapper(type)}
-        <MarkdownTool
-          explainContentRef={this.explainContentRef}
+        <Toolbar
+          contentRef={this.contentRef}
           source={this.state.source}
           changePosition={this.changePosition}
           changeState={this.changeState}
-          edit={edit}
-          cursorPosition={this.cursorPosition}
+          edit={isEditing}
+          cursorPosition={this.cursorPos}
           handleCursor={this.handleCursor}>
           <Upload
             name="file"
@@ -239,28 +231,28 @@ export default class MarkdownEditor extends React.Component<
             accept=".jpg,.jpeg,.png,.gif"
             onSuccess={(body: { path: string }) => {
               const { source } = this.state;
-              const explainTextarea = this.explainContentRef.current;
-              const newExplainContent = insertStr(
+              const textarea = this.contentRef.current;
+              const updatedContent = insertStr(
                 source,
                 `![](${body.path})`,
-                explainTextarea.selectionStart,
+                textarea.selectionStart,
               );
 
               this.changePosition(
-                source.slice(0, explainTextarea.selectionStart).length + 2,
+                source.slice(0, textarea.selectionStart).length + 2,
               );
-              this.setState({ source: newExplainContent });
+              this.setState({ source: updatedContent });
 
-              this.props.handleSave(type, newExplainContent);
+              this.props.handleSave(type, updatedContent);
             }}>
             <ToolButton>Img</ToolButton>
           </Upload>
-        </MarkdownTool>
+        </Toolbar>
         {nowTab === 'edit' ? (
           <div>
             <textarea
               name={type}
-              ref={this.explainContentRef}
+              ref={this.contentRef}
               value={this.state.source}
               placeholder="写一点解释..."
               onChange={this.handleChange}
@@ -273,7 +265,7 @@ export default class MarkdownEditor extends React.Component<
             />
           </div>
         ) : (
-          <MarkdownViewer
+          <Viewer
             source={this.state.source}
             classnames={classnames('markdown', 'preview-markdown', {
               isRoot,
@@ -305,44 +297,25 @@ export default class MarkdownEditor extends React.Component<
     );
   };
 
-  renderNoExplainWrapper = () => {
-    return (
-      <NoExplainWrapper onClick={() => this.handleAddExplain()}>
-        <WriteImage src={EditIcon} alt="edit-iconf" />
-      </NoExplainWrapper>
-    );
-  };
+  render() {
+    const { isRoot } = this.props;
 
-  renderEditExplainStr = (): React.ReactNode => {
-    const { type } = this.props;
-
-    return (
+    return this.state.isEditing ? (
+      this.rendorEditor()
+    ) : (
       <EditExplainWrapper>
-        {this.renderExplainStr()}
-        {this.state.source
-          ? this.renderHasExplainButton()
-          : this.renderNoExplainWrapper()}
+        <Viewer
+          source={this.state.source}
+          classnames={classnames('markdown', { isRoot })}
+        />
+        {this.state.source ? (
+          this.renderHasExplainButton()
+        ) : (
+          <AddExplainWrapper onClick={() => this.handleAddExplain()}>
+            <WriteImage src={EditIcon} alt="edit-icon" />
+          </AddExplainWrapper>
+        )}
       </EditExplainWrapper>
     );
-  };
-
-  renderExplainStr = (): React.ReactNode => {
-    const { isRoot } = this.props;
-    return (
-      <MarkdownViewer
-        source={this.state.source}
-        classnames={classnames('markdown', { isRoot })}
-      />
-    );
-  };
-
-  renderExplain = (): React.ReactNode => {
-    return this.state.edit
-      ? this.renderEditFrame()
-      : this.renderEditExplainStr();
-  };
-
-  render() {
-    return this.renderExplain();
   }
 }
