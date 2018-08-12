@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import ExplainedItem from './ExplainedItem';
 import DiffView, { Chunk, File, DiffItem } from './DiffView';
 import { Diff } from '../types';
-import { reorder } from '../utils/common';
 
 interface StepDiffProps {
   diff: Diff[];
@@ -29,6 +28,7 @@ interface StepDiffState {
 }
 
 export const DiffWrapper = styled.div`
+  margin-top: 12px;
   padding: ${(props: { isEditMode: boolean }) =>
     props.isEditMode ? '24px' : '0px 24px'};
   &:hover {
