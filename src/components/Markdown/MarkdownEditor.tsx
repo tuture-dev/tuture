@@ -67,7 +67,6 @@ export default class MarkdownEditor extends React.Component<
   }
 
   componentDidUpdate() {
-    console.log('reload');
     if (this.cursorPosition !== -1) {
       const explainTextarea = this.explainContentRef.current;
       if (explainTextarea) {
@@ -84,8 +83,6 @@ export default class MarkdownEditor extends React.Component<
   }
 
   handleCursor = (position?: number, explainTextarea?: HTMLTextAreaElement) => {
-    console.log('posiion', position);
-    console.log('source', this.state.source.length);
     if (explainTextarea) {
       explainTextarea.focus();
     }

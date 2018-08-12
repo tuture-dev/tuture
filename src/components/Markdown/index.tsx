@@ -17,7 +17,7 @@ export interface MarkdownProps {
 export default class Markdown extends React.Component<MarkdownProps> {
   render() {
     const { isEditMode, source, isRoot } = this.props;
-    console.log('source', source);
+
     return isEditMode ? (
       <MarkdownEditor {...this.props} />
     ) : (
