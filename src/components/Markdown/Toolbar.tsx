@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { ToolButton } from './Editor.style';
+import { ToolButton } from './common';
 import { spliceStr, insertStr } from './utils';
 
 type ToolType =
@@ -19,9 +19,8 @@ type ToolType =
 interface ToolProps {
   source: string;
   contentRef: React.RefObject<HTMLTextAreaElement>;
-  edit: boolean;
   cursorPosition?: number;
-  changeState: (content: string) => void;
+  updateContent: (content: string) => void;
   changePosition: (position: number) => void;
   handleCursor: (position?: number, textarea?: HTMLTextAreaElement) => void;
 }
@@ -43,8 +42,8 @@ export default class Toolbar extends React.Component<ToolProps> {
     content.slice(selectionEnd, content.length).indexOf('\n') === 0;
 
   changeState = (source: string, position?: number) => {
-    const { changeState, changePosition } = this.props;
-    changeState(source);
+    const { updateContent, changePosition } = this.props;
+    updateContent(source);
 
     if (position) {
       changePosition(position);
@@ -73,223 +72,215 @@ export default class Toolbar extends React.Component<ToolProps> {
   };
 
   handleToolbarClick = (toolType: ToolType) => {
-    const { edit, source, contentRef } = this.props;
+    const { source, contentRef } = this.props;
     const textarea = contentRef.current;
-    if (edit) {
-      const content = source || '';
-      const selectedContent = content.slice(
-        textarea.selectionStart,
-        textarea.selectionEnd,
-      );
-      let resultContent = '';
-      switch (toolType) {
-        case 'b': {
-          selectedContent
-            ? this.spliceContent(
-                content,
-                '**',
-                textarea.selectionStart,
-                textarea.selectionEnd,
-                textarea.selectionStart + selectedContent.length + 2,
-              )
-            : this.insertContent(
-                content,
-                '****',
-                textarea.selectionStart,
-                content.slice(0, textarea.selectionStart).length + 2,
-              );
-          break;
-        }
-        case 'i': {
-          selectedContent
-            ? this.spliceContent(
-                content,
-                '*',
-                textarea.selectionStart,
-                textarea.selectionEnd,
-                textarea.selectionStart + selectedContent.length + 1,
-              )
-            : this.insertContent(
-                content,
-                '**',
-                textarea.selectionStart,
-                content.slice(0, textarea.selectionStart).length + 1,
-              );
-          break;
-        }
-        case 'h': {
-          const isContentEnd = !content || content.endsWith('\n');
-          this.insertContent(
-            content,
-            isContentEnd ? '#### ' : '\n#### ',
-            textarea.selectionStart,
-            content.slice(0, textarea.selectionStart).length + 5,
-          );
-          break;
-        }
-        case 'list':
-          if (selectedContent) {
-            let resultContent: string = '';
-            const listItems = selectedContent.split('\n');
-            listItems.map((item) => {
-              if (item) {
-                resultContent += `- ${item}\n`;
-              }
-            });
-            const source = content
-              .slice(0, textarea.selectionStart)
-              .concat(
-                this.isAtBeginning(content, textarea.selectionStart)
-                  ? ''
-                  : '\n',
-                resultContent,
-                this.isAtEnding(content, textarea.selectionEnd) ? '' : '\n',
-                content.slice(textarea.selectionEnd, content.length),
-              );
-            this.changeState(source);
-          } else {
-            const isContentEnd = !content || content.endsWith('\n');
-            this.insertContent(
+    const content = source || '';
+    const selectedContent = content.slice(
+      textarea.selectionStart,
+      textarea.selectionEnd,
+    );
+    let resultContent = '';
+    switch (toolType) {
+      case 'b': {
+        selectedContent
+          ? this.spliceContent(
               content,
-              isContentEnd ? '- ' : '\n- ',
+              '**',
               textarea.selectionStart,
-              content.slice(0, textarea.selectionStart).length + 2,
-            );
-          }
-          break;
-        case 'numbered list':
-          if (selectedContent) {
-            let resultContent: string = '';
-            const listItems = selectedContent.split('\n');
-            listItems.map((item, index) => {
-              if (item) {
-                resultContent += `${index + 1}. ${item}\n`;
-              }
-            });
-            const source = content
-              .slice(0, textarea.selectionStart)
-              .concat(
-                this.isAtBeginning(content, textarea.selectionStart)
-                  ? ''
-                  : '\n\n',
-                resultContent,
-                this.isAtEnding(content, textarea.selectionEnd) ? '' : '\n',
-                content.slice(textarea.selectionEnd, content.length),
-              );
-            this.changeState(source);
-          } else {
-            const isContentEnd = !content || content.endsWith('\n');
-            this.insertContent(
-              content,
-              isContentEnd ? '1. ' : '\n1. ',
-              textarea.selectionStart,
-              content.slice(0, textarea.selectionStart).length + 3,
-            );
-          }
-          break;
-        case 'blockquotes':
-          if (selectedContent) {
-            let resultContent: string;
-            if (
-              textarea.selectionStart === 0 ||
-              selectedContent.indexOf('\n') === 0
-            ) {
-              resultContent = '';
-            } else {
-              resultContent = '\n';
-            }
-            const listItems = selectedContent.split('\n');
-            listItems.map((item, index) => {
-              if (item) {
-                resultContent += `> ${item}\n`;
-              }
-            });
-            const source = content
-              .slice(0, textarea.selectionStart)
-              .concat(
-                this.isAtBeginning(content, textarea.selectionStart)
-                  ? ''
-                  : '\n',
-                resultContent,
-                this.isAtEnding(content, textarea.selectionEnd) ? '' : '\n',
-                content.slice(textarea.selectionEnd, content.length),
-              );
-            this.changeState(source);
-          } else {
-            const isContentEnd = !content || content.endsWith('\n');
-            this.insertContent(
-              content,
-              isContentEnd ? '> ' : '\n> ',
-              textarea.selectionStart,
-              content.slice(0, textarea.selectionStart).length + 2,
-            );
-          }
-
-          break;
-        case 'code': {
-          selectedContent
-            ? this.spliceContent(
-                content,
-                '`',
-                textarea.selectionStart,
-                textarea.selectionEnd,
-                textarea.selectionStart + selectedContent.length + 1,
-              )
-            : this.insertContent(
-                content,
-                '``',
-                textarea.selectionStart,
-                content.slice(0, textarea.selectionStart).length + 1,
-              );
-          break;
-        }
-        case 'block code': {
-          const isContentEnd = !content || content.endsWith('\n');
-          const basicCursorPosition = content.slice(0, textarea.selectionStart)
-            .length;
-          selectedContent
-            ? this.spliceContent(
-                content,
-                '\n```\n',
-                textarea.selectionStart,
-                textarea.selectionEnd,
-                textarea.selectionStart + selectedContent.length + 5,
-              )
-            : this.insertContent(
-                content,
-                isContentEnd ? '```\n\n```' : '\n```\n\n```',
-                textarea.selectionStart,
-                isContentEnd
-                  ? basicCursorPosition + 5
-                  : basicCursorPosition + 6,
-              );
-          break;
-        }
-        case 'link':
-          if (selectedContent) {
-            resultContent = `${content.slice(
-              0,
-              textarea.selectionStart,
-            )}[${selectedContent}]()${content.slice(
               textarea.selectionEnd,
-              content.length,
-            )}`;
-            this.changeState(
-              resultContent,
-              textarea.selectionStart + selectedContent.length + 3,
-            );
-          } else {
-            this.insertContent(
+              textarea.selectionStart + selectedContent.length + 2,
+            )
+          : this.insertContent(
               content,
-              '[](url)',
+              '****',
+              textarea.selectionStart,
+              content.slice(0, textarea.selectionStart).length + 2,
+            );
+        break;
+      }
+      case 'i': {
+        selectedContent
+          ? this.spliceContent(
+              content,
+              '*',
+              textarea.selectionStart,
+              textarea.selectionEnd,
+              textarea.selectionStart + selectedContent.length + 1,
+            )
+          : this.insertContent(
+              content,
+              '**',
               textarea.selectionStart,
               content.slice(0, textarea.selectionStart).length + 1,
             );
-          }
-          break;
-        default:
-          break;
+        break;
       }
+      case 'h': {
+        const isContentEnd = !content || content.endsWith('\n');
+        this.insertContent(
+          content,
+          isContentEnd ? '#### ' : '\n#### ',
+          textarea.selectionStart,
+          content.slice(0, textarea.selectionStart).length + 5,
+        );
+        break;
+      }
+      case 'list':
+        if (selectedContent) {
+          let resultContent: string = '';
+          const listItems = selectedContent.split('\n');
+          listItems.map((item) => {
+            if (item) {
+              resultContent += `- ${item}\n`;
+            }
+          });
+          const source = content
+            .slice(0, textarea.selectionStart)
+            .concat(
+              this.isAtBeginning(content, textarea.selectionStart) ? '' : '\n',
+              resultContent,
+              this.isAtEnding(content, textarea.selectionEnd) ? '' : '\n',
+              content.slice(textarea.selectionEnd, content.length),
+            );
+          this.changeState(source);
+        } else {
+          const isContentEnd = !content || content.endsWith('\n');
+          this.insertContent(
+            content,
+            isContentEnd ? '- ' : '\n- ',
+            textarea.selectionStart,
+            content.slice(0, textarea.selectionStart).length + 2,
+          );
+        }
+        break;
+      case 'numbered list':
+        if (selectedContent) {
+          let resultContent: string = '';
+          const listItems = selectedContent.split('\n');
+          listItems.map((item, index) => {
+            if (item) {
+              resultContent += `${index + 1}. ${item}\n`;
+            }
+          });
+          const source = content
+            .slice(0, textarea.selectionStart)
+            .concat(
+              this.isAtBeginning(content, textarea.selectionStart)
+                ? ''
+                : '\n\n',
+              resultContent,
+              this.isAtEnding(content, textarea.selectionEnd) ? '' : '\n',
+              content.slice(textarea.selectionEnd, content.length),
+            );
+          this.changeState(source);
+        } else {
+          const isContentEnd = !content || content.endsWith('\n');
+          this.insertContent(
+            content,
+            isContentEnd ? '1. ' : '\n1. ',
+            textarea.selectionStart,
+            content.slice(0, textarea.selectionStart).length + 3,
+          );
+        }
+        break;
+      case 'blockquotes':
+        if (selectedContent) {
+          let resultContent: string;
+          if (
+            textarea.selectionStart === 0 ||
+            selectedContent.indexOf('\n') === 0
+          ) {
+            resultContent = '';
+          } else {
+            resultContent = '\n';
+          }
+          const listItems = selectedContent.split('\n');
+          listItems.map((item, index) => {
+            if (item) {
+              resultContent += `> ${item}\n`;
+            }
+          });
+          const source = content
+            .slice(0, textarea.selectionStart)
+            .concat(
+              this.isAtBeginning(content, textarea.selectionStart) ? '' : '\n',
+              resultContent,
+              this.isAtEnding(content, textarea.selectionEnd) ? '' : '\n',
+              content.slice(textarea.selectionEnd, content.length),
+            );
+          this.changeState(source);
+        } else {
+          const isContentEnd = !content || content.endsWith('\n');
+          this.insertContent(
+            content,
+            isContentEnd ? '> ' : '\n> ',
+            textarea.selectionStart,
+            content.slice(0, textarea.selectionStart).length + 2,
+          );
+        }
+
+        break;
+      case 'code': {
+        selectedContent
+          ? this.spliceContent(
+              content,
+              '`',
+              textarea.selectionStart,
+              textarea.selectionEnd,
+              textarea.selectionStart + selectedContent.length + 1,
+            )
+          : this.insertContent(
+              content,
+              '``',
+              textarea.selectionStart,
+              content.slice(0, textarea.selectionStart).length + 1,
+            );
+        break;
+      }
+      case 'block code': {
+        const isContentEnd = !content || content.endsWith('\n');
+        const basicCursorPosition = content.slice(0, textarea.selectionStart)
+          .length;
+        selectedContent
+          ? this.spliceContent(
+              content,
+              '\n```\n',
+              textarea.selectionStart,
+              textarea.selectionEnd,
+              textarea.selectionStart + selectedContent.length + 5,
+            )
+          : this.insertContent(
+              content,
+              isContentEnd ? '```\n\n```' : '\n```\n\n```',
+              textarea.selectionStart,
+              isContentEnd ? basicCursorPosition + 5 : basicCursorPosition + 6,
+            );
+        break;
+      }
+      case 'link':
+        if (selectedContent) {
+          resultContent = `${content.slice(
+            0,
+            textarea.selectionStart,
+          )}[${selectedContent}]()${content.slice(
+            textarea.selectionEnd,
+            content.length,
+          )}`;
+          this.changeState(
+            resultContent,
+            textarea.selectionStart + selectedContent.length + 3,
+          );
+        } else {
+          this.insertContent(
+            content,
+            '[](url)',
+            textarea.selectionStart,
+            content.slice(0, textarea.selectionStart).length + 1,
+          );
+        }
+        break;
+      default:
+        break;
     }
   };
 

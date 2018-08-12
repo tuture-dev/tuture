@@ -7,34 +7,22 @@ import Upload from 'rc-upload';
 
 import Viewer from './Viewer';
 import { ExplainType, EditMode } from '../../types/ExplainedItem';
-import {
-  TabWrapper,
-  Button,
-  SaveButton,
-  HasExplainWrapper,
-  EditExplainWrapper,
-  HasExplainButton,
-  AddExplainWrapper,
-  ToolButton,
-  WriteImage,
-} from './Editor.style';
+import { TabWrapper, Button, SaveButton, ToolButton } from './common';
 import Toolbar from './Toolbar';
 import { insertStr } from './utils';
-import EditIcon from '../write.png';
 
-export interface EditorProps {
+interface EditorProps {
   source: string;
   type: ExplainType;
-  classnames?: string;
   isRoot?: boolean;
-  isEditMode?: boolean;
-  handleSave?: (explainType: ExplainType, explain: string) => void;
+  classnames?: string;
+  updateEditingStatus: (isEditing: boolean) => void;
+  handleSave?: (content: string) => void;
 }
 
-export interface EditorState {
+interface EditorState {
+  content: string;
   nowTab: EditMode;
-  isEditing?: boolean;
-  source?: string;
   editFrameHeight?: number;
 }
 
@@ -45,22 +33,12 @@ export default class Editor extends React.Component<EditorProps, EditorState> {
   constructor(props: EditorProps) {
     super(props);
 
-    const { source } = this.props;
     this.state = {
-      source,
+      content: this.props.source,
       nowTab: 'edit',
-      isEditing: false,
       editFrameHeight: 200,
     };
     this.contentRef = React.createRef();
-  }
-
-  componentWillReceiveProps(nextProps: EditorProps) {
-    if (nextProps.isEditMode !== this.props.isEditMode) {
-      this.setState({
-        isEditing: false,
-      });
-    }
   }
 
   componentDidUpdate() {
@@ -76,6 +54,10 @@ export default class Editor extends React.Component<EditorProps, EditorState> {
     }
   }
 
+  updateContent = (content: string) => {
+    this.setState({ content });
+  };
+
   handleCursor = (position?: number, textarea?: HTMLTextAreaElement) => {
     if (textarea) {
       textarea.focus();
@@ -89,12 +71,9 @@ export default class Editor extends React.Component<EditorProps, EditorState> {
     this.setState({ nowTab });
   };
 
-  handleSave = (type: ExplainType) => {
-    this.setState({
-      isEditing: false,
-    });
-
-    this.props.handleSave(type, this.state.source);
+  handleSave = () => {
+    this.props.handleSave(this.state.content);
+    this.props.updateEditingStatus(false);
   };
 
   handleImageUpload(
@@ -128,34 +107,26 @@ export default class Editor extends React.Component<EditorProps, EditorState> {
         const savePath = resObj.path;
 
         // Add markdown image element to current explain.
-        const currentExplain = that.state.source as string;
-        const explainTextarea = this.contentRef.current;
-        const newCurrentExplain = insertStr(
-          currentExplain,
+        const currentContent = that.state.content as string;
+        const textarea = this.contentRef.current;
+        const updatedContent = insertStr(
+          currentContent,
           `![](${savePath})`,
-          explainTextarea.selectionStart,
+          textarea.selectionStart,
         );
 
         this.changePosition(
-          currentExplain.slice(0, explainTextarea.selectionStart).length + 2,
+          currentContent.slice(0, textarea.selectionStart).length + 2,
         );
-        this.setState({ source: newCurrentExplain });
 
-        this.props.handleSave(name, newCurrentExplain);
+        this.updateContent(updatedContent);
       });
   }
 
   handleChange = (e: React.FormEvent<HTMLTextAreaElement>) => {
-    const { value, scrollHeight } = e.currentTarget;
-    let needRenderScrollHeight = scrollHeight;
-    if (needRenderScrollHeight <= 200) {
-      needRenderScrollHeight = 200;
-    } else if (needRenderScrollHeight >= 400) {
-      needRenderScrollHeight = 400;
-    }
+    const { value } = e.currentTarget;
     this.setState({
-      source: value,
-      editFrameHeight: needRenderScrollHeight,
+      content: value,
     });
   };
 
@@ -167,27 +138,11 @@ export default class Editor extends React.Component<EditorProps, EditorState> {
     this.handleImageUpload(e, 'drop');
   };
 
-  handleDelete = () => {
-    const { type } = this.props;
-    this.setState({ source: '' });
-    this.props.handleSave(type, '');
-  };
-
-  handleAddExplain = () => {
-    this.setState({
-      isEditing: true,
-    });
-  };
-
   changePosition = (position: number) => {
     this.cursorPos = position;
   };
 
-  changeState = (source: string) => {
-    this.setState({ source });
-  };
-
-  renderTabWrapper = (type: ExplainType) => {
+  renderTabWrapper = () => {
     const { nowTab } = this.state;
     return (
       <TabWrapper>
@@ -205,24 +160,23 @@ export default class Editor extends React.Component<EditorProps, EditorState> {
             预览
           </Button>
         </div>
-        <SaveButton onClick={() => this.handleSave(type)}>确定</SaveButton>
+        <SaveButton onClick={() => this.handleSave()}>确定</SaveButton>
       </TabWrapper>
     );
   };
 
-  rendorEditor = (): React.ReactNode => {
+  render() {
     const { isRoot, type } = this.props;
-    const { nowTab, isEditing } = this.state;
+    const { nowTab } = this.state;
 
     return (
-      <div className={classnames('editor', { isRoot })}>
-        {this.renderTabWrapper(type)}
+      <div className={classnames('editor')}>
+        {this.renderTabWrapper()}
         <Toolbar
           contentRef={this.contentRef}
-          source={this.state.source}
+          source={this.state.content}
           changePosition={this.changePosition}
-          changeState={this.changeState}
-          edit={isEditing}
+          updateContent={this.updateContent}
           cursorPosition={this.cursorPos}
           handleCursor={this.handleCursor}>
           <Upload
@@ -230,20 +184,19 @@ export default class Editor extends React.Component<EditorProps, EditorState> {
             action={`http://${location.host}/upload`}
             accept=".jpg,.jpeg,.png,.gif"
             onSuccess={(body: { path: string }) => {
-              const { source } = this.state;
+              const { content } = this.state;
               const textarea = this.contentRef.current;
               const updatedContent = insertStr(
-                source,
+                content,
                 `![](${body.path})`,
                 textarea.selectionStart,
               );
 
               this.changePosition(
-                source.slice(0, textarea.selectionStart).length + 2,
+                content.slice(0, textarea.selectionStart).length + 2,
               );
-              this.setState({ source: updatedContent });
-
-              this.props.handleSave(type, updatedContent);
+              this.updateContent(updatedContent);
+              this.handleSave();
             }}>
             <ToolButton>Img</ToolButton>
           </Upload>
@@ -253,69 +206,28 @@ export default class Editor extends React.Component<EditorProps, EditorState> {
             <textarea
               name={type}
               ref={this.contentRef}
-              value={this.state.source}
+              value={this.state.content}
               placeholder="写一点解释..."
               onChange={this.handleChange}
               onPaste={this.handlePaste}
               onDrop={this.handleDrop}
               style={{
-                height: this.state.editFrameHeight as number,
+                height: '200px',
+                maxHeight: '400px',
                 overflow: 'auto',
+                resize: 'vertical',
               }}
             />
           </div>
         ) : (
           <Viewer
-            source={this.state.source}
+            source={this.state.content}
             classnames={classnames('markdown', 'preview-markdown', {
               isRoot,
             })}
           />
         )}
       </div>
-    );
-  };
-
-  renderHasExplainButton = () => {
-    return (
-      <HasExplainWrapper>
-        <div>
-          <HasExplainButton
-            color="rgba(0,0,0,0.84)"
-            border="1px solid rgba(0,0,0,0.84)"
-            onClick={() => this.handleAddExplain()}>
-            编辑
-          </HasExplainButton>
-          <HasExplainButton
-            color="#cb2431"
-            border="1px solid #cb2431"
-            onClick={() => this.handleDelete()}>
-            删除
-          </HasExplainButton>
-        </div>
-      </HasExplainWrapper>
-    );
-  };
-
-  render() {
-    const { isRoot } = this.props;
-
-    return this.state.isEditing ? (
-      this.rendorEditor()
-    ) : (
-      <EditExplainWrapper>
-        <Viewer
-          source={this.state.source}
-          classnames={classnames('markdown', { isRoot })}
-        />
-        {this.state.source ? (
-          this.renderHasExplainButton()
-        ) : (
-          <AddExplainWrapper onClick={() => this.handleAddExplain()}>
-            <WriteImage src={EditIcon} alt="edit-icon" />
-          </AddExplainWrapper>
-        )}
-      </EditExplainWrapper>
     );
   }
 }
