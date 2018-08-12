@@ -253,7 +253,7 @@ export default class Toolbar extends React.Component<ToolProps> {
               content,
               isContentEnd ? '```\n\n```' : '\n```\n\n```',
               textarea.selectionStart,
-              isContentEnd ? basicCursorPosition + 5 : basicCursorPosition + 6,
+              isContentEnd ? basicCursorPosition + 4 : basicCursorPosition + 5,
             );
         break;
       }

@@ -172,36 +172,36 @@ export default class Editor extends React.Component<EditorProps, EditorState> {
     return (
       <div className={classnames('editor')}>
         {this.renderTabWrapper()}
-        <Toolbar
-          contentRef={this.contentRef}
-          source={this.state.content}
-          changePosition={this.changePosition}
-          updateContent={this.updateContent}
-          cursorPosition={this.cursorPos}
-          handleCursor={this.handleCursor}>
-          <Upload
-            name="file"
-            action={`http://${location.host}/upload`}
-            accept=".jpg,.jpeg,.png,.gif"
-            onSuccess={(body: { path: string }) => {
-              const { content } = this.state;
-              const textarea = this.contentRef;
-              const updatedContent = insertStr(
-                content,
-                `![](${body.path})`,
-                textarea.selectionStart,
-              );
-
-              this.changePosition(
-                content.slice(0, textarea.selectionStart).length + 2,
-              );
-              this.updateContent(updatedContent);
-            }}>
-            <ToolButton>Img</ToolButton>
-          </Upload>
-        </Toolbar>
         {nowTab === 'edit' ? (
           <div>
+            <Toolbar
+              contentRef={this.contentRef}
+              source={this.state.content}
+              changePosition={this.changePosition}
+              updateContent={this.updateContent}
+              cursorPosition={this.cursorPos}
+              handleCursor={this.handleCursor}>
+              <Upload
+                name="file"
+                action={`http://${location.host}/upload`}
+                accept=".jpg,.jpeg,.png,.gif"
+                onSuccess={(body: { path: string }) => {
+                  const { content } = this.state;
+                  const textarea = this.contentRef;
+                  const updatedContent = insertStr(
+                    content,
+                    `![](${body.path})`,
+                    textarea.selectionStart,
+                  );
+
+                  this.changePosition(
+                    content.slice(0, textarea.selectionStart).length + 2,
+                  );
+                  this.updateContent(updatedContent);
+                }}>
+                <ToolButton>Img</ToolButton>
+              </Upload>
+            </Toolbar>
             <TextareaAutoresize
               name={type}
               rows={8}
