@@ -14,21 +14,4 @@ const reorder = (list: any[], startIndex: number, endIndex: number): any[] => {
   return result;
 };
 
-const spliceStr = (str = '', typeStr: string, start: number, end: number) => {
-  return str
-    .slice(0, start)
-    .concat(
-      typeStr,
-      str.slice(start, end),
-      typeStr,
-      str.slice(end, str.length),
-    );
-};
-
-const insertStr = (str = '', typeStr: string, insertPosition: number) => {
-  return str
-    .slice(0, insertPosition)
-    .concat(typeStr, str.slice(insertPosition, str.length));
-};
-
-export { handleAnchor, isClientOrServer, reorder, spliceStr, insertStr };
+export { handleAnchor, isClientOrServer, reorder };

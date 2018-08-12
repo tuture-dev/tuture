@@ -110,6 +110,7 @@ export default class App extends React.Component<AppProps, AppState> {
       const diff = step.diff[parseInt(diffKey, 10)];
       diff.explain = { ...diff.explain, [name]: value };
     }
+
     this.setState({ tuture });
   };
 
@@ -132,12 +133,7 @@ export default class App extends React.Component<AppProps, AppState> {
     let tutorialTitle: string;
     let bodyContent: React.ReactNode;
 
-    const { isEditMode } = this.state;
-
-    let { tuture, diff } = this.props;
-    tuture = JSON.parse(tuture as string);
-    diff = JSON.parse(diff as string);
-
+    const { isEditMode, tuture, diff } = this.state;
     if (
       !tuture ||
       tutureUtilities.isObjectEmpty(tuture) ||

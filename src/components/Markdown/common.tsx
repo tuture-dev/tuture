@@ -103,16 +103,16 @@ injectGlobal`
     margin-top: 0;
   }
 
-  .is-root {
+  .isRoot {
     padding: 0 24px 12px;
   }
 
-  .editor > .is-root {
+  .editor > .isRoot {
     padding-left: 0;
     padding-right: 0;
   }
 
-  .editor > .is-root.preview-markdown {
+  .editor > .isRoot.preview-markdown {
     padding: 20px;
   }
 
@@ -186,61 +186,4 @@ const ToolButton = styled.button`
   margin-right: 10px;
 `;
 
-const HasExplainWrapper = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: absolute;
-  top: 0;
-  left: 0;
-  opacity: 0;
-  background-color: rgba(255, 255, 255, 0.7);
-  &:hover {
-    opacity: 1;
-    transition: opacity 0.3s;
-    border: 1px solid #00b887;
-  }
-`;
-
-const EditExplainWrapper = styled.div`
-  width: 100%;
-  position: relative;
-`;
-
-const HasExplainButton = styled(BasicButton)`
-  color: ${(props: { color: string; border: string }) => props.color};
-  border: ${(props: { color: string; border: string }) => props.border};
-  border-radius: 4px;
-  margin-right: 30px;
-`;
-
-const NoExplainWrapper = styled.div`
-  display: block;
-  width: 100%;
-  box-sizing: border-box;
-  border: 1px solid #00b887;
-  color: #00b887;
-  padding: 10px 10px 5px 10px;
-  font-size: 20px;
-  opacity: 0.3;
-  border-radius: 3px;
-  text-align: center;
-  cursor: pointer;
-  &:hover {
-    opacity: 1;
-  }
-`;
-
-export {
-  TabWrapper,
-  BasicButton,
-  Button,
-  SaveButton,
-  ToolButton,
-  HasExplainWrapper,
-  EditExplainWrapper,
-  HasExplainButton,
-  NoExplainWrapper,
-};
+export { TabWrapper, BasicButton, Button, SaveButton, ToolButton };
