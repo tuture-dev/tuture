@@ -1,10 +1,6 @@
 const fs = require('fs');
 const path = require('path');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
-const createStyledComponentsTransformer = require('typescript-plugin-styled-components')
-  .default;
-
-const styledComponentsTransformer = createStyledComponentsTransformer();
 
 const nodeModules = {};
 fs.readdirSync('node_modules')
@@ -35,11 +31,6 @@ const base = {
         test: /\.tsx?$/,
         loader: 'ts-loader',
         include: path.resolve(__dirname, 'src'),
-        options: {
-          getCustomTransformers: () => ({
-            before: [styledComponentsTransformer],
-          }),
-        },
       },
     ],
   },
@@ -55,6 +46,7 @@ const serverConfig = {
   entry: './src/server/index.tsx',
   output: {
     filename: 'server.js',
+    pathinfo: false,
   },
   externals: nodeModules,
 };
@@ -63,6 +55,7 @@ const clientConfig = {
   entry: './src/index.tsx',
   output: {
     filename: 'static/js/bundle.js',
+    pathinfo: false,
   },
 };
 
