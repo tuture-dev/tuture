@@ -312,7 +312,16 @@ export default class MarkdownEditor extends React.Component<
   renderNoExplainWrapper = () => {
     return (
       <NoExplainWrapper onClick={() => this.handleAddExplain()}>
-        <img src={EditIcon} alt="edit-iconf" style={{ width: '20px' }} />
+        <img src={EditIcon} alt="edit-icon" style={{ width: '20px' }} />
+        <span style={{ padding: '10px' }}>
+          {this.props.isRoot
+            ? this.props.type === 'pre'
+              ? '填写此步骤的介绍文字'
+              : '填写此步骤的总结文字'
+            : this.props.type === 'pre'
+              ? '填写修改此文件的介绍文字'
+              : '填写修改此文件的解释文字'}
+        </span>
       </NoExplainWrapper>
     );
   };

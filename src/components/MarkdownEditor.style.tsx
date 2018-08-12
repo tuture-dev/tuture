@@ -217,13 +217,14 @@ const HasExplainButton = styled(BasicButton)`
 `;
 
 const NoExplainWrapper = styled.div`
+  font-family: LucidaGrande;
   display: block;
   width: 100%;
   box-sizing: border-box;
   border: 1px solid #00b887;
   color: #00b887;
-  padding: 10px 10px 5px 10px;
-  font-size: 20px;
+  padding: 10px;
+  font-size: 14px;
   opacity: 0.3;
   border-radius: 3px;
   text-align: center;
