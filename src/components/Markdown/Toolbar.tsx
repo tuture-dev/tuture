@@ -18,7 +18,7 @@ type ToolType =
 
 interface ToolProps {
   source: string;
-  contentRef: React.RefObject<HTMLTextAreaElement>;
+  contentRef: HTMLTextAreaElement;
   cursorPosition?: number;
   updateContent: (content: string) => void;
   changePosition: (position: number) => void;
@@ -73,7 +73,7 @@ export default class Toolbar extends React.Component<ToolProps> {
 
   handleToolbarClick = (toolType: ToolType) => {
     const { source, contentRef } = this.props;
-    const textarea = contentRef.current;
+    const textarea = contentRef;
     const content = source || '';
     const selectedContent = content.slice(
       textarea.selectionStart,

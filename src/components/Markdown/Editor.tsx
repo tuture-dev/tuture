@@ -4,6 +4,7 @@ import fetch from 'isomorphic-fetch';
 
 // @ts-ignore
 import Upload from 'rc-upload';
+import TextareaAutoresize from 'react-autosize-textarea';
 
 import Viewer from './Viewer';
 import { ExplainType, EditMode } from '../../types/ExplainedItem';
@@ -27,7 +28,7 @@ interface EditorState {
 }
 
 export default class Editor extends React.Component<EditorProps, EditorState> {
-  private contentRef: React.RefObject<HTMLTextAreaElement>;
+  private contentRef: HTMLTextAreaElement;
   private cursorPos: number = -1;
 
   constructor(props: EditorProps) {
@@ -38,12 +39,11 @@ export default class Editor extends React.Component<EditorProps, EditorState> {
       nowTab: 'edit',
       editFrameHeight: 200,
     };
-    this.contentRef = React.createRef();
   }
 
   componentDidUpdate() {
     if (this.cursorPos !== -1) {
-      const textarea = this.contentRef.current;
+      const textarea = this.contentRef;
       if (textarea) {
         textarea.focus();
       }
@@ -108,7 +108,7 @@ export default class Editor extends React.Component<EditorProps, EditorState> {
 
         // Add markdown image element to current explain.
         const currentContent = that.state.content as string;
-        const textarea = this.contentRef.current;
+        const textarea = this.contentRef;
         const updatedContent = insertStr(
           currentContent,
           `![](${savePath})`,
@@ -185,7 +185,7 @@ export default class Editor extends React.Component<EditorProps, EditorState> {
             accept=".jpg,.jpeg,.png,.gif"
             onSuccess={(body: { path: string }) => {
               const { content } = this.state;
-              const textarea = this.contentRef.current;
+              const textarea = this.contentRef;
               const updatedContent = insertStr(
                 content,
                 `![](${body.path})`,
@@ -196,27 +196,22 @@ export default class Editor extends React.Component<EditorProps, EditorState> {
                 content.slice(0, textarea.selectionStart).length + 2,
               );
               this.updateContent(updatedContent);
-              this.handleSave();
             }}>
             <ToolButton>Img</ToolButton>
           </Upload>
         </Toolbar>
         {nowTab === 'edit' ? (
           <div>
-            <textarea
+            <TextareaAutoresize
               name={type}
-              ref={this.contentRef}
+              rows={8}
+              maxRows={15}
+              innerRef={(ref) => (this.contentRef = ref)}
               value={this.state.content}
               placeholder="写一点解释..."
               onChange={this.handleChange}
               onPaste={this.handlePaste}
               onDrop={this.handleDrop}
-              style={{
-                height: '200px',
-                maxHeight: '400px',
-                overflow: 'auto',
-                resize: 'vertical',
-              }}
             />
           </div>
         ) : (

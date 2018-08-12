@@ -48,6 +48,7 @@
     "opn": "^5.3.0",
     "rc-upload": "^2.5.1",
     "react": "^16.3.2",
+    "react-autosize-textarea": "^4.0.0",
     "react-dom": "^16.3.2",
     "socket.io": "^2.1.1",
     "socket.io-client": "^2.1.1",
