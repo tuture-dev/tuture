@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 
 import { Explain } from '../types';
 import { ExplainType } from '../types/ExplainedItem';
-import MarkdownEditor from './MarkdownEditor';
+import Markdown from './Markdown/';
 
 interface ExplainedItemProps {
   explain: Explain;
@@ -35,7 +35,7 @@ export default class ExplainedItem extends PureComponent<
     explain = explain || { pre: '', post: '' };
 
     return (
-      <MarkdownEditor
+      <Markdown
         type={type}
         source={explain[type]}
         isEditMode={isEditMode}

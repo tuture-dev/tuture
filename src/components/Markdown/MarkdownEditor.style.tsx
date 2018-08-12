@@ -103,16 +103,16 @@ injectGlobal`
     margin-top: 0;
   }
 
-  .is-root {
+  .isRoot {
     padding: 0 24px 12px;
   }
 
-  .editor > .is-root {
+  .editor > .isRoot {
     padding-left: 0;
     padding-right: 0;
   }
 
-  .editor > .is-root.preview-markdown {
+  .editor > .isRoot.preview-markdown {
     padding: 20px;
   }
 
@@ -233,6 +233,10 @@ const NoExplainWrapper = styled.div`
   }
 `;
 
+const WriteImage = styled.img`
+  width: 20px;
+`;
+
 export {
   TabWrapper,
   BasicButton,
@@ -243,4 +247,5 @@ export {
   EditExplainWrapper,
   HasExplainButton,
   NoExplainWrapper,
+  WriteImage,
 };

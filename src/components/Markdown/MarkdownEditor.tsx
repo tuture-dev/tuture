@@ -3,12 +3,10 @@ import classnames from 'classnames';
 import fetch from 'isomorphic-fetch';
 
 // @ts-ignore
-import Markdown from 'react-markdown';
-
-// @ts-ignore
 import Upload from 'rc-upload';
 
-import { ExplainType, EditMode, ToolType } from '../types/ExplainedItem';
+import MarkdownViewer from './MarkdownViewer';
+import { ExplainType, EditMode, ToolType } from '../../types/ExplainedItem';
 import {
   TabWrapper,
   Button,
@@ -18,10 +16,11 @@ import {
   HasExplainButton,
   NoExplainWrapper,
   ToolButton,
+  WriteImage,
 } from './MarkdownEditor.style';
 import MarkdownTool from './MarkdownTool';
-import { spliceStr, insertStr } from '../utils/common';
-import EditIcon from './write.png';
+import { insertStr } from '../../utils/common';
+import EditIcon from '../write.png';
 
 export interface MarkdownEditorProps {
   source: string;
@@ -227,7 +226,7 @@ export default class MarkdownEditor extends React.Component<
     const { nowTab, edit } = this.state;
 
     return (
-      <div className={classnames('editor', { 'is-root': isRoot })}>
+      <div className={classnames('editor', { isRoot })}>
         {this.renderTabWrapper(type)}
         <MarkdownTool
           explainContentRef={this.explainContentRef}
@@ -255,7 +254,7 @@ export default class MarkdownEditor extends React.Component<
               );
               this.setState({ source: newExplainContent });
 
-              this.props.handleSave(name, newExplainContent);
+              this.props.handleSave(type, newExplainContent);
             }}>
             <ToolButton>Img</ToolButton>
           </Upload>
@@ -277,10 +276,10 @@ export default class MarkdownEditor extends React.Component<
             />
           </div>
         ) : (
-          <Markdown
+          <MarkdownViewer
             source={this.state.source}
-            className={classnames('markdown', 'preview-markdown', {
-              'is-root': isRoot,
+            classnames={classnames('markdown', 'preview-markdown', {
+              isRoot,
             })}
           />
         )}
@@ -312,7 +311,7 @@ export default class MarkdownEditor extends React.Component<
   renderNoExplainWrapper = () => {
     return (
       <NoExplainWrapper onClick={() => this.handleAddExplain()}>
-        <img src={EditIcon} alt="edit-iconf" style={{ width: '20px' }} />
+        <WriteImage src={EditIcon} alt="edit-iconf" />
       </NoExplainWrapper>
     );
   };
@@ -333,23 +332,20 @@ export default class MarkdownEditor extends React.Component<
   renderExplainStr = (): React.ReactNode => {
     const { isRoot } = this.props;
     return (
-      <Markdown
+      <MarkdownViewer
         source={this.state.source}
-        className={classnames('markdown', { 'is-root': isRoot })}
+        classnames={classnames('markdown', { isRoot })}
       />
     );
   };
 
-  renderExplain = (isEditMode: boolean): React.ReactNode => {
-    return isEditMode
-      ? this.state.edit
-        ? this.renderEditFrame()
-        : this.renderEditExplainStr()
-      : this.renderExplainStr();
+  renderExplain = (): React.ReactNode => {
+    return this.state.edit
+      ? this.renderEditFrame()
+      : this.renderEditExplainStr();
   };
 
   render() {
-    const { isEditMode } = this.props;
-    return this.renderExplain(isEditMode);
+    return this.renderExplain();
   }
 }

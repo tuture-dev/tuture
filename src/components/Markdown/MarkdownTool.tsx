@@ -2,8 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { ToolButton } from './MarkdownEditor.style';
-import { ToolType } from '../types/ExplainedItem';
-import { spliceStr, insertStr } from '../utils/common';
+import { ToolType } from '../../types/ExplainedItem';
+import { spliceStr, insertStr } from '../../utils/common';
 
 export interface MarkdownToolProps {
   source: string;
@@ -45,6 +45,36 @@ export default class MarkdownTool extends React.Component<MarkdownToolProps> {
     }
   };
 
+  insertMode = (
+    explainContent?: string,
+    typeStr?: string,
+    insertPoistion?: number,
+    cursorPosition?: number,
+  ) => {
+    const newExplainContent = insertStr(
+      explainContent,
+      typeStr,
+      insertPoistion,
+    );
+    this.changeState(newExplainContent, cursorPosition);
+  };
+
+  spliceMode = (
+    explainContent?: string,
+    typeStr?: string,
+    startPoistion?: number,
+    endPosition?: number,
+    cursorPosition?: number,
+  ) => {
+    const source = spliceStr(
+      explainContent,
+      typeStr,
+      startPoistion,
+      endPosition,
+    );
+    this.changeState(source, cursorPosition);
+  };
+
   handleMdTool = (toolType: ToolType) => {
     const { edit, source, explainContentRef } = this.props;
     const explainTextarea = explainContentRef.current;
@@ -57,45 +87,49 @@ export default class MarkdownTool extends React.Component<MarkdownToolProps> {
       let resultContent = '';
       switch (toolType) {
         case 'b': {
-          if (selectedContent) {
-            const source = spliceStr(
-              explainContent,
-              '**',
-              explainTextarea.selectionStart,
-              explainTextarea.selectionEnd,
-            );
-            this.changeState(
-              source,
-              explainTextarea.selectionStart + selectedContent.length + 2,
-            );
-          } else {
-            this.changeState(
-              `${explainContent}****`,
-              explainContent.length + 2,
-            );
-          }
+          selectedContent
+            ? this.spliceMode(
+                explainContent,
+                '**',
+                explainTextarea.selectionStart,
+                explainTextarea.selectionEnd,
+                explainTextarea.selectionStart + selectedContent.length + 2,
+              )
+            : this.insertMode(
+                explainContent,
+                '****',
+                explainTextarea.selectionStart,
+                explainContent.slice(0, explainTextarea.selectionStart).length +
+                  2,
+              );
           break;
         }
-        case 'i':
-          if (selectedContent) {
-            const source = spliceStr(
-              explainContent,
-              '_',
-              explainTextarea.selectionStart,
-              explainTextarea.selectionEnd,
-            );
-            this.changeState(
-              source,
-              explainTextarea.selectionStart + selectedContent.length + 1,
-            );
-          } else {
-            this.changeState(`${explainContent}__`, explainContent.length + 1);
-          }
+        case 'i': {
+          selectedContent
+            ? this.spliceMode(
+                explainContent,
+                '*',
+                explainTextarea.selectionStart,
+                explainTextarea.selectionEnd,
+                explainTextarea.selectionStart + selectedContent.length + 1,
+              )
+            : this.insertMode(
+                explainContent,
+                '**',
+                explainTextarea.selectionStart,
+                explainContent.slice(0, explainTextarea.selectionStart).length +
+                  1,
+              );
           break;
+        }
         case 'h': {
-          !explainContent || explainContent.endsWith('\n')
-            ? this.changeState(`${explainContent}#### `, 0)
-            : this.changeState(`${explainContent}\n#### `, 0);
+          const isContentEnd = !explainContent || explainContent.endsWith('\n');
+          this.insertMode(
+            explainContent,
+            isContentEnd ? '#### ' : '\n#### ',
+            explainTextarea.selectionStart,
+            explainContent.slice(0, explainTextarea.selectionStart).length + 5,
+          );
           break;
         }
         case 'list':
@@ -127,9 +161,15 @@ export default class MarkdownTool extends React.Component<MarkdownToolProps> {
               );
             this.changeState(source);
           } else {
-            !explainContent || explainContent.endsWith('\n')
-              ? this.changeState(`${explainContent}- `, 0)
-              : this.changeState(`${explainContent}\n- `, 0);
+            const isContentEnd =
+              !explainContent || explainContent.endsWith('\n');
+            this.insertMode(
+              explainContent,
+              isContentEnd ? '- ' : '\n- ',
+              explainTextarea.selectionStart,
+              explainContent.slice(0, explainTextarea.selectionStart).length +
+                2,
+            );
           }
           break;
         case 'numbered list':
@@ -161,9 +201,15 @@ export default class MarkdownTool extends React.Component<MarkdownToolProps> {
               );
             this.changeState(source);
           } else {
-            !explainContent || explainContent.endsWith('\n')
-              ? this.changeState(`${explainContent}1. `, 0)
-              : this.changeState(`${explainContent}\n1. `, 0);
+            const isContentEnd =
+              !explainContent || explainContent.endsWith('\n');
+            this.insertMode(
+              explainContent,
+              isContentEnd ? '1. ' : '\n1. ',
+              explainTextarea.selectionStart,
+              explainContent.slice(0, explainTextarea.selectionStart).length +
+                3,
+            );
           }
           break;
         case 'blockquotes':
@@ -203,54 +249,60 @@ export default class MarkdownTool extends React.Component<MarkdownToolProps> {
               );
             this.changeState(source);
           } else {
-            !explainContent || explainContent.endsWith('\n')
-              ? this.changeState(`${explainContent}> `, 0)
-              : this.changeState(`${explainContent}\n> `, 0);
+            const isContentEnd =
+              !explainContent || explainContent.endsWith('\n');
+            this.insertMode(
+              explainContent,
+              isContentEnd ? '> ' : '\n> ',
+              explainTextarea.selectionStart,
+              explainContent.slice(0, explainTextarea.selectionStart).length +
+                2,
+            );
           }
 
           break;
-        case 'code':
-          if (selectedContent) {
-            const source = spliceStr(
-              explainContent,
-              '`',
-              explainTextarea.selectionStart,
-              explainTextarea.selectionEnd,
-            );
-            this.changeState(
-              source,
-              explainTextarea.selectionStart + selectedContent.length + 1,
-            );
-          } else {
-            this.changeState(explainContent + '``', explainContent.length + 1);
-          }
-          break;
-        case 'block code':
-          if (selectedContent) {
-            const source = spliceStr(
-              explainContent,
-              '\n```\n',
-              explainTextarea.selectionStart,
-              explainTextarea.selectionEnd,
-            );
-            this.changeState(
-              source,
-              explainTextarea.selectionStart + selectedContent.length + 5,
-            );
-          } else {
-            if (!explainContent || explainContent.endsWith('\n')) {
-              this.changeState(
-                explainContent + '```\n\n```',
-                explainContent.length + 4,
+        case 'code': {
+          selectedContent
+            ? this.spliceMode(
+                explainContent,
+                '`',
+                explainTextarea.selectionStart,
+                explainTextarea.selectionEnd,
+                explainTextarea.selectionStart + selectedContent.length + 1,
+              )
+            : this.insertMode(
+                explainContent,
+                '``',
+                explainTextarea.selectionStart,
+                explainContent.slice(0, explainTextarea.selectionStart).length +
+                  1,
               );
-            } else {
-              this.changeState(
-                explainContent + '\n```\n\n```',
-                explainContent.length + 5,
-              );
-            }
-          }
           break;
+        }
+        case 'block code': {
+          const isContentEnd = !explainContent || explainContent.endsWith('\n');
+          const basicCursorPosition = explainContent.slice(
+            0,
+            explainTextarea.selectionStart,
+          ).length;
+          selectedContent
+            ? this.spliceMode(
+                explainContent,
+                '\n```\n',
+                explainTextarea.selectionStart,
+                explainTextarea.selectionEnd,
+                explainTextarea.selectionStart + selectedContent.length + 5,
+              )
+            : this.insertMode(
+                explainContent,
+                isContentEnd ? '```\n\n```' : '\n```\n\n```',
+                explainTextarea.selectionStart,
+                isContentEnd
+                  ? basicCursorPosition + 5
+                  : basicCursorPosition + 6,
+              );
+          break;
+        }
         case 'link':
           if (selectedContent) {
             resultContent = `${explainContent.slice(
@@ -265,13 +317,10 @@ export default class MarkdownTool extends React.Component<MarkdownToolProps> {
               explainTextarea.selectionStart + selectedContent.length + 3,
             );
           } else {
-            const newExplainContent = insertStr(
+            this.insertMode(
               explainContent,
               '[](url)',
               explainTextarea.selectionStart,
-            );
-            this.changeState(
-              newExplainContent,
               explainContent.slice(0, explainTextarea.selectionStart).length +
                 1,
             );
