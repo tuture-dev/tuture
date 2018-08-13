@@ -19,12 +19,13 @@ interface EditorProps {
   classnames?: string;
   updateEditingStatus: (isEditing: boolean) => void;
   handleSave?: (content: string) => void;
+  updateContent?: (content: string) => void;
 }
 
 interface EditorState {
-  content: string;
   nowTab: EditMode;
   editFrameHeight?: number;
+  contentRef?: HTMLTextAreaElement;
 }
 
 export default class Editor extends React.Component<EditorProps, EditorState> {
@@ -35,10 +36,19 @@ export default class Editor extends React.Component<EditorProps, EditorState> {
     super(props);
 
     this.state = {
-      content: this.props.source,
       nowTab: 'edit',
       editFrameHeight: 200,
+      contentRef: this.contentRef,
     };
+  }
+
+  componentDidMount() {
+    if (this.contentRef) {
+      this.contentRef.focus();
+      this.setState({
+        contentRef: this.contentRef,
+      });
+    }
   }
 
   componentDidUpdate() {
@@ -55,7 +65,7 @@ export default class Editor extends React.Component<EditorProps, EditorState> {
   }
 
   updateContent = (content: string) => {
-    this.setState({ content });
+    this.props.updateContent(content);
   };
 
   handleCursor = (position?: number, textarea?: HTMLTextAreaElement) => {
@@ -72,7 +82,7 @@ export default class Editor extends React.Component<EditorProps, EditorState> {
   };
 
   handleSave = () => {
-    this.props.handleSave(this.state.content);
+    this.props.handleSave(this.props.source);
     this.props.updateEditingStatus(false);
   };
 
@@ -107,7 +117,7 @@ export default class Editor extends React.Component<EditorProps, EditorState> {
         const savePath = resObj.path;
 
         // Add markdown image element to current explain.
-        const currentContent = that.state.content as string;
+        const currentContent = that.props.source as string;
         const textarea = this.contentRef;
         const updatedContent = insertStr(
           currentContent,
@@ -125,9 +135,7 @@ export default class Editor extends React.Component<EditorProps, EditorState> {
 
   handleChange = (e: React.FormEvent<HTMLTextAreaElement>) => {
     const { value } = e.currentTarget;
-    this.setState({
-      content: value,
-    });
+    this.props.updateContent(value);
   };
 
   handlePaste = (e: React.ClipboardEvent<HTMLTextAreaElement>) => {
@@ -176,7 +184,7 @@ export default class Editor extends React.Component<EditorProps, EditorState> {
           <div>
             <Toolbar
               contentRef={this.contentRef}
-              source={this.state.content}
+              source={this.props.source || ''}
               changePosition={this.changePosition}
               updateContent={this.updateContent}
               cursorPosition={this.cursorPos}
@@ -186,16 +194,16 @@ export default class Editor extends React.Component<EditorProps, EditorState> {
                 action={`http://${location.host}/upload`}
                 accept=".jpg,.jpeg,.png,.gif"
                 onSuccess={(body: { path: string }) => {
-                  const { content } = this.state;
+                  const { source } = this.props;
                   const textarea = this.contentRef;
                   const updatedContent = insertStr(
-                    content,
+                    source,
                     `![](${body.path})`,
                     textarea.selectionStart,
                   );
 
                   this.changePosition(
-                    content.slice(0, textarea.selectionStart).length + 2,
+                    source.slice(0, textarea.selectionStart).length + 2,
                   );
                   this.updateContent(updatedContent);
                 }}>
@@ -207,7 +215,7 @@ export default class Editor extends React.Component<EditorProps, EditorState> {
               rows={8}
               maxRows={15}
               innerRef={(ref) => (this.contentRef = ref)}
-              value={this.state.content}
+              value={this.props.source}
               placeholder="写一点解释..."
               onChange={this.handleChange}
               onPaste={this.handlePaste}
@@ -216,7 +224,7 @@ export default class Editor extends React.Component<EditorProps, EditorState> {
           </div>
         ) : (
           <Viewer
-            source={this.state.content}
+            source={this.props.source}
             classnames={classnames('markdown', 'preview-markdown', {
               isRoot,
             })}
