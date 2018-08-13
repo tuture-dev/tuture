@@ -44,7 +44,7 @@ const serverConfig = merge(base, {
     __dirname: false,
     __filename: false,
   },
-  entry: './src/server/index.tsx',
+  entry: './src/index.tsx',
   output: {
     filename: 'server.js',
     pathinfo: false,
@@ -54,12 +54,17 @@ const serverConfig = merge(base, {
 });
 
 const clientConfig = merge(base, {
-  entry: './src/index.tsx',
+  entry: './src/components/index.tsx',
   output: {
     filename: 'static/js/bundle.js',
     pathinfo: false,
   },
-  plugins: [new HtmlWebpackPlugin(['dist'])],
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: './src/public/index.html',
+      favicon: './src/public/favicon.ico',
+    }),
+  ],
 });
 
 module.exports = [serverConfig, clientConfig];
