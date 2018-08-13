@@ -3,6 +3,7 @@ import http from 'http';
 import path from 'path';
 
 import express from 'express';
+import handlebars from 'handlebars';
 import logger from 'morgan';
 import multer from 'multer';
 import React from 'react';
@@ -13,7 +14,6 @@ import yaml from 'js-yaml';
 import { ServerStyleSheet, StyleSheetManager } from 'styled-components';
 
 import App from '../components/App';
-import html from './html';
 import { Tuture } from '../types/';
 
 const port = process.env.TUTURE_PORT || 3000;
@@ -69,13 +69,26 @@ app.get('/', (req, res) => {
   );
   const styleTags = sheet.getStyleTags();
 
+  const html = fs.readFileSync(path.join(__dirname, 'index.html')).toString();
+  const template = handlebars.compile(html, { noEscape: true });
+
+  // Here we don't turn to full-fledged HTML escaping, because it will
+  // mess up JSON data and make unescaping unapproachable.
+  const escape = (s: string) =>
+    s
+      ? s
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+      : '';
+
   res.send(
-    html({
+    template({
       body,
       title,
-      diff,
+      diff: escape(diff),
       css: styleTags,
-      tuture: JSON.stringify(tuture),
+      tuture: escape(JSON.stringify(tuture)),
     }),
   );
 });

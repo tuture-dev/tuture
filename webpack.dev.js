@@ -1,5 +1,7 @@
 const fs = require('fs');
 const path = require('path');
+const merge = require('webpack-merge');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const WebpackShellPlugin = require('webpack-shell-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
@@ -47,7 +49,6 @@ const base = {
     ],
   },
   plugins: [
-    new CleanWebpackPlugin(['dist']),
     new ForkTsCheckerWebpackPlugin(),
     new WebpackShellPlugin({
       onBuildEnd: ['./scripts/watch.js'],
@@ -63,7 +64,7 @@ const base = {
   },
 };
 
-const serverConfig = {
+const serverConfig = merge(base, {
   target: 'node',
   node: {
     __dirname: false,
@@ -74,18 +75,17 @@ const serverConfig = {
     filename: 'server.js',
     pathinfo: false,
   },
+  plugins: [new CleanWebpackPlugin(['dist'])],
   externals: nodeModules,
-};
+});
 
-const clientConfig = {
+const clientConfig = merge(base, {
   entry: './src/index.tsx',
   output: {
     filename: 'static/js/bundle.js',
     pathinfo: false,
   },
-};
+  plugins: [new HtmlWebpackPlugin({ template: './src/server/index.html' })],
+});
 
-module.exports = [
-  Object.assign(serverConfig, base),
-  Object.assign(clientConfig, base),
-];
+module.exports = [serverConfig, clientConfig];

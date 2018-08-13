@@ -15,7 +15,7 @@ import { reorder } from '../utils/common';
 
 export interface AppProps {
   tuture?: Tuture | string;
-  diff?: string | DiffItem[] | string;
+  diff?: DiffItem[] | string;
 }
 
 interface AppState extends AppProps {
@@ -60,9 +60,9 @@ export default class App extends React.Component<AppProps, AppState> {
     super(props);
 
     let { tuture, diff } = this.props;
-    ``;
     tuture = JSON.parse(tuture as string);
     diff = JSON.parse(diff as string);
+
     this.state = {
       tuture,
       diff,

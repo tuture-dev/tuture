@@ -15,6 +15,7 @@ import App from './components/App';
 
 const diff = window.__APP_INITIAL_DIFF__;
 const tuture = window.__APP_INITIAL_TUTURE__;
+
 hydrate(
   <App
     tuture={unescape(JSON.stringify(tuture))}
