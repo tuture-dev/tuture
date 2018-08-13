@@ -73,7 +73,7 @@ export default class Toolbar extends React.Component<ToolProps> {
 
   handleToolbarClick = (toolType: ToolType) => {
     const { source, contentRef } = this.props;
-    console.log('textarea', contentRef);
+
     if (!contentRef) {
       return;
     }
