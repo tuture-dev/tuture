@@ -177,8 +177,6 @@ export default class Editor extends React.Component<EditorProps, EditorState> {
     const { isRoot, type } = this.props;
     const { nowTab } = this.state;
 
-    console.log('this.props.source', this.props.source);
-
     return (
       <div className={classnames('editor')}>
         {this.renderTabWrapper()}
