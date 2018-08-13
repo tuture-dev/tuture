@@ -1,5 +1,7 @@
 const fs = require('fs');
 const path = require('path');
+const merge = require('webpack-merge');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 const nodeModules = {};
@@ -34,32 +36,35 @@ const base = {
       },
     ],
   },
-  plugins: [new CleanWebpackPlugin(['dist'])],
 };
 
-const serverConfig = {
+const serverConfig = merge(base, {
   target: 'node',
   node: {
     __dirname: false,
     __filename: false,
   },
-  entry: './src/server/index.tsx',
+  entry: './src/index.tsx',
   output: {
     filename: 'server.js',
     pathinfo: false,
   },
+  plugins: [new CleanWebpackPlugin(['dist'])],
   externals: nodeModules,
-};
+});
 
-const clientConfig = {
-  entry: './src/index.tsx',
+const clientConfig = merge(base, {
+  entry: './src/components/index.tsx',
   output: {
     filename: 'static/js/bundle.js',
     pathinfo: false,
   },
-};
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: './src/public/index.html',
+      favicon: './src/public/favicon.ico',
+    }),
+  ],
+});
 
-module.exports = [
-  Object.assign(serverConfig, base),
-  Object.assign(clientConfig, base),
-];
+module.exports = [serverConfig, clientConfig];

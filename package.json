@@ -48,6 +48,7 @@
   "dependencies": {
     "classnames": "^2.2.6",
     "express": "^4.16.3",
+    "handlebars": "^4.0.11",
     "highlight.js": "^9.12.0",
     "isomorphic-fetch": "^2.2.1",
     "js-yaml": "^3.12.0",
@@ -59,6 +60,7 @@
     "react": "^16.3.2",
     "react-autosize-textarea": "^4.0.0",
     "react-dom": "^16.3.2",
+    "serve-favicon": "^2.5.0",
     "socket.io": "^2.1.1",
     "socket.io-client": "^2.1.1",
     "styled-components": "^3.3.2",
@@ -67,6 +69,7 @@
   "devDependencies": {
     "@types/classnames": "^2.2.4",
     "@types/express": "^4.16.0",
+    "@types/handlebars": "^4.0.39",
     "@types/highlight.js": "^9.12.3",
     "@types/isomorphic-fetch": "^0.0.34",
     "@types/js-yaml": "^3.11.2",
@@ -76,14 +79,14 @@
     "@types/opn": "^5.1.0",
     "@types/react": "^16.3.17",
     "@types/react-dom": "^16.0.6",
-    "@types/react-helmet": "^5.0.6",
+    "@types/serve-favicon": "^2.2.30",
     "@types/socket.io": "^1.4.36",
     "@types/socket.io-client": "^1.4.32",
-    "cache-loader": "^1.2.2",
     "clean-webpack-plugin": "^0.1.19",
     "cross-spawn": "^6.0.5",
     "file-loader": "^1.1.11",
     "fork-ts-checker-webpack-plugin": "^0.4.7",
+    "html-webpack-plugin": "^3.2.0",
     "husky": "^0.14.3",
     "lint-staged": "^7.2.0",
     "nodemon": "^1.18.3",
@@ -95,6 +98,7 @@
     "typescript-plugin-styled-components": "^0.0.6",
     "webpack": "^4.12.0",
     "webpack-cli": "^3.1.0",
+    "webpack-merge": "^4.1.4",
     "webpack-shell-plugin": "^0.5.0"
   }
 }
