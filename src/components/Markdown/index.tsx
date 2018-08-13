@@ -14,13 +14,14 @@ const EditorWrapper = styled.div`
 `;
 
 const AddExplainWrapper = styled.div`
+  font-family: LucidaGrande;
   display: block;
   width: 100%;
   box-sizing: border-box;
   border: 1px solid #00b887;
   color: #00b887;
-  padding: 10px 10px 5px 10px;
-  font-size: 20px;
+  padding: 10px;
+  font-size: 14px;
   opacity: 0.3;
   border-radius: 3px;
   text-align: center;
@@ -138,6 +139,15 @@ export default class Markdown extends React.Component<
           ) : (
             <AddExplainWrapper onClick={() => this.handleAddExplain()}>
               <WriteImage src={EditIcon} alt="edit-icon" />
+              <span style={{ padding: '10px' }}>
+                {this.props.isRoot
+                  ? this.props.type === 'pre'
+                    ? '填写此步骤的介绍文字'
+                    : '填写此步骤的总结文字'
+                  : this.props.type === 'pre'
+                    ? '填写修改此文件的介绍文字'
+                    : '填写修改此文件的解释文字'}
+              </span>
             </AddExplainWrapper>
           )}
         </EditorWrapper>
