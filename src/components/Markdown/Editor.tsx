@@ -25,6 +25,7 @@ interface EditorProps {
 interface EditorState {
   nowTab: EditMode;
   editFrameHeight?: number;
+  contentRef?: HTMLTextAreaElement;
 }
 
 export default class Editor extends React.Component<EditorProps, EditorState> {
@@ -37,7 +38,17 @@ export default class Editor extends React.Component<EditorProps, EditorState> {
     this.state = {
       nowTab: 'edit',
       editFrameHeight: 200,
+      contentRef: this.contentRef,
     };
+  }
+
+  componentDidMount() {
+    if (this.contentRef) {
+      this.contentRef.focus();
+      this.setState({
+        contentRef: this.contentRef,
+      });
+    }
   }
 
   componentDidUpdate() {
@@ -175,7 +186,7 @@ export default class Editor extends React.Component<EditorProps, EditorState> {
           <div>
             <Toolbar
               contentRef={this.contentRef}
-              source={this.props.source}
+              source={this.props.source || ''}
               changePosition={this.changePosition}
               updateContent={this.updateContent}
               cursorPosition={this.cursorPos}
