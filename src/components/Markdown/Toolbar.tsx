@@ -73,6 +73,10 @@ export default class Toolbar extends React.Component<ToolProps> {
 
   handleToolbarClick = (toolType: ToolType) => {
     const { source, contentRef } = this.props;
+
+    if (!contentRef) {
+      return;
+    }
     const textarea = contentRef;
     const content = source || '';
     const selectedContent = content.slice(

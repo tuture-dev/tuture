@@ -1,13 +1,11 @@
 /* tslint:disable-next-line */
 import React from 'react';
 import styled, { injectGlobal } from 'styled-components';
-import _ from 'lodash';
 import fetch from 'isomorphic-fetch';
 
 import SideBarLeft from './SideBarLeft';
 import { DiffItem } from './DiffView';
 import Content from './Content';
-import tutureUtilities from '../utils';
 import { Tuture } from '../types/';
 import { extractCommits, extractMetaData } from '../utils/extractors';
 import Header from './Header';
@@ -100,8 +98,11 @@ export default class App extends React.Component<AppProps, AppState> {
   ) => {
     let { tuture } = this.state;
     tuture = tuture as Tuture;
-    const stepIndex = _.findIndex(tuture.steps, (step) => {
-      return step.commit === commit;
+    let stepIndex = 0;
+    const nowStep = tuture.steps.filter((step, index) => {
+      if (step.commit === commit) {
+        stepIndex = index;
+      }
     });
     const step = tuture.steps[stepIndex];
     if (diffKey === 'root') {
@@ -121,8 +122,11 @@ export default class App extends React.Component<AppProps, AppState> {
   ) => {
     let { tuture } = this.state;
     tuture = tuture as Tuture;
-    const stepIndex = _.findIndex(tuture.steps, (step) => {
-      return step.commit === commit;
+    let stepIndex = 0;
+    const nowStep = tuture.steps.filter((step, index) => {
+      if (step.commit === commit) {
+        stepIndex = index;
+      }
     });
     const step = tuture.steps[stepIndex];
     step.diff = reorder(step.diff, sourceIndex, destinationIndex);
@@ -136,9 +140,9 @@ export default class App extends React.Component<AppProps, AppState> {
     const { isEditMode, tuture, diff } = this.state;
     if (
       !tuture ||
-      tutureUtilities.isObjectEmpty(tuture) ||
+      Object.keys(tuture).length === 0 ||
       !diff ||
-      !tutureUtilities.isArray(diff)
+      !Array.isArray(diff)
     ) {
       bodyContent = null;
     } else {
