@@ -71,12 +71,21 @@ interface MarkdownProps {
 
 interface MarkdownState {
   isEditing: boolean;
+  content: string;
 }
 
 export default class Markdown extends React.Component<
   MarkdownProps,
   MarkdownState
 > {
+  constructor(props: MarkdownProps) {
+    super(props);
+
+    this.state = {
+      isEditing: false,
+      content: this.props.source,
+    };
+  }
   componentWillReceiveProps(nextProps: MarkdownProps) {
     if (nextProps.isEditMode !== this.props.isEditMode) {
       this.setState({
@@ -91,6 +100,7 @@ export default class Markdown extends React.Component<
 
   handleDelete = () => {
     const { type } = this.props;
+    this.setState({ content: '' });
     this.props.handleSave(type, '');
   };
 
@@ -102,24 +112,32 @@ export default class Markdown extends React.Component<
     this.props.handleSave(this.props.type, content);
   };
 
+  updateContent = (content: string) => {
+    this.setState({
+      content,
+    });
+  };
+
   render() {
     const { isEditMode, source, isRoot } = this.props;
+    const { content } = this.state;
 
     return isEditMode ? (
       this.state.isEditing ? (
         <Editor
           {...this.props}
-          source={source}
+          source={content}
           handleSave={this.handleSave}
+          updateContent={this.updateContent}
           updateEditingStatus={this.updateEditingStatus}
         />
       ) : (
         <EditorWrapper>
           <Viewer
-            source={source}
+            source={content}
             classnames={classnames('markdown', { isRoot })}
           />
-          {source ? (
+          {content ? (
             <HasExplainWrapper>
               <div>
                 <HasExplainButton
@@ -153,7 +171,10 @@ export default class Markdown extends React.Component<
         </EditorWrapper>
       )
     ) : (
-      <Viewer source={source} classnames={classnames('markdown', { isRoot })} />
+      <Viewer
+        source={content}
+        classnames={classnames('markdown', { isRoot })}
+      />
     );
   }
 }
