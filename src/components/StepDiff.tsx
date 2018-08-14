@@ -2,6 +2,7 @@ import React from 'react';
 import styled, { keyframes } from 'styled-components';
 
 import ExplainedItem from './ExplainedItem';
+import CodeBlock from './CodeBlock';
 import DiffView, { Chunk, File, DiffItem } from './DiffView';
 import { Diff } from '../types';
 
@@ -60,34 +61,6 @@ const DiffHeader = styled.header`
   padding-right: 20px;
 `;
 
-const ToolTip = styled.span`
-  opacity: 0;
-  background-color: black;
-  color: #fff;
-  text-align: center;
-  padding: 10px 20px;
-  border-radius: 6px;
-  position: absolute;
-  right: 0;
-  bottom: 150%;
-  z-index: 1;
-  transition: opacity 1s;
-
-  &:after {
-    content: '';
-    position: absolute;
-    bottom: -15%;
-    right: 20%;
-    padding: 10px;
-    background-color: inherit;
-    border: inherit;
-    border-right: 0;
-    border-bottom: 0;
-    transform: rotate(45deg);
-    z-index: -99;
-  }
-`;
-
 export default class StepDiff extends React.PureComponent<
   StepDiffProps,
   StepDiffState
@@ -130,7 +103,8 @@ export default class StepDiff extends React.PureComponent<
     return file.chunks;
   };
 
-  handleCopy = (chunks: Chunk[], key: number) => {
+  handleCopy = (chunks: Chunk[]) => {
+    let res = 0;
     const contentArr: string[] = [];
     chunks[0].changes.forEach((change) => {
       contentArr.push(change.content.slice(1));
@@ -142,18 +116,10 @@ export default class StepDiff extends React.PureComponent<
     textarea.select();
     if (document.execCommand('copy')) {
       document.execCommand('copy');
-      this.showToolTip(`tooltip${key}`, '复制成功');
+      res = 1;
     }
     document.body.removeChild(textarea);
-  };
-
-  showToolTip = (id: string, content: string) => {
-    const tooltip = document.getElementById(id);
-    tooltip.innerText = content;
-    tooltip.style.opacity = '0.8';
-    setTimeout(function () {
-      tooltip.style.opacity = '0';
-    }, 1500);
+    return res;
   };
 
   render() {
@@ -173,31 +139,15 @@ export default class StepDiff extends React.PureComponent<
             diffKey={String(i)}
             updateTutureExplain={updateTutureExplain}
             isEditMode={isEditMode}>
-            <article className="diff-file" key={i}>
-              <header className="diff-file-header">
-                {fileName}
-                <button
-                  className="diff-file-copyButton"
-                  onClick={(e) => {
-                    this.handleCopy(this.getRenderedHunks(fileCopy), i);
-                  }}>
-                  Copy
-                </button>
-                <ToolTip id={'tooltip' + i} />
-              </header>
-              <main>
-                <DiffView
-                  key={i}
-                  id={`${commit}-i`}
-                  lang={fileName
-                    .split('.')
-                    .pop()
-                    .toLowerCase()}
-                  chunks={this.getRenderedHunks(fileCopy)}
-                  startLine={startLine}
-                />
-              </main>
-            </article>
+            <CodeBlock
+              className="diff-file"
+              handleCopy={this.handleCopy}
+              getRenderedHunks={this.getRenderedHunks}
+              fileCopy={fileCopy}
+              fileName={fileName}
+              startLine={startLine}
+              commit={commit}
+            />
           </ExplainedItem>
         </DiffWrapper>
       );
