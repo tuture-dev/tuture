@@ -32,18 +32,14 @@
     "build": "webpack --config webpack.prod.js",
     "prepublishOnly": "webpack --config webpack.prod.js",
     "test": "jest",
-    "lint": "tslint 'src/**/*.{ts,tsx,js}' --project tsconfig.json"
+    "lint": "tslint 'src/**/*.{ts,tsx,js}' --project tsconfig.json",
+    "precommit": "npm run lint && lint-staged"
   },
   "lint-staged": {
     "./**/*.{ts,tsx,js,css,md}": [
       "prettier --write",
       "git add"
     ]
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged && yarn lint"
-    }
   },
   "dependencies": {
     "classnames": "^2.2.6",
