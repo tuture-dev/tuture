@@ -84,7 +84,6 @@
     "@types/socket.io-client": "^1.4.32",
     "clean-webpack-plugin": "^0.1.19",
     "cross-spawn": "^6.0.5",
-    "file-loader": "^1.1.11",
     "fork-ts-checker-webpack-plugin": "^0.4.7",
     "html-webpack-plugin": "^3.2.0",
     "husky": "^0.14.3",

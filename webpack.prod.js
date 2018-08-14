@@ -23,11 +23,8 @@ const base = {
     strictExportPresence: true,
     rules: [
       {
-        test: /\.(png|svg|jpg|gif)$/,
-        loader: 'file-loader',
-        options: {
-          name: 'static/media/[name].[ext]',
-        },
+        test: /\.svg$/,
+        loader: 'svg-sprite-loader',
       },
       {
         test: /\.tsx?$/,
