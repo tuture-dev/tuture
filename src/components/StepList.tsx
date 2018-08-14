@@ -22,7 +22,7 @@ const TutureSteps = styled.div`
 const MenuHeader = styled.div`
   width: 100%;
   height: 134px;
-  background-color: #d7efee;
+  background-color: #000;
   box-sizing: border-box;
   display: flex;
   justify-content: center;
@@ -33,7 +33,7 @@ const MenuHeader = styled.div`
 const MenuHeaderText = styled.p`
   font-family: LucidaGrande-Bold;
   font-size: 24px;
-  color: rgba(0, 0, 0, 0.84);
+  color: rgba(255, 255, 255, 1);
 `;
 
 /* tslint:disable-next-line */

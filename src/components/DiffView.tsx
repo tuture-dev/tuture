@@ -115,7 +115,7 @@ injectGlobal`
   .diff-file {
     color: rgba(0,0,0,0.84);
     display: block;
-    padding-top: 8px;
+    /* padding-top: 8px; */
     padding-bottom: 20px;
     background-color: rgba(0, 0, 0, .05);
     margin: 32px 0;
@@ -124,14 +124,20 @@ injectGlobal`
   .diff-file-header {
     font-family: Monaco;
     font-size: 14px;
-    color: rgba(0,0,0,0.24);
+    background-color:black;
+    color: rgba(255,255,255,1);
     text-align: left;
-    padding-left: 20px;
-    padding-bottom: 5px;
+    padding:4px 0px 4px 20px;
+    margin-bottom:8px;
   }
   .diff-file-copyButton{
+    width:20px;
+    height:20px;
     float: right;
-    margin-right: 15px;
+    margin-right: 20px;
+    border:0px;
+    background-color:transparent;
+    outline:none;
   }
 
   .addition-count {

@@ -50,8 +50,15 @@ const HasExplainWrapper = styled.div`
 `;
 
 const HasExplainButton = styled(BasicButton)`
-  color: ${(props: { color: string; border: string }) => props.color};
-  border: ${(props: { color: string; border: string }) => props.border};
+  color: ${(props: { color: string; border: string; bColor: string }) =>
+    props.color};
+  border: ${(props: { color: string; border: string; bColor: string }) =>
+    props.border};
+  background-color: ${(props: {
+    color: string;
+    border: string;
+    bColor: string;
+  }) => props.bColor};
   border-radius: 4px;
   margin-right: 30px;
 `;
@@ -106,6 +113,9 @@ export default class Markdown extends React.Component<
   handleSave = (content: string) => {
     this.props.handleSave(this.props.type, content);
   };
+  handleUndo = () => {
+    this.setState({ content: this.props.source });
+  };
 
   updateContent = (content: string) => {
     this.setState({
@@ -123,6 +133,7 @@ export default class Markdown extends React.Component<
           {...this.props}
           source={content}
           handleSave={this.handleSave}
+          handleUndo={this.handleUndo}
           updateContent={this.updateContent}
           updateEditingStatus={this.updateEditingStatus}
         />
@@ -136,14 +147,16 @@ export default class Markdown extends React.Component<
             <HasExplainWrapper>
               <div>
                 <HasExplainButton
-                  color="rgba(0,0,0,0.84)"
-                  border="1px solid rgba(0,0,0,0.84)"
+                  color="white"
+                  border="1px solid #00B887"
+                  bColor="#00B887"
                   onClick={() => this.handleAddExplain()}>
                   编辑
                 </HasExplainButton>
                 <HasExplainButton
                   color="#cb2431"
                   border="1px solid #cb2431"
+                  bColor="#fff"
                   onClick={() => this.handleDelete()}>
                   删除
                 </HasExplainButton>

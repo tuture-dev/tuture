@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import ExplainedItem from './ExplainedItem';
 import DiffView, { Chunk, File, DiffItem } from './DiffView';
 import { Diff } from '../types';
+import Icon from './common/Icon';
 
 interface StepDiffProps {
   diff: Diff[];
@@ -144,7 +145,10 @@ export default class StepDiff extends React.PureComponent<
                   onClick={(e) => {
                     this.handleCopy(this.getRenderedHunks(fileCopy));
                   }}>
-                  Copy
+                  <Icon
+                    name="icon-clipboard"
+                    style={{ width: 16, height: 20 }}
+                  />
                 </button>
               </header>
               <main>

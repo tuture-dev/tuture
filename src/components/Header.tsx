@@ -36,11 +36,11 @@ const Button = styled.button`
   box-sizing: border-box;
   margin-right: 34px;
   color: ${(props: { isEditMode: boolean }) =>
-    props.isEditMode ? '#FFF' : 'rgba(0, 0, 0, 0.84)'};
+    props.isEditMode ? '#FFF' : '#00B887'};
   border-color: ${(props: { isEditMode: boolean }) =>
-    props.isEditMode ? 'transparent' : 'rgba(0, 0, 0, 0.68)'};
+    props.isEditMode ? 'transparent' : '#00B887'};
   background-color: ${(props: { isEditMode: boolean }) =>
-    props.isEditMode ? 'rgba(0,0,0,.54)' : 'white'};
+    props.isEditMode ? '#00B887' : 'white'};
   outline: none;
   &: hover {
     cursor: pointer;

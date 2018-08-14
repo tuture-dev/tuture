@@ -8,9 +8,16 @@ import TextareaAutoresize from 'react-autosize-textarea';
 
 import Viewer from './Viewer';
 import { ExplainType, EditMode } from '../../types/ExplainedItem';
-import { TabWrapper, Button, SaveButton, ToolButton } from './common';
+import {
+  TabWrapper,
+  Button,
+  SaveButton,
+  ToolButton,
+  UndoButton,
+} from './common';
 import Toolbar from './Toolbar';
 import { insertStr } from './utils';
+import Icon from '../common/Icon';
 
 interface EditorProps {
   source: string;
@@ -19,6 +26,7 @@ interface EditorProps {
   classnames?: string;
   updateEditingStatus: (isEditing: boolean) => void;
   handleSave?: (content: string) => void;
+  handleUndo?: () => void;
   updateContent?: (content: string) => void;
 }
 
@@ -83,6 +91,10 @@ export default class Editor extends React.Component<EditorProps, EditorState> {
 
   handleSave = () => {
     this.props.handleSave(this.props.source);
+    this.props.updateEditingStatus(false);
+  };
+  handleUndo = () => {
+    this.props.handleUndo();
     this.props.updateEditingStatus(false);
   };
 
@@ -156,19 +168,50 @@ export default class Editor extends React.Component<EditorProps, EditorState> {
       <TabWrapper>
         <div>
           <Button
+            style={{ height: 39, fontSize: 14 }}
             name="edit"
             onClick={() => this.handleTabClick('edit')}
             selected={nowTab === 'edit'}>
             编写
           </Button>
           <Button
+            style={{ height: 39, fontSize: 14 }}
             name="preview"
             onClick={() => this.handleTabClick('preview')}
             selected={nowTab === 'preview'}>
             预览
           </Button>
         </div>
-        <SaveButton onClick={() => this.handleSave()}>确定</SaveButton>
+        <Toolbar
+          contentRef={this.contentRef}
+          source={this.props.source || ''}
+          changePosition={this.changePosition}
+          updateContent={this.updateContent}
+          cursorPosition={this.cursorPos}
+          handleCursor={this.handleCursor}>
+          <Upload
+            name="file"
+            action={`http://${location.host}/upload`}
+            accept=".jpg,.jpeg,.png,.gif"
+            onSuccess={(body: { path: string }) => {
+              const { source } = this.props;
+              const textarea = this.contentRef;
+              const updatedContent = insertStr(
+                source,
+                `![](${body.path})`,
+                textarea.selectionStart,
+              );
+
+              this.changePosition(
+                source.slice(0, textarea.selectionStart).length + 2,
+              );
+              this.updateContent(updatedContent);
+            }}>
+            <ToolButton>
+              <Icon name="icon-image" style={{ width: 19, height: 17 }} />
+            </ToolButton>
+          </Upload>
+        </Toolbar>
       </TabWrapper>
     );
   };
@@ -182,34 +225,6 @@ export default class Editor extends React.Component<EditorProps, EditorState> {
         {this.renderTabWrapper()}
         {nowTab === 'edit' ? (
           <div>
-            <Toolbar
-              contentRef={this.contentRef}
-              source={this.props.source || ''}
-              changePosition={this.changePosition}
-              updateContent={this.updateContent}
-              cursorPosition={this.cursorPos}
-              handleCursor={this.handleCursor}>
-              <Upload
-                name="file"
-                action={`http://${location.host}/upload`}
-                accept=".jpg,.jpeg,.png,.gif"
-                onSuccess={(body: { path: string }) => {
-                  const { source } = this.props;
-                  const textarea = this.contentRef;
-                  const updatedContent = insertStr(
-                    source,
-                    `![](${body.path})`,
-                    textarea.selectionStart,
-                  );
-
-                  this.changePosition(
-                    source.slice(0, textarea.selectionStart).length + 2,
-                  );
-                  this.updateContent(updatedContent);
-                }}>
-                <ToolButton>Img</ToolButton>
-              </Upload>
-            </Toolbar>
             <TextareaAutoresize
               name={type}
               rows={8}
@@ -223,13 +238,24 @@ export default class Editor extends React.Component<EditorProps, EditorState> {
             />
           </div>
         ) : (
-          <Viewer
-            source={this.props.source}
-            classnames={classnames('markdown', 'preview-markdown', {
-              isRoot,
-            })}
-          />
+          <div>
+            <Viewer
+              source={this.props.source}
+              classnames={classnames('markdown', 'preview-markdown', {
+                isRoot,
+              })}
+            />
+          </div>
         )}
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'row-reverse',
+            marginTop: 12,
+          }}>
+          <SaveButton onClick={() => this.handleSave()}>确定</SaveButton>
+          <UndoButton onClick={() => this.handleUndo()}>取消</UndoButton>
+        </div>
       </div>
     );
   }

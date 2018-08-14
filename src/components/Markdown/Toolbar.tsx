@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 import { ToolButton } from './common';
 import { spliceStr, insertStr } from './utils';
+import Icon from '../common/Icon';
 
 type ToolType =
   | 'b'
@@ -26,11 +27,13 @@ interface ToolProps {
 }
 
 const ToolbarWrapper = styled.div`
-  border: 1px solid #d1d5da;
+  display: flex;
+  flex-direction: rowReverse;
   border-bottom: none;
-  height: 30px;
-  padding: 5px 10px;
-  line-height: 30px;
+  height: 28px;
+  padding: 1px 10px;
+  padding-top: 8px;
+  line-height: 32px;
 `;
 
 export default class Toolbar extends React.Component<ToolProps> {
@@ -290,56 +293,104 @@ export default class Toolbar extends React.Component<ToolProps> {
 
   render() {
     const toolArr = [
-      {
-        type: 'b',
-        value: 'B',
-        children: <b>B</b>,
-      },
-      {
-        type: 'h',
-        value: 'H',
-      },
-      {
-        type: 'i',
-        value: 'I',
-        children: <i>I</i>,
-      },
-      {
-        type: 'list',
-        value: 'List',
-      },
-      {
-        type: 'numbered list',
-        value: 'Numbered List',
-      },
-      {
-        type: 'blockquotes',
-        value: 'Blockquotes',
-      },
-      {
-        type: 'code',
-        value: 'Code',
-      },
-      {
-        type: 'block code',
-        value: 'Block Code',
-      },
-      {
-        type: 'link',
-        value: 'Link',
-      },
+      [
+        {
+          type: 'b',
+          value: 'icon-bold',
+          children: <b>B</b>,
+          style: {
+            width: 13,
+            height: 14,
+          },
+        },
+        {
+          type: 'i',
+          value: 'icon-italic',
+          style: {
+            width: 5,
+            height: 12,
+          },
+          children: <i>I</i>,
+        },
+        {
+          type: 'h',
+          value: 'icon-heading',
+          style: {
+            width: 15,
+            height: 14,
+          },
+        },
+      ],
+      [
+        {
+          type: 'link',
+          value: 'icon-link',
+          style: {
+            width: 17,
+            height: 15.21,
+          },
+        },
+        {
+          type: 'blockquotes',
+          value: 'icon-blockquote',
+          style: {
+            width: 17,
+            height: 15,
+          },
+        },
+        {
+          type: 'code',
+          value: 'icon-code',
+          style: {
+            width: 20,
+            height: 15,
+          },
+        },
+        {
+          type: 'block code',
+          value: 'icon-block-code',
+          style: {
+            width: 18,
+            height: 18,
+          },
+        },
+      ],
+      [
+        {
+          type: 'list',
+          value: 'icon-unordered-list',
+          style: {
+            width: 19,
+            height: 15.83,
+          },
+        },
+        {
+          type: 'numbered list',
+          value: 'icon-ordered-list',
+          style: {
+            width: 18,
+            height: 15.92,
+          },
+        },
+      ],
     ];
 
     return (
       <ToolbarWrapper>
         {toolArr.map((tool, index) => (
-          <ToolButton
-            key={index}
-            onClick={() => this.handleToolbarClick(tool.type as ToolType)}>
-            {tool.children ? tool.children : tool.value}
-          </ToolButton>
+          <div key={index} style={{ marginLeft: 40 }}>
+            {tool.map((toolItem, toolItemIndex) => (
+              <ToolButton
+                key={toolItemIndex}
+                onClick={() =>
+                  this.handleToolbarClick(toolItem.type as ToolType)
+                }>
+                <Icon name={toolItem.value} style={toolItem.style} />
+              </ToolButton>
+            ))}
+            {index === 2 && this.props.children}
+          </div>
         ))}
-        {this.props.children}
       </ToolbarWrapper>
     );
   }
