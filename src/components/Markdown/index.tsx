@@ -6,7 +6,7 @@ import Viewer from './Viewer';
 import Editor from './Editor';
 import { BasicButton } from './common';
 import { ExplainType } from '../../types/ExplainedItem';
-import EditIcon from '../write.png';
+import Icon from '../common/Icon';
 
 const EditorWrapper = styled.div`
   width: 100%;
@@ -55,11 +55,6 @@ const HasExplainButton = styled(BasicButton)`
   border-radius: 4px;
   margin-right: 30px;
 `;
-
-const WriteImage = styled.img`
-  width: 20px;
-`;
-
 interface MarkdownProps {
   source: string;
   type: ExplainType;
@@ -156,7 +151,7 @@ export default class Markdown extends React.Component<
             </HasExplainWrapper>
           ) : (
             <AddExplainWrapper onClick={() => this.handleAddExplain()}>
-              <WriteImage src={EditIcon} alt="edit-icon" />
+              <Icon name="icon-write" style={{ width: 17.39, height: 17.84 }} />
               <span style={{ padding: '10px' }}>
                 {this.props.isRoot
                   ? this.props.type === 'pre'
