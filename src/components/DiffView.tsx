@@ -128,6 +128,7 @@ injectGlobal`
     text-align: left;
     padding-left: 20px;
     padding-bottom: 5px;
+    position: relative;
   }
   .diff-file-copyButton{
     float: right;

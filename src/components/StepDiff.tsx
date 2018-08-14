@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
 import ExplainedItem from './ExplainedItem';
 import DiffView, { Chunk, File, DiffItem } from './DiffView';
@@ -60,6 +60,34 @@ const DiffHeader = styled.header`
   padding-right: 20px;
 `;
 
+const ToolTip = styled.span`
+  opacity: 0;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  padding: 10px 20px;
+  border-radius: 6px;
+  position: absolute;
+  right: 0;
+  bottom: 150%;
+  z-index: 1;
+  transition: opacity 1s;
+
+  &:after {
+    content: '';
+    position: absolute;
+    bottom: -15%;
+    right: 20%;
+    padding: 10px;
+    background-color: inherit;
+    border: inherit;
+    border-right: 0;
+    border-bottom: 0;
+    transform: rotate(45deg);
+    z-index: -99;
+  }
+`;
+
 export default class StepDiff extends React.PureComponent<
   StepDiffProps,
   StepDiffState
@@ -102,28 +130,37 @@ export default class StepDiff extends React.PureComponent<
     return file.chunks;
   };
 
-  handleCopy = (chunks: Chunk[]) => {
+  handleCopy = (chunks: Chunk[], key: number) => {
     const contentArr: string[] = [];
     chunks[0].changes.forEach((change) => {
       contentArr.push(change.content.slice(1));
     });
     const needClipedString = contentArr.join('\n');
-
     const textarea = document.createElement('textarea');
     document.body.appendChild(textarea);
     textarea.value = needClipedString;
     textarea.select();
     if (document.execCommand('copy')) {
       document.execCommand('copy');
+      this.showToolTip(`tooltip${key}`, '复制成功');
     }
     document.body.removeChild(textarea);
+  };
+
+  showToolTip = (id: string, content: string) => {
+    const tooltip = document.getElementById(id);
+    tooltip.innerText = content;
+    tooltip.style.opacity = '0.8';
+    setTimeout(function () {
+      tooltip.style.opacity = '0';
+    }, 1500);
   };
 
   render() {
     const { filesToBeRendered } = this.state;
     const { isEditMode, updateTutureExplain, commit } = this.props;
 
-    const renderList = filesToBeRendered.map((file: File & Diff, i) => {
+    const renderList = filesToBeRendered.map((file: File & Diff, i: number) => {
       const fileCopy: File & Diff = JSON.parse(JSON.stringify(file));
       const fileName = fileCopy.file;
       const startLine = fileCopy.section ? fileCopy.section.start : 1;
@@ -142,10 +179,11 @@ export default class StepDiff extends React.PureComponent<
                 <button
                   className="diff-file-copyButton"
                   onClick={(e) => {
-                    this.handleCopy(this.getRenderedHunks(fileCopy));
+                    this.handleCopy(this.getRenderedHunks(fileCopy), i);
                   }}>
                   Copy
                 </button>
+                <ToolTip id={'tooltip' + i} />
               </header>
               <main>
                 <DiffView
