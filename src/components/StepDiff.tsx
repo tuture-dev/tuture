@@ -1,5 +1,5 @@
 import React from 'react';
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 
 import ExplainedItem from './ExplainedItem';
 import DiffView, { Chunk, File, DiffItem } from './DiffView';
@@ -102,8 +102,8 @@ export default class StepDiff extends React.PureComponent<
     return file.chunks;
   };
 
-  handleCopy = (chunks: Chunk[]) => {
-    let res = 0;
+  handleCopy = (chunks: Chunk[]): boolean => {
+    let res = false;
     const contentArr: string[] = [];
     chunks[0].changes.forEach((change) => {
       contentArr.push(change.content.slice(1));
@@ -115,7 +115,7 @@ export default class StepDiff extends React.PureComponent<
     textarea.select();
     if (document.execCommand('copy')) {
       document.execCommand('copy');
-      res = 1;
+      res = true;
     }
     document.body.removeChild(textarea);
     return res;

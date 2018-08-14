@@ -64,7 +64,7 @@ interface DiffViewProps {
   fileCopy: File & Diff;
   fileName: string;
   commit: string;
-  handleCopy: (chunks: Chunk[]) => number;
+  handleCopy: (chunks: Chunk[]) => boolean;
   getRenderedHunks: (file: File & Diff) => Chunk[];
 }
 
