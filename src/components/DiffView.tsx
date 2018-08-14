@@ -129,7 +129,7 @@ injectGlobal`
     color: rgba(0,0,0,0.84);
     display: block;
     /* padding-top: 8px; */
-    padding-bottom: 20px;
+    padding-bottom: 10px;
     background-color: rgba(0, 0, 0, .05);
     margin: 32px 0;
   }
@@ -137,21 +137,21 @@ injectGlobal`
   .diff-file-header {
     font-family: Monaco;
     font-size: 14px;
-    background-color:black;
+    background-color: black;
     color: rgba(255,255,255,1);
     text-align: left;
-    padding:4px 0px 4px 20px;
-    margin-bottom:8px;
+    padding: 10px 0px 10px 20px;
+    margin-bottom: 16px;
     position: relative;
   }
-  .diff-file-copyButton{
-    width:20px;
-    height:20px;
+  .diff-file-copyButton {
+    width: 20px;
+    height: 20px;
     float: right;
     margin-right: 20px;
-    border:0px;
-    background-color:transparent;
-    outline:none;
+    border: 0px;
+    background-color: transparent;
+    outline: none;
   }
 
   .addition-count {
@@ -173,17 +173,18 @@ const ToolTip = styled.span`
   width: 94px;
   height: 45px;
   line-height: 45px;
-  border-radius: 6px;
+  border-radius: 8px;
   position: absolute;
   right: -2.3%;
-  bottom: 143%;
+  bottom: 125%;
   z-index: 1;
   transition: opacity 1s;
+  font-family: Georgia, 'Times New Roman', Times, serif;
 
   &:after {
     content: '';
     position: absolute;
-    bottom: -15%;
+    bottom: -5%;
     right: 37%;
     padding: 10px;
     background-color: inherit;
