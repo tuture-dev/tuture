@@ -54,7 +54,7 @@ steps:
           pre: 'The entire `index.html` looks like this:'
       - file: src/index.js
         explain:
-          pre: 'This is the entry file we''re working upon:'
+          pre: "This is the entry file we're working upon:"
       - file: package.json
         explain:
           pre: >-

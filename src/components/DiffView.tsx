@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { injectGlobal } from 'styled-components';
+import styled, { injectGlobal } from 'styled-components';
 import classnames from 'classnames';
 
 import Snippet from './Snippet';
+import { Diff } from '../types';
 
 interface NormalChange {
   type: 'normal';
@@ -53,11 +54,22 @@ export interface DiffItem {
   diff: File[];
 }
 
+interface ToolTipProps {
+  opacity: string;
+}
+
 interface DiffViewProps {
-  lang: string;
   startLine: number;
-  chunks: Chunk[];
-  id?: string;
+  className?: string;
+  fileCopy: File & Diff;
+  fileName: string;
+  commit: string;
+  handleCopy: (chunks: Chunk[]) => boolean;
+  getRenderedHunks: (file: File & Diff) => Chunk[];
+}
+
+interface DiffViewState {
+  tooltipOpacity: string;
 }
 
 injectGlobal`
@@ -128,6 +140,7 @@ injectGlobal`
     text-align: left;
     padding-left: 20px;
     padding-bottom: 5px;
+    position: relative;
   }
   .diff-file-copyButton{
     float: right;
@@ -145,7 +158,42 @@ injectGlobal`
   }
 `;
 
-export default class DiffView extends Component<DiffViewProps> {
+const ToolTip = styled.span`
+  opacity: ${(props: ToolTipProps) => props.opacity};
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  padding: 10px 20px;
+  border-radius: 6px;
+  position: absolute;
+  right: 0;
+  bottom: 150%;
+  z-index: 1;
+  transition: opacity 1s;
+
+  &:after {
+    content: '';
+    position: absolute;
+    bottom: -15%;
+    right: 20%;
+    padding: 10px;
+    background-color: inherit;
+    border: inherit;
+    border-right: 0;
+    border-bottom: 0;
+    transform: rotate(45deg);
+    z-index: -99;
+  }
+`;
+
+export default class DiffView extends Component<DiffViewProps, DiffViewState> {
+  constructor(props: DiffViewProps) {
+    super(props);
+    this.state = {
+      tooltipOpacity: '0',
+    };
+  }
+
   renderLineNumber = (
     lineNumberClassName: string,
     lineNumber: number,
@@ -155,6 +203,12 @@ export default class DiffView extends Component<DiffViewProps> {
 
   renderRow = (change: Change, isAllInsert: Boolean, i: number) => {
     const { type, content } = change;
+    const { fileName } = this.props;
+    const lang = fileName
+      .split('.')
+      .pop()
+      .toLowerCase();
+
     const lineNumberClassName = classnames('diff-gutter', {
       [`diff-gutter-${type}`]: !isAllInsert,
     });
@@ -165,7 +219,7 @@ export default class DiffView extends Component<DiffViewProps> {
       <tr key={`change${i}`} className={classnames('diff-line')}>
         {this.renderLineNumber(lineNumberClassName, this.props.startLine + i)}
         <td className={codeClassName}>
-          <Snippet code={content.slice(1)} lang={this.props.lang} />
+          <Snippet code={content.slice(1)} lang={lang} />
         </td>
       </tr>
     );
@@ -184,17 +238,51 @@ export default class DiffView extends Component<DiffViewProps> {
     });
   };
 
+  showTooltip = () => {
+    this.setState({
+      tooltipOpacity: '0.8',
+    });
+    setTimeout(() => {
+      this.setState({
+        tooltipOpacity: '0',
+      });
+    }, 1000);
+  };
+
   render() {
-    const { chunks, id } = this.props;
+    const {
+      fileName,
+      handleCopy,
+      getRenderedHunks,
+      fileCopy,
+      commit,
+    } = this.props;
+
+    const chunks = getRenderedHunks(fileCopy);
 
     return (
-      <table className="diff" id={id}>
-        {chunks.map((chunk: Chunk, key: number) => (
-          <tbody key={key} className={classnames('diff-hunk')}>
-            {this.judgeAllRowInsertState(chunk.changes)}
-          </tbody>
-        ))}
-      </table>
+      <div className="diff-file">
+        <header className="diff-file-header">
+          {fileName}
+          <button
+            className="diff-file-copyButton"
+            onClick={(e) => {
+              if (handleCopy(getRenderedHunks(fileCopy))) {
+                this.showTooltip();
+              }
+            }}>
+            Copy
+          </button>
+          <ToolTip opacity={this.state.tooltipOpacity}>复制成功</ToolTip>
+        </header>
+        <table className="diff" id={`${commit}-i`}>
+          {chunks.map((chunk: Chunk, key: number) => (
+            <tbody key={key} className={classnames('diff-hunk')}>
+              {this.judgeAllRowInsertState(chunk.changes)}
+            </tbody>
+          ))}
+        </table>
+      </div>
     );
   }
 }
