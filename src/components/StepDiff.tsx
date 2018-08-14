@@ -2,7 +2,6 @@ import React from 'react';
 import styled, { keyframes } from 'styled-components';
 
 import ExplainedItem from './ExplainedItem';
-import CodeBlock from './CodeBlock';
 import DiffView, { Chunk, File, DiffItem } from './DiffView';
 import { Diff } from '../types';
 
@@ -139,7 +138,7 @@ export default class StepDiff extends React.PureComponent<
             diffKey={String(i)}
             updateTutureExplain={updateTutureExplain}
             isEditMode={isEditMode}>
-            <CodeBlock
+            <DiffView
               className="diff-file"
               handleCopy={this.handleCopy}
               getRenderedHunks={this.getRenderedHunks}

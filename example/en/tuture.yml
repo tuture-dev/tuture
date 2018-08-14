@@ -54,7 +54,7 @@ steps:
           pre: 'The entire `index.html` looks like this:'
       - file: src/index.js
         explain:
-          pre: 'This is the entry file we''re working upon:'
+          pre: "This is the entry file we're working upon:"
       - file: package.json
         explain:
           pre: >-
@@ -66,8 +66,6 @@ steps:
             > If you want to learn more about the inner workings of
             `package.json`, then we recommend reading the [npm
             documentation](https://docs.npmjs.com/files/package.json).
-
-            > dsad 
   - name: Creating a Bundle
     commit: cfadaa6
     explain:
