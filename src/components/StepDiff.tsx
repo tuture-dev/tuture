@@ -103,28 +103,30 @@ export default class StepDiff extends React.PureComponent<
     return file.chunks;
   };
 
-  handleCopy = (chunks: Chunk[]) => {
+  handleCopy = (chunks: Chunk[]): boolean => {
+    let res = false;
     const contentArr: string[] = [];
     chunks[0].changes.forEach((change) => {
       contentArr.push(change.content.slice(1));
     });
     const needClipedString = contentArr.join('\n');
-
     const textarea = document.createElement('textarea');
     document.body.appendChild(textarea);
     textarea.value = needClipedString;
     textarea.select();
     if (document.execCommand('copy')) {
       document.execCommand('copy');
+      res = true;
     }
     document.body.removeChild(textarea);
+    return res;
   };
 
   render() {
     const { filesToBeRendered } = this.state;
     const { isEditMode, updateTutureExplain, commit } = this.props;
 
-    const renderList = filesToBeRendered.map((file: File & Diff, i) => {
+    const renderList = filesToBeRendered.map((file: File & Diff, i: number) => {
       const fileCopy: File & Diff = JSON.parse(JSON.stringify(file));
       const fileName = fileCopy.file;
       const startLine = fileCopy.section ? fileCopy.section.start : 1;
@@ -137,33 +139,15 @@ export default class StepDiff extends React.PureComponent<
             diffKey={String(i)}
             updateTutureExplain={updateTutureExplain}
             isEditMode={isEditMode}>
-            <article className="diff-file" key={i}>
-              <header className="diff-file-header">
-                {fileName}
-                <button
-                  className="diff-file-copyButton"
-                  onClick={(e) => {
-                    this.handleCopy(this.getRenderedHunks(fileCopy));
-                  }}>
-                  <Icon
-                    name="icon-clipboard"
-                    style={{ width: 16, height: 20 }}
-                  />
-                </button>
-              </header>
-              <main>
-                <DiffView
-                  key={i}
-                  id={`${commit}-i`}
-                  lang={fileName
-                    .split('.')
-                    .pop()
-                    .toLowerCase()}
-                  chunks={this.getRenderedHunks(fileCopy)}
-                  startLine={startLine}
-                />
-              </main>
-            </article>
+            <DiffView
+              className="diff-file"
+              handleCopy={this.handleCopy}
+              getRenderedHunks={this.getRenderedHunks}
+              fileCopy={fileCopy}
+              fileName={fileName}
+              startLine={startLine}
+              commit={commit}
+            />
           </ExplainedItem>
         </DiffWrapper>
       );
