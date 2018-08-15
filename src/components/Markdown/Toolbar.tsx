@@ -4,6 +4,8 @@ import styled from 'styled-components';
 import { ToolButton } from './common';
 import { spliceStr, insertStr } from './utils';
 
+import Icon from '../common/Icon';
+
 type ToolType =
   | 'b'
   | 'i'
@@ -25,15 +27,28 @@ interface ToolProps {
   handleCursor: (position?: number, textarea?: HTMLTextAreaElement) => void;
 }
 
+interface ToolState {
+  tooltipOpacity: string;
+}
+
 const ToolbarWrapper = styled.div`
-  border: 1px solid #d1d5da;
+  display: flex;
+  flex-direction: rowReverse;
   border-bottom: none;
-  height: 30px;
-  padding: 5px 10px;
-  line-height: 30px;
+  height: 28px;
+  padding: 1px 10px;
+  padding-top: 8px;
+  line-height: 32px;
 `;
 
-export default class Toolbar extends React.Component<ToolProps> {
+export default class Toolbar extends React.Component<ToolProps, ToolState> {
+  constructor(props: ToolProps) {
+    super(props);
+    this.state = {
+      tooltipOpacity: '0',
+    };
+  }
+
   isAtBeginning = (content: string, selectionStart: number) =>
     selectionStart === 0 || content.slice(0, selectionStart).endsWith('\n');
 
@@ -290,56 +305,116 @@ export default class Toolbar extends React.Component<ToolProps> {
 
   render() {
     const toolArr = [
-      {
-        type: 'b',
-        value: 'B',
-        children: <b>B</b>,
-      },
-      {
-        type: 'h',
-        value: 'H',
-      },
-      {
-        type: 'i',
-        value: 'I',
-        children: <i>I</i>,
-      },
-      {
-        type: 'list',
-        value: 'List',
-      },
-      {
-        type: 'numbered list',
-        value: 'Numbered List',
-      },
-      {
-        type: 'blockquotes',
-        value: 'Blockquotes',
-      },
-      {
-        type: 'code',
-        value: 'Code',
-      },
-      {
-        type: 'block code',
-        value: 'Block Code',
-      },
-      {
-        type: 'link',
-        value: 'Link',
-      },
+      [
+        {
+          type: 'b',
+          value: 'icon-bold',
+          children: <b>B</b>,
+          style: {
+            width: '13px',
+            height: '14px',
+          },
+          note: '加粗',
+        },
+        {
+          type: 'i',
+          value: 'icon-italic',
+          style: {
+            width: '5px',
+            height: '12px',
+          },
+          children: <i>I</i>,
+          note: '斜体',
+        },
+        {
+          type: 'h',
+          value: 'icon-heading',
+          style: {
+            width: '15px',
+            height: '14px',
+          },
+          note: '标题',
+        },
+      ],
+      [
+        {
+          type: 'link',
+          value: 'icon-link',
+          style: {
+            width: '17px',
+            height: '15.21px',
+          },
+          note: '链接',
+        },
+        {
+          type: 'blockquotes',
+          value: 'icon-blockquote',
+          style: {
+            width: '17px',
+            height: '15px',
+          },
+          note: '引用',
+        },
+        {
+          type: 'code',
+          value: 'icon-code',
+          style: {
+            width: '20px',
+            height: '15px',
+          },
+          note: '代码',
+        },
+        {
+          type: 'block code',
+          value: 'icon-block-code',
+          style: {
+            width: '18px',
+            height: '18px',
+          },
+          note: '代码块',
+        },
+      ],
+      [
+        {
+          type: 'list',
+          value: 'icon-unordered-list',
+          style: {
+            width: '19px',
+            height: '15.83px',
+          },
+          note: '无序列表',
+        },
+        {
+          type: 'numbered list',
+          value: 'icon-ordered-list',
+          style: {
+            width: '18px',
+            height: '15.92px',
+          },
+          note: '有序列表',
+        },
+      ],
     ];
 
     return (
       <ToolbarWrapper>
         {toolArr.map((tool, index) => (
-          <ToolButton
-            key={index}
-            onClick={() => this.handleToolbarClick(tool.type as ToolType)}>
-            {tool.children ? tool.children : tool.value}
-          </ToolButton>
+          <div key={index} style={{ marginLeft: 40 }}>
+            {tool.map((toolItem, toolItemIndex) => (
+              <ToolButton
+                key={toolItemIndex}
+                onClick={() =>
+                  this.handleToolbarClick(toolItem.type as ToolType)
+                }>
+                <Icon
+                  name={toolItem.value}
+                  customStyle={{ ...toolItem.style, fill: '#00b887' }}
+                />
+              </ToolButton>
+            ))}
+            {index === 2 && this.props.children}
+          </div>
         ))}
-        {this.props.children}
       </ToolbarWrapper>
     );
   }

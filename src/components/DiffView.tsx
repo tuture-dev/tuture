@@ -4,6 +4,7 @@ import classnames from 'classnames';
 
 import Snippet from './Snippet';
 import { Diff } from '../types';
+import Icon from './common/Icon';
 
 interface NormalChange {
   type: 'normal';
@@ -55,7 +56,7 @@ export interface DiffItem {
 }
 
 interface ToolTipProps {
-  opacity: string;
+  opacity?: string;
 }
 
 interface DiffViewProps {
@@ -127,8 +128,8 @@ injectGlobal`
   .diff-file {
     color: rgba(0,0,0,0.84);
     display: block;
-    padding-top: 8px;
-    padding-bottom: 20px;
+    /* padding-top: 8px; */
+    padding-bottom: 10px;
     background-color: rgba(0, 0, 0, .05);
     margin: 32px 0;
   }
@@ -136,15 +137,21 @@ injectGlobal`
   .diff-file-header {
     font-family: Monaco;
     font-size: 14px;
-    color: rgba(0,0,0,0.24);
+    background-color: black;
+    color: rgba(255,255,255,1);
     text-align: left;
-    padding-left: 20px;
-    padding-bottom: 5px;
+    padding: 10px 0px 10px 20px;
+    margin-bottom: 16px;
     position: relative;
   }
-  .diff-file-copyButton{
+  .diff-file-copyButton {
+    width: 20px;
+    height: 20px;
     float: right;
-    margin-right: 15px;
+    margin-right: 20px;
+    border: 0px;
+    background-color: transparent;
+    outline: none;
   }
 
   .addition-count {
@@ -163,19 +170,22 @@ const ToolTip = styled.span`
   background-color: black;
   color: #fff;
   text-align: center;
-  padding: 10px 20px;
-  border-radius: 6px;
+  width: 94px;
+  height: 45px;
+  line-height: 45px;
+  border-radius: 8px;
   position: absolute;
-  right: 0;
-  bottom: 150%;
+  right: -2.3%;
+  bottom: 125%;
   z-index: 1;
   transition: opacity 1s;
+  font-family: Georgia, 'Times New Roman', Times, serif;
 
   &:after {
     content: '';
     position: absolute;
-    bottom: -15%;
-    right: 20%;
+    bottom: -5%;
+    right: 37%;
     padding: 10px;
     background-color: inherit;
     border: inherit;
@@ -187,6 +197,7 @@ const ToolTip = styled.span`
 `;
 
 export default class DiffView extends Component<DiffViewProps, DiffViewState> {
+  private time: any;
   constructor(props: DiffViewProps) {
     super(props);
     this.state = {
@@ -242,12 +253,16 @@ export default class DiffView extends Component<DiffViewProps, DiffViewState> {
     this.setState({
       tooltipOpacity: '0.8',
     });
-    setTimeout(() => {
+    this.time = setTimeout(() => {
       this.setState({
         tooltipOpacity: '0',
       });
     }, 1000);
   };
+
+  componentWillUnmount() {
+    clearTimeout(this.time);
+  }
 
   render() {
     const {
@@ -271,7 +286,10 @@ export default class DiffView extends Component<DiffViewProps, DiffViewState> {
                 this.showTooltip();
               }
             }}>
-            Copy
+            <Icon
+              name="icon-clipboard"
+              customStyle={{ width: '16px', height: '20px' }}
+            />
           </button>
           <ToolTip opacity={this.state.tooltipOpacity}>复制成功</ToolTip>
         </header>

@@ -26,7 +26,7 @@ const AppContent = styled.div`
   margin: 0 auto;
   display: flex;
   justify-content: space-between;
-  margin-top: 92px;
+  margin-top: 60px;
 `;
 
 injectGlobal`

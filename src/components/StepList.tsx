@@ -21,19 +21,21 @@ const TutureSteps = styled.div`
 /* tslint:disable-next-line */
 const MenuHeader = styled.div`
   width: 100%;
-  height: 134px;
-  background-color: #d7efee;
+  height: 100px;
   box-sizing: border-box;
   display: flex;
-  justify-content: center;
+  padding-left: 41px;
   align-items: center;
 `;
 
 /* tslint:disable-next-line */
 const MenuHeaderText = styled.p`
-  font-family: LucidaGrande-Bold;
-  font-size: 24px;
+  font-family: LucidaGrande;
+  font-size: 30px;
   color: rgba(0, 0, 0, 0.84);
+  margin-bottom: -10px;
+  padding-right: 20px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.54);
 `;
 
 /* tslint:disable-next-line */
