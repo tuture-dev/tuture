@@ -409,7 +409,16 @@ export default class Toolbar extends React.Component<ToolProps, ToolState> {
                 <Icon
                   name={toolItem.value}
                   customStyle={{ ...toolItem.style, fill: '#00b887' }}
+                  data-for={toolItem.type}
                 />
+                <ReactTooltip
+                  id={toolItem.type}
+                  place="top"
+                  type="dark"
+                  effect="solid"
+                  key={index}>
+                  <span>={toolItem.note}</span>
+                </ReactTooltip>
               </ToolButton>
             ))}
             {index === 2 && this.props.children}
