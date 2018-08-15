@@ -182,39 +182,45 @@ export default class Editor extends React.Component<EditorProps, EditorState> {
             预览
           </Button>
         </div>
-        <Toolbar
-          contentRef={this.contentRef}
-          source={this.props.source || ''}
-          changePosition={this.changePosition}
-          updateContent={this.updateContent}
-          cursorPosition={this.cursorPos}
-          handleCursor={this.handleCursor}>
-          <Upload
-            name="file"
-            action={`http://${location.host}/upload`}
-            accept=".jpg,.jpeg,.png,.gif"
-            onSuccess={(body: { path: string }) => {
-              const { source } = this.props;
-              const textarea = this.contentRef;
-              const updatedContent = insertStr(
-                source,
-                `![](${body.path})`,
-                textarea.selectionStart,
-              );
+        {nowTab === 'edit' ? (
+          <Toolbar
+            contentRef={this.contentRef}
+            source={this.props.source || ''}
+            changePosition={this.changePosition}
+            updateContent={this.updateContent}
+            cursorPosition={this.cursorPos}
+            handleCursor={this.handleCursor}>
+            <Upload
+              name="file"
+              action={`http://${location.host}/upload`}
+              accept=".jpg,.jpeg,.png,.gif"
+              onSuccess={(body: { path: string }) => {
+                const { source } = this.props;
+                const textarea = this.contentRef;
+                const updatedContent = insertStr(
+                  source,
+                  `![](${body.path})`,
+                  textarea.selectionStart,
+                );
 
-              this.changePosition(
-                source.slice(0, textarea.selectionStart).length + 2,
-              );
-              this.updateContent(updatedContent);
-            }}>
-            <ToolButton>
-              <Icon
-                name="icon-image"
-                customStyle={{ width: '19px', height: '17px', fill: '#00b887' }}
-              />
-            </ToolButton>
-          </Upload>
-        </Toolbar>
+                this.changePosition(
+                  source.slice(0, textarea.selectionStart).length + 2,
+                );
+                this.updateContent(updatedContent);
+              }}>
+              <ToolButton>
+                <Icon
+                  name="icon-image"
+                  customStyle={{
+                    width: '19px',
+                    height: '17px',
+                    fill: '#00b887',
+                  }}
+                />
+              </ToolButton>
+            </Upload>
+          </Toolbar>
+        ) : null}
       </TabWrapper>
     );
   };
