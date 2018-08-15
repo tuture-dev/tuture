@@ -8,13 +8,11 @@ export interface IconProps {
   customStyle: any;
 }
 
-const StyledSvg = styled.div`
-  svg {
-    width: ${(props: { customStyle: any }) => props.customStyle.width};
-    height: ${(props: { customStyle: any }) => props.customStyle.height};
-  }
+const StyledSvg = styled.svg`
+  width: ${(props: { customStyle: any }) => props.customStyle.width};
+  height: ${(props: { customStyle: any }) => props.customStyle.height};
 
-  svg: hover {
+  &: hover {
     fill: ${(props: { customStyle: any }) =>
       props.customStyle.fill ? props.customStyle.fill : null};
   }
@@ -25,9 +23,7 @@ export default class Icon extends React.Component<IconProps> {
     const { customStyle, name } = this.props;
     return (
       <StyledSvg customStyle={customStyle}>
-        <svg>
-          <use xlinkHref={`#icons_${name}`} />
-        </svg>
+        <use xlinkHref={`#icons_${name}`} />
       </StyledSvg>
     );
   }
