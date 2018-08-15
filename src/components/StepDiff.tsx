@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import ExplainedItem from './ExplainedItem';
 import DiffView, { Chunk, File, DiffItem } from './DiffView';
 import { Diff } from '../types';
+import Icon from './common/Icon';
 
 interface StepDiffProps {
   diff: Diff[];

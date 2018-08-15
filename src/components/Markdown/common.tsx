@@ -139,6 +139,7 @@ const TabWrapper = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
+  height: 40px;
 `;
 
 const BasicButton = styled.button`
@@ -178,12 +179,24 @@ const Button = styled(BasicButton)`
 `;
 
 const SaveButton = styled(BasicButton)`
-  color: #00b887;
+  background-color: #00b887;
+  color: white;
   border: none;
+  border-radius: 4px;
+`;
+
+const UndoButton = styled(BasicButton)`
+  color: black;
+  border: 1px solid black;
+  border-radius: 4px;
+  margin-right: 16px;
 `;
 
 const ToolButton = styled.button`
-  margin-right: 10px;
+  border: 0px;
+  background-color: transparent;
+  outline: none;
+  margin-right: 8px;
 `;
 
-export { TabWrapper, BasicButton, Button, SaveButton, ToolButton };
+export { TabWrapper, BasicButton, Button, SaveButton, UndoButton, ToolButton };
