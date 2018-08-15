@@ -7,10 +7,10 @@ import SideBarLeft from './SideBarLeft';
 import SideBarRight from './SideBarRight';
 import { DiffItem } from './DiffView';
 import Content from './Content';
-import { Tuture } from '../types/';
+import { Tuture, Step } from '../types/';
 import { extractCommits, extractMetaData } from '../utils/extractors';
 import Header from './Header';
-import { reorder } from '../utils/common';
+import { reorder, handleAnchor } from '../utils/common';
 
 export interface AppProps {
   tuture?: Tuture | string;
@@ -19,6 +19,7 @@ export interface AppProps {
 
 interface AppState extends AppProps {
   isEditMode: boolean;
+  nowSelected: string;
 }
 
 /* tslint:disable-next-line */
@@ -61,11 +62,13 @@ export default class App extends React.Component<AppProps, AppState> {
     let { tuture, diff } = this.props;
     tuture = JSON.parse(tuture as string);
     diff = JSON.parse(diff as string);
+    const nowAnchorName = (tuture as Tuture).steps[0].name;
 
     this.state = {
       tuture,
       diff,
       isEditMode: false,
+      nowSelected: handleAnchor(nowAnchorName),
     };
   }
 
@@ -134,11 +137,23 @@ export default class App extends React.Component<AppProps, AppState> {
     this.setState({ tuture });
   };
 
+  setSelect = (nowSelected: string) => {
+    const { tuture } = this.state;
+    const nowAnchorName = (tuture as Tuture).steps[0].name;
+    this.setState({
+      nowSelected: nowSelected ? nowSelected : handleAnchor(nowAnchorName),
+    });
+  };
+
+  updateTuture = (tuture: Tuture) => {
+    this.setState({ tuture });
+  };
+
   render() {
     let tutorialTitle: string;
     let bodyContent: React.ReactNode;
 
-    const { isEditMode, tuture, diff } = this.state;
+    const { isEditMode, tuture, diff, nowSelected } = this.state;
     if (
       !tuture ||
       Object.keys(tuture).length === 0 ||
@@ -150,7 +165,11 @@ export default class App extends React.Component<AppProps, AppState> {
       const commits = extractCommits(tuture as Tuture);
       tutorialTitle = extractMetaData(tuture as Tuture).name;
       bodyContent = [
-        <SideBarLeft commits={commits} key="SiderbarLeft" />,
+        <SideBarLeft
+          setSelect={this.setSelect}
+          commits={commits}
+          key="SiderBarLeft"
+        />,
         <Content
           tuture={tuture}
           diff={diff}
@@ -159,7 +178,13 @@ export default class App extends React.Component<AppProps, AppState> {
           isEditMode={isEditMode}
           key="Content"
         />,
-        <SideBarRight />,
+        <SideBarRight
+          key="SideBarRight"
+          isEditMode={isEditMode}
+          nowSelected={nowSelected}
+          tuture={tuture as Tuture}
+          updateTuture={this.updateTuture}
+        />,
       ];
     }
 

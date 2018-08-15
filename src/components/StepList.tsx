@@ -6,6 +6,7 @@ import { handleAnchor, isClientOrServer } from '../utils/common';
 
 export interface StepListProps {
   commits: Commit[];
+  setSelect: (nowSelected: string) => void;
 }
 export interface StepListState {
   nowSelected: string;
@@ -18,7 +19,6 @@ const TutureSteps = styled.div`
   height: 637px;
 `;
 
-/* tslint:disable-next-line */
 const MenuHeader = styled.div`
   width: 100%;
   height: 100px;
@@ -28,7 +28,6 @@ const MenuHeader = styled.div`
   align-items: center;
 `;
 
-/* tslint:disable-next-line */
 const MenuHeaderText = styled.p`
   font-family: LucidaGrande;
   font-size: 30px;
@@ -38,8 +37,7 @@ const MenuHeaderText = styled.p`
   border-bottom: 1px solid rgba(0, 0, 0, 0.54);
 `;
 
-/* tslint:disable-next-line */
-const TutureMenu = styled.ul`
+export const TutureMenu = styled.ul`
   height: 503px;
   overflow-y: auto;
   overflow-x: hidden;
@@ -119,9 +117,11 @@ export default class StepList extends React.Component<
       }
       return window.scrollY >= itemTopOffset.offsetTop;
     });
+    const nowSelected = item ? item.id : '';
     this.setState({
-      nowSelected: item ? item.id : '',
+      nowSelected,
     });
+    this.props.setSelect(nowSelected);
   };
 
   componentDidMount() {
@@ -175,4 +175,4 @@ export default class StepList extends React.Component<
   }
 }
 
-export { TutureSteps, TutureMenu, TutureMenuItem };
+export { TutureSteps, TutureMenuItem };
