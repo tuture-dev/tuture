@@ -4,6 +4,7 @@ import styled, { injectGlobal } from 'styled-components';
 import fetch from 'isomorphic-fetch';
 
 import SideBarLeft from './SideBarLeft';
+import SideBarRight from './SideBarRight';
 import { DiffItem } from './DiffView';
 import Content from './Content';
 import { Tuture } from '../types/';
@@ -22,7 +23,7 @@ interface AppState extends AppProps {
 
 /* tslint:disable-next-line */
 const AppContent = styled.div`
-  max-width: 1080px;
+  max-width: 1349px;
   margin: 0 auto;
   display: flex;
   justify-content: space-between;
@@ -99,7 +100,7 @@ export default class App extends React.Component<AppProps, AppState> {
     let { tuture } = this.state;
     tuture = tuture as Tuture;
     let stepIndex = 0;
-    const nowStep = tuture.steps.filter((step, index) => {
+    tuture.steps.filter((step, index) => {
       if (step.commit === commit) {
         stepIndex = index;
       }
@@ -123,7 +124,7 @@ export default class App extends React.Component<AppProps, AppState> {
     let { tuture } = this.state;
     tuture = tuture as Tuture;
     let stepIndex = 0;
-    const nowStep = tuture.steps.filter((step, index) => {
+    tuture.steps.filter((step, index) => {
       if (step.commit === commit) {
         stepIndex = index;
       }
@@ -158,6 +159,7 @@ export default class App extends React.Component<AppProps, AppState> {
           isEditMode={isEditMode}
           key="Content"
         />,
+        <SideBarRight />,
       ];
     }
 
