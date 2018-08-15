@@ -164,7 +164,10 @@ export default class Markdown extends React.Component<
             </HasExplainWrapper>
           ) : (
             <AddExplainWrapper onClick={() => this.handleAddExplain()}>
-              <Icon name="icon-write" style={{ width: 17.39, height: 17.84 }} />
+              <Icon
+                name="icon-write"
+                customStyle={{ width: '17.39px', height: '17.84px' }}
+              />
               <span style={{ padding: '10px' }}>
                 {this.props.isRoot
                   ? this.props.type === 'pre'

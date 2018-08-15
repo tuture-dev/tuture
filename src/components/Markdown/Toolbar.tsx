@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 import { ToolButton } from './common';
 import { spliceStr, insertStr } from './utils';
+
 import Icon from '../common/Icon';
 
 type ToolType =
@@ -26,6 +27,10 @@ interface ToolProps {
   handleCursor: (position?: number, textarea?: HTMLTextAreaElement) => void;
 }
 
+interface ToolState {
+  tooltipOpacity: string;
+}
+
 const ToolbarWrapper = styled.div`
   display: flex;
   flex-direction: rowReverse;
@@ -36,7 +41,14 @@ const ToolbarWrapper = styled.div`
   line-height: 32px;
 `;
 
-export default class Toolbar extends React.Component<ToolProps> {
+export default class Toolbar extends React.Component<ToolProps, ToolState> {
+  constructor(props: ToolProps) {
+    super(props);
+    this.state = {
+      tooltipOpacity: '0',
+    };
+  }
+
   isAtBeginning = (content: string, selectionStart: number) =>
     selectionStart === 0 || content.slice(0, selectionStart).endsWith('\n');
 
@@ -299,26 +311,29 @@ export default class Toolbar extends React.Component<ToolProps> {
           value: 'icon-bold',
           children: <b>B</b>,
           style: {
-            width: 13,
-            height: 14,
+            width: '13px',
+            height: '14px',
           },
+          note: '加粗',
         },
         {
           type: 'i',
           value: 'icon-italic',
           style: {
-            width: 5,
-            height: 12,
+            width: '5px',
+            height: '12px',
           },
           children: <i>I</i>,
+          note: '斜体',
         },
         {
           type: 'h',
           value: 'icon-heading',
           style: {
-            width: 15,
-            height: 14,
+            width: '15px',
+            height: '14px',
           },
+          note: '标题',
         },
       ],
       [
@@ -326,33 +341,37 @@ export default class Toolbar extends React.Component<ToolProps> {
           type: 'link',
           value: 'icon-link',
           style: {
-            width: 17,
-            height: 15.21,
+            width: '17px',
+            height: '15.21px',
           },
+          note: '链接',
         },
         {
           type: 'blockquotes',
           value: 'icon-blockquote',
           style: {
-            width: 17,
-            height: 15,
+            width: '17px',
+            height: '15px',
           },
+          note: '引用',
         },
         {
           type: 'code',
           value: 'icon-code',
           style: {
-            width: 20,
-            height: 15,
+            width: '20px',
+            height: '15px',
           },
+          note: '代码',
         },
         {
           type: 'block code',
           value: 'icon-block-code',
           style: {
-            width: 18,
-            height: 18,
+            width: '18px',
+            height: '18px',
           },
+          note: '代码块',
         },
       ],
       [
@@ -360,17 +379,19 @@ export default class Toolbar extends React.Component<ToolProps> {
           type: 'list',
           value: 'icon-unordered-list',
           style: {
-            width: 19,
-            height: 15.83,
+            width: '19px',
+            height: '15.83px',
           },
+          note: '无序列表',
         },
         {
           type: 'numbered list',
           value: 'icon-ordered-list',
           style: {
-            width: 18,
-            height: 15.92,
+            width: '18px',
+            height: '15.92px',
           },
+          note: '有序列表',
         },
       ],
     ];
@@ -385,7 +406,10 @@ export default class Toolbar extends React.Component<ToolProps> {
                 onClick={() =>
                   this.handleToolbarClick(toolItem.type as ToolType)
                 }>
-                <Icon name={toolItem.value} style={toolItem.style} />
+                <Icon
+                  name={toolItem.value}
+                  customStyle={{ ...toolItem.style, fill: '#00b887' }}
+                />
               </ToolButton>
             ))}
             {index === 2 && this.props.children}

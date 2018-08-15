@@ -208,7 +208,10 @@ export default class Editor extends React.Component<EditorProps, EditorState> {
               this.updateContent(updatedContent);
             }}>
             <ToolButton>
-              <Icon name="icon-image" style={{ width: 19, height: 17 }} />
+              <Icon
+                name="icon-image"
+                customStyle={{ width: '19px', height: '17px' }}
+              />
             </ToolButton>
           </Upload>
         </Toolbar>

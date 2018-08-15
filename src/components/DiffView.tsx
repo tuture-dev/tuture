@@ -56,7 +56,7 @@ export interface DiffItem {
 }
 
 interface ToolTipProps {
-  opacity: string;
+  opacity?: string;
 }
 
 interface DiffViewProps {
@@ -285,7 +285,10 @@ export default class DiffView extends Component<DiffViewProps, DiffViewState> {
                 this.showTooltip();
               }
             }}>
-            <Icon name="icon-clipboard" style={{ width: 16, height: 20 }} />
+            <Icon
+              name="icon-clipboard"
+              customStyle={{ width: '16px', height: '20px' }}
+            />
           </button>
           <ToolTip opacity={this.state.tooltipOpacity}>复制成功</ToolTip>
         </header>
