@@ -29,7 +29,7 @@ const TutureWrapper = styled.div`
   min-width: 400px;
   max-width: 762px;
   margin-left: 282px;
-  margin-right: 300px;
+  margin-right: 0.5%;
 `;
 
 const TutureContentHeader = styled.h1`

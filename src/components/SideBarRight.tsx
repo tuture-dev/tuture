@@ -26,7 +26,7 @@ const SideBarRightWrapper = SideBarLeftWrapper.extend`
   height: 637px;
   margin-top: 32px;
   position: fixed;
-  right: 110px;
+  right: 6%;
 `;
 
 const SideBarRightMenuHeader = MenuHeader.extend`
