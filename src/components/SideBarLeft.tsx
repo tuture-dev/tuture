@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import StepList, { StepListProps } from './StepList';
 
 /* tslint:disable-next-line */
-const SideBarLeftWrapper = styled.div`
+export const SideBarLeftWrapper = styled.div`
   width: 270px;
   height: 637px;
   margin-top: 20px;
@@ -13,10 +13,10 @@ const SideBarLeftWrapper = styled.div`
 
 export default class SideBarLeft extends React.Component<StepListProps> {
   render() {
-    const { commits } = this.props;
+    const { commits, setSelect } = this.props;
     return (
       <SideBarLeftWrapper>
-        <StepList commits={commits} />
+        <StepList commits={commits} setSelect={setSelect} />
       </SideBarLeftWrapper>
     );
   }

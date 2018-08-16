@@ -8,7 +8,7 @@ export interface HeaderProps {
 
 /* tslint:disable-next-line */
 const HeaderContent = styled.div`
-  max-width: 1080px;
+  max-width: 988px;
   margin: 0 auto;
   display: flex;
   height: 100%;
@@ -23,7 +23,7 @@ const HeaderWrapper = styled.div`
   left: 0;
   height: 60px;
   width: 100%;
-  background-color: rgba(255, 255, 255, 0.4);
+  background-color: rgba(255, 255, 255, 0);
 `;
 
 /* tslint:disable-next-line */

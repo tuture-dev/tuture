@@ -12,6 +12,7 @@ interface Diff {
   file: string;
   explain?: Explain;
   section?: Section;
+  display?: boolean;
 }
 
 interface TutureMeta {

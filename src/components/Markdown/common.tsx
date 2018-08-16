@@ -128,7 +128,6 @@ injectGlobal`
     resize: none;
     font-size: 18px;
     border: 1px solid #d1d5da;
-    border-radius: 0 4px 4px;
     &:focus {
       outline: none;
     }

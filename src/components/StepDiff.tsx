@@ -1,10 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
+import _ from 'lodash';
 
 import ExplainedItem from './ExplainedItem';
 import DiffView, { Chunk, File, DiffItem } from './DiffView';
 import { Diff } from '../types';
-import Icon from './common/Icon';
 
 interface StepDiffProps {
   diff: Diff[];
@@ -61,7 +61,7 @@ const DiffHeader = styled.header`
   padding-right: 20px;
 `;
 
-export default class StepDiff extends React.PureComponent<
+export default class StepDiff extends React.Component<
   StepDiffProps,
   StepDiffState
 > {
@@ -76,6 +76,17 @@ export default class StepDiff extends React.PureComponent<
     this.state = {
       filesToBeRendered,
     };
+  }
+
+  componentWillReceiveProps(nextProps: StepDiffProps) {
+    const { diff, diffItem } = nextProps;
+    const filesToBeRendered = this.getRenderedContent(
+      diff,
+      (diffItem as DiffItem).diff,
+    );
+    if (!_.isEqual(filesToBeRendered, this.state.filesToBeRendered)) {
+      this.setState({ filesToBeRendered });
+    }
   }
 
   getRenderedContent = (diff: Diff[], files: File[]): (Diff & File)[] => {
@@ -127,6 +138,10 @@ export default class StepDiff extends React.PureComponent<
     const { isEditMode, updateTutureExplain, commit } = this.props;
 
     const renderList = filesToBeRendered.map((file: File & Diff, i: number) => {
+      // if file display is false or not exists, then not display it
+      if (!file.display) {
+        return;
+      }
       const fileCopy: File & Diff = JSON.parse(JSON.stringify(file));
       const fileName = fileCopy.file;
       const startLine = fileCopy.section ? fileCopy.section.start : 1;
