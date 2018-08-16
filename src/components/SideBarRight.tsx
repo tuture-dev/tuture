@@ -217,14 +217,16 @@ export default class SideBarRight extends React.Component<
                             nowStepDiff[i].display,
                             isEditMode,
                           )}>
-                          <Icon
-                            name="icon-drag"
-                            customStyle={{
-                              width: '10px',
-                              height: '6.67px',
-                              display: 'block',
-                            }}
-                          />
+                          {isEditMode && (
+                            <Icon
+                              name="icon-drag"
+                              customStyle={{
+                                width: '10px',
+                                height: '6.67px',
+                                display: 'block',
+                              }}
+                            />
+                          )}
                           <MenuItemText>{filename}</MenuItemText>
                           {isEditMode && (
                             <IconHelper>

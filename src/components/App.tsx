@@ -1,4 +1,3 @@
-/* tslint:disable-next-line */
 import React from 'react';
 import styled, { injectGlobal } from 'styled-components';
 import fetch from 'isomorphic-fetch';
@@ -66,7 +65,7 @@ export default class App extends React.Component<AppProps, AppState> {
     this.state = {
       tuture,
       diff,
-      isEditMode: false,
+      isEditMode: true,
       nowSelected: handleAnchor(nowAnchorName),
     };
   }
@@ -177,13 +176,15 @@ export default class App extends React.Component<AppProps, AppState> {
           isEditMode={isEditMode}
           key="Content"
         />,
-        <SideBarRight
-          key="SideBarRight"
-          isEditMode={isEditMode}
-          nowSelected={nowSelected}
-          tuture={tuture as Tuture}
-          updateTuture={this.updateTuture}
-        />,
+        isEditMode && (
+          <SideBarRight
+            key="SideBarRight"
+            isEditMode={isEditMode}
+            nowSelected={nowSelected}
+            tuture={tuture as Tuture}
+            updateTuture={this.updateTuture}
+          />
+        ),
       ];
     }
 
