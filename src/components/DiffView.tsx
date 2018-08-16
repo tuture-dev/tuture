@@ -74,40 +74,12 @@ interface DiffViewState {
 }
 
 injectGlobal`
-  .diff {
-    table-layout: fixed;
-    border-collapse: collapse;
-    width: 100%;
-  }
-
-  .diff-gutter-col {
-    width: 50px;
-  }
-
-  .diff td {
-    vertical-align: top;
-  }
-  .diff-line {
-    line-height: 31px;
-    font-family: Consolas, Courier, monospace;
-  }
-
-  .diff-gutter {
-    width: 8px;
-    padding: 0 16px;
-    color: rgba(0, 0, 0, .24);
-  }
-
   .diff-gutter-add {
     background-color: rgba(0, 0, 0, .07);
   }
 
   .diff-gutter-del {
     background-color: rgba(0, 0, 0, .021);
-  }
-
-  .diff-gutter:empty:before {
-    content: attr(data-line-number);
   }
 
   .diff-code-add {
@@ -120,48 +92,64 @@ injectGlobal`
     background-color: rgba(0, 0, 0, .07);
   }
 
-  .diff-code {
-    padding: 0 20px;
-    width: 557px;
-  }
+`;
 
-  .diff-file {
-    color: rgba(0,0,0,0.84);
-    display: block;
-    /* padding-top: 8px; */
-    padding-bottom: 10px;
-    background-color: rgba(0, 0, 0, .05);
-    margin: 32px 0;
-  }
+const DiffLine = styled.tr`
+  line-height: 31px;
+  font-family: Consolas, Courier, monospace;
+`;
 
-  .diff-file-header {
-    font-family: Monaco;
-    font-size: 14px;
-    background-color: black;
-    color: rgba(255,255,255,1);
-    text-align: left;
-    padding: 10px 0px 10px 20px;
-    margin-bottom: 16px;
-    position: relative;
-  }
-  .diff-file-copyButton {
-    width: 20px;
-    height: 20px;
-    float: right;
-    margin-right: 20px;
-    border: 0px;
-    background-color: transparent;
-    outline: none;
-  }
+const DiffFile = styled.div`
+  color: rgba(0, 0, 0, 0.84);
+  display: block;
+  /* padding-top: 8px; */
+  padding-bottom: 10px;
+  background-color: rgba(0, 0, 0, 0.05);
+  margin: 32px 0;
+`;
 
-  .addition-count {
-    margin-right: 1em;
-    color: #88b149;
-  }
+const DiffFileHeader = styled.header`
+  font-family: Monaco;
+  font-size: 14px;
+  background-color: black;
+  color: rgba(255, 255, 255, 1);
+  text-align: left;
+  padding: 10px 0px 10px 20px;
+  margin-bottom: 16px;
+  position: relative;
+`;
 
-  .deletion-count {
-    margin-right: 1em;
-    color: #ee5b60;
+const Diff = styled.table`
+  table-layout: fixed;
+  border-collapse: collapse;
+  width: 100%;
+
+  td {
+    vertical-align: top;
+  }
+`;
+
+const DiffFileCopyButton = styled.button`
+  width: 20px;
+  height: 20px;
+  float: right;
+  margin-right: 20px;
+  border: 0px;
+  background-color: transparent;
+  outline: none;
+`;
+
+const DiffCode = styled.td`
+  padding: 0 20px;
+  width: 557px;
+`;
+
+const DiffGutter = styled.td`
+  width: 8px;
+  padding: 0 16px;
+  color: rgba(0, 0, 0, 0.24);
+  & :empty:before {
+    content: attr(data-line-number);
   }
 `;
 
@@ -209,7 +197,12 @@ export default class DiffView extends Component<DiffViewProps, DiffViewState> {
     lineNumberClassName: string,
     lineNumber: number,
   ): React.ReactNode => {
-    return <td className={lineNumberClassName} data-line-number={lineNumber} />;
+    return (
+      <DiffGutter
+        className={lineNumberClassName}
+        data-line-number={lineNumber}
+      />
+    );
   };
 
   renderRow = (change: Change, isAllInsert: Boolean, i: number) => {
@@ -226,13 +219,14 @@ export default class DiffView extends Component<DiffViewProps, DiffViewState> {
     const codeClassName = classnames('diff-code', {
       [`diff-code-${type}`]: !isAllInsert,
     });
+
     return (
-      <tr key={`change${i}`} className={classnames('diff-line')}>
+      <DiffLine key={`change${i}`}>
         {this.renderLineNumber(lineNumberClassName, this.props.startLine + i)}
-        <td className={codeClassName}>
+        <DiffCode className={codeClassName}>
           <Snippet code={content.slice(1)} lang={lang} />
-        </td>
-      </tr>
+        </DiffCode>
+      </DiffLine>
     );
   };
 
@@ -276,11 +270,10 @@ export default class DiffView extends Component<DiffViewProps, DiffViewState> {
     const chunks = getRenderedHunks(fileCopy);
 
     return (
-      <div className="diff-file">
-        <header className="diff-file-header">
+      <DiffFile>
+        <DiffFileHeader>
           {fileName}
-          <button
-            className="diff-file-copyButton"
+          <DiffFileCopyButton
             onClick={(e) => {
               if (handleCopy(getRenderedHunks(fileCopy))) {
                 this.showTooltip();
@@ -290,17 +283,17 @@ export default class DiffView extends Component<DiffViewProps, DiffViewState> {
               name="icon-clipboard"
               customStyle={{ width: '16px', height: '20px' }}
             />
-          </button>
+          </DiffFileCopyButton>
           <ToolTip opacity={this.state.tooltipOpacity}>复制成功</ToolTip>
-        </header>
-        <table className="diff" id={`${commit}-i`}>
+        </DiffFileHeader>
+        <Diff id={`${commit}-i`}>
           {chunks.map((chunk: Chunk, key: number) => (
-            <tbody key={key} className={classnames('diff-hunk')}>
+            <tbody key={key}>
               {this.judgeAllRowInsertState(chunk.changes)}
             </tbody>
           ))}
-        </table>
-      </div>
+        </Diff>
+      </DiffFile>
     );
   }
 }
