@@ -7,6 +7,7 @@ export interface IconProps {
   name: string;
   customStyle?: any;
   onClick?: () => void;
+  className?: string;
 }
 
 const StyledSvg = styled.svg`
@@ -24,9 +25,12 @@ const StyledSvg = styled.svg`
 
 export default class Icon extends React.Component<IconProps> {
   render() {
-    const { customStyle, name, onClick } = this.props;
+    const { customStyle, name, onClick, className } = this.props;
     return (
-      <StyledSvg customStyle={customStyle} onClick={onClick}>
+      <StyledSvg
+        customStyle={customStyle}
+        onClick={onClick}
+        className={className}>
         <use xlinkHref={`#icons_${name}`} />
       </StyledSvg>
     );

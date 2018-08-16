@@ -49,14 +49,14 @@ steps:
 
         Let's use webpack to manage these scripts instead.
     diff:
+      - file: src/index.js
+        display: true
+        explain:
+          pre: 'This is the entry file we''re working upon:'
       - file: index.html
         display: true
         explain:
           pre: 'The entire `index.html` looks like this:'
-      - file: src/index.js
-        display: true
-        explain:
-          pre: "This is the entry file we're working upon:"
       - file: package.json
         display: true
         explain:

@@ -1,9 +1,9 @@
 import React from 'react';
-import styled, { css } from 'styled-components';
+import styled, { injectGlobal } from 'styled-components';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 import { SideBarLeftWrapper } from './SideBarLeft';
-import { TutureMenu } from './StepList';
+import { TutureMenu, MenuHeader, MenuHeaderText } from './StepList';
 import { reorder, handleAnchor } from '../utils/common';
 import Icon from './common/Icon';
 import { Step, Tuture } from '../types/';
@@ -29,13 +29,13 @@ const SideBarRightWrapper = SideBarLeftWrapper.extend`
   left: 1145px;
 `;
 
-const MenuHeader = styled.p`
-  font-family: LucidaGrande;
-  font-size: 30px;
-  color: rgba(0, 0, 0, 0.84);
-  width: 100%;
-  margin: 24px 0;
-  text-align: center;
+const SideBarRightMenuHeader = MenuHeader.extend`
+  padding-left: 16px;
+  margin-bottom: 16px;
+`;
+
+const SideBarRightMenuHeaderText = MenuHeaderText.extend`
+  margin-bottom: 16px;
 `;
 
 const MenuItemText = styled.p`
@@ -54,11 +54,22 @@ const IconHelper = styled.div`
   bottom: 8px;
   display: flex;
   align-items: center;
-  width: 50px;
+  width: 20px;
   justify-content: space-between;
 `;
 
-const getItemStyle = (isDragging: any, draggableStyle: any) => ({
+injectGlobal`
+  .menu-item: hover .icon-eye {
+    fill: #000
+  }
+`;
+
+const getItemStyle = (
+  isDragging: any,
+  draggableStyle: any,
+  display?: boolean,
+  isEditMode?: boolean,
+) => ({
   // some basic styles to make the items look a bit nicer
   userSelect: 'none',
   background: '#ffffff',
@@ -71,12 +82,13 @@ const getItemStyle = (isDragging: any, draggableStyle: any) => ({
   fontSize: '16px',
   padding: '8px 16px 8px 8px',
   position: 'relative',
-  cursor: 'pointer',
+  cursor: isEditMode ? 'pointer' : 'auto',
+  color: display ? 'rgba(0, 0, 0, .84)' : 'rgba(0, 0, 0, .24)',
   // styles we need to apply on draggables
   ...draggableStyle,
 });
 
-export default class SideBarRight extends React.PureComponent<
+export default class SideBarRight extends React.Component<
   SideBarRightProps,
   SideBarRightState
 > {
@@ -173,11 +185,13 @@ export default class SideBarRight extends React.PureComponent<
     const { filenames, stepName } = this.state;
     const { isEditMode, tuture, nowSelected } = this.props;
     const { nowStepDiff } = this.getNowStepDiff(tuture, nowSelected);
-    console.log(nowStepDiff);
+    console.log('nowStepDiff', nowStepDiff);
 
     return (
       <SideBarRightWrapper>
-        <MenuHeader>{stepName}</MenuHeader>
+        <SideBarRightMenuHeader>
+          <SideBarRightMenuHeaderText>{stepName}</SideBarRightMenuHeaderText>
+        </SideBarRightMenuHeader>
         <DragDropContext onDragEnd={this.onDragEnd}>
           <Droppable droppableId="droppable" isDropDisabled={!isEditMode}>
             {(dropProvided) => (
@@ -193,12 +207,15 @@ export default class SideBarRight extends React.PureComponent<
                       return (
                         <div
                           key={i}
+                          className="menu-item"
                           ref={dropProvided.innerRef}
                           {...dropProvided.draggableProps}
                           {...dropProvided.dragHandleProps}
                           style={getItemStyle(
                             snapshot.isDragging,
                             dropProvided.draggableProps.style,
+                            nowStepDiff[i].display,
+                            isEditMode,
                           )}>
                           <Icon
                             name="icon-drag"
@@ -209,28 +226,22 @@ export default class SideBarRight extends React.PureComponent<
                             }}
                           />
                           <MenuItemText>{filename}</MenuItemText>
-                          <IconHelper>
-                            <Icon
-                              name="icon-eye"
-                              onClick={() => this.handleToggleDisplay(i)}
-                              customStyle={{
-                                width: '20px',
-                                height: '13px',
-                                fill: nowStepDiff[i].display
-                                  ? '#000'
-                                  : 'rgba(0, 0, 0, .24)',
-                              }}
-                            />
-                            <Icon
-                              name="icon-up"
-                              customStyle={{
-                                width: '20px',
-                                height: '10px',
-                                fill: '#000',
-                                unHoveredFill: '#FFF',
-                              }}
-                            />
-                          </IconHelper>
+                          {isEditMode && (
+                            <IconHelper>
+                              <Icon
+                                name="icon-eye"
+                                className="icon-eye"
+                                onClick={() => this.handleToggleDisplay(i)}
+                                customStyle={{
+                                  width: '20px',
+                                  height: '13px',
+                                  unHoveredFill: nowStepDiff[i].display
+                                    ? '#FFF'
+                                    : 'rgba(0, 0, 0, .24)',
+                                }}
+                              />
+                            </IconHelper>
+                          )}
                         </div>
                       );
                     }}

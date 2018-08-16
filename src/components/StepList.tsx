@@ -19,7 +19,7 @@ const TutureSteps = styled.div`
   height: 637px;
 `;
 
-const MenuHeader = styled.div`
+export const MenuHeader = styled.div`
   width: 100%;
   height: 100px;
   box-sizing: border-box;
@@ -28,7 +28,7 @@ const MenuHeader = styled.div`
   align-items: center;
 `;
 
-const MenuHeaderText = styled.p`
+export const MenuHeaderText = styled.p`
   font-family: LucidaGrande;
   font-size: 30px;
   color: rgba(0, 0, 0, 0.84);
@@ -47,7 +47,7 @@ export const TutureMenu = styled.ul`
   margin-top: 10px;
   outline: none;
   list-style: none;
-  color: rgba(0, 0, 0, 0.65);
+  color: rgba(0, 0, 0, 0.84);
 `;
 
 /* tslint:disable-next-line */
