@@ -41,7 +41,6 @@ injectGlobal`
     font-size: 14px;
     line-height: 1.5;
     margin: 0;
-    padding: 0;
   }
 
   #root {
