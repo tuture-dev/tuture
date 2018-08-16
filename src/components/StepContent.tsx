@@ -25,7 +25,8 @@ interface StepContentProps {
 }
 
 const TutureWrapper = styled.div`
-  max-width: 788px;
+  min-width: 400px;
+  width: 58%;
   margin-left: 282px;
 `;
 

@@ -49,13 +49,16 @@ steps:
 
         Let's use webpack to manage these scripts instead.
     diff:
+      - file: src/index.js
+        display: true
+        explain:
+          pre: "This is the entry file we're working upon:"
       - file: index.html
+        display: true
         explain:
           pre: 'The entire `index.html` looks like this:'
-      - file: src/index.js
-        explain:
-          pre: 'This is the entry file we''re working upon:'
       - file: package.json
+        display: true
         explain:
           pre: >-
             We also need to adjust our `package.json` file in order to make sure
@@ -119,9 +122,11 @@ steps:
         should see the following text: 'Hello webpack'.
     diff:
       - file: src/index.js
+        display: true
         explain:
           pre: 'Now, lets import `lodash` in our script:'
       - file: dist/index.html
+        display: true
         explain:
           pre: >-
             Now, since we'll be bundling our scripts, we have to update our
@@ -161,3 +166,4 @@ steps:
         enhancements this way.
     diff:
       - file: webpack.config.js
+        display: true

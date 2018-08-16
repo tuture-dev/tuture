@@ -1,15 +1,15 @@
-/* tslint:disable-next-line */
 import React from 'react';
 import styled, { injectGlobal } from 'styled-components';
 import fetch from 'isomorphic-fetch';
 
 import SideBarLeft from './SideBarLeft';
+import SideBarRight from './SideBarRight';
 import { DiffItem } from './DiffView';
 import Content from './Content';
-import { Tuture } from '../types/';
+import { Tuture, Step } from '../types/';
 import { extractCommits, extractMetaData } from '../utils/extractors';
 import Header from './Header';
-import { reorder } from '../utils/common';
+import { reorder, handleAnchor } from '../utils/common';
 
 export interface AppProps {
   tuture?: Tuture | string;
@@ -18,11 +18,12 @@ export interface AppProps {
 
 interface AppState extends AppProps {
   isEditMode: boolean;
+  nowSelected: string;
 }
 
 /* tslint:disable-next-line */
 const AppContent = styled.div`
-  max-width: 1080px;
+  width: 80%;
   margin: 0 auto;
   display: flex;
   justify-content: space-between;
@@ -39,7 +40,6 @@ injectGlobal`
     font-size: 14px;
     line-height: 1.5;
     margin: 0;
-    padding: 0;
   }
 
   #root {
@@ -65,11 +65,13 @@ export default class App extends React.Component<AppProps, AppState> {
     let { tuture, diff } = this.props;
     tuture = JSON.parse(tuture as string);
     diff = JSON.parse(diff as string);
+    const nowAnchorName = (tuture as Tuture).steps[0].name;
 
     this.state = {
       tuture,
       diff,
       isEditMode: true,
+      nowSelected: handleAnchor(nowAnchorName),
     };
   }
 
@@ -104,7 +106,7 @@ export default class App extends React.Component<AppProps, AppState> {
     let { tuture } = this.state;
     tuture = tuture as Tuture;
     let stepIndex = 0;
-    const nowStep = tuture.steps.filter((step, index) => {
+    tuture.steps.filter((step, index) => {
       if (step.commit === commit) {
         stepIndex = index;
       }
@@ -128,7 +130,7 @@ export default class App extends React.Component<AppProps, AppState> {
     let { tuture } = this.state;
     tuture = tuture as Tuture;
     let stepIndex = 0;
-    const nowStep = tuture.steps.filter((step, index) => {
+    tuture.steps.filter((step, index) => {
       if (step.commit === commit) {
         stepIndex = index;
       }
@@ -138,11 +140,23 @@ export default class App extends React.Component<AppProps, AppState> {
     this.setState({ tuture });
   };
 
+  setSelect = (nowSelected: string) => {
+    const { tuture } = this.state;
+    const nowAnchorName = (tuture as Tuture).steps[0].name;
+    this.setState({
+      nowSelected: nowSelected ? nowSelected : handleAnchor(nowAnchorName),
+    });
+  };
+
+  updateTuture = (tuture: Tuture) => {
+    this.setState({ tuture });
+  };
+
   render() {
     let tutorialTitle: string;
     let bodyContent: React.ReactNode;
 
-    const { isEditMode, tuture, diff } = this.state;
+    const { isEditMode, tuture, diff, nowSelected } = this.state;
     if (
       !tuture ||
       Object.keys(tuture).length === 0 ||
@@ -154,7 +168,11 @@ export default class App extends React.Component<AppProps, AppState> {
       const commits = extractCommits(tuture as Tuture);
       tutorialTitle = extractMetaData(tuture as Tuture).name;
       bodyContent = [
-        <SideBarLeft commits={commits} key="SiderbarLeft" />,
+        <SideBarLeft
+          setSelect={this.setSelect}
+          commits={commits}
+          key="SiderBarLeft"
+        />,
         <Content
           tuture={tuture}
           diff={diff}
@@ -162,6 +180,15 @@ export default class App extends React.Component<AppProps, AppState> {
           updateTutureDiffOrder={this.updateTutureDiffOrder}
           key="Content"
         />,
+        isEditMode && (
+          <SideBarRight
+            key="SideBarRight"
+            isEditMode={isEditMode}
+            nowSelected={nowSelected}
+            tuture={tuture as Tuture}
+            updateTuture={this.updateTuture}
+          />
+        ),
       ];
     }
 

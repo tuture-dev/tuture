@@ -94,6 +94,12 @@ export default class Markdown extends React.Component<
         isEditing: false,
       });
     }
+
+    if (nextProps.source !== this.props.source) {
+      this.setState({
+        content: nextProps.source,
+      });
+    }
   }
 
   updateEditingStatus = (isEditing: boolean) => {
