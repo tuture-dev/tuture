@@ -147,9 +147,9 @@ export default class Markdown extends React.Component<
             <HasExplainWrapper>
               <div>
                 <HasExplainButton
-                  color="white"
+                  color="#00B887"
                   border="1px solid #00B887"
-                  bColor="#00B887"
+                  bColor="#fff"
                   onClick={() => this.handleAddExplain()}>
                   编辑
                 </HasExplainButton>
