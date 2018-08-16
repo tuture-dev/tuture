@@ -53,6 +53,11 @@ injectGlobal`
   }
 `;
 
+export const ModeContext = React.createContext({
+  isEditMode: true,
+  toggleEditMode: () => {},
+});
+
 export default class App extends React.Component<AppProps, AppState> {
   constructor(props: AppProps) {
     super(props);
@@ -64,7 +69,7 @@ export default class App extends React.Component<AppProps, AppState> {
     this.state = {
       tuture,
       diff,
-      isEditMode: false,
+      isEditMode: true,
     };
   }
 
@@ -155,20 +160,20 @@ export default class App extends React.Component<AppProps, AppState> {
           diff={diff}
           updateTutureExplain={this.updateTutureExplain}
           updateTutureDiffOrder={this.updateTutureDiffOrder}
-          isEditMode={isEditMode}
           key="Content"
         />,
       ];
     }
 
     return (
-      <div>
-        <Header
-          toggleEditMode={this.toggleEditMode}
-          isEditMode={this.state.isEditMode}
-        />
+      <ModeContext.Provider
+        value={{
+          isEditMode: this.state.isEditMode,
+          toggleEditMode: this.toggleEditMode,
+        }}>
+        <Header />
         <AppContent>{bodyContent}</AppContent>
-      </div>
+      </ModeContext.Provider>
     );
   }
 }

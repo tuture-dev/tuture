@@ -3,11 +3,11 @@ import React, { PureComponent } from 'react';
 import { Explain } from '../types';
 import { ExplainType } from '../types/ExplainedItem';
 import Markdown from './Markdown/';
-
+import { ModeContext } from './App';
 interface ExplainedItemProps {
   explain: Explain;
   isRoot: boolean;
-  isEditMode: boolean;
+  isEditMode?: boolean;
   commit: string;
   diffKey: string;
   updateTutureExplain: (
@@ -30,18 +30,22 @@ export default class ExplainedItem extends PureComponent<
   };
 
   renderExplain = (type: ExplainType) => {
-    const { isEditMode, isRoot } = this.props;
+    const { isRoot } = this.props;
     let { explain } = this.props;
     explain = explain || { pre: '', post: '' };
 
     return (
-      <Markdown
-        type={type}
-        source={explain[type]}
-        isEditMode={isEditMode}
-        isRoot={isRoot}
-        handleSave={this.handleSave}
-      />
+      <ModeContext.Consumer>
+        {({ isEditMode }) => (
+          <Markdown
+            type={type}
+            source={explain[type]}
+            isEditMode={isEditMode}
+            isRoot={isRoot}
+            handleSave={this.handleSave}
+          />
+        )}
+      </ModeContext.Consumer>
     );
   };
 

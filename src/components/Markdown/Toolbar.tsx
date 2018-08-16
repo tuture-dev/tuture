@@ -130,7 +130,7 @@ export default class Toolbar extends React.Component<ToolProps, ToolState> {
               content,
               '**',
               textarea.selectionStart,
-              content.slice(0, textarea.selectionStart).length + 1,
+              content.slice(0, textarea.selectionStart).length + 2,
             );
         break;
       }
@@ -140,7 +140,7 @@ export default class Toolbar extends React.Component<ToolProps, ToolState> {
           content,
           isContentEnd ? '#### ' : '\n#### ',
           textarea.selectionStart,
-          content.slice(0, textarea.selectionStart).length + 5,
+          content.slice(0, textarea.selectionStart).length + 6,
         );
         break;
       }
@@ -168,7 +168,7 @@ export default class Toolbar extends React.Component<ToolProps, ToolState> {
             content,
             isContentEnd ? '- ' : '\n- ',
             textarea.selectionStart,
-            content.slice(0, textarea.selectionStart).length + 2,
+            content.slice(0, textarea.selectionStart).length + 3,
           );
         }
         break;
@@ -198,7 +198,7 @@ export default class Toolbar extends React.Component<ToolProps, ToolState> {
             content,
             isContentEnd ? '1. ' : '\n1. ',
             textarea.selectionStart,
-            content.slice(0, textarea.selectionStart).length + 3,
+            content.slice(0, textarea.selectionStart).length + 4,
           );
         }
         break;
@@ -234,7 +234,7 @@ export default class Toolbar extends React.Component<ToolProps, ToolState> {
             content,
             isContentEnd ? '> ' : '\n> ',
             textarea.selectionStart,
-            content.slice(0, textarea.selectionStart).length + 2,
+            content.slice(0, textarea.selectionStart).length + 3,
           );
         }
 

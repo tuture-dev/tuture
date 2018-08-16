@@ -11,6 +11,10 @@ export default class Viewer extends React.Component<ViewerProps> {
     if (!source) {
       return;
     }
+    marked.setOptions({
+      gfm: true,
+      breaks: true,
+    });
     const rawMarkup = marked(source, { sanitize: true });
     return { __html: rawMarkup };
   }
