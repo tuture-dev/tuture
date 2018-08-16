@@ -24,7 +24,7 @@ interface AppState extends AppProps {
 
 /* tslint:disable-next-line */
 const AppContent = styled.div`
-  max-width: 1349px;
+  width: 80%;
   margin: 0 auto;
   display: flex;
   justify-content: space-between;
