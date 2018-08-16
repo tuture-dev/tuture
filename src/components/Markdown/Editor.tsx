@@ -1,5 +1,6 @@
 import React from 'react';
 import classnames from 'classnames';
+import styled from 'styled-components';
 import fetch from 'isomorphic-fetch';
 
 // @ts-ignore
@@ -9,8 +10,8 @@ import TextareaAutoresize from 'react-autosize-textarea';
 import Viewer from './Viewer';
 import { ExplainType, EditMode } from '../../types/ExplainedItem';
 import {
+  BasicButton,
   TabWrapper,
-  Button,
   SaveButton,
   ToolButton,
   UndoButton,
@@ -35,6 +36,27 @@ interface EditorState {
   editFrameHeight?: number;
   contentRef?: HTMLTextAreaElement;
 }
+
+const TabButton = styled(BasicButton)`
+  font-size: 14px;
+  height: 39px;
+  border: ${(props: { selected?: boolean; color?: string }) =>
+    props.color
+      ? `1px solid ${props.color}`
+      : props.selected
+        ? '1px solid #d1d5da;'
+        : '1px solid transparent'};
+  border-bottom: ${(props: { selected?: boolean; color?: string }) =>
+    props.color ? `1px solid ${props.color}` : props.selected && '0'};
+  color: ${(props: { selected?: boolean; color?: string }) =>
+    props.color
+      ? props.color
+      : props.selected
+        ? 'rgba(0,0,0,.84)'
+        : 'rgba(0,0,0,.84)'};
+  bottom: ${(props: { selected?: boolean; color?: string }) =>
+    props.selected ? '-2px' : 0};
+`;
 
 export default class Editor extends React.Component<EditorProps, EditorState> {
   private contentRef: HTMLTextAreaElement;
@@ -167,20 +189,18 @@ export default class Editor extends React.Component<EditorProps, EditorState> {
     return (
       <TabWrapper>
         <div>
-          <Button
-            style={{ height: 39, fontSize: 14 }}
+          <TabButton
             name="edit"
             onClick={() => this.handleTabClick('edit')}
             selected={nowTab === 'edit'}>
             编写
-          </Button>
-          <Button
-            style={{ height: 39, fontSize: 14 }}
+          </TabButton>
+          <TabButton
             name="preview"
             onClick={() => this.handleTabClick('preview')}
             selected={nowTab === 'preview'}>
             预览
-          </Button>
+          </TabButton>
         </div>
         {nowTab === 'edit' ? (
           <Toolbar
