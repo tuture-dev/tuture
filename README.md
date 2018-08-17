@@ -14,13 +14,13 @@ Tuture revolutionizes the way of writing tech tutorials.
 
 - **Automatic extraction of code diff**: One of the greatest pain point of writing tutorials is the daunting manual work of collecting code snippets of each changed file for each step. Fortunately, Tuture will handle this boring and error-prone work for you, so you can just focus on writing amazing tuturials.
 
-- **Writing in a programming way**: Writing is more of a casual and personal course in these good old days. But with Tuture, you can write tutorial in a way that greatly resembles programming. Your whole tutorial is exactly specified in a YAML file, so all you need is to fill in needed fields.
+- **Edit tutorials alongside your code**: It can be much clearer and easier to write something just next to your code. With full-fleged markdown support and a series of handy tools, writing high-quality tech posts has never been this fun.
 
-- **Eye-catching rendering in the browser**: Thanks to the blazingly fast development of JavaScript technologies, Tuture is fully capable of rendering your tutorial in a beautiful and interactive way.
+- **Share your work in a breeze**: Sharing is one of the time-honored conventions within the geek community, which is fully valued and appreciated by Tuture. Fortunately, publishing your tutorials is just one command away (`tuture publish` and you are done). Come and visit [tuture.co](https://tuture.co) for tutorials written by you and others!
 
 ## Installation
 
-Make sure you have [Node.js](https://nodejs.org/) (>= 8.0.0) and [npm](https://www.npmjs.com/) (>= 5.0.0) on your machine.
+Make sure you have [Git](https://git-scm.com/), [Node.js](https://nodejs.org/) (>= 8.0.0) and [npm](https://www.npmjs.com/) (>= 5.0.0) on your machine.
 
 > You may need `sudo` to install npm packages globally.
 
@@ -48,7 +48,7 @@ $ npm i -g
 
 ## Documentation
 
-View all documentation [here](https://github.com/tutureproject/docs).
+Learn more about Tuture [here](https://github.com/tutureproject/docs).
 
 ## Why this name, Tuture?
 
