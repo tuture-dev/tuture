@@ -1,10 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-export interface HeaderProps {
-  isEditMode: boolean;
-  toggleEditMode: () => void;
-}
+import { ModeContext } from './App';
 
 /* tslint:disable-next-line */
 const HeaderContent = styled.div`
@@ -47,17 +44,20 @@ const Button = styled.button`
   }
 `;
 
-export default class Header extends React.Component<HeaderProps, any> {
-  public render() {
-    const { isEditMode, toggleEditMode } = this.props;
+export default class Header extends React.PureComponent {
+  render() {
     return (
-      <HeaderWrapper>
-        <HeaderContent>
-          <Button onClick={toggleEditMode} isEditMode={isEditMode}>
-            {isEditMode ? '保存' : '编辑'}
-          </Button>
-        </HeaderContent>
-      </HeaderWrapper>
+      <ModeContext.Consumer>
+        {({ isEditMode, toggleEditMode }) => (
+          <HeaderWrapper>
+            <HeaderContent>
+              <Button onClick={toggleEditMode} isEditMode={isEditMode}>
+                {isEditMode ? '保存' : '编辑'}
+              </Button>
+            </HeaderContent>
+          </HeaderWrapper>
+        )}
+      </ModeContext.Consumer>
     );
   }
 }

@@ -6,7 +6,6 @@ import StepContent from './StepContent';
 import { Tuture, Step } from '../types/';
 
 interface ContentProps extends AppProps {
-  isEditMode: boolean;
   updateTutureExplain: (
     commit: string,
     diffKey: string,
@@ -30,7 +29,6 @@ export default class Content extends React.Component<ContentProps> {
     const {
       tuture,
       diff,
-      isEditMode,
       updateTutureExplain,
       updateTutureDiffOrder,
     } = this.props;
@@ -45,7 +43,6 @@ export default class Content extends React.Component<ContentProps> {
             key={index}
             content={step}
             diffItem={diffItem}
-            isEditMode={isEditMode}
             updateTutureExplain={updateTutureExplain}
             updateTutureDiffOrder={updateTutureDiffOrder}
           />,

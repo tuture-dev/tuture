@@ -62,6 +62,7 @@ const HasExplainButton = styled(BasicButton)`
   border-radius: 4px;
   margin-right: 30px;
 `;
+
 interface MarkdownProps {
   source: string;
   type: ExplainType;
