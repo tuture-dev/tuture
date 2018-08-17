@@ -4,10 +4,10 @@ import { Explain } from '../types';
 import { ExplainType } from '../types/ExplainedItem';
 import Markdown from './Markdown/';
 import { ModeContext } from './App';
+
 interface ExplainedItemProps {
   explain: Explain;
   isRoot: boolean;
-  isEditMode?: boolean;
   commit: string;
   diffKey: string;
   updateTutureExplain: (

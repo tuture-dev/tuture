@@ -2,10 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { ModeContext } from './App';
-export interface HeaderProps {
-  isEditMode?: boolean;
-  toggleEditMode?: () => void;
-}
 
 /* tslint:disable-next-line */
 const HeaderContent = styled.div`
@@ -48,8 +44,8 @@ const Button = styled.button`
   }
 `;
 
-export default class Header extends React.Component<HeaderProps, any> {
-  public render() {
+export default class Header extends React.PureComponent {
+  render() {
     return (
       <ModeContext.Consumer>
         {({ isEditMode, toggleEditMode }) => (

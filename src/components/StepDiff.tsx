@@ -6,13 +6,11 @@ import ExplainedItem from './ExplainedItem';
 import DiffView, { Chunk, File, DiffItem } from './DiffView';
 import { Diff } from '../types';
 import { ModeContext } from './App';
-import Icon from './common/Icon';
 
 interface StepDiffProps {
   diff: Diff[];
   commit: string;
   diffItem: DiffItem | string;
-  isEditMode?: boolean;
   updateTutureExplain: (
     commit: string,
     diffKey: string,

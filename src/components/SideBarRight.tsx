@@ -185,7 +185,6 @@ export default class SideBarRight extends React.Component<
     const { filenames, stepName } = this.state;
     const { isEditMode, tuture, nowSelected } = this.props;
     const { nowStepDiff } = this.getNowStepDiff(tuture, nowSelected);
-    console.log('nowStepDiff', nowStepDiff);
 
     return (
       <SideBarRightWrapper>
