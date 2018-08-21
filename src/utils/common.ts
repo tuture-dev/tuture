@@ -14,4 +14,11 @@ const reorder = (list: any[], startIndex: number, endIndex: number): any[] => {
   return result;
 };
 
-export { handleAnchor, isClientOrServer, reorder };
+const vwDesign = 1680;
+const vwFontsize = 168;
+
+function rem(px: number) {
+  return px / vwFontsize;
+}
+
+export { handleAnchor, isClientOrServer, reorder, rem, vwDesign, vwFontsize };

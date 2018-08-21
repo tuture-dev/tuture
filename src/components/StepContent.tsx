@@ -6,7 +6,7 @@ import ExplainedItem from './ExplainedItem';
 import StepDiff from './StepDiff';
 
 import { Step } from '../types';
-import { handleAnchor } from '../utils/common';
+import { handleAnchor, rem } from '../utils/common';
 
 interface StepContentProps {
   content: Step;
@@ -26,7 +26,7 @@ interface StepContentProps {
 
 const TutureWrapper = styled.div`
   min-width: 400px;
-  width: 58%;
+  width: ${rem(759)}rem;
   margin-left: 282px;
 `;
 
