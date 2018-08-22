@@ -11,6 +11,7 @@ const HeaderWrapper = styled.div`
   height: 60px;
   right: ${rem(160)}rem;
   background-color: rgba(255, 255, 255, 0);
+  z-index: 9999;
 `;
 
 const Button = styled.button`
