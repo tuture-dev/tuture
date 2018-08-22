@@ -25,8 +25,8 @@ interface AppState extends AppProps {
 const AppContent = styled.div`
   width: 80%;
 
-  @media (max-width: 1508px) {
-    width: 95%;
+  @media (max-width: 1408px) {
+    width: 90%;
   }
 
   @media (max-width: 1206px) {

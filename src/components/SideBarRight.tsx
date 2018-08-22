@@ -21,7 +21,7 @@ export interface SideBarRightState {
 }
 
 const SideBarRightWrapper = SideBarLeftWrapper.extend`
-  width: ${rem(270)}rem;
+  width: 200px;
   background-color: white;
   height: 637px;
   margin-top: 32px;
