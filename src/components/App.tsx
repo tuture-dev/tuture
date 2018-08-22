@@ -23,14 +23,14 @@ interface AppState extends AppProps {
 
 /* tslint:disable-next-line */
 const AppContent = styled.div`
-  width: 80%;
+  width: 86%;
 
   @media (max-width: 1408px) {
     width: 90%;
   }
 
   @media (max-width: 1206px) {
-    width: 100%;
+    width: 94%;
   }
 
   margin: 0 auto;
