@@ -27,8 +27,10 @@ const Button = styled.button`
   background-color: ${(props: { isEditMode: boolean }) =>
     props.isEditMode ? '#00B887' : 'white'};
   outline: none;
-  &: hover {
+  &:hover {
     cursor: pointer;
+    transition: box-shadow 0.3s;
+    box-shadow: 0 5px 20px 5px #ddd;
   }
 `;
 
