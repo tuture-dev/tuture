@@ -1,7 +1,6 @@
 /* tslint:disable-next-line */
 import React from 'react';
 import { hydrate } from 'react-dom';
-import hljs from 'highlight.js';
 import io from 'socket.io-client';
 
 function unescape(s: any) {
@@ -23,9 +22,6 @@ hydrate(
   />,
   document.getElementById('root'),
 );
-
-// Syntax highlight on pageload
-hljs.initHighlightingOnLoad();
 
 // Add socket.io client implementation.
 const socket = io();

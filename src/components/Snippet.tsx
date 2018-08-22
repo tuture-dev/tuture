@@ -1,6 +1,9 @@
 import React, { PureComponent } from 'react';
 import { injectGlobal } from 'styled-components';
 
+// @ts-ignore
+import Highlight from 'react-highlight';
+
 interface SnippetProps {
   code: string;
   lang: string;
@@ -106,10 +109,6 @@ injectGlobal`
 
 export default class Snippet extends PureComponent<SnippetProps> {
   render() {
-    return (
-      <pre>
-        <code className={this.props.lang}>{this.props.code}</code>
-      </pre>
-    );
+    return <Highlight className={this.props.lang}>{this.props.code}</Highlight>;
   }
 }
