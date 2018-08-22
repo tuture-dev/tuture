@@ -7,7 +7,7 @@ import Icon from './common/Icon';
 
 const HeaderWrapper = styled.div`
   position: fixed;
-  top: 729px;
+  top: 80vh;
   height: 60px;
   right: ${rem(160)}rem;
   background-color: rgba(255, 255, 255, 0);
