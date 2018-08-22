@@ -128,6 +128,7 @@ const Diff = styled.table`
   table-layout: fixed;
   border-collapse: collapse;
   overflow: auto;
+  width: 100%;
 
   td {
     vertical-align: top;

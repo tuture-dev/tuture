@@ -5,10 +5,6 @@ import { ModeContext } from './App';
 import { rem } from '../utils/common';
 import Icon from './common/Icon';
 
-/* tslint:disable-next-line */
-const HeaderContent = styled.div``;
-
-/* tslint:disable-next-line */
 const HeaderWrapper = styled.div`
   position: fixed;
   top: 729px;
@@ -17,7 +13,6 @@ const HeaderWrapper = styled.div`
   background-color: rgba(255, 255, 255, 0);
 `;
 
-/* tslint:disable-next-line */
 const Button = styled.button`
   height: 60px;
   width: 60px;
@@ -64,11 +59,11 @@ export default class Header extends React.PureComponent {
       <ModeContext.Consumer>
         {({ isEditMode, toggleEditMode }) => (
           <HeaderWrapper>
-            <HeaderContent>
+            <div>
               <Button onClick={toggleEditMode} isEditMode={isEditMode}>
                 {isEditMode ? saveIcon : editButton}
               </Button>
-            </HeaderContent>
+            </div>
           </HeaderWrapper>
         )}
       </ModeContext.Consumer>
