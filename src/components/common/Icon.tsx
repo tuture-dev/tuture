@@ -15,10 +15,10 @@ const StyledSvg = styled.svg`
   height: ${(props: { customStyle: any }) => props.customStyle.height};
   display: ${(props: { customStyle: any }) => props.customStyle.display};
   fill: ${(props: { customStyle: any }) =>
-    props.customStyle.unHoveredFill ? props.customStyle.unHoveredFill : '#FFF'};
+    props.customStyle.unHoveredFill ? props.customStyle.unHoveredFill : null};
   &: hover {
     fill: ${(props: { customStyle: any }) =>
-      props.customStyle.fill ? props.customStyle.fill : '#FFF'};
+      props.customStyle.fill ? props.customStyle.fill : null};
     cursor: pointer;
   }
 `;
