@@ -1,17 +1,19 @@
 import React from 'react';
 import styled from 'styled-components';
 import _ from 'lodash';
+import { inject, observer } from 'mobx-react';
 
 import ExplainedItem from './ExplainedItem';
 import DiffView, { Chunk, File, DiffItem } from './DiffView';
 import { Diff } from '../types';
-import { ModeContext } from './App';
+import Store from './store';
 
 interface StepDiffProps {
   diff: Diff[];
   commit: string;
   diffItem: DiffItem | string;
   index: number;
+  store?: Store;
   updateTutureExplain: (
     commit: string,
     diffKey: string,
@@ -62,6 +64,8 @@ const DiffHeader = styled.header`
   padding-right: 20px;
 `;
 
+@inject('store')
+@observer
 export default class StepDiff extends React.Component<
   StepDiffProps,
   StepDiffState
@@ -136,7 +140,7 @@ export default class StepDiff extends React.Component<
 
   render() {
     const { filesToBeRendered } = this.state;
-    const { updateTutureExplain, commit, index } = this.props;
+    const { updateTutureExplain, commit, index, store } = this.props;
 
     const renderList = filesToBeRendered.map((file: File & Diff, i: number) => {
       // if file display is false or not exists, then not display it
@@ -147,28 +151,24 @@ export default class StepDiff extends React.Component<
       const fileName = fileCopy.file;
       const startLine = fileCopy.section ? fileCopy.section.start : 1;
       return (
-        <ModeContext.Consumer key={i}>
-          {({ isEditMode }) => (
-            <DiffWrapper isEditMode={isEditMode}>
-              <ExplainedItem
-                explain={fileCopy.explain}
-                isRoot={false}
-                commit={commit}
-                diffKey={String(i)}
-                updateTutureExplain={updateTutureExplain}>
-                <DiffView
-                  className="diff-file"
-                  handleCopy={this.handleCopy}
-                  getRenderedHunks={this.getRenderedHunks}
-                  fileCopy={fileCopy}
-                  fileName={fileName}
-                  startLine={startLine}
-                  commit={commit}
-                />
-              </ExplainedItem>
-            </DiffWrapper>
-          )}
-        </ModeContext.Consumer>
+        <DiffWrapper isEditMode={store.isEditMode} key={i}>
+          <ExplainedItem
+            explain={fileCopy.explain}
+            isRoot={false}
+            commit={commit}
+            diffKey={String(i)}
+            updateTutureExplain={updateTutureExplain}>
+            <DiffView
+              className="diff-file"
+              handleCopy={this.handleCopy}
+              getRenderedHunks={this.getRenderedHunks}
+              fileCopy={fileCopy}
+              fileName={fileName}
+              startLine={startLine}
+              commit={commit}
+            />
+          </ExplainedItem>
+        </DiffWrapper>
       );
     });
 

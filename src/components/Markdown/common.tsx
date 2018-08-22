@@ -156,7 +156,7 @@ const BasicButton = styled.button`
   }
 `;
 
-const Button = styled(BasicButton)`
+const Button = BasicButton.extend`
   border: ${(props: { selected?: boolean; color?: string }) =>
     props.color
       ? `1px solid ${props.color}`

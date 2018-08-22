@@ -188,7 +188,7 @@ export default class SideBarRight extends React.Component<
 
   render() {
     const { filenames, stepName } = this.state;
-    const { tuture, nowSelected } = this.props;
+    const { tuture, nowSelected, store } = this.props;
     const { nowStepDiff } = this.getNowStepDiff(tuture, nowSelected);
 
     return (
@@ -197,15 +197,13 @@ export default class SideBarRight extends React.Component<
           <SideBarRightMenuHeaderText>{stepName}</SideBarRightMenuHeaderText>
         </SideBarRightMenuHeader>
         <DragDropContext onDragEnd={this.onDragEnd}>
-          <Droppable
-            droppableId="droppable"
-            isDropDisabled={!this.props.store.isEditMode}>
+          <Droppable droppableId="droppable" isDropDisabled={!store.isEditMode}>
             {(dropProvided) => (
               <TutureMenu innerRef={dropProvided.innerRef}>
                 {filenames.map((filename, i) => (
                   <Draggable
                     key={`${filename}-${i}`}
-                    isDragDisabled={!this.props.store.isEditMode}
+                    isDragDisabled={!store.isEditMode}
                     draggableId={`${filename}-${i}`}
                     index={i}>
                     {(dropProvided, snapshot) => {
@@ -220,9 +218,9 @@ export default class SideBarRight extends React.Component<
                             snapshot.isDragging,
                             dropProvided.draggableProps.style,
                             nowStepDiff[i].display,
-                            this.props.store.isEditMode,
+                            store.isEditMode,
                           )}>
-                          {this.props.store.isEditMode && (
+                          {store.isEditMode && (
                             <Icon
                               name="icon-drag"
                               customStyle={{
@@ -233,7 +231,7 @@ export default class SideBarRight extends React.Component<
                             />
                           )}
                           <MenuItemText>{filename}</MenuItemText>
-                          {this.props.store.isEditMode && (
+                          {store.isEditMode && (
                             <IconHelper>
                               <Icon
                                 name="icon-eye"

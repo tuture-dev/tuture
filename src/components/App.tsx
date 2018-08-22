@@ -23,7 +23,6 @@ interface AppState extends AppProps {
   nowSelected: string;
 }
 
-/* tslint:disable-next-line */
 const AppContent = styled.div`
   width: 86%;
 
@@ -65,7 +64,6 @@ injectGlobal`
 `;
 
 export const ModeContext = React.createContext({
-  isEditMode: true,
   toggleEditMode: () => {},
 });
 
@@ -163,7 +161,6 @@ export default class App extends React.Component<AppProps, AppState> {
   };
 
   render() {
-    let tutorialTitle: string;
     let bodyContent: React.ReactNode;
 
     const { tuture, diff, nowSelected } = this.state;
@@ -176,7 +173,6 @@ export default class App extends React.Component<AppProps, AppState> {
       bodyContent = null;
     } else {
       const commits = extractCommits(tuture as Tuture);
-      tutorialTitle = extractMetaData(tuture as Tuture).name;
       bodyContent = [
         <SideBarLeft
           setSelect={this.setSelect}
@@ -204,7 +200,6 @@ export default class App extends React.Component<AppProps, AppState> {
     return (
       <ModeContext.Provider
         value={{
-          isEditMode: this.props.store.isEditMode,
           toggleEditMode: this.toggleEditMode,
         }}>
         <Header />
