@@ -93,6 +93,10 @@ injectGlobal`
     background-color: rgba(0, 0, 0, .07);
   }
 
+  .diff-gutter:empty:before {
+    content: attr(data-line-number);
+  }
+
 `;
 
 const DiffLine = styled.tr`
