@@ -1,5 +1,19 @@
 # Changelog
 
+## 1.2.0
+
+### New Features
+
+- Add right sidebar for managing changed files within a step easily
+- Updated UI with delicate responsive design
+
+### Improvements
+
+- Personalized placeholder for "Add Explain" buttons
+- Cute icons for markdown editor toolbar
+- Add tooltip after "Adding to Clipboard"
+- Add favicon
+
 ## 1.1.0
 
 ### New Features
