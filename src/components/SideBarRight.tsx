@@ -203,7 +203,6 @@ export default class SideBarRight extends React.Component<
                     draggableId={`${filename}-${i}`}
                     index={i}>
                     {(dropProvided, snapshot) => {
-                      console.log(dropProvided.draggableProps.style);
                       return (
                         <div
                           key={i}
