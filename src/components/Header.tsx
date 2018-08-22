@@ -2,38 +2,25 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { ModeContext } from './App';
+import { rem } from '../utils/common';
+import Icon from './common/Icon';
 
-/* tslint:disable-next-line */
-const HeaderContent = styled.div`
-  max-width: 988px;
-  margin: 0 auto;
-  display: flex;
-  height: 100%;
-  justify-content: flex-end;
-  align-items: center;
-`;
-
-/* tslint:disable-next-line */
 const HeaderWrapper = styled.div`
   position: fixed;
-  top: 0;
-  left: 0;
+  top: 729px;
   height: 60px;
-  width: 100%;
+  right: ${rem(160)}rem;
   background-color: rgba(255, 255, 255, 0);
 `;
 
-/* tslint:disable-next-line */
 const Button = styled.button`
-  border-radius: 4px;
-  height: 30px;
-  line-height: 30px;
-  padding: 0 18px;
+  height: 60px;
+  width: 60px;
+  border-radius: 50%;
   font-size: 12px;
-  box-sizing: border-box;
-  margin-right: 34px;
-  color: ${(props: { isEditMode: boolean }) =>
-    props.isEditMode ? '#FFF' : '#00B887'};
+  display: flex;
+  justify-content: center;
+  align-items: center;
   border-color: ${(props: { isEditMode: boolean }) =>
     props.isEditMode ? 'transparent' : '#00B887'};
   background-color: ${(props: { isEditMode: boolean }) =>
@@ -46,15 +33,37 @@ const Button = styled.button`
 
 export default class Header extends React.PureComponent {
   render() {
+    const editButton = (
+      <Icon
+        name="icon-write"
+        customStyle={{
+          width: '19px',
+          height: '17px',
+          fill: '#FFF',
+          unHoveredFill: '#FFF',
+        }}
+      />
+    );
+
+    const saveIcon = (
+      <Icon
+        name="icon-save"
+        customStyle={{
+          width: '18px',
+          height: '18px',
+          unHoveredFill: '#FFF',
+        }}
+      />
+    );
     return (
       <ModeContext.Consumer>
         {({ isEditMode, toggleEditMode }) => (
           <HeaderWrapper>
-            <HeaderContent>
+            <div>
               <Button onClick={toggleEditMode} isEditMode={isEditMode}>
-                {isEditMode ? '保存' : '编辑'}
+                {isEditMode ? saveIcon : editButton}
               </Button>
-            </HeaderContent>
+            </div>
           </HeaderWrapper>
         )}
       </ModeContext.Consumer>

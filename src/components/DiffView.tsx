@@ -93,6 +93,10 @@ injectGlobal`
     background-color: rgba(0, 0, 0, .07);
   }
 
+  .diff-gutter:empty:before {
+    content: attr(data-line-number);
+  }
+
 `;
 
 const DiffLine = styled.tr`
@@ -124,6 +128,7 @@ const Diff = styled.table`
   table-layout: fixed;
   border-collapse: collapse;
   overflow: auto;
+  width: 100%;
 
   td {
     vertical-align: top;
