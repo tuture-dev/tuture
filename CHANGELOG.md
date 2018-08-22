@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.2.1
+
+### Bug Fixes
+
+Fix bug of Save/Edit button not working.
+
 ## 1.2.0
 
 ### New Features
