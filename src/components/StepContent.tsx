@@ -27,7 +27,11 @@ interface StepContentProps {
 const TutureWrapper = styled.div`
   min-width: 500px;
   width: ${rem(880)}rem;
-  margin-left: ${rem(268)}rem;
+  margin-left: ${rem(288)}rem;
+
+  @media (max-width: 1406px) {
+    margin-left: ${rem(340)}rem;
+  }
 `;
 
 const TutureContentHeader = styled.h1`
