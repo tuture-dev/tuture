@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 import { ToolButton } from './common';
 import { spliceStr, insertStr } from './utils';
+import { rem } from '../../utils/common';
 
 import Icon from '../common/Icon';
 
@@ -36,9 +37,15 @@ const ToolbarWrapper = styled.div`
   flex-direction: rowReverse;
   border-bottom: none;
   height: 28px;
-  padding: 1px 10px;
   padding-top: 8px;
   line-height: 32px;
+`;
+
+const ToolButtonWrapper = styled.div`
+  margin-left: ${rem(40)}rem;
+  @media (max-width: 1300px) {
+    margin-left: ${rem(20)}rem;
+  }
 `;
 
 export default class Toolbar extends React.Component<ToolProps, ToolState> {
@@ -399,7 +406,7 @@ export default class Toolbar extends React.Component<ToolProps, ToolState> {
     return (
       <ToolbarWrapper>
         {toolArr.map((tool, index) => (
-          <div key={index} style={{ marginLeft: 40 }}>
+          <ToolButtonWrapper key={index}>
             {tool.map((toolItem, toolItemIndex) => (
               <ToolButton
                 key={toolItemIndex}
@@ -413,7 +420,7 @@ export default class Toolbar extends React.Component<ToolProps, ToolState> {
               </ToolButton>
             ))}
             {index === 2 && this.props.children}
-          </div>
+          </ToolButtonWrapper>
         ))}
       </ToolbarWrapper>
     );

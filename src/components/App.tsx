@@ -1,6 +1,7 @@
 import React from 'react';
 import styled, { injectGlobal } from 'styled-components';
 import fetch from 'isomorphic-fetch';
+import { inject, observer } from 'mobx-react';
 
 import SideBarLeft from './SideBarLeft';
 import SideBarRight from './SideBarRight';
@@ -10,18 +11,18 @@ import { Tuture, Step } from '../types/';
 import { extractCommits, extractMetaData } from '../utils/extractors';
 import Header from './Header';
 import { reorder, handleAnchor, vwDesign, vwFontsize } from '../utils/common';
+import Store from './store';
 
 export interface AppProps {
   tuture?: Tuture | string;
   diff?: DiffItem[] | string;
+  store?: Store;
 }
 
 interface AppState extends AppProps {
-  isEditMode: boolean;
   nowSelected: string;
 }
 
-/* tslint:disable-next-line */
 const AppContent = styled.div`
   width: 86%;
 
@@ -63,10 +64,11 @@ injectGlobal`
 `;
 
 export const ModeContext = React.createContext({
-  isEditMode: true,
   toggleEditMode: () => {},
 });
 
+@inject('store')
+@observer
 export default class App extends React.Component<AppProps, AppState> {
   constructor(props: AppProps) {
     super(props);
@@ -79,7 +81,6 @@ export default class App extends React.Component<AppProps, AppState> {
     this.state = {
       tuture,
       diff,
-      isEditMode: true,
       nowSelected: handleAnchor(nowAnchorName),
     };
   }
@@ -97,13 +98,11 @@ export default class App extends React.Component<AppProps, AppState> {
   };
 
   toggleEditMode = () => {
-    const { isEditMode } = this.state;
-    if (isEditMode) {
+    const { store } = this.props;
+    store.updateIsEditMode();
+    if (!store.isEditMode) {
       this.saveTuture();
     }
-    this.setState({
-      isEditMode: !isEditMode,
-    });
   };
 
   updateTutureExplain = (
@@ -162,10 +161,9 @@ export default class App extends React.Component<AppProps, AppState> {
   };
 
   render() {
-    let tutorialTitle: string;
     let bodyContent: React.ReactNode;
 
-    const { isEditMode, tuture, diff, nowSelected } = this.state;
+    const { tuture, diff, nowSelected } = this.state;
     if (
       !tuture ||
       Object.keys(tuture).length === 0 ||
@@ -175,7 +173,6 @@ export default class App extends React.Component<AppProps, AppState> {
       bodyContent = null;
     } else {
       const commits = extractCommits(tuture as Tuture);
-      tutorialTitle = extractMetaData(tuture as Tuture).name;
       bodyContent = [
         <SideBarLeft
           setSelect={this.setSelect}
@@ -189,10 +186,9 @@ export default class App extends React.Component<AppProps, AppState> {
           updateTutureDiffOrder={this.updateTutureDiffOrder}
           key="Content"
         />,
-        isEditMode && (
+        this.props.store.isEditMode && (
           <SideBarRight
             key="SideBarRight"
-            isEditMode={isEditMode}
             nowSelected={nowSelected}
             tuture={tuture as Tuture}
             updateTuture={this.updateTuture}
@@ -204,7 +200,6 @@ export default class App extends React.Component<AppProps, AppState> {
     return (
       <ModeContext.Provider
         value={{
-          isEditMode: this.state.isEditMode,
           toggleEditMode: this.toggleEditMode,
         }}>
         <Header />

@@ -13,6 +13,9 @@ import opn from 'opn';
 import socketio from 'socket.io';
 import yaml from 'js-yaml';
 import { ServerStyleSheet, StyleSheetManager } from 'styled-components';
+import { Provider } from 'mobx-react';
+
+import Store from './components/store';
 
 import App from './components/App';
 import { Tuture } from './types/';
@@ -62,11 +65,15 @@ app.get('/', (req, res) => {
     encoding: 'utf8',
   });
 
+  const store = new Store();
+
   // add SSR style
   const sheet = new ServerStyleSheet();
   const body = renderToString(
     <StyleSheetManager sheet={sheet.instance}>
-      <App diff={diff} tuture={JSON.stringify(tuture)} />
+      <Provider store={store}>
+        <App diff={diff} tuture={JSON.stringify(tuture)} />
+      </Provider>
     </StyleSheetManager>,
   );
   const styleTags = sheet.getStyleTags();

@@ -1,6 +1,5 @@
 import React from 'react';
 import classnames from 'classnames';
-import styled from 'styled-components';
 import fetch from 'isomorphic-fetch';
 
 // @ts-ignore
@@ -19,6 +18,7 @@ import {
 import Toolbar from './Toolbar';
 import { insertStr } from './utils';
 import Icon from '../common/Icon';
+import { rem } from '../../utils/common';
 
 interface EditorProps {
   source: string;
@@ -37,7 +37,7 @@ interface EditorState {
   contentRef?: HTMLTextAreaElement;
 }
 
-const TabButton = styled(BasicButton)`
+const TabButton = BasicButton.extend`
   font-size: 14px;
   height: 39px;
   border: ${(props: { selected?: boolean; color?: string }) =>
@@ -56,6 +56,7 @@ const TabButton = styled(BasicButton)`
         : 'rgba(0,0,0,.84)'};
   bottom: ${(props: { selected?: boolean; color?: string }) =>
     props.selected ? '-2px' : 0};
+  padding: 0 ${rem(18)}rem;
 `;
 
 export default class Editor extends React.Component<EditorProps, EditorState> {
