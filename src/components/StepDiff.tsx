@@ -11,6 +11,7 @@ interface StepDiffProps {
   diff: Diff[];
   commit: string;
   diffItem: DiffItem | string;
+  index: number;
   updateTutureExplain: (
     commit: string,
     diffKey: string,
@@ -135,7 +136,7 @@ export default class StepDiff extends React.Component<
 
   render() {
     const { filesToBeRendered } = this.state;
-    const { updateTutureExplain, commit } = this.props;
+    const { updateTutureExplain, commit, index } = this.props;
 
     const renderList = filesToBeRendered.map((file: File & Diff, i: number) => {
       // if file display is false or not exists, then not display it

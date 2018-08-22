@@ -1,15 +1,17 @@
 import React, { PureComponent } from 'react';
+import { inject, observer } from 'mobx-react';
 
 import { Explain } from '../types';
 import { ExplainType } from '../types/ExplainedItem';
 import Markdown from './Markdown/';
-import { ModeContext } from './App';
+import Store from './store';
 
 interface ExplainedItemProps {
   explain: Explain;
   isRoot: boolean;
   commit: string;
   diffKey: string;
+  store?: Store;
   updateTutureExplain: (
     commit: string,
     diffKey: string,
@@ -20,6 +22,8 @@ interface ExplainedItemProps {
 
 interface ExplainedItemState extends Explain {}
 
+@inject('store')
+@observer
 export default class ExplainedItem extends PureComponent<
   ExplainedItemProps,
   ExplainedItemState
@@ -30,22 +34,18 @@ export default class ExplainedItem extends PureComponent<
   };
 
   renderExplain = (type: ExplainType) => {
-    const { isRoot } = this.props;
+    const { isRoot, store } = this.props;
     let { explain } = this.props;
     explain = explain || { pre: '', post: '' };
 
     return (
-      <ModeContext.Consumer>
-        {({ isEditMode }) => (
-          <Markdown
-            type={type}
-            source={explain[type]}
-            isEditMode={isEditMode}
-            isRoot={isRoot}
-            handleSave={this.handleSave}
-          />
-        )}
-      </ModeContext.Consumer>
+      <Markdown
+        type={type}
+        source={explain[type]}
+        isEditMode={store.isEditMode}
+        isRoot={isRoot}
+        handleSave={this.handleSave}
+      />
     );
   };
 

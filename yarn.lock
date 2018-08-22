@@ -2915,6 +2915,17 @@ mkdirp@^0.5.0, mkdirp@^0.5.1, mkdirp@~0.5.0:
   dependencies:
     minimist "0.0.8"
 
+mobx-react@^5.2.5:
+  version "5.2.5"
+  resolved "https://registry.npmjs.org/mobx-react/-/mobx-react-5.2.5.tgz#fc44ac17e1798f6b590f064b831d8a1d89850ef0"
+  dependencies:
+    hoist-non-react-statics "^2.5.0"
+    react-lifecycles-compat "^3.0.2"
+
+mobx@^5.0.4:
+  version "5.0.4"
+  resolved "https://registry.npmjs.org/mobx/-/mobx-5.0.4.tgz#3f0faa74d4214b012d957f6a559e2e3e1aae421e"
+
 morgan@^1.9.0:
   version "1.9.0"
   resolved "https://registry.npmjs.org/morgan/-/morgan-1.9.0.tgz#d01fa6c65859b76fcf31b3cb53a3821a311d8051"
@@ -3719,6 +3730,10 @@ react-highlight@^0.12.0:
 react-is@^16.3.1:
   version "16.4.2"
   resolved "https://registry.npmjs.org/react-is/-/react-is-16.4.2.tgz#84891b56c2b6d9efdee577cc83501dfc5ecead88"
+
+react-lifecycles-compat@^3.0.2:
+  version "3.0.4"
+  resolved "https://registry.npmjs.org/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
 
 react-motion@^0.5.2:
   version "0.5.2"

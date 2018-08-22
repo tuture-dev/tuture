@@ -11,6 +11,7 @@ import { handleAnchor, rem } from '../utils/common';
 interface StepContentProps {
   content: Step;
   diffItem: DiffItem | string;
+  index: number;
   updateTutureExplain: (
     commit: string,
     diffKey: string,
@@ -49,6 +50,7 @@ export default class StepContent extends React.Component<StepContentProps> {
     const {
       content,
       diffItem,
+      index,
       updateTutureExplain,
       updateTutureDiffOrder,
     } = this.props;
@@ -65,6 +67,7 @@ export default class StepContent extends React.Component<StepContentProps> {
           updateTutureExplain={updateTutureExplain}>
           <StepDiff
             diff={diff}
+            index={index}
             diffItem={diffItem}
             commit={commit}
             updateTutureExplain={updateTutureExplain}

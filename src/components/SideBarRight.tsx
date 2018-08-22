@@ -1,17 +1,19 @@
 import React from 'react';
 import styled, { injectGlobal } from 'styled-components';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import { inject, observer } from 'mobx-react';
 
 import { SideBarLeftWrapper } from './SideBarLeft';
 import { TutureMenu, MenuHeader, MenuHeaderText } from './StepList';
 import { reorder, handleAnchor, rem } from '../utils/common';
 import Icon from './common/Icon';
 import { Step, Tuture } from '../types/';
+import Store from './store';
 
 export interface SideBarRightProps {
   nowSelected: string;
   tuture: Tuture;
-  isEditMode: boolean;
+  store?: Store;
   updateTuture: (tuture: Tuture) => void;
 }
 
@@ -89,6 +91,8 @@ const getItemStyle = (
   ...draggableStyle,
 });
 
+@inject('store')
+@observer
 export default class SideBarRight extends React.Component<
   SideBarRightProps,
   SideBarRightState
@@ -184,7 +188,7 @@ export default class SideBarRight extends React.Component<
 
   render() {
     const { filenames, stepName } = this.state;
-    const { isEditMode, tuture, nowSelected } = this.props;
+    const { tuture, nowSelected } = this.props;
     const { nowStepDiff } = this.getNowStepDiff(tuture, nowSelected);
 
     return (
@@ -193,13 +197,15 @@ export default class SideBarRight extends React.Component<
           <SideBarRightMenuHeaderText>{stepName}</SideBarRightMenuHeaderText>
         </SideBarRightMenuHeader>
         <DragDropContext onDragEnd={this.onDragEnd}>
-          <Droppable droppableId="droppable" isDropDisabled={!isEditMode}>
+          <Droppable
+            droppableId="droppable"
+            isDropDisabled={!this.props.store.isEditMode}>
             {(dropProvided) => (
               <TutureMenu innerRef={dropProvided.innerRef}>
                 {filenames.map((filename, i) => (
                   <Draggable
                     key={`${filename}-${i}`}
-                    isDragDisabled={!isEditMode}
+                    isDragDisabled={!this.props.store.isEditMode}
                     draggableId={`${filename}-${i}`}
                     index={i}>
                     {(dropProvided, snapshot) => {
@@ -214,9 +220,9 @@ export default class SideBarRight extends React.Component<
                             snapshot.isDragging,
                             dropProvided.draggableProps.style,
                             nowStepDiff[i].display,
-                            isEditMode,
+                            this.props.store.isEditMode,
                           )}>
-                          {isEditMode && (
+                          {this.props.store.isEditMode && (
                             <Icon
                               name="icon-drag"
                               customStyle={{
@@ -227,7 +233,7 @@ export default class SideBarRight extends React.Component<
                             />
                           )}
                           <MenuItemText>{filename}</MenuItemText>
-                          {isEditMode && (
+                          {this.props.store.isEditMode && (
                             <IconHelper>
                               <Icon
                                 name="icon-eye"

@@ -42,6 +42,7 @@ export default class Content extends React.Component<ContentProps> {
           <StepContent
             key={index}
             content={step}
+            index={index}
             diffItem={diffItem}
             updateTutureExplain={updateTutureExplain}
             updateTutureDiffOrder={updateTutureDiffOrder}

@@ -1,9 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
+import { inject, observer } from 'mobx-react';
 
 import { ModeContext } from './App';
 import { rem } from '../utils/common';
 import Icon from './common/Icon';
+import Store from './store';
 
 const HeaderWrapper = styled.div`
   position: fixed;
@@ -33,8 +35,13 @@ const Button = styled.button`
     box-shadow: 0 5px 20px 5px #ddd;
   }
 `;
+export interface HeaderProps {
+  store?: Store;
+}
 
-export default class Header extends React.PureComponent {
+@inject('store')
+@observer
+export default class Header extends React.Component<HeaderProps> {
   render() {
     const editButton = (
       <Icon
@@ -58,9 +65,11 @@ export default class Header extends React.PureComponent {
         }}
       />
     );
+
+    const { isEditMode } = this.props.store;
     return (
       <ModeContext.Consumer>
-        {({ isEditMode, toggleEditMode }) => (
+        {({ toggleEditMode }) => (
           <HeaderWrapper>
             <div>
               <Button onClick={toggleEditMode} isEditMode={isEditMode}>
