@@ -52,7 +52,7 @@ steps:
       - file: src/index.js
         display: true
         explain:
-          pre: "This is the entry file we're working upon:"
+          pre: 'This is the entry file we''re working upon:'
       - file: index.html
         display: true
         explain:

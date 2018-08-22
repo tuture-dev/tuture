@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import styled, { injectGlobal } from 'styled-components';
 import classnames from 'classnames';
+import { rem } from '../utils/common';
 
 import Snippet from './Snippet';
 import { Diff } from '../types';
@@ -122,7 +123,7 @@ const DiffFileHeader = styled.header`
 const Diff = styled.table`
   table-layout: fixed;
   border-collapse: collapse;
-  width: 100%;
+  overflow: auto;
 
   td {
     vertical-align: top;
@@ -141,7 +142,8 @@ const DiffFileCopyButton = styled.button`
 
 const DiffCode = styled.td`
   padding: 0 20px;
-  width: 557px;
+  overflow: auto;
+  width: ${rem(640)}rem;
 `;
 
 const DiffGutter = styled.td`

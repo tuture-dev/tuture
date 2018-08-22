@@ -4,7 +4,7 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 import { SideBarLeftWrapper } from './SideBarLeft';
 import { TutureMenu, MenuHeader, MenuHeaderText } from './StepList';
-import { reorder, handleAnchor } from '../utils/common';
+import { reorder, handleAnchor, rem } from '../utils/common';
 import Icon from './common/Icon';
 import { Step, Tuture } from '../types/';
 
@@ -21,12 +21,13 @@ export interface SideBarRightState {
 }
 
 const SideBarRightWrapper = SideBarLeftWrapper.extend`
-  width: 270px;
+  width: 200px;
   background-color: white;
   height: 637px;
   margin-top: 32px;
   position: fixed;
-  right: 6%;
+  right: ${rem(100)}rem;
+  background-color: transparent;
 `;
 
 const SideBarRightMenuHeader = MenuHeader.extend`

@@ -9,7 +9,7 @@ import Content from './Content';
 import { Tuture, Step } from '../types/';
 import { extractCommits, extractMetaData } from '../utils/extractors';
 import Header from './Header';
-import { reorder, handleAnchor } from '../utils/common';
+import { reorder, handleAnchor, vwDesign, vwFontsize } from '../utils/common';
 
 export interface AppProps {
   tuture?: Tuture | string;
@@ -23,7 +23,16 @@ interface AppState extends AppProps {
 
 /* tslint:disable-next-line */
 const AppContent = styled.div`
-  width: 80%;
+  width: 86%;
+
+  @media (max-width: 1408px) {
+    width: 90%;
+  }
+
+  @media (max-width: 1206px) {
+    width: 94%;
+  }
+
   margin: 0 auto;
   display: flex;
   justify-content: space-between;
@@ -32,7 +41,7 @@ const AppContent = styled.div`
 
 injectGlobal`
   html {
-    font-size: 100%;
+    font-size: ${(vwFontsize / vwDesign) * 100}vw;
   }
 
   body {
