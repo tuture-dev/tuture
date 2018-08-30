@@ -5,19 +5,7 @@ import { AppProps } from './App';
 import StepContent from './StepContent';
 import { Tuture, Step } from '../types/';
 
-interface ContentProps extends AppProps {
-  updateTutureExplain: (
-    commit: string,
-    diffKey: string,
-    name: 'pre' | 'post',
-    value: string,
-  ) => void;
-  updateTutureDiffOrder: (
-    commit: string,
-    sourceIndex: number,
-    destinationIndex: number,
-  ) => void;
-}
+interface ContentProps extends AppProps {}
 
 /* tslint:disable-next-line */
 const ContentWrapper = styled.div`
@@ -26,12 +14,7 @@ const ContentWrapper = styled.div`
 
 export default class Content extends React.Component<ContentProps> {
   public render() {
-    const {
-      tuture,
-      diff,
-      updateTutureExplain,
-      updateTutureDiffOrder,
-    } = this.props;
+    const { tuture, diff } = this.props;
     const renderContent: any = [];
 
     (tuture as Tuture).steps.map((step, index: number) => {
@@ -44,8 +27,6 @@ export default class Content extends React.Component<ContentProps> {
             content={step}
             index={index}
             diffItem={diffItem}
-            updateTutureExplain={updateTutureExplain}
-            updateTutureDiffOrder={updateTutureDiffOrder}
           />,
         );
       }

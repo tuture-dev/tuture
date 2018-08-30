@@ -14,17 +14,6 @@ interface StepDiffProps {
   diffItem: DiffItem | string;
   index: number;
   store?: Store;
-  updateTutureExplain: (
-    commit: string,
-    diffKey: string,
-    name: 'pre' | 'post',
-    value: string,
-  ) => void;
-  updateTutureDiffOrder: (
-    commit: string,
-    sourceIndex: number,
-    destinationIndex: number,
-  ) => void;
 }
 
 interface StepDiffState {
@@ -140,7 +129,7 @@ export default class StepDiff extends React.Component<
 
   render() {
     const { filesToBeRendered } = this.state;
-    const { updateTutureExplain, commit, index, store } = this.props;
+    const { commit, index, store } = this.props;
 
     const renderList = filesToBeRendered.map((file: File & Diff, i: number) => {
       // if file display is false or not exists, then not display it
@@ -156,8 +145,7 @@ export default class StepDiff extends React.Component<
             explain={fileCopy.explain}
             isRoot={false}
             commit={commit}
-            diffKey={String(i)}
-            updateTutureExplain={updateTutureExplain}>
+            diffKey={String(i)}>
             <DiffView
               className="diff-file"
               handleCopy={this.handleCopy}

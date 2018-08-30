@@ -116,7 +116,7 @@ injectGlobal`
     padding: 20px;
   }
 
-  textarea {
+  input, textarea {
     display: block;
     width: 100%;
     height: auto;
@@ -131,6 +131,10 @@ injectGlobal`
     &:focus {
       outline: none;
     }
+  }
+
+  input {
+    padding: 0 20px;
   }
 `;
 

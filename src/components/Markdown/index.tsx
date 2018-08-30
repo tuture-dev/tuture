@@ -8,7 +8,7 @@ import { BasicButton } from './common';
 import { ExplainType } from '../../types/ExplainedItem';
 import Icon from '../common/Icon';
 
-const EditorWrapper = styled.div`
+export const EditorWrapper = styled.div`
   width: 100%;
   position: relative;
 `;
@@ -31,7 +31,7 @@ const AddExplainWrapper = styled.div`
   }
 `;
 
-const HasExplainWrapper = styled.div`
+export const HasExplainWrapper = styled.div`
   width: 100%;
   height: 100%;
   display: flex;
@@ -49,7 +49,7 @@ const HasExplainWrapper = styled.div`
   }
 `;
 
-const HasExplainButton = styled(BasicButton)`
+export const HasExplainButton = styled(BasicButton)`
   color: ${(props: { color: string; border: string; bColor: string }) =>
     props.color};
   border: ${(props: { color: string; border: string; bColor: string }) =>

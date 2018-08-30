@@ -6,10 +6,10 @@ topics:
   - frontend engineering
 maintainer: dev@tuture.io
 steps:
-  - name: Basic Setup
+  - name: Basic Setupsaasaasasassasasasasasa
     commit: 90ef523
     explain:
-      pre: >
+      pre: >-
         First let's create a directory, initialize npm, [install webpack
         locally](https://webpack.js.org/guides/installation#local-installation),
         and install the **webpack-cli** (the tool used to run webpack on the
@@ -29,6 +29,9 @@ steps:
 
         Now we'll create the following directory structure, files and their
         contents.
+
+
+        Now we are the best
       post: >-
         In this example, there are implicit dependencies between the `<script>`
         tags. Our `index.js` file depends on `lodash` being included in the page
@@ -49,10 +52,6 @@ steps:
 
         Let's use webpack to manage these scripts instead.
     diff:
-      - file: src/index.js
-        display: true
-        explain:
-          pre: "This is the entry file we're working upon:"
       - file: index.html
         display: true
         explain:
@@ -69,7 +68,11 @@ steps:
             > If you want to learn more about the inner workings of
             `package.json`, then we recommend reading the [npm
             documentation](https://docs.npmjs.com/files/package.json).
-  - name: Creating a Bundle
+      - file: src/index.js
+        display: true
+        explain:
+          pre: 'This is the entry file we''re working upon:'
+  - name: Creating a Bundleasasasassassasasaassanc
     commit: cfadaa6
     explain:
       pre: >-
@@ -133,7 +136,7 @@ steps:
             `index.html` file. Let's remove the lodash `<script>`, as we now
             `import` it, and modify the other `<script>` tag to load the bundle,
             instead of the raw `/src` file:
-  - name: Using a Configuration
+  - name: Using a Configurationassasaas
     commit: e0826b9
     explain:
       pre: >-

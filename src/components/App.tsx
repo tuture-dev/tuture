@@ -2,15 +2,16 @@ import React from 'react';
 import styled, { injectGlobal } from 'styled-components';
 import fetch from 'isomorphic-fetch';
 import { inject, observer } from 'mobx-react';
+import { observable, computed } from 'mobx';
 
 import SideBarLeft from './SideBarLeft';
 import SideBarRight from './SideBarRight';
 import { DiffItem } from './DiffView';
 import Content from './Content';
-import { Tuture, Step } from '../types/';
-import { extractCommits, extractMetaData } from '../utils/extractors';
+import { Tuture } from '../types/';
+import { extractCommits } from '../utils/extractors';
 import Header from './Header';
-import { reorder, handleAnchor, vwDesign, vwFontsize } from '../utils/common';
+import { handleAnchor, vwDesign, vwFontsize } from '../utils/common';
 import Store from './store';
 
 export interface AppProps {
@@ -78,22 +79,22 @@ export default class App extends React.Component<AppProps, AppState> {
     diff = JSON.parse(diff as string);
     const nowAnchorName = (tuture as Tuture).steps[0].name;
 
+    props.store.tuture = tuture as Tuture;
+
     this.state = {
-      tuture,
       diff,
       nowSelected: handleAnchor(nowAnchorName),
     };
   }
 
   saveTuture = () => {
-    const { tuture } = this.state;
     fetch(`http://${location.host}/save`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         Accept: 'application/json',
       },
-      body: JSON.stringify(tuture),
+      body: JSON.stringify(this.props.store.tuture),
     });
   };
 
@@ -105,51 +106,8 @@ export default class App extends React.Component<AppProps, AppState> {
     }
   };
 
-  updateTutureExplain = (
-    commit: string,
-    diffKey: string,
-    name: 'pre' | 'post',
-    value: string,
-  ) => {
-    let { tuture } = this.state;
-    tuture = tuture as Tuture;
-    let stepIndex = 0;
-    tuture.steps.filter((step, index) => {
-      if (step.commit === commit) {
-        stepIndex = index;
-      }
-    });
-    const step = tuture.steps[stepIndex];
-    if (diffKey === 'root') {
-      step.explain = { ...step.explain, [name]: value };
-    } else {
-      const diff = step.diff[parseInt(diffKey, 10)];
-      diff.explain = { ...diff.explain, [name]: value };
-    }
-
-    this.setState({ tuture });
-  };
-
-  updateTutureDiffOrder = (
-    commit: string,
-    sourceIndex: number,
-    destinationIndex: number,
-  ) => {
-    let { tuture } = this.state;
-    tuture = tuture as Tuture;
-    let stepIndex = 0;
-    tuture.steps.filter((step, index) => {
-      if (step.commit === commit) {
-        stepIndex = index;
-      }
-    });
-    const step = tuture.steps[stepIndex];
-    step.diff = reorder(step.diff, sourceIndex, destinationIndex);
-    this.setState({ tuture });
-  };
-
   setSelect = (nowSelected: string) => {
-    const { tuture } = this.state;
+    const { tuture } = this.props.store;
     const nowAnchorName = (tuture as Tuture).steps[0].name;
     this.setState({
       nowSelected: nowSelected ? nowSelected : handleAnchor(nowAnchorName),
@@ -163,7 +121,8 @@ export default class App extends React.Component<AppProps, AppState> {
   render() {
     let bodyContent: React.ReactNode;
 
-    const { tuture, diff, nowSelected } = this.state;
+    const { diff, nowSelected } = this.state;
+    const { tuture } = this.props.store;
     if (
       !tuture ||
       Object.keys(tuture).length === 0 ||
@@ -179,13 +138,7 @@ export default class App extends React.Component<AppProps, AppState> {
           commits={commits}
           key="SiderBarLeft"
         />,
-        <Content
-          tuture={tuture}
-          diff={diff}
-          updateTutureExplain={this.updateTutureExplain}
-          updateTutureDiffOrder={this.updateTutureDiffOrder}
-          key="Content"
-        />,
+        <Content tuture={tuture} diff={diff} key="Content" />,
         this.props.store.isEditMode && (
           <SideBarRight
             key="SideBarRight"

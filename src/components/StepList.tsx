@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { Commit } from '../types';
-import { handleAnchor, isClientOrServer } from '../utils/common';
+import { handleAnchor, isClientOrServer, rem } from '../utils/common';
 
 export interface StepListProps {
   commits: Commit[];
@@ -76,7 +76,7 @@ const TutureMenuItem = styled.li`
 /* tslint:disable-next-line */
 const MenuItemContent = styled.a`
   display: block;
-  width: 210px;
+  width: ${rem(210)}rem;
   text-decoration: none;
   color: ${(props: any) =>
     props.className === 'selected'
