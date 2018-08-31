@@ -1,15 +1,16 @@
 import React from 'react';
 import styled from 'styled-components';
+import { inject, observer } from 'mobx-react';
 
 import { Commit } from '../types';
 import { handleAnchor, isClientOrServer, rem } from '../utils/common';
+import Store from './store';
 
 export interface StepListProps {
   commits: Commit[];
-  setSelect: (nowSelected: string) => void;
+  store?: Store;
 }
 export interface StepListState {
-  nowSelected: string;
   itemTopOffsets: HTMLElement[];
 }
 
@@ -35,6 +36,10 @@ export const MenuHeaderText = styled.p`
   margin-bottom: -10px;
   padding-right: 20px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.54);
+  width: 180px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  word-break: break-all;
 `;
 
 export const TutureMenu = styled.ul`
@@ -87,6 +92,8 @@ const MenuItemContent = styled.a`
   word-break: break-all;
 `;
 
+@inject('store')
+@observer
 export default class StepList extends React.Component<
   StepListProps,
   StepListState
@@ -94,15 +101,13 @@ export default class StepList extends React.Component<
   constructor(props: StepListProps) {
     super(props);
 
-    const { commits } = this.props;
     this.state = {
-      nowSelected: handleAnchor(commits[0].name),
       itemTopOffsets: [],
     };
   }
 
   updateSelect = (anchor: string) => {
-    this.setState({ nowSelected: anchor });
+    this.props.store.nowSelected = anchor;
   };
 
   handleScroll = () => {
@@ -118,10 +123,8 @@ export default class StepList extends React.Component<
       return window.scrollY >= itemTopOffset.offsetTop;
     });
     const nowSelected = item ? item.id : '';
-    this.setState({
-      nowSelected,
-    });
-    this.props.setSelect(nowSelected);
+    const { store } = this.props;
+    store.nowSelected = nowSelected ? nowSelected : store.nowSelected;
   };
 
   componentDidMount() {
@@ -141,7 +144,7 @@ export default class StepList extends React.Component<
   }
 
   render() {
-    const { commits } = this.props;
+    const { commits, store } = this.props;
 
     return (
       <TutureSteps>
@@ -153,13 +156,11 @@ export default class StepList extends React.Component<
             <TutureMenuItem
               key={key}
               className={
-                this.state.nowSelected === handleAnchor(item.name)
-                  ? 'selected'
-                  : ''
+                store.nowSelected === handleAnchor(item.name) ? 'selected' : ''
               }>
               <MenuItemContent
                 className={
-                  this.state.nowSelected === handleAnchor(item.name)
+                  store.nowSelected === handleAnchor(item.name)
                     ? 'selected'
                     : ''
                 }

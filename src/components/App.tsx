@@ -2,7 +2,6 @@ import React from 'react';
 import styled, { injectGlobal } from 'styled-components';
 import fetch from 'isomorphic-fetch';
 import { inject, observer } from 'mobx-react';
-import { observable, computed } from 'mobx';
 
 import SideBarLeft from './SideBarLeft';
 import SideBarRight from './SideBarRight';
@@ -20,9 +19,7 @@ export interface AppProps {
   store?: Store;
 }
 
-interface AppState extends AppProps {
-  nowSelected: string;
-}
+interface AppState extends AppProps {}
 
 const AppContent = styled.div`
   width: 86%;
@@ -74,16 +71,16 @@ export default class App extends React.Component<AppProps, AppState> {
   constructor(props: AppProps) {
     super(props);
 
-    let { tuture, diff } = this.props;
+    let { tuture, diff } = props;
+    const { store } = props;
     tuture = JSON.parse(tuture as string);
     diff = JSON.parse(diff as string);
     const nowAnchorName = (tuture as Tuture).steps[0].name;
-
-    props.store.tuture = tuture as Tuture;
+    store.setTuture(tuture as Tuture);
+    store.nowSelected = handleAnchor(nowAnchorName);
 
     this.state = {
       diff,
-      nowSelected: handleAnchor(nowAnchorName),
     };
   }
 
@@ -106,23 +103,12 @@ export default class App extends React.Component<AppProps, AppState> {
     }
   };
 
-  setSelect = (nowSelected: string) => {
-    const { tuture } = this.props.store;
-    const nowAnchorName = (tuture as Tuture).steps[0].name;
-    this.setState({
-      nowSelected: nowSelected ? nowSelected : handleAnchor(nowAnchorName),
-    });
-  };
-
-  updateTuture = (tuture: Tuture) => {
-    this.setState({ tuture });
-  };
-
   render() {
     let bodyContent: React.ReactNode;
 
-    const { diff, nowSelected } = this.state;
+    const { diff } = this.state;
     const { tuture } = this.props.store;
+    console.log('tuture', tuture);
     if (
       !tuture ||
       Object.keys(tuture).length === 0 ||
@@ -133,20 +119,9 @@ export default class App extends React.Component<AppProps, AppState> {
     } else {
       const commits = extractCommits(tuture as Tuture);
       bodyContent = [
-        <SideBarLeft
-          setSelect={this.setSelect}
-          commits={commits}
-          key="SiderBarLeft"
-        />,
-        <Content tuture={tuture} diff={diff} key="Content" />,
-        this.props.store.isEditMode && (
-          <SideBarRight
-            key="SideBarRight"
-            nowSelected={nowSelected}
-            tuture={tuture as Tuture}
-            updateTuture={this.updateTuture}
-          />
-        ),
+        <SideBarLeft commits={commits} key="SiderBarLeft" />,
+        <Content diff={diff} key="Content" />,
+        this.props.store.isEditMode && <SideBarRight key="SideBarRight" />,
       ];
     }
 

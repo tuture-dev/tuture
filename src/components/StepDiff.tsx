@@ -78,7 +78,7 @@ export default class StepDiff extends React.Component<
       diff,
       (diffItem as DiffItem).diff,
     );
-    if (!_.isEqual(filesToBeRendered, this.state.filesToBeRendered)) {
+    if (!_.isEqual(diff, this.props.diff)) {
       this.setState({ filesToBeRendered });
     }
   }
@@ -129,7 +129,7 @@ export default class StepDiff extends React.Component<
 
   render() {
     const { filesToBeRendered } = this.state;
-    const { commit, index, store } = this.props;
+    const { commit, store } = this.props;
 
     const renderList = filesToBeRendered.map((file: File & Diff, i: number) => {
       // if file display is false or not exists, then not display it

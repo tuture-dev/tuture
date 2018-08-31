@@ -6,7 +6,7 @@ topics:
   - frontend engineering
 maintainer: dev@tuture.io
 steps:
-  - name: Basic Setupsaasaasasassasasasasasa
+  - name: Basic Setupsaasaasasaassasasasasasasasaa
     commit: 90ef523
     explain:
       pre: >-
@@ -53,7 +53,7 @@ steps:
         Let's use webpack to manage these scripts instead.
     diff:
       - file: index.html
-        display: true
+        display: false
         explain:
           pre: 'The entire `index.html` looks like this:'
       - file: package.json
@@ -72,7 +72,7 @@ steps:
         display: true
         explain:
           pre: 'This is the entry file we''re working upon:'
-  - name: Creating a Bundleasasasassassasasaassanc
+  - name: Creating a Bundl
     commit: cfadaa6
     explain:
       pre: >-
@@ -136,7 +136,7 @@ steps:
             `index.html` file. Let's remove the lodash `<script>`, as we now
             `import` it, and modify the other `<script>` tag to load the bundle,
             instead of the raw `/src` file:
-  - name: Using a Configurationassasaas
+  - name: Using a Co
     commit: e0826b9
     explain:
       pre: >-

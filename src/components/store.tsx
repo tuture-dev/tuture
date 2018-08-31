@@ -1,7 +1,7 @@
-import { observable, action } from 'mobx';
+import { observable, action, computed } from 'mobx';
 
-import { Tuture } from '../types/';
-import { reorder } from '../utils/common';
+import { Tuture, Step, Diff } from '../types/';
+import { handleAnchor } from '../utils/common';
 
 class Store {
   @observable
@@ -10,9 +10,22 @@ class Store {
   @observable
   tuture: Tuture;
 
+  @observable
+  nowSelected: string;
+
+  @computed
+  get updateTuture() {
+    return this.tuture;
+  }
+
   @action
   updateIsEditMode() {
     this.isEditMode = !this.isEditMode;
+  }
+
+  @action
+  setTuture(tuture: Tuture) {
+    this.tuture = tuture;
   }
 
   @action
