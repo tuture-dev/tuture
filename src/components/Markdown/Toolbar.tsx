@@ -28,10 +28,6 @@ interface ToolProps {
   handleCursor: (position?: number, textarea?: HTMLTextAreaElement) => void;
 }
 
-interface ToolState {
-  tooltipOpacity: string;
-}
-
 const ToolbarWrapper = styled.div`
   display: flex;
   flex-direction: rowReverse;
@@ -48,14 +44,7 @@ const ToolButtonWrapper = styled.div`
   }
 `;
 
-export default class Toolbar extends React.Component<ToolProps, ToolState> {
-  constructor(props: ToolProps) {
-    super(props);
-    this.state = {
-      tooltipOpacity: '0',
-    };
-  }
-
+export default class Toolbar extends React.Component<ToolProps> {
   isAtBeginning = (content: string, selectionStart: number) =>
     selectionStart === 0 || content.slice(0, selectionStart).endsWith('\n');
 

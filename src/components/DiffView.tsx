@@ -57,7 +57,7 @@ export interface DiffItem {
 }
 
 interface ToolTipProps {
-  opacity?: string;
+  display?: string;
 }
 
 interface DiffViewProps {
@@ -71,7 +71,7 @@ interface DiffViewProps {
 }
 
 interface DiffViewState {
-  tooltipOpacity: string;
+  tooltipDisplay: string;
 }
 
 injectGlobal`
@@ -161,7 +161,7 @@ const DiffGutter = styled.td`
 `;
 
 const ToolTip = styled.span`
-  opacity: ${(props: ToolTipProps) => props.opacity};
+  display: ${(props: ToolTipProps) => props.display};
   background-color: black;
   color: #fff;
   text-align: center;
@@ -196,7 +196,7 @@ export default class DiffView extends Component<DiffViewProps, DiffViewState> {
   constructor(props: DiffViewProps) {
     super(props);
     this.state = {
-      tooltipOpacity: '0',
+      tooltipDisplay: 'none',
     };
   }
 
@@ -252,11 +252,11 @@ export default class DiffView extends Component<DiffViewProps, DiffViewState> {
 
   showTooltip = () => {
     this.setState({
-      tooltipOpacity: '0.8',
+      tooltipDisplay: 'block',
     });
     this.time = setTimeout(() => {
       this.setState({
-        tooltipOpacity: '0',
+        tooltipDisplay: 'none',
       });
     }, 1000);
   };
@@ -291,7 +291,7 @@ export default class DiffView extends Component<DiffViewProps, DiffViewState> {
               customStyle={{ width: '16px', height: '20px' }}
             />
           </DiffFileCopyButton>
-          <ToolTip opacity={this.state.tooltipOpacity}>复制成功</ToolTip>
+          <ToolTip display={this.state.tooltipDisplay}>复制成功</ToolTip>
         </DiffFileHeader>
         <Diff id={`${commit}-i`}>
           {chunks.map((chunk: Chunk, key: number) => (
