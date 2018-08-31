@@ -136,9 +136,8 @@ export default class StepDiff extends React.Component<
       if (!file.display) {
         return;
       }
-      const fileCopy: File & Diff = JSON.parse(JSON.stringify(file));
+      const fileCopy: File & Diff = file;
       const fileName = fileCopy.file;
-      const startLine = fileCopy.section ? fileCopy.section.start : 1;
       return (
         <DiffWrapper isEditMode={store.isEditMode} key={i}>
           <ExplainedItem
@@ -152,7 +151,6 @@ export default class StepDiff extends React.Component<
               getRenderedHunks={this.getRenderedHunks}
               fileCopy={fileCopy}
               fileName={fileName}
-              startLine={startLine}
               commit={commit}
             />
           </ExplainedItem>

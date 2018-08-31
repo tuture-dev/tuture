@@ -108,7 +108,6 @@ export default class App extends React.Component<AppProps, AppState> {
 
     const { diff } = this.state;
     const { tuture } = this.props.store;
-    console.log('tuture', tuture);
     if (
       !tuture ||
       Object.keys(tuture).length === 0 ||

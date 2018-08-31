@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import styled, { injectGlobal } from 'styled-components';
 import classnames from 'classnames';
-import { rem } from '../utils/common';
 
+import { rem } from '../utils/common';
 import Snippet from './Snippet';
 import { Diff } from '../types';
 import Icon from './common/Icon';
@@ -61,7 +61,6 @@ interface ToolTipProps {
 }
 
 interface DiffViewProps {
-  startLine: number;
   className?: string;
   fileCopy: File & Diff;
   fileName: string;
@@ -91,10 +90,6 @@ injectGlobal`
   .diff-code-del {
     opacity: 0.3;
     background-color: rgba(0, 0, 0, .07);
-  }
-
-  .diff-gutter:empty:before {
-    content: attr(data-line-number);
   }
 
 `;
@@ -155,7 +150,7 @@ const DiffGutter = styled.td`
   width: 8px;
   padding: 0 16px;
   color: rgba(0, 0, 0, 0.24);
-  & :empty:before {
+  &:empty:before {
     content: attr(data-line-number);
   }
 `;
@@ -193,6 +188,8 @@ const ToolTip = styled.span`
 
 export default class DiffView extends Component<DiffViewProps, DiffViewState> {
   private time: any;
+  private nowLineNumber: number;
+  private nextAddCount: number;
   constructor(props: DiffViewProps) {
     super(props);
     this.state = {
@@ -229,7 +226,7 @@ export default class DiffView extends Component<DiffViewProps, DiffViewState> {
 
     return (
       <DiffLine key={`change${i}`}>
-        {this.renderLineNumber(lineNumberClassName, this.props.startLine + i)}
+        {this.renderLineNumber(lineNumberClassName, i + 1)}
         <DiffCode className={codeClassName}>
           <Snippet code={content.slice(1)} lang={lang} />
         </DiffCode>
@@ -237,7 +234,15 @@ export default class DiffView extends Component<DiffViewProps, DiffViewState> {
     );
   };
 
-  judgeAllRowInsertState = (changes: Change[]) => {
+  judgeAllRowInsertState = (changes: Change[], key: number) => {
+    // these lines of code are for display correct line number
+    if (key === 0) {
+      this.nowLineNumber = 0;
+    } else {
+      this.nowLineNumber = this.nowLineNumber + this.nextAddCount;
+    }
+    this.nextAddCount = changes.length;
+
     let isAllInsert = true;
     changes.map((change) => {
       const { type } = change;
@@ -246,7 +251,7 @@ export default class DiffView extends Component<DiffViewProps, DiffViewState> {
       }
     });
     return changes.map((change, i) => {
-      return this.renderRow(change, isAllInsert, i);
+      return this.renderRow(change, isAllInsert, this.nowLineNumber + i);
     });
   };
 
@@ -275,7 +280,6 @@ export default class DiffView extends Component<DiffViewProps, DiffViewState> {
     } = this.props;
 
     const chunks = getRenderedHunks(fileCopy);
-
     return (
       <DiffFile>
         <DiffFileHeader>
@@ -294,11 +298,11 @@ export default class DiffView extends Component<DiffViewProps, DiffViewState> {
           <ToolTip display={this.state.tooltipDisplay}>复制成功</ToolTip>
         </DiffFileHeader>
         <Diff id={`${commit}-i`}>
-          {chunks.map((chunk: Chunk, key: number) => (
-            <tbody key={key}>
-              {this.judgeAllRowInsertState(chunk.changes)}
-            </tbody>
-          ))}
+          <tbody>
+            {chunks.map((chunk: Chunk, key: number) =>
+              this.judgeAllRowInsertState(chunk.changes, key),
+            )}
+          </tbody>
         </Diff>
       </DiffFile>
     );
