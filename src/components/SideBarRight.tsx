@@ -54,14 +54,6 @@ injectGlobal`
   .menu-item: hover .icon-eye {
     fill: #000
   }
-
-  .icon-eye {
-    opacity: 0;
-
-    &:hover {
-      opacity: 1;
-    }
-  }
 `;
 
 const getItemStyle = (
@@ -212,7 +204,7 @@ export default class SideBarRight extends React.Component<SideBarRightProps> {
                                   width: '20px',
                                   height: '13px',
                                   unHoveredFill: nowStepDiff[i].display
-                                    ? '#FFF'
+                                    ? 'rgba(0, 0, 0, 0)'
                                     : 'rgba(0, 0, 0, .24)',
                                 }}
                               />

@@ -107,6 +107,10 @@ injectGlobal`
     padding: 0 24px 12px;
   }
 
+  .editor {
+    min-width: 550px;
+  }
+
   .editor > .isRoot {
     padding-left: 0;
     padding-right: 0;
