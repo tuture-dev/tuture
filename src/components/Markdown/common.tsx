@@ -50,7 +50,7 @@ injectGlobal`
 
   .markdown img {
     display: block;
-    width: 100%;
+    max-width: 100%;
     margin: 44px 0;
   }
 
