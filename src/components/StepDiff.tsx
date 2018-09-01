@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import _ from 'lodash';
+import isEqual from 'lodash.isequal';
 import { inject, observer } from 'mobx-react';
 
 import ExplainedItem from './ExplainedItem';
@@ -78,7 +78,7 @@ export default class StepDiff extends React.Component<
       diff,
       (diffItem as DiffItem).diff,
     );
-    if (!_.isEqual(diff, this.props.diff)) {
+    if (!isEqual(diff, this.props.diff)) {
       this.setState({ filesToBeRendered });
     }
   }

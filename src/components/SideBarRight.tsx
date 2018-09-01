@@ -2,8 +2,6 @@ import React from 'react';
 import styled, { injectGlobal } from 'styled-components';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { inject, observer } from 'mobx-react';
-import { computed, toJS } from 'mobx';
-import _ from 'lodash';
 
 import { SideBarLeftWrapper } from './SideBarLeft';
 import { TutureMenu, MenuHeaderText } from './StepList';

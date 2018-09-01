@@ -35,13 +35,14 @@ class Store {
       return;
     }
     let stepIndex = 0;
-    tuture.steps.filter((step, index) => {
+    tuture.steps.map((step, index) => {
       if (step.commit === commit) {
         stepIndex = index;
       }
     });
     const step = tuture.steps[stepIndex];
     step.name = value;
+    this.nowSelected = handleAnchor(value);
   }
 
   @action

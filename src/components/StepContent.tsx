@@ -115,12 +115,14 @@ export default class StepContent extends React.Component<
             [
               <input
                 type="text"
+                key="input"
                 maxLength={40}
                 value={this.state.name}
                 style={disable ? { borderColor: 'red' } : {}}
                 onChange={this.updateName}
               />,
               <div
+                key="saveButton"
                 style={{
                   display: 'flex',
                   flexDirection: 'row-reverse',
