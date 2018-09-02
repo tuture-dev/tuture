@@ -4,22 +4,14 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { inject, observer } from 'mobx-react';
 
 import { SideBarLeftWrapper } from './SideBarLeft';
-import { TutureMenu, MenuHeader, MenuHeaderText } from './StepList';
+import { TutureMenu, MenuHeaderText } from './StepList';
 import { reorder, handleAnchor, rem } from '../utils/common';
 import Icon from './common/Icon';
-import { Step, Tuture } from '../types/';
+import { Tuture, Step } from '../types/';
 import Store from './store';
 
 export interface SideBarRightProps {
-  nowSelected: string;
-  tuture: Tuture;
   store?: Store;
-  updateTuture: (tuture: Tuture) => void;
-}
-
-export interface SideBarRightState {
-  filenames: string[];
-  stepName: string;
 }
 
 const SideBarRightWrapper = SideBarLeftWrapper.extend`
@@ -30,11 +22,6 @@ const SideBarRightWrapper = SideBarLeftWrapper.extend`
   position: fixed;
   right: ${rem(100)}rem;
   background-color: transparent;
-`;
-
-const SideBarRightMenuHeader = MenuHeader.extend`
-  padding-left: 16px;
-  margin-bottom: 16px;
 `;
 
 const SideBarRightMenuHeaderText = MenuHeaderText.extend`
@@ -93,23 +80,44 @@ const getItemStyle = (
 
 @inject('store')
 @observer
-export default class SideBarRight extends React.Component<
-  SideBarRightProps,
-  SideBarRightState
-> {
-  constructor(props: SideBarRightProps) {
-    super(props);
-    const { tuture, nowSelected } = props;
+export default class SideBarRight extends React.Component<SideBarRightProps> {
+  onDragEnd = (result: any) => {
+    // dropped outside the list
+    if (!result.destination) {
+      return;
+    }
 
-    this.state = {
-      ...this.getNames(tuture, nowSelected),
-    };
-  }
+    const { store } = this.props;
+    const { tuture, nowSelected } = store;
+    const nowStepIndex = this.getNowStepIndex(tuture, nowSelected);
+    const nowStepDiff = this.getNowStepDiff();
 
-  getNames = (tuture: Tuture, nowSelected: string) => {
+    tuture.steps[nowStepIndex].diff = reorder(
+      nowStepDiff,
+      result.source.index,
+      result.destination.index,
+    );
+    store.tuture = tuture;
+  };
+
+  handleToggleDisplay = (i: number) => {
+    const { store } = this.props;
+    const { tuture, nowSelected } = store;
+    const nowStepIndex = this.getNowStepIndex(tuture, nowSelected);
+    let nowStepDiff = this.getNowStepDiff();
+
+    nowStepDiff = nowStepDiff
+      .slice(0, i)
+      .concat({ ...nowStepDiff[i], display: !nowStepDiff[i].display })
+      .concat(nowStepDiff.slice(i + 1));
+    store.tuture.steps[nowStepIndex].diff = nowStepDiff;
+  };
+
+  getNames = () => {
+    const { store } = this.props;
     let nowStep: Step;
-    tuture.steps.map((step) => {
-      if (handleAnchor(step.name) === nowSelected) {
+    store.tuture.steps.map((step) => {
+      if (handleAnchor(step.name) === store.nowSelected) {
         nowStep = step;
       }
     });
@@ -121,15 +129,6 @@ export default class SideBarRight extends React.Component<
     };
   };
 
-  componentWillReceiveProps(nextProps: SideBarRightProps) {
-    if (nextProps.nowSelected !== this.props.nowSelected) {
-      const { nowSelected, tuture } = nextProps;
-      this.setState({
-        ...this.getNames(tuture, nowSelected),
-      });
-    }
-  }
-
   getNowStepIndex = (tuture: Tuture, nowSelected: string) => {
     let nowStepIndex = 0;
     tuture.steps.map((step, index) => {
@@ -140,62 +139,24 @@ export default class SideBarRight extends React.Component<
     return nowStepIndex;
   };
 
-  onDragEnd = (result: any) => {
-    // dropped outside the list
-    if (!result.destination) {
-      return;
-    }
-
-    const filenames = reorder(
-      this.state.filenames,
-      result.source.index,
-      result.destination.index,
-    );
-    this.setState({ filenames });
-
-    const { nowSelected, tuture } = this.props;
-    const { nowStepDiff, nowStepIndex } = this.getNowStepDiff(
-      tuture,
-      nowSelected,
-    );
-    tuture.steps[nowStepIndex].diff = reorder(
-      nowStepDiff,
-      result.source.index,
-      result.destination.index,
-    );
-    this.props.updateTuture(tuture);
-  };
-
-  getNowStepDiff = (tuture: Tuture, nowSelected: string) => {
+  getNowStepDiff = () => {
+    const { store } = this.props;
+    const { tuture, nowSelected } = store;
     const nowStepIndex = this.getNowStepIndex(tuture, nowSelected);
     const nowStepDiff = tuture.steps[nowStepIndex].diff;
-    return {
-      nowStepIndex,
-      nowStepDiff,
-    };
-  };
-
-  handleToggleDisplay = (i: number) => {
-    const { tuture, nowSelected } = this.props;
-    const { nowStepDiff, nowStepIndex } = this.getNowStepDiff(
-      tuture,
-      nowSelected,
-    );
-    nowStepDiff[i].display = !nowStepDiff[i].display;
-    tuture.steps[nowStepIndex].diff = nowStepDiff;
-    this.props.updateTuture(tuture);
+    return nowStepDiff;
   };
 
   render() {
-    const { filenames, stepName } = this.state;
-    const { tuture, nowSelected, store } = this.props;
-    const { nowStepDiff } = this.getNowStepDiff(tuture, nowSelected);
+    const { store } = this.props;
+    const { filenames, stepName } = this.getNames();
+    const { tuture, nowSelected } = store;
+    const nowStepIndex = this.getNowStepIndex(tuture, nowSelected);
+    const nowStepDiff = tuture.steps[nowStepIndex].diff;
 
     return (
       <SideBarRightWrapper>
-        <SideBarRightMenuHeader>
-          <SideBarRightMenuHeaderText>{stepName}</SideBarRightMenuHeaderText>
-        </SideBarRightMenuHeader>
+        <SideBarRightMenuHeaderText>{stepName}</SideBarRightMenuHeaderText>
         <DragDropContext onDragEnd={this.onDragEnd}>
           <Droppable droppableId="droppable" isDropDisabled={!store.isEditMode}>
             {(dropProvided) => (
@@ -241,7 +202,7 @@ export default class SideBarRight extends React.Component<
                                   width: '20px',
                                   height: '13px',
                                   unHoveredFill: nowStepDiff[i].display
-                                    ? '#FFF'
+                                    ? 'rgba(0, 0, 0, 0)'
                                     : 'rgba(0, 0, 0, .24)',
                                 }}
                               />

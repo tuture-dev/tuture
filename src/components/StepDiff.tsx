@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import _ from 'lodash';
+import isEqual from 'lodash.isequal';
 import { inject, observer } from 'mobx-react';
 
 import ExplainedItem from './ExplainedItem';
@@ -14,17 +14,6 @@ interface StepDiffProps {
   diffItem: DiffItem | string;
   index: number;
   store?: Store;
-  updateTutureExplain: (
-    commit: string,
-    diffKey: string,
-    name: 'pre' | 'post',
-    value: string,
-  ) => void;
-  updateTutureDiffOrder: (
-    commit: string,
-    sourceIndex: number,
-    destinationIndex: number,
-  ) => void;
 }
 
 interface StepDiffState {
@@ -89,7 +78,7 @@ export default class StepDiff extends React.Component<
       diff,
       (diffItem as DiffItem).diff,
     );
-    if (!_.isEqual(filesToBeRendered, this.state.filesToBeRendered)) {
+    if (!isEqual(diff, this.props.diff)) {
       this.setState({ filesToBeRendered });
     }
   }
@@ -140,31 +129,28 @@ export default class StepDiff extends React.Component<
 
   render() {
     const { filesToBeRendered } = this.state;
-    const { updateTutureExplain, commit, index, store } = this.props;
+    const { commit, store } = this.props;
 
     const renderList = filesToBeRendered.map((file: File & Diff, i: number) => {
       // if file display is false or not exists, then not display it
       if (!file.display) {
         return;
       }
-      const fileCopy: File & Diff = JSON.parse(JSON.stringify(file));
+      const fileCopy: File & Diff = file;
       const fileName = fileCopy.file;
-      const startLine = fileCopy.section ? fileCopy.section.start : 1;
       return (
         <DiffWrapper isEditMode={store.isEditMode} key={i}>
           <ExplainedItem
             explain={fileCopy.explain}
             isRoot={false}
             commit={commit}
-            diffKey={String(i)}
-            updateTutureExplain={updateTutureExplain}>
+            diffKey={String(i)}>
             <DiffView
               className="diff-file"
               handleCopy={this.handleCopy}
               getRenderedHunks={this.getRenderedHunks}
               fileCopy={fileCopy}
               fileName={fileName}
-              startLine={startLine}
               commit={commit}
             />
           </ExplainedItem>

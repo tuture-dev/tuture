@@ -1,40 +1,27 @@
 import React from 'react';
 import styled from 'styled-components';
+import { inject, observer } from 'mobx-react';
 
 import { AppProps } from './App';
 import StepContent from './StepContent';
-import { Tuture, Step } from '../types/';
+import { Tuture } from '../types/';
+import Store from './store';
 
-interface ContentProps extends AppProps {
-  updateTutureExplain: (
-    commit: string,
-    diffKey: string,
-    name: 'pre' | 'post',
-    value: string,
-  ) => void;
-  updateTutureDiffOrder: (
-    commit: string,
-    sourceIndex: number,
-    destinationIndex: number,
-  ) => void;
-}
+interface ContentProps extends AppProps {}
 
 /* tslint:disable-next-line */
 const ContentWrapper = styled.div`
   margin-top: -32px;
 `;
 
+@inject('store')
+@observer
 export default class Content extends React.Component<ContentProps> {
   public render() {
-    const {
-      tuture,
-      diff,
-      updateTutureExplain,
-      updateTutureDiffOrder,
-    } = this.props;
+    const { store, diff } = this.props;
     const renderContent: any = [];
 
-    (tuture as Tuture).steps.map((step, index: number) => {
+    store.tuture.steps.map((step, index: number) => {
       const diffItem = diff[index];
 
       if (!step.outdated) {
@@ -44,8 +31,6 @@ export default class Content extends React.Component<ContentProps> {
             content={step}
             index={index}
             diffItem={diffItem}
-            updateTutureExplain={updateTutureExplain}
-            updateTutureDiffOrder={updateTutureDiffOrder}
           />,
         );
       }

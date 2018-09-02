@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 
 import { Explain } from '../types';
@@ -12,25 +12,19 @@ interface ExplainedItemProps {
   commit: string;
   diffKey: string;
   store?: Store;
-  updateTutureExplain: (
-    commit: string,
-    diffKey: string,
-    name: ExplainType,
-    value: string,
-  ) => void;
 }
 
 interface ExplainedItemState extends Explain {}
 
 @inject('store')
 @observer
-export default class ExplainedItem extends PureComponent<
+export default class ExplainedItem extends Component<
   ExplainedItemProps,
   ExplainedItemState
 > {
   handleSave = (type: ExplainType, value: string) => {
-    const { updateTutureExplain, commit, diffKey } = this.props;
-    updateTutureExplain(commit, diffKey, type, value);
+    const { store, commit, diffKey } = this.props;
+    store.updateTutureExplain(commit, diffKey, type, value);
   };
 
   renderExplain = (type: ExplainType) => {

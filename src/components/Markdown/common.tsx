@@ -50,7 +50,7 @@ injectGlobal`
 
   .markdown img {
     display: block;
-    width: 680px;
+    max-width: 100%;
     margin: 44px 0;
   }
 
@@ -107,6 +107,10 @@ injectGlobal`
     padding: 0 24px 12px;
   }
 
+  .editor {
+    min-width: 550px;
+  }
+
   .editor > .isRoot {
     padding-left: 0;
     padding-right: 0;
@@ -116,7 +120,7 @@ injectGlobal`
     padding: 20px;
   }
 
-  textarea {
+  input, textarea {
     display: block;
     width: 100%;
     height: auto;
@@ -131,6 +135,10 @@ injectGlobal`
     &:focus {
       outline: none;
     }
+  }
+
+  input {
+    padding: 0 20px;
   }
 `;
 

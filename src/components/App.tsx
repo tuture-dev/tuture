@@ -7,10 +7,10 @@ import SideBarLeft from './SideBarLeft';
 import SideBarRight from './SideBarRight';
 import { DiffItem } from './DiffView';
 import Content from './Content';
-import { Tuture, Step } from '../types/';
-import { extractCommits, extractMetaData } from '../utils/extractors';
+import { Tuture } from '../types/';
+import { extractCommits } from '../utils/extractors';
 import Header from './Header';
-import { reorder, handleAnchor, vwDesign, vwFontsize } from '../utils/common';
+import { handleAnchor, vwDesign, vwFontsize } from '../utils/common';
 import Store from './store';
 
 export interface AppProps {
@@ -19,9 +19,7 @@ export interface AppProps {
   store?: Store;
 }
 
-interface AppState extends AppProps {
-  nowSelected: string;
-}
+interface AppState extends AppProps {}
 
 const AppContent = styled.div`
   width: 86%;
@@ -73,27 +71,27 @@ export default class App extends React.Component<AppProps, AppState> {
   constructor(props: AppProps) {
     super(props);
 
-    let { tuture, diff } = this.props;
+    let { tuture, diff } = props;
+    const { store } = props;
     tuture = JSON.parse(tuture as string);
     diff = JSON.parse(diff as string);
     const nowAnchorName = (tuture as Tuture).steps[0].name;
+    store.setTuture(tuture as Tuture);
+    store.nowSelected = handleAnchor(nowAnchorName);
 
     this.state = {
-      tuture,
       diff,
-      nowSelected: handleAnchor(nowAnchorName),
     };
   }
 
   saveTuture = () => {
-    const { tuture } = this.state;
     fetch(`http://${location.host}/save`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         Accept: 'application/json',
       },
-      body: JSON.stringify(tuture),
+      body: JSON.stringify(this.props.store.tuture),
     });
   };
 
@@ -105,65 +103,11 @@ export default class App extends React.Component<AppProps, AppState> {
     }
   };
 
-  updateTutureExplain = (
-    commit: string,
-    diffKey: string,
-    name: 'pre' | 'post',
-    value: string,
-  ) => {
-    let { tuture } = this.state;
-    tuture = tuture as Tuture;
-    let stepIndex = 0;
-    tuture.steps.filter((step, index) => {
-      if (step.commit === commit) {
-        stepIndex = index;
-      }
-    });
-    const step = tuture.steps[stepIndex];
-    if (diffKey === 'root') {
-      step.explain = { ...step.explain, [name]: value };
-    } else {
-      const diff = step.diff[parseInt(diffKey, 10)];
-      diff.explain = { ...diff.explain, [name]: value };
-    }
-
-    this.setState({ tuture });
-  };
-
-  updateTutureDiffOrder = (
-    commit: string,
-    sourceIndex: number,
-    destinationIndex: number,
-  ) => {
-    let { tuture } = this.state;
-    tuture = tuture as Tuture;
-    let stepIndex = 0;
-    tuture.steps.filter((step, index) => {
-      if (step.commit === commit) {
-        stepIndex = index;
-      }
-    });
-    const step = tuture.steps[stepIndex];
-    step.diff = reorder(step.diff, sourceIndex, destinationIndex);
-    this.setState({ tuture });
-  };
-
-  setSelect = (nowSelected: string) => {
-    const { tuture } = this.state;
-    const nowAnchorName = (tuture as Tuture).steps[0].name;
-    this.setState({
-      nowSelected: nowSelected ? nowSelected : handleAnchor(nowAnchorName),
-    });
-  };
-
-  updateTuture = (tuture: Tuture) => {
-    this.setState({ tuture });
-  };
-
   render() {
     let bodyContent: React.ReactNode;
 
-    const { tuture, diff, nowSelected } = this.state;
+    const { diff } = this.state;
+    const { tuture } = this.props.store;
     if (
       !tuture ||
       Object.keys(tuture).length === 0 ||
@@ -174,26 +118,9 @@ export default class App extends React.Component<AppProps, AppState> {
     } else {
       const commits = extractCommits(tuture as Tuture);
       bodyContent = [
-        <SideBarLeft
-          setSelect={this.setSelect}
-          commits={commits}
-          key="SiderBarLeft"
-        />,
-        <Content
-          tuture={tuture}
-          diff={diff}
-          updateTutureExplain={this.updateTutureExplain}
-          updateTutureDiffOrder={this.updateTutureDiffOrder}
-          key="Content"
-        />,
-        this.props.store.isEditMode && (
-          <SideBarRight
-            key="SideBarRight"
-            nowSelected={nowSelected}
-            tuture={tuture as Tuture}
-            updateTuture={this.updateTuture}
-          />
-        ),
+        <SideBarLeft commits={commits} key="SiderBarLeft" />,
+        <Content diff={diff} key="Content" />,
+        this.props.store.isEditMode && <SideBarRight key="SideBarRight" />,
       ];
     }
 
