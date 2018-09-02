@@ -1,8 +1,6 @@
+import hljs from 'highlight.js';
 import React, { PureComponent } from 'react';
 import { injectGlobal } from 'styled-components';
-
-// @ts-ignore
-import Highlight from 'react-highlight';
 
 interface SnippetProps {
   code: string;
@@ -108,7 +106,39 @@ injectGlobal`
 `;
 
 export default class Snippet extends PureComponent<SnippetProps> {
+  el: HTMLElement;
+
+  constructor(props: SnippetProps) {
+    super(props);
+  }
+
+  componentDidMount() {
+    this.highlightCode();
+  }
+
+  componentDidUpdate() {
+    this.highlightCode();
+  }
+
+  highlightCode() {
+    const nodes = this.el.querySelectorAll('pre code');
+
+    for (let i = 0; i < nodes.length; i += 1) {
+      hljs.highlightBlock(nodes[i]);
+    }
+  }
+
+  setEl = (el: HTMLElement) => {
+    this.el = el;
+  };
+
   render() {
-    return <Highlight className={this.props.lang}>{this.props.code}</Highlight>;
+    const { lang, code } = this.props;
+
+    return (
+      <pre ref={this.setEl}>
+        <code className={lang}>{code}</code>
+      </pre>
+    );
   }
 }
