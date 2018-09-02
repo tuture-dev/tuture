@@ -1,5 +1,6 @@
 import React from 'react';
 import marked from 'marked';
+import hljs from 'highlight.js';
 
 export interface ViewerProps {
   source: string;
@@ -7,6 +8,8 @@ export interface ViewerProps {
 }
 
 export default class Viewer extends React.Component<ViewerProps> {
+  el: HTMLElement;
+
   getMarkdownText(source: string) {
     if (!source) {
       return;
@@ -19,10 +22,31 @@ export default class Viewer extends React.Component<ViewerProps> {
     return { __html: rawMarkup };
   }
 
+  componentDidMount() {
+    this.highlightCode();
+  }
+
+  componentDidUpdate() {
+    this.highlightCode();
+  }
+
+  highlightCode() {
+    const nodes = this.el.querySelectorAll('pre code');
+
+    for (let i = 0; i < nodes.length; i += 1) {
+      hljs.highlightBlock(nodes[i]);
+    }
+  }
+
+  setEl = (el: HTMLElement) => {
+    this.el = el;
+  };
+
   render() {
     const { source, classnames } = this.props;
     return (
       <div
+        ref={this.setEl}
         dangerouslySetInnerHTML={this.getMarkdownText(source)}
         className={classnames}
       />
