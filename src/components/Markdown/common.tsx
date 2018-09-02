@@ -147,6 +147,7 @@ const TabWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   height: 40px;
+  margin-top: 1px;
 `;
 
 const BasicButton = styled.button`

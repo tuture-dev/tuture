@@ -49,6 +49,10 @@ export const HasExplainWrapper = styled.div`
   }
 `;
 
+const ContentHasExplainWrapper = HasExplainWrapper.extend`
+  padding: 8px 0;
+`;
+
 export const HasExplainButton = styled(BasicButton)`
   color: ${(props: { color: string; border: string; bColor: string }) =>
     props.color};
@@ -151,7 +155,7 @@ export default class Markdown extends React.Component<
             classnames={classnames('markdown', { isRoot })}
           />
           {content ? (
-            <HasExplainWrapper>
+            <ContentHasExplainWrapper>
               <div>
                 <HasExplainButton
                   color="#00B887"
@@ -168,7 +172,7 @@ export default class Markdown extends React.Component<
                   删除
                 </HasExplainButton>
               </div>
-            </HasExplainWrapper>
+            </ContentHasExplainWrapper>
           ) : (
             <AddExplainWrapper onClick={() => this.handleAddExplain()}>
               <Icon
