@@ -9,6 +9,7 @@ import Store from './store';
 export interface StepListProps {
   commits: Commit[];
   store?: Store;
+  className?: string;
 }
 export interface StepListState {
   itemTopOffsets: HTMLElement[];

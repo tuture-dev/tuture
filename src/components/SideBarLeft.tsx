@@ -11,13 +11,14 @@ export const SideBarLeftWrapper = styled.div`
   height: 637px;
   margin-top: 20px;
   position: fixed;
+  transition: opacity 0.5s;
 `;
 
 export default class SideBarLeft extends React.Component<StepListProps> {
   render() {
-    const { commits } = this.props;
+    const { commits, className } = this.props;
     return (
-      <SideBarLeftWrapper>
+      <SideBarLeftWrapper className={className}>
         <StepList commits={commits} />
       </SideBarLeftWrapper>
     );
