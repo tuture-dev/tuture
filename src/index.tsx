@@ -128,7 +128,7 @@ app.get('/reload', (req, res) => {
 });
 
 server.listen(port, () => {
-  if (!inDevMode) {
+  if (inDevMode) {
     const url = `http://localhost:${port}`;
     console.log(`Tutorial is served on ${url}`);
     opn(url);

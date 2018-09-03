@@ -21,9 +21,7 @@ export interface AppProps {
   store?: Store;
 }
 
-interface AppState extends AppProps {
-  showSideBar?: boolean;
-}
+interface AppState extends AppProps {}
 
 const AppContent = styled.div`
   width: 86%;
@@ -94,7 +92,6 @@ export default class App extends React.Component<AppProps, AppState> {
 
     this.state = {
       diff,
-      showSideBar: false,
     };
   }
 
@@ -117,23 +114,19 @@ export default class App extends React.Component<AppProps, AppState> {
     }
   };
 
-  toggleShowSideBar = (rs: boolean) => {
-    this.setState({
-      showSideBar: rs,
-    });
-  };
-
   render() {
     let bodyContent: React.ReactNode;
 
     const { diff } = this.state;
-    const { tuture } = this.props.store;
+    const { store } = this.props;
+    const { tuture } = store;
 
     const briefInfo = {
-      userAvatar: '../example',
+      userAvatar:
+        'https://static.tuture.co/5b8bcccf0ff7ab20e243c552/avatar_small',
       userName: 'Tom Huang',
-      publishTime: '2018 年 6 月 6 日',
-      timeNeeded: 4,
+      publishTime: '2018 年 9 月 3 日',
+      timeNeeded: 0.06,
       briefTitle: 'Git 原理详解及使用指南',
       briefDescribe: `随着这几年 GitHub 的流行，Git已经是一个程序员逃不过的技术项，
         但很多人却纷纷倒在了学习它的路上。而且，出于工作原因而不得不用Git 的人，
@@ -150,26 +143,11 @@ export default class App extends React.Component<AppProps, AppState> {
       bodyContent = null;
     } else {
       const commits = extractCommits(tuture as Tuture);
-      const { showSideBar } = this.state;
-      const sideBarOpacity = classnames(
-        { showSideBar },
-        { hideSideBar: !showSideBar },
-      );
       bodyContent = [
-        <Brief
-          key="Brief"
-          briefInfo={briefInfo}
-          toggleShowSideBar={this.toggleShowSideBar}
-        />,
-        <SideBarLeft
-          commits={commits}
-          className={sideBarOpacity}
-          key="SiderBarLeft"
-        />,
+        <Brief key="Brief" briefInfo={briefInfo} />,
+        <SideBarLeft commits={commits} key="SiderBarLeft" />,
         <Content diff={diff} key="Content" />,
-        this.props.store.isEditMode && (
-          <SideBarRight key="SideBarRight" className={sideBarOpacity} />
-        ),
+        this.props.store.isEditMode && <SideBarRight key="SideBarRight" />,
       ];
     }
 

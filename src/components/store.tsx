@@ -1,6 +1,7 @@
 import { observable, action, computed } from 'mobx';
+import classnames from 'classnames';
 
-import { Tuture, Step, Diff } from '../types/';
+import { Tuture } from '../types/';
 import { handleAnchor } from '../utils/common';
 
 class Store {
@@ -13,9 +14,25 @@ class Store {
   @observable
   nowSelected: string;
 
+  @observable
+  sidebarStatus = false;
+
   @computed
   get updateTuture() {
     return this.tuture;
+  }
+
+  @computed
+  get sidebarOpacityClass() {
+    return classnames(
+      { showSideBar: this.sidebarStatus },
+      { hideSideBar: !this.sidebarStatus },
+    );
+  }
+
+  @action
+  toggleShowSideBar(sidebarStatus: boolean) {
+    this.sidebarStatus = sidebarStatus;
   }
 
   @action

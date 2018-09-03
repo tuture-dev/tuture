@@ -12,7 +12,6 @@ import Store from './store';
 
 export interface SideBarRightProps {
   store?: Store;
-  className?: string;
 }
 
 const SideBarRightWrapper = SideBarLeftWrapper.extend`
@@ -149,14 +148,14 @@ export default class SideBarRight extends React.Component<SideBarRightProps> {
   };
 
   render() {
-    const { store, className } = this.props;
+    const { store } = this.props;
     const { filenames, stepName } = this.getNames();
     const { tuture, nowSelected } = store;
     const nowStepIndex = this.getNowStepIndex(tuture, nowSelected);
     const nowStepDiff = tuture.steps[nowStepIndex].diff;
 
     return (
-      <SideBarRightWrapper className={className}>
+      <SideBarRightWrapper className={store.sidebarOpacityClass}>
         <SideBarRightMenuHeaderText>{stepName}</SideBarRightMenuHeaderText>
         <DragDropContext onDragEnd={this.onDragEnd}>
           <Droppable droppableId="droppable" isDropDisabled={!store.isEditMode}>

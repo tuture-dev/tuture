@@ -6,7 +6,6 @@ import Store from './store';
 
 export interface BriefProps {
   store?: Store;
-  toggleShowSideBar?: (rs: boolean) => void;
   briefInfo: any;
 }
 
@@ -38,11 +37,15 @@ const PersonProfile = styled.div`
     margin: 0 0 4px 0;
     font-size: ${rem(16)}rem;
     color: rgba(0, 0, 0, 0.84);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+      Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   }
 
   .tutorial-info {
     font-size: ${rem(16)}rem;
     color: rgba(0, 0, 0, 0.54);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+      Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   }
 
   .publish-time {
@@ -70,6 +73,8 @@ const BriefContent = styled.div`
   .brief-describe {
     font-size: ${rem(23)}rem;
     color: rgba(0, 0, 0, 0.54);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+      Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   }
 `;
 
@@ -79,6 +84,8 @@ const TechTag = styled.div`
   p {
     font-size: ${rem(16)}rem;
     color: rgba(0, 0, 0, 0.54);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+      Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   }
 `;
 
@@ -89,8 +96,11 @@ const TechTagList = styled.div`
     border: 1px solid #f0f0f0;
     color: rgba(0, 0, 0, 0.68);
     background-color: rgba(0, 0, 0, 0.05);
-    padding: 10px;
+    font-weight: 600;
+    padding: ${rem(10)}rem;
     margin-right: 8px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+      Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   }
 `;
 
@@ -104,9 +114,10 @@ export default class Brief extends React.Component<BriefProps> {
   }
 
   handleBriefScroll = () => {
+    const { store } = this.props;
     window.scrollY >= this.contentRef.current.clientHeight
-      ? this.props.toggleShowSideBar(true)
-      : this.props.toggleShowSideBar(false);
+      ? store.toggleShowSideBar(true)
+      : store.toggleShowSideBar(false);
   };
 
   componentDidMount() {
