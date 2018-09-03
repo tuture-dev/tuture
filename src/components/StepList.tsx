@@ -107,7 +107,9 @@ export default class StepList extends React.Component<
   }
 
   updateSelect = (anchor: string) => {
-    this.props.store.nowSelected = anchor;
+    const { store } = this.props;
+    store.nowSelected = anchor;
+    store.isStepListClick = true;
   };
 
   handleScroll = () => {
@@ -124,6 +126,11 @@ export default class StepList extends React.Component<
     });
     const nowSelected = item ? item.id : '';
     const { store } = this.props;
+
+    if (store.isStepListClick) {
+      store.isStepListClick = false;
+      return;
+    }
     store.nowSelected = nowSelected ? nowSelected : store.nowSelected;
   };
 

@@ -2,7 +2,6 @@ import React from 'react';
 import styled, { injectGlobal } from 'styled-components';
 import fetch from 'isomorphic-fetch';
 import { inject, observer } from 'mobx-react';
-import classnames from 'classnames';
 
 import SideBarLeft from './SideBarLeft';
 import SideBarRight from './SideBarRight';

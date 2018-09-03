@@ -17,6 +17,9 @@ class Store {
   @observable
   sidebarStatus = false;
 
+  @observable
+  isStepListClick = false;
+
   @computed
   get updateTuture() {
     return this.tuture;
