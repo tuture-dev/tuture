@@ -16,7 +16,7 @@ const StepListStatusControl = styled.button`
   box-sizing: border-box;
   background-color: #000;
   position: fixed;
-  left: -1px;
+  left: -24px;
   top: -1px;
   height: 101vh;
   transition: opacity 0.5s;
@@ -27,8 +27,8 @@ const StepListStatusControl = styled.button`
   @media (max-width: 1200px) {
     left: ${(props: { sidebarDisplayStatus: boolean }) =>
       props.sidebarDisplayStatus ? '-24px' : '-1px'};
-    transition: left 0.5s;
   }
+  transition: left 0.5s;
 `;
 
 const SideBarLeftWrapper = styled.div`
