@@ -1,6 +1,7 @@
 import React from 'react';
 import classnames from 'classnames';
 import fetch from 'isomorphic-fetch';
+import { inject, observer } from 'mobx-react';
 
 // @ts-ignore
 import Upload from 'rc-upload';
@@ -19,14 +20,15 @@ import Toolbar from './Toolbar';
 import { insertStr } from './utils';
 import Icon from '../common/Icon';
 import { rem } from '../../utils/common';
+import { MarkdownStore } from '../ExplainedItem';
 
 interface EditorProps {
   source: string;
   type: ExplainType;
   isRoot?: boolean;
   classnames?: string;
+  markdown?: MarkdownStore;
   updateEditingStatus: (isEditing: boolean) => void;
-  handleSave?: (content: string) => void;
   handleUndo?: () => void;
   updateContent?: (content: string) => void;
 }
@@ -113,9 +115,11 @@ export default class Editor extends React.Component<EditorProps, EditorState> {
   };
 
   handleSave = () => {
-    this.props.handleSave(this.props.source);
+    const { type, markdown } = this.props;
+    markdown.handleSave(type, this.props.source);
     this.props.updateEditingStatus(false);
   };
+
   handleUndo = () => {
     this.props.handleUndo();
     this.props.updateEditingStatus(false);

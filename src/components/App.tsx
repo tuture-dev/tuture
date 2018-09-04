@@ -94,22 +94,11 @@ export default class App extends React.Component<AppProps, AppState> {
     };
   }
 
-  saveTuture = () => {
-    fetch(`http://${location.host}/save`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-      },
-      body: JSON.stringify(this.props.store.tuture),
-    });
-  };
-
   toggleEditMode = () => {
     const { store } = this.props;
     store.updateIsEditMode();
     if (!store.isEditMode) {
-      this.saveTuture();
+      store.saveTuture();
     }
   };
 

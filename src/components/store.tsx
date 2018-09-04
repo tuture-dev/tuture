@@ -34,6 +34,18 @@ class Store {
   }
 
   @action
+  saveTuture() {
+    fetch(`http://${location.host}/save`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+      body: JSON.stringify(this.tuture),
+    });
+  }
+
+  @action
   toggleShowSideBar(sidebarStatus: boolean) {
     this.sidebarStatus = sidebarStatus;
   }

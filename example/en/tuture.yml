@@ -6,7 +6,7 @@ topics:
   - frontend engineering
 maintainer: dev@tuture.io
 steps:
-  - name: Basic Setup
+  - name: Basic Setup assasasa
     commit: 90ef523
     explain:
       pre: >
@@ -53,10 +53,27 @@ steps:
         display: true
         explain:
           pre: 'This is the entry file we''re working upon:'
+          post: |-
+            我就是最帅的
+
+            我就是最帅的
+
+            我就是最帅的
+
+            我就是最帅的
+
+            我就是最帅的
+
+            我就是最帅的
+
+            我就是最帅的
+
+            我就是最帅的
       - file: index.html
         display: true
         explain:
           pre: 'The entire `index.html` looks like this:'
+          post: assaassa
       - file: package.json
         display: true
         explain:
