@@ -24,16 +24,14 @@ export default class Content extends React.Component<ContentProps> {
     store.tuture.steps.map((step, index: number) => {
       const diffItem = diff[index];
 
-      if (!step.outdated) {
-        renderContent.push(
-          <StepContent
-            key={index}
-            content={step}
-            index={index}
-            diffItem={diffItem}
-          />,
-        );
-      }
+      renderContent.push(
+        <StepContent
+          key={index}
+          content={step}
+          index={index}
+          diffItem={diffItem}
+        />,
+      );
     });
     return <ContentWrapper>{renderContent}</ContentWrapper>;
   }
