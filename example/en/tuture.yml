@@ -69,6 +69,8 @@ steps:
             我就是最帅的
 
             我就是最帅的
+
+            asassasaas
       - file: index.html
         display: true
         explain:

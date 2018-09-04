@@ -21,6 +21,14 @@ const BriefWrapper = styled.div`
   @media (max-width: 1406px) {
     margin-left: ${rem(340)}rem;
   }
+
+  @media (max-width: 1200px) {
+    margin-left: ${rem(200)}rem;
+  }
+
+  @media (max-width: 1024px) {
+    margin-left: ${rem(120)}rem;
+  }
 `;
 
 const PersonProfile = styled.div`

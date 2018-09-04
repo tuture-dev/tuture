@@ -18,6 +18,7 @@ export interface StepListState {
 const TutureSteps = styled.div`
   width: 100%;
   height: 637px;
+  text-align: left;
 `;
 
 export const MenuHeader = styled.div`
