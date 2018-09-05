@@ -233,7 +233,8 @@ export default class Brief extends React.Component<BriefProps, BriefState> {
           <textarea
             name={elemName}
             key="input"
-            maxLength={elemName === 'title' && 40}
+            maxLength={elemName === 'title' ? 40 : undefined}
+            rows={elemName === 'title' ? 2 : 8}
             value={elemValue}
             style={elemDisabled ? { borderColor: 'red' } : {}}
             onChange={this.handleChange}
@@ -244,6 +245,7 @@ export default class Brief extends React.Component<BriefProps, BriefState> {
               display: 'flex',
               flexDirection: 'row-reverse',
               marginTop: 12,
+              marginBottom: 16,
             }}>
             <SaveButton
               disabled={elemDisabled}
