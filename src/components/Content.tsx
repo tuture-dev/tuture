@@ -49,7 +49,13 @@ export default class Content extends React.Component<ContentProps> {
 
     return (
       <ContentWrapper>
-        <Brief key="Brief" briefInfo={briefInfo} />,{renderContent}
+        <Brief
+          briefInfo={briefInfo}
+          title={store.tuture.name}
+          description={store.tuture.description}
+          techTag={store.tuture.topics}
+        />
+        {renderContent}
       </ContentWrapper>
     );
   }

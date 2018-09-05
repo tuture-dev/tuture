@@ -1,6 +1,7 @@
 name: Getting Started with Webpack
 version: 0.0.1
 language: en
+description: "随着这几年 GitHub 的流行，Git已经是一个程序员逃不过的技术项，但很多人却纷纷倒在了学习它的路上。而且，出于工作原因而不得不用Git 的人，有不少在工作中对 Git也是能不用就不用，生怕哪个命令用错就把公司的代码库毁掉了\U0001F648。而那些对Git 掌握得比较好的少数人，就像团队中的神一样，在同事遇到 Git相关的问题的时候用各种风骚操作来拯救队友于水火。"
 topics:
   - webpack
   - frontend engineering
@@ -52,25 +53,9 @@ steps:
       - file: src/index.js
         display: true
         explain:
-          pre: 'This is the entry file we''re working upon:'
+          pre: "This is the entry file we're working upon:"
           post: |-
-            我就是最帅的
 
-            我就是最帅的
-
-            我就是最帅的
-
-            我就是最帅的
-
-            我就是最帅的
-
-            我就是最帅的
-
-            我就是最帅的
-
-            我就是最帅的
-
-            asassasaas
       - file: index.html
         display: true
         explain:

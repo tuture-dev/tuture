@@ -124,7 +124,7 @@ injectGlobal`
     display: block;
     width: 100%;
     height: auto;
-    overflow-y: hidden;
+    overflow-y: auto;
     vertical-align: top;
     box-sizing: border-box;
     font-family: Georgia;
