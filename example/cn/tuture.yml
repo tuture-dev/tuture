@@ -8,7 +8,7 @@ steps:
   - name: 基础设置
     commit: 4a7abcd
     explain:
-      pre: |+
+      pre: |
         首先我们创建一个目录，初始化 npm 并本地安装 webpack 和 webpack-cli：
         ```bash
         mkdir webpack-demo && cd webpack-demo
@@ -18,8 +18,8 @@ steps:
         接下来我们创建以下文件：
       post: >-
         在这个例子中，`<script>` 标签之间存在隐含的依赖。在运行之前，我们的 `index.js` 文件依赖于包括在页面中的 `lodash`
-        库。这是因为 `index.js` 从未显式声明对 `lodash` 的依赖，它认为全局变量 `_` 已经存在。
-        这种管理 JavaScript 项目存在许多问题，让我们试着用 webpack 来解决。
+        库。这是因为 `index.js` 从未显式声明对 `lodash` 的依赖，它认为全局变量 `_` 已经存在。 这种管理 JavaScript
+        项目存在许多问题，让我们试着用 webpack 来解决。
     diff:
       - file: index.html
         explain:
@@ -33,10 +33,8 @@ steps:
     explain:
       pre: >-
         首先我们要微调项目结构，把源代码(`/src`)和发布代码(`/dist`)分开来。源代码是我们要编辑的代码。发布代码是构建过程产生的最小化、最优化的输出结果，并将最终被浏览器加载。
-        为了让 `lodash` 打包进 `index.js`，我们需要本地安装这个库：
-        ```bash
-        npm install --save lodash
-        ```
+        为了让 `lodash` 打包进 `index.js`，我们需要本地安装这个库： ```bash npm install --save
+        lodash ```
       post: 一切完成后，运行 `npx webpack` 进行打包。在浏览器中打开 `index.html` 文件，就可以看到 Hello webpack！
     diff:
       - file: index.html

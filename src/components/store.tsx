@@ -1,6 +1,8 @@
 import { observable, action, computed } from 'mobx';
+import classnames from 'classnames';
+import fetch from 'isomorphic-fetch';
 
-import { Tuture, Step, Diff } from '../types/';
+import { Tuture } from '../types/';
 import { handleAnchor } from '../utils/common';
 
 class Store {
@@ -13,9 +15,48 @@ class Store {
   @observable
   nowSelected: string;
 
+  @observable
+  sidebarStatus = false;
+
+  @observable
+  isStepListClick = false;
+
+  @observable
+  sidebarDisplayStatus = false;
+
   @computed
   get updateTuture() {
     return this.tuture;
+  }
+
+  @computed
+  get sidebarOpacityClass() {
+    return classnames(
+      { showSideBar: this.sidebarStatus },
+      { hideSideBar: !this.sidebarStatus },
+    );
+  }
+
+  @action
+  toggleSidebarDisplayStatus = () => {
+    this.sidebarDisplayStatus = !this.sidebarDisplayStatus;
+  };
+
+  @action
+  saveTuture() {
+    fetch(`http://${location.host}/save`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+      body: JSON.stringify(this.tuture),
+    });
+  }
+
+  @action
+  toggleShowSideBar(sidebarStatus: boolean) {
+    this.sidebarStatus = sidebarStatus;
   }
 
   @action

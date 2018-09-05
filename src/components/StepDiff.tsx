@@ -112,6 +112,9 @@ export default class StepDiff extends React.Component<
     let res = false;
     const contentArr: string[] = [];
     chunks[0].changes.forEach((change) => {
+      if (change.type === 'del') {
+        return;
+      }
       contentArr.push(change.content.slice(1));
     });
     const needClipedString = contentArr.join('\n');

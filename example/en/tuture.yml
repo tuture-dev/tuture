@@ -6,7 +6,7 @@ topics:
   - frontend engineering
 maintainer: dev@tuture.io
 steps:
-  - name: Basic Setup
+  - name: Basic Setup assasasa
     commit: 90ef523
     explain:
       pre: >
@@ -52,11 +52,30 @@ steps:
       - file: src/index.js
         display: true
         explain:
-          pre: "This is the entry file we're working upon:"
+          pre: 'This is the entry file we''re working upon:'
+          post: |-
+            我就是最帅的
+
+            我就是最帅的
+
+            我就是最帅的
+
+            我就是最帅的
+
+            我就是最帅的
+
+            我就是最帅的
+
+            我就是最帅的
+
+            我就是最帅的
+
+            asassasaas
       - file: index.html
         display: true
         explain:
           pre: 'The entire `index.html` looks like this:'
+          post: assaassa
       - file: package.json
         display: true
         explain:
@@ -121,18 +140,18 @@ steps:
         Open `index.html` in your browser and, if everything went right, you
         should see the following text: 'Hello webpack'.
     diff:
-      - file: src/index.js
-        display: true
-        explain:
-          pre: 'Now, lets import `lodash` in our script:'
       - file: dist/index.html
-        display: true
+        display: false
         explain:
           pre: >-
             Now, since we'll be bundling our scripts, we have to update our
             `index.html` file. Let's remove the lodash `<script>`, as we now
             `import` it, and modify the other `<script>` tag to load the bundle,
             instead of the raw `/src` file:
+      - file: src/index.js
+        display: true
+        explain:
+          pre: 'Now, lets import `lodash` in our script:'
   - name: Using a Configuration
     commit: e0826b9
     explain:

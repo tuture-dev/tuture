@@ -30,12 +30,20 @@ interface StepContentState {
 }
 
 const TutureWrapper = styled.div`
-  min-width: 500px;
+  min-width: 605px;
   width: ${rem(880)}rem;
   margin-left: ${rem(288)}rem;
 
   @media (max-width: 1406px) {
     margin-left: ${rem(340)}rem;
+  }
+
+  @media (max-width: 1200px) {
+    margin-left: ${rem(200)}rem;
+  }
+
+  @media (max-width: 1024px) {
+    margin-left: ${rem(120)}rem;
   }
 `;
 

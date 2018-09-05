@@ -1,6 +1,5 @@
 import React from 'react';
 import styled, { injectGlobal } from 'styled-components';
-import fetch from 'isomorphic-fetch';
 import { inject, observer } from 'mobx-react';
 
 import SideBarLeft from './SideBarLeft';
@@ -34,6 +33,7 @@ const AppContent = styled.div`
 
   margin: 0 auto;
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
   margin-top: 60px;
 `;
@@ -41,6 +41,7 @@ const AppContent = styled.div`
 injectGlobal`
   html {
     font-size: ${(vwFontsize / vwDesign) * 100}vw;
+    min-width: 1080px;
   }
 
   body {
@@ -58,6 +59,14 @@ injectGlobal`
 
   h1 {
     font-size: 45px;
+  }
+
+  .showSideBar {
+    opacity: 1;
+  }
+
+  .hideSideBar {
+    opacity: 0;
   }
 `;
 
@@ -84,22 +93,11 @@ export default class App extends React.Component<AppProps, AppState> {
     };
   }
 
-  saveTuture = () => {
-    fetch(`http://${location.host}/save`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-      },
-      body: JSON.stringify(this.props.store.tuture),
-    });
-  };
-
   toggleEditMode = () => {
     const { store } = this.props;
     store.updateIsEditMode();
     if (!store.isEditMode) {
-      this.saveTuture();
+      store.saveTuture();
     }
   };
 
@@ -107,7 +105,9 @@ export default class App extends React.Component<AppProps, AppState> {
     let bodyContent: React.ReactNode;
 
     const { diff } = this.state;
-    const { tuture } = this.props.store;
+    const { store } = this.props;
+    const { tuture } = store;
+
     if (
       !tuture ||
       Object.keys(tuture).length === 0 ||

@@ -3,7 +3,6 @@ import styled, { injectGlobal } from 'styled-components';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { inject, observer } from 'mobx-react';
 
-import { SideBarLeftWrapper } from './SideBarLeft';
 import { TutureMenu, MenuHeaderText } from './StepList';
 import { reorder, handleAnchor, rem } from '../utils/common';
 import Icon from './common/Icon';
@@ -14,13 +13,15 @@ export interface SideBarRightProps {
   store?: Store;
 }
 
-const SideBarRightWrapper = SideBarLeftWrapper.extend`
+const SideBarRightWrapper = styled.div`
+  min-width: 200px;
   width: 200px;
   background-color: white;
   height: 637px;
   margin-top: 32px;
   position: fixed;
   right: ${rem(100)}rem;
+  transition: opacity 0.5s;
   background-color: transparent;
 `;
 
@@ -155,7 +156,7 @@ export default class SideBarRight extends React.Component<SideBarRightProps> {
     const nowStepDiff = tuture.steps[nowStepIndex].diff;
 
     return (
-      <SideBarRightWrapper>
+      <SideBarRightWrapper className={store.sidebarOpacityClass}>
         <SideBarRightMenuHeaderText>{stepName}</SideBarRightMenuHeaderText>
         <DragDropContext onDragEnd={this.onDragEnd}>
           <Droppable droppableId="droppable" isDropDisabled={!store.isEditMode}>

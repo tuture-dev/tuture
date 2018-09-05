@@ -1,12 +1,14 @@
 import React from 'react';
 import classnames from 'classnames';
 import styled from 'styled-components';
+import { inject, observer } from 'mobx-react';
 
 import Viewer from './Viewer';
 import Editor from './Editor';
 import { BasicButton } from './common';
 import { ExplainType } from '../../types/ExplainedItem';
 import Icon from '../common/Icon';
+import { MarkdownStore } from '../ExplainedItem';
 
 export const EditorWrapper = styled.div`
   width: 100%;
@@ -73,7 +75,7 @@ interface MarkdownProps {
   isRoot?: boolean;
   classnames?: string;
   isEditMode?: boolean;
-  handleSave?: (explainType: ExplainType, explain: string) => void;
+  markdown?: MarkdownStore;
 }
 
 interface MarkdownState {
@@ -81,6 +83,8 @@ interface MarkdownState {
   content: string;
 }
 
+@inject('markdown')
+@observer
 export default class Markdown extends React.Component<
   MarkdownProps,
   MarkdownState
@@ -112,18 +116,15 @@ export default class Markdown extends React.Component<
   };
 
   handleDelete = () => {
-    const { type } = this.props;
+    const { type, markdown } = this.props;
     this.setState({ content: '' });
-    this.props.handleSave(type, '');
+    markdown.handleSave(type, '');
   };
 
   handleAddExplain = () => {
     this.updateEditingStatus(true);
   };
 
-  handleSave = (content: string) => {
-    this.props.handleSave(this.props.type, content);
-  };
   handleUndo = () => {
     this.setState({ content: this.props.source });
   };
@@ -143,7 +144,6 @@ export default class Markdown extends React.Component<
         <Editor
           {...this.props}
           source={content}
-          handleSave={this.handleSave}
           handleUndo={this.handleUndo}
           updateContent={this.updateContent}
           updateEditingStatus={this.updateEditingStatus}
