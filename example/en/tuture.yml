@@ -1,13 +1,20 @@
 name: Getting Started with Webpack
 version: 0.0.1
 language: en
-description: "随着这几年 GitHub 的流行，Git已经是一个程序员逃不过的技术项，但很多人却纷纷倒在了学习它的路上。而且，出于工作原因而不得不用Git 的人，有不少在工作中对 Git也是能不用就不用，生怕哪个命令用错就把公司的代码库毁掉了\U0001F648。而那些对Git 掌握得比较好的少数人，就像团队中的神一样，在同事遇到 Git相关的问题的时候用各种风骚操作来拯救队友于水火。"
+description: >-
+  With the popularity of GitHub in the past few years, Git has been a technical
+  item that programmers can't escape, but many people have fallen on the road to
+  learning it. Moreover, people who have to use Git for work reasons, there are
+  quite a few people who can use Git at work, but they are afraid that which
+  order is wrong will destroy the company's code base. And those few people who
+  have a good grasp of Git, like the gods in the team, use various coquetry
+  operations to save teammates when they encounter Git-related problems.
 topics:
   - webpack
   - frontend engineering
 maintainer: dev@tuture.io
 steps:
-  - name: Basic Setup assasasa
+  - name: Basic Setup
     commit: 90ef523
     explain:
       pre: >
@@ -53,14 +60,13 @@ steps:
       - file: src/index.js
         display: true
         explain:
-          pre: "This is the entry file we're working upon:"
-          post: |-
-
+          pre: 'This is the entry file we''re working upon:'
+          post: ''
       - file: index.html
         display: true
         explain:
           pre: 'The entire `index.html` looks like this:'
-          post: assaassa
+          post: ''
       - file: package.json
         display: true
         explain:

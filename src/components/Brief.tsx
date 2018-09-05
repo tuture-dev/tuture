@@ -97,7 +97,7 @@ const BriefTitle = styled.h1`
 `;
 
 const BriefDescription = styled.p`
-  font-size: 23px;
+  font-size: ${rem(23)}rem;
   color: rgba(0, 0, 0, 0.54);
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
     Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
