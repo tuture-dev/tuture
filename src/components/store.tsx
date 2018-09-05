@@ -84,6 +84,7 @@ class Store {
     const step = tuture.steps[stepIndex];
     step.name = value;
     this.nowSelected = handleAnchor(value);
+    this.saveTuture();
   }
 
   @action

@@ -1,12 +1,29 @@
 import React from 'react';
 import styled from 'styled-components';
 import { inject, observer } from 'mobx-react';
+
 import { rem } from '../utils/common';
 import Store from './store';
+import {
+  HasExplainWrapper,
+  HasExplainButton,
+  EditorWrapper,
+} from './Markdown/index';
+import { SaveButton, UndoButton } from './Markdown/common';
 
 export interface BriefProps {
   store?: Store;
-  briefInfo: any;
+  title?: string;
+  description?: string;
+  techTag?: string[];
+}
+
+interface BriefState {
+  title?: string;
+  description?: string;
+  isTitleEditing?: boolean;
+  isDescriptionEditing?: boolean;
+  [index: string]: string | boolean;
 }
 
 const BriefWrapper = styled.div`
@@ -43,14 +60,14 @@ const PersonProfile = styled.div`
 
   .user-name {
     margin: 0 0 4px 0;
-    font-size: ${rem(16)}rem;
+    font-size: 16px;
     color: rgba(0, 0, 0, 0.84);
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
       Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   }
 
   .tutorial-info {
-    font-size: ${rem(16)}rem;
+    font-size: 16px;
     color: rgba(0, 0, 0, 0.54);
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
       Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
@@ -71,26 +88,26 @@ const PersonProfileRight = styled.div`
   flex-direction: column;
 `;
 
-const BriefContent = styled.div`
-  .brief-title {
-    font-family: STSongti-SC-Bold;
-    color: rgba(0, 0, 0, 0.84);
-    font-size: ${rem(56)}rem;
-  }
+const BriefContent = styled.div``;
 
-  .brief-describe {
-    font-size: ${rem(23)}rem;
-    color: rgba(0, 0, 0, 0.54);
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
-      Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-  }
+const BriefTitle = styled.h1`
+  font-family: STSongti-SC-Bold;
+  color: rgba(0, 0, 0, 0.84);
+  font-size: 45px;
+`;
+
+const BriefDescription = styled.p`
+  font-size: ${rem(23)}rem;
+  color: rgba(0, 0, 0, 0.54);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+    Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 `;
 
 const TechTag = styled.div`
   display: flex;
   flex-direction: column;
   p {
-    font-size: ${rem(16)}rem;
+    font-size: 16px;
     color: rgba(0, 0, 0, 0.54);
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
       Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
@@ -99,13 +116,13 @@ const TechTag = styled.div`
 
 const TechTagList = styled.div`
   span {
-    font-size: ${rem(15)}rem;
+    font-size: 15px;
     border-radius: 3px;
     border: 1px solid #f0f0f0;
     color: rgba(0, 0, 0, 0.68);
     background-color: rgba(0, 0, 0, 0.05);
-    font-weight: 600;
-    padding: ${rem(10)}rem;
+    font-weight: 400;
+    padding: 10px;
     margin-right: 8px;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
       Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
@@ -114,11 +131,19 @@ const TechTagList = styled.div`
 
 @inject('store')
 @observer
-export default class Brief extends React.Component<BriefProps> {
+export default class Brief extends React.Component<BriefProps, BriefState> {
   private contentRef: React.RefObject<any>;
   constructor(props: BriefProps) {
     super(props);
     this.contentRef = React.createRef();
+
+    const { title, description } = props;
+    this.state = {
+      title,
+      description,
+      isTitleEditing: false,
+      isDescriptionEditing: false,
+    };
   }
 
   handleBriefScroll = () => {
@@ -136,37 +161,147 @@ export default class Brief extends React.Component<BriefProps> {
     window.removeEventListener('scroll', this.handleBriefScroll);
   }
 
+  handleChange = (e: React.FormEvent<HTMLTextAreaElement>) => {
+    const { name, value } = e.currentTarget;
+    if (name === 'title') {
+      this.setState({
+        title: value,
+      });
+    } else {
+      this.setState({
+        description: value,
+      });
+    }
+  };
+
+  handleSave = (elemName: string) => {
+    const { store } = this.props;
+    if (!this.state[elemName]) {
+      return;
+    }
+    if (elemName === 'title') {
+      store.tuture.name = this.state.title;
+      this.setState({
+        isTitleEditing: false,
+      });
+    } else {
+      store.tuture.description = this.state.description;
+      this.setState({
+        isDescriptionEditing: false,
+      });
+    }
+    store.saveTuture();
+  };
+
+  handleEdit = (elemName: string) => {
+    if (elemName === 'title') {
+      this.setState({
+        isTitleEditing: true,
+      });
+    } else {
+      this.setState({
+        isDescriptionEditing: true,
+      });
+    }
+  };
+
+  handleUndo = (elemName: string) => {
+    if (elemName === 'title') {
+      this.setState({
+        isTitleEditing: false,
+        title: this.props.title,
+      });
+    } else {
+      this.setState({
+        isDescriptionEditing: false,
+        description: this.props.description,
+      });
+    }
+  };
+
+  renderEditFunction = (
+    elemState: boolean,
+    elemName: string,
+    elemValue: string,
+    elemDisabled: boolean,
+    ElemNode: React.ReactNode,
+  ) => {
+    const { store } = this.props;
+    return store.isEditMode ? (
+      elemState ? (
+        [
+          <textarea
+            name={elemName}
+            key="input"
+            maxLength={elemName === 'title' ? 40 : undefined}
+            rows={elemName === 'title' ? 2 : 8}
+            value={elemValue}
+            style={elemDisabled ? { borderColor: 'red' } : {}}
+            onChange={this.handleChange}
+          />,
+          <div
+            key="saveButton"
+            style={{
+              display: 'flex',
+              flexDirection: 'row-reverse',
+              marginTop: 12,
+              marginBottom: 16,
+            }}>
+            <SaveButton
+              disabled={elemDisabled}
+              onClick={() => this.handleSave(elemName)}
+              style={elemDisabled ? { backgroundColor: '#999' } : {}}>
+              确定
+            </SaveButton>
+            <UndoButton onClick={() => this.handleUndo(elemName)}>
+              取消
+            </UndoButton>
+          </div>,
+        ]
+      ) : (
+        <EditorWrapper>
+          {ElemNode}
+          <HasExplainWrapper>
+            <HasExplainButton
+              color="#00B887"
+              border="1px solid #00B887"
+              bColor="#fff"
+              onClick={() => this.handleEdit(elemName)}>
+              编辑
+            </HasExplainButton>
+          </HasExplainWrapper>
+        </EditorWrapper>
+      )
+    ) : (
+      ElemNode
+    );
+  };
+
   render() {
-    const {
-      userAvatar,
-      userName,
-      publishTime,
-      timeNeeded,
-      briefTitle,
-      briefDescribe,
-      techTag,
-    } = this.props.briefInfo;
+    const { techTag } = this.props;
     return (
       <BriefWrapper innerRef={this.contentRef}>
-        <PersonProfile>
-          <img className="user-avatar" src={userAvatar} alt="avatar" />
-          <PersonProfileRight>
-            <p className="user-name">{userName}</p>
-            <div className="tutorial-info">
-              <span className="publish-time">{publishTime}</span>
-              <span className="time-needed">学完需要 {timeNeeded} 小时</span>
-            </div>
-          </PersonProfileRight>
-        </PersonProfile>
         <BriefContent>
-          <h1 className="brief-title">{briefTitle}</h1>
-          <p className="brief-describe">{briefDescribe}</p>
+          {this.renderEditFunction(
+            this.state.isTitleEditing,
+            'title',
+            this.state.title,
+            this.state.title === '',
+            <BriefTitle>{this.props.title}</BriefTitle>,
+          )}
+          {this.renderEditFunction(
+            this.state.isDescriptionEditing,
+            'description',
+            this.state.description,
+            this.state.description === '',
+            <BriefDescription>{this.props.description}</BriefDescription>,
+          )}
         </BriefContent>
         <TechTag>
           <p>本篇教程涉及的内容：</p>
           <TechTagList>
-            {techTag.map((item: string, index: string) => (
-              <span key={index}>{item}</span>
+            {techTag.map((item: string) => (
+              <span key={`${item}-${Math.random() * 10}`}>{item}</span>
             ))}
           </TechTagList>
         </TechTag>

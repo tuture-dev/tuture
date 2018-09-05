@@ -1,12 +1,20 @@
 name: Getting Started with Webpack
 version: 0.0.1
 language: en
+description: >-
+  With the popularity of GitHub in the past few years, Git has been a technical
+  item that programmers can't escape, but many people have fallen on the road to
+  learning it. Moreover, people who have to use Git for work reasons, there are
+  quite a few people who can use Git at work, but they are afraid that which
+  order is wrong will destroy the company's code base. And those few people who
+  have a good grasp of Git, like the gods in the team, use various coquetry
+  operations to save teammates when they encounter Git-related problems.
 topics:
   - webpack
   - frontend engineering
 maintainer: dev@tuture.io
 steps:
-  - name: Basic Setup assasasa
+  - name: Basic Setup
     commit: 90ef523
     explain:
       pre: >
@@ -53,29 +61,12 @@ steps:
         display: true
         explain:
           pre: 'This is the entry file we''re working upon:'
-          post: |-
-            我就是最帅的
-
-            我就是最帅的
-
-            我就是最帅的
-
-            我就是最帅的
-
-            我就是最帅的
-
-            我就是最帅的
-
-            我就是最帅的
-
-            我就是最帅的
-
-            asassasaas
+          post: ''
       - file: index.html
         display: true
         explain:
           pre: 'The entire `index.html` looks like this:'
-          post: assaassa
+          post: ''
       - file: package.json
         display: true
         explain:
