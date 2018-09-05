@@ -16,7 +16,6 @@ export interface BriefProps {
   title?: string;
   description?: string;
   techTag?: string[];
-  briefInfo: any;
 }
 
 interface BriefState {
@@ -277,26 +276,9 @@ export default class Brief extends React.Component<BriefProps, BriefState> {
   };
 
   render() {
-    const {
-      userAvatar,
-      userName,
-      publishTime,
-      timeNeeded,
-    } = this.props.briefInfo;
     const { techTag } = this.props;
     return (
       <BriefWrapper innerRef={this.contentRef}>
-        <PersonProfile>
-          <img className="user-avatar" src={userAvatar} alt="avatar" />
-          <PersonProfileRight>
-            <p className="user-name">{userName}</p>
-            <div className="tutorial-info">
-              <span className="publish-time">{publishTime}</span>
-              <span className="time-needed">学完需要 {timeNeeded} 小时</span>
-            </div>
-          </PersonProfileRight>
-        </PersonProfile>
-
         <BriefContent>
           {this.renderEditFunction(
             this.state.isTitleEditing,
