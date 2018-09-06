@@ -52,6 +52,14 @@ export default class ExplainedItem extends Component<
   ExplainedItemProps,
   ExplainedItemState
 > {
+  private markdown: MarkdownStore;
+  constructor(props: ExplainedItemProps) {
+    super(props);
+
+    const { commit, diffKey, store } = this.props;
+    this.markdown = new MarkdownStore(commit, diffKey, store);
+  }
+
   renderExplain = (type: ExplainType) => {
     const { isRoot, store } = this.props;
     let { explain } = this.props;
@@ -68,10 +76,8 @@ export default class ExplainedItem extends Component<
   };
 
   render() {
-    const { commit, diffKey, store } = this.props;
-    const markdown = new MarkdownStore(commit, diffKey, store);
     return (
-      <Provider markdown={markdown}>
+      <Provider markdown={this.markdown}>
         <div>
           {this.renderExplain('pre')}
           {this.props.children}
