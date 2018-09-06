@@ -15,7 +15,7 @@ export const EditorWrapper = styled.div`
   position: relative;
 `;
 
-const AddExplainWrapper = styled.div`
+export const AddExplainWrapper = styled.div`
   font-family: LucidaGrande;
   display: block;
   width: 100%;
