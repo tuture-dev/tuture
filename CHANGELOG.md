@@ -1,5 +1,27 @@
 # Changelog
 
+## 1.3.0
+
+### New Features
+
+= `description` and `topics` for each tutorial are added
+
+- You can now edit titles of the tutorial and each step
+
+### Improvements
+
+- Save tutorial right after finishing a single explanation area
+- Size of images is now carefully adjusted
+- Enable syntax highlighting for code blocks within markdown
+- Copying code will now only include added lines
+
+### Bug Fixes
+
+- Fix content sidebar clicking and scrolling issue
+- Fix incorrect line number of code blocks
+- Fix browser not open issue when calling `tuture-server`
+- Ignore `outdated` steps by default
+
 ## 1.2.1
 
 ### Bug Fixes
