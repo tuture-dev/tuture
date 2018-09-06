@@ -38,7 +38,7 @@ export default class Content extends React.Component<ContentProps> {
         <Brief
           title={store.tuture.name}
           description={store.tuture.description}
-          techTag={store.tuture.topics}
+          techTag={store.tuture.topics || []}
         />
         {renderContent}
       </ContentWrapper>
