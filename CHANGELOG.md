@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.3.1
+
+### Improvements
+
+- Add hint for adding tutorial description
+- Open new browser window for links
+
+### Bug Fixes
+
+- Fix crashing problem when no topics given
+
 ## 1.3.0
 
 ### New Features
