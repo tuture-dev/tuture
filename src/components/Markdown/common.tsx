@@ -104,7 +104,7 @@ injectGlobal`
   }
 
   .isRoot {
-    padding: 0 24px 12px;
+    padding: 0 24px;
   }
 
   .editor {
