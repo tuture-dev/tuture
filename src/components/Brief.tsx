@@ -50,46 +50,6 @@ const BriefWrapper = styled.div`
   }
 `;
 
-const PersonProfile = styled.div`
-  display: flex;
-
-  .user-avatar {
-    width: ${rem(60)}rem;
-    height: ${rem(60)}rem;
-    margin-right: 10px;
-    border-radius: 50%;
-  }
-
-  .user-name {
-    margin: 0 0 4px 0;
-    font-size: 16px;
-    color: rgba(0, 0, 0, 0.84);
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
-      Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-  }
-
-  .tutorial-info {
-    font-size: 16px;
-    color: rgba(0, 0, 0, 0.54);
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
-      Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-  }
-
-  .publish-time {
-    margin-right: 6px;
-
-    &::after {
-      content: '·';
-      margin-left: 6px;
-    }
-  }
-`;
-
-const PersonProfileRight = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
 const BriefContent = styled.div`
   width: 100%;
 `;
@@ -101,7 +61,13 @@ const BriefTitle = styled.h1`
 `;
 
 const BriefDescription = styled.p`
+  width: 100%;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  word-break: break-all;
   font-size: ${rem(23)}rem;
+  box-sizing: border-box;
+  padding: 20px 0;
   color: rgba(0, 0, 0, 0.54);
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
     Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
@@ -180,7 +146,7 @@ export default class Brief extends React.Component<BriefProps, BriefState> {
 
   handleSave = (elemName: string) => {
     const { store } = this.props;
-    if (!this.state[elemName]) {
+    if (elemName === 'title' && !this.state[elemName]) {
       return;
     }
     if (elemName === 'title') {
@@ -207,6 +173,13 @@ export default class Brief extends React.Component<BriefProps, BriefState> {
         isDescriptionEditing: true,
       });
     }
+  };
+
+  handleDelete = () => {
+    const { store } = this.props;
+    this.setState({ description: '' });
+    store.tuture.description = '';
+    store.saveTuture();
   };
 
   handleUndo = (elemName: string) => {
@@ -240,7 +213,9 @@ export default class Brief extends React.Component<BriefProps, BriefState> {
             maxLength={elemName === 'title' ? 40 : undefined}
             rows={elemName === 'title' ? 2 : 8}
             value={elemValue}
-            style={elemDisabled ? { borderColor: 'red' } : {}}
+            style={
+              elemName === 'title' && elemDisabled ? { borderColor: 'red' } : {}
+            }
             onChange={this.handleChange}
           />,
           <div
@@ -252,9 +227,12 @@ export default class Brief extends React.Component<BriefProps, BriefState> {
               marginBottom: 16,
             }}>
             <SaveButton
-              disabled={elemDisabled}
               onClick={() => this.handleSave(elemName)}
-              style={elemDisabled ? { backgroundColor: '#999' } : {}}>
+              style={
+                elemName === 'title' && elemDisabled
+                  ? { backgroundColor: '#999' }
+                  : {}
+              }>
               确定
             </SaveButton>
             <UndoButton onClick={() => this.handleUndo(elemName)}>
@@ -266,6 +244,15 @@ export default class Brief extends React.Component<BriefProps, BriefState> {
         <EditorWrapper>
           {ElemNode}
           <HasExplainWrapper>
+            {elemName === 'description' && (
+              <HasExplainButton
+                color="#cb2431"
+                border="1px solid #cb2431"
+                bColor="#fff"
+                onClick={() => this.handleDelete()}>
+                删除
+              </HasExplainButton>
+            )}
             <HasExplainButton
               color="#00B887"
               border="1px solid #00B887"
@@ -281,7 +268,7 @@ export default class Brief extends React.Component<BriefProps, BriefState> {
             name="icon-write"
             customStyle={{ width: '17.39px', height: '17.84px' }}
           />
-          <span style={{ padding: '10px' }}>添加此教程的描述</span>
+          <span style={{ padding: '10px' }}>添加此教程的简介</span>
         </AddExplainWrapper>
       )
     ) : (
