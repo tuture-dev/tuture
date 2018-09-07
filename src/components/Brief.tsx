@@ -8,8 +8,10 @@ import {
   HasExplainWrapper,
   HasExplainButton,
   EditorWrapper,
+  AddExplainWrapper,
 } from './Markdown/index';
 import { SaveButton, UndoButton } from './Markdown/common';
+import Icon from './common/Icon';
 
 export interface BriefProps {
   store?: Store;
@@ -27,7 +29,7 @@ interface BriefState {
 }
 
 const BriefWrapper = styled.div`
-  min-width: 500px;
+  min-width: 605px;
   width: ${rem(880)}rem;
   margin-left: ${rem(288)}rem;
   display: flex;
@@ -88,7 +90,9 @@ const PersonProfileRight = styled.div`
   flex-direction: column;
 `;
 
-const BriefContent = styled.div``;
+const BriefContent = styled.div`
+  width: 100%;
+`;
 
 const BriefTitle = styled.h1`
   font-family: STSongti-SC-Bold;
@@ -258,7 +262,7 @@ export default class Brief extends React.Component<BriefProps, BriefState> {
             </UndoButton>
           </div>,
         ]
-      ) : (
+      ) : elemValue ? (
         <EditorWrapper>
           {ElemNode}
           <HasExplainWrapper>
@@ -271,6 +275,14 @@ export default class Brief extends React.Component<BriefProps, BriefState> {
             </HasExplainButton>
           </HasExplainWrapper>
         </EditorWrapper>
+      ) : (
+        <AddExplainWrapper onClick={() => this.handleEdit(elemName)}>
+          <Icon
+            name="icon-write"
+            customStyle={{ width: '17.39px', height: '17.84px' }}
+          />
+          <span style={{ padding: '10px' }}>添加此教程的描述</span>
+        </AddExplainWrapper>
       )
     ) : (
       ElemNode

@@ -24,10 +24,12 @@ export default class Viewer extends React.Component<ViewerProps> {
 
   componentDidMount() {
     this.highlightCode();
+    this.openLinkInNewWindow();
   }
 
   componentDidUpdate() {
     this.highlightCode();
+    this.openLinkInNewWindow();
   }
 
   highlightCode() {
@@ -35,6 +37,14 @@ export default class Viewer extends React.Component<ViewerProps> {
 
     for (let i = 0; i < nodes.length; i += 1) {
       hljs.highlightBlock(nodes[i]);
+    }
+  }
+
+  openLinkInNewWindow() {
+    const nodes = this.el.querySelectorAll('a');
+
+    for (let i = 0; i < nodes.length; i += 1) {
+      nodes[i].target = '_blank';
     }
   }
 

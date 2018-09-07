@@ -234,7 +234,7 @@ export default class DiffView extends Component<DiffViewProps, DiffViewState> {
     );
   };
 
-  judgeAllRowInsertState = (changes: Change[], key: number) => {
+  judgeAllRowInsertState = (changes: Change[] = [], key: number) => {
     // these lines of code are for display correct line number
     if (key === 0) {
       this.nowLineNumber = 0;
