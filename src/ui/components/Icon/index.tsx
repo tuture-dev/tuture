@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import './images/icons.svg';
+import './icons.svg';
 
 export interface IconProps {
   name: string;

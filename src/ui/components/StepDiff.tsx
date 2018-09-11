@@ -5,8 +5,7 @@ import { inject, observer } from 'mobx-react';
 
 import ExplainedItem from './ExplainedItem';
 import DiffView, { Chunk, File, DiffItem } from './DiffView';
-import { Diff } from '../types';
-import Store from './store';
+import Store from '../store';
 
 interface StepDiffProps {
   diff: Diff[];
@@ -98,16 +97,6 @@ export default class StepDiff extends React.Component<
     });
   };
 
-  getRenderedHunks = (file: File & Diff) => {
-    if (file.section) {
-      const changes = file.chunks[0].changes.slice(
-        ...[file.section.start - 1, file.section.end],
-      );
-      file.chunks[0].changes = changes;
-    }
-    return file.chunks;
-  };
-
   handleCopy = (chunks: Chunk[]): boolean => {
     let res = false;
     const contentArr: string[] = [];
@@ -151,7 +140,6 @@ export default class StepDiff extends React.Component<
             <DiffView
               className="diff-file"
               handleCopy={this.handleCopy}
-              getRenderedHunks={this.getRenderedHunks}
               fileCopy={fileCopy}
               fileName={fileName}
               commit={commit}

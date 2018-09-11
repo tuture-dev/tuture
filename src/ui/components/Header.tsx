@@ -3,9 +3,9 @@ import styled from 'styled-components';
 import { inject, observer } from 'mobx-react';
 
 import { ModeContext } from './App';
-import { rem } from '../utils/common';
-import Icon from './common/Icon';
-import Store from './store';
+import { rem } from '../utils';
+import Icon from './Icon';
+import Store from '../store';
 
 const HeaderWrapper = styled.div`
   position: fixed;

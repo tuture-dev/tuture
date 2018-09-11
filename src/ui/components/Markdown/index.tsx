@@ -6,8 +6,7 @@ import { inject, observer } from 'mobx-react';
 import Viewer from './Viewer';
 import Editor from './Editor';
 import { BasicButton } from './common';
-import { ExplainType } from '../../types/ExplainedItem';
-import Icon from '../common/Icon';
+import Icon from '../Icon';
 import { MarkdownStore } from '../ExplainedItem';
 
 export const EditorWrapper = styled.div`

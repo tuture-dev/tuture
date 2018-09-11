@@ -4,10 +4,9 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { inject, observer } from 'mobx-react';
 
 import { TutureMenu, MenuHeaderText } from './StepList';
-import { reorder, handleAnchor, rem } from '../utils/common';
-import Icon from './common/Icon';
-import { Tuture, Step } from '../types/';
-import Store from './store';
+import { reorder, handleAnchor, rem } from '../utils';
+import Icon from './Icon';
+import Store from '../store';
 
 export interface SideBarRightProps {
   store?: Store;

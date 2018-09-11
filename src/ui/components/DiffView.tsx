@@ -2,10 +2,9 @@ import React, { Component } from 'react';
 import styled, { injectGlobal } from 'styled-components';
 import classnames from 'classnames';
 
-import { rem } from '../utils/common';
+import { rem } from '../utils';
 import Snippet from './Snippet';
-import { Diff } from '../types';
-import Icon from './common/Icon';
+import Icon from './Icon';
 
 interface NormalChange {
   type: 'normal';
@@ -66,7 +65,6 @@ interface DiffViewProps {
   fileName: string;
   commit: string;
   handleCopy: (chunks: Chunk[]) => boolean;
-  getRenderedHunks: (file: File & Diff) => Chunk[];
 }
 
 interface DiffViewState {
@@ -271,22 +269,16 @@ export default class DiffView extends Component<DiffViewProps, DiffViewState> {
   }
 
   render() {
-    const {
-      fileName,
-      handleCopy,
-      getRenderedHunks,
-      fileCopy,
-      commit,
-    } = this.props;
+    const { fileName, handleCopy, fileCopy, commit } = this.props;
 
-    const chunks = getRenderedHunks(fileCopy);
+    const chunks = fileCopy.chunks;
     return (
       <DiffFile>
         <DiffFileHeader>
           {fileName}
           <DiffFileCopyButton
             onClick={(e) => {
-              if (handleCopy(getRenderedHunks(fileCopy))) {
+              if (handleCopy(chunks)) {
                 this.showTooltip();
               }
             }}>

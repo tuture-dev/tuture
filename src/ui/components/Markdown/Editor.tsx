@@ -1,14 +1,12 @@
 import React from 'react';
 import classnames from 'classnames';
 import fetch from 'isomorphic-fetch';
-import { inject, observer } from 'mobx-react';
 
 // @ts-ignore
 import Upload from 'rc-upload';
 import TextareaAutoresize from 'react-autosize-textarea';
 
 import Viewer from './Viewer';
-import { ExplainType, EditMode } from '../../types/ExplainedItem';
 import {
   BasicButton,
   TabWrapper,
@@ -18,8 +16,8 @@ import {
 } from './common';
 import Toolbar from './Toolbar';
 import { insertStr } from './utils';
-import Icon from '../common/Icon';
-import { rem } from '../../utils/common';
+import Icon from '../Icon';
+import { rem } from '../../utils';
 import { MarkdownStore } from '../ExplainedItem';
 
 interface EditorProps {
