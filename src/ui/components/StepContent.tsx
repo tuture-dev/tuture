@@ -5,14 +5,10 @@ import { inject, observer } from 'mobx-react';
 import { DiffItem } from './DiffView';
 import ExplainedItem from './ExplainedItem';
 import StepDiff from './StepDiff';
-import {
-  HasExplainWrapper,
-  HasExplainButton,
-  EditorWrapper,
-} from './Markdown/index';
+import { HasExplainWrapper, HasExplainButton, EditorWrapper } from './Markdown';
 import { SaveButton, UndoButton } from './Markdown/common';
-import Store from './store';
-import { handleAnchor, rem } from '../utils/common';
+import Store from '../store';
+import { handleAnchor, rem } from '../utils';
 
 interface StepContentProps {
   content: Step;

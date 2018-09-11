@@ -3,8 +3,8 @@ import styled from 'styled-components';
 import { inject, observer } from 'mobx-react';
 
 import StepList, { StepListProps } from './StepList';
-import { rem } from '../utils/common';
-import Icon from './common/Icon';
+import { rem } from '../utils';
+import Icon from './Icon';
 
 const StepListStatusControl = styled.button`
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,

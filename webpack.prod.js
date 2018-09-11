@@ -51,7 +51,7 @@ const serverConfig = merge(base, {
 });
 
 const clientConfig = merge(base, {
-  entry: './src/components/index.tsx',
+  entry: './src/ui/index.tsx',
   output: {
     filename: 'static/js/bundle.js',
     pathinfo: false,

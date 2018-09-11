@@ -2,16 +2,16 @@ import React from 'react';
 import styled from 'styled-components';
 import { inject, observer } from 'mobx-react';
 
-import { rem } from '../utils/common';
-import Store from './store';
+import { rem } from '../utils';
+import Store from '../store';
 import {
   HasExplainWrapper,
   HasExplainButton,
   EditorWrapper,
   AddExplainWrapper,
-} from './Markdown/index';
+} from './Markdown';
 import { SaveButton, UndoButton } from './Markdown/common';
-import Icon from './common/Icon';
+import Icon from './Icon';
 
 export interface BriefProps {
   store?: Store;

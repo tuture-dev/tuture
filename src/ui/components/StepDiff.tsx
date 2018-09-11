@@ -5,7 +5,7 @@ import { inject, observer } from 'mobx-react';
 
 import ExplainedItem from './ExplainedItem';
 import DiffView, { Chunk, File, DiffItem } from './DiffView';
-import Store from './store';
+import Store from '../store';
 
 interface StepDiffProps {
   diff: Diff[];

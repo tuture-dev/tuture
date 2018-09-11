@@ -15,9 +15,8 @@ import yaml from 'js-yaml';
 import { ServerStyleSheet, StyleSheetManager } from 'styled-components';
 import { Provider } from 'mobx-react';
 
-import Store from './components/store';
-
-import App from './components/App';
+import Store from './ui/store';
+import App from './ui/components/App';
 
 const port = process.env.TUTURE_PORT || 3000;
 const app = express();

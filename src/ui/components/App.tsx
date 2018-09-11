@@ -6,10 +6,9 @@ import SideBarLeft from './SideBarLeft';
 import SideBarRight from './SideBarRight';
 import { DiffItem } from './DiffView';
 import Content from './Content';
-import { extractCommits } from '../utils/extractors';
+import { extractCommits, handleAnchor, vwDesign, vwFontsize } from '../utils';
 import Header from './Header';
-import { handleAnchor, vwDesign, vwFontsize } from '../utils/common';
-import Store from './store';
+import Store from '../store';
 
 export interface AppProps {
   tuture?: Tuture | string;

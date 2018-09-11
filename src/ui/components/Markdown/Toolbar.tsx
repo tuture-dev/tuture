@@ -3,9 +3,8 @@ import styled from 'styled-components';
 
 import { ToolButton } from './common';
 import { spliceStr, insertStr } from './utils';
-import { rem } from '../../utils/common';
-
-import Icon from '../common/Icon';
+import { rem } from '../../utils';
+import Icon from '../Icon';
 
 type ToolType =
   | 'b'

@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { observable, action } from 'mobx';
 import { inject, observer, Provider } from 'mobx-react';
 
-import Markdown from './Markdown/';
-import Store from './store';
+import Markdown from './Markdown';
+import Store from '../store';
 
 interface ExplainedItemProps {
   explain: Explain;

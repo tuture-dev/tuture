@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import styled, { injectGlobal } from 'styled-components';
 import classnames from 'classnames';
 
-import { rem } from '../utils/common';
+import { rem } from '../utils';
 import Snippet from './Snippet';
-import Icon from './common/Icon';
+import Icon from './Icon';
 
 interface NormalChange {
   type: 'normal';

@@ -13,7 +13,7 @@ function unescape(s: any) {
     .replace(/&gt;/g, '>');
 }
 
-import App from './App';
+import App from './components/App';
 
 const diff = window.__APP_INITIAL_DIFF__;
 const tuture = window.__APP_INITIAL_TUTURE__;
