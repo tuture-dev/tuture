@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { inject, observer } from 'mobx-react';
+import { translate } from 'react-i18next';
 
 import { rem } from '../utils';
 import Store from '../store';
@@ -18,6 +19,8 @@ export interface BriefProps {
   title?: string;
   description?: string;
   techTag?: string[];
+  t?: any;
+  i18n?: any;
 }
 
 interface BriefState {
@@ -101,7 +104,7 @@ const TechTagList = styled.div`
 
 @inject('store')
 @observer
-export default class Brief extends React.Component<BriefProps, BriefState> {
+class Brief extends React.Component<BriefProps, BriefState> {
   private contentRef: React.RefObject<any>;
   constructor(props: BriefProps) {
     super(props);
@@ -277,7 +280,8 @@ export default class Brief extends React.Component<BriefProps, BriefState> {
   };
 
   render() {
-    const { techTag } = this.props;
+    const { techTag, t, i18n } = this.props;
+
     return (
       <BriefWrapper innerRef={this.contentRef}>
         <BriefContent>
@@ -297,7 +301,7 @@ export default class Brief extends React.Component<BriefProps, BriefState> {
           )}
         </BriefContent>
         <TechTag>
-          <p>本篇教程涉及的内容：</p>
+          <p>{t('tagTitle')}</p>
           <TechTagList>
             {techTag.map((item: string) => (
               <span key={`${item}-${Math.random() * 10}`}>{item}</span>
@@ -308,3 +312,5 @@ export default class Brief extends React.Component<BriefProps, BriefState> {
     );
   }
 }
+
+export default translate('translations')(Brief);
