@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import { observable, action } from 'mobx';
 import { inject, observer, Provider } from 'mobx-react';
 
-import { Explain } from '../types';
-import { ExplainType } from '../types/ExplainedItem';
 import Markdown from './Markdown/';
 import Store from './store';
 

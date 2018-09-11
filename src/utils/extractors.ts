@@ -1,5 +1,3 @@
-import { Step, Tuture } from '../types';
-
 const extractCommits = (tuture: Tuture) => {
   const commits = tuture.steps.map((item: Step) => ({
     name: item.name,
@@ -10,12 +8,9 @@ const extractCommits = (tuture: Tuture) => {
 };
 
 const extractMetaData = (tuture: Tuture) => {
-  const { name, language, version, maintainer, topics, description } = tuture;
+  const { name, topics, description } = tuture;
   const metadata = {
     name,
-    language,
-    version,
-    maintainer,
     topics,
     description,
   };

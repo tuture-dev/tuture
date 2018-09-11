@@ -18,7 +18,6 @@ import { Provider } from 'mobx-react';
 import Store from './components/store';
 
 import App from './components/App';
-import { Tuture } from './types/';
 
 const port = process.env.TUTURE_PORT || 3000;
 const app = express();

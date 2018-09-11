@@ -12,8 +12,6 @@ import {
 } from './Markdown/index';
 import { SaveButton, UndoButton } from './Markdown/common';
 import Store from './store';
-
-import { Step } from '../types';
 import { handleAnchor, rem } from '../utils/common';
 
 interface StepContentProps {

@@ -2,7 +2,6 @@ import { observable, action, computed } from 'mobx';
 import classnames from 'classnames';
 import fetch from 'isomorphic-fetch';
 
-import { Tuture } from '../types/';
 import { handleAnchor } from '../utils/common';
 
 class Store {

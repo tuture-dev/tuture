@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 import { inject, observer } from 'mobx-react';
 
-import { Commit } from '../types';
 import { handleAnchor, isClientOrServer, rem } from '../utils/common';
 import Store from './store';
 
