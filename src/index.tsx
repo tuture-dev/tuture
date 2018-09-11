@@ -15,6 +15,9 @@ import yaml from 'js-yaml';
 import { Provider } from 'mobx-react';
 import { I18nextProvider } from 'react-i18next';
 import i18nMiddleware from 'i18next-express-middleware';
+
+// @ts-ignore
+import { resetServerContext } from 'react-beautiful-dnd';
 import { ServerStyleSheet, StyleSheetManager } from 'styled-components';
 
 import Store from './ui/store';
@@ -68,7 +71,7 @@ app.get('/', (req: any, res) => {
   });
 
   const store = new Store();
-  const locale = 'en';
+  const locale = req.language;
   const resources = i18n.getResourceBundle(locale, 'translations');
   const i18nClient = { locale, resources };
   const i18nServer = i18n.cloneInstance();
@@ -76,6 +79,9 @@ app.get('/', (req: any, res) => {
 
   // add SSR style
   const sheet = new ServerStyleSheet();
+
+  // reset data-react-beautiful-dnd-draggable count for SSR
+  resetServerContext();
   const body = renderToString(
     <StyleSheetManager sheet={sheet.instance}>
       <I18nextProvider i18n={i18nServer}>
@@ -88,7 +94,9 @@ app.get('/', (req: any, res) => {
   const styleTags = sheet.getStyleTags();
 
   const html = fs.readFileSync(path.join(__dirname, 'index.html')).toString();
-  const template = handlebars.compile(html, { noEscape: true });
+  const template = handlebars.compile(html, {
+    noEscape: true,
+  });
 
   // Here we don't turn to full-fledged HTML escaping, since it will
   // mess up JSON data and make unescaping unapproachable.
