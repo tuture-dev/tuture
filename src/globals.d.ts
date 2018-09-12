@@ -36,4 +36,5 @@ declare interface Tuture extends TutureMeta {
 declare interface Window {
   __APP_INITIAL_TUTURE__: any;
   __APP_INITIAL_DIFF__: any;
+  __APP_INITIAL_I18N__: any;
 }

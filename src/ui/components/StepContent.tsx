@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { inject, observer } from 'mobx-react';
+import { translate } from 'react-i18next';
 
 import { DiffItem } from './DiffView';
 import ExplainedItem from './ExplainedItem';
@@ -15,6 +16,7 @@ interface StepContentProps {
   diffItem: DiffItem | string;
   index: number;
   store?: Store;
+  t?: any;
 }
 
 interface StepContentState {
@@ -53,10 +55,7 @@ const TutureContentHeader = styled.h1`
 
 @inject('store')
 @observer
-export default class StepContent extends React.Component<
-  StepContentProps,
-  StepContentState
-> {
+class StepContent extends React.Component<StepContentProps, StepContentState> {
   constructor(props: StepContentProps) {
     super(props);
 
@@ -106,7 +105,7 @@ export default class StepContent extends React.Component<
   };
 
   render() {
-    const { content, diffItem, index, store } = this.props;
+    const { content, diffItem, index, store, t } = this.props;
     const { explain, diff, commit } = content;
     const { disable } = this.state;
 
@@ -134,9 +133,11 @@ export default class StepContent extends React.Component<
                   disabled={disable}
                   onClick={() => this.handleSave()}
                   style={disable ? { backgroundColor: '#999' } : {}}>
-                  确定
+                  {t('saveButton')}
                 </SaveButton>
-                <UndoButton onClick={() => this.handleUndo()}>取消</UndoButton>
+                <UndoButton onClick={() => this.handleUndo()}>
+                  {t('cancelButton')}
+                </UndoButton>
               </div>,
             ]
           ) : (
@@ -148,7 +149,7 @@ export default class StepContent extends React.Component<
                   border="1px solid #00B887"
                   bColor="#fff"
                   onClick={() => this.handleEditHeader()}>
-                  编辑
+                  {t('editButton')}
                 </HasExplainButton>
               </HasExplainWrapper>
             </EditorWrapper>
@@ -172,3 +173,5 @@ export default class StepContent extends React.Component<
     );
   }
 }
+
+export default translate('translations')(StepContent);

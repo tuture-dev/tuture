@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import styled, { injectGlobal } from 'styled-components';
 import classnames from 'classnames';
+import { translate } from 'react-i18next';
 
 import { rem } from '../utils';
 import Snippet from './Snippet';
@@ -64,6 +65,7 @@ interface DiffViewProps {
   fileCopy: File & Diff;
   fileName: string;
   commit: string;
+  t?: any;
   handleCopy: (chunks: Chunk[]) => boolean;
 }
 
@@ -167,7 +169,8 @@ const ToolTip = styled.span`
   bottom: 125%;
   z-index: 1;
   transition: opacity 1s;
-  font-family: Georgia, 'Times New Roman', Times, serif;
+  font-family: --apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+    Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 
   &:after {
     content: '';
@@ -184,7 +187,7 @@ const ToolTip = styled.span`
   }
 `;
 
-export default class DiffView extends Component<DiffViewProps, DiffViewState> {
+class DiffView extends Component<DiffViewProps, DiffViewState> {
   private time: any;
   private nowLineNumber: number;
   private nextAddCount: number;
@@ -269,9 +272,9 @@ export default class DiffView extends Component<DiffViewProps, DiffViewState> {
   }
 
   render() {
-    const { fileName, handleCopy, fileCopy, commit } = this.props;
+    const { fileName, handleCopy, fileCopy, commit, t } = this.props;
 
-    const chunks = fileCopy.chunks;
+    const chunks = fileCopy.chunks || [];
     return (
       <DiffFile>
         <DiffFileHeader>
@@ -287,7 +290,9 @@ export default class DiffView extends Component<DiffViewProps, DiffViewState> {
               customStyle={{ width: '16px', height: '20px' }}
             />
           </DiffFileCopyButton>
-          <ToolTip display={this.state.tooltipDisplay}>复制成功</ToolTip>
+          <ToolTip display={this.state.tooltipDisplay}>
+            {t('copySuccess')}
+          </ToolTip>
         </DiffFileHeader>
         <Diff id={`${commit}-i`}>
           <tbody>
@@ -300,3 +305,5 @@ export default class DiffView extends Component<DiffViewProps, DiffViewState> {
     );
   }
 }
+
+export default translate('translations')(DiffView);

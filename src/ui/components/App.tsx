@@ -1,6 +1,7 @@
 import React from 'react';
 import styled, { injectGlobal } from 'styled-components';
 import { inject, observer } from 'mobx-react';
+import { translate } from 'react-i18next';
 
 import SideBarLeft from './SideBarLeft';
 import SideBarRight from './SideBarRight';
@@ -14,6 +15,7 @@ export interface AppProps {
   tuture?: Tuture | string;
   diff?: DiffItem[] | string;
   store?: Store;
+  i18n?: any;
 }
 
 interface AppState extends AppProps {}
@@ -74,17 +76,19 @@ export const ModeContext = React.createContext({
 
 @inject('store')
 @observer
-export default class App extends React.Component<AppProps, AppState> {
+class App extends React.Component<AppProps, AppState> {
   constructor(props: AppProps) {
     super(props);
 
     let { tuture, diff } = props;
+    const { i18n } = props;
     const { store } = props;
     tuture = JSON.parse(tuture as string);
     diff = JSON.parse(diff as string);
     const nowAnchorName = (tuture as Tuture).steps[0].name;
     store.setTuture(tuture as Tuture);
     store.nowSelected = handleAnchor(nowAnchorName);
+    store.i18n = i18n;
 
     this.state = {
       diff,
@@ -123,13 +127,12 @@ export default class App extends React.Component<AppProps, AppState> {
     }
 
     return (
-      <ModeContext.Provider
-        value={{
-          toggleEditMode: this.toggleEditMode,
-        }}>
+      <ModeContext.Provider value={{ toggleEditMode: this.toggleEditMode }}>
         <Header />
         <AppContent>{bodyContent}</AppContent>
       </ModeContext.Provider>
     );
   }
 }
+
+export default translate('translations')(App);

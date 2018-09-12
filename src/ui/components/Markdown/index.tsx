@@ -2,6 +2,7 @@ import React from 'react';
 import classnames from 'classnames';
 import styled from 'styled-components';
 import { inject, observer } from 'mobx-react';
+import { translate } from 'react-i18next';
 
 import Viewer from './Viewer';
 import Editor from './Editor';
@@ -75,6 +76,7 @@ interface MarkdownProps {
   classnames?: string;
   isEditMode?: boolean;
   markdown?: MarkdownStore;
+  t?: any;
 }
 
 interface MarkdownState {
@@ -84,10 +86,7 @@ interface MarkdownState {
 
 @inject('markdown')
 @observer
-export default class Markdown extends React.Component<
-  MarkdownProps,
-  MarkdownState
-> {
+class Markdown extends React.Component<MarkdownProps, MarkdownState> {
   constructor(props: MarkdownProps) {
     super(props);
 
@@ -135,7 +134,7 @@ export default class Markdown extends React.Component<
   };
 
   render() {
-    const { isEditMode, source, isRoot } = this.props;
+    const { isEditMode, t, isRoot } = this.props;
     const { content } = this.state;
 
     return isEditMode ? (
@@ -151,7 +150,9 @@ export default class Markdown extends React.Component<
         <EditorWrapper>
           <Viewer
             source={content}
-            classnames={classnames('markdown', { isRoot })}
+            classnames={classnames('markdown', {
+              isRoot,
+            })}
           />
           {content ? (
             <ContentHasExplainWrapper>
@@ -161,14 +162,14 @@ export default class Markdown extends React.Component<
                   border="1px solid #00B887"
                   bColor="#fff"
                   onClick={() => this.handleAddExplain()}>
-                  编辑
+                  {t('editButton')}
                 </HasExplainButton>
                 <HasExplainButton
                   color="#cb2431"
                   border="1px solid #cb2431"
                   bColor="#fff"
                   onClick={() => this.handleDelete()}>
-                  删除
+                  {t('deleteButton')}
                 </HasExplainButton>
               </div>
             </ContentHasExplainWrapper>
@@ -181,11 +182,11 @@ export default class Markdown extends React.Component<
               <span style={{ padding: '10px' }}>
                 {this.props.isRoot
                   ? this.props.type === 'pre'
-                    ? '填写此步骤的介绍文字'
-                    : '填写此步骤的总结文字'
+                    ? t('fillStepIntroduction')
+                    : t('fillStepExplain')
                   : this.props.type === 'pre'
-                    ? '填写修改此文件的介绍文字'
-                    : '填写修改此文件的解释文字'}
+                    ? t('fillFileIntrodution')
+                    : t('fillFileExplain')}
               </span>
             </AddExplainWrapper>
           )}
@@ -199,3 +200,5 @@ export default class Markdown extends React.Component<
     );
   }
 }
+
+export default translate('translations')(Markdown);

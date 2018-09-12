@@ -23,6 +23,14 @@ class Store {
   @observable
   sidebarDisplayStatus = false;
 
+  @observable
+  i18n: any;
+
+  @action
+  changeLanguage(language: string) {
+    this.i18n.changeLanguage(language);
+  }
+
   @computed
   get updateTuture() {
     return this.tuture;

@@ -12,11 +12,17 @@ import favicon from 'serve-favicon';
 import opn from 'opn';
 import socketio from 'socket.io';
 import yaml from 'js-yaml';
-import { ServerStyleSheet, StyleSheetManager } from 'styled-components';
 import { Provider } from 'mobx-react';
+import { I18nextProvider } from 'react-i18next';
+import i18nMiddleware from 'i18next-express-middleware';
+
+// @ts-ignore
+import { resetServerContext } from 'react-beautiful-dnd';
+import { ServerStyleSheet, StyleSheetManager } from 'styled-components';
 
 import Store from './ui/store';
 import App from './ui/components/App';
+import i18n from './i18n/server';
 
 const port = process.env.TUTURE_PORT || 3000;
 const app = express();
@@ -52,8 +58,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use('/static', express.static(path.join(__dirname, 'static')));
 app.use('/tuture-assets', express.static(assetsPath));
+app.use(i18nMiddleware.handle(i18n));
 
-app.get('/', (req, res) => {
+app.get('/', (req: any, res) => {
   const tutureYAML = fs.readFileSync(tutureYAMLPath, {
     encoding: 'utf8',
   });
@@ -64,20 +71,32 @@ app.get('/', (req, res) => {
   });
 
   const store = new Store();
+  const locale = req.language;
+  const resources = i18n.getResourceBundle(locale, 'translations');
+  const i18nClient = { locale, resources };
+  const i18nServer = i18n.cloneInstance();
+  i18nServer.changeLanguage(locale);
 
   // add SSR style
   const sheet = new ServerStyleSheet();
+
+  // reset data-react-beautiful-dnd-draggable count for SSR
+  resetServerContext();
   const body = renderToString(
     <StyleSheetManager sheet={sheet.instance}>
-      <Provider store={store}>
-        <App diff={diff} tuture={JSON.stringify(tuture)} />
-      </Provider>
+      <I18nextProvider i18n={i18nServer}>
+        <Provider store={store}>
+          <App diff={diff} tuture={JSON.stringify(tuture)} />
+        </Provider>
+      </I18nextProvider>
     </StyleSheetManager>,
   );
   const styleTags = sheet.getStyleTags();
 
   const html = fs.readFileSync(path.join(__dirname, 'index.html')).toString();
-  const template = handlebars.compile(html, { noEscape: true });
+  const template = handlebars.compile(html, {
+    noEscape: true,
+  });
 
   // Here we don't turn to full-fledged HTML escaping, since it will
   // mess up JSON data and make unescaping unapproachable.
@@ -95,6 +114,7 @@ app.get('/', (req, res) => {
       title,
       diff: escape(diff),
       css: styleTags,
+      i18n: JSON.stringify(i18nClient),
       tuture: escape(JSON.stringify(tuture)),
     }),
   );
