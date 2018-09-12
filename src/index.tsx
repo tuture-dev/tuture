@@ -22,7 +22,7 @@ import { ServerStyleSheet, StyleSheetManager } from 'styled-components';
 
 import Store from './ui/store';
 import App from './ui/components/App';
-import i18n from './i18n.server';
+import i18n from './i18n/server';
 
 const port = process.env.TUTURE_PORT || 3000;
 const app = express();

@@ -1,9 +1,8 @@
 import i18n from 'i18next';
 
-import { resources } from './i18n.server';
+import resources from './resources';
 
 i18n.init({
-  // we init with resources
   resources,
   fallbackLng: 'en',
   debug: true,

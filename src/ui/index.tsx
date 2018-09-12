@@ -6,7 +6,7 @@ import { Provider } from 'mobx-react';
 import { I18nextProvider } from 'react-i18next';
 
 import Store from './store';
-import i18n from '../i18n.client';
+import i18n from '../i18n/client';
 
 function unescape(s: any) {
   return s
