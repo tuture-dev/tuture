@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { inject, observer } from 'mobx-react';
+import { translate } from 'react-i18next';
 
 import { handleAnchor, isClientOrServer, rem } from '../utils';
 import Store from '../store';
@@ -8,6 +9,7 @@ import Store from '../store';
 export interface StepListProps {
   commits: Commit[];
   store?: Store;
+  t?: any;
 }
 export interface StepListState {
   itemTopOffsets: HTMLElement[];
@@ -94,10 +96,7 @@ const MenuItemContent = styled.a`
 
 @inject('store')
 @observer
-export default class StepList extends React.Component<
-  StepListProps,
-  StepListState
-> {
+class StepList extends React.Component<StepListProps, StepListState> {
   constructor(props: StepListProps) {
     super(props);
 
@@ -151,12 +150,12 @@ export default class StepList extends React.Component<
   }
 
   render() {
-    const { commits, store } = this.props;
+    const { commits, store, t } = this.props;
 
     return (
       <TutureSteps>
         <MenuHeader>
-          <MenuHeaderText>教程目录</MenuHeaderText>
+          <MenuHeaderText>{t('menu')}</MenuHeaderText>
         </MenuHeader>
         <TutureMenu>
           {commits.map((item, key) => (
@@ -183,4 +182,5 @@ export default class StepList extends React.Component<
   }
 }
 
+export default translate('translations')(StepList);
 export { TutureSteps, TutureMenuItem };

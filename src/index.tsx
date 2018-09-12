@@ -71,7 +71,7 @@ app.get('/', (req: any, res) => {
   });
 
   const store = new Store();
-  const locale = req.language;
+  const locale = 'en';
   const resources = i18n.getResourceBundle(locale, 'translations');
   const i18nClient = { locale, resources };
   const i18nServer = i18n.cloneInstance();

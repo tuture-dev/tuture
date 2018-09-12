@@ -206,7 +206,7 @@ class Brief extends React.Component<BriefProps, BriefState> {
     elemDisabled: boolean,
     ElemNode: React.ReactNode,
   ) => {
-    const { store } = this.props;
+    const { store, t } = this.props;
     return store.isEditMode ? (
       elemState ? (
         [
@@ -236,10 +236,10 @@ class Brief extends React.Component<BriefProps, BriefState> {
                   ? { backgroundColor: '#999' }
                   : {}
               }>
-              确定
+              {t('saveButton')}
             </SaveButton>
             <UndoButton onClick={() => this.handleUndo(elemName)}>
-              取消
+              {t('cancelButton')}
             </UndoButton>
           </div>,
         ]
@@ -247,22 +247,22 @@ class Brief extends React.Component<BriefProps, BriefState> {
         <EditorWrapper>
           {ElemNode}
           <HasExplainWrapper>
+            <HasExplainButton
+              color="#00B887"
+              border="1px solid #00B887"
+              bColor="#fff"
+              onClick={() => this.handleEdit(elemName)}>
+              {t('editButton')}
+            </HasExplainButton>
             {elemName === 'description' && (
               <HasExplainButton
                 color="#cb2431"
                 border="1px solid #cb2431"
                 bColor="#fff"
                 onClick={() => this.handleDelete()}>
-                删除
+                {t('deleteButton')}
               </HasExplainButton>
             )}
-            <HasExplainButton
-              color="#00B887"
-              border="1px solid #00B887"
-              bColor="#fff"
-              onClick={() => this.handleEdit(elemName)}>
-              编辑
-            </HasExplainButton>
           </HasExplainWrapper>
         </EditorWrapper>
       ) : (
@@ -280,7 +280,7 @@ class Brief extends React.Component<BriefProps, BriefState> {
   };
 
   render() {
-    const { techTag, t, i18n } = this.props;
+    const { techTag, t } = this.props;
 
     return (
       <BriefWrapper innerRef={this.contentRef}>

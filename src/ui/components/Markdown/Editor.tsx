@@ -1,6 +1,7 @@
 import React from 'react';
 import classnames from 'classnames';
 import fetch from 'isomorphic-fetch';
+import { translate } from 'react-i18next';
 
 // @ts-ignore
 import Upload from 'rc-upload';
@@ -26,6 +27,7 @@ interface EditorProps {
   isRoot?: boolean;
   classnames?: string;
   markdown?: MarkdownStore;
+  t?: any;
   updateEditingStatus: (isEditing: boolean) => void;
   handleUndo?: () => void;
   updateContent?: (content: string) => void;
@@ -59,7 +61,7 @@ const TabButton = BasicButton.extend`
   padding: 0 ${rem(18)}rem;
 `;
 
-export default class Editor extends React.Component<EditorProps, EditorState> {
+class Editor extends React.Component<EditorProps, EditorState> {
   private contentRef: HTMLTextAreaElement;
   private cursorPos: number = -1;
 
@@ -189,6 +191,7 @@ export default class Editor extends React.Component<EditorProps, EditorState> {
 
   renderTabWrapper = () => {
     const { nowTab } = this.state;
+    const { t } = this.props;
     return (
       <TabWrapper>
         <div>
@@ -196,13 +199,13 @@ export default class Editor extends React.Component<EditorProps, EditorState> {
             name="edit"
             onClick={() => this.handleTabClick('edit')}
             selected={nowTab === 'edit'}>
-            编写
+            {t('editTab')}
           </TabButton>
           <TabButton
             name="preview"
             onClick={() => this.handleTabClick('preview')}
             selected={nowTab === 'preview'}>
-            预览
+            {t('previewTab')}
           </TabButton>
         </div>
         {nowTab === 'edit' ? (
@@ -249,7 +252,7 @@ export default class Editor extends React.Component<EditorProps, EditorState> {
   };
 
   render() {
-    const { isRoot, type } = this.props;
+    const { isRoot, type, t } = this.props;
     const { nowTab } = this.state;
 
     return (
@@ -285,10 +288,16 @@ export default class Editor extends React.Component<EditorProps, EditorState> {
             flexDirection: 'row-reverse',
             marginTop: 12,
           }}>
-          <SaveButton onClick={() => this.handleSave()}>确定</SaveButton>
-          <UndoButton onClick={() => this.handleUndo()}>取消</UndoButton>
+          <SaveButton onClick={() => this.handleSave()}>
+            {t('saveButton')}
+          </SaveButton>
+          <UndoButton onClick={() => this.handleUndo()}>
+            {t('cancelButton')}
+          </UndoButton>
         </div>
       </div>
     );
   }
 }
+
+export default translate('translations')(Editor);
