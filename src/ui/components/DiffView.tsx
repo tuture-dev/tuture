@@ -274,7 +274,7 @@ class DiffView extends Component<DiffViewProps, DiffViewState> {
   render() {
     const { fileName, handleCopy, fileCopy, commit, t } = this.props;
 
-    const chunks = fileCopy.chunks;
+    const chunks = fileCopy.chunks || [];
     return (
       <DiffFile>
         <DiffFileHeader>
