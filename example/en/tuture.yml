@@ -17,7 +17,26 @@ steps:
   - name: Basic Setup
     commit: 90ef523
     explain:
-      pre: asassa
+      pre: >
+        First let's create a directory, initialize npm, [install webpack
+        locally](https://webpack.js.org/guides/installation#local-installation),
+        and install the **webpack-cli** (the tool used to run webpack on the
+        command line):
+
+
+        ```bash
+
+        mkdir webpack-demo && cd webpack-demo
+
+        npm init -y
+
+        npm install webpack webpack-cli --save-dev
+
+        ```
+
+
+        Now we'll create the following directory structure, files and their
+        contents.
       post: >-
         In this example, there are implicit dependencies between the `<script>`
         tags. Our `index.js` file depends on `lodash` being included in the page
@@ -41,7 +60,7 @@ steps:
       - file: src/index.js
         display: true
         explain:
-          pre: ''
+          pre: "This is the entry file we're working upon:"
           post: ''
       - file: index.html
         display: true
