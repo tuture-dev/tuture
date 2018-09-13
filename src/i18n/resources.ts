@@ -1,6 +1,7 @@
 export default {
   en: {
     translations: {
+      addDescription: 'Add description for this tutorial',
       tagTitle: 'Related topics:',
       deleteButton: 'Delete',
       editButton: 'Edit',
@@ -18,6 +19,7 @@ export default {
   },
   'zh-CN': {
     translations: {
+      addDescription: '填写此教程的介绍',
       tagTitle: '本篇教程涉及的主题：',
       deleteButton: '删除',
       editButton: '编辑',
