@@ -271,7 +271,7 @@ class Brief extends React.Component<BriefProps, BriefState> {
             name="icon-write"
             customStyle={{ width: '17.39px', height: '17.84px' }}
           />
-          <span style={{ padding: '10px' }}>添加此教程的简介</span>
+          <span style={{ padding: '10px' }}>{t('addDescription')}</span>
         </AddExplainWrapper>
       )
     ) : (
