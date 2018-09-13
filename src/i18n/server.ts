@@ -11,7 +11,7 @@ i18n
     // we init with resources
     resources,
     fallbackLng: 'en',
-    debug: true,
+    debug: process.env.NODE_ENV === 'development',
 
     // have a common namespace used around the full app
     ns: ['translations'],
