@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.4.0
+
+### New Features
+
+- Add i18n (internationalization) support
+
 ## 1.3.1
 
 ### Improvements
