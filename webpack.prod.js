@@ -41,7 +41,7 @@ const serverConfig = merge(base, {
     __dirname: false,
     __filename: false,
   },
-  entry: './src/index.tsx',
+  entry: './src/index.ts',
   output: {
     filename: 'server.js',
     pathinfo: false,

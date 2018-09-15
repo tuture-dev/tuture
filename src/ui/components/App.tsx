@@ -2,6 +2,7 @@ import React from 'react';
 import styled, { injectGlobal } from 'styled-components';
 import { inject, observer } from 'mobx-react';
 import { translate } from 'react-i18next';
+import { Helmet } from 'react-helmet';
 
 import SideBarLeft from './SideBarLeft';
 import SideBarRight from './SideBarRight';
@@ -80,11 +81,7 @@ class App extends React.Component<AppProps, AppState> {
   constructor(props: AppProps) {
     super(props);
 
-    let { tuture, diff } = props;
-    const { i18n } = props;
-    const { store } = props;
-    tuture = JSON.parse(tuture as string);
-    diff = JSON.parse(diff as string);
+    const { tuture, diff, i18n, store } = props;
     const nowAnchorName = (tuture as Tuture).steps[0].name;
     store.setTuture(tuture as Tuture);
     store.nowSelected = handleAnchor(nowAnchorName);
@@ -105,10 +102,15 @@ class App extends React.Component<AppProps, AppState> {
 
   render() {
     let bodyContent: React.ReactNode;
+    let tutorialTitle = '图雀';
 
     const { diff } = this.state;
     const { store } = this.props;
     const { tuture } = store;
+
+    if (tuture && tuture.name) {
+      tutorialTitle = tuture.name;
+    }
 
     if (
       !tuture ||
@@ -128,6 +130,9 @@ class App extends React.Component<AppProps, AppState> {
 
     return (
       <ModeContext.Provider value={{ toggleEditMode: this.toggleEditMode }}>
+        <Helmet>
+          <title>{tutorialTitle}</title>
+        </Helmet>
         <Header />
         <AppContent>{bodyContent}</AppContent>
       </ModeContext.Provider>

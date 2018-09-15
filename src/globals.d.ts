@@ -32,9 +32,3 @@ declare interface Step extends Commit {
 declare interface Tuture extends TutureMeta {
   steps: Step[];
 }
-
-declare interface Window {
-  __APP_INITIAL_TUTURE__: any;
-  __APP_INITIAL_DIFF__: any;
-  __APP_INITIAL_I18N__: any;
-}
