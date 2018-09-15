@@ -1,8 +1,9 @@
 import i18n from 'i18next';
+import LngDetector from 'i18next-browser-languagedetector';
 
 import resources from './resources';
 
-i18n.init({
+i18n.use(LngDetector).init({
   resources,
   fallbackLng: 'en',
   debug: process.env.NODE_ENV === 'development',

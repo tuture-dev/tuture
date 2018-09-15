@@ -73,26 +73,13 @@
   version "9.12.3"
   resolved "https://registry.yarnpkg.com/@types/highlight.js/-/highlight.js-9.12.3.tgz#b672cfaac25cbbc634a0fd92c515f66faa18dbca"
 
-"@types/i18next-express-middleware@^0.0.33":
-  version "0.0.33"
-  resolved "https://registry.npmjs.org/@types/i18next-express-middleware/-/i18next-express-middleware-0.0.33.tgz#1c5625f123eaae126de3b43626ef9a04bc6ad482"
-  dependencies:
-    "@types/express" "*"
-    "@types/i18next" "*"
-
-"@types/i18next-node-fs-backend@^0.0.30":
-  version "0.0.30"
-  resolved "https://registry.npmjs.org/@types/i18next-node-fs-backend/-/i18next-node-fs-backend-0.0.30.tgz#7454f8e923798a2ebf16309befcfdfde32e90a7c"
-  dependencies:
-    "@types/i18next" "^2"
+"@types/i18next-browser-languagedetector@^2.0.1":
+  version "2.0.1"
+  resolved "http://registry.npm.taobao.org/@types/i18next-browser-languagedetector/download/@types/i18next-browser-languagedetector-2.0.1.tgz#35490253884b15311c54108697d5a7147a75df95"
 
 "@types/i18next@*", "@types/i18next@^8.4.5":
   version "8.4.5"
   resolved "https://registry.npmjs.org/@types/i18next/-/i18next-8.4.5.tgz#d6c0cb594258815219c70006e9f5cd65ad6d797f"
-
-"@types/i18next@^2":
-  version "2.3.41"
-  resolved "https://registry.npmjs.org/@types/i18next/-/i18next-2.3.41.tgz#5a3ebdcb4942052ca2ef71c4f6341438c57cb18c"
 
 "@types/isomorphic-fetch@^0.0.34":
   version "0.0.34"
@@ -1026,13 +1013,6 @@ cookie-signature@1.0.6:
 cookie@0.3.1:
   version "0.3.1"
   resolved "https://registry.npmjs.org/cookie/-/cookie-0.3.1.tgz#e7e0a1f9ef43b4c8ba925c5c5a96e806d16873bb"
-
-cookies@0.7.1:
-  version "0.7.1"
-  resolved "https://registry.npmjs.org/cookies/-/cookies-0.7.1.tgz#7c8a615f5481c61ab9f16c833731bcb8f663b99b"
-  dependencies:
-    depd "~1.1.1"
-    keygrip "~1.0.2"
 
 copy-concurrently@^1.0.0:
   version "1.0.5"
@@ -2098,18 +2078,9 @@ husky@^0.14.3:
     normalize-path "^1.0.0"
     strip-indent "^2.0.0"
 
-i18next-express-middleware@^1.3.2:
-  version "1.3.2"
-  resolved "https://registry.npmjs.org/i18next-express-middleware/-/i18next-express-middleware-1.3.2.tgz#f45911a5907f37f4fa25af868928341817c8f5ee"
-  dependencies:
-    cookies "0.7.1"
-
-i18next-node-fs-backend@^2.1.0:
-  version "2.1.0"
-  resolved "https://registry.npmjs.org/i18next-node-fs-backend/-/i18next-node-fs-backend-2.1.0.tgz#b0ad55eb8671b4dedbd21fe434fb50e964a4ece2"
-  dependencies:
-    js-yaml "3.12.0"
-    json5 "2.0.0"
+i18next-browser-languagedetector@^2.2.3:
+  version "2.2.3"
+  resolved "http://registry.npm.taobao.org/i18next-browser-languagedetector/download/i18next-browser-languagedetector-2.2.3.tgz#4196a9964b6d51b76254706a267ba746c9ca19de"
 
 i18next@^11.8.0:
   version "11.8.0"
@@ -2488,7 +2459,7 @@ js-tokens@^3.0.2:
   version "3.0.2"
   resolved "https://registry.npmjs.org/js-tokens/-/js-tokens-3.0.2.tgz#9866df395102130e38f7f996bceb65443209c25b"
 
-js-yaml@3.12.0, js-yaml@^3.12.0, js-yaml@^3.7.0, js-yaml@^3.9.0:
+js-yaml@^3.12.0, js-yaml@^3.7.0, js-yaml@^3.9.0:
   version "3.12.0"
   resolved "https://registry.npmjs.org/js-yaml/-/js-yaml-3.12.0.tgz#eaed656ec8344f10f527c6bfa1b6e2244de167d1"
   dependencies:
@@ -2503,19 +2474,9 @@ json-schema-traverse@^0.4.1:
   version "0.4.1"
   resolved "https://registry.npmjs.org/json-schema-traverse/-/json-schema-traverse-0.4.1.tgz#69f6a87d9513ab8bb8fe63bdb0979c448e684660"
 
-json5@2.0.0:
-  version "2.0.0"
-  resolved "https://registry.npmjs.org/json5/-/json5-2.0.0.tgz#b61abf97aa178c4b5853a66cc8eecafd03045d78"
-  dependencies:
-    minimist "^1.2.0"
-
 json5@^0.5.0:
   version "0.5.1"
   resolved "https://registry.npmjs.org/json5/-/json5-0.5.1.tgz#1eade7acc012034ad84e2396767ead9fa5495821"
-
-keygrip@~1.0.2:
-  version "1.0.2"
-  resolved "https://registry.npmjs.org/keygrip/-/keygrip-1.0.2.tgz#ad3297c557069dea8bcfe7a4fa491b75c5ddeb91"
 
 kind-of@^3.0.2, kind-of@^3.0.3, kind-of@^3.2.0:
   version "3.2.2"
