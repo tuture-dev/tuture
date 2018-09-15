@@ -80,11 +80,7 @@ class App extends React.Component<AppProps, AppState> {
   constructor(props: AppProps) {
     super(props);
 
-    let { tuture, diff } = props;
-    const { i18n } = props;
-    const { store } = props;
-    tuture = JSON.parse(tuture as string);
-    diff = JSON.parse(diff as string);
+    const { tuture, diff, i18n, store } = props;
     const nowAnchorName = (tuture as Tuture).steps[0].name;
     store.setTuture(tuture as Tuture);
     store.nowSelected = handleAnchor(nowAnchorName);
