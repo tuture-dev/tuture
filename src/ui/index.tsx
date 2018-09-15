@@ -20,16 +20,6 @@ socket.on('reload', () => {
   document.location.reload(true);
 });
 
-// const i18nClient = window.__APP_INITIAL_I18N__;
-
-// i18n.changeLanguage(i18nClient.locale);
-// i18n.addResourceBundle(
-//   i18nClient.locale,
-//   'translations',
-//   i18nClient.resources,
-//   true,
-// );
-
 const store = new Store();
 
 Promise.all([
