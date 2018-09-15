@@ -3,8 +3,29 @@ import LngDetector from 'i18next-browser-languagedetector';
 
 import resources from './resources';
 
-i18n.use(LngDetector).init({
+function getLanguage() {
+  const lng = navigator.language;
+  if (['en', 'en-US', 'zh', 'zh-CN'].includes(lng)) {
+    return lng;
+  }
+
+  return 'en';
+}
+
+const lngDetector = new LngDetector();
+lngDetector.addDetector({
+  name: 'navigatorDetector',
+  lookup(options) {
+    return getLanguage();
+  },
+  cacheUserLanguage() {
+    localStorage.setItem('i18nextLng', getLanguage());
+  },
+});
+
+i18n.use(lngDetector).init({
   resources,
+  detection: { order: ['navigatorDetector'] },
   fallbackLng: 'en',
   debug: process.env.NODE_ENV === 'development',
 

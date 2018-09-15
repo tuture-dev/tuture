@@ -3,7 +3,7 @@
     "jsx": "react",
     "noImplicitAny": true,
     "target": "es5",
-    "lib": ["es2015", "dom"],
+    "lib": ["dom", "es7"],
     "sourceMap": true,
     "allowSyntheticDefaultImports": true,
     "module": "ESNext",
