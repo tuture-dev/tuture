@@ -69,6 +69,9 @@ const BriefDescription = styled.p`
   word-wrap: break-word;
   word-break: break-all;
   font-size: ${rem(23)}rem;
+  @media (max-width: 1200px) {
+    font-size: 16px;
+  }
   box-sizing: border-box;
   padding: 20px 0;
   color: rgba(0, 0, 0, 0.54);
