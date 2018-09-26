@@ -1,17 +1,13 @@
 {
   "compilerOptions": {
-    "jsx": "react",
-    "noImplicitAny": true,
-    "target": "es5",
-    "lib": ["dom", "es7"],
-    "sourceMap": true,
-    "allowSyntheticDefaultImports": true,
-    "module": "ESNext",
-    "moduleResolution": "node",
-    "allowJs": true,
-    "outDir": "./dist/",
-    "skipLibCheck": true,
-    "experimentalDecorators": true
+    "forceConsistentCasingInFileNames": true,
+    "esModuleInterop": true,
+    "importHelpers": true,
+    "module": "commonjs",
+    "outDir": "./build",
+    "strict": true,
+    "target": "es2017",
+    "typeRoots": ["./node_modules/@types"]
   },
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "editor"]
 }
