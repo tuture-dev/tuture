@@ -8,6 +8,7 @@ import SideBarLeft from './SideBarLeft';
 import SideBarRight from './SideBarRight';
 import { DiffItem } from './DiffView';
 import Content from './Content';
+import { Tuture } from '../../../types';
 import { extractCommits, handleAnchor, vwDesign, vwFontsize } from '../utils';
 import Header from './Header';
 import Store from '../store';

@@ -3,6 +3,7 @@ import styled, { injectGlobal } from 'styled-components';
 import classnames from 'classnames';
 import { translate } from 'react-i18next';
 
+import { Diff } from '../../../types';
 import { rem } from '../utils';
 import Snippet from './Snippet';
 import Icon from './Icon';

@@ -19,6 +19,7 @@ import Toolbar from './Toolbar';
 import { insertStr } from './utils';
 import Icon from '../Icon';
 import { rem } from '../../utils';
+import { ExplainType, EditMode } from '../../types';
 import { MarkdownStore } from '../ExplainedItem';
 
 interface EditorProps {

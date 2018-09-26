@@ -5,6 +5,7 @@ import { translate } from 'react-i18next';
 
 import { handleAnchor, isClientOrServer, rem } from '../utils';
 import Store from '../store';
+import { Commit } from '../../../types';
 
 export interface StepListProps {
   commits: Commit[];

@@ -5,6 +5,7 @@ import { prompt } from 'inquirer';
 import yaml from 'js-yaml';
 
 import BaseCommand from '../base';
+import { Tuture, TutureMeta } from '../types';
 import { makeSteps, removeTutureSuite } from '../utils';
 import * as git from '../utils/git';
 

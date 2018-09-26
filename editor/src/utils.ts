@@ -1,3 +1,5 @@
+import { Step, Tuture } from '../../types';
+
 export const vwDesign = 1680;
 export const vwFontsize = 168;
 

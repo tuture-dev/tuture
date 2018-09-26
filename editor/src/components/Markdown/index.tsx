@@ -9,6 +9,7 @@ import Editor from './Editor';
 import { BasicButton } from './common';
 import Icon from '../Icon';
 import { MarkdownStore } from '../ExplainedItem';
+import { ExplainType } from '../../types';
 
 export const EditorWrapper = styled.div`
   width: 100%;

@@ -3,6 +3,7 @@ import classnames from 'classnames';
 import fetch from 'isomorphic-fetch';
 
 import { handleAnchor } from './utils';
+import { Tuture } from '../../types';
 
 class Store {
   @observable

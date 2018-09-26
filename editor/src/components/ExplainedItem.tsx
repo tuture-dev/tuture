@@ -4,6 +4,8 @@ import { inject, observer, Provider } from 'mobx-react';
 
 import Markdown from './Markdown';
 import Store from '../store';
+import { Explain } from '../../../types';
+import { ExplainType } from '../types';
 
 interface ExplainedItemProps {
   explain: Explain;

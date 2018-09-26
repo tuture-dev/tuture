@@ -9,6 +9,7 @@ import StepDiff from './StepDiff';
 import { HasExplainWrapper, HasExplainButton, EditorWrapper } from './Markdown';
 import { SaveButton, UndoButton } from './Markdown/common';
 import Store from '../store';
+import { Step } from '../../../types';
 import { handleAnchor, rem } from '../utils';
 
 interface StepContentProps {

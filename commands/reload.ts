@@ -3,6 +3,7 @@ import http from 'http';
 import yaml from 'js-yaml';
 
 import BaseCommand from '../base';
+import { Step, Tuture } from '../types';
 import { makeSteps, mergeSteps } from '../utils';
 import { isGitAvailable } from '../utils/git';
 

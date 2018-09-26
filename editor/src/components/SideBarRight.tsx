@@ -3,6 +3,7 @@ import styled, { injectGlobal } from 'styled-components';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { inject, observer } from 'mobx-react';
 
+import { Step, Tuture } from '../../../types';
 import { TutureMenu, MenuHeaderText } from './StepList';
 import { reorder, handleAnchor, rem } from '../utils';
 import Icon from './Icon';
@@ -49,7 +50,7 @@ const IconHelper = styled.div`
 `;
 
 injectGlobal`
-  .menu-item: hover .icon-eye {
+  .menu-item:hover .icon-eye {
     fill: #000
   }
 `;

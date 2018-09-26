@@ -7,6 +7,7 @@ import request from 'request';
 import { flags } from '@oclif/command';
 
 import BaseCommand from '../base';
+import { Tuture } from '../types';
 import { apiEndpoint, apiTokenPath, staticServer } from '../config';
 
 export default class Publish extends BaseCommand {
