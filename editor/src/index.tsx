@@ -10,7 +10,10 @@ import App from './components/App';
 
 const store = new Store();
 
-const fetchTasks = [fetch('/diff'), fetch('/tuture')];
+const fetchTasks =
+  process.env.NODE_ENV === 'development'
+    ? [fetch('./diff.json'), fetch('./tuture.json')]
+    : [fetch('/diff'), fetch('/tuture')];
 
 Promise.all(fetchTasks)
   .then((responses) => {

@@ -229,12 +229,12 @@ module.exports = {
   plugins: [
     new CopyWebpackPlugin([
       {
-        from: './example/cn/.tuture/diff.json',
+        from: './example/en/.tuture/diff.json',
         to: './diff.json',
       },
       {
-        from: './example/cn/tuture.yml',
-        to: './tuture.yml',
+        from: './example/en/tuture.json',
+        to: './tuture.json',
       },
     ]),
     // Makes some environment variables available in index.html.
