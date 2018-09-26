@@ -30,3 +30,8 @@ export interface Tuture extends TutureMeta {
   id?: string;
   steps: Step[];
 }
+
+export interface TutureConfig {
+  ignoredFiles: string[];
+  port: number;
+}

@@ -15,7 +15,7 @@
   "scripts": {
     "lint": "tslint -p . -t verbose",
     "test": "rimraf build && tsc && jest",
-    "build": "rimraf build && tsc && cp -r editor/build dist/editor",
+    "build": "rimraf build && tsc && cp -r editor/build build/editor",
     "pkg": "pkg . -o dist",
     "prepack": "rimraf dist && tsc"
   },
