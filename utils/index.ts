@@ -1,6 +1,5 @@
 import fs from 'fs-extra';
 
-import { Step } from '../types';
 import { tutureRoot } from '../config';
 import * as git from './git';
 

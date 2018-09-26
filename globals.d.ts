@@ -27,8 +27,10 @@ declare interface Commit {
 declare interface Step extends Commit {
   explain?: Explain;
   diff: Diff[];
+  outdated?: boolean;
 }
 
 declare interface Tuture extends TutureMeta {
+  id?: string;
   steps: Step[];
 }

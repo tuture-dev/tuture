@@ -76,7 +76,7 @@ export async function getGitDiff(commit: string) {
 
   return changedFiles.map((file) => {
     const fileObj: any = { file };
-    if (!ignoredFiles.some((pattern) => mm.isMatch(file, pattern))) {
+    if (!ignoredFiles.some((pattern: string) => mm.isMatch(file, pattern))) {
       fileObj.display = true;
     }
     return fileObj;

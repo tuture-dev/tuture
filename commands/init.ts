@@ -5,7 +5,6 @@ import { prompt } from 'inquirer';
 import yaml from 'js-yaml';
 
 import BaseCommand from '../base';
-import { TutureMetadata, Tuture } from '../types';
 import { makeSteps, removeTutureSuite } from '../utils';
 import * as git from '../utils/git';
 
@@ -45,7 +44,7 @@ export default class Init extends BaseCommand {
     }
   }
 
-  async promptMetaData(yes: boolean): Promise<TutureMetadata> {
+  async promptMetaData(yes: boolean): Promise<TutureMeta> {
     const answer: any = yes
       ? { name: 'My Awesome Tutorial' }
       : await prompt([
@@ -65,7 +64,7 @@ export default class Init extends BaseCommand {
     } else {
       delete answer.topics;
     }
-    return answer as TutureMetadata;
+    return answer as TutureMeta;
   }
 
   async run() {

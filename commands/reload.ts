@@ -3,7 +3,6 @@ import http from 'http';
 import yaml from 'js-yaml';
 
 import BaseCommand from '../base';
-import { Step, Tuture } from '../types';
 import { makeSteps, mergeSteps } from '../utils';
 import { isGitAvailable } from '../utils/git';
 
@@ -41,7 +40,9 @@ export default class Reload extends BaseCommand {
       this.exit(1);
     }
 
-    const tuture: Tuture = yaml.safeLoad(fs.readFileSync('tuture.yml').toString());
+    const tuture: Tuture = yaml.safeLoad(
+      fs.readFileSync('tuture.yml').toString(),
+    );
     const currentSteps: Step[] = await makeSteps();
     tuture.steps = mergeSteps(tuture.steps, currentSteps);
 
