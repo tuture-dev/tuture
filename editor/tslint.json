@@ -1,0 +1,34 @@
+{
+  "extends": ["tslint-config-airbnb", "tslint-config-prettier"],
+  "jsRules": {
+    "no-empty": true
+  },
+  "defaultSeverity": "error",
+  "rules": {
+    "import-name": false,
+    "no-this-assignment": false,
+    "semicolon": [true, "always", "ignore-bound-class-methods"],
+    "trailing-comma": [
+      true,
+      {
+        "multiline": {
+          "objects": "ignore",
+          "arrays": "always",
+          "functions": "always",
+          "typeLiterals": "ignore"
+        }
+      }
+    ],
+    "ter-arrow-parens": true,
+    "ter-prefer-arrow-callback": false,
+    "align": [false, "arguments"],
+    "variable-name": false
+  },
+  "linterOptions": {
+    "exclude": [
+      "config/**/*.js",
+      "node_modules/**/*.ts",
+      "coverage/lcov-report/*.js"
+    ]
+  }
+}
