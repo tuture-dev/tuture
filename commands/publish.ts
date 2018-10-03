@@ -5,10 +5,22 @@ import chalk from 'chalk';
 import yaml from 'js-yaml';
 import request from 'request';
 import { flags } from '@oclif/command';
+import { GraphQLClient } from 'graphql-request';
 
 import BaseCommand from '../base';
 import { Tuture } from '../types';
-import { apiEndpoint, apiTokenPath, staticServer } from '../config';
+import {
+  apiEndpoint,
+  apiTokenPath,
+  staticServer,
+  FILE_UPLOAD_API,
+} from '../config';
+
+type FileUploadResponse = {
+  tuture: string[];
+  diff: string[];
+  assets: string;
+};
 
 export default class Publish extends BaseCommand {
   static description = 'Publish tutorial to tuture.co';
@@ -40,6 +52,39 @@ export default class Publish extends BaseCommand {
     return tmpPath;
   }
 
+  publishTutorial(tuture: Tuture, urls: FileUploadResponse): void {
+    const query = `
+      mutation {
+        publish(
+          name: "${tuture.name}"
+          topics: [${tuture.topics ? tuture.topics.toString() : ''}]
+          description: "${tuture.description}"
+          diffUri: "${urls.diff[0]}"
+          tutureUri: "${urls.tuture[0]}"
+        ) {
+          id
+        }
+      }
+    `;
+
+    const client = new GraphQLClient(apiEndpoint, {
+      headers: {
+        authorization: `Bearer ${fs.readFileSync(apiTokenPath).toString()}`,
+      },
+    });
+
+    client
+      .request(query)
+      .then(() => {
+        this.success('Your tutorial has been successfully published!');
+      })
+      .catch((err) => {
+        this.log('Publish failed. Please retry.');
+        this.log(err);
+        this.exit(1);
+      });
+  }
+
   async run() {
     this.parse(Publish);
 
@@ -57,26 +102,19 @@ export default class Publish extends BaseCommand {
     const tuture: Tuture = yaml.safeLoad(updatedTutureYml);
 
     const formData: any = {
-      id: tuture.id,
-      name: tuture.name,
       tuture: fs.createReadStream(this.saveTutureToTmp(JSON.stringify(tuture))),
       diff: fs.createReadStream(path.join('.tuture', 'diff.json')),
       assets: assets.map((asset) => fs.createReadStream(asset)),
     };
 
-    if (tuture.topics) {
-      formData.topics = tuture.topics.join(',');
-    }
-
-    if (tuture.description) {
-      formData.description = tuture.description;
-    }
-
-    const token = fs.readFileSync(apiTokenPath).toString();
-
     request.post(
-      `${apiEndpoint}/publish`,
-      { formData, headers: { Authorization: `JWT ${token}` } },
+      FILE_UPLOAD_API,
+      {
+        formData,
+        headers: {
+          Authorization: `Bearer ${fs.readFileSync(apiTokenPath).toString()}`,
+        },
+      },
       (err, res, body) => {
         if (err) {
           this.log(
@@ -86,14 +124,7 @@ export default class Publish extends BaseCommand {
           );
           this.exit(1);
         }
-
-        if (res.statusCode === 201) {
-          this.success('Your tutorial has been successfully published!');
-        } else {
-          this.log('Publish failed. Please retry.');
-          this.log(body);
-          this.exit(1);
-        }
+        this.publishTutorial(tuture, JSON.parse(body));
       },
     );
   }
