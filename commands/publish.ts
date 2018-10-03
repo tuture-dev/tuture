@@ -10,9 +10,9 @@ import { GraphQLClient } from 'graphql-request';
 import BaseCommand from '../base';
 import { Tuture } from '../types';
 import {
-  apiEndpoint,
-  apiTokenPath,
-  staticServer,
+  GRAPHQL_SERVER,
+  TOKEN_PATH,
+  STATIC_SERVER,
   FILE_UPLOAD_API,
 } from '../config';
 
@@ -38,7 +38,7 @@ export default class Publish extends BaseCommand {
       /!\[.*\]\((.*)\)/g,
       (match, imagePath) => {
         assets.push(imagePath);
-        return match.replace(imagePath, staticServer + imagePath);
+        return match.replace(imagePath, STATIC_SERVER + imagePath);
       },
     );
 
@@ -67,9 +67,9 @@ export default class Publish extends BaseCommand {
       }
     `;
 
-    const client = new GraphQLClient(apiEndpoint, {
+    const client = new GraphQLClient(GRAPHQL_SERVER, {
       headers: {
-        authorization: `Bearer ${fs.readFileSync(apiTokenPath).toString()}`,
+        authorization: `Bearer ${fs.readFileSync(TOKEN_PATH).toString()}`,
       },
     });
 
@@ -88,7 +88,7 @@ export default class Publish extends BaseCommand {
   async run() {
     this.parse(Publish);
 
-    if (!fs.existsSync(apiTokenPath)) {
+    if (!fs.existsSync(TOKEN_PATH)) {
       this.error(
         `You have not logged in yet. Please login with ${chalk.bold(
           'tuture login',
@@ -112,7 +112,7 @@ export default class Publish extends BaseCommand {
       {
         formData,
         headers: {
-          Authorization: `Bearer ${fs.readFileSync(apiTokenPath).toString()}`,
+          Authorization: `Bearer ${fs.readFileSync(TOKEN_PATH).toString()}`,
         },
       },
       (err, res, body) => {

@@ -4,7 +4,7 @@ import { flags } from '@oclif/command';
 import { request, ClientError } from 'graphql-request';
 
 import BaseCommand from '../base';
-import { apiEndpoint, apiTokenPath, globalTutureRoot } from '../config';
+import { GRAPHQL_SERVER, TOKEN_PATH, GLOBAL_TUTURE_ROOT } from '../config';
 
 type Credentials = {
   email: string;
@@ -41,10 +41,10 @@ export default class Login extends BaseCommand {
   }
 
   saveToken(token: string) {
-    if (!fs.existsSync(globalTutureRoot)) {
-      fs.mkdirSync(globalTutureRoot);
+    if (!fs.existsSync(GLOBAL_TUTURE_ROOT)) {
+      fs.mkdirSync(GLOBAL_TUTURE_ROOT);
     }
-    fs.writeFileSync(apiTokenPath, token);
+    fs.writeFileSync(TOKEN_PATH, token);
   }
 
   async run() {
@@ -63,7 +63,7 @@ export default class Login extends BaseCommand {
       }
     `;
 
-    request<LoginData>(apiEndpoint, query)
+    request<LoginData>(GRAPHQL_SERVER, query)
       .then((data) => {
         this.saveToken(data.login.token);
         this.success('You have logged in!');

@@ -5,7 +5,7 @@ import path from 'path';
 import which from 'which';
 import parseDiff from 'parse-diff';
 
-import { tutureRoot, loadConfig } from '../config';
+import { TUTURE_ROOT, loadConfig } from '../config';
 
 /**
  * Check if Git command is available.
@@ -99,7 +99,7 @@ export async function storeDiff(commits: string[]) {
 
   const diffs = await Promise.all(diffPromises);
 
-  fs.writeFileSync(path.join(tutureRoot, 'diff.json'), JSON.stringify(diffs));
+  fs.writeFileSync(path.join(TUTURE_ROOT, 'diff.json'), JSON.stringify(diffs));
 }
 
 /**
