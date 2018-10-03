@@ -1,38 +1,27 @@
 import fs from 'fs';
 import http from 'http';
 import path from 'path';
-
-import express from 'express';
+import yaml from 'js-yaml';
 import logger from 'morgan';
 import multer from 'multer';
+import express from 'express';
 import socketio from 'socket.io';
-import yaml from 'js-yaml';
+
+import { TUTURE_ROOT } from './config';
 
 const app = express();
 const server = http.createServer(app);
 
-const inDevMode = process.env.NODE_ENV === 'development';
-
-const tuturePath = process.env.TUTURE_PATH || process.cwd();
-const tutureYAMLPath = path.join(tuturePath, 'tuture.yml');
-const diffPath = path.join(tuturePath, '.tuture', 'diff.json');
-const assetsPath = path.join(tuturePath, 'tuture-assets');
+const workspace = process.env.TUTURE_PATH || process.cwd();
+const tutureYMLPath = path.join(workspace, 'tuture.yml');
+const diffPath = path.join(workspace, TUTURE_ROOT, 'diff.json');
+const assetsPath = path.join(workspace, 'tuture-assets');
 
 const upload = multer({ dest: assetsPath });
 
 const io = socketio(server);
-let reloadCounter = 0;
 
-io.on('connection', (socket) => {
-  reloadCounter += 1;
-
-  // Server has just been restarted.
-  if (reloadCounter === 1 && inDevMode) {
-    socket.emit('reload');
-  }
-});
-
-if (inDevMode) {
+if (process.env.NODE_ENV === 'development') {
   app.use(logger('dev'));
 }
 
@@ -53,32 +42,28 @@ app.get('/diff', (_, res) => {
 });
 
 app.get('/tuture', (_, res) => {
-  res.json(yaml.safeLoad(fs.readFileSync(tutureYAMLPath).toString()));
+  res.json(yaml.safeLoad(fs.readFileSync(tutureYMLPath).toString()));
 });
 
 app.post('/save', (req, res) => {
   const body = req.body;
   try {
     const tuture = yaml.safeDump(body);
-    fs.writeFileSync(tutureYAMLPath, tuture);
-    res.status(200);
-    res.end();
+    fs.writeFileSync(tutureYMLPath, tuture);
+    res.sendStatus(200);
   } catch (err) {
-    res.status(500);
-    res.send({ msg: err.message });
+    res.status(500).send({ msg: err.message });
   }
 });
 
 app.post('/upload', upload.single('file'), (req, res) => {
   const savePath = path.join('tuture-assets', req.file.filename);
   res.json({ path: savePath });
-  res.end();
 });
 
 app.get('/reload', (_, res) => {
   io.emit('reload');
-  res.status(200);
-  res.end();
+  res.sendStatus(200);
 });
 
 export default server;
