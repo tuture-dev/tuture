@@ -5,22 +5,23 @@ import path from 'path';
 import { TutureConfig } from './types';
 
 // Directory which houses tuture internal files.
-export const tutureRoot = '.tuture';
+export const TUTURE_ROOT = '.tuture';
 
 // Path to runtime config file.
-export const configPath = path.join(tutureRoot, 'config.json');
+export const CONFIG_PATH = path.join(TUTURE_ROOT, 'config.json');
 
-export const globalTutureRoot = path.join(os.homedir(), tutureRoot);
+export const GLOBAL_TUTURE_ROOT = path.join(os.homedir(), TUTURE_ROOT);
 
-export const apiTokenPath = path.join(globalTutureRoot, 'token');
+export const TOKEN_PATH = path.join(GLOBAL_TUTURE_ROOT, 'token');
 
 // API endpoint of tuture.co.
-export const apiEndpoint = 'https://tuture.co/api';
+export const GRAPHQL_SERVER = 'https://gql.tuture.co';
+export const FILE_UPLOAD_API = 'https://gql.tuture.co/upload';
 
-export const staticServer = 'https://static.tuture.co/';
+export const STATIC_SERVER = 'https://static.tuture.co/';
 
 export function loadConfig(): TutureConfig {
-  return JSON.parse(fs.readFileSync(configPath).toString());
+  return JSON.parse(fs.readFileSync(CONFIG_PATH).toString());
 }
 
 // Default config of Tuture.

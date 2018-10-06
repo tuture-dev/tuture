@@ -1,7 +1,7 @@
 import fs from 'fs-extra';
 
 import { Step } from '../types';
-import { tutureRoot } from '../config';
+import { TUTURE_ROOT } from '../config';
 import * as git from './git';
 
 /**
@@ -9,7 +9,7 @@ import * as git from './git';
  */
 export async function removeTutureSuite() {
   await fs.remove('tuture.yml');
-  await fs.remove(tutureRoot);
+  await fs.remove(TUTURE_ROOT);
 }
 
 /**

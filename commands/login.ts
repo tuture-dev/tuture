@@ -1,10 +1,21 @@
 import fs from 'fs-extra';
-import request from 'request';
-import { flags } from '@oclif/command';
 import { prompt } from 'inquirer';
+import { flags } from '@oclif/command';
+import { request, ClientError } from 'graphql-request';
 
 import BaseCommand from '../base';
-import { apiEndpoint, apiTokenPath, globalTutureRoot } from '../config';
+import { GRAPHQL_SERVER, TOKEN_PATH, GLOBAL_TUTURE_ROOT } from '../config';
+
+type Credentials = {
+  email: string;
+  password: string;
+};
+
+type LoginData = {
+  login: {
+    token: string;
+  };
+};
 
 export default class Login extends BaseCommand {
   static description = 'Login to tuture account';
@@ -14,7 +25,7 @@ export default class Login extends BaseCommand {
   };
 
   async promptCredentials() {
-    const response = await prompt([
+    const response = await prompt<Credentials>([
       {
         name: 'email',
         message: 'Email',
@@ -30,35 +41,39 @@ export default class Login extends BaseCommand {
   }
 
   saveToken(token: string) {
-    if (!fs.existsSync(globalTutureRoot)) {
-      fs.mkdirSync(globalTutureRoot);
+    if (!fs.existsSync(GLOBAL_TUTURE_ROOT)) {
+      fs.mkdirSync(GLOBAL_TUTURE_ROOT);
     }
-    fs.writeFileSync(apiTokenPath, token);
+    fs.writeFileSync(TOKEN_PATH, token);
   }
 
   async run() {
     this.parse(Login);
 
-    const credentials = await this.promptCredentials();
+    const { email, password } = await this.promptCredentials();
 
-    request.post(
-      `${apiEndpoint}/auth`,
-      { form: credentials },
-      (err, res, body) => {
-        if (err) {
-          this.error(err.message);
-          this.exit(1);
+    const query = `
+      mutation {
+        login(
+          email: "${email}"
+          password: "${password}"
+        ) {
+          token
         }
+      }
+    `;
 
-        if (res.statusCode === 200) {
-          this.saveToken(JSON.parse(body).token as string);
-          this.success('Login successfully!');
-        } else if (res.statusCode === 401) {
-          this.log('Invalid email or password.');
-        } else {
-          this.log(body);
+    request<LoginData>(GRAPHQL_SERVER, query)
+      .then((data) => {
+        this.saveToken(data.login.token);
+        this.success('You have logged in!');
+      })
+      .catch((err: ClientError) => {
+        if (err.response.errors) {
+          err.response.errors.forEach((error) => {
+            this.log(error.message);
+          });
         }
-      },
-    );
+      });
   }
 }
