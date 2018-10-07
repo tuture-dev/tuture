@@ -53,17 +53,24 @@ export default class Login extends BaseCommand {
     const { email, password } = await this.promptCredentials();
 
     const query = `
-      mutation {
+      mutation login(
+        $email: String!,
+        $password: String!
+      ) {
         login(
-          email: "${email}"
-          password: "${password}"
+          email: $email
+          password: $password
         ) {
           token
         }
       }
     `;
+    const variables = {
+      email,
+      password,
+    };
 
-    request<LoginData>(GRAPHQL_SERVER, query)
+    request<LoginData>(GRAPHQL_SERVER, query, variables)
       .then((data) => {
         this.saveToken(data.login.token);
         this.success('You have logged in!');

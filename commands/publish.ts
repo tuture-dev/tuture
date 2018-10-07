@@ -54,18 +54,31 @@ export default class Publish extends BaseCommand {
 
   publishTutorial(tuture: Tuture, urls: FileUploadResponse): void {
     const query = `
-      mutation {
+      mutation publish(
+        $name: String!
+        $topics: TutorialCreatetopicsInput
+        $description: String
+        $tutureUri: String!
+        $diffUri: String!
+      ) {
         publish(
-          name: "${tuture.name}"
-          topics: [${tuture.topics ? tuture.topics.toString() : ''}]
-          description: "${tuture.description}"
-          diffUri: "${urls.diff[0]}"
-          tutureUri: "${urls.tuture[0]}"
+          name: $name
+          topics: $topics
+          description: $description
+          diffUri: $tutureUri
+          tutureUri: $diffUri
         ) {
           id
         }
       }
     `;
+    const variables = {
+      name: tuture.name,
+      topics: { set: tuture.topics },
+      description: tuture.description,
+      diffUri: urls.diff[0],
+      tutureUri: urls.tuture[0],
+    };
 
     const client = new GraphQLClient(GRAPHQL_SERVER, {
       headers: {
@@ -74,7 +87,7 @@ export default class Publish extends BaseCommand {
     });
 
     client
-      .request(query)
+      .request(query, variables)
       .then(() => {
         this.success('Your tutorial has been successfully published!');
       })
