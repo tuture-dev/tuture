@@ -53,11 +53,12 @@ export default class Publish extends BaseCommand {
   }
 
   publishTutorial(tuture: Tuture, urls: FileUploadResponse): void {
+    const topics = tuture.topics ? tuture.topics.join(',') : '';
     const query = `
       mutation {
         publish(
           name: "${tuture.name}"
-          topics: [${tuture.topics ? tuture.topics.toString() : ''}]
+          topics: "${topics}"
           description: "${tuture.description}"
           diffUri: "${urls.diff[0]}"
           tutureUri: "${urls.tuture[0]}"
