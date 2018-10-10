@@ -5,9 +5,12 @@
   "main": "index.ts",
   "preferGlobal": true,
   "keywords": [
-    "cli",
-    "git",
-    "yml"
+    "learn-by-doing",
+    "learn-by-examples",
+    "hands-on",
+    "tutorial",
+    "diff-viewer",
+    "git"
   ],
   "engines": {
     "node": ">=8.0.0"
@@ -16,7 +19,7 @@
     "lint": "tslint -p . -t verbose",
     "test": "rimraf build && tsc && jest",
     "build": "rimraf build && tsc && cp -r editor/build build/editor",
-    "pkg": "pkg . -o dist/tuture",
+    "pkg": "./scripts/pack.sh",
     "prepack": "rimraf dist && tsc"
   },
   "repository": {
