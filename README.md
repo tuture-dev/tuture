@@ -20,7 +20,30 @@ Tuture revolutionizes the way of writing tech tutorials.
 
 ## Installation
 
-Make sure you have [Git](https://git-scm.com/), [Node.js](https://nodejs.org/) (>= 8.0.0) and [npm](https://www.npmjs.com/) (>= 5.0.0) on your machine.
+Make sure you have [Git](https://git-scm.com/) installed on your machine. You can check by running `git version`. If not, head to Git [downloads page](https://git-scm.com/downloads).
+
+### Download ready-to-use binaries
+
+1. Visit our [Github release page](https://github.com/tutureproject/tuture/releases) to download binary distribution suited to your machine.
+
+2. Extract the binary file `tuture` (or `tuture.exe` on Windows).
+
+3. Move the binary to your system path:
+
+  - For Linux/macOS users, open your terminal and navigate to where the tuture binary resides:
+
+  ```bash
+  $ cd /path/to/tuture
+  $ sudo mv tuture /usr/local/bin
+  ```
+
+  - For Windows users, simply move the binary to `C:\Windows` folder as Administrator.
+
+4. Checkout whether `tuture` binary works by running `tuture --version`.
+
+### Install with package managers
+
+We assume that [Node.js](https://nodejs.org/) (>= 8.0.0) and [npm](https://www.npmjs.com/) (>= 5.0.0) are already avaiable.
 
 > You may need `sudo` to install npm packages globally.
 

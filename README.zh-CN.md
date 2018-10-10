@@ -18,7 +18,30 @@ Tuture 革新了技术教程写作的方式。
 
 ## 安装
 
-确保你已经安装了 [Git](https://git-scm.com/), [Node.js](https://nodejs.org/) (>= 8.0.0) 和 [npm](https://www.npmjs.com/) (>= 5.0.0)。
+确保你已经安装了 [Git](https://git-scm.com/)。你可以通过运行 `git version` 命令来检查是否已安装。如果未安装，请访问 Git [下载页面](https://git-scm.com/downloads)。
+
+### 下载开箱可用的可执行文件
+
+1. 访问我们的 [GitHub release 页面](https://github.com/tutureproject/tuture/releases)，下载适合您机器运行的压缩包。
+
+2. 将二进制可执行文件 `tuture` （在 Windows 上是 `tuture.exe`）解压缩。
+
+3. 将此可执行文件添加到系统路径上去：
+
+  - 对 Linux/macOS 用户，打开终端并进入到 tuture 可执行文件所在的路径：
+
+  ```bash
+  $ cd /path/to/tuture
+  $ sudo mv tuture /usr/local/bin
+  ```
+
+  - 对 Windows 用户，只需将可执行文件以管理员身份添加到 `C:\Windows` 文件夹中。
+
+4. 通过运行 `tuture --version` 命令确认 `tuture` 可执行文件安装成功。
+
+### 用包管理器安装
+
+我们假定你已经安装好 [Node.js](https://nodejs.org/) (>= 8.0.0) 和 [npm](https://www.npmjs.com/) (>= 5.0.0)。
 
 > 你可能需要 `sudo` 权限来全局安装 npm 包。
 
