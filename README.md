@@ -27,20 +27,20 @@ Make sure you have [Git](https://git-scm.com/), [Node.js](https://nodejs.org/) (
 - **install with npm**
 
 ```bash
-$ npm i -g tuture tuture-cli
+$ npm i -g tuture
 ```
 
 - **install with yarn**
 
 ```bash
-$ yarn global add tuture tuture-cli
+$ yarn global add tuture
 ```
 
 > Installing global binaries via yarn can fail sometimes (check out this [issue](https://github.com/yarnpkg/yarn/issues/1321)), so it's not recommended. But you can `export PATH="$PATH:$(yarn global bin)"` if you insist.
 
 - **install from source**
 
-Clone this repo and [tuture-cli](https://github.com/tutureproject/cli) to your machine, and `cd` into these repos and run following command respectively:
+Clone this repo to your machine, `cd` into the project root and run following command:
 
 ```bash
 $ npm i -g

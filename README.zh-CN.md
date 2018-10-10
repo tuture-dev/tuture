@@ -25,13 +25,13 @@ Tuture 革新了技术教程写作的方式。
 - **通过 npm 安装**
 
 ```bash
-$ npm i -g tuture tuture-cli
+$ npm i -g tuture
 ```
 
 - **通过 yarn 安装**
 
 ```bash
-$ yarn global add tuture tuture-cli
+$ yarn global add tuture
 ```
 
 > 用 yarn 全局安装二进制可执行文件有时会失败（查看此 [issue](https://github.com/yarnpkg/yarn/issues/1321)），因此我们不推荐这种方法。如果你坚持要使用 yarn，可以通过 `export PATH="$PATH:$(yarn global bin)"` 来解决。
