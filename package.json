@@ -20,7 +20,7 @@
     "test": "rimraf build && tsc && jest",
     "build": "rimraf build && tsc && cp -r editor/build build/editor",
     "pkg": "./scripts/pack.sh",
-    "prepack": "rimraf dist && tsc"
+    "prepack": "npm run build"
   },
   "repository": {
     "type": "git",
