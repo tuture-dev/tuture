@@ -1,6 +1,6 @@
 {
   "name": "tuture",
-  "version": "0.5.3",
+  "version": "1.5.0",
   "description": "Tuture magically turns your repositories into juicy tutorials.",
   "main": "index.ts",
   "preferGlobal": true,
@@ -28,12 +28,12 @@
     "tuture": "./bin/run"
   },
   "bugs": {
-    "url": "https://github.com/tutureproject/cli/issues"
+    "url": "https://github.com/tutureproject/tuture/issues"
   },
-  "homepage": "https://github.com/tutureproject/cli#readme",
+  "homepage": "https://github.com/tutureproject/tuture#readme",
   "files": [
     "/bin",
-    "/dist"
+    "/build"
   ],
   "dependencies": {
     "@oclif/command": "^1.4.36",
