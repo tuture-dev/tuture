@@ -6,6 +6,7 @@ import BaseCommand from '../base';
 import { Step, Tuture } from '../types';
 import { makeSteps, mergeSteps } from '../utils';
 import { isGitAvailable } from '../utils/git';
+import { TUTURE_YML_PATH } from '../config';
 
 export default class Reload extends BaseCommand {
   static description = 'Sync tuture files with current repo';
@@ -13,12 +14,12 @@ export default class Reload extends BaseCommand {
   // Notify server to reload.
   async notifyServer() {
     const url = `http://localhost:${this.userConfig.port}/reload`;
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve, _) => {
       http
         .get(url, (res) => {
           const { statusCode } = res;
           if (statusCode === 200) {
-            this.success('server is ready to reload.');
+            this.success('Server is ready to reload.');
           }
           resolve();
         })
@@ -31,25 +32,25 @@ export default class Reload extends BaseCommand {
   async run() {
     this.parse(Reload);
 
-    if (!fs.existsSync('tuture.yml')) {
-      this.error('tuture has not been initialized!');
+    if (!fs.existsSync(TUTURE_YML_PATH)) {
+      this.error('Tuture has not been initialized!');
       this.exit(1);
     }
 
     if (!isGitAvailable()) {
-      this.error('git is not installed on your machine!');
+      this.error('Git is not installed on your machine!');
       this.exit(1);
     }
 
     const tuture: Tuture = yaml.safeLoad(
-      fs.readFileSync('tuture.yml').toString(),
+      fs.readFileSync(TUTURE_YML_PATH).toString(),
     );
     const currentSteps: Step[] = await makeSteps();
     tuture.steps = mergeSteps(tuture.steps, currentSteps);
 
-    fs.writeFileSync('tuture.yml', yaml.safeDump(tuture));
+    fs.writeFileSync(TUTURE_YML_PATH, yaml.safeDump(tuture));
     await this.notifyServer();
 
-    this.success('reload complete!');
+    this.success('Reload complete!');
   }
 }

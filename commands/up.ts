@@ -6,6 +6,7 @@ import { flags } from '@oclif/command';
 import BaseCommand from '../base';
 import reload from './reload';
 import server from '../server';
+import { TUTURE_YML_PATH } from '../config';
 
 export default class Up extends BaseCommand {
   static description = 'Render and edit tutorial in browser';
@@ -37,14 +38,14 @@ export default class Up extends BaseCommand {
   async run() {
     const { flags } = this.parse(Up);
 
-    if (!fs.existsSync('tuture.yml')) {
+    if (!fs.existsSync(TUTURE_YML_PATH)) {
       this.error('tuture.yml not found!');
       this.exit(1);
     }
 
     // Check for tuture.yml syntax.
     try {
-      yaml.safeLoad(fs.readFileSync('tuture.yml').toString());
+      yaml.safeLoad(fs.readFileSync(TUTURE_YML_PATH).toString());
     } catch (err) {
       this.error(err.message);
       this.exit(1);
