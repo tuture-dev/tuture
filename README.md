@@ -61,7 +61,7 @@ $ yarn global add tuture
 
 > Installing global binaries via yarn can fail sometimes (check out this [issue](https://github.com/yarnpkg/yarn/issues/1321)), so it's not recommended. But you can `export PATH="$PATH:$(yarn global bin)"` if you insist.
 
-- **install from source**
+### Install from source
 
 Clone this repo to your machine, `cd` into the project root and run following command:
 
