@@ -39,7 +39,7 @@ ${step.explain ? step.explain.pre || '' : ''}
 ${zip(step.diff, files)
   .map((zipObj) => {
     const [diff, file] = zipObj;
-    return diff && file ? diffTmpl(diff, file) : '';
+    return diff && file && diff.display ? diffTmpl(diff, file) : '';
   })
   .join('')}
 ${step.explain ? step.explain.post || '' : ''}`;
