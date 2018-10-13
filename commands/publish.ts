@@ -14,6 +14,8 @@ import {
   TOKEN_PATH,
   STATIC_SERVER,
   FILE_UPLOAD_API,
+  TUTURE_YML_PATH,
+  DIFF_PATH,
 } from '../config';
 
 type FileUploadResponse = {
@@ -110,13 +112,13 @@ export default class Publish extends BaseCommand {
       this.exit(1);
     }
 
-    const tutureYml = fs.readFileSync('tuture.yml').toString();
+    const tutureYml = fs.readFileSync(TUTURE_YML_PATH).toString();
     const [updatedTutureYml, assets] = this.collectTutureAssets(tutureYml);
     const tuture: Tuture = yaml.safeLoad(updatedTutureYml);
 
     const formData: any = {
       tuture: fs.createReadStream(this.saveTutureToTmp(JSON.stringify(tuture))),
-      diff: fs.createReadStream(path.join('.tuture', 'diff.json')),
+      diff: fs.createReadStream(DIFF_PATH),
       assets: assets.map((asset) => fs.createReadStream(asset)),
     };
 

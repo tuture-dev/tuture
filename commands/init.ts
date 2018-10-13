@@ -8,6 +8,7 @@ import BaseCommand from '../base';
 import { Tuture, TutureMeta } from '../types';
 import { makeSteps, removeTutureSuite } from '../utils';
 import * as git from '../utils/git';
+import { TUTURE_YML_PATH } from '../config';
 
 type ConfirmResponse = {
   answer: boolean;
@@ -71,7 +72,7 @@ export default class Init extends BaseCommand {
   async run() {
     const { flags } = this.parse(Init);
 
-    if (fs.existsSync('tuture.yml')) {
+    if (fs.existsSync(TUTURE_YML_PATH)) {
       this.error('tuture has already been initialized!');
       this.exit(0);
     }
@@ -93,7 +94,7 @@ export default class Init extends BaseCommand {
         steps: await makeSteps(),
       };
 
-      fs.writeFileSync('tuture.yml', yaml.safeDump(tuture));
+      fs.writeFileSync(TUTURE_YML_PATH, yaml.safeDump(tuture));
       this.success('tuture.yml created!');
 
       git.appendGitignore();

@@ -4,8 +4,12 @@ import path from 'path';
 
 import { TutureConfig } from './types';
 
+export const TUTURE_YML_PATH = 'tuture.yml';
+
 // Directory which houses tuture internal files.
 export const TUTURE_ROOT = '.tuture';
+
+export const DIFF_PATH = path.join(TUTURE_ROOT, 'diff.json');
 
 // Path to runtime config file.
 export const CONFIG_PATH = path.join(TUTURE_ROOT, 'config.json');

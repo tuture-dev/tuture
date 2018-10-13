@@ -4,6 +4,7 @@ import { prompt } from 'inquirer';
 
 import BaseCommand from '../base';
 import * as git from '../utils/git';
+import { TUTURE_YML_PATH } from '../config';
 import { removeTutureSuite } from '../utils';
 
 type ConfirmResponse = {
@@ -38,7 +39,7 @@ export default class Destroy extends BaseCommand {
   async run() {
     const { flags } = this.parse(Destroy);
 
-    if (!fs.existsSync('tuture.yml')) {
+    if (!fs.existsSync(TUTURE_YML_PATH)) {
       this.error('No tuture tutorial to destroy!');
       this.exit(1);
     }
