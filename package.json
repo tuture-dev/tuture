@@ -96,6 +96,9 @@
     "transform": {
       "^.+\\.tsx?$": "ts-jest"
     },
+    "roots": [
+      "test"
+    ],
     "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
     "moduleFileExtensions": [
       "ts",
@@ -103,7 +106,7 @@
       "js"
     ],
     "collectCoverageFrom": [
-      "src/**/*.ts"
+      "build/**/*.ts"
     ],
     "testURL": "http://localhost/",
     "verbose": true
