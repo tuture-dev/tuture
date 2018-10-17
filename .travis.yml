@@ -13,5 +13,6 @@ branches:
 
 script:
   - yarn lint
+  - yarn test
 
 cache: yarn
