@@ -1,7 +1,12 @@
 import fs from 'fs-extra';
 import path from 'path';
 
-import { createEmptyDir, createGitRepo, tutureRunnerFactory } from './utils';
+import {
+  createEmptyDir,
+  createGitRepo,
+  tutureRunnerFactory,
+  SyncRunner,
+} from './utils';
 
 // Tmp directories used in tests.
 const tmpDirs: string[] = Array();
@@ -11,7 +16,7 @@ describe('tuture destroy', () => {
 
   describe('normal destroy', () => {
     const repoPath = createGitRepo();
-    const tutureRunner = tutureRunnerFactory(repoPath);
+    const tutureRunner = tutureRunnerFactory(repoPath) as SyncRunner;
     tmpDirs.push(repoPath);
 
     tutureRunner(['init', '-y']);
@@ -39,7 +44,7 @@ describe('tuture destroy', () => {
 
   describe('no tuture files present', () => {
     const nonTuturePath = createEmptyDir();
-    const tutureRunner = tutureRunnerFactory(nonTuturePath);
+    const tutureRunner = tutureRunnerFactory(nonTuturePath) as SyncRunner;
     tmpDirs.push(nonTuturePath);
 
     const cp = tutureRunner(['destroy', '-f']);

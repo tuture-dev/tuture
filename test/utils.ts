@@ -21,12 +21,23 @@ export const exampleRepo: Commit[] = [
   },
 ];
 
+export type SyncRunner = (args: string[]) => cp.SpawnSyncReturns<Buffer>;
+export type AsyncRunner = (args: string[]) => cp.ChildProcess;
+
 /**
  * Factory of functions running tuture commands in a given directory.
  */
-export function tutureRunnerFactory(cwd: string) {
+export function tutureRunnerFactory(
+  cwd: string,
+  async = false,
+): SyncRunner | AsyncRunner {
+  const tuturePath = path.join(__dirname, '..', 'bin', 'run');
+  if (async) {
+    return function (args: string[]) {
+      return cp.spawn('node', [tuturePath, ...args], { cwd });
+    };
+  }
   return function (args: string[]) {
-    const tuturePath = path.join(__dirname, '..', 'bin', 'run');
     return cp.spawnSync('node', [tuturePath, ...args], { cwd });
   };
 }
@@ -34,7 +45,7 @@ export function tutureRunnerFactory(cwd: string) {
 /**
  * Factory of functions running git commands in a given directory.
  */
-export function gitRunnerFactory(cwd: string) {
+export function gitRunnerFactory(cwd: string): SyncRunner {
   return function (args: string[]) {
     return cp.spawnSync('git', args, { cwd });
   };
@@ -74,7 +85,5 @@ export function createGitRepo(repo = exampleRepo, ignoreTuture = false) {
 }
 
 export function parseDiffJSON(repoPath: string) {
-  return JSON.parse(
-    fs.readFileSync(path.join(repoPath, DIFF_PATH)).toString(),
-  );
+  return JSON.parse(fs.readFileSync(path.join(repoPath, DIFF_PATH)).toString());
 }

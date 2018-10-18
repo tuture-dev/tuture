@@ -9,6 +9,7 @@ import {
   parseDiffJSON,
   gitRunnerFactory,
   tutureRunnerFactory,
+  SyncRunner,
 } from './utils';
 
 // Tmp directories used in tests.
@@ -19,7 +20,7 @@ describe('tuture reload', () => {
 
   describe('tuture is not initialized', () => {
     const nonRepoPath = createEmptyDir();
-    const tutureRunner = tutureRunnerFactory(nonRepoPath);
+    const tutureRunner = tutureRunnerFactory(nonRepoPath) as SyncRunner;
     tmpDirs.push(nonRepoPath);
 
     it('should refuse to reload', () => {
@@ -31,7 +32,7 @@ describe('tuture reload', () => {
   describe('automatic reload', () => {
     describe('add commits plainly', () => {
       const repoPath = createGitRepo();
-      const tutureRunner = tutureRunnerFactory(repoPath);
+      const tutureRunner = tutureRunnerFactory(repoPath) as SyncRunner;
       const gitRunner = gitRunnerFactory(repoPath);
       const tutureYmlPath = path.join(repoPath, 'tuture.yml');
       tmpDirs.push(repoPath);
@@ -103,7 +104,7 @@ describe('tuture reload', () => {
 
   describe('manual reload', () => {
     const repoPath = createGitRepo();
-    const tutureRunner = tutureRunnerFactory(repoPath);
+    const tutureRunner = tutureRunnerFactory(repoPath) as SyncRunner;
     const tutureYmlPath = path.join(repoPath, 'tuture.yml');
     tmpDirs.push(repoPath);
 

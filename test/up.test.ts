@@ -1,7 +1,13 @@
 import fs from 'fs-extra';
 import path from 'path';
+import request from 'request';
 
-import { createEmptyDir, createGitRepo, tutureRunnerFactory } from './utils';
+import {
+  createEmptyDir,
+  createGitRepo,
+  tutureRunnerFactory,
+  SyncRunner,
+} from './utils';
 
 // Tmp directories used in tests.
 const tmpDirs: string[] = Array();
@@ -9,9 +15,28 @@ const tmpDirs: string[] = Array();
 describe('tuture up', () => {
   afterAll(() => tmpDirs.forEach((dir) => fs.removeSync(dir)));
 
+  describe('normal setup', () => {
+    const repoPath = createGitRepo();
+    const tutureRunner = tutureRunnerFactory(repoPath, true);
+    tmpDirs.push(repoPath);
+    tutureRunner(['init', '-y']);
+    tutureRunner(['up']);
+
+    it('should spin tuture server', () => {
+      // Wait for the server to be fully prepared.
+      setTimeout(() => {
+        request.get('http://localhost:3000', (err, response, body) => {
+          expect(err).toBeUndefined();
+          expect(response).not.toBeUndefined();
+          expect(response.statusCode).toBe(200);
+        });
+      }, 200);
+    });
+  });
+
   describe('tuture is not initialized', () => {
     const nonTuturePath = createEmptyDir();
-    const tutureRunner = tutureRunnerFactory(nonTuturePath);
+    const tutureRunner = tutureRunnerFactory(nonTuturePath) as SyncRunner;
     tmpDirs.push(nonTuturePath);
 
     it('should refuse to up', () => {
@@ -22,7 +47,7 @@ describe('tuture up', () => {
 
   describe('tuture.yml syntax error', () => {
     const repoPath = createGitRepo();
-    const tutureRunner = tutureRunnerFactory(repoPath);
+    const tutureRunner = tutureRunnerFactory(repoPath) as SyncRunner;
     tmpDirs.push(repoPath);
     tutureRunner(['init', '-y']);
 
