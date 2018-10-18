@@ -10,6 +10,7 @@ import {
   createGitRepo,
   parseDiffJSON,
   tutureRunnerFactory,
+  SyncRunner,
 } from './utils';
 import defaultConfig, {
   TUTURE_ROOT,
@@ -26,7 +27,7 @@ describe('tuture init -y', () => {
 
   describe('outside a git repo', () => {
     const nonRepoPath = createEmptyDir();
-    const tutureRunner = tutureRunnerFactory(nonRepoPath);
+    const tutureRunner = tutureRunnerFactory(nonRepoPath) as SyncRunner;
     tmpDirs.push(nonRepoPath);
 
     const cp = tutureRunner(['init', '-y']);
@@ -101,7 +102,7 @@ describe('tuture init -y', () => {
 
 function testInit(testRepo = exampleRepo, ignoreTuture = false) {
   const repoPath = createGitRepo(testRepo, ignoreTuture);
-  const tutureRunner = tutureRunnerFactory(repoPath);
+  const tutureRunner = tutureRunnerFactory(repoPath) as SyncRunner;
   tmpDirs.push(repoPath);
 
   // Remove commits with commit messages starting with `tuture:`.

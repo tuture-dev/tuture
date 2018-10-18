@@ -21,7 +21,10 @@ export const exampleRepo: Commit[] = [
   },
 ];
 
+// Synchronous command runner (running in foreground).
 export type SyncRunner = (args: string[]) => cp.SpawnSyncReturns<Buffer>;
+
+// Asynchronous command runner (running in background).
 export type AsyncRunner = (args: string[]) => cp.ChildProcess;
 
 /**
