@@ -13,6 +13,16 @@ import {
 const tmpDirs: string[] = Array();
 
 describe('tuture up', () => {
+  beforeAll(() => {
+    // Add mock editor required by tuture server.
+    const mockEditorPage = '<html>Mock Editor</html>';
+    fs.mkdirSync(path.join('build', 'editor'));
+    fs.writeFileSync(
+      path.join('build', 'editor', 'index.html'),
+      mockEditorPage,
+    );
+  });
+
   afterAll(() => tmpDirs.forEach((dir) => fs.removeSync(dir)));
 
   describe('normal setup', () => {
