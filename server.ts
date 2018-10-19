@@ -7,14 +7,14 @@ import multer from 'multer';
 import express from 'express';
 import socketio from 'socket.io';
 
-import { TUTURE_ROOT } from './config';
+import { TUTURE_YML_PATH, DIFF_PATH } from './config';
 
 const app = express();
 const server = http.createServer(app);
 
 const workspace = process.env.TUTURE_PATH || process.cwd();
-const tutureYMLPath = path.join(workspace, 'tuture.yml');
-const diffPath = path.join(workspace, TUTURE_ROOT, 'diff.json');
+const tutureYMLPath = path.join(workspace, TUTURE_YML_PATH);
+const diffPath = path.join(workspace, DIFF_PATH);
 const assetsPath = path.join(workspace, 'tuture-assets');
 
 const upload = multer({ dest: assetsPath });
