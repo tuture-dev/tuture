@@ -31,7 +31,11 @@ export default class Up extends BaseCommand {
       }
       const url = `http://localhost:${portToUse}`;
       this.success(`Tutorial is served on ${url}`);
-      opn(url);
+
+      // Don't open browser in test environment.
+      if (!process.env.TEST) {
+        opn(url);
+      }
     });
   }
 

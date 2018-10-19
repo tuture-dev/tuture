@@ -20,12 +20,28 @@ describe('tuture up', () => {
     const tutureRunner = tutureRunnerFactory(repoPath, true);
     tmpDirs.push(repoPath);
     tutureRunner(['init', '-y']);
-    tutureRunner(['up']);
 
     it('should spin tuture server', () => {
+      tutureRunner(['up']);
+
       // Wait for the server to be fully prepared.
       setTimeout(() => {
         request.get('http://localhost:3000', (err, response, body) => {
+          expect(err).toBeUndefined();
+          expect(response).not.toBeUndefined();
+          expect(response.statusCode).toBe(200);
+        });
+      }, 200);
+    });
+
+    it('should spin server on specified port', () => {
+      const testPort = 8000;
+      process.env.TEST = 'yes';
+      tutureRunner(['up', '-p', `${testPort}`]);
+
+      // Wait for the server to be fully prepared.
+      setTimeout(() => {
+        request.get(`http://localhost:${testPort}`, (err, response, body) => {
           expect(err).toBeUndefined();
           expect(response).not.toBeUndefined();
           expect(response.statusCode).toBe(200);
