@@ -31,6 +31,9 @@ describe('tuture up', () => {
     tmpDirs.push(repoPath);
     tutureRunner(['init', '-y']);
 
+    // Ensure we don't open browser in test environment.
+    process.env.TEST = 'yes';
+
     it('should spin tuture server', () => {
       tutureRunner(['up']);
 
@@ -46,7 +49,6 @@ describe('tuture up', () => {
 
     it('should spin server on specified port', () => {
       const testPort = 8000;
-      process.env.TEST = 'yes';
       tutureRunner(['up', '-p', `${testPort}`]);
 
       // Wait for the server to be fully prepared.
