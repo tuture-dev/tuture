@@ -17,8 +17,16 @@ const tutureYMLPath = path.join(workspace, TUTURE_YML_PATH);
 const diffPath = path.join(workspace, DIFF_PATH);
 const assetsPath = path.join(workspace, 'tuture-assets');
 
-const upload = multer({ dest: assetsPath });
+// File upload middleware.
+const upload = multer({
+  storage: multer.diskStorage({
+    destination(req, file, cb) {
+      cb(null, assetsPath);
+    },
+  }),
+});
 
+// Socket.IO server instance.
 const io = socketio(server);
 
 if (process.env.NODE_ENV === 'development') {
@@ -57,7 +65,7 @@ app.post('/save', (req, res) => {
 });
 
 app.post('/upload', upload.single('file'), (req, res) => {
-  const savePath = path.join('tuture-assets', req.file.filename);
+  const savePath = path.join(assetsPath, req.file.filename);
   res.json({ path: savePath });
 });
 
