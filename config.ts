@@ -11,6 +11,11 @@ export const TUTURE_ROOT = '.tuture';
 
 export const DIFF_PATH = path.join(TUTURE_ROOT, 'diff.json');
 
+// Editor path
+export const EDITOR_PATH = path.join(__dirname, 'editor');
+
+export const EDITOR_STATIC_PATH = path.join(EDITOR_PATH, 'static');
+
 // Path to runtime config file.
 export const CONFIG_PATH = path.join(TUTURE_ROOT, 'config.json');
 

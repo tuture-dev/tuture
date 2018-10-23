@@ -7,7 +7,12 @@ import multer from 'multer';
 import express from 'express';
 import socketio from 'socket.io';
 
-import { TUTURE_YML_PATH, DIFF_PATH } from './config';
+import {
+  TUTURE_YML_PATH,
+  DIFF_PATH,
+  EDITOR_STATIC_PATH,
+  EDITOR_PATH,
+} from './config';
 
 const app = express();
 const server = http.createServer(app);
@@ -17,8 +22,16 @@ const tutureYMLPath = path.join(workspace, TUTURE_YML_PATH);
 const diffPath = path.join(workspace, DIFF_PATH);
 const assetsPath = path.join(workspace, 'tuture-assets');
 
-const upload = multer({ dest: assetsPath });
+// File upload middleware.
+const upload = multer({
+  storage: multer.diskStorage({
+    destination(req, file, cb) {
+      cb(null, assetsPath);
+    },
+  }),
+});
 
+// Socket.IO server instance.
 const io = socketio(server);
 
 if (process.env.NODE_ENV === 'development') {
@@ -27,13 +40,11 @@ if (process.env.NODE_ENV === 'development') {
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use('/static', express.static(path.join(__dirname, './editor/static')));
+app.use('/static', express.static(EDITOR_STATIC_PATH));
 app.use('/tuture-assets', express.static(assetsPath));
 
 app.get('/', (_, res) => {
-  const html = fs
-    .readFileSync(path.join(__dirname, './editor/index.html'))
-    .toString();
+  const html = fs.readFileSync(path.join(EDITOR_PATH, 'index.html')).toString();
   res.send(html);
 });
 
@@ -57,7 +68,7 @@ app.post('/save', (req, res) => {
 });
 
 app.post('/upload', upload.single('file'), (req, res) => {
-  const savePath = path.join('tuture-assets', req.file.filename);
+  const savePath = path.join(assetsPath, req.file.filename);
   res.json({ path: savePath });
 });
 
