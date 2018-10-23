@@ -1,4 +1,5 @@
 import fs from 'fs-extra';
+import { ChildProcess } from 'child_process';
 import path from 'path';
 import request from 'request';
 
@@ -7,10 +8,14 @@ import {
   createGitRepo,
   tutureRunnerFactory,
   SyncRunner,
+  AsyncRunner,
 } from './utils';
 
 // Tmp directories used in tests.
 const tmpDirs: string[] = Array();
+
+// Subprocesses used in test (need to be killed in the end).
+const procs: ChildProcess[] = Array();
 
 describe('tuture up', () => {
   beforeAll(() => {
@@ -23,16 +28,19 @@ describe('tuture up', () => {
     );
   });
 
-  afterAll(() => tmpDirs.forEach((dir) => fs.removeSync(dir)));
+  afterAll(() => {
+    tmpDirs.forEach((dir) => fs.removeSync(dir));
+    procs.forEach((proc) => proc.kill('SIGINT'));
+  });
 
   describe('normal setup', () => {
     const repoPath = createGitRepo();
-    const tutureRunner = tutureRunnerFactory(repoPath, true);
+    const tutureRunner = tutureRunnerFactory(repoPath, true) as AsyncRunner;
     tmpDirs.push(repoPath);
-    tutureRunner(['init', '-y']);
+    procs.push(tutureRunner(['init', '-y']));
 
     it('should spin tuture server', () => {
-      tutureRunner(['up']);
+      procs.push(tutureRunner(['up']));
 
       // Wait for the server to be fully prepared.
       setTimeout(() => {
@@ -47,7 +55,7 @@ describe('tuture up', () => {
     it('should spin server on specified port', () => {
       const testPort = 8000;
       process.env.TEST = 'yes';
-      tutureRunner(['up', '-p', `${testPort}`]);
+      procs.push(tutureRunner(['up', '-p', `${testPort}`]));
 
       // Wait for the server to be fully prepared.
       setTimeout(() => {
