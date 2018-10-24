@@ -16,9 +16,11 @@ type RawDiff = {
 // Markdown template for code blocks.
 const codeBlock = (file: File) => {
   const lang = file.to ? file.to.split('.').slice(-1)[0] : '';
-  const code = file.chunks[0].changes
-    .map((change) => change.content.slice(1))
-    .join('\n');
+  const changes = file.chunks[0].changes;
+  const code = changes
+    ? changes.map((change) => change.content.slice(1)).join('\n')
+    : '';
+
   return `
 \`\`\`${lang}
 ${code}

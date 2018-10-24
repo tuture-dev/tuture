@@ -17,7 +17,7 @@
   },
   "scripts": {
     "lint": "tslint -p . -t verbose",
-    "test": "rimraf build && tsc && jest --detectOpenHandles",
+    "test": "rimraf build && tsc && jest",
     "build": "rimraf build && tsc && cp -r editor/build build/editor",
     "pkg": "./scripts/pack.sh",
     "prepack": "npm run build"
