@@ -4,6 +4,7 @@ import { flags } from '@oclif/command';
 import { prompt } from 'inquirer';
 import yaml from 'js-yaml';
 
+import logger from '../utils/logger';
 import BaseCommand from '../base';
 import { Tuture, TutureMeta } from '../types';
 import { makeSteps, removeTutureSuite } from '../utils';
@@ -42,7 +43,7 @@ export default class Init extends BaseCommand {
       this.exit(0);
     } else {
       await git.initGit();
-      this.success('git repo is initialized!');
+      logger.log('success', 'Git repository is initialized!');
     }
   }
 
@@ -73,12 +74,12 @@ export default class Init extends BaseCommand {
     const { flags } = this.parse(Init);
 
     if (fs.existsSync(TUTURE_YML_PATH)) {
-      this.error('tuture has already been initialized!');
+      logger.log('success', 'Tuture tutorial has already been initialized!');
       this.exit(0);
     }
 
     if (!git.isGitAvailable()) {
-      this.error('Git is not installed on your machine!');
+      logger.log('error', 'Git is not installed on your machine!');
       this.exit(1);
     }
 
@@ -95,13 +96,14 @@ export default class Init extends BaseCommand {
       };
 
       fs.writeFileSync(TUTURE_YML_PATH, yaml.safeDump(tuture));
-      this.success('tuture.yml created!');
 
       git.appendGitignore();
       git.appendGitHook();
+
+      logger.log('success', 'Tuture tutorial has been initialized!');
     } catch (err) {
       await removeTutureSuite();
-      this.error(err.message);
+      logger.log('error', err.message);
       this.exit(1);
     }
   }

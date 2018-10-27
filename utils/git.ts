@@ -5,6 +5,7 @@ import path from 'path';
 import which from 'which';
 import parseDiff from 'parse-diff';
 
+import logger from '../utils/logger';
 import { TUTURE_ROOT, loadConfig } from '../config';
 
 /**
@@ -123,6 +124,7 @@ export function appendGitHook() {
   const hookPath = path.join('.git', 'hooks', 'post-commit');
   if (!fs.existsSync(hookPath)) {
     fs.writeFileSync(hookPath, reloadHook, { mode: 0o755 });
+    logger.log('info', 'Git post-commit hook added.');
   } else if (
     !fs
       .readFileSync(hookPath)
@@ -130,6 +132,7 @@ export function appendGitHook() {
       .includes('tuture reload')
   ) {
     fs.appendFileSync(hookPath, reloadHook);
+    logger.log('info', 'Git post-commit hook configured.');
   }
 }
 
@@ -147,6 +150,7 @@ export function removeGitHook() {
     } else {
       fs.writeFileSync(hookPath, hook.replace('tuture reload', ''));
     }
+    logger.log('info', 'Git post-commit hook removed.');
   }
 }
 
@@ -160,6 +164,7 @@ export function appendGitignore() {
 
   if (!fs.existsSync('.gitignore')) {
     fs.writeFileSync('.gitignore', ignoreRules);
+    logger.log('info', '.gitignore file created.');
   } else if (
     !fs
       .readFileSync('.gitignore')
@@ -167,5 +172,6 @@ export function appendGitignore() {
       .includes('.tuture')
   ) {
     fs.appendFileSync('.gitignore', `\n${ignoreRules}`);
+    logger.log('info', '.gitignore rules appended.');
   }
 }

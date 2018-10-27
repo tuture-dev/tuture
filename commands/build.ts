@@ -1,10 +1,12 @@
 import fs from 'fs-extra';
 import yaml from 'js-yaml';
+import chalk from 'chalk';
 import zip from 'lodash.zip';
 import { flags } from '@oclif/command';
 import { File } from 'parse-diff';
 
 import BaseCommand from '../base';
+import logger from '../utils/logger';
 import { TUTURE_YML_PATH, DIFF_PATH } from '../config';
 import { Diff, Step, Tuture } from '../types';
 
@@ -71,13 +73,13 @@ export default class Build extends BaseCommand {
   async run() {
     const { flags } = this.parse(Build);
 
-    if (!fs.existsSync(TUTURE_YML_PATH)) {
-      this.error('Cannot build without tuture.yml!');
-      this.exit(1);
-    }
-
-    if (!fs.existsSync(DIFF_PATH)) {
-      this.error('Cannot build without diff.json!');
+    if (!fs.existsSync(TUTURE_YML_PATH) || !fs.existsSync(DIFF_PATH)) {
+      logger.log(
+        'error',
+        `You are not in a Tuture tutorial. Run ${chalk.bold(
+          'tuture init',
+        )} to initialize one`,
+      );
       this.exit(1);
     }
 
@@ -88,10 +90,17 @@ export default class Build extends BaseCommand {
       fs.readFileSync(DIFF_PATH).toString(),
     );
 
+    if (rawDiff.length === 0) {
+      logger.log(
+        'warning',
+        'No commits yet. Target tutorial will have empty content.',
+      );
+    }
+
     const tutorial = tutorialTmpl(tuture, rawDiff);
     const dest = flags.out || 'tutorial.md';
     fs.writeFileSync(dest, tutorial);
 
-    this.success('Tutorial has been built!');
+    logger.log('success', `Tutorial has been written to ${chalk.bold(dest)}`);
   }
 }
