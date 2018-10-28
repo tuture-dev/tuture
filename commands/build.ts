@@ -78,7 +78,7 @@ export default class Build extends BaseCommand {
         'error',
         `You are not in a Tuture tutorial. Run ${chalk.bold(
           'tuture init',
-        )} to initialize one`,
+        )} to initialize one.`,
       );
       this.exit(1);
     }
