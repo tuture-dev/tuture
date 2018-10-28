@@ -8,9 +8,7 @@ const logLevels = {
   info: 3,
 };
 
-const { printf } = format;
-
-const logFormat = printf((info) => {
+const consoleFormat = format.printf((info) => {
   const { level, message } = info;
   switch (level) {
     case 'error':
@@ -26,10 +24,26 @@ const logFormat = printf((info) => {
   }
 });
 
+const fileFormat = format.printf((info) => {
+  const { message, error, timestamp } = info;
+  let log = `${timestamp} ${message}\n`;
+  if (error) {
+    const { message, stack } = error as Error;
+    log += `${message}\n${stack}\n`;
+  }
+  return log;
+});
+
 const logger = winston.createLogger({
   levels: logLevels,
-  format: logFormat,
-  transports: [new winston.transports.Console({ level: 'info' })],
+  transports: [
+    new winston.transports.Console({ level: 'info', format: consoleFormat }),
+    new winston.transports.File({
+      filename: 'tuture-error.log',
+      level: 'error',
+      format: format.combine(format.timestamp(), fileFormat),
+    }),
+  ],
 });
 
 export default logger;

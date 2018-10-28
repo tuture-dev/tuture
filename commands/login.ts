@@ -77,12 +77,23 @@ export default class Login extends BaseCommand {
         logger.log('success', 'You have logged in!');
       })
       .catch((err: ClientError) => {
-        if (err.response.errors) {
-          err.response.errors.forEach((error) => {
-            logger.log('error', error.message);
-            this.exit(1);
+        if (!err.response) {
+          logger.log({
+            level: 'error',
+            message: 'Cannot connect to tuture remote server.',
+            error: err,
+          });
+        } else if (err.response.errors) {
+          logger.log({
+            level: 'error',
+            message: 'Invalid username or password.',
+            error: err,
           });
         }
+
+        // We don't use `exit` method from `Command` base class here.
+        // Or we'll get nasty unhandled promise rejection warning.
+        process.exit(1);
       });
   }
 }

@@ -134,12 +134,13 @@ export default class Publish extends BaseCommand {
       },
       (err, _, body) => {
         if (err) {
-          logger.log(
-            'error',
-            `Verification failed. Please relogin with ${chalk.bold(
+          logger.log({
+            level: 'error',
+            message: `Verification failed. Please relogin with ${chalk.bold(
               'tuture login',
             )}.`,
-          );
+            error: err,
+          });
           this.exit(1);
         }
         this.publishTutorial(tuture, JSON.parse(body));

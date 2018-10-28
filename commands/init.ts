@@ -103,7 +103,11 @@ export default class Init extends BaseCommand {
       logger.log('success', 'Tuture tutorial has been initialized!');
     } catch (err) {
       await removeTutureSuite();
-      logger.log('error', err.message);
+      logger.log({
+        level: 'error',
+        message: err.message,
+        error: err,
+      });
       this.exit(1);
     }
   }
