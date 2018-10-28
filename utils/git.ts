@@ -160,7 +160,7 @@ export function removeGitHook() {
  * If .gitignore doesn't exist, create one and add the rule.
  */
 export function appendGitignore() {
-  const ignoreRules = '# Tuture supporting files\n\n.tuture\n';
+  const ignoreRules = '# Tuture-related files\n\n.tuture\ntuture-error.log\n';
 
   if (!fs.existsSync('.gitignore')) {
     fs.writeFileSync('.gitignore', ignoreRules);
