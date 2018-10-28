@@ -32,7 +32,7 @@ export default class Up extends BaseCommand {
         this.exit(1);
       }
       const url = `http://localhost:${portToUse}`;
-      this.success(`Tutorial is served on ${url}`);
+      logger.log('success', `Tutorial editor is served on ${url}`);
 
       // Don't open browser in test environment.
       if (!process.env.TEST) {
