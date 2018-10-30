@@ -1,5 +1,4 @@
 import { Command } from '@oclif/command';
-import chalk from 'chalk';
 import fs from 'fs-extra';
 
 import defaultConfig, { TUTURE_ROOT, CONFIG_PATH } from './config';
@@ -8,10 +7,6 @@ export default abstract class BaseCommand extends Command {
   readonly tutureRoot = TUTURE_ROOT;
 
   userConfig = defaultConfig;
-
-  success(msg: string) {
-    this.log(` ${chalk.green('›')}   Success: ${msg}`);
-  }
 
   async init() {
     if (!fs.existsSync(CONFIG_PATH)) {

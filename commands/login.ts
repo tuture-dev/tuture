@@ -4,6 +4,7 @@ import { flags } from '@oclif/command';
 import { request, ClientError } from 'graphql-request';
 
 import BaseCommand from '../base';
+import logger from '../utils/logger';
 import { GRAPHQL_SERVER, TOKEN_PATH, GLOBAL_TUTURE_ROOT } from '../config';
 
 type Credentials = {
@@ -73,14 +74,26 @@ export default class Login extends BaseCommand {
     request<LoginData>(GRAPHQL_SERVER, query, variables)
       .then((data) => {
         this.saveToken(data.login.token);
-        this.success('You have logged in!');
+        logger.log('success', 'You have logged in!');
       })
       .catch((err: ClientError) => {
-        if (err.response.errors) {
-          err.response.errors.forEach((error) => {
-            this.log(error.message);
+        if (!err.response) {
+          logger.log({
+            level: 'error',
+            message: 'Cannot connect to tuture remote server.',
+            error: err,
+          });
+        } else if (err.response.errors) {
+          logger.log({
+            level: 'error',
+            message: 'Invalid username or password.',
+            error: err,
           });
         }
+
+        // We don't use `exit` method from `Command` base class here.
+        // Or we'll get nasty unhandled promise rejection warning.
+        process.exit(1);
       });
   }
 }

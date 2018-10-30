@@ -4,6 +4,7 @@ import yaml from 'js-yaml';
 import { flags } from '@oclif/command';
 
 import BaseCommand from '../base';
+import logger from '../utils/logger';
 import reload from './reload';
 import server from '../server';
 import { TUTURE_YML_PATH } from '../config';
@@ -24,13 +25,14 @@ export default class Up extends BaseCommand {
 
     server.listen(portToUse, (err: Error) => {
       if (err) {
-        this.error(
+        logger.log(
+          'error',
           `Port ${portToUse} has been occupied. Please choose a new port.`,
         );
         this.exit(1);
       }
       const url = `http://localhost:${portToUse}`;
-      this.success(`Tutorial is served on ${url}`);
+      logger.log('success', `Tutorial editor is served on ${url}`);
 
       // Don't open browser in test environment.
       if (!process.env.TEST) {
@@ -43,7 +45,7 @@ export default class Up extends BaseCommand {
     const { flags } = this.parse(Up);
 
     if (!fs.existsSync(TUTURE_YML_PATH)) {
-      this.error('tuture.yml not found!');
+      logger.log('error', 'tuture.yml not found!');
       this.exit(1);
     }
 
@@ -51,7 +53,7 @@ export default class Up extends BaseCommand {
     try {
       yaml.safeLoad(fs.readFileSync(TUTURE_YML_PATH).toString());
     } catch (err) {
-      this.error(err.message);
+      logger.log('error', err.message);
       this.exit(1);
     }
 

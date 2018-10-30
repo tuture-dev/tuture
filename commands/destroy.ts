@@ -3,6 +3,7 @@ import { flags } from '@oclif/command';
 import { prompt } from 'inquirer';
 
 import BaseCommand from '../base';
+import logger from '../utils/logger';
 import * as git from '../utils/git';
 import { TUTURE_YML_PATH } from '../config';
 import { removeTutureSuite } from '../utils';
@@ -40,7 +41,7 @@ export default class Destroy extends BaseCommand {
     const { flags } = this.parse(Destroy);
 
     if (!fs.existsSync(TUTURE_YML_PATH)) {
-      this.error('No tuture tutorial to destroy!');
+      logger.log('error', 'No Tuture tutorial to destroy!');
       this.exit(1);
     }
 
@@ -51,6 +52,6 @@ export default class Destroy extends BaseCommand {
     git.removeGitHook();
     await removeTutureSuite();
 
-    this.success('Tuture suite has been destroyed!');
+    logger.log('success', 'Tuture tutorial has been destroyed!');
   }
 }

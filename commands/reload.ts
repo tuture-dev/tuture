@@ -3,6 +3,7 @@ import http from 'http';
 import yaml from 'js-yaml';
 
 import BaseCommand from '../base';
+import logger from '../utils/logger';
 import { Step, Tuture } from '../types';
 import { makeSteps, mergeSteps } from '../utils';
 import { isGitAvailable } from '../utils/git';
@@ -19,7 +20,7 @@ export default class Reload extends BaseCommand {
         .get(url, (res) => {
           const { statusCode } = res;
           if (statusCode === 200) {
-            this.success('Server is ready to reload.');
+            logger.log('success', 'Server is ready to reload.');
           }
           resolve();
         })
@@ -33,12 +34,12 @@ export default class Reload extends BaseCommand {
     this.parse(Reload);
 
     if (!fs.existsSync(TUTURE_YML_PATH)) {
-      this.error('Tuture has not been initialized!');
+      logger.log('error', 'Tuture tutorial has not been initialized!');
       this.exit(1);
     }
 
     if (!isGitAvailable()) {
-      this.error('Git is not installed on your machine!');
+      logger.log('error', 'Git is not installed on your machine!');
       this.exit(1);
     }
 
@@ -50,7 +51,5 @@ export default class Reload extends BaseCommand {
 
     fs.writeFileSync(TUTURE_YML_PATH, yaml.safeDump(tuture));
     await this.notifyServer();
-
-    this.success('Reload complete!');
   }
 }

@@ -8,6 +8,7 @@ import { flags } from '@oclif/command';
 import { GraphQLClient } from 'graphql-request';
 
 import BaseCommand from '../base';
+import logger from '../utils/logger';
 import { Tuture } from '../types';
 import {
   GRAPHQL_SERVER,
@@ -91,11 +92,11 @@ export default class Publish extends BaseCommand {
     client
       .request(query, variables)
       .then(() => {
-        this.success('Your tutorial has been successfully published!');
+        logger.log('success', 'Your tutorial has been successfully published!');
       })
       .catch((err) => {
-        this.log('Publish failed. Please retry.');
-        this.log(err);
+        logger.log('error', 'Publish failed. Please retry.');
+        logger.log('error', err);
         this.exit(1);
       });
   }
@@ -104,7 +105,8 @@ export default class Publish extends BaseCommand {
     this.parse(Publish);
 
     if (!fs.existsSync(TOKEN_PATH)) {
-      this.error(
+      logger.log(
+        'error',
         `You have not logged in yet. Please login with ${chalk.bold(
           'tuture login',
         )}.`,
@@ -130,13 +132,15 @@ export default class Publish extends BaseCommand {
           Authorization: `Bearer ${fs.readFileSync(TOKEN_PATH).toString()}`,
         },
       },
-      (err, res, body) => {
+      (err, _, body) => {
         if (err) {
-          this.log(
-            `Verification failed. Please relogin with ${chalk.bold(
+          logger.log({
+            level: 'error',
+            message: `Verification failed. Please relogin with ${chalk.bold(
               'tuture login',
             )}.`,
-          );
+            error: err,
+          });
           this.exit(1);
         }
         this.publishTutorial(tuture, JSON.parse(body));
