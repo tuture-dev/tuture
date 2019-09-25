@@ -1,0 +1,27 @@
+2018-10-28T13:42:03.033Z You are not in a Tuture tutorial. Run [1mtuture init[22m to initialize one.
+
+2018-10-28T13:43:08.375Z Invalid username or password.
+No such user found: {"response":{"data":{"login":null},"errors":[{"message":"No such user found","locations":[{"line":6,"column":9}],"path":["login"]}],"status":200},"request":{"query":"\n      mutation login(\n        $email: String!,\n        $password: String!\n      ) {\n        login(\n          email: $email\n          password: $password\n        ) {\n          token\n        }\n      }\n    ","variables":{"email":"mrc@me.com","password":"123"}}}
+Error: No such user found: {"response":{"data":{"login":null},"errors":[{"message":"No such user found","locations":[{"line":6,"column":9}],"path":["login"]}],"status":200},"request":{"query":"\n      mutation login(\n        $email: String!,\n        $password: String!\n      ) {\n        login(\n          email: $email\n          password: $password\n        ) {\n          token\n        }\n      }\n    ","variables":{"email":"mrc@me.com","password":"123"}}}
+    at GraphQLClient.<anonymous> (/Users/pftom/Projects/ProgrammingLearning/tuture/node_modules/graphql-request/dist/src/index.js:116:35)
+    at step (/Users/pftom/Projects/ProgrammingLearning/tuture/node_modules/graphql-request/dist/src/index.js:40:23)
+    at Object.next (/Users/pftom/Projects/ProgrammingLearning/tuture/node_modules/graphql-request/dist/src/index.js:21:53)
+    at fulfilled (/Users/pftom/Projects/ProgrammingLearning/tuture/node_modules/graphql-request/dist/src/index.js:12:58)
+    at <anonymous>
+    at process._tickCallback (internal/process/next_tick.js:188:7)
+
+2018-10-28T13:43:30.382Z Cannot connect to tuture remote server.
+request to https://gql.tuture.co/ failed, reason: getaddrinfo ENOTFOUND gql.tuture.co gql.tuture.co:443
+FetchError: request to https://gql.tuture.co/ failed, reason: getaddrinfo ENOTFOUND gql.tuture.co gql.tuture.co:443
+    at ClientRequest.<anonymous> (/Users/pftom/Projects/ProgrammingLearning/tuture/node_modules/node-fetch/lib/index.js:1393:11)
+    at emitOne (events.js:116:13)
+    at ClientRequest.emit (events.js:211:7)
+    at TLSSocket.socketErrorListener (_http_client.js:387:9)
+    at emitOne (events.js:116:13)
+    at TLSSocket.emit (events.js:211:7)
+    at emitErrorNT (internal/streams/destroy.js:64:8)
+    at _combinedTickCallback (internal/process/next_tick.js:138:11)
+    at process._tickCallback (internal/process/next_tick.js:180:9)
+
+2018-10-28T13:46:26.360Z You are not in a Tuture tutorial. Run [1mtuture init[22m to initialize one.
+
