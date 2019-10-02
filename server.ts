@@ -20,7 +20,7 @@ const server = http.createServer(app);
 const workspace = process.env.TUTURE_PATH || process.cwd();
 const tutureYMLPath = path.join(workspace, TUTURE_YML_PATH);
 const diffPath = path.join(workspace, DIFF_PATH);
-const assetsPath = path.join(workspace, 'tuture-assets');
+const assetsPath = './tuture-assets';
 
 // File upload middleware.
 const upload = multer({
