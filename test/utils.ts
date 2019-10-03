@@ -37,11 +37,17 @@ export function tutureRunnerFactory(
   const tuturePath = path.join(__dirname, '..', 'bin', 'run');
   if (async) {
     return function (args: string[]) {
-      return cp.spawn('node', [tuturePath, ...args], { cwd });
+      return cp.spawn('node', [tuturePath, ...args], {
+        cwd,
+        env: { ...process.env, TEST: 'yes' },
+      });
     };
   }
   return function (args: string[]) {
-    return cp.spawnSync('node', [tuturePath, ...args], { cwd });
+    return cp.spawnSync('node', [tuturePath, ...args], {
+      cwd,
+      env: { ...process.env, TEST: 'yes' },
+    });
   };
 }
 
