@@ -1,4 +1,4 @@
-import opn from 'opn';
+import open from 'open';
 import fs from 'fs-extra';
 import yaml from 'js-yaml';
 import { flags } from '@oclif/command';
@@ -23,20 +23,14 @@ export default class Up extends BaseCommand {
   async fireTutureServer(port?: number) {
     const portToUse = port || 3000;
 
-    server.listen(portToUse, (err: Error) => {
-      if (err) {
-        logger.log(
-          'error',
-          `Port ${portToUse} has been occupied. Please choose a new port.`,
-        );
-        this.exit(1);
-      }
+    server.listen(portToUse, () => {
       const url = `http://localhost:${portToUse}`;
       logger.log('success', `Tutorial editor is served on ${url}`);
 
       // Don't open browser in test environment.
-      if (!process.env.TEST) {
-        opn(url);
+      console.log('process.env.TEST', process.env.TEST);
+      if (process.env.TEST !== 'yes') {
+        open(url);
       }
     });
   }

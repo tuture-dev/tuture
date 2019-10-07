@@ -1118,13 +1118,6 @@
   resolved "http://r.cnpmjs.org/@types/node/download/@types/node-12.7.7.tgz#f9bd8c00fa9e1a8129af910fc829f6139c397d6c"
   integrity sha1-+b2MAPqeGoEpr5EPyCn2E5w5fWw=
 
-"@types/opn@^5.1.0":
-  version "5.5.0"
-  resolved "http://r.cnpmjs.org/@types/opn/download/@types/opn-5.5.0.tgz#f7b80ae1269b76d621290befb568c87e7511e3ac"
-  integrity sha1-97gK4SabdtYhKQvvtWjIfnUR46w=
-  dependencies:
-    opn "*"
-
 "@types/q@^1.5.1":
   version "1.5.2"
   resolved "http://r.cnpmjs.org/@types/q/download/@types/q-1.5.2.tgz#690a1475b84f2a884fd07cd797c00f5f31356ea8"
@@ -6807,19 +6800,19 @@ onetime@^2.0.0:
   dependencies:
     mimic-fn "^1.0.0"
 
+open@^6.4.0:
+  version "6.4.0"
+  resolved "http://r.cnpmjs.org/open/download/open-6.4.0.tgz#5c13e96d0dc894686164f18965ecfe889ecfc8a9"
+  integrity sha1-XBPpbQ3IlGhhZPGJZez+iJ7PyKk=
+  dependencies:
+    is-wsl "^1.1.0"
+
 opencollective-postinstall@^2.0.2:
   version "2.0.2"
   resolved "http://r.cnpmjs.org/opencollective-postinstall/download/opencollective-postinstall-2.0.2.tgz#5657f1bede69b6e33a45939b061eb53d3c6c3a89"
   integrity sha1-Vlfxvt5ptuM6RZObBh61PTxsOok=
 
-opn@*:
-  version "6.0.0"
-  resolved "http://r.cnpmjs.org/opn/download/opn-6.0.0.tgz#3c5b0db676d5f97da1233d1ed42d182bc5a27d2d"
-  integrity sha1-PFsNtnbV+X2hIz0e1C0YK8WifS0=
-  dependencies:
-    is-wsl "^1.1.0"
-
-opn@^5.4.0, opn@^5.5.0:
+opn@^5.5.0:
   version "5.5.0"
   resolved "http://r.cnpmjs.org/opn/download/opn-5.5.0.tgz#fc7164fab56d235904c51c3b27da6758ca3b9bfc"
   integrity sha1-/HFk+rVtI1kExRw7J9pnWMo7m/w=
