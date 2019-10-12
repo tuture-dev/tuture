@@ -980,13 +980,6 @@
   resolved "http://r.cnpmjs.org/@types/caseless/download/@types/caseless-0.12.2.tgz#f65d3d6389e01eeb458bd54dc8f52b95a9463bc8"
   integrity sha1-9l09Y4ngHutFi9VNyPUrlalGO8g=
 
-"@types/commander@^2.12.2":
-  version "2.12.2"
-  resolved "http://r.cnpmjs.org/@types/commander/download/@types/commander-2.12.2.tgz#183041a23842d4281478fa5d23c5ca78e6fd08ae"
-  integrity sha1-GDBBojhC1CgUePpdI8XKeOb9CK4=
-  dependencies:
-    commander "*"
-
 "@types/connect@*":
   version "3.4.32"
   resolved "http://r.cnpmjs.org/@types/connect/download/@types/connect-3.4.32.tgz#aa0e9616b9435ccad02bc52b5b454ffc2c70ba28"
@@ -1031,6 +1024,11 @@
     "@types/events" "*"
     "@types/minimatch" "*"
     "@types/node" "*"
+
+"@types/highlight.js@^9.12.3":
+  version "9.12.3"
+  resolved "https://registry.npm.taobao.org/@types/highlight.js/download/@types/highlight.js-9.12.3.tgz#b672cfaac25cbbc634a0fd92c515f66faa18dbca"
+  integrity sha1-tnLPqsJcu8Y0oP2SxRX2b6oY28o=
 
 "@types/inquirer@^0.0.42":
   version "0.0.42"
@@ -2768,11 +2766,6 @@ combined-stream@^1.0.6, combined-stream@~1.0.6:
   integrity sha1-w9RaizT9cwYxoRCoolIGgrMdWn8=
   dependencies:
     delayed-stream "~1.0.0"
-
-commander@*:
-  version "3.0.1"
-  resolved "http://r.cnpmjs.org/commander/download/commander-3.0.1.tgz#4595aec3530525e671fb6f85fb173df8ff8bf57a"
-  integrity sha1-RZWuw1MFJeZx+2+F+xc9+P+L9Xo=
 
 commander@2.17.x:
   version "2.17.1"
@@ -4591,6 +4584,11 @@ hex-color-regex@^1.1.0:
   version "1.1.0"
   resolved "http://r.cnpmjs.org/hex-color-regex/download/hex-color-regex-1.1.0.tgz#4c06fccb4602fe2602b3c93df82d7e7dbf1a8a8e"
   integrity sha1-TAb8y0YC/iYCs8k9+C1+fb8aio4=
+
+highlight.js@^9.15.10:
+  version "9.15.10"
+  resolved "https://registry.npm.taobao.org/highlight.js/download/highlight.js-9.15.10.tgz#7b18ed75c90348c045eef9ed08ca1319a2219ad2"
+  integrity sha1-exjtdckDSMBF7vntCMoTGaIhmtI=
 
 hmac-drbg@^1.0.0:
   version "1.0.1"
