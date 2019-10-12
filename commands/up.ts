@@ -28,7 +28,6 @@ export default class Up extends BaseCommand {
       logger.log('success', `Tutorial editor is served on ${url}`);
 
       // Don't open browser in test environment.
-      console.log('process.env.TEST', process.env.TEST);
       if (process.env.TEST !== 'yes') {
         open(url);
       }
