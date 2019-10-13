@@ -1,6 +1,5 @@
 import fs from 'fs-extra';
 import yaml from 'js-yaml';
-import hljs from 'highlight.js';
 import chalk from 'chalk';
 import zip from 'lodash.zip';
 import { flags } from '@oclif/command';
@@ -16,158 +15,86 @@ type RawDiff = {
   diff: File[];
 };
 
-// TODO: remove this temporary hint when better diff display
-// strategy is available.
-const hint = `
+// Internal hints for rendering code lines.
+const diffRenderHints: { [mode: string]: { [diffType: string]: string } } = {
+  hexo: {
+    normal: '',
+    add: '[tuture-add]',
+    del: '[tuture-del]',
+    omit: '\n[tuture-omit]\n',
+  },
+  plain: {
+    normal: '',
+    add: '+ ',
+    del: '- ',
+    omit: `
 
 ============================================
-============= 此处省略 n 行代码 ==============
+=============== Omitted Code ===============
 ============================================
 
-`;
-
-const htmlHint = `<tr>
-  <td class="tuture-diff-code tuture-diff-code-omit">
-    Omitted code ...
-  </td>
-</tr>`;
-
-const styleCode = `<style>
-.tuture-code-block {
-  display: block;
-  background-color: #f7f7f7;
-}
-
-.tuture-code-block figcaption {
-  color: #fff;
-  padding-left: 15px;
-  background-color: #33a674;
-}
-
-.tuture-code-table {
-  width: 100% !important;
-  margin: 10px 0 !important;
-  overflow: auto;
-}
-
-.tuture-code-table tbody {
-  vertical-align: middle;
-}
-
-.tuture-code-table tbody > tr {
-  line-height: 31px;
-  display: table-row;
-}
-
-.tuture-diff-code {
-  height: 2em;
-  background-color: #f7f7f7;
-  /* padding: 0; */
-}
-
-.tuture-diff-code pre {
-  margin: 0px;
-  padding: 4px 15px;
-}
-
-.tuture-diff-code pre code {
-  font-size: 1em;
-}
-
-.tuture-diff-code-add pre {
-  font-weight: 700;
-  background-color: #e3e3e3 !important;
-}
-
-.tuture-diff-code-del pre {
-  opacity: 0.3;
-}
-
-.tuture-diff-code-omit {
-  text-align: center;
-  padding: 10px 0px !important;
-  background-color: #fefefe !important;
-}
-</style>`;
+    `,
+  },
+};
 
 // Sanitize explanation string for hexo compatibility
 const sanitize = (text: string | undefined) => {
   if (text && Build.flags.hexo) {
-    return text.replace(
-      /`([^`\n]+)`/g,
-      (_, code) => `\`{% raw %}${code}{% endraw %}\``,
+    return text.replace(/`([^`\n]+)`/g, (_, code: string) =>
+      code.match(/[\{\}]/) ? `\`{% raw %}${code}{% endraw %}\`` : `\`${code}\``,
     );
   }
   return text;
 };
 
-// Code highlighting using highlight.js in place.
-const highlighChanges = (changes: Change[], lang: string) => {
-  const codeBlock = changes.map((change) => change.content.slice(1)).join('\n');
-  const { value } = hljs.highlight(lang, codeBlock);
-  const highlighted = value.split('\n');
+// Template for metadata of hexo posts.
+const hexoMetaDataTmpl = (tuture: Tuture) => {
+  const { name, description, topics } = tuture;
+  const elements = ['---', `title: "${name}"`, 'comments: true'];
+  if (description) {
+    elements.push(`description: "${sanitize(description)}"`);
+  }
+  if (topics) {
+    const tags = topics.map((topic) => `"${sanitize(topic)}"`).join(', ');
+    elements.push(`tags: [${tags}]`);
+  }
+  elements.push('---');
 
-  changes.forEach((change, index) => {
-    change.content = highlighted[index].replace(/hljs-/g, '');
-  });
+  return elements.join('\n');
 };
 
 // Template for single line of change.
 const changeTmpl = (change: Change, newFile = false) => {
-  let tmpl = '';
+  let prefix = '';
+  const mode = Build.flags.hexo ? 'hexo' : 'plain';
 
-  if (Build.flags.hexo) {
-    let className = 'tuture-diff-code';
-    if (!newFile && change.type === 'add') {
-      className += ' tuture-diff-code-add';
-    } else if (!newFile && change.type === 'del') {
-      className += ' tuture-diff-code-del';
-    }
-    tmpl = `<tr><td class="${className}"><pre><code>${
-      change.content
-    }</code></pre></td></tr>`;
-  } else {
-    let prefix = '';
-    if (!newFile && change.type === 'add') {
-      prefix = '+ ';
-    } else if (!newFile && change.type === 'del') {
-      prefix = '- ';
-    }
-    tmpl = prefix + change.content.slice(1);
+  if (!newFile) {
+    prefix = diffRenderHints[mode][change.type];
   }
 
-  return tmpl;
+  return prefix + change.content.slice(1);
 };
 
 // Template for code blocks.
 const codeBlockTmpl = (file: File) => {
   const lang = file.to ? file.to.split('.').slice(-1)[0] : '';
-  const html = Build.flags.hexo;
+  const mode = Build.flags.hexo ? 'hexo' : 'plain';
 
   const code = file.chunks
     .map((chunk) => {
       const { changes } = chunk;
-      if (html) {
-        highlighChanges(changes, lang);
-      }
       return changes
         ? changes.map((change) => changeTmpl(change, file.new)).join('\n')
         : null;
     })
     .filter((elem) => elem)
-    .join(html ? htmlHint : hint);
+    .join(diffRenderHints[mode]['omit']);
 
-  let tmpl = '';
-  if (html) {
-    tmpl = `<figure class="highlight ${lang} tuture-code-block">
-  <figcaption><span>${file.to}</span></figcaption>
-  <table class="tuture-code-table"><tbody>${code}</tbody></table>
-</figure>`;
-  } else {
-    tmpl = `\`\`\`${file.new ? lang : 'diff'} ${file.to}\n${code}\n\`\`\``;
-  }
+  const tmpl = `\`\`\`${file.new || mode === 'hexo' ? lang : 'diff'} ${
+    file.to
+  }\n${code}\n\`\`\``;
 
-  return `{% raw %}\n${tmpl}\n{% endraw %}`;
+  return tmpl;
 };
 
 // Markdown template for a Diff object.
@@ -208,8 +135,6 @@ const stepTmpl = (step: Step, files: File[]) => {
 // Markdown template for the whole tutorial.
 const tutorialTmpl = (tuture: Tuture, rawDiffs: RawDiff[]) => {
   const elements = [
-    sanitize(`# ${tuture.name}`),
-    sanitize(tuture.description),
     zip(tuture.steps, rawDiffs)
       .map((zipObj) => {
         const [step, rawDiff] = zipObj;
@@ -227,9 +152,13 @@ const tutorialTmpl = (tuture: Tuture, rawDiffs: RawDiff[]) => {
       .join('\n\n'),
   ];
 
-  // Add css styles in hexo mode.
   if (Build.flags.hexo) {
-    elements.push(styleCode);
+    elements.unshift(hexoMetaDataTmpl(tuture));
+  } else {
+    elements.unshift(
+      sanitize(`# ${tuture.name}`) || '',
+      sanitize(tuture.description) || '',
+    );
   }
 
   return elements

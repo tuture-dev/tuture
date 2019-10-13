@@ -1025,11 +1025,6 @@
     "@types/minimatch" "*"
     "@types/node" "*"
 
-"@types/highlight.js@^9.12.3":
-  version "9.12.3"
-  resolved "https://registry.npm.taobao.org/@types/highlight.js/download/@types/highlight.js-9.12.3.tgz#b672cfaac25cbbc634a0fd92c515f66faa18dbca"
-  integrity sha1-tnLPqsJcu8Y0oP2SxRX2b6oY28o=
-
 "@types/inquirer@^0.0.42":
   version "0.0.42"
   resolved "http://r.cnpmjs.org/@types/inquirer/download/@types/inquirer-0.0.42.tgz#2310fd8623053bead72247adae416aa32bacdf0c"
@@ -4584,11 +4579,6 @@ hex-color-regex@^1.1.0:
   version "1.1.0"
   resolved "http://r.cnpmjs.org/hex-color-regex/download/hex-color-regex-1.1.0.tgz#4c06fccb4602fe2602b3c93df82d7e7dbf1a8a8e"
   integrity sha1-TAb8y0YC/iYCs8k9+C1+fb8aio4=
-
-highlight.js@^9.15.10:
-  version "9.15.10"
-  resolved "https://registry.npm.taobao.org/highlight.js/download/highlight.js-9.15.10.tgz#7b18ed75c90348c045eef9ed08ca1319a2219ad2"
-  integrity sha1-exjtdckDSMBF7vntCMoTGaIhmtI=
 
 hmac-drbg@^1.0.0:
   version "1.0.1"
