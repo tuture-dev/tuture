@@ -8,7 +8,7 @@ import { File, Change } from 'parse-diff';
 import BaseCommand from '../base';
 import logger from '../utils/logger';
 import { TUTURE_YML_PATH, DIFF_PATH } from '../config';
-import { Diff, Step, Tuture } from '../types';
+import { Diff, Step, Tuture, Split } from '../types';
 
 type RawDiff = {
   commit: string;
@@ -44,13 +44,16 @@ const sanitize = (text: string | undefined) => {
       code.match(/[\{\}]/) ? `\`{% raw %}${code}{% endraw %}\`` : `\`${code}\``,
     );
   }
-  return text;
+  return text || '';
 };
 
 // Template for metadata of hexo posts.
-const hexoMetaDataTmpl = (tuture: Tuture) => {
-  const { name, description, topics } = tuture;
-  const elements = ['---', `title: "${name}"`, 'comments: true'];
+const hexoMetaDataTmpl = (
+  title: string,
+  description?: string,
+  topics?: string[],
+) => {
+  const elements = ['---', `title: "${title}"`];
   if (description) {
     elements.push(`description: "${sanitize(description)}"`);
   }
@@ -133,9 +136,15 @@ const stepTmpl = (step: Step, files: File[]) => {
 };
 
 // Markdown template for the whole tutorial.
-const tutorialTmpl = (tuture: Tuture, rawDiffs: RawDiff[]) => {
+const tutorialTmpl = (
+  title: string,
+  description: string | undefined,
+  topics: string[] | undefined,
+  steps: Step[],
+  rawDiffs: RawDiff[],
+) => {
   const elements = [
-    zip(tuture.steps, rawDiffs)
+    zip(steps, rawDiffs)
       .map((zipObj) => {
         const [step, rawDiff] = zipObj;
         if (!step || !rawDiff) return '';
@@ -153,12 +162,9 @@ const tutorialTmpl = (tuture: Tuture, rawDiffs: RawDiff[]) => {
   ];
 
   if (Build.flags.hexo) {
-    elements.unshift(hexoMetaDataTmpl(tuture));
+    elements.unshift(hexoMetaDataTmpl(title, description, topics));
   } else {
-    elements.unshift(
-      sanitize(`# ${tuture.name}`) || '',
-      sanitize(tuture.description) || '',
-    );
+    elements.unshift(sanitize(`# ${title}`) || '', sanitize(description) || '');
   }
 
   return elements
@@ -201,25 +207,56 @@ export default class Build extends BaseCommand {
     const tuture: Tuture = yaml.safeLoad(
       fs.readFileSync(TUTURE_YML_PATH).toString(),
     );
-    const rawDiff: RawDiff[] = JSON.parse(
+    const rawDiffs: RawDiff[] = JSON.parse(
       fs.readFileSync(DIFF_PATH).toString(),
     );
 
-    if (rawDiff.length === 0) {
+    if (rawDiffs.length === 0) {
       logger.log(
         'warning',
         'No commits yet. Target tutorial will have empty content.',
       );
     }
 
-    let tutorial = tutorialTmpl(tuture, rawDiff);
-    if (flags.assetsPath) {
-      tutorial = tutorial.replace(/.\/tuture-assets\//g, flags.assetsPath);
+    const { name, splits, description, topics, steps } = tuture;
+    let tutorials: string[] = [];
+    let titles: string[] = [];
+
+    if (splits) {
+      const commits = rawDiffs.map((diff) => diff.commit);
+      titles = splits.map(
+        (split, index) => split.name || `${name} (${index + 1})`,
+      );
+
+      // Iterate over each split of tutorial.
+      tutorials = splits.map((split, index) => {
+        const start = commits.indexOf(split.start);
+        const end = commits.indexOf(split.end) + 1;
+
+        return tutorialTmpl(
+          titles[index],
+          split.description,
+          topics,
+          steps.slice(start, end),
+          rawDiffs.slice(start, end),
+        );
+      });
+    } else {
+      tutorials = [tutorialTmpl(name, description, topics, steps, rawDiffs)];
+      titles = [name];
     }
 
-    const dest = flags.out || 'tutorial.md';
-    fs.writeFileSync(dest, tutorial);
+    tutorials.forEach((tutorial, index) => {
+      const dest = flags.out || `${titles[index]}.md`;
 
-    logger.log('success', `Tutorial has been written to ${chalk.bold(dest)}`);
+      const { assetsPath } = flags;
+      assetsPath
+        ? fs.writeFileSync(
+            dest,
+            tutorial.replace(/.\/tuture-assets\//g, assetsPath),
+          )
+        : fs.writeFileSync(dest, tutorial);
+      logger.log('success', `Tutorial has been written to ${chalk.bold(dest)}`);
+    });
   }
 }
