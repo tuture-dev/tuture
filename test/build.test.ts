@@ -111,11 +111,13 @@ This is pre-explain for step 1.
 
 This is pre-explain for test1.js.
 
-\`\`\`js
+\`\`\`js test1.js
 console.log('Test');
 
 \`\`\`
+
 This is post-explain for test1.js.
+
 This is post-explain for step 1.
 
 ## Commit 2
@@ -124,11 +126,13 @@ This is pre-explain for step 2.
 
 This is pre-explain for test2.py.
 
-\`\`\`py
+\`\`\`py test2.py
 print('Test')
 
 \`\`\`
+
 This is post-explain for test2.py.
+
 This is post-explain for step 2.`;
 
 describe('tuture build', () => {
@@ -153,7 +157,9 @@ describe('tuture build', () => {
 
       it('should output correct markdown content', () => {
         const generated = fs
-          .readFileSync(path.join(repoPath, 'tutorial.md'))
+          .readFileSync(
+            path.join(repoPath, 'tuture-build', 'My Awesome Tutorial.md'),
+          )
           .toString();
         expect(generated).toBe(expectedOutput);
       });

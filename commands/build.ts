@@ -1,4 +1,5 @@
 import fs from 'fs-extra';
+import path from 'path';
 import yaml from 'js-yaml';
 import chalk from 'chalk';
 import zip from 'lodash.zip';
@@ -14,6 +15,9 @@ type RawDiff = {
   commit: string;
   diff: File[];
 };
+
+// Global variable for storing parsed flags.
+let parsedFlags: any;
 
 // Internal hints for rendering code lines.
 const diffRenderHints: { [mode: string]: { [diffType: string]: string } } = {
@@ -39,7 +43,7 @@ const diffRenderHints: { [mode: string]: { [diffType: string]: string } } = {
 
 // Sanitize explanation string for hexo compatibility
 const sanitize = (text: string | undefined) => {
-  if (text && Build.flags.hexo) {
+  if (text && parsedFlags.hexo) {
     return text.replace(/`([^`\n]+)`/g, (_, code: string) =>
       code.match(/[\{\}]/) ? `\`{% raw %}${code}{% endraw %}\`` : `\`${code}\``,
     );
@@ -69,7 +73,7 @@ const hexoMetaDataTmpl = (
 // Template for single line of change.
 const changeTmpl = (change: Change, newFile = false) => {
   let prefix = '';
-  const mode = Build.flags.hexo ? 'hexo' : 'plain';
+  const mode = parsedFlags.hexo ? 'hexo' : 'plain';
 
   if (!newFile) {
     prefix = diffRenderHints[mode][change.type];
@@ -81,7 +85,7 @@ const changeTmpl = (change: Change, newFile = false) => {
 // Template for code blocks.
 const codeBlockTmpl = (file: File) => {
   const lang = file.to ? file.to.split('.').slice(-1)[0] : '';
-  const mode = Build.flags.hexo ? 'hexo' : 'plain';
+  const mode = parsedFlags.hexo ? 'hexo' : 'plain';
 
   const code = file.chunks
     .map((chunk) => {
@@ -161,7 +165,7 @@ const tutorialTmpl = (
       .join('\n\n'),
   ];
 
-  if (Build.flags.hexo) {
+  if (parsedFlags.hexo) {
     elements.unshift(hexoMetaDataTmpl(title, description, topics));
   } else {
     elements.unshift(sanitize(`# ${title}`) || '', sanitize(description) || '');
@@ -173,6 +177,22 @@ const tutorialTmpl = (
     .trim();
 };
 
+// Replace assets URL with github links if present.
+const replaceAssetsURL = (tutorial: string, github?: string) => {
+  if (!github) return tutorial;
+
+  const match = github.match(/^https:\/\/github.com\/(.+)\/(.+)$/);
+  if (!match || !match[1] || !match[2]) {
+    throw new Error(`Invalid github URL: ${github}`);
+  }
+
+  return tutorial.replace(/!\[.*\]\(\.\/(.+)\)/g, (_, assetPath) => {
+    return `![](https://raw.githubusercontent.com/${match[1]}/${
+      match[2]
+    }/master/${assetPath})`;
+  });
+};
+
 export default class Build extends BaseCommand {
   static description = 'Build tutorial into a markdown document';
 
@@ -182,9 +202,6 @@ export default class Build extends BaseCommand {
       char: 'o',
       description: 'name of output file',
     }),
-    assetsPath: flags.string({
-      description: 'path to assets directory',
-    }),
     hexo: flags.boolean({
       description: 'hexo compatibility mode',
       default: false,
@@ -192,7 +209,7 @@ export default class Build extends BaseCommand {
   };
 
   async run() {
-    const { flags } = this.parse(Build);
+    parsedFlags = this.parse(Build).flags;
 
     if (!fs.existsSync(TUTURE_YML_PATH) || !fs.existsSync(DIFF_PATH)) {
       logger.log(
@@ -218,7 +235,7 @@ export default class Build extends BaseCommand {
       );
     }
 
-    const { name, splits, description, topics, steps } = tuture;
+    const { name, splits, description, topics, steps, github } = tuture;
     let tutorials: string[] = [];
     let titles: string[] = [];
 
@@ -246,16 +263,15 @@ export default class Build extends BaseCommand {
       titles = [name];
     }
 
-    tutorials.forEach((tutorial, index) => {
-      const dest = flags.out || `${titles[index]}.md`;
+    if (!parsedFlags.out && !fs.existsSync('tuture-build')) {
+      fs.mkdirSync('tuture-build');
+    }
 
-      const { assetsPath } = flags;
-      assetsPath
-        ? fs.writeFileSync(
-            dest,
-            tutorial.replace(/.\/tuture-assets\//g, assetsPath),
-          )
-        : fs.writeFileSync(dest, tutorial);
+    tutorials.forEach((tutorial, index) => {
+      const dest =
+        parsedFlags.out || path.join('tuture-build', `${titles[index]}.md`);
+
+      fs.writeFileSync(dest, replaceAssetsURL(tutorial, github));
       logger.log('success', `Tutorial has been written to ${chalk.bold(dest)}`);
     });
   }
