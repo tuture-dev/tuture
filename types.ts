@@ -9,10 +9,19 @@ export interface Diff {
   display?: boolean;
 }
 
+export interface Split {
+  start: string;
+  end: string;
+  name?: string;
+  description?: string;
+}
+
 export interface TutureMeta {
   name: string;
   topics?: string[];
   description?: string;
+  github?: string;
+  splits?: Split[];
 }
 
 export interface Commit {
