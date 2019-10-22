@@ -68,6 +68,10 @@ app.post('/save', (req, res) => {
 });
 
 app.post('/upload', upload.single('file'), (req, res) => {
+  if (!fs.existsSync(assetsPath)) {
+    fs.mkdirSync(assetsPath);
+  }
+
   const savePath = path.join(assetsPath, req.file.filename);
   res.json({ path: savePath });
 });
