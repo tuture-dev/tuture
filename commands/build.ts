@@ -9,7 +9,7 @@ import { File, Change } from 'parse-diff';
 import BaseCommand from '../base';
 import logger from '../utils/logger';
 import { TUTURE_YML_PATH, DIFF_PATH } from '../config';
-import { Diff, Step, Tuture, Split } from '../types';
+import { Diff, Step, Tuture } from '../types';
 
 type RawDiff = {
   commit: string;
@@ -52,7 +52,7 @@ const sanitize = (text: string | undefined) => {
 };
 
 // Template for metadata of hexo posts.
-const hexoMetaDataTmpl = (
+const hexoFrontMatterTmpl = (
   title: string,
   description?: string,
   topics?: string[],
@@ -166,7 +166,7 @@ const tutorialTmpl = (
   ];
 
   if (parsedFlags.hexo) {
-    elements.unshift(hexoMetaDataTmpl(title, description, topics));
+    elements.unshift(hexoFrontMatterTmpl(title, description, topics));
   } else {
     elements.unshift(sanitize(`# ${title}`) || '', sanitize(description) || '');
   }
@@ -186,7 +186,7 @@ const replaceAssetsURL = (tutorial: string, github?: string) => {
     throw new Error(`Invalid github URL: ${github}`);
   }
 
-  return tutorial.replace(/!\[.*\]\(\.\/(.+)\)/g, (_, assetPath) => {
+  return tutorial.replace(/!\[.*\]\((.+)\)/g, (_, assetPath) => {
     return `![](https://raw.githubusercontent.com/${match[1]}/${
       match[2]
     }/master/${assetPath})`;
