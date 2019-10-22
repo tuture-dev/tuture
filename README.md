@@ -16,8 +16,6 @@ Tuture revolutionizes the way of writing tech tutorials.
 
 - **Edit tutorials alongside your code**: It can be much clearer and easier to write something just next to your code. With full-fleged markdown support and a series of handy tools, writing high-quality tech posts has never been this fun.
 
-- **Share your work in a breeze**: Sharing is one of the time-honored conventions within the geek community, which is fully valued and appreciated by Tuture. Fortunately, publishing your tutorials is just one command away (`tuture publish` and you are done). Come and visit [tuture.co](https://tuture.co) for tutorials written by you and others!
-
 ## Installation
 
 Make sure you have [Git](https://git-scm.com/) installed on your machine. You can check by running `git version`. If not, head to Git [downloads page](https://git-scm.com/downloads).

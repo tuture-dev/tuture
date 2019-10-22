@@ -47,7 +47,6 @@
     "express": "^4.16.3",
     "fs-extra": "^7.0.0",
     "globby": "^8.0.1",
-    "graphql-request": "^1.8.2",
     "inquirer": "^6.0.0",
     "js-yaml": "^3.13.1",
     "lodash.zip": "^4.2.0",
@@ -82,8 +81,7 @@
     "ts-jest": "^24.1.0",
     "tslint": "^5.11.0",
     "tslint-config-airbnb": "^5.11.0",
-    "typescript": "^3.1.1",
-    "vuepress": "^1.1.0"
+    "typescript": "^3.1.1"
   },
   "types": "lib/index.d.ts",
   "oclif": {

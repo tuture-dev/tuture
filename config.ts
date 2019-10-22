@@ -23,12 +23,6 @@ export const GLOBAL_TUTURE_ROOT = path.join(os.homedir(), TUTURE_ROOT);
 
 export const TOKEN_PATH = path.join(GLOBAL_TUTURE_ROOT, 'token');
 
-// API endpoint of tuture.co.
-export const GRAPHQL_SERVER = 'https://gql.tuture.co';
-export const FILE_UPLOAD_API = 'https://gql.tuture.co/upload';
-
-export const STATIC_SERVER = 'https://static.tuture.co/';
-
 export function loadConfig(): TutureConfig {
   return JSON.parse(fs.readFileSync(CONFIG_PATH).toString());
 }
