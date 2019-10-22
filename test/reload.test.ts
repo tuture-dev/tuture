@@ -1,6 +1,7 @@
 import fs from 'fs-extra';
 import path from 'path';
 import yaml from 'js-yaml';
+import clonedeep from 'lodash.clonedeep';
 
 import {
   exampleRepo,
@@ -113,7 +114,7 @@ describe('tuture reload', () => {
     const tuture = yaml.safeLoad(fs.readFileSync(tutureYmlPath).toString());
     tuture.steps[0].explain = 'Some Explanation';
 
-    const tutureBeforeReload = JSON.parse(JSON.stringify(tuture)); // deep copy
+    const tutureBeforeReload = clonedeep(tuture);
     const diffBeforeReload = parseDiffJSON(repoPath);
 
     // Remove the last step to see if it can be recovered after reload.

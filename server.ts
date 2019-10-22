@@ -59,6 +59,7 @@ app.get('/tuture', (_, res) => {
 app.post('/save', (req, res) => {
   const body = req.body;
   try {
+    body.updated = new Date();
     const tuture = yaml.safeDump(body);
     fs.writeFileSync(tutureYMLPath, tuture);
     res.sendStatus(200);

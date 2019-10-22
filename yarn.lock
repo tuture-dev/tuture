@@ -524,6 +524,13 @@
   resolved "http://r.cnpmjs.org/@types/js-yaml/download/@types/js-yaml-3.12.1.tgz#5c6f4a1eabca84792fbd916f0cb40847f123c656"
   integrity sha1-XG9KHqvKhHkvvZFvDLQIR/EjxlY=
 
+"@types/lodash.clonedeep@^4.5.6":
+  version "4.5.6"
+  resolved "https://registry.npm.taobao.org/@types/lodash.clonedeep/download/@types/lodash.clonedeep-4.5.6.tgz?cache=0&sync_timestamp=1567533360770&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40types%2Flodash.clonedeep%2Fdownload%2F%40types%2Flodash.clonedeep-4.5.6.tgz#3b6c40a0affe0799a2ce823b440a6cf33571d32b"
+  integrity sha1-O2xAoK/+B5mizoI7RAps8zVx0ys=
+  dependencies:
+    "@types/lodash" "*"
+
 "@types/lodash.zip@^4.2.4":
   version "4.2.6"
   resolved "http://r.cnpmjs.org/@types/lodash.zip/download/@types/lodash.zip-4.2.6.tgz#c30b441700a1707761aa36282de12bc80382dc0b"
@@ -3264,6 +3271,11 @@ lodash._reinterpolate@^3.0.0:
   version "3.0.0"
   resolved "http://r.cnpmjs.org/lodash._reinterpolate/download/lodash._reinterpolate-3.0.0.tgz#0ccf2d89166af03b3663c796538b75ac6e114d9d"
   integrity sha1-DM8tiRZq8Ds2Y8eWU4t1rG4RTZ0=
+
+lodash.clonedeep@^4.5.0:
+  version "4.5.0"
+  resolved "https://registry.npm.taobao.org/lodash.clonedeep/download/lodash.clonedeep-4.5.0.tgz#e23f3f9c4f8fbdde872529c1071857a086e5ccef"
+  integrity sha1-4j8/nE+Pvd6HJSnBBxhXoIblzO8=
 
 lodash.memoize@4.x:
   version "4.1.2"

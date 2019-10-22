@@ -20,6 +20,8 @@ export interface TutureMeta {
   name: string;
   topics?: string[];
   description?: string;
+  created?: Date;
+  updated?: Date;
   github?: string;
   splits?: Split[];
 }
