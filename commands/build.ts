@@ -63,10 +63,10 @@ const hexoFrontMatterTmpl = (meta: TutureMeta) => {
     elements.push(`tags: [${tags}]`);
   }
   if (created) {
-    elements.push(`date: ${created}`);
+    elements.push(`date: ${created.toISOString()}`);
   }
   if (updated) {
-    elements.push(`updated: ${updated}`);
+    elements.push(`updated: ${updated.toISOString()}`);
   }
   elements.push('---');
 
