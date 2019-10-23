@@ -54,9 +54,9 @@ const sanitize = (text: string | undefined) => {
 // Template for metadata of hexo posts.
 const hexoFrontMatterTmpl = (meta: TutureMeta) => {
   const { name, description, topics, created, updated } = meta;
-  const elements = ['---', `title: "${name}"`];
+  const elements = ['---', `title: "${name.replace('"', '')}"`];
   if (description) {
-    elements.push(`description: "${sanitize(description)}"`);
+    elements.push(`description: "${sanitize(description).replace('"', '')}"`);
   }
   if (topics) {
     const tags = topics.map((topic) => `"${sanitize(topic)}"`).join(', ');
@@ -241,13 +241,6 @@ export default class Build extends BaseCommand {
       created,
       updated,
     } = tuture;
-    const meta: TutureMeta = {
-      name,
-      topics,
-      description,
-      created,
-      updated,
-    };
 
     let tutorials: string[] = [];
     let titles: string[] = [];
@@ -263,6 +256,14 @@ export default class Build extends BaseCommand {
         const start = commits.indexOf(split.start);
         const end = commits.indexOf(split.end) + 1;
 
+        const meta: TutureMeta = {
+          topics,
+          created,
+          updated,
+          name: split.name || name,
+          description: split.description || description,
+        };
+
         return tutorialTmpl(
           meta,
           steps.slice(start, end),
@@ -270,6 +271,13 @@ export default class Build extends BaseCommand {
         );
       });
     } else {
+      const meta: TutureMeta = {
+        topics,
+        created,
+        updated,
+        name,
+        description,
+      };
       tutorials = [tutorialTmpl(meta, steps, rawDiffs)];
       titles = [name];
     }
