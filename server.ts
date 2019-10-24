@@ -59,6 +59,7 @@ app.get('/tuture', (_, res) => {
 app.post('/save', (req, res) => {
   const body = req.body;
   try {
+    body.updated = new Date();
     const tuture = yaml.safeDump(body);
     fs.writeFileSync(tutureYMLPath, tuture);
     res.sendStatus(200);
@@ -68,6 +69,10 @@ app.post('/save', (req, res) => {
 });
 
 app.post('/upload', upload.single('file'), (req, res) => {
+  if (!fs.existsSync(assetsPath)) {
+    fs.mkdirSync(assetsPath);
+  }
+
   const savePath = path.join(assetsPath, req.file.filename);
   res.json({ path: savePath });
 });

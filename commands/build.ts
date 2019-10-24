@@ -9,7 +9,7 @@ import { File, Change } from 'parse-diff';
 import BaseCommand from '../base';
 import logger from '../utils/logger';
 import { TUTURE_YML_PATH, DIFF_PATH } from '../config';
-import { Diff, Step, Tuture, Split } from '../types';
+import { Diff, Step, Tuture, TutureMeta } from '../types';
 
 type RawDiff = {
   commit: string;
@@ -52,18 +52,21 @@ const sanitize = (text: string | undefined) => {
 };
 
 // Template for metadata of hexo posts.
-const hexoMetaDataTmpl = (
-  title: string,
-  description?: string,
-  topics?: string[],
-) => {
-  const elements = ['---', `title: "${title}"`];
+const hexoFrontMatterTmpl = (meta: TutureMeta) => {
+  const { name, description, topics, created, updated } = meta;
+  const elements = ['---', `title: "${name.replace('"', '')}"`];
   if (description) {
-    elements.push(`description: "${sanitize(description)}"`);
+    elements.push(`description: "${sanitize(description).replace('"', '')}"`);
   }
   if (topics) {
     const tags = topics.map((topic) => `"${sanitize(topic)}"`).join(', ');
     elements.push(`tags: [${tags}]`);
+  }
+  if (created) {
+    elements.push(`date: ${created.toISOString()}`);
+  }
+  if (updated) {
+    elements.push(`updated: ${updated.toISOString()}`);
   }
   elements.push('---');
 
@@ -140,13 +143,8 @@ const stepTmpl = (step: Step, files: File[]) => {
 };
 
 // Markdown template for the whole tutorial.
-const tutorialTmpl = (
-  title: string,
-  description: string | undefined,
-  topics: string[] | undefined,
-  steps: Step[],
-  rawDiffs: RawDiff[],
-) => {
+const tutorialTmpl = (meta: TutureMeta, steps: Step[], rawDiffs: RawDiff[]) => {
+  const { name, description } = meta;
   const elements = [
     zip(steps, rawDiffs)
       .map((zipObj) => {
@@ -166,9 +164,9 @@ const tutorialTmpl = (
   ];
 
   if (parsedFlags.hexo) {
-    elements.unshift(hexoMetaDataTmpl(title, description, topics));
+    elements.unshift(hexoFrontMatterTmpl(meta));
   } else {
-    elements.unshift(sanitize(`# ${title}`) || '', sanitize(description) || '');
+    elements.unshift(sanitize(`# ${name}`) || '', sanitize(description) || '');
   }
 
   return elements
@@ -186,10 +184,8 @@ const replaceAssetsURL = (tutorial: string, github?: string) => {
     throw new Error(`Invalid github URL: ${github}`);
   }
 
-  return tutorial.replace(/!\[.*\]\(\.\/(.+)\)/g, (_, assetPath) => {
-    return `![](https://raw.githubusercontent.com/${match[1]}/${
-      match[2]
-    }/master/${assetPath})`;
+  return tutorial.replace(/!\[.*\]\((.+)\)/g, (_, assetPath) => {
+    return `![](https://raw.githubusercontent.com/${match[1]}/${match[2]}/master/${assetPath})`;
   });
 };
 
@@ -235,7 +231,17 @@ export default class Build extends BaseCommand {
       );
     }
 
-    const { name, splits, description, topics, steps, github } = tuture;
+    const {
+      name,
+      splits,
+      description,
+      topics,
+      steps,
+      github,
+      created,
+      updated,
+    } = tuture;
+
     let tutorials: string[] = [];
     let titles: string[] = [];
 
@@ -250,16 +256,29 @@ export default class Build extends BaseCommand {
         const start = commits.indexOf(split.start);
         const end = commits.indexOf(split.end) + 1;
 
-        return tutorialTmpl(
-          titles[index],
-          split.description,
+        const meta: TutureMeta = {
           topics,
+          created,
+          updated,
+          name: split.name || name,
+          description: split.description || description,
+        };
+
+        return tutorialTmpl(
+          meta,
           steps.slice(start, end),
           rawDiffs.slice(start, end),
         );
       });
     } else {
-      tutorials = [tutorialTmpl(name, description, topics, steps, rawDiffs)];
+      const meta: TutureMeta = {
+        topics,
+        created,
+        updated,
+        name,
+        description,
+      };
+      tutorials = [tutorialTmpl(meta, steps, rawDiffs)];
       titles = [name];
     }
 

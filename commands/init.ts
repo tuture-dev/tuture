@@ -92,6 +92,8 @@ export default class Init extends BaseCommand {
     try {
       const tuture: Tuture = {
         ...tutureMeta,
+        created: new Date(),
+        updated: new Date(),
         steps: await makeSteps(),
       };
 
