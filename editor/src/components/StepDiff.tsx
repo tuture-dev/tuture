@@ -46,7 +46,7 @@ const DiffArticle = styled.article`
 `;
 
 const DiffHeader = styled.header`
-  font-family: Monaco;
+  font-family: 'Roboto Mono', Courier, monospace;
   font-size: 14px;
   color: rgba(0, 0, 0, 0.24);
   text-align: right;

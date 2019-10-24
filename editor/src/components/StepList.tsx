@@ -33,7 +33,7 @@ export const MenuHeader = styled.div`
 `;
 
 export const MenuHeaderText = styled.p`
-  font-family: LucidaGrande;
+  font-family: Roboto;
   font-size: 30px;
   color: rgba(0, 0, 0, 0.84);
   margin-bottom: -10px;
@@ -62,11 +62,11 @@ export const TutureMenu = styled.ul`
 const TutureMenuItem = styled.li`
   width: ${(props) =>
     props.className === 'selected' ? 'calc(100% -38px)' : 'calc(100% -41px)'};
-  font-family: Georgia;
+  font-family: Roboto;
   font-size: 16px;
   margin: 8px 0;
   padding-right: 40px;
-  font-weight: ${(props) => (props.className === 'selected' ? 700 : 500)};
+  font-weight: ${(props) => (props.className === 'selected' ? 700 : 400)};
   padding-left: ${(props: any) =>
     props.className === 'selected' ? '38px' : '41px'};
   overflow: hidden;

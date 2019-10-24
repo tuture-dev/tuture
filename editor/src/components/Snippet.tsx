@@ -10,12 +10,12 @@ interface SnippetProps {
 injectGlobal`
   code,
   pre {
-    line-height: 2;
+    line-height: 1.5;
     text-align: left;
     white-space: pre-wrap;
     word-wrap: break-word;
     word-break: break-all;
-    font-family: Monaco,Menlo,"Courier New",Courier,monospace;
+    font-family: "Roboto Mono", Monaco,Menlo,"Courier New",Courier,monospace;
     font-size: 14px;
     color: rgba(0,0,0,0.84);
   }
