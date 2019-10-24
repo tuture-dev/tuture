@@ -2,9 +2,9 @@ import styled, { injectGlobal } from 'styled-components';
 
 injectGlobal`
   .markdown p, li {
-    font-family: Georgia;
-    font-size: 18px;
-    line-height: 1.58;
+    font-family: Roboto;
+    font-size: 16px;
+    line-height: 1.5;
     margin: 24px 0 0 0;
     color: rgba(0,0,0,0.84);
   }
@@ -15,28 +15,26 @@ injectGlobal`
 
   .markdown h1 {
     font-size: 37px;
-    font-family: LucidaGrande-Bold;
   }
 
   .markdown h2 {
     font-size: 31px;
-    font-family: LucidaGrande-Bold;
   }
 
   .markdown h3 {
     font-size: 26px;
-    font-family: LucidaGrande-Bold;
   }
 
   .markdown pre {
-    font-family: Monaco,Menlo,"Courier New",Courier,monospace;
+    font-family: "Roboto Mono", Monaco, Menlo,"Courier New",Courier,monospace;
     font-size: 14px;
+    line-height: 1.5;
     font-weight: 400;
     color: rgba(0,0,0,0.66);
     display: block;
     padding: 20px;
     background-color: rgba(0, 0, 0, .05);
-    margin: 32px 0 !important;
+    margin: 24px 0 !important;
   }
 
   .markdown a {
@@ -55,7 +53,7 @@ injectGlobal`
   }
 
   .markdown :not(pre) > code {
-    font-family: Monaco,Monaco,"Courier New",Courier,monospace;
+    font-family: "Roboto Mono", Monaco,Monaco,"Courier New",Courier,monospace;
     background-color: rgba(0, 0, 0, .05);
     padding: 3px 4px;
     margin: 0 2px;
@@ -64,11 +62,11 @@ injectGlobal`
 
   .markdown blockquote {
     font-style: italic;
-    margin-top: 28px;
+    margin-top: 16px;
     border-left: 3px solid rgba(0,0,0,.84);
     padding-left: 20px;
     margin-left: -21px;
-    padding-bottom: 2px;
+    padding-bottom: 0px;
   }
 
   .markdown blockquote p {
@@ -127,7 +125,7 @@ injectGlobal`
     overflow-y: auto;
     vertical-align: top;
     box-sizing: border-box;
-    font-family: Georgia;
+    font-family: Roboto;
     padding: 20px;
     resize: none;
     font-size: 18px;
@@ -170,8 +168,8 @@ const Button = BasicButton.extend`
     props.color
       ? `1px solid ${props.color}`
       : props.selected
-        ? '1px solid #d1d5da;'
-        : '1px solid transparent'};
+      ? '1px solid #d1d5da;'
+      : '1px solid transparent'};
   border-bottom: ${(props: { selected?: boolean; color?: string }) =>
     props.color ? `1px solid ${props.color}` : props.selected && '0'};
   border-radius: ${(props: { selected?: boolean; color?: string }) =>
@@ -180,8 +178,8 @@ const Button = BasicButton.extend`
     props.color
       ? props.color
       : props.selected
-        ? 'rgba(0,0,0,.84)'
-        : 'rgba(0,0,0,.84)'};
+      ? 'rgba(0,0,0,.84)'
+      : 'rgba(0,0,0,.84)'};
   bottom: ${(props: { selected?: boolean; color?: string }) =>
     props.selected ? '-1px' : 0};
 `;

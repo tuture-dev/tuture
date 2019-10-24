@@ -45,7 +45,7 @@ const TutureWrapper = styled.div`
 `;
 
 const TutureContentHeader = styled.h1`
-  font-family: LucidaGrande-Bold;
+  font-family: Roboto;
   font-size: 37px;
   color: rgba(0, 0, 0, 0.84);
   padding-left: 20px;

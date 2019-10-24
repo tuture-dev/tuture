@@ -17,7 +17,7 @@ export const EditorWrapper = styled.div`
 `;
 
 export const AddExplainWrapper = styled.div`
-  font-family: LucidaGrande;
+  font-family: Roboto;
   display: block;
   width: 100%;
   box-sizing: border-box;
@@ -186,8 +186,8 @@ class Markdown extends React.Component<MarkdownProps, MarkdownState> {
                     ? t('fillStepIntroduction')
                     : t('fillStepExplain')
                   : this.props.type === 'pre'
-                    ? t('fillFileIntrodution')
-                    : t('fillFileExplain')}
+                  ? t('fillFileIntrodution')
+                  : t('fillFileExplain')}
               </span>
             </AddExplainWrapper>
           )}

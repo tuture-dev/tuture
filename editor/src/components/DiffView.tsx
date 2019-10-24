@@ -97,7 +97,7 @@ injectGlobal`
 
 const DiffLine = styled.tr`
   line-height: 31px;
-  font-family: Consolas, Courier, monospace;
+  font-family: 'Roboto Mono', Courier, monospace;
 `;
 
 const DiffFile = styled.div`
@@ -110,12 +110,12 @@ const DiffFile = styled.div`
 `;
 
 const DiffFileHeader = styled.header`
-  font-family: Monaco;
+  font-family: 'Roboto Mono', Courier, monospace;
   font-size: 14px;
-  background-color: black;
+  background-color: #00bc87;
   color: rgba(255, 255, 255, 1);
   text-align: left;
-  padding: 10px 0px 10px 20px;
+  padding: 8px 0px 8px 20px;
   margin-bottom: 16px;
   position: relative;
 `;
@@ -170,8 +170,8 @@ const ToolTip = styled.span`
   bottom: 125%;
   z-index: 1;
   transition: opacity 1s;
-  font-family: --apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
-    Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-family: 'Roboto', --apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 
   &:after {
     content: '';
@@ -226,9 +226,10 @@ class DiffView extends Component<DiffViewProps, DiffViewState> {
       [`diff-code-${type}`]: !isAllInsert,
     });
 
+    // {this.renderLineNumber(lineNumberClassName, i + 1)}
+
     return (
       <DiffLine key={`change${i}`}>
-        {this.renderLineNumber(lineNumberClassName, i + 1)}
         <DiffCode className={codeClassName}>
           <Snippet code={content.slice(1)} lang={lang} />
         </DiffCode>
