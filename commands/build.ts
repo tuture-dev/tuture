@@ -192,10 +192,10 @@ export default class Build extends BaseCommand {
       );
     }
 
-    return elements
+    return `${elements
       .filter((elem) => elem)
       .join('\n\n')
-      .trim();
+      .trim()}\n`;
   }
 
   // Replace assets URL with github links if present.
@@ -262,7 +262,7 @@ export default class Build extends BaseCommand {
       );
 
       // Iterate over each split of tutorial.
-      tutorials = splits.map((split, index) => {
+      tutorials = splits.map((split) => {
         const start = commits.indexOf(split.start);
         const end = commits.indexOf(split.end) + 1;
 
