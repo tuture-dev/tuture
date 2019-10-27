@@ -81,10 +81,10 @@ export default class Build extends BaseCommand {
       elements.push(`tags: [${tags}]`);
     }
     if (created) {
-      elements.push(`date: ${created.toISOString()}`);
+      elements.push(`date: ${(new Date(created)).toISOString()}`);
     }
     if (updated) {
-      elements.push(`updated: ${updated.toISOString()}`);
+      elements.push(`updated: ${(new Date(updated)).toISOString()}`);
     }
     elements.push('---');
 
