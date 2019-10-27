@@ -12,6 +12,7 @@ import { Tuture } from '../../../types';
 import { extractCommits, handleAnchor, vwDesign, vwFontsize } from '../utils';
 import Header from './Header';
 import Store from '../store';
+import NoCommit from './NoCommit.png';
 
 export interface AppProps {
   tuture?: Tuture | string;
@@ -20,7 +21,9 @@ export interface AppProps {
   i18n?: any;
 }
 
-interface AppState extends AppProps {}
+interface AppState extends AppProps {
+  hasCommit?: boolean;
+}
 
 const AppContent = styled.div`
   width: 86%;
@@ -38,6 +41,24 @@ const AppContent = styled.div`
   flex-direction: column;
   justify-content: space-between;
   margin-top: 60px;
+`;
+
+const NoCommitContainer = styled.div`
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 200px;
+`;
+
+const NoCommitLogo = styled.img`
+  height: 300px;
+`;
+
+const NoCommitText = styled.p`
+  margin-top: 40px;
+  font-size: 20px;
 `;
 
 injectGlobal`
@@ -83,15 +104,30 @@ class App extends React.Component<AppProps, AppState> {
   constructor(props: AppProps) {
     super(props);
 
-    const { tuture, diff, i18n, store } = props;
-    const nowAnchorName = (tuture as Tuture).steps[0].name;
-    store.setTuture(tuture as Tuture);
-    store.nowSelected = handleAnchor(nowAnchorName);
-    store.i18n = i18n;
+    const { tuture } = props;
 
-    this.state = {
-      diff,
-    };
+    // Judge whether project has commit
+    if (
+      tuture &&
+      (tuture as Tuture).steps &&
+      Array.isArray((tuture as Tuture).steps) &&
+      (tuture as Tuture).steps.length > 0
+    ) {
+      const { diff, i18n, store } = props;
+      const nowAnchorName = (tuture as Tuture).steps[0].name;
+      store.setTuture(tuture as Tuture);
+      store.nowSelected = handleAnchor(nowAnchorName);
+      store.i18n = i18n;
+
+      this.state = {
+        diff,
+        hasCommit: true,
+      };
+    } else {
+      this.state = {
+        hasCommit: false,
+      };
+    }
   }
 
   toggleEditMode = () => {
@@ -106,28 +142,30 @@ class App extends React.Component<AppProps, AppState> {
     let bodyContent: React.ReactNode;
     let tutorialTitle = '图雀';
 
-    const { diff } = this.state;
-    const { store } = this.props;
-    const { tuture } = store;
+    const hasCommit = false;
 
-    if (tuture && tuture.name) {
-      tutorialTitle = tuture.name;
-    }
+    if (hasCommit) {
+      const { diff } = this.state;
+      const { store } = this.props;
+      const { tuture } = store;
 
-    if (
-      !tuture ||
-      Object.keys(tuture).length === 0 ||
-      !diff ||
-      !Array.isArray(diff)
-    ) {
-      bodyContent = null;
-    } else {
+      if (tuture && tuture.name) {
+        tutorialTitle = tuture.name;
+      }
+
       const commits = extractCommits(tuture as Tuture);
       bodyContent = [
         <SideBarLeft commits={commits} key="SiderBarLeft" />,
         <Content diff={diff} key="Content" />,
         this.props.store.isEditMode && <SideBarRight key="SideBarRight" />,
       ];
+    } else {
+      bodyContent = (
+        <NoCommitContainer>
+          <NoCommitLogo src={NoCommit} alt="" />
+          <NoCommitText>Oops！ 此项目还没有任何 commit 哦！</NoCommitText>
+        </NoCommitContainer>
+      );
     }
 
     return (
@@ -135,8 +173,9 @@ class App extends React.Component<AppProps, AppState> {
         <Helmet>
           <title>{tutorialTitle}</title>
         </Helmet>
-        <Header />
-        <AppContent>{bodyContent}</AppContent>
+        {hasCommit && <Header />}
+        {hasCommit && <AppContent>{bodyContent}</AppContent>}
+        {!hasCommit && bodyContent}
       </ModeContext.Provider>
     );
   }
