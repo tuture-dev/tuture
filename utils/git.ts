@@ -6,7 +6,7 @@ import which from 'which';
 import parseDiff from 'parse-diff';
 
 import logger from '../utils/logger';
-import { TUTURE_ROOT } from '../constants';
+import { TUTURE_ROOT, TUTURE_ERROR_LOG } from '../constants';
 
 /**
  * Check if Git command is available.
@@ -158,7 +158,7 @@ export function removeGitHook() {
  * If .gitignore doesn't exist, create one and add the rule.
  */
 export function appendGitignore() {
-  const ignoreRules = '# Tuture-related files\n\n.tuture\ntuture-error.log\n';
+  const ignoreRules = `# Tuture-related files\n\n.tuture\n${TUTURE_ERROR_LOG}\n`;
 
   if (!fs.existsSync('.gitignore')) {
     fs.writeFileSync('.gitignore', ignoreRules);

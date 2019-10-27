@@ -1,5 +1,6 @@
 import chalk from 'chalk';
 import winston, { format } from 'winston';
+import { TUTURE_ERROR_LOG } from '../constants';
 
 const logLevels = {
   error: 0,
@@ -39,7 +40,7 @@ const logger = winston.createLogger({
   transports: [
     new winston.transports.Console({ level: 'info', format: consoleFormat }),
     new winston.transports.File({
-      filename: 'tuture-error.log',
+      filename: TUTURE_ERROR_LOG,
       level: 'error',
       format: format.combine(format.timestamp(), fileFormat),
     }),

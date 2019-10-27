@@ -3,7 +3,7 @@ import fs from 'fs-extra';
 import rc from 'rc';
 
 import defaultConfig from './config';
-import { TUTURE_ROOT, TUTURE_IGNORE_PATH } from './constants';
+import { TUTURE_ROOT, TUTURE_IGNORE_PATH, TUTURE_ERROR_LOG } from './constants';
 
 export default abstract class BaseCommand extends Command {
   // User configurations.
@@ -35,6 +35,7 @@ export default abstract class BaseCommand extends Command {
       fs.readdirSync(TUTURE_ROOT).length === 0
     ) {
       fs.removeSync(TUTURE_ROOT);
+      fs.removeSync(TUTURE_ERROR_LOG);
     }
   }
 }
