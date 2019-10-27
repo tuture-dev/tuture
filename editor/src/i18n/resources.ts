@@ -13,6 +13,7 @@ const enTranslations = {
   fillFileExplain: 'Add explaination of this file',
   menu: 'Contents',
   copySuccess: 'Copied',
+  noCommitText: 'Oops! There are no commits for this project yet!',
 };
 
 const zhTranslations = {
@@ -30,6 +31,7 @@ const zhTranslations = {
   fillFileExplain: '填写此文件的解释文字',
   menu: '目录',
   copySuccess: '复制成功',
+  noCommitText: 'Oops！ 此项目还没有任何 commit 哦！',
 };
 
 export default {

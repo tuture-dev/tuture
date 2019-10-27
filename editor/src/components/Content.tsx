@@ -1,13 +1,16 @@
 import React from 'react';
 import styled from 'styled-components';
 import { inject, observer } from 'mobx-react';
+import { translate } from 'react-i18next';
 
 import { AppProps } from './App';
 import StepContent from './StepContent';
 import Brief from './Brief';
 import NoCommit from './NoCommit.png';
 
-interface ContentProps extends AppProps {}
+interface ContentProps extends AppProps {
+  t?: any;
+}
 
 /* tslint:disable-next-line */
 const ContentWrapper = styled.div`
@@ -34,9 +37,9 @@ const NoCommitText = styled.p`
 
 @inject('store')
 @observer
-export default class Content extends React.Component<ContentProps> {
+class Content extends React.Component<ContentProps> {
   public render() {
-    const { store, diff } = this.props;
+    const { store, diff, t } = this.props;
     const renderContent: any = [];
     let renderNoCommit = null;
 
@@ -57,7 +60,7 @@ export default class Content extends React.Component<ContentProps> {
       renderNoCommit = (
         <NoCommitContainer>
           <NoCommitLogo src={NoCommit} alt="" />
-          <NoCommitText>Oops！ 此项目还没有任何 commit 哦！</NoCommitText>
+          <NoCommitText>{t('noCommitText')}</NoCommitText>
         </NoCommitContainer>
       );
     }
@@ -75,3 +78,5 @@ export default class Content extends React.Component<ContentProps> {
     );
   }
 }
+
+export default translate('translations')(Content);

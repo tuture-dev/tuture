@@ -20,7 +20,6 @@ export interface BriefProps {
   description?: string;
   techTag?: string[];
   t?: any;
-  i18n?: any;
 }
 
 interface BriefState {
