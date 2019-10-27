@@ -7,7 +7,7 @@ import logger from '../utils/logger';
 import { Step, Tuture } from '../types';
 import { makeSteps, mergeSteps } from '../utils';
 import { isGitAvailable } from '../utils/git';
-import { TUTURE_YML_PATH } from '../config';
+import { TUTURE_YML_PATH } from '../constants';
 
 export default class Reload extends BaseCommand {
   static description = 'Sync tuture files with current repo';

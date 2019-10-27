@@ -3,7 +3,7 @@ import fs from 'fs-extra';
 import path from 'path';
 import tmp from 'tmp';
 
-import { DIFF_PATH } from '../config';
+import { DIFF_PATH } from '../constants';
 
 export interface Commit {
   message: string;

@@ -1,21 +1,21 @@
 import fs from 'fs-extra';
 
 import { Step } from '../types';
-import { TUTURE_ROOT } from '../config';
+import { TUTURE_ROOT, TUTURE_YML_PATH } from '../constants';
 import * as git from './git';
 
 /**
  * Remove all Tuture-related files.
  */
 export async function removeTutureSuite() {
-  await fs.remove('tuture.yml');
+  await fs.remove(TUTURE_YML_PATH);
   await fs.remove(TUTURE_ROOT);
 }
 
 /**
  * Store diff data of all commits and return corresponding steps.
  */
-export async function makeSteps() {
+export async function makeSteps(ignoredFiles?: string[]) {
   let logs = await git.getGitLogs();
   logs = logs
     .reverse()
@@ -31,7 +31,7 @@ export async function makeSteps() {
     return {
       name: msg,
       commit: commits[idx],
-      diff: await git.getGitDiff(commits[idx]),
+      diff: await git.getGitDiff(commits[idx], ignoredFiles || []),
     };
   });
 

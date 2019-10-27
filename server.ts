@@ -12,74 +12,80 @@ import {
   DIFF_PATH,
   EDITOR_STATIC_PATH,
   EDITOR_PATH,
-} from './config';
-
-const app = express();
-const server = http.createServer(app);
+} from './constants';
 
 const workspace = process.env.TUTURE_PATH || process.cwd();
 const tutureYMLPath = path.join(workspace, TUTURE_YML_PATH);
 const diffPath = path.join(workspace, DIFF_PATH);
-const assetsPath = './tuture-assets';
 
-// File upload middleware.
-const upload = multer({
-  storage: multer.diskStorage({
-    destination(req, file, cb) {
-      cb(null, assetsPath);
-    },
-  }),
-});
+const makeServer = (config: any) => {
+  const app = express();
+  const server = http.createServer(app);
+  const { assetsPath } = config;
 
-// Socket.IO server instance.
-const io = socketio(server);
+  // Socket.IO server instance.
+  const io = socketio(server);
 
-if (process.env.NODE_ENV === 'development') {
-  app.use(logger('dev'));
-}
+  // File upload middleware.
+  const upload = multer({
+    storage: multer.diskStorage({
+      destination(req, file, cb) {
+        cb(null, assetsPath);
+      },
+    }),
+  });
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use('/static', express.static(EDITOR_STATIC_PATH));
-app.use('/tuture-assets', express.static(assetsPath));
+  if (process.env.NODE_ENV === 'development') {
+    app.use(logger('dev'));
+  }
 
-app.get('/', (_, res) => {
-  const html = fs.readFileSync(path.join(EDITOR_PATH, 'index.html')).toString();
-  res.send(html);
-});
+  app.use(express.json());
+  app.use(express.urlencoded({ extended: false }));
+  app.use('/static', express.static(EDITOR_STATIC_PATH));
+  app.use(`/${assetsPath}`, express.static(assetsPath));
 
-app.get('/diff', (_, res) => {
-  res.json(JSON.parse(fs.readFileSync(diffPath).toString()));
-});
+  app.get('/', (_, res) => {
+    const html = fs
+      .readFileSync(path.join(EDITOR_PATH, 'index.html'))
+      .toString();
+    res.send(html);
+  });
 
-app.get('/tuture', (_, res) => {
-  res.json(yaml.safeLoad(fs.readFileSync(tutureYMLPath).toString()));
-});
+  app.get('/diff', (_, res) => {
+    res.json(JSON.parse(fs.readFileSync(diffPath).toString()));
+  });
 
-app.post('/save', (req, res) => {
-  const body = req.body;
-  try {
-    body.updated = new Date();
-    const tuture = yaml.safeDump(body);
-    fs.writeFileSync(tutureYMLPath, tuture);
+  app.get('/tuture', (_, res) => {
+    res.json(yaml.safeLoad(fs.readFileSync(tutureYMLPath).toString()));
+  });
+
+  app.post('/save', (req, res) => {
+    const body = req.body;
+    try {
+      body.updated = new Date();
+      const tuture = yaml.safeDump(body);
+      fs.writeFileSync(tutureYMLPath, tuture);
+      res.sendStatus(200);
+    } catch (err) {
+      res.status(500).send({ msg: err.message });
+    }
+  });
+
+  app.post('/upload', upload.single('file'), (req, res) => {
+    if (!fs.existsSync(assetsPath)) {
+      fs.mkdirSync(assetsPath);
+    }
+
+    const savePath = path.join(assetsPath, req.file.filename);
+    res.json({ path: savePath });
+  });
+
+  app.get('/reload', (_, res) => {
+    io.emit('reload');
     res.sendStatus(200);
-  } catch (err) {
-    res.status(500).send({ msg: err.message });
-  }
-});
+  });
 
-app.post('/upload', upload.single('file'), (req, res) => {
-  if (!fs.existsSync(assetsPath)) {
-    fs.mkdirSync(assetsPath);
-  }
+  return app;
+};
 
-  const savePath = path.join(assetsPath, req.file.filename);
-  res.json({ path: savePath });
-});
-
-app.get('/reload', (_, res) => {
-  io.emit('reload');
-  res.sendStatus(200);
-});
-
-export default server;
+export default makeServer;

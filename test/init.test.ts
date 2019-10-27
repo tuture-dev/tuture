@@ -12,11 +12,8 @@ import {
   tutureRunnerFactory,
   SyncRunner,
 } from './utils';
-import defaultConfig, {
-  TUTURE_ROOT,
-  DIFF_PATH,
-  TUTURE_YML_PATH,
-} from '../config';
+import defaultConfig from '../config';
+import { TUTURE_ROOT, DIFF_PATH, TUTURE_YML_PATH } from '../constants';
 import { Tuture } from '../types';
 
 // Tmp directories used in tests.

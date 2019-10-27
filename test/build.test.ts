@@ -2,7 +2,7 @@ import fs from 'fs-extra';
 import path from 'path';
 
 import { createEmptyDir, tutureRunnerFactory, SyncRunner } from './utils';
-import { DIFF_PATH, TUTURE_YML_PATH, TUTURE_ROOT } from '../config';
+import { DIFF_PATH, TUTURE_YML_PATH, TUTURE_ROOT } from '../constants';
 
 // Tmp directories used in tests.
 const tmpDirs: string[] = Array();
