@@ -26,7 +26,6 @@ export default abstract class BaseCommand extends Command {
       );
       this.userConfig.ignoredFiles = patterns;
     }
-    console.log(this.userConfig);
   }
 
   async finally() {
