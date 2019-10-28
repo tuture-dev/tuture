@@ -14,11 +14,9 @@ export default {
     '.gitignore',
     '.gitattributes',
 
-    // Node.js
-    'package-lock.json',
-    'yarn.lock',
-
     // Tuture-related files
     'tuture.yml',
+    '.tuturerc',
+    '.tutureignore',
   ],
 };
