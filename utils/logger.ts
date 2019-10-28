@@ -38,11 +38,6 @@ const logger = winston.createLogger({
   levels: logLevels,
   transports: [
     new winston.transports.Console({ level: 'info', format: consoleFormat }),
-    new winston.transports.File({
-      filename: 'tuture-error.log',
-      level: 'error',
-      format: format.combine(format.timestamp(), fileFormat),
-    }),
   ],
 });
 

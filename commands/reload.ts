@@ -7,7 +7,7 @@ import logger from '../utils/logger';
 import { Step, Tuture } from '../types';
 import { makeSteps, mergeSteps } from '../utils';
 import { isGitAvailable } from '../utils/git';
-import { TUTURE_YML_PATH } from '../config';
+import { TUTURE_YML_PATH } from '../constants';
 
 export default class Reload extends BaseCommand {
   static description = 'Sync tuture files with current repo';
@@ -46,7 +46,7 @@ export default class Reload extends BaseCommand {
     const tuture: Tuture = yaml.safeLoad(
       fs.readFileSync(TUTURE_YML_PATH).toString(),
     );
-    const currentSteps: Step[] = await makeSteps();
+    const currentSteps: Step[] = await makeSteps(this.userConfig.ignoredFiles);
     tuture.steps = mergeSteps(tuture.steps, currentSteps);
 
     fs.writeFileSync(TUTURE_YML_PATH, yaml.safeDump(tuture));

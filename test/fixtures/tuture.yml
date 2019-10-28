@@ -1,0 +1,26 @@
+name: My Awesome Tutorial
+id: 70cb2a2c41ba87cf9938b22bb6df23d8
+description: This is a test tutorial.
+steps:
+  - name: Commit 1
+    commit: 139f13c
+    explain:
+      pre: This is pre-explain for step 1.
+      post: This is post-explain for step 1.
+    diff:
+      - file: test1.js
+        explain:
+          pre: This is pre-explain for test1.js.
+          post: This is post-explain for test1.js.
+        display: true
+  - name: Commit 2
+    commit: 829f330
+    explain:
+      pre: This is pre-explain for step 2.
+      post: This is post-explain for step 2.
+    diff:
+      - file: test2.py
+        explain:
+          pre: This is pre-explain for test2.py.
+          post: This is post-explain for test2.py.
+        display: true

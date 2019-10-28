@@ -9,7 +9,7 @@ import BaseCommand from '../base';
 import { Tuture, TutureMeta } from '../types';
 import { makeSteps, removeTutureSuite } from '../utils';
 import * as git from '../utils/git';
-import { TUTURE_YML_PATH } from '../config';
+import { TUTURE_YML_PATH } from '../constants';
 
 type ConfirmResponse = {
   answer: boolean;
@@ -94,7 +94,7 @@ export default class Init extends BaseCommand {
         ...tutureMeta,
         created: new Date(),
         updated: new Date(),
-        steps: await makeSteps(),
+        steps: await makeSteps(this.userConfig.ignoredFiles),
       };
 
       fs.writeFileSync(TUTURE_YML_PATH, yaml.safeDump(tuture));

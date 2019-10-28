@@ -271,7 +271,7 @@ class Editor extends React.Component<EditorProps, EditorState> {
               maxRows={15}
               innerRef={this.getTextareaRef}
               value={this.props.source}
-              placeholder="写一点解释..."
+              placeholder={t('editPlaceholder')}
               onChange={this.handleChange}
               onPaste={this.handlePaste}
               onDrop={this.handleDrop}

@@ -584,6 +584,11 @@
   resolved "http://r.cnpmjs.org/@types/range-parser/download/@types/range-parser-1.2.3.tgz#7ee330ba7caafb98090bece86a5ee44115904c2c"
   integrity sha1-fuMwunyq+5gJC+zoal7kQRWQTCw=
 
+"@types/rc@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.npm.taobao.org/@types/rc/download/@types/rc-1.1.0.tgz#59cf49ae07e2a34ab744231287b85d9e15a580a2"
+  integrity sha1-Wc9Jrgfio0q3RCMSh7hdnhWlgKI=
+
 "@types/request@^2.47.1":
   version "2.48.3"
   resolved "http://r.cnpmjs.org/@types/request/download/@types/request-2.48.3.tgz#970b8ed2317568c390361d29c555a95e74bd6135"
@@ -4102,9 +4107,9 @@ raw-body@2.4.0:
     iconv-lite "0.4.24"
     unpipe "1.0.0"
 
-rc@^1.2.7:
+rc@^1.2.7, rc@^1.2.8:
   version "1.2.8"
-  resolved "http://r.cnpmjs.org/rc/download/rc-1.2.8.tgz#cd924bf5200a075b83c188cd6b9e211b7fc0d3ed"
+  resolved "https://registry.npm.taobao.org/rc/download/rc-1.2.8.tgz#cd924bf5200a075b83c188cd6b9e211b7fc0d3ed"
   integrity sha1-zZJL9SAKB1uDwYjNa54hG3/A0+0=
   dependencies:
     deep-extend "^0.6.0"

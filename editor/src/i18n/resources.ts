@@ -4,6 +4,7 @@ const enTranslations = {
   deleteButton: 'Delete',
   editButton: 'Edit',
   editTab: 'Edit',
+  editPlaceholder: 'Add some words...',
   previewTab: 'Preview',
   cancelButton: 'Cancel',
   saveButton: 'Save',
@@ -13,6 +14,7 @@ const enTranslations = {
   fillFileExplain: 'Add explaination of this file',
   menu: 'Contents',
   copySuccess: 'Copied',
+  noCommitText: 'Oops! There are no commits for this project yet!',
 };
 
 const zhTranslations = {
@@ -21,6 +23,7 @@ const zhTranslations = {
   deleteButton: '删除',
   editButton: '编辑',
   editTab: '编辑',
+  editPlaceholder: '写一点解释...',
   previewTab: '预览',
   cancelButton: '取消',
   saveButton: '保存',
@@ -30,6 +33,7 @@ const zhTranslations = {
   fillFileExplain: '填写此文件的解释文字',
   menu: '目录',
   copySuccess: '复制成功',
+  noCommitText: 'Oops！ 此项目还没有任何 commit 哦！',
 };
 
 export default {

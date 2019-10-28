@@ -10,7 +10,7 @@ interface SnippetProps {
 injectGlobal`
   code,
   pre {
-    line-height: 1.5;
+    line-height: 1.8;
     text-align: left;
     white-space: pre-wrap;
     word-wrap: break-word;

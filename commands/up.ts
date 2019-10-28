@@ -6,8 +6,8 @@ import { flags } from '@oclif/command';
 import BaseCommand from '../base';
 import logger from '../utils/logger';
 import reload from './reload';
-import server from '../server';
-import { TUTURE_YML_PATH } from '../config';
+import makeServer from '../server';
+import { TUTURE_YML_PATH } from '../constants';
 
 export default class Up extends BaseCommand {
   static description = 'Render and edit tutorial in browser';
@@ -20,8 +20,9 @@ export default class Up extends BaseCommand {
     }),
   };
 
-  async fireTutureServer(port?: number) {
-    const portToUse = port || 3000;
+  async fireTutureServer() {
+    const portToUse = this.userConfig.port;
+    const server = makeServer(this.userConfig);
 
     server.listen(portToUse, () => {
       const url = `http://localhost:${portToUse}`;
@@ -36,6 +37,7 @@ export default class Up extends BaseCommand {
 
   async run() {
     const { flags } = this.parse(Up);
+    this.userConfig = Object.assign(this.userConfig, flags);
 
     if (!fs.existsSync(TUTURE_YML_PATH)) {
       logger.log('error', 'tuture.yml not found!');
@@ -52,6 +54,6 @@ export default class Up extends BaseCommand {
 
     await reload.run([]);
 
-    this.fireTutureServer(flags.port);
+    this.fireTutureServer();
   }
 }

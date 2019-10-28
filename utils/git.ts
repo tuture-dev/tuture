@@ -6,7 +6,7 @@ import which from 'which';
 import parseDiff from 'parse-diff';
 
 import logger from '../utils/logger';
-import { TUTURE_ROOT, loadConfig } from '../config';
+import { TUTURE_ROOT } from '../constants';
 
 /**
  * Check if Git command is available.
@@ -65,15 +65,13 @@ export async function getGitLogs() {
 /**
  * Get all changed files of a given commit.
  */
-export async function getGitDiff(commit: string) {
+export async function getGitDiff(commit: string, ignoredFiles: string[]) {
   const output = await runGitCommand(['show', commit, '--name-only']);
   let changedFiles = output
     .split('\n\n')
     .slice(-1)[0]
     .split('\n');
   changedFiles = changedFiles.slice(0, changedFiles.length - 1);
-
-  const ignoredFiles = loadConfig().ignoredFiles;
 
   return changedFiles.map((file) => {
     const fileObj: any = { file };
@@ -160,7 +158,7 @@ export function removeGitHook() {
  * If .gitignore doesn't exist, create one and add the rule.
  */
 export function appendGitignore() {
-  const ignoreRules = '# Tuture-related files\n\n.tuture\ntuture-error.log\n';
+  const ignoreRules = '# Tuture-related files\n\n.tuture\n';
 
   if (!fs.existsSync('.gitignore')) {
     fs.writeFileSync('.gitignore', ignoreRules);

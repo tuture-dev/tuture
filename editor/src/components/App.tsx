@@ -84,9 +84,12 @@ class App extends React.Component<AppProps, AppState> {
     super(props);
 
     const { tuture, diff, i18n, store } = props;
-    const nowAnchorName = (tuture as Tuture).steps[0].name;
+
+    if (diff && Array.isArray(diff) && diff.length > 0) {
+      const nowAnchorName = (tuture as Tuture).steps[0].name;
+      store.nowSelected = handleAnchor(nowAnchorName);
+    }
     store.setTuture(tuture as Tuture);
-    store.nowSelected = handleAnchor(nowAnchorName);
     store.i18n = i18n;
 
     this.state = {
@@ -106,7 +109,7 @@ class App extends React.Component<AppProps, AppState> {
     let bodyContent: React.ReactNode;
     let tutorialTitle = '图雀';
 
-    const { diff } = this.state;
+    const { diff = [] } = this.state;
     const { store } = this.props;
     const { tuture } = store;
 
@@ -114,19 +117,16 @@ class App extends React.Component<AppProps, AppState> {
       tutorialTitle = tuture.name;
     }
 
-    if (
-      !tuture ||
-      Object.keys(tuture).length === 0 ||
-      !diff ||
-      !Array.isArray(diff)
-    ) {
+    if (!tuture || Object.keys(tuture).length === 0) {
       bodyContent = null;
     } else {
       const commits = extractCommits(tuture as Tuture);
       bodyContent = [
-        <SideBarLeft commits={commits} key="SiderBarLeft" />,
+        diff.length > 0 && <SideBarLeft commits={commits} key="SiderBarLeft" />,
         <Content diff={diff} key="Content" />,
-        this.props.store.isEditMode && <SideBarRight key="SideBarRight" />,
+        diff.length > 0 && this.props.store.isEditMode && (
+          <SideBarRight key="SideBarRight" />
+        ),
       ];
     }
 
