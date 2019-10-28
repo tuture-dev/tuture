@@ -46,7 +46,7 @@ export default class Reload extends BaseCommand {
     const tuture: Tuture = yaml.safeLoad(
       fs.readFileSync(TUTURE_YML_PATH).toString(),
     );
-    const currentSteps: Step[] = await makeSteps();
+    const currentSteps: Step[] = await makeSteps(this.userConfig.ignoredFiles);
     tuture.steps = mergeSteps(tuture.steps, currentSteps);
 
     fs.writeFileSync(TUTURE_YML_PATH, yaml.safeDump(tuture));
