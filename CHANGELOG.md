@@ -1,5 +1,22 @@
 # Changelog
 
+## 2.0.0
+
+### What's New
+
+- Add support for hexo post building
+- Add support for splitting tutorials
+- Add fully-fledged configuration system (via **.tuturerc** and **.tutureignore**)
+- Enable serving assets/images with GitHub
+- Remove **login** and **publish** command
+- Delicately adjusted editor UI
+
+### Bug Fixes
+
+- Fix editor display when there are no commits
+- Fix image upload in editor
+- Fix undesired generation of tuture-error.log
+
 ## 1.4.0
 
 ### New Features

@@ -1,6 +1,6 @@
 # Tuture
 
-[![Build Status](https://travis-ci.com/tutureproject/tuture.svg?branch=master)](https://travis-ci.com/tutureproject/tuture/)
+![](https://github.com/tutureproject/tuture/workflows/Continuous%20Integration/badge.svg)
 
 Tuture is a tool for writing high-quality tutorials with both ease and speed based on Git repositories.
 
