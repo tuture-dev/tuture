@@ -23,6 +23,10 @@ const SideBarRightWrapper = styled.div`
   right: ${rem(100)}rem;
   transition: opacity 0.5s;
   background-color: transparent;
+
+  @media (max-width: 1024px) {
+    display: none;
+  }
 `;
 
 const SideBarRightMenuHeaderText = MenuHeaderText.extend`
