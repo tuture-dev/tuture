@@ -4,7 +4,7 @@ import path from 'path';
 import yaml from 'js-yaml';
 import logger from 'morgan';
 import multer from 'multer';
-import express from 'express';
+import express, { Request, Response, NextFunction } from 'express';
 import socketio from 'socket.io';
 
 import {
@@ -34,6 +34,14 @@ const makeServer = (config: any) => {
       },
     }),
   });
+
+  // Middleware for checking whether assets root exists.
+  const checkAssetsRoot = (req: Request, res: Response, next: NextFunction) => {
+    if (!fs.existsSync(assetsRoot)) {
+      fs.mkdirSync(assetsRoot);
+    }
+    next();
+  };
 
   if (process.env.NODE_ENV === 'development') {
     app.use(logger('dev'));
@@ -71,11 +79,7 @@ const makeServer = (config: any) => {
     }
   });
 
-  app.post('/upload', upload.single('file'), (req, res) => {
-    if (!fs.existsSync(assetsRoot)) {
-      fs.mkdirSync(assetsRoot);
-    }
-
+  app.post('/upload', checkAssetsRoot, upload.single('file'), (req, res) => {
     const savePath = path.join(assetsRoot, req.file.filename);
     res.json({ path: savePath });
   });
