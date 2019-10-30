@@ -21,7 +21,7 @@ const diffPath = path.join(workspace, DIFF_PATH);
 const makeServer = (config: any) => {
   const app = express();
   const server = http.createServer(app);
-  const { assetsPath } = config;
+  const { assetsRoot } = config;
 
   // Socket.IO server instance.
   const io = socketio(server);
@@ -30,7 +30,7 @@ const makeServer = (config: any) => {
   const upload = multer({
     storage: multer.diskStorage({
       destination(req, file, cb) {
-        cb(null, assetsPath);
+        cb(null, assetsRoot);
       },
     }),
   });
@@ -42,7 +42,7 @@ const makeServer = (config: any) => {
   app.use(express.json());
   app.use(express.urlencoded({ extended: false }));
   app.use('/static', express.static(EDITOR_STATIC_PATH));
-  app.use(`/${assetsPath}`, express.static(assetsPath));
+  app.use(`/${assetsRoot}`, express.static(assetsRoot));
 
   app.get('/', (_, res) => {
     const html = fs
@@ -72,11 +72,11 @@ const makeServer = (config: any) => {
   });
 
   app.post('/upload', upload.single('file'), (req, res) => {
-    if (!fs.existsSync(assetsPath)) {
-      fs.mkdirSync(assetsPath);
+    if (!fs.existsSync(assetsRoot)) {
+      fs.mkdirSync(assetsRoot);
     }
 
-    const savePath = path.join(assetsPath, req.file.filename);
+    const savePath = path.join(assetsRoot, req.file.filename);
     res.json({ path: savePath });
   });
 

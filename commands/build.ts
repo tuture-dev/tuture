@@ -8,7 +8,7 @@ import { File, Change } from 'parse-diff';
 
 import BaseCommand from '../base';
 import logger from '../utils/logger';
-import { TUTURE_YML_PATH, DIFF_PATH, GITHUB_RAW_PATH } from '../constants';
+import { TUTURE_YML_PATH, DIFF_PATH } from '../constants';
 import { Diff, Step, Tuture, TutureMeta } from '../types';
 
 type RawDiff = {
@@ -47,6 +47,9 @@ export default class Build extends BaseCommand {
       char: 'o',
       description: 'name of output file',
     }),
+    assetsPath: flags.string({
+      description: 'path to assets root directory',
+    }),
     hexo: flags.boolean({
       description: 'hexo compatibility mode',
       default: false,
@@ -81,10 +84,10 @@ export default class Build extends BaseCommand {
       elements.push(`tags: [${tags}]`);
     }
     if (created) {
-      elements.push(`date: ${(new Date(created)).toISOString()}`);
+      elements.push(`date: ${new Date(created).toISOString()}`);
     }
     if (updated) {
-      elements.push(`updated: ${(new Date(updated)).toISOString()}`);
+      elements.push(`updated: ${new Date(updated).toISOString()}`);
     }
     elements.push('---');
 
@@ -198,56 +201,20 @@ export default class Build extends BaseCommand {
       .trim()}\n`;
   }
 
-  // Replace assets URL with github links if present.
-  replaceAssetsURL(tutorial: string, github?: string) {
-    if (!github) return tutorial;
-
-    const match = github.match(/^https:\/\/github.com\/(.+)\/(.+)$/);
-    if (!match || !match[1] || !match[2]) {
-      logger.warn(`Invalid github URL: ${github}`);
-      return tutorial;
-    }
-
-    return tutorial.replace(/!\[.*\]\((.+)\)/g, (_, assetPath) => {
-      return `![](${GITHUB_RAW_PATH}/${match[1]}/${match[2]}/master/${assetPath})`;
+  replaceAssetPaths(tutorial: string, newPrefix: string) {
+    const { assetsRoot } = this.userConfig;
+    return tutorial.replace(/!\[(.*)\]\((.+)\)/g, (_, caption, assetPath) => {
+      return `![${caption}](${assetPath.replace(assetsRoot, newPrefix)})`;
     });
   }
 
-  async run() {
-    const { flags } = this.parse(Build);
-    this.userConfig = Object.assign(this.userConfig, flags);
-
-    if (!fs.existsSync(TUTURE_YML_PATH) || !fs.existsSync(DIFF_PATH)) {
-      logger.log(
-        'error',
-        `You are not in a Tuture tutorial. Run ${chalk.bold(
-          'tuture init',
-        )} to initialize one.`,
-      );
-      this.exit(1);
-    }
-
-    const tuture: Tuture = yaml.safeLoad(
-      fs.readFileSync(TUTURE_YML_PATH).toString(),
-    );
-    const rawDiffs: RawDiff[] = JSON.parse(
-      fs.readFileSync(DIFF_PATH).toString(),
-    );
-
-    if (rawDiffs.length === 0) {
-      logger.log(
-        'warning',
-        'No commits yet. Target tutorial will have empty content.',
-      );
-    }
-
+  generateTutorials(tuture: Tuture, rawDiffs: RawDiff[]) {
     const {
       name,
       splits,
       description,
       topics,
       steps,
-      github,
       created,
       updated,
     } = tuture;
@@ -292,17 +259,69 @@ export default class Build extends BaseCommand {
       titles = [name];
     }
 
-    const { buildPath } = this.userConfig;
+    return [tutorials, titles];
+  }
+
+  saveTutorials(tutorials: string[], titles: string[]) {
+    const { assetsRoot, assetsPath, buildPath, hexo } = this.userConfig;
     if (!this.userConfig.out && !fs.existsSync(buildPath)) {
       fs.mkdirSync(buildPath);
     }
 
     tutorials.forEach((tutorial, index) => {
+      // Path to target tutorial.
       const dest =
         this.userConfig.out || path.join(buildPath, `${titles[index]}.md`);
 
-      fs.writeFileSync(dest, this.replaceAssetsURL(tutorial, github));
+      // Path to assets directory of target tutorial.
+      const assetsDir = hexo
+        ? path.join(path.dirname(dest), titles[index])
+        : path.join(path.dirname(dest), assetsPath || assetsRoot);
+
+      // Copy all assets.
+      fs.copySync(assetsRoot, assetsDir, { overwrite: true });
+
+      // Replace asset paths if needed.
+      const newTutorial = hexo
+        ? this.replaceAssetPaths(tutorial, '.')
+        : assetsPath
+        ? this.replaceAssetPaths(tutorial, assetsPath)
+        : tutorial;
+      fs.writeFileSync(dest, newTutorial);
+
       logger.log('success', `Tutorial has been written to ${chalk.bold(dest)}`);
     });
+  }
+
+  async run() {
+    const { flags } = this.parse(Build);
+    this.userConfig = Object.assign(this.userConfig, flags);
+
+    if (!fs.existsSync(TUTURE_YML_PATH) || !fs.existsSync(DIFF_PATH)) {
+      logger.log(
+        'error',
+        `You are not in a Tuture tutorial. Run ${chalk.bold(
+          'tuture init',
+        )} to initialize one.`,
+      );
+      this.exit(1);
+    }
+
+    const tuture: Tuture = yaml.safeLoad(
+      fs.readFileSync(TUTURE_YML_PATH).toString(),
+    );
+    const rawDiffs: RawDiff[] = JSON.parse(
+      fs.readFileSync(DIFF_PATH).toString(),
+    );
+
+    if (rawDiffs.length === 0) {
+      logger.log(
+        'warning',
+        'No commits yet. Target tutorial will have empty content.',
+      );
+    }
+
+    const [tutorials, titles] = this.generateTutorials(tuture, rawDiffs);
+    this.saveTutorials(tutorials, titles);
   }
 }

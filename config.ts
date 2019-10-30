@@ -1,6 +1,6 @@
 export default {
   // Path to assets directory.
-  assetsPath: 'tuture-assets',
+  assetsRoot: 'tuture-assets',
 
   // Path to build outputs.
   buildPath: 'tuture-build',
