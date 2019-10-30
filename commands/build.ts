@@ -279,7 +279,9 @@ export default class Build extends BaseCommand {
         : path.join(path.dirname(dest), assetsPath || assetsRoot);
 
       // Copy all assets.
-      fs.copySync(assetsRoot, assetsDir, { overwrite: true });
+      if (fs.existsSync(assetsRoot)) {
+        fs.copySync(assetsRoot, assetsDir, { overwrite: true });
+      }
 
       // Replace asset paths if needed.
       const newTutorial = hexo
