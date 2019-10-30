@@ -18,7 +18,9 @@
   "scripts": {
     "lint": "tslint -p . -t verbose",
     "test": "rimraf build && tsc && jest",
-    "build": "rimraf build && tsc && cp -r editor/build build/editor",
+    "build:editor": "cd editor && npm install && npm run build",
+    "build:cli": "rimraf build && tsc && cp -r editor/build build/editor",
+    "build": "npm run build:editor && npm run build:cli",
     "pkg": "./scripts/pack.sh",
     "prepack": "npm run build"
   },

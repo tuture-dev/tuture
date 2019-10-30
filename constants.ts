@@ -14,6 +14,4 @@ export const EDITOR_PATH = path.join(__dirname, 'editor');
 
 export const EDITOR_STATIC_PATH = path.join(EDITOR_PATH, 'static');
 
-export const GITHUB_RAW_PATH = 'https://raw.githubusercontent.com';
-
 export const TUTURE_COMMIT_PREFIX = 'tuture:';
