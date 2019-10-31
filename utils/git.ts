@@ -89,7 +89,7 @@ export async function storeDiff(commits: string[]) {
   const diffPromises = commits.map(async (commit: string) => {
     const output = await runGitCommand(['show', commit]);
     const diffText = output
-      .replace('\n\\ No newline at end of file', '')
+      .replace(/\\ No newline at end of file\n/g, '')
       .split('\n\n')
       .slice(-1)[0];
     const diff = parseDiff(diffText);
