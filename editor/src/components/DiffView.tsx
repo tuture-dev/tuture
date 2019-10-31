@@ -231,7 +231,10 @@ class DiffView extends Component<DiffViewProps, DiffViewState> {
     return (
       <DiffLine key={`change${i}`}>
         <DiffCode className={codeClassName}>
-          <Snippet code={content.slice(1)} lang={lang} />
+          <Snippet
+            code={type === 'normal' ? content : content.slice(1)}
+            lang={lang}
+          />
         </DiffCode>
       </DiffLine>
     );
