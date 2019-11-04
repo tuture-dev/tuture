@@ -1,6 +1,6 @@
-<p align="center"><a href="https://tuture.co" target="_blank" rel="noopener noreferrer"><img src="./media/logo.svg" alt="Tuture logo"></a></p>
+<p align="center"><a href="https://docs.tuture.co" target="_blank" rel="noopener noreferrer"><img src="https://tuture.co/logo.svg" alt="Tuture logo"></a></p>
 <p align="center">
-  <a href="https://github.com/tutureproject/tuture/actions?query=workflow%3A%22Continuous+Integration%22"><img src="https://github.com/tutureproject/tuture/workflows/Continuous%20Integration/badge.svg" alt="Build Status"></a>
+  <a href="https://github.com/tuture-dev/tuture/actions?query=workflow%3A%22Continuous+Integration%22"><img src="https://github.com/tuture-dev/tuture/workflows/Continuous%20Integration/badge.svg" alt="Build Status"></a>
   <a href="https://www.npmjs.com/package/tuture"><img src="https://img.shields.io/npm/v/tuture" alt="Version"></a>
   <a href="https://www.npmjs.com/package/tuture"><img src="https://img.shields.io/npm/l/tuture" alt="License"></a>
   <a href="https://www.npmjs.com/package/tuture"><img src="https://img.shields.io/node/v/tuture" alt="Node Version"></a>
@@ -23,7 +23,7 @@ Tuture revolutionizes the way of writing tech tutorials.
 
 - **Edit tutorials alongside your code**: It can be much clearer and easier to write something just next to your code. With full-fleged markdown support and a series of handy tools, writing high-quality tech posts has never been this fun.
 
-- **Share your tutorial with ease**: Your tutorial can be built into a publish-ready markdown file with a single command. Apart from this, we also provide a [platform](https://github.com/tutureproject/hub) for sharing your tutorials (currently only those in Chinese).
+- **Share your tutorial with ease**: Your tutorial can be built into a publish-ready markdown file with a single command. Apart from this, we also provide a [platform](https://github.com/tuture-dev/hub) for sharing your tutorials (currently only those in Chinese).
 
 ## Installation
 
@@ -51,7 +51,7 @@ yarn global add tuture
 
 ### Download ready-to-use binaries
 
-1. Visit our [Github release page](https://github.com/tutureproject/tuture/releases) to download binary distribution suited to your machine.
+1. Visit our [Github release page](https://github.com/tuture-dev/tuture/releases) to download binary distribution suited to your machine.
 
 2. Extract the binary file `tuture` (or `tuture.exe` on Windows).
 

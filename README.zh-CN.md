@@ -1,4 +1,4 @@
-<p align="center"><a href="https://tuture.co" target="_blank" rel="noopener noreferrer"><img src="./media/logo.svg" alt="Tuture logo"></a></p>
+<p align="center"><a href="https://tuture.co" target="_blank" rel="noopener noreferrer"><img src="https://tuture.co/logo.svg" alt="Tuture logo"></a></p>
 
 # Tuture
 
@@ -16,7 +16,7 @@ Tuture 革新了技术教程写作的方式。
 
 - **对着代码写教程**：对着你的代码去写一些东西显然更简单，思路更清晰。搭配完整的 Markdown 编辑功能和一系列方便的工具，书写优质技术文章从未如此有趣。
 
-- **轻松分享你的教程**：只需一条命令，你的教程便可以构建成即可发表的 Markdown 文件。除此之外，我们还提供了专门的[平台](https://github.com/tutureproject/hub)来分享你的教程。
+- **轻松分享你的教程**：只需一条命令，你的教程便可以构建成即可发表的 Markdown 文件。除此之外，我们还提供了专门的[平台](https://github.com/tuture-dev/hub)来分享你的教程。
 
 ## 安装
 
@@ -44,7 +44,7 @@ yarn global add tuture
 
 ### 下载开箱可用的可执行文件
 
-1. 访问我们的 [GitHub release 页面](https://github.com/tutureproject/tuture/releases)，下载适合您机器运行的压缩包。
+1. 访问我们的 [GitHub release 页面](https://github.com/tuture-dev/tuture/releases)，下载适合您机器运行的压缩包。
 
 2. 将二进制可执行文件 `tuture` （在 Windows 上是 `tuture.exe`）解压缩。
 

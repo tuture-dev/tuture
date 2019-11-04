@@ -26,16 +26,16 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/tutureproject/tuture.git"
+    "url": "https://github.com/tuture-dev/tuture.git"
   },
   "license": "MIT",
   "bin": {
     "tuture": "./bin/run"
   },
   "bugs": {
-    "url": "https://github.com/tutureproject/tuture/issues"
+    "url": "https://github.com/tuture-dev/tuture/issues"
   },
-  "homepage": "https://github.com/tutureproject/tuture#readme",
+  "homepage": "https://github.com/tuture-dev/tuture#readme",
   "files": [
     "/bin",
     "/build"
