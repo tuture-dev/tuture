@@ -1,4 +1,4 @@
-<p align="center"><a href="https://docs.tuture.co" target="_blank" rel="noopener noreferrer"><img src="https://tuture.co/logo.svg" alt="Tuture logo"></a></p>
+<p align="center"><a href="https://docs.tuture.co" target="_blank" rel="noopener noreferrer"><img src="https://tuture.co/images/logo.svg" alt="Tuture logo"></a></p>
 <p align="center">
   <a href="https://github.com/tuture-dev/tuture/actions?query=workflow%3A%22Continuous+Integration%22"><img src="https://github.com/tuture-dev/tuture/workflows/Continuous%20Integration/badge.svg" alt="Build Status"></a>
   <a href="https://www.npmjs.com/package/tuture"><img src="https://img.shields.io/npm/v/tuture" alt="Version"></a>

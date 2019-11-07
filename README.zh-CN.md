@@ -1,4 +1,4 @@
-<p align="center"><a href="https://tuture.co" target="_blank" rel="noopener noreferrer"><img src="https://tuture.co/logo.svg" alt="Tuture logo"></a></p>
+<p align="center"><a href="https://tuture.co" target="_blank" rel="noopener noreferrer"><img src="https://tuture.co/images/logo.svg" alt="Tuture logo"></a></p>
 
 # Tuture
 
