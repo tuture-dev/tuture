@@ -19,6 +19,7 @@ export interface Split {
 export interface TutureMeta {
   name: string;
   topics?: string[];
+  categories?: string[];
   description?: string;
   created?: Date;
   updated?: Date;
