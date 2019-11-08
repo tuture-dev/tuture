@@ -1,0 +1,52 @@
+name: Release (Nightly)
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  release-nightly:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        platform: [linux, macos, windows]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@master
+
+      - name: Setup Node.js Environment
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+
+      - name: Build artifacts
+        run: |
+          npm install
+          npm run build
+          npm run pkg
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1.0.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: nightly
+          release_name: Nightly Release
+          draft: false
+          prerelease: false
+
+      - name: Upload Release Asset
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1.0.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: dist/tuture-${{ matrix.platform }}.zip
+          asset_name: tuture-${{ matrix.platform }}.zip
+          asset_content_type: application/zip
