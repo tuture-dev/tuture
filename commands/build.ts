@@ -70,7 +70,7 @@ export default class Build extends BaseCommand {
 
   // Template for metadata of hexo posts.
   hexoFrontMatterTmpl(meta: TutureMeta) {
-    const { name, description, topics, created, updated } = meta;
+    const { name, description, topics, categories, created, updated } = meta;
     const elements = ['---', `title: "${name.replace('"', '')}"`];
     if (description) {
       elements.push(
@@ -82,6 +82,12 @@ export default class Build extends BaseCommand {
         .map((topic) => `"${this.sanitize(topic)}"`)
         .join(', ');
       elements.push(`tags: [${tags}]`);
+    }
+    if (categories) {
+      const cats = categories
+        .map((category) => `"${this.sanitize(category)}"`)
+        .join(', ');
+      elements.push(`categories: [${cats}]`);
     }
     if (created) {
       elements.push(`date: ${new Date(created).toISOString()}`);
@@ -214,6 +220,7 @@ export default class Build extends BaseCommand {
       splits,
       description,
       topics,
+      categories,
       steps,
       created,
       updated,
@@ -235,6 +242,7 @@ export default class Build extends BaseCommand {
 
         const meta: TutureMeta = {
           topics,
+          categories,
           created,
           updated,
           name: split.name || name,
