@@ -1,0 +1,50 @@
+name: Release (Nightly)
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  release-nightly:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@master
+
+      - name: Setup Node.js Environment
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+
+      - name: Cache node modules
+        uses: actions/cache@v1
+        with:
+          path: node_modules
+          key: ${{ runner.OS }}-build-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.OS }}-build-${{ env.cache-name }}-
+            ${{ runner.OS }}-build-
+            ${{ runner.OS }}-
+
+      - name: Build artifacts
+        run: |
+          yarn
+          yarn build
+          yarn pkg
+
+      - name: Upload Release Asset
+        uses: mRcfps/github-release@master
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          name: Nightly Release
+          tag: nightly
+          body: Nightly prebuilt binaries. Use with caution!
+          gzip: false
+          allow_override: true
+          files: >
+            dist/tuture-linux.zip
+            dist/tuture-macos.zip
+            dist/tuture-windows.zip
