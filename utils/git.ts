@@ -156,18 +156,23 @@ export function removeGitHook() {
  * Append .tuture rule to gitignore.
  * If it's already ignored, do nothing.
  * If .gitignore doesn't exist, create one and add the rule.
+ * @param config User config
  */
-export function appendGitignore() {
-  const ignoreRules = '# Tuture-related files\n\n.tuture\n';
+export function appendGitignore(config: any) {
+  const ignoreRules = [
+    '# Tuture-related files\n',
+    TUTURE_ROOT,
+    config.buildPath,
+  ].join('\n');
 
   if (!fs.existsSync('.gitignore')) {
-    fs.writeFileSync('.gitignore', ignoreRules);
+    fs.writeFileSync('.gitignore', `${ignoreRules}\n`);
     logger.log('info', '.gitignore file created.');
   } else if (
     !fs
       .readFileSync('.gitignore')
       .toString()
-      .includes('.tuture')
+      .includes(TUTURE_ROOT)
   ) {
     fs.appendFileSync('.gitignore', `\n${ignoreRules}`);
     logger.log('info', '.gitignore rules appended.');

@@ -117,7 +117,7 @@ export default class Init extends BaseCommand {
 
       fs.writeFileSync(TUTURE_YML_PATH, yaml.safeDump(tuture));
 
-      git.appendGitignore();
+      git.appendGitignore(this.userConfig);
       git.appendGitHook();
 
       logger.log('success', 'Tuture tutorial has been initialized!');
