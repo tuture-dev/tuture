@@ -1,6 +1,13 @@
 # Changelog
 
-## 2.0.0
+## 2.0.1
+
+- Fix almost all bugs around image uploading in editor
+- Fix annoying "No newline at end of file" in code diff
+- Add `categories` to tuture.yml spec
+- Ignore build output directory when initializing
+
+## 2.0.0 (unpublished)
 
 ### What's New
 

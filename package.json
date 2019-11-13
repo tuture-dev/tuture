@@ -1,6 +1,6 @@
 {
   "name": "tuture",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Tuture magically turns your repositories into juicy tutorials.",
   "main": "index.ts",
   "preferGlobal": true,
@@ -18,11 +18,11 @@
   "scripts": {
     "lint": "tslint -p . -t verbose",
     "test": "rimraf build && tsc && jest",
-    "build:editor": "cd editor && npm install && npm run build",
+    "build:editor": "cd editor && yarn && yarn build",
     "build:cli": "rimraf build && tsc && cp -r editor/build build/editor",
-    "build": "npm run build:editor && npm run build:cli",
+    "build": "yarn build:editor && yarn build:cli",
     "pkg": "./scripts/pack.sh",
-    "prepack": "npm run build"
+    "prepack": "yarn build"
   },
   "repository": {
     "type": "git",
