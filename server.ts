@@ -1,4 +1,5 @@
-import fs from 'fs';
+import crypto from 'crypto';
+import fs from 'fs-extra';
 import http from 'http';
 import path from 'path';
 import yaml from 'js-yaml';
@@ -80,7 +81,23 @@ const makeServer = (config: any) => {
   });
 
   app.post('/upload', checkAssetsRoot, upload.single('file'), (req, res) => {
-    const savePath = path.join(assetsRoot, req.file.filename);
+    const { originalname } = req.file;
+    let savePath = path.join(assetsRoot, originalname);
+
+    // If target file already exists (likely to happen when uploading image
+    // from clipboard), append a unique ID to its name.
+    if (fs.existsSync(savePath)) {
+      const { dir, name, ext } = path.parse(savePath);
+      const uniqueId = crypto.randomBytes(8).toString('hex');
+      savePath = path.join(dir, `${name}-${uniqueId}${ext}`);
+    }
+
+    // Move temporarily created file to final save path.
+    fs.moveSync(req.file.path, savePath);
+
+    // Enforce UNIX style path sep in markdown asset path.
+    savePath = savePath.split(path.sep).join('/');
+
     res.json({ path: savePath });
   });
 
