@@ -331,6 +331,14 @@ export default class Build extends BaseCommand {
       );
     }
 
+    if (flags.out && tuture.splits) {
+      logger.log(
+        'error',
+        'Cannot specify output target when tutorial splitting is enabled.',
+      );
+      this.exit(1);
+    }
+
     const [tutorials, titles] = this.generateTutorials(tuture, rawDiffs);
     this.saveTutorials(tutorials, titles);
   }
