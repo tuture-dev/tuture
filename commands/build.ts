@@ -7,6 +7,7 @@ import { flags } from '@oclif/command';
 import { File, Change } from 'parse-diff';
 
 import BaseCommand from '../base';
+import { generateUserProfile } from '../utils';
 import logger from '../utils/logger';
 import { TUTURE_YML_PATH, DIFF_PATH } from '../constants';
 import { Diff, Step, Tuture, TutureMeta } from '../types';
@@ -173,7 +174,7 @@ export default class Build extends BaseCommand {
 
   // Markdown template for the whole tutorial.
   tutorialTmpl(meta: TutureMeta, steps: Step[], rawDiffs: RawDiff[]) {
-    const { name, description } = meta;
+    const { name, description, github } = meta;
     const elements = [
       zip(steps, rawDiffs)
         .map((zipObj) => {
@@ -193,6 +194,9 @@ export default class Build extends BaseCommand {
     ];
 
     if (this.userConfig.hexo) {
+      if (github) {
+        elements.unshift(generateUserProfile(github));
+      }
       elements.unshift(this.hexoFrontMatterTmpl(meta));
     } else {
       elements.unshift(
@@ -221,6 +225,7 @@ export default class Build extends BaseCommand {
       description,
       topics,
       categories,
+      github,
       steps,
       created,
       updated,
@@ -243,6 +248,7 @@ export default class Build extends BaseCommand {
         const meta: TutureMeta = {
           topics,
           categories,
+          github,
           created,
           updated,
           name: split.name || name,
