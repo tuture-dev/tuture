@@ -7,6 +7,7 @@ import { flags } from '@oclif/command';
 import { File, Change } from 'parse-diff';
 
 import BaseCommand from '../base';
+import { generateUserProfile } from '../utils';
 import logger from '../utils/logger';
 import { TUTURE_YML_PATH, DIFF_PATH } from '../constants';
 import { Diff, Step, Tuture, TutureMeta } from '../types';
@@ -52,6 +53,10 @@ export default class Build extends BaseCommand {
     }),
     hexo: flags.boolean({
       description: 'hexo compatibility mode',
+      default: false,
+    }),
+    withProfile: flags.boolean({
+      description: 'whether to add github profile',
       default: false,
     }),
   };
@@ -173,7 +178,7 @@ export default class Build extends BaseCommand {
 
   // Markdown template for the whole tutorial.
   tutorialTmpl(meta: TutureMeta, steps: Step[], rawDiffs: RawDiff[]) {
-    const { name, description } = meta;
+    const { name, description, github } = meta;
     const elements = [
       zip(steps, rawDiffs)
         .map((zipObj) => {
@@ -191,6 +196,10 @@ export default class Build extends BaseCommand {
         .filter((elem) => elem)
         .join('\n\n'),
     ];
+
+    if (this.userConfig.withProfile && github) {
+      elements.unshift(generateUserProfile(github));
+    }
 
     if (this.userConfig.hexo) {
       elements.unshift(this.hexoFrontMatterTmpl(meta));
@@ -221,6 +230,7 @@ export default class Build extends BaseCommand {
       description,
       topics,
       categories,
+      github,
       steps,
       created,
       updated,
@@ -243,6 +253,7 @@ export default class Build extends BaseCommand {
         const meta: TutureMeta = {
           topics,
           categories,
+          github,
           created,
           updated,
           name: split.name || name,
@@ -335,6 +346,14 @@ export default class Build extends BaseCommand {
       logger.log(
         'error',
         'Cannot specify output target when tutorial splitting is enabled.',
+      );
+      this.exit(1);
+    }
+
+    if (flags.withProfile && !tuture.github) {
+      logger.log(
+        'warning',
+        'Profile will not be generated without specifying repository url.',
       );
       this.exit(1);
     }
