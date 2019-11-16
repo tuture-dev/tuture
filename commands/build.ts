@@ -55,10 +55,6 @@ export default class Build extends BaseCommand {
       description: 'hexo compatibility mode',
       default: false,
     }),
-    withProfile: flags.boolean({
-      description: 'whether to add github profile',
-      default: false,
-    }),
   };
 
   // Sanitize explanation string for hexo compatibility
@@ -197,11 +193,10 @@ export default class Build extends BaseCommand {
         .join('\n\n'),
     ];
 
-    if (this.userConfig.withProfile && github) {
-      elements.unshift(generateUserProfile(github));
-    }
-
     if (this.userConfig.hexo) {
+      if (github) {
+        elements.unshift(generateUserProfile(github));
+      }
       elements.unshift(this.hexoFrontMatterTmpl(meta));
     } else {
       elements.unshift(
@@ -346,14 +341,6 @@ export default class Build extends BaseCommand {
       logger.log(
         'error',
         'Cannot specify output target when tutorial splitting is enabled.',
-      );
-      this.exit(1);
-    }
-
-    if (flags.withProfile && !tuture.github) {
-      logger.log(
-        'warning',
-        'Profile will not be generated without specifying repository url.',
       );
       this.exit(1);
     }
