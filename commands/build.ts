@@ -231,6 +231,16 @@ export default class Build extends BaseCommand {
       updated,
     } = tuture;
 
+    const meta: TutureMeta = {
+      topics,
+      categories,
+      github,
+      created,
+      updated,
+      name,
+      description,
+    };
+
     let tutorials: string[] = [];
     let titles: string[] = [];
 
@@ -245,15 +255,12 @@ export default class Build extends BaseCommand {
         const start = commits.indexOf(split.start);
         const end = commits.indexOf(split.end) + 1;
 
-        const meta: TutureMeta = {
-          topics,
-          categories,
-          github,
-          created,
-          updated,
-          name: split.name || name,
-          description: split.description || description,
-        };
+        if (split.name) {
+          meta.name = name;
+        }
+        if (split.description) {
+          meta.description = description;
+        }
 
         return this.tutorialTmpl(
           meta,
@@ -262,13 +269,6 @@ export default class Build extends BaseCommand {
         );
       });
     } else {
-      const meta: TutureMeta = {
-        topics,
-        created,
-        updated,
-        name,
-        description,
-      };
       tutorials = [this.tutorialTmpl(meta, steps, rawDiffs)];
       titles = [name];
     }
