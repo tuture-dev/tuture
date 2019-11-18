@@ -256,10 +256,10 @@ export default class Build extends BaseCommand {
         const end = commits.indexOf(split.end) + 1;
 
         if (split.name) {
-          meta.name = name;
+          meta.name = split.name;
         }
         if (split.description) {
-          meta.description = description;
+          meta.description = split.description;
         }
 
         return this.tutorialTmpl(
