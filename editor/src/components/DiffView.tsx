@@ -228,13 +228,19 @@ class DiffView extends Component<DiffViewProps, DiffViewState> {
 
     // {this.renderLineNumber(lineNumberClassName, i + 1)}
 
+    // handle render code content
+    let code = content;
+
+    if (content !== 'normal' && content.length === 1) {
+      code = content.replace(/[\+\-]/, ' ');
+    } else if (content !== 'normal' && content.length > 1) {
+      code = content.slice(1);
+    }
+
     return (
       <DiffLine key={`change${i}`}>
         <DiffCode className={codeClassName}>
-          <Snippet
-            code={type === 'normal' ? content : content.slice(1)}
-            lang={lang}
-          />
+          <Snippet code={code} lang={lang} />
         </DiffCode>
       </DiffLine>
     );
