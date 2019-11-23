@@ -130,7 +130,11 @@ export default class Build extends BaseCommand {
       .filter((elem) => elem)
       .join(diffRenderHints[mode]['omit']);
 
-    return `\`\`\`${lang} ${file.to} ${link} 查看完整代码\n${code}\n\`\`\``;
+    const head = [lang, file.to];
+    if (link) head.push(link);
+    if (mode === 'hexo') head.push('查看完整代码');
+
+    return `\`\`\`${head.join(' ')}\n${code}\n\`\`\``;
   }
 
   // Markdown template for a Diff object.
