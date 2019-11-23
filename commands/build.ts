@@ -114,7 +114,7 @@ export default class Build extends BaseCommand {
   }
 
   // Template for code blocks.
-  codeBlockTmpl(file: File) {
+  codeBlockTmpl(file: File, link?: string) {
     const lang = file.to ? file.to.split('.').slice(-1)[0] : '';
     const mode = this.userConfig.hexo ? 'hexo' : 'plain';
 
@@ -130,18 +130,14 @@ export default class Build extends BaseCommand {
       .filter((elem) => elem)
       .join(diffRenderHints[mode]['omit']);
 
-    const tmpl = `\`\`\`${file.new || mode === 'hexo' ? lang : 'diff'} ${
-      file.to
-    }\n${code}\n\`\`\``;
-
-    return tmpl;
+    return `\`\`\`${lang} ${file.to} ${link} 查看完整代码\n${code}\n\`\`\``;
   }
 
   // Markdown template for a Diff object.
-  diffTmpl(diff: Diff, file: File) {
+  diffTmpl(diff: Diff, file: File, link?: string) {
     const elements = [
       diff.explain ? this.sanitize(diff.explain.pre) : '',
-      this.codeBlockTmpl(file),
+      this.codeBlockTmpl(file, link),
       diff.explain ? this.sanitize(diff.explain.post) : '',
     ];
 
@@ -152,18 +148,20 @@ export default class Build extends BaseCommand {
   }
 
   // Markdown template for a single Step.
-  stepTmpl(step: Step, files: File[]) {
+  stepTmpl(step: Step, files: File[], github?: string) {
+    const { name, explain, diff, commit } = step;
     const elements = [
-      this.sanitize(`## ${step.name}`),
-      step.explain ? this.sanitize(step.explain.pre) : '',
-      zip(step.diff, files)
+      this.sanitize(`## ${name}`),
+      explain ? this.sanitize(explain.pre) : '',
+      zip(diff, files)
         .map((zipObj) => {
           const [diff, file] = zipObj;
-          return diff && file && diff.display ? this.diffTmpl(diff, file) : '';
+          const link = github && file ? `${github}/blob/${commit}/${file.to}` : undefined;
+          return diff && file && diff.display ? this.diffTmpl(diff, file, link) : '';
         })
         .filter((elem) => elem)
         .join('\n\n'),
-      step.explain ? this.sanitize(step.explain.post) : '',
+      explain ? this.sanitize(explain.post) : '',
     ];
 
     return elements
@@ -187,7 +185,7 @@ export default class Build extends BaseCommand {
             rawDiff.diff.find((elem) => elem.to === filename),
           ) as File[];
 
-          return this.stepTmpl(step, files);
+          return this.stepTmpl(step, files, github);
         })
         .filter((elem) => elem)
         .join('\n\n'),
