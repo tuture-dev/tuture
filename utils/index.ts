@@ -84,7 +84,7 @@ export function generateUserProfile(github: string) {
   }
 
   const user = matched[1];
-  const avatarUrl = `https://github.com/${user}.png`;
+  const avatarUrl = `https://github.com/${user}.png?size=200`;
   const homepageUrl = `https://github.com/${user}`;
 
   return `<div class="profileBox">
