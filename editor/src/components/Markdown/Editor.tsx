@@ -2,7 +2,9 @@ import React from 'react';
 import classnames from 'classnames';
 import fetch from 'isomorphic-fetch';
 import { translate } from 'react-i18next';
-import MdEditor from 'react-markdown-editor-lite';
+
+// @ts-ignore
+import MdEditor from 'tuture-react-markdown-editor-lite';
 import MarkdownIt from 'markdown-it';
 import hljs from 'highlight.js';
 
@@ -144,58 +146,10 @@ class Editor extends React.Component<EditorProps, EditorState> {
     this.props.updateEditingStatus(false);
   };
 
-  handleImageUpload(
-    e: React.SyntheticEvent<HTMLTextAreaElement>,
-    eventType: 'paste' | 'drop',
-  ) {
-    const files =
-      eventType === 'paste'
-        ? (e as React.ClipboardEvent<HTMLTextAreaElement>).clipboardData.files
-        : (e as React.DragEvent<HTMLTextAreaElement>).dataTransfer.files;
-
-    if (files.length === 0 || !/\.(png|jpe?g|bmp)$/.test(files[0].name)) {
-      // Not a valid image.
-      return;
-    }
-
-    // Prevent default behaviors of pasting and dropping events.
-    e.preventDefault();
-
+  handleImageUpload(file, callback) {
     // Upload the first images to server.
     const data = new FormData();
     const that = this;
-    data.append('file', files[0]);
-
-    fetch(`http://${location.host}/upload`, {
-      method: 'POST',
-      body: data,
-    })
-      .then((res) => res.json())
-      .then((resObj) => {
-        const savePath = resObj.path;
-
-        // Add markdown image element to current explain.
-        const currentContent = that.props.source as string;
-        const textarea = this.contentRef;
-        const updatedContent = insertStr(
-          currentContent,
-          `![](${savePath})`,
-          textarea.selectionStart,
-        );
-
-        this.changePosition(
-          currentContent.slice(0, textarea.selectionStart).length + 2,
-        );
-
-        this.updateContent(updatedContent);
-      });
-  }
-
-  handleClickButtonUpload = (file, callback) => {
-    // Upload the first images to server.
-    const data = new FormData();
-    const that = this;
-    console.log('file', file);
     data.append('file', file);
 
     fetch(`http://${location.host}/upload`, {
@@ -211,18 +165,12 @@ class Editor extends React.Component<EditorProps, EditorState> {
         // Add markdown image element to current explain.
         callback(savePath);
       });
-  };
+  }
 
-  handleChange = ({ text }) => {
+  handleChange = ({ html, text }) => {
+    // @ts-ignore
+    console.log('html', this.mdEditor);
     this.props.updateContent(text);
-  };
-
-  handlePaste = (e: React.ClipboardEvent<HTMLTextAreaElement>) => {
-    this.handleImageUpload(e, 'paste');
-  };
-
-  handleDrop = (e: React.DragEvent<HTMLTextAreaElement>) => {
-    this.handleImageUpload(e, 'drop');
   };
 
   changePosition = (position: number) => {
@@ -291,6 +239,8 @@ class Editor extends React.Component<EditorProps, EditorState> {
           <div>
             <MdEditor
               name="textarea"
+              // @ts-ignore
+              ref={(node) => (this.mdEditor = node)}
               value={this.props.source}
               config={{
                 view: {
@@ -302,7 +252,9 @@ class Editor extends React.Component<EditorProps, EditorState> {
               // @ts-ignore
               renderHTML={(text) => this.mdParser.render(text)}
               onChange={this.handleChange}
-              onImageUpload={this.handleClickButtonUpload}
+              onImageUpload={this.handleImageUpload}
+              onImagePaste={this.handleImageUpload}
+              onImageDrop={this.handleImageUpload}
             />
           </div>
         ) : (

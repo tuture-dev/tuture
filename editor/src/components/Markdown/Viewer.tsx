@@ -5,6 +5,8 @@ import hljs from 'highlight.js';
 export interface ViewerProps {
   source: string;
   classnames?: string;
+  isEditMode?: boolean;
+  onClick?: () => {};
 }
 
 export default class Viewer extends React.Component<ViewerProps> {
@@ -52,6 +54,14 @@ export default class Viewer extends React.Component<ViewerProps> {
     this.el = el;
   };
 
+  handleClick = () => {
+    const { isEditMode } = this.props;
+
+    if (isEditMode) {
+      this.props.onClick();
+    }
+  };
+
   render() {
     const { source, classnames } = this.props;
     return (
@@ -59,6 +69,7 @@ export default class Viewer extends React.Component<ViewerProps> {
         ref={this.setEl}
         dangerouslySetInnerHTML={this.getMarkdownText(source)}
         className={classnames}
+        onClick={this.handleClick}
       />
     );
   }
