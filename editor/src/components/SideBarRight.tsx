@@ -20,7 +20,7 @@ const SideBarRightWrapper = styled.div`
   height: 637px;
   margin-top: 32px;
   position: fixed;
-  right: ${rem(100)}rem;
+  right: 0;
   transition: opacity 0.5s;
   background-color: transparent;
 
