@@ -185,7 +185,7 @@ class Markdown extends React.Component<MarkdownProps, MarkdownState> {
     ) : (
       <Viewer
         source={content}
-        classnames={classnames('markdown', { isRoot })}
+        classnames={classnames('markdown', 'mdContent', { isRoot })}
       />
     );
   }

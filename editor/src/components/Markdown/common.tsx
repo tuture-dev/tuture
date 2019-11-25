@@ -120,7 +120,7 @@ injectGlobal`
 
   .mdContent table {
     margin-top: 0;
-    margin-bottom: 16px;
+    margin-top: 16px;
   }
 
   .mdContent pre {
@@ -128,7 +128,7 @@ injectGlobal`
   }
 
   .mdContent .note {
-    margin-bottom: 20px;
+    margin-top: 20px;
     padding: 15px;
     padding-bottom: 30px;
     padding-left: 45px;
