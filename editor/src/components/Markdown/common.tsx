@@ -5,7 +5,7 @@ injectGlobal`
     padding: 4px 10px 10px !important;
   }
 
-  .markdown:hover {
+  .isEditMode.markdown:hover {
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04), inset 0 0 0 1px rgba(0, 0, 0, 0.09);
     transition: box-shadow 100ms;
   }

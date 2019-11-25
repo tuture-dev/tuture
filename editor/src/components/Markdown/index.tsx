@@ -154,9 +154,14 @@ class Markdown extends React.Component<MarkdownProps, MarkdownState> {
             isEditMode={isEditMode}
             // @ts-ignore
             onClick={() => this.handleAddExplain()}
-            classnames={classnames('markdown', 'mdContent', {
-              isRoot,
-            })}
+            classnames={classnames(
+              'markdown',
+              'mdContent',
+              {
+                isRoot,
+              },
+              { isEditMode },
+            )}
           />
           {!content && (
             <AddExplainWrapper onClick={() => this.handleAddExplain()}>

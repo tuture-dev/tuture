@@ -1,5 +1,4 @@
 import React from 'react';
-import marked from 'marked';
 import hljs from 'highlight.js';
 import MarkdownIt from 'markdown-it';
 import insert from 'markdown-it-ins';
