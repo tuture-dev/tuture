@@ -118,6 +118,109 @@ injectGlobal`
     min-width: 550px;
   }
 
+  .editor .note {
+    margin-bottom: 20px;
+    padding: 15px;
+    padding-left: 45px;
+    position: relative;
+    border: 1px solid #eee;
+    border-left-width: 5px;
+    border-radius: 0px;
+  }
+
+  .editor .note p {
+    margin-top: 0;
+  }
+
+  .editor .note.default {
+    border-left-color: #777;
+  }
+
+  .editor .note.primary {
+    border-left-color: #6f42c1;
+  }
+
+  .editor .note.success {
+    border-left-color: #5cb85c;
+  }
+
+  .editor .note.info {
+    border-left-color: #428bca;
+  }
+
+  .editor .note.warning {
+    border-left-color: #f0ad4e;
+  }
+
+  .editor .note.danger {
+    border-left-color: #d9534f;
+  }
+
+  .editor .note h2, .editor .note h3, .editor .note h4, .editor .note h5, .editor .note h6 {
+    margin-top: 3px;
+    border-bottom: initial;
+    margin-bottom: 0;
+    padding-top: 0;
+  }
+
+  .editor .note.default h2, .editor .note.default h3, .editor .note.default h4, .editor .note.default h5, .editor .note.default h6 {
+    color: #777;
+  }
+
+  .editor .note.primary h2, .editor .note.primary h3, .editor .note.primary h4, .editor .note.primary h5, .editor .note.primary h6 {
+    color: #6f42c1;
+  }
+
+  .editor .note.success h2, .editor .note.success h3, .editor .note.success h4, .editor .note.success h5, .editor .note.success h6 {
+    color: #5cb85c;
+  }
+
+  .editor .note.info h2, .editor .note.info h3, .editor .note.info h4, .editor .note.info h5, .editor .note.info h6 {
+    color: #428bca;
+  }
+
+  .editor .note.warning h2, .editor .note.warning h3, .editor .note.warning h4, .editor .note.warning h5, .editor .note.warning h6 {
+    color: #f0ad4e;
+  }
+
+  .editor .note.danger h2, .editor .note.danger h3, .editor .note.danger h4, .editor .note.danger h5, .editor .note.danger h6 {
+    color: #d9534f;
+  }
+
+  .editor .note::before {
+    font-family: 'FontAwesome';
+    font-size: larger;
+    left: 15px;
+    position: absolute;
+    top: 13px;
+  }
+
+  .editor .note.primary::before {
+    content: "\f055";
+    color: #6f42c1;
+}
+
+  .editor .note.success::before {
+      content: "\f058";
+      color: #5cb85c;
+  }
+
+  .editor .note.info::before {
+    content: "\f05a";
+    color: #428bca;
+  }
+
+  .editor .note.warning::before {
+    content: "\f06a";
+    color: #f0ad4e;
+  }
+
+  .editor .note.danger::before {
+    content: "\f056";
+    color: #d9534f;
+}
+
+
   .editor > .isRoot {
     padding-left: 0;
     padding-right: 0;

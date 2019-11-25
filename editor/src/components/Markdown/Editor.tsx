@@ -7,6 +7,7 @@ import { translate } from 'react-i18next';
 import MdEditor from 'tuture-react-markdown-editor-lite';
 import MarkdownIt from 'markdown-it';
 import insert from 'markdown-it-ins';
+import container from 'markdown-it-container';
 import hljs from 'highlight.js';
 
 // @ts-ignore
@@ -94,7 +95,62 @@ class Editor extends React.Component<EditorProps, EditorState> {
         }
         return ''; // use external default escaping
       },
-    }).use(insert);
+    })
+      .use(insert)
+      .use(container, 'default', {
+        render(tokens, idx) {
+          if (tokens[idx].nesting === 1) {
+            return "<div class='note default'>\n";
+          }
+
+          return '</div>\n';
+        },
+      })
+      .use(container, 'primary', {
+        render(tokens, idx) {
+          if (tokens[idx].nesting === 1) {
+            return "<div class='note primary'>\n";
+          }
+
+          return '</div>\n';
+        },
+      })
+      .use(container, 'success', {
+        render(tokens, idx) {
+          if (tokens[idx].nesting === 1) {
+            return "<div class='note success'>\n";
+          }
+
+          return '</div>\n';
+        },
+      })
+      .use(container, 'info', {
+        render(tokens, idx) {
+          if (tokens[idx].nesting === 1) {
+            return "<div class='note info'>\n";
+          }
+
+          return '</div>\n';
+        },
+      })
+      .use(container, 'warning', {
+        render(tokens, idx) {
+          if (tokens[idx].nesting === 1) {
+            return "<div class='note warning'>\n";
+          }
+
+          return '</div>\n';
+        },
+      })
+      .use(container, 'danger', {
+        render(tokens, idx) {
+          if (tokens[idx].nesting === 1) {
+            return "<div class='note danger'>\n";
+          }
+
+          return '</div>\n';
+        },
+      });
   }
 
   componentDidMount() {

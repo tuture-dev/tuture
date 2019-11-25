@@ -5781,6 +5781,11 @@ map-visit@^1.0.0:
   dependencies:
     object-visit "^1.0.0"
 
+markdown-it-container@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.npmjs.org/markdown-it-container/-/markdown-it-container-2.0.0.tgz#0019b43fd02eefece2f1960a2895fba81a404695"
+  integrity sha1-ABm0P9Au7+zi8ZYKKJX7qBpARpU=
+
 markdown-it-ins@^3.0.0:
   version "3.0.0"
   resolved "https://registry.npmjs.org/markdown-it-ins/-/markdown-it-ins-3.0.0.tgz#b1b56824c78dc66e52b0fc97531b317cd78d79d2"
@@ -9017,8 +9022,10 @@ tunnel-agent@^0.6.0:
   dependencies:
     safe-buffer "^5.0.1"
 
-tuture-react-markdown-editor-lite@../../tools/react-markdown-editor-lite:
-  version "0.0.1"
+tuture-react-markdown-editor-lite@^0.0.2:
+  version "0.0.2"
+  resolved "https://registry.npmjs.org/tuture-react-markdown-editor-lite/-/tuture-react-markdown-editor-lite-0.0.2.tgz#4bc8ef910bbd7bf04bce1a90b981494a1d94d8d9"
+  integrity sha512-rHPGWqkxjYE7uxnYFGzjYIEsBMl3M6Ee3yK5aL1+HKANThQYm1yaMNSa1E5LLuZkHabHq95YjASXKXZh28RlLg==
 
 tweetnacl@^0.14.3, tweetnacl@~0.14.0:
   version "0.14.5"
