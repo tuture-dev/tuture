@@ -43,7 +43,7 @@ injectGlobal`
     display: block;
     padding: 20px;
     background-color: rgba(0, 0, 0, .05);
-    margin: 24px 0 !important;
+    margin: 16px 0 !important;
   }
 
   .markdown a {
@@ -118,9 +118,19 @@ injectGlobal`
     min-width: 550px;
   }
 
+  .editor table {
+    margin-top: 0;
+    margin-bottom: 16px;
+  }
+
+  .editor pre {
+    margin: 16px 0;
+  }
+
   .editor .note {
     margin-bottom: 20px;
     padding: 15px;
+    padding-bottom: 30px;
     padding-left: 45px;
     position: relative;
     border: 1px solid #eee;
