@@ -291,7 +291,7 @@ class Editor extends React.Component<EditorProps, EditorState> {
     const { nowTab } = this.state;
 
     return (
-      <div className={classnames('editor')}>
+      <div className={classnames('editor', 'mdContent')}>
         {nowTab === 'edit' ? (
           <div>
             <MdEditor

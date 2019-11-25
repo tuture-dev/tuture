@@ -118,16 +118,16 @@ injectGlobal`
     min-width: 550px;
   }
 
-  .editor table {
+  .mdContent table {
     margin-top: 0;
     margin-bottom: 16px;
   }
 
-  .editor pre {
+  .mdContent pre {
     margin: 16px 0;
   }
 
-  .editor .note {
+  .mdContent .note {
     margin-bottom: 20px;
     padding: 15px;
     padding-bottom: 30px;
@@ -138,66 +138,66 @@ injectGlobal`
     border-radius: 0px;
   }
 
-  .editor .note p {
+  .mdContent .note p {
     margin-top: 0;
   }
 
-  .editor .note.default {
+  .mdContent .note.default {
     border-left-color: #777;
   }
 
-  .editor .note.primary {
+  .mdContent .note.primary {
     border-left-color: #6f42c1;
   }
 
-  .editor .note.success {
+  .mdContent .note.success {
     border-left-color: #5cb85c;
   }
 
-  .editor .note.info {
+  .mdContent .note.info {
     border-left-color: #428bca;
   }
 
-  .editor .note.warning {
+  .mdContent .note.warning {
     border-left-color: #f0ad4e;
   }
 
-  .editor .note.danger {
+  .mdContent .note.danger {
     border-left-color: #d9534f;
   }
 
-  .editor .note h2, .editor .note h3, .editor .note h4, .editor .note h5, .editor .note h6 {
+  .mdContent .note h2, .mdContent .note h3, .mdContent .note h4, .mdContent .note h5, .mdContent .note h6 {
     margin-top: 3px;
     border-bottom: initial;
     margin-bottom: 0;
     padding-top: 0;
   }
 
-  .editor .note.default h2, .editor .note.default h3, .editor .note.default h4, .editor .note.default h5, .editor .note.default h6 {
+  .mdContent .note.default h2, .mdContent .note.default h3, .mdContent .note.default h4, .mdContent .note.default h5, .mdContent .note.default h6 {
     color: #777;
   }
 
-  .editor .note.primary h2, .editor .note.primary h3, .editor .note.primary h4, .editor .note.primary h5, .editor .note.primary h6 {
+  .mdContent .note.primary h2, .mdContent .note.primary h3, .mdContent .note.primary h4, .mdContent .note.primary h5, .mdContent .note.primary h6 {
     color: #6f42c1;
   }
 
-  .editor .note.success h2, .editor .note.success h3, .editor .note.success h4, .editor .note.success h5, .editor .note.success h6 {
+  .mdContent .note.success h2, .mdContent .note.success h3, .mdContent .note.success h4, .mdContent .note.success h5, .mdContent .note.success h6 {
     color: #5cb85c;
   }
 
-  .editor .note.info h2, .editor .note.info h3, .editor .note.info h4, .editor .note.info h5, .editor .note.info h6 {
+  .mdContent .note.info h2, .mdContent .note.info h3, .mdContent .note.info h4, .mdContent .note.info h5, .mdContent .note.info h6 {
     color: #428bca;
   }
 
-  .editor .note.warning h2, .editor .note.warning h3, .editor .note.warning h4, .editor .note.warning h5, .editor .note.warning h6 {
+  .mdContent .note.warning h2, .mdContent .note.warning h3, .mdContent .note.warning h4, .mdContent .note.warning h5, .mdContent .note.warning h6 {
     color: #f0ad4e;
   }
 
-  .editor .note.danger h2, .editor .note.danger h3, .editor .note.danger h4, .editor .note.danger h5, .editor .note.danger h6 {
+  .mdContent .note.danger h2, .mdContent .note.danger h3, .mdContent .note.danger h4, .mdContent .note.danger h5, .mdContent .note.danger h6 {
     color: #d9534f;
   }
 
-  .editor .note::before {
+  .mdContent .note::before {
     font-family: 'FontAwesome';
     font-size: larger;
     left: 15px;
@@ -205,38 +205,38 @@ injectGlobal`
     top: 13px;
   }
 
-  .editor .note.primary::before {
+  .mdContent .note.primary::before {
     content: "\f055";
     color: #6f42c1;
 }
 
-  .editor .note.success::before {
+  .mdContent .note.success::before {
       content: "\f058";
       color: #5cb85c;
   }
 
-  .editor .note.info::before {
+  .mdContent .note.info::before {
     content: "\f05a";
     color: #428bca;
   }
 
-  .editor .note.warning::before {
+  .mdContent .note.warning::before {
     content: "\f06a";
     color: #f0ad4e;
   }
 
-  .editor .note.danger::before {
+  .mdContent .note.danger::before {
     content: "\f056";
     color: #d9534f;
 }
 
 
-  .editor > .isRoot {
+  .mdContent > .isRoot {
     padding-left: 0;
     padding-right: 0;
   }
 
-  .editor > .isRoot.preview-markdown {
+  .mdContent > .isRoot.preview-markdown {
     padding: 20px;
   }
 
