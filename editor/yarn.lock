@@ -5781,6 +5781,11 @@ map-visit@^1.0.0:
   dependencies:
     object-visit "^1.0.0"
 
+markdown-it-ins@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.npmjs.org/markdown-it-ins/-/markdown-it-ins-3.0.0.tgz#b1b56824c78dc66e52b0fc97531b317cd78d79d2"
+  integrity sha512-+vyAdBuMGwmT2yMlAFJSx2VR/0QZ1onQ/Mkkmr4l9tDFOh5sVoAgRbkgbuSsk+sxJ9vaMH/IQ323ydfvQrPO/Q==
+
 markdown-it@^10.0.0:
   version "10.0.0"
   resolved "https://registry.npm.taobao.org/markdown-it/download/markdown-it-10.0.0.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fmarkdown-it%2Fdownload%2Fmarkdown-it-10.0.0.tgz#abfc64f141b1722d663402044e43927f1f50a8dc"

@@ -6,6 +6,7 @@ import { translate } from 'react-i18next';
 // @ts-ignore
 import MdEditor from 'tuture-react-markdown-editor-lite';
 import MarkdownIt from 'markdown-it';
+import insert from 'markdown-it-ins';
 import hljs from 'highlight.js';
 
 // @ts-ignore
@@ -93,7 +94,7 @@ class Editor extends React.Component<EditorProps, EditorState> {
         }
         return ''; // use external default escaping
       },
-    });
+    }).use(insert);
   }
 
   componentDidMount() {
