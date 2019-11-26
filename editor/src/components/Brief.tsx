@@ -31,20 +31,21 @@ interface BriefState {
 }
 
 const BriefWrapper = styled.div`
-  min-width: 605px;
-  width: ${rem(880)}rem;
-  margin-left: ${rem(288)}rem;
   display: flex;
   flex-direction: column;
   padding: 20px;
   box-sizing: border-box;
 
+  min-width: 605px;
+  width: ${rem(1100)}rem;
+  margin-left: ${rem(200)}rem;
+
   @media (max-width: 1406px) {
-    margin-left: ${rem(340)}rem;
+    margin-left: ${rem(240)}rem;
   }
 
   @media (max-width: 1200px) {
-    margin-left: ${rem(200)}rem;
+    margin-left: ${rem(140)}rem;
   }
 
   @media (max-width: 1024px) {

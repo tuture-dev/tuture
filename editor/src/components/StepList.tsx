@@ -28,7 +28,7 @@ export const MenuHeader = styled.div`
   height: 100px;
   box-sizing: border-box;
   display: flex;
-  padding-left: 41px;
+  padding-left: 16px;
   align-items: center;
 `;
 
@@ -68,7 +68,7 @@ const TutureMenuItem = styled.li`
   padding-right: 40px;
   font-weight: ${(props) => (props.className === 'selected' ? 700 : 400)};
   padding-left: ${(props: any) =>
-    props.className === 'selected' ? '38px' : '41px'};
+    props.className === 'selected' ? '12px' : '16px'};
   overflow: hidden;
   text-overflow: ellipsis;
   cursor: pointer;

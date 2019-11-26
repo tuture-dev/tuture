@@ -36,7 +36,7 @@ const SideBarLeftWrapper = styled.div`
   margin-top: 20px;
   position: fixed;
   transition: opacity 0.5s;
-  left: ${rem(100)}rem;
+  left: 0;
   text-align: center;
   @media (max-width: 1200px) {
     width: 270px;

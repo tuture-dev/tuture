@@ -151,30 +151,19 @@ class Markdown extends React.Component<MarkdownProps, MarkdownState> {
         <EditorWrapper>
           <Viewer
             source={content}
-            classnames={classnames('markdown', {
-              isRoot,
-            })}
+            isEditMode={isEditMode}
+            // @ts-ignore
+            onClick={() => this.handleAddExplain()}
+            classnames={classnames(
+              'markdown',
+              'mdContent',
+              {
+                isRoot,
+              },
+              { isEditMode },
+            )}
           />
-          {content ? (
-            <ContentHasExplainWrapper>
-              <div>
-                <HasExplainButton
-                  color="#00B887"
-                  border="1px solid #00B887"
-                  bColor="#fff"
-                  onClick={() => this.handleAddExplain()}>
-                  {t('editButton')}
-                </HasExplainButton>
-                <HasExplainButton
-                  color="#cb2431"
-                  border="1px solid #cb2431"
-                  bColor="#fff"
-                  onClick={() => this.handleDelete()}>
-                  {t('deleteButton')}
-                </HasExplainButton>
-              </div>
-            </ContentHasExplainWrapper>
-          ) : (
+          {!content && (
             <AddExplainWrapper onClick={() => this.handleAddExplain()}>
               <Icon
                 name="icon-write"
@@ -196,7 +185,7 @@ class Markdown extends React.Component<MarkdownProps, MarkdownState> {
     ) : (
       <Viewer
         source={content}
-        classnames={classnames('markdown', { isRoot })}
+        classnames={classnames('markdown', 'mdContent', { isRoot })}
       />
     );
   }

@@ -4,6 +4,13 @@ import fetch from 'isomorphic-fetch';
 import { translate } from 'react-i18next';
 
 // @ts-ignore
+import MdEditor from 'tuture-react-markdown-editor-lite';
+import MarkdownIt from 'markdown-it';
+import insert from 'markdown-it-ins';
+import container from 'markdown-it-container';
+import hljs from 'highlight.js';
+
+// @ts-ignore
 import Upload from 'rc-upload';
 import TextareaAutoresize from 'react-autosize-textarea';
 
@@ -47,16 +54,16 @@ const TabButton = BasicButton.extend`
     props.color
       ? `1px solid ${props.color}`
       : props.selected
-        ? '1px solid #d1d5da;'
-        : '1px solid transparent'};
+      ? '1px solid #d1d5da;'
+      : '1px solid transparent'};
   border-bottom: ${(props: { selected?: boolean; color?: string }) =>
     props.color ? `1px solid ${props.color}` : props.selected && '0'};
   color: ${(props: { selected?: boolean; color?: string }) =>
     props.color
       ? props.color
       : props.selected
-        ? 'rgba(0,0,0,.84)'
-        : 'rgba(0,0,0,.84)'};
+      ? 'rgba(0,0,0,.84)'
+      : 'rgba(0,0,0,.84)'};
   bottom: ${(props: { selected?: boolean; color?: string }) =>
     props.selected ? '-2px' : 0};
   padding: 0 ${rem(18)}rem;
@@ -74,6 +81,76 @@ class Editor extends React.Component<EditorProps, EditorState> {
       editFrameHeight: 200,
       contentRef: this.contentRef,
     };
+
+    // @ts-ignore
+    this.mdParser = new MarkdownIt({
+      html: true,
+      linkify: true,
+      typographer: true,
+      highlight(str, lang) {
+        if (lang && hljs.getLanguage(lang)) {
+          try {
+            return hljs.highlight(lang, str).value;
+          } catch (__) {}
+        }
+        return ''; // use external default escaping
+      },
+    })
+      .use(insert)
+      .use(container, 'default', {
+        render(tokens, idx) {
+          if (tokens[idx].nesting === 1) {
+            return "<div class='note default'>\n";
+          }
+
+          return '</div>\n';
+        },
+      })
+      .use(container, 'primary', {
+        render(tokens, idx) {
+          if (tokens[idx].nesting === 1) {
+            return "<div class='note primary'>\n";
+          }
+
+          return '</div>\n';
+        },
+      })
+      .use(container, 'success', {
+        render(tokens, idx) {
+          if (tokens[idx].nesting === 1) {
+            return "<div class='note success'>\n";
+          }
+
+          return '</div>\n';
+        },
+      })
+      .use(container, 'info', {
+        render(tokens, idx) {
+          if (tokens[idx].nesting === 1) {
+            return "<div class='note info'>\n";
+          }
+
+          return '</div>\n';
+        },
+      })
+      .use(container, 'warning', {
+        render(tokens, idx) {
+          if (tokens[idx].nesting === 1) {
+            return "<div class='note warning'>\n";
+          }
+
+          return '</div>\n';
+        },
+      })
+      .use(container, 'danger', {
+        render(tokens, idx) {
+          if (tokens[idx].nesting === 1) {
+            return "<div class='note danger'>\n";
+          }
+
+          return '</div>\n';
+        },
+      });
   }
 
   componentDidMount() {
@@ -126,27 +203,11 @@ class Editor extends React.Component<EditorProps, EditorState> {
     this.props.updateEditingStatus(false);
   };
 
-  handleImageUpload(
-    e: React.SyntheticEvent<HTMLTextAreaElement>,
-    eventType: 'paste' | 'drop',
-  ) {
-    const files =
-      eventType === 'paste'
-        ? (e as React.ClipboardEvent<HTMLTextAreaElement>).clipboardData.files
-        : (e as React.DragEvent<HTMLTextAreaElement>).dataTransfer.files;
-
-    if (files.length === 0 || !/\.(png|jpe?g|bmp)$/.test(files[0].name)) {
-      // Not a valid image.
-      return;
-    }
-
-    // Prevent default behaviors of pasting and dropping events.
-    e.preventDefault();
-
+  handleImageUpload(file, callback) {
     // Upload the first images to server.
     const data = new FormData();
     const that = this;
-    data.append('file', files[0]);
+    data.append('file', file);
 
     fetch(`http://${location.host}/upload`, {
       method: 'POST',
@@ -156,51 +217,21 @@ class Editor extends React.Component<EditorProps, EditorState> {
       .then((resObj) => {
         const savePath = resObj.path;
 
+        console.log('savePath', savePath);
+
         // Add markdown image element to current explain.
-        const currentContent = that.props.source as string;
-        const textarea = this.contentRef;
-        const updatedContent = insertStr(
-          currentContent,
-          `![](${savePath})`,
-          textarea.selectionStart,
-        );
-
-        this.changePosition(
-          currentContent.slice(0, textarea.selectionStart).length + 2,
-        );
-
-        this.updateContent(updatedContent);
+        callback(savePath);
       });
   }
 
-  handleChange = (e: React.FormEvent<HTMLTextAreaElement>) => {
-    const { value } = e.currentTarget;
-    this.props.updateContent(value);
-  };
-
-  handlePaste = (e: React.ClipboardEvent<HTMLTextAreaElement>) => {
-    this.handleImageUpload(e, 'paste');
-  };
-
-  handleDrop = (e: React.DragEvent<HTMLTextAreaElement>) => {
-    this.handleImageUpload(e, 'drop');
+  handleChange = ({ html, text }) => {
+    // @ts-ignore
+    console.log('html', this.mdEditor);
+    this.props.updateContent(text);
   };
 
   changePosition = (position: number) => {
     this.cursorPos = position;
-  };
-
-  handleUploadSuccess = (body: { path: string }) => {
-    const { source } = this.props;
-    const textarea = this.contentRef;
-    const updatedContent = insertStr(
-      source,
-      `![](${body.path})`,
-      textarea.selectionStart,
-    );
-
-    this.changePosition(source.slice(0, textarea.selectionStart).length + 2);
-    this.updateContent(updatedContent);
   };
 
   renderTabWrapper = () => {
@@ -233,8 +264,7 @@ class Editor extends React.Component<EditorProps, EditorState> {
             <Upload
               name="file"
               action={`http://${location.host}/upload`}
-              accept=".jpg,.jpeg,.png,.gif"
-              onSuccess={this.handleUploadSuccess}>
+              accept=".jpg,.jpeg,.png,.gif">
               <ToolButton>
                 <Icon
                   name="icon-image"
@@ -261,20 +291,27 @@ class Editor extends React.Component<EditorProps, EditorState> {
     const { nowTab } = this.state;
 
     return (
-      <div className={classnames('editor')}>
-        {this.renderTabWrapper()}
+      <div className={classnames('editor', 'mdContent')}>
         {nowTab === 'edit' ? (
           <div>
-            <TextareaAutoresize
-              name={type}
-              rows={8}
-              maxRows={15}
-              innerRef={this.getTextareaRef}
+            <MdEditor
+              name="textarea"
+              // @ts-ignore
+              ref={(node) => (this.mdEditor = node)}
               value={this.props.source}
-              placeholder={t('editPlaceholder')}
+              config={{
+                view: {
+                  menu: true,
+                  md: true,
+                  html: true,
+                },
+              }}
+              // @ts-ignore
+              renderHTML={(text) => this.mdParser.render(text)}
               onChange={this.handleChange}
-              onPaste={this.handlePaste}
-              onDrop={this.handleDrop}
+              onImageUpload={this.handleImageUpload}
+              onImagePaste={this.handleImageUpload}
+              onImageDrop={this.handleImageUpload}
             />
           </div>
         ) : (

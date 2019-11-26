@@ -1,6 +1,15 @@
 import styled, { injectGlobal } from 'styled-components';
 
 injectGlobal`
+  .markdown {
+    padding: 4px 10px 10px !important;
+  }
+
+  .isEditMode.markdown:hover {
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04), inset 0 0 0 1px rgba(0, 0, 0, 0.09);
+    transition: box-shadow 100ms;
+  }
+
   .markdown p, li {
     font-family: Roboto;
     font-size: 16px;
@@ -34,7 +43,7 @@ injectGlobal`
     display: block;
     padding: 20px;
     background-color: rgba(0, 0, 0, .05);
-    margin: 24px 0 !important;
+    margin: 16px 0 !important;
   }
 
   .markdown a {
@@ -109,12 +118,125 @@ injectGlobal`
     min-width: 550px;
   }
 
-  .editor > .isRoot {
+  .mdContent table {
+    margin-top: 0;
+    margin-top: 16px;
+  }
+
+  .mdContent pre {
+    margin: 16px 0;
+  }
+
+  .mdContent .note {
+    margin-top: 20px;
+    padding: 15px;
+    padding-bottom: 30px;
+    padding-left: 45px;
+    position: relative;
+    border: 1px solid #eee;
+    border-left-width: 5px;
+    border-radius: 0px;
+  }
+
+  .mdContent .note p {
+    margin-top: 0;
+  }
+
+  .mdContent .note.default {
+    border-left-color: #777;
+  }
+
+  .mdContent .note.primary {
+    border-left-color: #6f42c1;
+  }
+
+  .mdContent .note.success {
+    border-left-color: #5cb85c;
+  }
+
+  .mdContent .note.info {
+    border-left-color: #428bca;
+  }
+
+  .mdContent .note.warning {
+    border-left-color: #f0ad4e;
+  }
+
+  .mdContent .note.danger {
+    border-left-color: #d9534f;
+  }
+
+  .mdContent .note h2, .mdContent .note h3, .mdContent .note h4, .mdContent .note h5, .mdContent .note h6 {
+    margin-top: 3px;
+    border-bottom: initial;
+    margin-bottom: 0;
+    padding-top: 0;
+  }
+
+  .mdContent .note.default h2, .mdContent .note.default h3, .mdContent .note.default h4, .mdContent .note.default h5, .mdContent .note.default h6 {
+    color: #777;
+  }
+
+  .mdContent .note.primary h2, .mdContent .note.primary h3, .mdContent .note.primary h4, .mdContent .note.primary h5, .mdContent .note.primary h6 {
+    color: #6f42c1;
+  }
+
+  .mdContent .note.success h2, .mdContent .note.success h3, .mdContent .note.success h4, .mdContent .note.success h5, .mdContent .note.success h6 {
+    color: #5cb85c;
+  }
+
+  .mdContent .note.info h2, .mdContent .note.info h3, .mdContent .note.info h4, .mdContent .note.info h5, .mdContent .note.info h6 {
+    color: #428bca;
+  }
+
+  .mdContent .note.warning h2, .mdContent .note.warning h3, .mdContent .note.warning h4, .mdContent .note.warning h5, .mdContent .note.warning h6 {
+    color: #f0ad4e;
+  }
+
+  .mdContent .note.danger h2, .mdContent .note.danger h3, .mdContent .note.danger h4, .mdContent .note.danger h5, .mdContent .note.danger h6 {
+    color: #d9534f;
+  }
+
+  .mdContent .note::before {
+    font-family: 'FontAwesome';
+    font-size: larger;
+    left: 15px;
+    position: absolute;
+    top: 13px;
+  }
+
+  .mdContent .note.primary::before {
+    content: "\f055";
+    color: #6f42c1;
+}
+
+  .mdContent .note.success::before {
+      content: "\f058";
+      color: #5cb85c;
+  }
+
+  .mdContent .note.info::before {
+    content: "\f05a";
+    color: #428bca;
+  }
+
+  .mdContent .note.warning::before {
+    content: "\f06a";
+    color: #f0ad4e;
+  }
+
+  .mdContent .note.danger::before {
+    content: "\f056";
+    color: #d9534f;
+}
+
+
+  .mdContent > .isRoot {
     padding-left: 0;
     padding-right: 0;
   }
 
-  .editor > .isRoot.preview-markdown {
+  .mdContent > .isRoot.preview-markdown {
     padding: 20px;
   }
 
