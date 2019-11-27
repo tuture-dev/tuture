@@ -1,4 +1,5 @@
 import crypto from 'crypto';
+import chalk from 'chalk';
 import fs from 'fs-extra';
 import { flags } from '@oclif/command';
 import { prompt } from 'inquirer';
@@ -114,6 +115,15 @@ export default class Init extends BaseCommand {
         updated: new Date(),
         steps: await makeSteps(this.userConfig.ignoredFiles),
       };
+
+      const github = await git.inferGithubField();
+      if (github) {
+        logger.log(
+          'info',
+          `Inferred github repository: ${chalk.underline(github)}. Feel free to revise or delete it.`,
+        );
+        tuture.github = github;
+      }
 
       fs.writeFileSync(TUTURE_YML_PATH, yaml.safeDump(tuture));
 

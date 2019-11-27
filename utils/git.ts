@@ -178,3 +178,30 @@ export function appendGitignore(config: any) {
     logger.log('info', '.gitignore rules appended.');
   }
 }
+
+/**
+ * Infer github field from available information.
+ */
+export async function inferGithubField() {
+  let github: string = '';
+  try {
+    // Trying to infer github repo url from origin.
+    github = await runGitCommand(['remote', 'get-url', 'origin']);
+    if (github) {
+      github = github.replace('.git', '').trim();
+    }
+  } catch {
+    // No remote url, infer github field from git username and cwd.
+    let username = await runGitCommand(['config', '--get', 'user.name']);
+    if (!username) {
+      username = await runGitCommand(['config', '--global', '--get', 'user.name']);
+    }
+
+    if (username) {
+      const { name: repoName } = path.parse(process.cwd());
+      github = `https://github.com/${username.trim()}/${repoName}`;
+    }
+  }
+
+  return github;
+}
