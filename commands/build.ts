@@ -307,7 +307,7 @@ export default class Build extends BaseCommand {
         : tutorial;
       fs.writeFileSync(dest, newTutorial);
 
-      logger.log('success', `Tutorial has been written to ${chalk.bold(dest)}`);
+      logger.log('success', `Tutorial has been written to ${chalk.bold(dest)}.`);
     });
   }
 
@@ -345,6 +345,10 @@ export default class Build extends BaseCommand {
         'Cannot specify output target when tutorial splitting is enabled.',
       );
       this.exit(1);
+    }
+
+    if (flags.hexo && !tuture.github) {
+      logger.log('warning', 'No github field provided.');
     }
 
     const [tutorials, titles] = this.generateTutorials(tuture, rawDiffs);
