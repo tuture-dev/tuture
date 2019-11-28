@@ -293,12 +293,12 @@ class Editor extends React.Component<EditorProps, EditorState> {
     return (
       <div className={classnames('editor', 'mdContent')}>
         {nowTab === 'edit' ? (
-          <div>
+          <div style={{ height: '500px' }}>
             <MdEditor
               name="textarea"
               // @ts-ignore
               ref={(node) => (this.mdEditor = node)}
-              value={this.props.source}
+              value={this.props.source || ''}
               config={{
                 view: {
                   menu: true,

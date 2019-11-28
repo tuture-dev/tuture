@@ -307,9 +307,25 @@ class DiffView extends Component<DiffViewProps, DiffViewState> {
         </DiffFileHeader>
         <Diff id={`${commit}-i`}>
           <tbody>
-            {chunks.map((chunk: Chunk, key: number) =>
-              this.judgeAllRowInsertState(chunk.changes, key),
-            )}
+            {chunks.map((chunk: Chunk, key: number) => {
+              if (key !== chunks.length - 1) {
+                return [
+                  this.judgeAllRowInsertState(chunk.changes, key),
+                  this.judgeAllRowInsertState(
+                    [
+                      {
+                        type: 'normal',
+                        content: ' ...',
+                        normal: true,
+                      } as NormalChange,
+                    ],
+                    key,
+                  ),
+                ];
+              }
+
+              return this.judgeAllRowInsertState(chunk.changes, key);
+            })}
           </tbody>
         </Diff>
       </DiffFile>
