@@ -113,6 +113,27 @@ export default class Build extends BaseCommand {
     return prefix + change.content.slice(1);
   }
 
+  // Template for explanation string.
+  explainTmpl(explain: string | undefined) {
+    let text = this.sanitize(explain);
+
+    if (this.userConfig.hexo) {
+      text = text.replace(/::: (\w+)([^]+?):::/g, (_, type, content) => {
+        return `{% note ${type} %}${content}{% endnote %}`;
+      });
+    } else {
+      text = text.replace(/::: (\w+)([^]+?):::/g, (_, __, content: string) =>
+        content
+          .trim()
+          .split(/\r?\n/)
+          .map((elem) => `> ${elem}`)
+          .join('\n'),
+      );
+    }
+
+    return text;
+  }
+
   // Template for code blocks.
   codeBlockTmpl(file: File, link?: string) {
     const lang = file.to ? file.to.split('.').slice(-1)[0] : '';
@@ -140,9 +161,9 @@ export default class Build extends BaseCommand {
   // Markdown template for a Diff object.
   diffTmpl(diff: Diff, file: File, link?: string) {
     const elements = [
-      diff.explain ? this.sanitize(diff.explain.pre) : '',
+      diff.explain ? this.explainTmpl(diff.explain.pre) : '',
       this.codeBlockTmpl(file, link),
-      diff.explain ? this.sanitize(diff.explain.post) : '',
+      diff.explain ? this.explainTmpl(diff.explain.post) : '',
     ];
 
     return elements
@@ -156,16 +177,19 @@ export default class Build extends BaseCommand {
     const { name, explain, diff, commit } = step;
     const elements = [
       this.sanitize(`## ${name}`),
-      explain ? this.sanitize(explain.pre) : '',
+      explain ? this.explainTmpl(explain.pre) : '',
       zip(diff, files)
         .map((zipObj) => {
           const [diff, file] = zipObj;
-          const link = github && file ? `${github}/blob/${commit}/${file.to}` : undefined;
-          return diff && file && diff.display ? this.diffTmpl(diff, file, link) : '';
+          const link =
+            github && file ? `${github}/blob/${commit}/${file.to}` : undefined;
+          return diff && file && diff.display
+            ? this.diffTmpl(diff, file, link)
+            : '';
         })
         .filter((elem) => elem)
         .join('\n\n'),
-      explain ? this.sanitize(explain.post) : '',
+      explain ? this.explainTmpl(explain.post) : '',
     ];
 
     return elements
@@ -307,7 +331,10 @@ export default class Build extends BaseCommand {
         : tutorial;
       fs.writeFileSync(dest, newTutorial);
 
-      logger.log('success', `Tutorial has been written to ${chalk.bold(dest)}.`);
+      logger.log(
+        'success',
+        `Tutorial has been written to ${chalk.bold(dest)}.`,
+      );
     });
   }
 
