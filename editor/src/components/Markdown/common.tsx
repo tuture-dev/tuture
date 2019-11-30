@@ -144,26 +144,32 @@ injectGlobal`
 
   .mdContent .note.default {
     border-left-color: #777;
+    background-color: #f7f7f7;
   }
 
   .mdContent .note.primary {
     border-left-color: #6f42c1;
+    background-color: #f5f0fa;
   }
 
   .mdContent .note.success {
     border-left-color: #5cb85c;
+    background-color: #eff8f0;
   }
 
   .mdContent .note.info {
     border-left-color: #428bca;
+    background-color: #eef7fa;
   }
 
   .mdContent .note.warning {
     border-left-color: #f0ad4e;
+    background-color: #fdf8ea;
   }
 
   .mdContent .note.danger {
     border-left-color: #d9534f;
+    background-color: #fcf1f2;
   }
 
   .mdContent .note h2, .mdContent .note h3, .mdContent .note h4, .mdContent .note h5, .mdContent .note h6 {
