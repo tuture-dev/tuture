@@ -2,7 +2,7 @@ import { observable, action, computed } from 'mobx';
 import classnames from 'classnames';
 import fetch from 'isomorphic-fetch';
 
-import { handleAnchor } from './utils';
+import { handleAnchor, getNowTime } from './utils';
 import { Tuture } from '../../types';
 
 class Store {
@@ -26,6 +26,9 @@ class Store {
 
   @observable
   i18n: any;
+
+  @observable
+  nowTime = '';
 
   @action
   changeLanguage(language: string) {
@@ -60,6 +63,11 @@ class Store {
       },
       body: JSON.stringify(this.tuture),
     });
+  }
+
+  @action
+  updateSaveText() {
+    this.nowTime = getNowTime();
   }
 
   @action

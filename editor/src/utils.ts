@@ -42,3 +42,10 @@ export const extractMetaData = (tuture: Tuture) => {
 
   return metadata;
 };
+
+export const getNowTime = () => {
+  const date = new Date(Date.now());
+
+  const nowTime = `保存于 ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
+  return nowTime;
+};
