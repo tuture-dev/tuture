@@ -35,6 +35,21 @@ const Button = styled.button`
     box-shadow: 0 5px 20px 5px #ddd;
   }
 `;
+
+const NowTime = styled.span`
+  line-height: 22px;
+  font-size: 12px;
+  color: #8c8c8c;
+  margin-top: 20px;
+`;
+
+const Center = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100px;
+`;
+
 export interface HeaderProps {
   store?: Store;
 }
@@ -66,16 +81,17 @@ export default class Header extends React.Component<HeaderProps> {
       />
     );
 
-    const { isEditMode } = this.props.store;
+    const { isEditMode, nowTime } = this.props.store;
     return (
       <ModeContext.Consumer>
         {({ toggleEditMode }) => (
           <HeaderWrapper>
-            <div>
+            <Center>
               <Button onClick={toggleEditMode} isEditMode={isEditMode}>
                 {isEditMode ? saveIcon : editButton}
               </Button>
-            </div>
+              {isEditMode && <NowTime>{nowTime}</NowTime>}
+            </Center>
           </HeaderWrapper>
         )}
       </ModeContext.Consumer>

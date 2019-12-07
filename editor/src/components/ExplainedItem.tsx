@@ -41,6 +41,7 @@ export class MarkdownStore {
   handleSave(type: ExplainType, value: string) {
     this.store.updateTutureExplain(this.commit, this.diffKey, type, value);
     this.store.saveTuture();
+    this.store.updateSaveText();
   }
 }
 

@@ -10,22 +10,8 @@ import insert from 'markdown-it-ins';
 import container from 'markdown-it-container';
 import hljs from 'highlight.js';
 
-// @ts-ignore
-import Upload from 'rc-upload';
-import TextareaAutoresize from 'react-autosize-textarea';
-
 import Viewer from './Viewer';
-import {
-  BasicButton,
-  TabWrapper,
-  SaveButton,
-  ToolButton,
-  UndoButton,
-} from './common';
-import Toolbar from './Toolbar';
-import { insertStr } from './utils';
-import Icon from '../Icon';
-import { rem } from '../../utils';
+import { SaveButton } from './common';
 import { ExplainType, EditMode } from '../../types';
 import { MarkdownStore } from '../ExplainedItem';
 
@@ -43,43 +29,16 @@ interface EditorProps {
 
 interface EditorState {
   nowTab: EditMode;
-  editFrameHeight?: number;
-  contentRef?: HTMLTextAreaElement;
+  timeout?: any;
 }
 
-const TabButton = BasicButton.extend`
-  font-size: 14px;
-  height: 39px;
-  border: ${(props: { selected?: boolean; color?: string }) =>
-    props.color
-      ? `1px solid ${props.color}`
-      : props.selected
-      ? '1px solid #d1d5da;'
-      : '1px solid transparent'};
-  border-bottom: ${(props: { selected?: boolean; color?: string }) =>
-    props.color ? `1px solid ${props.color}` : props.selected && '0'};
-  color: ${(props: { selected?: boolean; color?: string }) =>
-    props.color
-      ? props.color
-      : props.selected
-      ? 'rgba(0,0,0,.84)'
-      : 'rgba(0,0,0,.84)'};
-  bottom: ${(props: { selected?: boolean; color?: string }) =>
-    props.selected ? '-2px' : 0};
-  padding: 0 ${rem(18)}rem;
-`;
-
 class Editor extends React.Component<EditorProps, EditorState> {
-  private contentRef: HTMLTextAreaElement;
-  private cursorPos: number = -1;
-
   constructor(props: EditorProps) {
     super(props);
 
     this.state = {
       nowTab: 'edit',
-      editFrameHeight: 200,
-      contentRef: this.contentRef,
+      timeout: null,
     };
 
     // @ts-ignore
@@ -153,53 +112,17 @@ class Editor extends React.Component<EditorProps, EditorState> {
       });
   }
 
-  componentDidMount() {
-    if (this.contentRef) {
-      this.contentRef.focus();
-      this.setState({
-        contentRef: this.contentRef,
-      });
-    }
-  }
-
-  componentDidUpdate() {
-    if (this.cursorPos !== -1) {
-      const textarea = this.contentRef;
-      if (textarea) {
-        textarea.focus();
-      }
-      if (this.cursorPos && textarea) {
-        textarea.setSelectionRange(this.cursorPos, this.cursorPos);
-      }
-      this.cursorPos = -1;
-    }
-  }
-
   updateContent = (content: string) => {
     this.props.updateContent(content);
-  };
-
-  handleCursor = (position?: number, textarea?: HTMLTextAreaElement) => {
-    if (textarea) {
-      textarea.focus();
-    }
-    if (position && textarea) {
-      textarea.setSelectionRange(position, position);
-    }
-  };
-
-  handleTabClick = (nowTab: EditMode) => {
-    this.setState({ nowTab });
   };
 
   handleSave = () => {
     const { type, markdown } = this.props;
     markdown.handleSave(type, this.props.source);
-    this.props.updateEditingStatus(false);
   };
 
-  handleUndo = () => {
-    this.props.handleUndo();
+  handleComplete = () => {
+    this.handleSave();
     this.props.updateEditingStatus(false);
   };
 
@@ -224,66 +147,20 @@ class Editor extends React.Component<EditorProps, EditorState> {
       });
   }
 
+  resetTimeout = (id, newId) => {
+    clearTimeout(id);
+
+    return newId;
+  };
+
   handleChange = ({ html, text }) => {
     // @ts-ignore
-    console.log('html', this.mdEditor);
     this.props.updateContent(text);
-  };
 
-  changePosition = (position: number) => {
-    this.cursorPos = position;
-  };
-
-  renderTabWrapper = () => {
-    const { nowTab } = this.state;
-    const { t } = this.props;
-    return (
-      <TabWrapper>
-        <div>
-          <TabButton
-            name="edit"
-            onClick={this.handleTabClick.bind(this, 'edit')}
-            selected={nowTab === 'edit'}>
-            {t('editTab')}
-          </TabButton>
-          <TabButton
-            name="preview"
-            onClick={this.handleTabClick.bind(this, 'preview')}
-            selected={nowTab === 'preview'}>
-            {t('previewTab')}
-          </TabButton>
-        </div>
-        {nowTab === 'edit' ? (
-          <Toolbar
-            contentRef={this.contentRef}
-            source={this.props.source || ''}
-            changePosition={this.changePosition}
-            updateContent={this.updateContent}
-            cursorPosition={this.cursorPos}
-            handleCursor={this.handleCursor}>
-            <Upload
-              name="file"
-              action={`http://${location.host}/upload`}
-              accept=".jpg,.jpeg,.png,.gif">
-              <ToolButton>
-                <Icon
-                  name="icon-image"
-                  customStyle={{
-                    width: '19px',
-                    height: '17px',
-                    fill: '#00b887',
-                  }}
-                />
-              </ToolButton>
-            </Upload>
-          </Toolbar>
-        ) : null}
-      </TabWrapper>
-    );
-  };
-
-  getTextareaRef = (ref) => {
-    this.contentRef = ref;
+    const { timeout } = this.state;
+    this.setState({
+      timeout: this.resetTimeout(timeout, setTimeout(this.handleSave, 1000)),
+    });
   };
 
   render() {
@@ -330,8 +207,9 @@ class Editor extends React.Component<EditorProps, EditorState> {
             flexDirection: 'row-reverse',
             marginTop: 12,
           }}>
-          <SaveButton onClick={this.handleSave}>{t('saveButton')}</SaveButton>
-          <UndoButton onClick={this.handleUndo}>{t('cancelButton')}</UndoButton>
+          <SaveButton onClick={this.handleComplete}>
+            {t('saveButton')}
+          </SaveButton>
         </div>
       </div>
     );
