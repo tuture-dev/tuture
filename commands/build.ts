@@ -277,7 +277,7 @@ export default class Build extends BaseCommand {
       );
 
       // Iterate over each split of tutorial.
-      tutorials = splits.map((split) => {
+      tutorials = splits.map((split, index) => {
         const start = commits.indexOf(split.start);
         const end = commits.indexOf(split.end) + 1;
 
@@ -286,6 +286,11 @@ export default class Build extends BaseCommand {
         }
         if (split.description) {
           meta.description = split.description;
+        }
+
+        // Ensure the order for created timestamp.
+        if (created) {
+          meta.created = new Date(Date.parse(created.toString()) + index);
         }
 
         return this.tutorialTmpl(
