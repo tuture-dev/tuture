@@ -28,7 +28,7 @@ class Store {
   i18n: any;
 
   @observable
-  nowTime = '还未保存';
+  nowTime = '';
 
   @action
   changeLanguage(language: string) {
