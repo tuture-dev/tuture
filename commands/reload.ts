@@ -1,6 +1,7 @@
 import fs from 'fs-extra';
 import http from 'http';
 import yaml from 'js-yaml';
+import { flags } from '@oclif/command';
 
 import BaseCommand from '../base';
 import logger from '../utils/logger';
@@ -11,6 +12,13 @@ import { TUTURE_YML_PATH } from '../constants';
 
 export default class Reload extends BaseCommand {
   static description = 'Sync tuture files with current repo';
+
+  static flags = {
+    help: flags.help({ char: 'h' }),
+    contextLines: flags.integer({
+      description: 'number of context lines for showing git diff',
+    }),
+  };
 
   // Notify server to reload.
   async notifyServer() {
@@ -31,7 +39,7 @@ export default class Reload extends BaseCommand {
   }
 
   async run() {
-    this.parse(Reload);
+    const { flags } = this.parse(Reload);
 
     if (!fs.existsSync(TUTURE_YML_PATH)) {
       logger.log('error', 'Tuture tutorial has not been initialized!');
@@ -46,7 +54,10 @@ export default class Reload extends BaseCommand {
     const tuture: Tuture = yaml.safeLoad(
       fs.readFileSync(TUTURE_YML_PATH).toString(),
     );
-    const currentSteps: Step[] = await makeSteps(this.userConfig.ignoredFiles);
+    const currentSteps: Step[] = await makeSteps(
+      this.userConfig.ignoredFiles,
+      flags.contextLines,
+    );
     tuture.steps = mergeSteps(tuture.steps, currentSteps);
 
     fs.writeFileSync(TUTURE_YML_PATH, yaml.safeDump(tuture));

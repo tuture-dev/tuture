@@ -15,7 +15,10 @@ export async function removeTutureSuite() {
 /**
  * Store diff data of all commits and return corresponding steps.
  */
-export async function makeSteps(ignoredFiles?: string[]) {
+export async function makeSteps(
+  ignoredFiles?: string[],
+  contextLines?: number,
+) {
   let logs = await git.getGitLogs();
   logs = logs
     .reverse()
@@ -24,7 +27,7 @@ export async function makeSteps(ignoredFiles?: string[]) {
 
   // Store all diff into .tuture/diff.json
   const commits = logs.map((log) => log.slice(0, 7));
-  await git.storeDiff(commits);
+  await git.storeDiff(commits, contextLines);
 
   const stepProms: Promise<Step>[] = logs.map(async (log, idx) => {
     const msg = log.slice(8, log.length);

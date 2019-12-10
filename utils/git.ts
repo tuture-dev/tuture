@@ -85,9 +85,14 @@ export async function getGitDiff(commit: string, ignoredFiles: string[]) {
 /**
  * Store diff of all commits.
  */
-export async function storeDiff(commits: string[]) {
+export async function storeDiff(commits: string[], contextLines?: number) {
   const diffPromises = commits.map(async (commit: string) => {
-    const output = await runGitCommand(['show', commit]);
+    const command = ['show', commit];
+    if (contextLines) {
+      command.splice(1, 0, `-U${contextLines}`);
+    }
+
+    const output = await runGitCommand(command);
     const diffText = output
       .replace(/\\ No newline at end of file\n/g, '')
       .split('\n\n')
@@ -194,7 +199,12 @@ export async function inferGithubField() {
     // No remote url, infer github field from git username and cwd.
     let username = await runGitCommand(['config', '--get', 'user.name']);
     if (!username) {
-      username = await runGitCommand(['config', '--global', '--get', 'user.name']);
+      username = await runGitCommand([
+        'config',
+        '--global',
+        '--get',
+        'user.name',
+      ]);
     }
 
     if (username) {
