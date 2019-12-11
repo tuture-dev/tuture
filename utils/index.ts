@@ -78,7 +78,7 @@ export function mergeSteps(prevSteps: Step[], currentSteps: Step[]) {
 }
 
 /**
- * Generate HTML code for user profile with github repo url.
+ * Generate HTML code for user profile.
  */
 export function generateUserProfile(github: string) {
   const matched = github.match(/github.com\/(.+)\/(.+)/);
@@ -87,12 +87,12 @@ export function generateUserProfile(github: string) {
   }
 
   const user = matched[1];
-  const avatarUrl = `https://github.com/${user}.png?size=200`;
+  const avatarUrl = `https://tuture.co/images/avatars/${user}.jpg`;
   const homepageUrl = `https://github.com/${user}`;
 
   return `<div class="profileBox">
   <div class="avatarBox">
-    <a href="${homepageUrl}"><img src="${avatarUrl}" alt="${user}" class="avatar"></a>
+    <a href="${homepageUrl}"><img src="${avatarUrl}" alt="" class="avatar"></a>
   </div>
   <div class="rightBox">
     <div class="infoBox">
