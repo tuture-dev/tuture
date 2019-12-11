@@ -27,15 +27,9 @@ const diffRenderHints: { [mode: string]: { [diffType: string]: string } } = {
   },
   plain: {
     normal: '',
-    add: '+ ',
-    del: '- ',
-    omit: `
-
-============================================
-=============== Omitted Code ===============
-============================================
-
-    `,
+    add: '',
+    del: '',
+    omit: '...',
   },
 };
 
@@ -106,6 +100,10 @@ export default class Build extends BaseCommand {
     let prefix = '';
     const mode = this.userConfig.hexo ? 'hexo' : 'plain';
 
+    if (mode === 'plain' && change.type === 'del') {
+      return null;
+    }
+
     if (!newFile) {
       prefix = diffRenderHints[mode][change.type];
     }
@@ -145,6 +143,7 @@ export default class Build extends BaseCommand {
         return changes
           ? changes
               .map((change) => this.changeTmpl(change, file.new))
+              .filter((elem) => elem !== null)
               .join('\n')
           : null;
       })

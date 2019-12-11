@@ -25,6 +25,9 @@ export default class Init extends BaseCommand {
       char: 'y',
       description: 'do not ask for prompts',
     }),
+    contextLines: flags.integer({
+      description: 'number of context lines for showing git diff',
+    }),
   };
 
   async promptInitGit(yes: boolean) {
@@ -113,14 +116,19 @@ export default class Init extends BaseCommand {
         ...tutureMeta,
         created: new Date(),
         updated: new Date(),
-        steps: await makeSteps(this.userConfig.ignoredFiles),
+        steps: await makeSteps(
+          this.userConfig.ignoredFiles,
+          flags.contextLines,
+        ),
       };
 
       const github = await git.inferGithubField();
       if (github) {
         logger.log(
           'info',
-          `Inferred github repository: ${chalk.underline(github)}. Feel free to revise or delete it.`,
+          `Inferred github repository: ${chalk.underline(
+            github,
+          )}. Feel free to revise or delete it.`,
         );
         tuture.github = github;
       }

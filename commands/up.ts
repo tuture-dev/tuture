@@ -7,7 +7,7 @@ import BaseCommand from '../base';
 import logger from '../utils/logger';
 import reload from './reload';
 import makeServer from '../server';
-import { TUTURE_YML_PATH } from '../constants';
+import { TUTURE_YML_PATH, TUTURE_ROOT } from '../constants';
 
 export default class Up extends BaseCommand {
   static description = 'Render and edit tutorial in browser';
@@ -52,7 +52,10 @@ export default class Up extends BaseCommand {
       this.exit(1);
     }
 
-    await reload.run([]);
+    // Run reload command if .tuture directory is not present.
+    if (!fs.existsSync(TUTURE_ROOT)) {
+      await reload.run([]);
+    }
 
     this.fireTutureServer();
   }
