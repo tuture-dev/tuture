@@ -8,7 +8,7 @@ This is pre-explain for step 1.
 
 This is pre-explain for test1.js.
 
-```js test1.js
+```js
 console.log('Test');
 
 ```
@@ -23,7 +23,7 @@ This is pre-explain for step 2.
 
 This is pre-explain for test2.py.
 
-```py test2.py
+```py
 print('Test')
 
 ```

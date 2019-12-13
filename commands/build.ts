@@ -150,9 +150,17 @@ export default class Build extends BaseCommand {
       .filter((elem) => elem)
       .join(diffRenderHints[mode]['omit']);
 
-    const head = [lang, file.to];
-    if (link) head.push(link);
-    if (mode === 'hexo') head.push('查看完整代码');
+    const head = [lang];
+
+    if (mode === 'hexo') {
+      if (file.to) {
+        head.push(file.to);
+        if (link) {
+          head.push(link);
+          head.push('查看完整代码');
+        }
+      }
+    }
 
     return `\`\`\`${head.join(' ')}\n${code}\n\`\`\``;
   }
