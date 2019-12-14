@@ -1,5 +1,24 @@
 # Changelog
 
+## 2.1.0
+
+### What's New
+
+- Brand new markdown editor for better writing experience
+- Auto-save your tutorial while writing
+- Note blocks (`info`, `warning`, etc.) are fully supported
+
+### Improvements
+
+- Automatically infer `github` field for `init` command
+- Ensure order of created timestamps for multiple splits
+- Improve codeblock compatibility for building plain markdown
+
+### Bug Fixes
+
+- Fix metadata for splits
+- Fix linebreak for code blocks in editor
+
 ## 2.0.1
 
 - Fix almost all bugs around image uploading in editor
