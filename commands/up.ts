@@ -52,8 +52,8 @@ export default class Up extends BaseCommand {
       this.exit(1);
     }
 
-    // Run reload command if .tuture directory is not present.
-    if (!fs.existsSync(TUTURE_ROOT)) {
+    // Run reload command if .tuture directory is empty.
+    if (fs.readdirSync(TUTURE_ROOT).length === 0) {
       await reload.run([]);
     }
 
