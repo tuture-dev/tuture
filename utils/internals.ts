@@ -1,5 +1,3 @@
-import path from 'path';
-
 /**
  * Generate HTML code for user profile.
  */
@@ -26,11 +24,4 @@ export function generateUserProfile(github: string) {
   </div>
   </div>
 </div>`;
-}
-
-/**
- * Generate cover URI used in Tuture Hub.
- */
-export function generateCoverURI(cover: string) {
-  return `/images/covers/${path.parse(cover).base}`;
 }

@@ -7,7 +7,7 @@ import { flags } from '@oclif/command';
 import { File, Change } from 'parse-diff';
 
 import BaseCommand from '../base';
-import { generateUserProfile, generateCoverURI } from '../utils/internals';
+import { generateUserProfile } from '../utils/internals';
 import logger from '../utils/logger';
 import { TUTURE_YML_PATH, DIFF_PATH } from '../constants';
 import { Diff, Step, Tuture, TutureMeta } from '../types';
@@ -99,7 +99,7 @@ export default class Build extends BaseCommand {
       elements.push(`updated: ${new Date(updated).toISOString()}`);
     }
     if (cover) {
-      elements.push(`photos:\n  - ${generateCoverURI(cover)}`);
+      elements.push(`photos:\n  - ${cover}`);
     }
     elements.push('---');
 
