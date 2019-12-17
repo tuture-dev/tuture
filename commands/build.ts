@@ -7,7 +7,7 @@ import { flags } from '@oclif/command';
 import { File, Change } from 'parse-diff';
 
 import BaseCommand from '../base';
-import { generateUserProfile } from '../utils';
+import { generateUserProfile } from '../utils/internals';
 import logger from '../utils/logger';
 import { TUTURE_YML_PATH, DIFF_PATH } from '../constants';
 import { Diff, Step, Tuture, TutureMeta } from '../types';
@@ -65,7 +65,15 @@ export default class Build extends BaseCommand {
 
   // Template for metadata of hexo posts.
   hexoFrontMatterTmpl(meta: TutureMeta) {
-    const { name, description, topics, categories, created, updated } = meta;
+    const {
+      name,
+      description,
+      topics,
+      categories,
+      created,
+      updated,
+      cover,
+    } = meta;
     const elements = ['---', `title: "${name.replace('"', '')}"`];
     if (description) {
       elements.push(
@@ -89,6 +97,9 @@ export default class Build extends BaseCommand {
     }
     if (updated) {
       elements.push(`updated: ${new Date(updated).toISOString()}`);
+    }
+    if (cover) {
+      elements.push(`photos:\n  - ${cover}`);
     }
     elements.push('---');
 
@@ -207,7 +218,7 @@ export default class Build extends BaseCommand {
 
   // Markdown template for the whole tutorial.
   tutorialTmpl(meta: TutureMeta, steps: Step[], rawDiffs: RawDiff[]) {
-    const { name, description, github } = meta;
+    const { name, description, github, cover } = meta;
     const elements = [
       zip(steps, rawDiffs)
         .map((zipObj) => {
@@ -226,13 +237,15 @@ export default class Build extends BaseCommand {
         .join('\n\n'),
     ];
 
+    // Add cover to the front.
     if (this.userConfig.hexo) {
-      if (github) {
-        elements.unshift(generateUserProfile(github));
-      }
-      elements.unshift(this.hexoFrontMatterTmpl(meta));
+      elements.unshift(
+        this.hexoFrontMatterTmpl(meta),
+        github ? generateUserProfile(github) : '',
+      );
     } else {
       elements.unshift(
+        cover ? `![](${cover})` : '',
         this.sanitize(`# ${name}`) || '',
         this.sanitize(description) || '',
       );
@@ -262,6 +275,7 @@ export default class Build extends BaseCommand {
       steps,
       created,
       updated,
+      cover,
     } = tuture;
 
     const meta: TutureMeta = {
@@ -272,6 +286,7 @@ export default class Build extends BaseCommand {
       updated,
       name,
       description,
+      cover,
     };
 
     let tutorials: string[] = [];
@@ -288,20 +303,16 @@ export default class Build extends BaseCommand {
         const start = commits.indexOf(split.start);
         const end = commits.indexOf(split.end) + 1;
 
-        if (split.name) {
-          meta.name = split.name;
-        }
-        if (split.description) {
-          meta.description = split.description;
-        }
+        // Override outmost metadata with split metadata.
+        const splitMeta = { ...meta, ...split };
 
         // Ensure the order for created timestamp.
         if (created) {
-          meta.created = new Date(Date.parse(created.toString()) + index);
+          splitMeta.created = new Date(Date.parse(created.toString()) + index);
         }
 
         return this.tutorialTmpl(
-          meta,
+          splitMeta,
           steps.slice(start, end),
           rawDiffs.slice(start, end),
         );

@@ -9,13 +9,6 @@ export interface Diff {
   display?: boolean;
 }
 
-export interface Split {
-  start: string;
-  end: string;
-  name?: string;
-  description?: string;
-}
-
 export interface TutureMeta {
   name: string;
   topics?: string[];
@@ -23,8 +16,13 @@ export interface TutureMeta {
   description?: string;
   created?: Date;
   updated?: Date;
+  cover?: string;
   github?: string;
-  splits?: Split[];
+}
+
+export interface Split extends TutureMeta {
+  start: string;
+  end: string;
 }
 
 export interface Commit {
@@ -40,6 +38,7 @@ export interface Step extends Commit {
 
 export interface Tuture extends TutureMeta {
   id?: string;
+  splits?: Split[];
   steps: Step[];
 }
 
