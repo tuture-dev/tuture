@@ -18,11 +18,11 @@
   "scripts": {
     "lint": "tslint -p . -t verbose",
     "test": "rimraf build && tsc && jest",
-    "build:editor": "cd editor && yarn && yarn build",
-    "build:cli": "rimraf build && tsc && cp -r editor/build build/editor",
-    "build": "yarn build:editor && yarn build:cli",
+    "build:editor": "cd editor && npm install && npm run build",
+    "build:cli": "rimraf build && tsc",
+    "build": "npm run build:editor && npm run build:cli && cp -r editor/build build/editor",
     "pkg": "./scripts/pack.sh",
-    "prepack": "yarn build"
+    "prepack": "npm run build"
   },
   "repository": {
     "type": "git",
