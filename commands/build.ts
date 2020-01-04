@@ -145,7 +145,8 @@ export default class Build extends BaseCommand {
 
   // Template for code blocks.
   codeBlockTmpl(file: File, link?: string) {
-    const lang = file.to ? file.to.split('.').slice(-1)[0] : '';
+    const filename = path.basename(file.to || '');
+    const lang = filename ? filename.split('.').slice(-1)[0] : '';
     const mode = this.userConfig.hexo ? 'hexo' : 'plain';
 
     const code = file.chunks
