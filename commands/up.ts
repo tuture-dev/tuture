@@ -7,6 +7,7 @@ import BaseCommand from '../base';
 import logger from '../utils/logger';
 import reload from './reload';
 import makeServer from '../server';
+import { syncImages } from '../utils/assets';
 import { TUTURE_YML_PATH, TUTURE_ROOT } from '../constants';
 
 export default class Up extends BaseCommand {
@@ -16,7 +17,7 @@ export default class Up extends BaseCommand {
     help: flags.help({ char: 'h' }),
     port: flags.integer({
       char: 'p',
-      description: 'which port to use for tutorial server',
+      description: 'which port to use for editor server',
     }),
   };
 
@@ -56,6 +57,10 @@ export default class Up extends BaseCommand {
     if (fs.readdirSync(TUTURE_ROOT).length === 0) {
       await reload.run([]);
     }
+
+    // Background interval to synchronize assets.
+    syncImages();
+    setInterval(syncImages, this.userConfig.assetsSyncInterval);
 
     this.fireTutureServer();
   }

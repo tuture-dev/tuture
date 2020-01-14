@@ -14,6 +14,7 @@ import {
   EDITOR_STATIC_PATH,
   EDITOR_PATH,
 } from './constants';
+import { uploadSingle } from './utils/assets';
 
 const workspace = process.env.TUTURE_PATH || process.cwd();
 const tutureYMLPath = path.join(workspace, TUTURE_YML_PATH);
@@ -97,6 +98,9 @@ const makeServer = (config: any) => {
 
     // Enforce UNIX style path sep in markdown asset path.
     savePath = savePath.split(path.sep).join('/');
+
+    // Trying to upload to image hosting.
+    uploadSingle(savePath);
 
     res.json({ path: savePath });
   });
