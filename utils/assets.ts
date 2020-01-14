@@ -5,7 +5,7 @@ import request from 'request';
 import logger from './logger';
 import { TUTURE_ROOT, IMAGE_HOSTING_URL, ASSETS_JSON_PATH } from '../constants';
 
-interface Asset {
+export interface Asset {
   localPath: string;
   hostingUri?: string;
 }
@@ -36,6 +36,20 @@ export function loadAssetsTable(): Asset[] {
  */
 export function saveAssetsTable(assets: Asset[]) {
   fs.writeFileSync(assetsTablePath, JSON.stringify(assets, null, 2));
+}
+
+/**
+ * Check assets table and throw warning if some local images are not uploaded.
+ */
+export function checkAssets(assets: Asset[]) {
+  assets.forEach(({ localPath, hostingUri }) => {
+    if (!hostingUri) {
+      logger.log(
+        'warning',
+        `${localPath} has not been uploaded. Please check your network connection.`,
+      );
+    }
+  });
 }
 
 /**

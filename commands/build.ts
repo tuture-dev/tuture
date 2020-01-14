@@ -7,8 +7,9 @@ import { flags } from '@oclif/command';
 import { File, Change } from 'parse-diff';
 
 import BaseCommand from '../base';
-import { generateUserProfile } from '../utils/internals';
 import logger from '../utils/logger';
+import { Asset, loadAssetsTable, checkAssets } from '../utils/assets';
+import { generateUserProfile } from '../utils/internals';
 import { TUTURE_YML_PATH, DIFF_PATH } from '../constants';
 import { Diff, Step, Tuture, TutureMeta } from '../types';
 
@@ -41,9 +42,6 @@ export default class Build extends BaseCommand {
     out: flags.string({
       char: 'o',
       description: 'name of output file',
-    }),
-    assetsPath: flags.string({
-      description: 'path to assets root directory',
     }),
     hexo: flags.boolean({
       description: 'hexo compatibility mode',
@@ -258,11 +256,19 @@ export default class Build extends BaseCommand {
       .trim()}\n`;
   }
 
-  replaceAssetPaths(tutorial: string, newPrefix: string) {
-    const { assetsRoot } = this.userConfig;
-    return tutorial.replace(/!\[(.*)\]\((.+)\)/g, (_, caption, assetPath) => {
-      return `![${caption}](${assetPath.replace(assetsRoot, newPrefix)})`;
+  replaceAssetPaths(tutorial: string, assets: Asset[]) {
+    let updated = tutorial;
+
+    // Replace all local paths.
+    // If not uploaded, replace it with absolute local path.
+    assets.forEach(({ localPath, hostingUri }) => {
+      updated = updated.replace(
+        localPath,
+        hostingUri || path.resolve(localPath),
+      );
     });
+
+    return updated;
   }
 
   generateTutorials(tuture: Tuture, rawDiffs: RawDiff[]) {
@@ -326,8 +332,8 @@ export default class Build extends BaseCommand {
     return [tutorials, titles];
   }
 
-  saveTutorials(tutorials: string[], titles: string[]) {
-    const { assetsRoot, assetsPath, buildPath, hexo } = this.userConfig;
+  saveTutorials(tutorials: string[], titles: string[], assets: Asset[]) {
+    const { buildPath } = this.userConfig;
     if (!this.userConfig.out && !fs.existsSync(buildPath)) {
       fs.mkdirSync(buildPath);
     }
@@ -337,23 +343,8 @@ export default class Build extends BaseCommand {
       const dest =
         this.userConfig.out || path.join(buildPath, `${titles[index]}.md`);
 
-      // Path to assets directory of target tutorial.
-      const assetsDir = hexo
-        ? path.join(path.dirname(dest), titles[index])
-        : path.join(path.dirname(dest), assetsPath || assetsRoot);
-
-      // Copy all assets.
-      if (fs.existsSync(assetsRoot)) {
-        fs.copySync(assetsRoot, assetsDir, { overwrite: true });
-      }
-
-      // Replace asset paths if needed.
-      const newTutorial = hexo
-        ? this.replaceAssetPaths(tutorial, '.')
-        : assetsPath
-        ? this.replaceAssetPaths(tutorial, assetsPath)
-        : tutorial;
-      fs.writeFileSync(dest, newTutorial);
+      // Replace local asset paths.
+      fs.writeFileSync(dest, this.replaceAssetPaths(tutorial, assets));
 
       logger.log(
         'success',
@@ -383,6 +374,9 @@ export default class Build extends BaseCommand {
       fs.readFileSync(DIFF_PATH).toString(),
     );
 
+    const assets = loadAssetsTable();
+    checkAssets(assets);
+
     if (rawDiffs.length === 0) {
       logger.log(
         'warning',
@@ -403,6 +397,6 @@ export default class Build extends BaseCommand {
     }
 
     const [tutorials, titles] = this.generateTutorials(tuture, rawDiffs);
-    this.saveTutorials(tutorials, titles);
+    this.saveTutorials(tutorials, titles, assets);
   }
 }
