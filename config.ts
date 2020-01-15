@@ -21,7 +21,6 @@ export default {
     '.gitattributes',
 
     // Tuture-related files
-    'tuture.yml',
     '.tuturerc',
     '.tutureignore',
   ],

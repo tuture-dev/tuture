@@ -5,19 +5,19 @@ import request from 'request';
 import logger from './logger';
 import { TUTURE_ROOT, IMAGE_HOSTING_URL, ASSETS_JSON_PATH } from '../constants';
 
+// A dead simple mutex lock.
+let locked = false;
+
 export interface Asset {
   localPath: string;
   hostingUri?: string;
 }
 
-const assetsTablePath = path.join(
+export const assetsTablePath = path.join(
   process.env.TUTURE_PATH || process.cwd(),
   TUTURE_ROOT,
   ASSETS_JSON_PATH,
 );
-
-// A dead simple mutex lock.
-let locked = false;
 
 /**
  * Load assets from tuture-assets.json.

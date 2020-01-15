@@ -19,3 +19,6 @@ export const EDITOR_STATIC_PATH = path.join(EDITOR_PATH, 'static');
 export const TUTURE_COMMIT_PREFIX = 'tuture:';
 
 export const IMAGE_HOSTING_URL = 'https://imgkr.com/api/files/upload';
+
+// Branch for commiting tutorial content.
+export const TUTURE_BRANCH = 'tuture';
