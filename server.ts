@@ -2,22 +2,16 @@ import crypto from 'crypto';
 import fs from 'fs-extra';
 import http from 'http';
 import path from 'path';
-import yaml from 'js-yaml';
 import logger from 'morgan';
 import multer from 'multer';
 import express, { Request, Response, NextFunction } from 'express';
 import socketio from 'socket.io';
 
-import {
-  TUTURE_YML_PATH,
-  DIFF_PATH,
-  EDITOR_STATIC_PATH,
-  EDITOR_PATH,
-} from './constants';
+import { DIFF_PATH, EDITOR_STATIC_PATH, EDITOR_PATH } from './constants';
 import { uploadSingle } from './utils/assets';
+import { loadTuture, saveTuture } from './utils/tuture';
 
 const workspace = process.env.TUTURE_PATH || process.cwd();
-const tutureYMLPath = path.join(workspace, TUTURE_YML_PATH);
 const diffPath = path.join(workspace, DIFF_PATH);
 
 const makeServer = (config: any) => {
@@ -66,19 +60,14 @@ const makeServer = (config: any) => {
   });
 
   app.get('/tuture', (_, res) => {
-    res.json(yaml.safeLoad(fs.readFileSync(tutureYMLPath).toString()));
+    res.json(loadTuture());
   });
 
   app.post('/save', (req, res) => {
     const body = req.body;
-    try {
-      body.updated = new Date();
-      const tuture = yaml.safeDump(body);
-      fs.writeFileSync(tutureYMLPath, tuture);
-      res.sendStatus(200);
-    } catch (err) {
-      res.status(500).send({ msg: err.message });
-    }
+    body.updated = new Date();
+    saveTuture(body);
+    res.sendStatus(200);
   });
 
   app.post('/upload', checkAssetsRoot, upload.single('file'), (req, res) => {

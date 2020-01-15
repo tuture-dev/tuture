@@ -1,6 +1,5 @@
 import fs from 'fs-extra';
 import path from 'path';
-import yaml from 'js-yaml';
 import chalk from 'chalk';
 import zip from 'lodash.zip';
 import { flags } from '@oclif/command';
@@ -8,6 +7,7 @@ import { File, Change } from 'parse-diff';
 
 import BaseCommand from '../base';
 import logger from '../utils/logger';
+import { loadTuture } from '../utils/tuture';
 import { Asset, loadAssetsTable, checkAssets } from '../utils/assets';
 import { generateUserProfile } from '../utils/internals';
 import { TUTURE_YML_PATH, DIFF_PATH } from '../constants';
@@ -367,9 +367,7 @@ export default class Build extends BaseCommand {
       this.exit(1);
     }
 
-    const tuture: Tuture = yaml.safeLoad(
-      fs.readFileSync(TUTURE_YML_PATH).toString(),
-    );
+    const tuture = loadTuture();
     const rawDiffs: RawDiff[] = JSON.parse(
       fs.readFileSync(DIFF_PATH).toString(),
     );

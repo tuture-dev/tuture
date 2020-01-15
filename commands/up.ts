@@ -1,6 +1,5 @@
 import open from 'open';
 import fs from 'fs-extra';
-import yaml from 'js-yaml';
 import { flags } from '@oclif/command';
 
 import BaseCommand from '../base';
@@ -8,7 +7,8 @@ import logger from '../utils/logger';
 import reload from './reload';
 import makeServer from '../server';
 import { syncImages } from '../utils/assets';
-import { TUTURE_YML_PATH, TUTURE_ROOT } from '../constants';
+import { TUTURE_ROOT } from '../constants';
+import { loadTuture } from '../utils/tuture';
 
 export default class Up extends BaseCommand {
   static description = 'Render and edit tutorial in browser';
@@ -40,23 +40,13 @@ export default class Up extends BaseCommand {
     const { flags } = this.parse(Up);
     this.userConfig = Object.assign(this.userConfig, flags);
 
-    if (!fs.existsSync(TUTURE_YML_PATH)) {
-      logger.log('error', 'tuture.yml not found!');
-      this.exit(1);
-    }
-
-    // Check for tuture.yml syntax.
-    try {
-      yaml.safeLoad(fs.readFileSync(TUTURE_YML_PATH).toString());
-    } catch (err) {
-      logger.log('error', err.message);
-      this.exit(1);
-    }
-
     // Run reload command if .tuture directory is empty.
     if (fs.readdirSync(TUTURE_ROOT).length === 0) {
       await reload.run([]);
     }
+
+    // Trying to load tuture.yml for sanity check.
+    loadTuture();
 
     // Background interval to synchronize assets.
     syncImages();

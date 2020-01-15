@@ -4,7 +4,6 @@ import { prompt } from 'inquirer';
 
 import BaseCommand from '../base';
 import logger from '../utils/logger';
-import * as git from '../utils/git';
 import { TUTURE_YML_PATH } from '../constants';
 import { removeTutureSuite } from '../utils';
 
@@ -49,7 +48,6 @@ export default class Destroy extends BaseCommand {
       await this.promptConfirmDestroy();
     }
 
-    git.removeGitHook();
     await removeTutureSuite();
 
     logger.log('success', 'Tuture tutorial has been destroyed!');

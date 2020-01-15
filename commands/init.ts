@@ -3,12 +3,12 @@ import chalk from 'chalk';
 import fs from 'fs-extra';
 import { flags } from '@oclif/command';
 import { prompt } from 'inquirer';
-import yaml from 'js-yaml';
 
 import logger from '../utils/logger';
 import BaseCommand from '../base';
 import { Tuture, TutureMeta } from '../types';
 import { makeSteps, removeTutureSuite } from '../utils';
+import { saveTuture } from '../utils/tuture';
 import * as git from '../utils/git';
 import { TUTURE_YML_PATH } from '../constants';
 
@@ -133,10 +133,8 @@ export default class Init extends BaseCommand {
         tuture.github = github;
       }
 
-      fs.writeFileSync(TUTURE_YML_PATH, yaml.safeDump(tuture));
-
+      saveTuture(tuture);
       git.appendGitignore(this.userConfig);
-      git.appendGitHook();
 
       logger.log('success', 'Tuture tutorial has been initialized!');
     } catch (err) {
