@@ -46,7 +46,7 @@ export default class Up extends BaseCommand {
     }
 
     // Trying to load tuture.yml for sanity check.
-    loadTuture();
+    await loadTuture();
 
     // Background interval to synchronize assets.
     syncImages();

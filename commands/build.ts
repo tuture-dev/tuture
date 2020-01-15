@@ -367,7 +367,7 @@ export default class Build extends BaseCommand {
       this.exit(1);
     }
 
-    const tuture = loadTuture();
+    const tuture = await loadTuture();
     const rawDiffs: RawDiff[] = JSON.parse(
       fs.readFileSync(DIFF_PATH).toString(),
     );

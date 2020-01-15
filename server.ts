@@ -59,8 +59,9 @@ const makeServer = (config: any) => {
     res.json(JSON.parse(fs.readFileSync(diffPath).toString()));
   });
 
-  app.get('/tuture', (_, res) => {
-    res.json(loadTuture());
+  app.get('/tuture', async (_, res) => {
+    const tuture = await loadTuture();
+    res.json(tuture);
   });
 
   app.post('/save', (req, res) => {

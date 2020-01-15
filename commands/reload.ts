@@ -44,7 +44,7 @@ export default class Reload extends BaseCommand {
       this.exit(1);
     }
 
-    const tuture = loadTuture();
+    const tuture = await loadTuture();
     const currentSteps: Step[] = await makeSteps(
       this.userConfig.ignoredFiles,
       flags.contextLines,
