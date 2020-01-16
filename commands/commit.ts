@@ -2,8 +2,9 @@ import cp from 'child_process';
 import fs from 'fs-extra';
 import path from 'path';
 import { flags } from '@oclif/command';
-import BaseCommand from '../base';
+import { prompt } from 'inquirer';
 
+import BaseCommand from '../base';
 import logger from '../utils/logger';
 import { git } from '../utils/git';
 import { assetsTablePath } from '../utils/assets';
@@ -24,6 +25,16 @@ export default class Commit extends BaseCommand {
   async run() {
     const { flags } = this.parse(Commit);
     this.userConfig = Object.assign(this.userConfig, flags);
+
+    const message =
+      flags.message ||
+      ((await prompt([
+        {
+          name: 'message',
+          type: 'input',
+          default: `Commit on ${new Date()}`,
+        },
+      ])) as any).message;
 
     const { all: allBranches } = await git.branchLocal();
     // Create the tuture branch if not exist.
@@ -56,7 +67,6 @@ export default class Commit extends BaseCommand {
     }
 
     // Commit changes to tuture branch.
-    const message = flags.message || `Commit on ${new Date()}`;
     cp.execSync(`git commit --allow-empty -m "tuture: ${message}"`);
     logger.log('success', `Committed to branch ${TUTURE_BRANCH} (${message})`);
   }
