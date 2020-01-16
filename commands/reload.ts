@@ -53,5 +53,7 @@ export default class Reload extends BaseCommand {
 
     saveTuture(tuture);
     await this.notifyServer();
+
+    logger.log('success', 'Reload complete!');
   }
 }

@@ -36,37 +36,29 @@ export default class Commit extends BaseCommand {
 
     // Checkout tuture branch and add tuture.yml.
     cp.execSync(`git checkout -q ${TUTURE_BRANCH}`);
+    await git.merge(['master']);
+
+    // Trying to copy and add tuture.yml to staging.
     const targetTutureYML = path.join(
       process.cwd(),
       path.basename(tutureYMLPath),
     );
     fs.copySync(tutureYMLPath, targetTutureYML);
-    cp.execSync(`git add ${targetTutureYML}`);
+    await git.add(targetTutureYML);
 
+    // Trying to copy and add tuture-assets.json to staging.
+    const targetAssetsTable = path.join(
+      process.cwd(),
+      path.basename(assetsTablePath),
+    );
     if (fs.existsSync(assetsTablePath)) {
-      const targetAssetsTable = path.join(
-        process.cwd(),
-        path.basename(assetsTablePath),
-      );
       fs.copySync(assetsTablePath, targetAssetsTable);
-      cp.execSync(`git add ${targetAssetsTable}`);
+      await git.add(targetAssetsTable);
     }
 
-    const { staged } = await git.status();
-
-    if (staged.length > 0) {
-      // Commit changes to tuture branch.
-      const message = flags.message || `Commit on ${new Date()}`;
-      cp.execSync(`git commit -m "${message}"`);
-      logger.log(
-        'success',
-        `Committed to branch ${TUTURE_BRANCH} (${message})`,
-      );
-    } else {
-      logger.log('info', 'Nothing to commit.');
-    }
-
-    // Switch back to original branch.
-    cp.execSync(`git checkout -q ${branchSum.current}`);
+    // Commit changes to tuture branch.
+    const message = flags.message || `Commit on ${new Date()}`;
+    cp.execSync(`git commit --allow-empty -m "tuture: ${message}"`);
+    logger.log('success', `Committed to branch ${TUTURE_BRANCH} (${message})`);
   }
 }

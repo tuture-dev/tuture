@@ -1,6 +1,8 @@
 import { Command } from '@oclif/command';
+import cp from 'child_process';
 import fs from 'fs-extra';
 import rc from 'rc';
+import simplegit from 'simple-git/promise';
 
 import * as git from './utils/git';
 import defaultConfig from './config';
@@ -39,6 +41,16 @@ export default abstract class BaseCommand extends Command {
     ) {
       fs.removeSync(TUTURE_ROOT);
       git.removeGitHook();
+    }
+
+    const gitP = simplegit();
+
+    if (await gitP.checkIsRepo()) {
+      const { all } = await gitP.branchLocal();
+      if (all.includes('master')) {
+        // Ensure we are back to master branch.
+        await gitP.checkout(['-q', 'master']);
+      }
     }
   }
 }

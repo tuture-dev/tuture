@@ -1,14 +1,13 @@
 import fs from 'fs-extra';
 
 import { Step } from '../types';
-import { TUTURE_ROOT, TUTURE_YML_PATH } from '../constants';
+import { TUTURE_ROOT } from '../constants';
 import * as git from './git';
 
 /**
  * Remove all Tuture-related files.
  */
 export async function removeTutureSuite() {
-  await fs.remove(TUTURE_YML_PATH);
   await fs.remove(TUTURE_ROOT);
 }
 
@@ -75,4 +74,14 @@ export function mergeSteps(prevSteps: Step[], currentSteps: Step[]) {
   }
 
   return mergedSteps;
+}
+
+/**
+ * Compare if two file has identical content.
+ */
+export function isTwoFileEqual(fileA: string, fileB: string) {
+  if (!fs.existsSync(fileA) || !fs.existsSync(fileB)) {
+    return false;
+  }
+  return fs.readFileSync(fileA).equals(fs.readFileSync(fileB));
 }

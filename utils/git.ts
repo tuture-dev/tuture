@@ -205,6 +205,7 @@ export function appendGitHook() {
   const reloadHook = getGitHook();
   const hookPath = path.join('.git', 'hooks', 'post-commit');
   if (!fs.existsSync(hookPath)) {
+    fs.mkdirpSync(path.dirname(hookPath));
     fs.writeFileSync(hookPath, reloadHook, { mode: 0o755 });
     logger.log('info', 'Git post-commit hook added.');
   } else if (
