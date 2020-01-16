@@ -1,5 +1,6 @@
 import open from 'open';
 import fs from 'fs-extra';
+import getPort from 'get-port';
 import { flags } from '@oclif/command';
 
 import BaseCommand from '../base';
@@ -22,11 +23,11 @@ export default class Up extends BaseCommand {
   };
 
   async fireTutureServer() {
-    const portToUse = this.userConfig.port;
+    const port = await getPort({ port: this.userConfig.port });
     const server = makeServer(this.userConfig);
 
-    server.listen(portToUse, () => {
-      const url = `http://localhost:${portToUse}`;
+    server.listen(port, () => {
+      const url = `http://localhost:${port}`;
       logger.log('success', `Tutorial editor is served on ${url}`);
 
       // Don't open browser in test environment.
