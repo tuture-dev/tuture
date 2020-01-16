@@ -5,6 +5,13 @@ import { TUTURE_ROOT } from '../constants';
 import { git, storeDiff, getGitDiff } from './git';
 
 /**
+ * Compare if two commit hashes are equal.
+ */
+function isCommitEqual(hash1: string, hash2: string) {
+  return hash1.includes(hash2) || hash2.includes(hash1);
+}
+
+/**
  * Remove all Tuture-related files.
  */
 export async function removeTutureSuite() {
@@ -47,7 +54,9 @@ export async function makeSteps(
 export function mergeSteps(prevSteps: Step[], currentSteps: Step[]) {
   // Mark steps not included in latest steps as outdated.
   prevSteps.forEach((prevStep) => {
-    if (!currentSteps.find((step) => step.commit === prevStep.commit)) {
+    if (
+      !currentSteps.find(({ commit }) => isCommitEqual(commit, prevStep.commit))
+    ) {
       prevStep.outdated = true; /* eslint no-param-reassign: "off"  */
     }
   });
@@ -62,7 +71,7 @@ export function mergeSteps(prevSteps: Step[], currentSteps: Step[]) {
     } else if (j >= currentSteps.length || prevSteps[i].outdated) {
       mergedSteps.push(prevSteps[i]);
       i += 1;
-    } else if (prevSteps[i].commit === currentSteps[j].commit) {
+    } else if (isCommitEqual(prevSteps[i].commit, currentSteps[j].commit)) {
       mergedSteps.push(prevSteps[i]);
       i += 1;
       j += 1;
