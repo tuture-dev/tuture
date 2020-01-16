@@ -1,10 +1,10 @@
 import fs from 'fs-extra';
 import path from 'path';
 import yaml from 'js-yaml';
-import simplegit from 'simple-git/promise';
 
 import { Tuture } from '../types';
 import logger from '../utils/logger';
+import { git } from '../utils/git';
 import {
   TUTURE_ROOT,
   TUTURE_YML_PATH,
@@ -12,8 +12,6 @@ import {
   ASSETS_JSON_PATH,
 } from '../constants';
 import { assetsTablePath } from './assets';
-
-const git = simplegit();
 
 export const tutureYMLPath = path.join(
   process.env.TUTURE_PATH || process.cwd(),
@@ -25,24 +23,22 @@ export const tutureYMLPath = path.join(
  * Whether the local tuture branch exists.
  */
 export async function hasLocalTutureBranch() {
-  const { all: allBranches } = await git.branchLocal();
-  return allBranches.indexOf(TUTURE_BRANCH) >= 0;
+  return (await git.branchLocal()).all.includes(TUTURE_BRANCH);
 }
 
 /**
  * Whether the remote tuture branch exists.
  */
 export async function hasRemoteTutureBranch() {
-  const { all: allBranches } = await git.branch({ '-a': true });
-  const remoteName = await git.remote([]);
+  const remote = await git.remote([]);
 
-  if (!remoteName) {
+  if (!remote) {
     logger.log('warning', 'No remote found for this repository.');
     return false;
   }
 
-  const remoteBranch = `remotes/${remoteName.trim()}/${TUTURE_BRANCH}`;
-  if (allBranches.indexOf(remoteBranch) < 0) {
+  const remoteBranch = `remotes/${remote.trim()}/${TUTURE_BRANCH}`;
+  if (!(await git.branch({ '-a': true })).all.includes(remoteBranch)) {
     logger.log('warning', 'No remote tuture branch.');
     return false;
   }

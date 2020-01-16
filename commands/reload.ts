@@ -5,7 +5,6 @@ import BaseCommand from '../base';
 import logger from '../utils/logger';
 import { Step } from '../types';
 import { makeSteps, mergeSteps } from '../utils';
-import { isGitAvailable } from '../utils/git';
 import { loadTuture, saveTuture } from '../utils/tuture';
 
 export default class Reload extends BaseCommand {
@@ -38,11 +37,6 @@ export default class Reload extends BaseCommand {
 
   async run() {
     const { flags } = this.parse(Reload);
-
-    if (!isGitAvailable()) {
-      logger.log('error', 'Git is not installed on your machine!');
-      this.exit(1);
-    }
 
     const tuture = await loadTuture();
     const currentSteps: Step[] = await makeSteps(

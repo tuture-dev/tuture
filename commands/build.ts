@@ -10,7 +10,7 @@ import logger from '../utils/logger';
 import { loadTuture } from '../utils/tuture';
 import { Asset, loadAssetsTable, checkAssets } from '../utils/assets';
 import { generateUserProfile } from '../utils/internals';
-import { TUTURE_YML_PATH, DIFF_PATH } from '../constants';
+import { DIFF_PATH } from '../constants';
 import { Diff, Step, Tuture, TutureMeta } from '../types';
 
 type RawDiff = {
@@ -356,16 +356,6 @@ export default class Build extends BaseCommand {
   async run() {
     const { flags } = this.parse(Build);
     this.userConfig = Object.assign(this.userConfig, flags);
-
-    if (!fs.existsSync(TUTURE_YML_PATH) || !fs.existsSync(DIFF_PATH)) {
-      logger.log(
-        'error',
-        `You are not in a Tuture tutorial. Run ${chalk.bold(
-          'tuture init',
-        )} to initialize one.`,
-      );
-      this.exit(1);
-    }
 
     const tuture = await loadTuture();
     const rawDiffs: RawDiff[] = JSON.parse(

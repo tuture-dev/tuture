@@ -1,12 +1,11 @@
+import cp from 'child_process';
 import fs from 'fs-extra';
 import path from 'path';
-import cp from 'child_process';
 import { flags } from '@oclif/command';
-import simplegit from 'simple-git/promise';
-
 import BaseCommand from '../base';
 
 import logger from '../utils/logger';
+import { git } from '../utils/git';
 import { assetsTablePath } from '../utils/assets';
 import { tutureYMLPath } from '../utils/tuture';
 import { TUTURE_BRANCH } from '../constants';
@@ -26,16 +25,16 @@ export default class Commit extends BaseCommand {
     const { flags } = this.parse(Commit);
     this.userConfig = Object.assign(this.userConfig, flags);
 
-    const git = simplegit();
-    const branchSum = await git.branchLocal();
-
+    const { all: allBranches } = await git.branchLocal();
     // Create the tuture branch if not exist.
-    if (branchSum.all.indexOf(TUTURE_BRANCH) < 0) {
-      cp.execSync(`git branch ${TUTURE_BRANCH}`);
+    if (!allBranches.includes(TUTURE_BRANCH)) {
+      if (!allBranches.includes(TUTURE_BRANCH)) {
+        await git.branch([TUTURE_BRANCH]);
+      }
     }
 
     // Checkout tuture branch and add tuture.yml.
-    cp.execSync(`git checkout -q ${TUTURE_BRANCH}`);
+    await git.checkout(TUTURE_BRANCH);
     await git.merge(['master']);
 
     // Trying to copy and add tuture.yml to staging.

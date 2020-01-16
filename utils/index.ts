@@ -2,7 +2,7 @@ import fs from 'fs-extra';
 
 import { Step } from '../types';
 import { TUTURE_ROOT } from '../constants';
-import * as git from './git';
+import { git, storeDiff, getGitDiff } from './git';
 
 /**
  * Remove all Tuture-related files.
@@ -18,22 +18,21 @@ export async function makeSteps(
   ignoredFiles?: string[],
   contextLines?: number,
 ) {
-  let logs = await git.getGitLogs();
-  logs = logs
+  const logs = (await git.log()).all
+    .map(({ message, hash }) => ({ message, hash }))
     .reverse()
     // filter out commits whose commit message starts with 'tuture:'
-    .filter((log) => !log.slice(8, log.length).startsWith('tuture:'));
+    .filter(({ message }) => !message.startsWith('tuture:'));
 
   // Store all diff into .tuture/diff.json
-  const commits = logs.map((log) => log.slice(0, 7));
-  await git.storeDiff(commits, contextLines);
+  const commits = logs.map(({ hash }) => hash);
+  await storeDiff(commits, contextLines);
 
-  const stepProms: Promise<Step>[] = logs.map(async (log, idx) => {
-    const msg = log.slice(8, log.length);
+  const stepProms: Promise<Step>[] = logs.map(async ({ message, hash }) => {
     return {
-      name: msg,
-      commit: commits[idx],
-      diff: await git.getGitDiff(commits[idx], ignoredFiles || []),
+      name: message,
+      commit: hash,
+      diff: await getGitDiff(hash, ignoredFiles || []),
     };
   });
 

@@ -1,11 +1,9 @@
-import fs from 'fs-extra';
 import { flags } from '@oclif/command';
 import { prompt } from 'inquirer';
-import simplegit from 'simple-git/promise';
 
 import BaseCommand from '../base';
 import logger from '../utils/logger';
-import { removeGitHook } from '../utils/git';
+import { git, removeGitHook } from '../utils/git';
 import { TUTURE_BRANCH } from '../constants';
 import { removeTutureSuite } from '../utils';
 
@@ -49,7 +47,6 @@ export default class Destroy extends BaseCommand {
     removeGitHook();
 
     // Remove local tuture branch if exists.
-    const git = simplegit();
     const { all: allBranches } = await git.branchLocal();
     if (allBranches.includes(TUTURE_BRANCH)) {
       await git.branch(['-D', TUTURE_BRANCH]);

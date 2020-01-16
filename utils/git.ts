@@ -1,72 +1,21 @@
-import cp from 'child_process';
 import fs from 'fs-extra';
 import mm from 'micromatch';
 import path from 'path';
-import which from 'which';
 import parseDiff from 'parse-diff';
+import simplegit from 'simple-git/promise';
 
 import logger from '../utils/logger';
 import { TUTURE_ROOT } from '../constants';
 
-/**
- * Check if Git command is available.
- */
-export function isGitAvailable() {
-  return which.sync('git', { nothrow: true }) !== null;
-}
-
-/**
- * Run arbitrary Git commands.
- */
-function runGitCommand(args: string[]): Promise<string> {
-  return new Promise((resolve, reject) => {
-    const git = cp.spawn('git', args);
-    let stdout = '';
-    let stderr = '';
-
-    git.stdout.on('data', (data) => {
-      stdout += data;
-    });
-
-    git.stderr.on('data', (data) => {
-      stderr += data;
-    });
-
-    git.on('close', (code) => {
-      if (code === 0) {
-        resolve(stdout);
-      } else {
-        reject(new Error(stderr));
-      }
-    });
-  });
-}
-
-/**
- * Initialize a Git repo.
- */
-export async function initGit() {
-  await runGitCommand(['init']);
-}
-
-/**
- * Get an array of Git commit messages.
- */
-export async function getGitLogs() {
-  try {
-    const output = await runGitCommand(['log', '--oneline', '--no-merges']);
-    return output.trim().split('\n');
-  } catch (err) {
-    // Current repo doesn't have any commit yet.
-    return [];
-  }
-}
+// Interface for running git commands.
+// https://github.com/steveukx/git-js
+export const git = simplegit().silent(true);
 
 /**
  * Get all changed files of a given commit.
  */
 export async function getGitDiff(commit: string, ignoredFiles: string[]) {
-  const output = await runGitCommand(['show', commit, '--name-only']);
+  const output = await git.show([commit, '--name-only']);
   let changedFiles = output
     .split('\n\n')
     .slice(-1)[0]
@@ -92,7 +41,7 @@ export async function storeDiff(commits: string[], contextLines?: number) {
       command.splice(1, 0, `-U${contextLines}`);
     }
 
-    const output = await runGitCommand(command);
+    const output = await git.raw(command);
     const diffText = output
       .replace(/\\ No newline at end of file\n/g, '')
       .split('\n\n')
@@ -140,20 +89,18 @@ export async function inferGithubField() {
   let github: string = '';
   try {
     // Trying to infer github repo url from origin.
-    github = await runGitCommand(['remote', 'get-url', 'origin']);
-    if (github) {
-      github = github.replace('.git', '').trim();
+    const remote = await git.remote([]);
+    if (remote) {
+      const origin = await git.remote(['get-url', remote]);
+      if (origin) {
+        github = origin.replace('.git', '').trim();
+      }
     }
   } catch {
     // No remote url, infer github field from git username and cwd.
-    let username = await runGitCommand(['config', '--get', 'user.name']);
+    let username = await git.raw(['config', '--get', 'user.name']);
     if (!username) {
-      username = await runGitCommand([
-        'config',
-        '--global',
-        '--get',
-        'user.name',
-      ]);
+      username = await git.raw(['config', '--global', '--get', 'user.name']);
     }
 
     if (username) {
@@ -163,26 +110,6 @@ export async function inferGithubField() {
   }
 
   return github;
-}
-
-/**
- * Get the name of current branch.
- */
-export async function getCurrentBranch() {
-  const branch = await runGitCommand(['rev-parse', '--abbrev-ref', 'HEAD']);
-  return branch;
-}
-
-/**
- * List all local branches.
- */
-export async function listBranches() {
-  const output = await runGitCommand(['branch']);
-  return output
-    .replace('* ', '  ')
-    .split(/\r?\n/)
-    .map((branch) => branch.trim())
-    .filter((branch) => branch);
 }
 
 /**
