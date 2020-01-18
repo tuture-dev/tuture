@@ -25,6 +25,12 @@ Promise.all(fetchTasks)
   })
   .then((data) => {
     const [diff, tuture] = data;
+
+    // 过滤 tuture.steps 中可能存在的 outdated 情况
+    if ('steps' in tuture) {
+      tuture.steps = tuture.steps.filter((step) => !step.outdated);
+    }
+
     ReactDOM.render(
       <I18nextProvider i18n={i18n}>
         <Provider store={store}>
