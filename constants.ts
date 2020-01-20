@@ -2,7 +2,11 @@ import path from 'path';
 
 export const TUTURE_YML_PATH = 'tuture.yml';
 
+export const TUTURE_YML_CHECKPOINT = 'tuture.last-committed.yml';
+
 export const ASSETS_JSON_PATH = 'tuture-assets.json';
+
+export const ASSETS_JSON_CHECKPOINT = 'tuture-assets.last-committed.json';
 
 export const TUTURE_IGNORE_PATH = '.tutureignore';
 

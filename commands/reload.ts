@@ -4,8 +4,17 @@ import { flags } from '@oclif/command';
 import BaseCommand from '../base';
 import logger from '../utils/logger';
 import { Step } from '../types';
+import { git } from '../utils/git';
 import { makeSteps, mergeSteps } from '../utils';
-import { loadTuture, saveTuture } from '../utils/tuture';
+import {
+  loadTuture,
+  saveTuture,
+  saveCheckpoint,
+  hasTutureChangedSinceCheckpoint,
+  initializeTutureBranch,
+} from '../utils/tuture';
+import { TUTURE_BRANCH } from '../constants';
+import { hasAssetsChangedSinceCheckpoint } from '../utils/assets';
 
 export default class Reload extends BaseCommand {
   static description = 'Sync tuture files with current repo';
@@ -38,7 +47,25 @@ export default class Reload extends BaseCommand {
   async run() {
     const { flags } = this.parse(Reload);
 
-    const tuture = await loadTuture();
+    if (
+      hasTutureChangedSinceCheckpoint() ||
+      hasAssetsChangedSinceCheckpoint()
+    ) {
+      logger.log(
+        'error',
+        'You have uncommitted changes. Commit them with tuture commit.',
+      );
+      this.exit(1);
+    }
+
+    await initializeTutureBranch();
+
+    // Trying to update tuture branch.
+    await git.checkout(TUTURE_BRANCH);
+    await git.merge(['master']);
+
+    const tuture = await loadTuture(true);
+
     const currentSteps: Step[] = await makeSteps(
       this.userConfig.ignoredFiles,
       flags.contextLines,
@@ -47,6 +74,9 @@ export default class Reload extends BaseCommand {
 
     saveTuture(tuture);
     await this.notifyServer();
+
+    // Copy the last committed file.
+    await saveCheckpoint();
 
     logger.log('success', 'Reload complete!');
   }
