@@ -1,3 +1,4 @@
+import chalk from 'chalk';
 import fs from 'fs-extra';
 import path from 'path';
 import yaml from 'js-yaml';
@@ -69,17 +70,20 @@ export async function hasRemoteTutureBranch() {
  */
 export async function loadTuture(fromBranch = false): Promise<Tuture> {
   if (!fs.existsSync(tutureYMLPath)) {
-    const hasLocalBranch = await hasLocalTutureBranch();
-    const hasRemoteBranch = await hasRemoteTutureBranch();
+    await initializeTutureBranch();
+    await git.checkout(TUTURE_BRANCH);
 
-    if (!hasLocalBranch && !hasRemoteBranch) {
-      logger.log('error', 'Not in a valid Tuture tutorial.');
+    if (!fs.existsSync(TUTURE_YML_PATH)) {
+      logger.log(
+        'error',
+        `Cannot load tuture. Please run ${chalk.bold(
+          'tuture init',
+        )} to initialize.`,
+      );
+      await git.checkout('master');
       process.exit(1);
-    } else if (!hasLocalBranch) {
-      await git.fetch('origin', TUTURE_BRANCH);
     }
 
-    await git.checkout(TUTURE_BRANCH);
     fs.copySync(TUTURE_YML_PATH, tutureYMLPath);
     if (fs.existsSync(ASSETS_JSON_PATH)) {
       fs.copySync(ASSETS_JSON_PATH, assetsTablePath);
@@ -90,38 +94,6 @@ export async function loadTuture(fromBranch = false): Promise<Tuture> {
     return yaml.safeLoad(fs.readFileSync(TUTURE_YML_PATH).toString());
   }
   return yaml.safeLoad(fs.readFileSync(tutureYMLPath).toString());
-}
-
-export async function loadTutureFromBranch(): Promise<Tuture> {
-  const hasLocalBranch = await hasLocalTutureBranch();
-  const hasRemoteBranch = await hasRemoteTutureBranch();
-
-  if (!hasLocalBranch && !hasRemoteBranch) {
-    logger.log('error', 'Not in a valid Tuture tutorial.');
-    process.exit(1);
-  } else if (!hasLocalBranch) {
-    await git.fetch('origin', TUTURE_BRANCH);
-  }
-
-  const { current } = await git.branch([]);
-  await git.checkout(TUTURE_BRANCH);
-  fs.copySync(TUTURE_YML_PATH, tutureYMLPath);
-  if (fs.existsSync(ASSETS_JSON_PATH)) {
-    fs.copySync(ASSETS_JSON_PATH, assetsTablePath);
-  }
-  await git.checkout(current);
-
-  const plainTuture = fs.readFileSync(tutureYMLPath).toString();
-
-  // Check for tuture.yml syntax.
-  try {
-    yaml.safeLoad(plainTuture);
-  } catch (err) {
-    logger.log('error', err.message);
-    process.exit(1);
-  }
-
-  return yaml.safeLoad(plainTuture);
 }
 
 /**
