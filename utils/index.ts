@@ -8,7 +8,7 @@ import { git, storeDiff, getGitDiff } from './git';
  * Compare if two commit hashes are equal.
  */
 function isCommitEqual(hash1: string, hash2: string) {
-  return hash1.includes(hash2) || hash2.includes(hash1);
+  return hash1.startsWith(hash2) || hash2.startsWith(hash1);
 }
 
 /**
@@ -25,7 +25,7 @@ export async function makeSteps(
   ignoredFiles?: string[],
   contextLines?: number,
 ) {
-  const logs = (await git.log()).all
+  const logs = (await git.log({ '--no-merges': true })).all
     .map(({ message, hash }) => ({ message, hash }))
     .reverse()
     // filter out commits whose commit message starts with 'tuture:'

@@ -7,8 +7,12 @@ import { prompt } from 'inquirer';
 import BaseCommand from '../base';
 import logger from '../utils/logger';
 import { git } from '../utils/git';
-import { assetsTablePath } from '../utils/assets';
-import { tutureYMLPath } from '../utils/tuture';
+import { assetsTablePath, assetsTableCheckpoint } from '../utils/assets';
+import {
+  tutureYMLPath,
+  tutureYMLCheckpoint,
+  initializeTutureBranch,
+} from '../utils/tuture';
 import { TUTURE_BRANCH } from '../constants';
 
 export default class Commit extends BaseCommand {
@@ -36,13 +40,7 @@ export default class Commit extends BaseCommand {
         },
       ])) as any).message;
 
-    const { all: allBranches } = await git.branchLocal();
-    // Create the tuture branch if not exist.
-    if (!allBranches.includes(TUTURE_BRANCH)) {
-      if (!allBranches.includes(TUTURE_BRANCH)) {
-        await git.branch([TUTURE_BRANCH]);
-      }
-    }
+    await initializeTutureBranch();
 
     // Checkout tuture branch and add tuture.yml.
     await git.checkout(TUTURE_BRANCH);
@@ -65,6 +63,9 @@ export default class Commit extends BaseCommand {
       fs.copySync(assetsTablePath, targetAssetsTable);
       await git.add(targetAssetsTable);
     }
+
+    fs.removeSync(tutureYMLCheckpoint);
+    fs.removeSync(assetsTableCheckpoint);
 
     // Commit changes to tuture branch.
     cp.execSync(`git commit --allow-empty -m "tuture: ${message}"`);

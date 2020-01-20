@@ -3,7 +3,12 @@ import path from 'path';
 import request from 'request';
 
 import logger from './logger';
-import { TUTURE_ROOT, IMAGE_HOSTING_URL, ASSETS_JSON_PATH } from '../constants';
+import {
+  TUTURE_ROOT,
+  IMAGE_HOSTING_URL,
+  ASSETS_JSON_PATH,
+  ASSETS_JSON_CHECKPOINT,
+} from '../constants';
 
 // A dead simple mutex lock.
 let locked = false;
@@ -18,6 +23,21 @@ export const assetsTablePath = path.join(
   TUTURE_ROOT,
   ASSETS_JSON_PATH,
 );
+
+export const assetsTableCheckpoint = path.join(
+  process.env.TUTURE_PATH || process.cwd(),
+  TUTURE_ROOT,
+  ASSETS_JSON_CHECKPOINT,
+);
+
+export function hasAssetsChangedSinceCheckpoint() {
+  if (!fs.existsSync(assetsTableCheckpoint)) {
+    return false;
+  }
+  return !fs
+    .readFileSync(assetsTablePath)
+    .equals(fs.readFileSync(assetsTableCheckpoint));
+}
 
 /**
  * Load assets from tuture-assets.json.
