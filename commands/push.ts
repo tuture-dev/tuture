@@ -1,10 +1,12 @@
+import chalk from 'chalk';
+import fs from 'fs-extra';
 import { flags } from '@oclif/command';
 
 import BaseCommand from '../base';
 import logger from '../utils/logger';
 import { git } from '../utils/git';
 import { initializeTutureBranch } from '../utils/tuture';
-import { TUTURE_BRANCH } from '../constants';
+import { TUTURE_BRANCH, TUTURE_YML_PATH } from '../constants';
 
 export default class Push extends BaseCommand {
   static description = 'Push the tuture branch to remote';
@@ -23,6 +25,17 @@ export default class Push extends BaseCommand {
 
     // Checkout tuture branch and add tuture.yml.
     await git.checkout(TUTURE_BRANCH);
+
+    if (!fs.existsSync(TUTURE_YML_PATH)) {
+      logger.log(
+        'error',
+        `Cannot push empty tuture branch. Please commit your tutorial with ${chalk.bold(
+          'tuture commit',
+        )}.`,
+      );
+      this.exit(1);
+    }
+
     await git.push(remotes[0].name, TUTURE_BRANCH);
 
     // Commit changes to tuture branch.

@@ -36,8 +36,6 @@ export function hasTutureChangedSinceCheckpoint() {
     .equals(fs.readFileSync(tutureYMLCheckpoint));
 }
 
-export async function prepareLocalTutureBranch() {}
-
 /**
  * Whether the local tuture branch exists.
  */
