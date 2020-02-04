@@ -1,3 +1,4 @@
+import chalk from 'chalk';
 import open from 'open';
 import fs from 'fs-extra';
 import getPort from 'get-port';
@@ -7,6 +8,7 @@ import BaseCommand from '../base';
 import logger from '../utils/logger';
 import reload from './reload';
 import makeServer from '../server';
+import { isInitialized } from '../utils';
 import { syncImages } from '../utils/assets';
 import { TUTURE_ROOT } from '../constants';
 import { loadTuture } from '../utils/tuture';
@@ -40,6 +42,16 @@ export default class Up extends BaseCommand {
   async run() {
     const { flags } = this.parse(Up);
     this.userConfig = Object.assign(this.userConfig, flags);
+
+    if (!(await isInitialized())) {
+      logger.log(
+        'error',
+        `Tuture is not initialized. Run ${chalk.bold(
+          'tuture init',
+        )} to initialize.`,
+      );
+      this.exit(1);
+    }
 
     // Run reload command if .tuture directory is empty.
     if (fs.readdirSync(TUTURE_ROOT).length === 0) {

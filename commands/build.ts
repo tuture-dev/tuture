@@ -6,6 +6,7 @@ import { flags } from '@oclif/command';
 import { File, Change } from 'parse-diff';
 
 import BaseCommand from '../base';
+import { isInitialized } from '../utils';
 import logger from '../utils/logger';
 import { loadTuture } from '../utils/tuture';
 import { Asset, loadAssetsTable, checkAssets } from '../utils/assets';
@@ -356,6 +357,16 @@ export default class Build extends BaseCommand {
   async run() {
     const { flags } = this.parse(Build);
     this.userConfig = Object.assign(this.userConfig, flags);
+
+    if (!(await isInitialized())) {
+      logger.log(
+        'error',
+        `Tuture is not initialized. Run ${chalk.bold(
+          'tuture init',
+        )} to initialize.`,
+      );
+      this.exit(1);
+    }
 
     const tuture = await loadTuture();
     const rawDiffs: RawDiff[] = JSON.parse(

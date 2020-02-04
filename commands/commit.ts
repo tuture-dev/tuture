@@ -44,7 +44,12 @@ export default class Commit extends BaseCommand {
 
     // Checkout tuture branch and add tuture.yml.
     await git.checkout(TUTURE_BRANCH);
-    await git.merge(['master']);
+
+    try {
+      await git.merge(['master']);
+    } catch {
+      logger.log('warning', 'master branch is empty.');
+    }
 
     // Trying to copy and add tuture.yml to staging.
     const targetTutureYML = path.join(

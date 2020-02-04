@@ -1,7 +1,8 @@
 import fs from 'fs-extra';
 
 import { Step } from '../types';
-import { TUTURE_ROOT } from '../constants';
+import { tutureYMLPath } from './tuture';
+import { TUTURE_ROOT, TUTURE_BRANCH } from '../constants';
 import { git, storeDiff, getGitDiff } from './git';
 
 /**
@@ -25,6 +26,11 @@ export async function makeSteps(
   ignoredFiles?: string[],
   contextLines?: number,
 ) {
+  if (!(await git.branchLocal()).current) {
+    // No commits yet.
+    return [];
+  }
+
   const logs = (await git.log({ '--no-merges': true })).all
     .map(({ message, hash }) => ({ message, hash }))
     .reverse()
@@ -85,11 +91,16 @@ export function mergeSteps(prevSteps: Step[], currentSteps: Step[]) {
 }
 
 /**
- * Compare if two file has identical content.
+ * Detect if tuture is initialized.
  */
-export function isTwoFileEqual(fileA: string, fileB: string) {
-  if (!fs.existsSync(fileA) || !fs.existsSync(fileB)) {
-    return false;
+export async function isInitialized() {
+  if ((await git.checkIsRepo()) && (await git.branchLocal()).current) {
+    const workspaceExists = fs.existsSync(tutureYMLPath);
+    const branchExists = (await git.branch({ '-a': true })).all
+      .map((branch) => branch.split('/').slice(-1)[0])
+      .includes(TUTURE_BRANCH);
+    return workspaceExists || branchExists;
   }
-  return fs.readFileSync(fileA).equals(fs.readFileSync(fileB));
+
+  return false;
 }

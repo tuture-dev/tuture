@@ -1,3 +1,4 @@
+import chalk from 'chalk';
 import http from 'http';
 import { flags } from '@oclif/command';
 
@@ -5,7 +6,7 @@ import BaseCommand from '../base';
 import logger from '../utils/logger';
 import { Step } from '../types';
 import { git } from '../utils/git';
-import { makeSteps, mergeSteps } from '../utils';
+import { makeSteps, mergeSteps, isInitialized } from '../utils';
 import {
   loadTuture,
   saveTuture,
@@ -47,6 +48,16 @@ export default class Reload extends BaseCommand {
   async run() {
     const { flags } = this.parse(Reload);
 
+    if (!(await isInitialized())) {
+      logger.log(
+        'error',
+        `Tuture is not initialized. Run ${chalk.bold(
+          'tuture init',
+        )} to initialize.`,
+      );
+      this.exit(1);
+    }
+
     if (
       hasTutureChangedSinceCheckpoint() ||
       hasAssetsChangedSinceCheckpoint()
@@ -62,7 +73,12 @@ export default class Reload extends BaseCommand {
 
     // Trying to update tuture branch.
     await git.checkout(TUTURE_BRANCH);
-    await git.merge(['master']);
+
+    try {
+      await git.merge(['master']);
+    } catch {
+      logger.log('warning', 'master branch is empty.');
+    }
 
     const tuture = await loadTuture(true);
 
