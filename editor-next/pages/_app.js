@@ -1,12 +1,13 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import NextApp from 'next/app';
+import NextApp, { Container } from 'next/app';
 import withRedux from 'next-redux-wrapper';
 import { CacheProvider } from '@emotion/core';
 import { cache } from 'emotion';
 
 import makeStore from '../store';
 import { globalStyles } from '../shared/styles';
+import ConnectedLayout from '../components/ConnectedLayout';
 
 class MyApp extends NextApp {
   static async getInitialProps({ Component, ctx }) {
@@ -20,12 +21,16 @@ class MyApp extends NextApp {
   render() {
     const { Component, pageProps, store } = this.props;
     return (
-      <Provider store={store}>
-        <CacheProvider value={cache}>
-          {globalStyles}
-          <Component {...pageProps} />
-        </CacheProvider>
-      </Provider>
+      <Container>
+        <Provider store={store}>
+          <CacheProvider value={cache}>
+            {globalStyles}
+            <ConnectedLayout>
+              <Component {...pageProps} />
+            </ConnectedLayout>
+          </CacheProvider>
+        </Provider>
+      </Container>
     );
   }
 }
