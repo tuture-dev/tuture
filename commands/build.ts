@@ -1,15 +1,17 @@
 import fs from 'fs-extra';
 import path from 'path';
-import yaml from 'js-yaml';
 import chalk from 'chalk';
 import zip from 'lodash.zip';
 import { flags } from '@oclif/command';
 import { File, Change } from 'parse-diff';
 
 import BaseCommand from '../base';
-import { generateUserProfile } from '../utils/internals';
+import { isInitialized } from '../utils';
 import logger from '../utils/logger';
-import { TUTURE_YML_PATH, DIFF_PATH } from '../constants';
+import { loadTuture } from '../utils/tuture';
+import { Asset, loadAssetsTable, checkAssets } from '../utils/assets';
+import { generateUserProfile } from '../utils/internals';
+import { DIFF_PATH } from '../constants';
 import { Diff, Step, Tuture, TutureMeta } from '../types';
 
 type RawDiff = {
@@ -41,9 +43,6 @@ export default class Build extends BaseCommand {
     out: flags.string({
       char: 'o',
       description: 'name of output file',
-    }),
-    assetsPath: flags.string({
-      description: 'path to assets root directory',
     }),
     hexo: flags.boolean({
       description: 'hexo compatibility mode',
@@ -258,11 +257,19 @@ export default class Build extends BaseCommand {
       .trim()}\n`;
   }
 
-  replaceAssetPaths(tutorial: string, newPrefix: string) {
-    const { assetsRoot } = this.userConfig;
-    return tutorial.replace(/!\[(.*)\]\((.+)\)/g, (_, caption, assetPath) => {
-      return `![${caption}](${assetPath.replace(assetsRoot, newPrefix)})`;
+  replaceAssetPaths(tutorial: string, assets: Asset[]) {
+    let updated = tutorial;
+
+    // Replace all local paths.
+    // If not uploaded, replace it with absolute local path.
+    assets.forEach(({ localPath, hostingUri }) => {
+      updated = updated.replace(
+        localPath,
+        hostingUri || path.resolve(localPath),
+      );
     });
+
+    return updated;
   }
 
   generateTutorials(tuture: Tuture, rawDiffs: RawDiff[]) {
@@ -326,8 +333,8 @@ export default class Build extends BaseCommand {
     return [tutorials, titles];
   }
 
-  saveTutorials(tutorials: string[], titles: string[]) {
-    const { assetsRoot, assetsPath, buildPath, hexo } = this.userConfig;
+  saveTutorials(tutorials: string[], titles: string[], assets: Asset[]) {
+    const { buildPath } = this.userConfig;
     if (!this.userConfig.out && !fs.existsSync(buildPath)) {
       fs.mkdirSync(buildPath);
     }
@@ -337,23 +344,8 @@ export default class Build extends BaseCommand {
       const dest =
         this.userConfig.out || path.join(buildPath, `${titles[index]}.md`);
 
-      // Path to assets directory of target tutorial.
-      const assetsDir = hexo
-        ? path.join(path.dirname(dest), titles[index])
-        : path.join(path.dirname(dest), assetsPath || assetsRoot);
-
-      // Copy all assets.
-      if (fs.existsSync(assetsRoot)) {
-        fs.copySync(assetsRoot, assetsDir, { overwrite: true });
-      }
-
-      // Replace asset paths if needed.
-      const newTutorial = hexo
-        ? this.replaceAssetPaths(tutorial, '.')
-        : assetsPath
-        ? this.replaceAssetPaths(tutorial, assetsPath)
-        : tutorial;
-      fs.writeFileSync(dest, newTutorial);
+      // Replace local asset paths.
+      fs.writeFileSync(dest, this.replaceAssetPaths(tutorial, assets));
 
       logger.log(
         'success',
@@ -366,22 +358,23 @@ export default class Build extends BaseCommand {
     const { flags } = this.parse(Build);
     this.userConfig = Object.assign(this.userConfig, flags);
 
-    if (!fs.existsSync(TUTURE_YML_PATH) || !fs.existsSync(DIFF_PATH)) {
+    if (!(await isInitialized())) {
       logger.log(
         'error',
-        `You are not in a Tuture tutorial. Run ${chalk.bold(
+        `Tuture is not initialized. Run ${chalk.bold(
           'tuture init',
-        )} to initialize one.`,
+        )} to initialize.`,
       );
       this.exit(1);
     }
 
-    const tuture: Tuture = yaml.safeLoad(
-      fs.readFileSync(TUTURE_YML_PATH).toString(),
-    );
+    const tuture = await loadTuture();
     const rawDiffs: RawDiff[] = JSON.parse(
       fs.readFileSync(DIFF_PATH).toString(),
     );
+
+    const assets = loadAssetsTable();
+    checkAssets(assets);
 
     if (rawDiffs.length === 0) {
       logger.log(
@@ -403,6 +396,6 @@ export default class Build extends BaseCommand {
     }
 
     const [tutorials, titles] = this.generateTutorials(tuture, rawDiffs);
-    this.saveTutorials(tutorials, titles);
+    this.saveTutorials(tutorials, titles, assets);
   }
 }

@@ -1,14 +1,21 @@
 import fs from 'fs-extra';
 
 import { Step } from '../types';
-import { TUTURE_ROOT, TUTURE_YML_PATH } from '../constants';
-import * as git from './git';
+import { tutureYMLPath } from './tuture';
+import { TUTURE_ROOT, TUTURE_BRANCH } from '../constants';
+import { git, storeDiff, getGitDiff } from './git';
+
+/**
+ * Compare if two commit hashes are equal.
+ */
+function isCommitEqual(hash1: string, hash2: string) {
+  return hash1.startsWith(hash2) || hash2.startsWith(hash1);
+}
 
 /**
  * Remove all Tuture-related files.
  */
 export async function removeTutureSuite() {
-  await fs.remove(TUTURE_YML_PATH);
   await fs.remove(TUTURE_ROOT);
 }
 
@@ -19,22 +26,26 @@ export async function makeSteps(
   ignoredFiles?: string[],
   contextLines?: number,
 ) {
-  let logs = await git.getGitLogs();
-  logs = logs
+  if (!(await git.branchLocal()).current) {
+    // No commits yet.
+    return [];
+  }
+
+  const logs = (await git.log({ '--no-merges': true })).all
+    .map(({ message, hash }) => ({ message, hash }))
     .reverse()
     // filter out commits whose commit message starts with 'tuture:'
-    .filter((log) => !log.slice(8, log.length).startsWith('tuture:'));
+    .filter(({ message }) => !message.startsWith('tuture:'));
 
   // Store all diff into .tuture/diff.json
-  const commits = logs.map((log) => log.slice(0, 7));
-  await git.storeDiff(commits, contextLines);
+  const commits = logs.map(({ hash }) => hash);
+  await storeDiff(commits, contextLines);
 
-  const stepProms: Promise<Step>[] = logs.map(async (log, idx) => {
-    const msg = log.slice(8, log.length);
+  const stepProms: Promise<Step>[] = logs.map(async ({ message, hash }) => {
     return {
-      name: msg,
-      commit: commits[idx],
-      diff: await git.getGitDiff(commits[idx], ignoredFiles || []),
+      name: message,
+      commit: hash,
+      diff: await getGitDiff(hash, ignoredFiles || []),
     };
   });
 
@@ -49,7 +60,9 @@ export async function makeSteps(
 export function mergeSteps(prevSteps: Step[], currentSteps: Step[]) {
   // Mark steps not included in latest steps as outdated.
   prevSteps.forEach((prevStep) => {
-    if (!currentSteps.find((step) => step.commit === prevStep.commit)) {
+    if (
+      !currentSteps.find(({ commit }) => isCommitEqual(commit, prevStep.commit))
+    ) {
       prevStep.outdated = true; /* eslint no-param-reassign: "off"  */
     }
   });
@@ -64,7 +77,7 @@ export function mergeSteps(prevSteps: Step[], currentSteps: Step[]) {
     } else if (j >= currentSteps.length || prevSteps[i].outdated) {
       mergedSteps.push(prevSteps[i]);
       i += 1;
-    } else if (prevSteps[i].commit === currentSteps[j].commit) {
+    } else if (isCommitEqual(prevSteps[i].commit, currentSteps[j].commit)) {
       mergedSteps.push(prevSteps[i]);
       i += 1;
       j += 1;
@@ -75,4 +88,19 @@ export function mergeSteps(prevSteps: Step[], currentSteps: Step[]) {
   }
 
   return mergedSteps;
+}
+
+/**
+ * Detect if tuture is initialized.
+ */
+export async function isInitialized() {
+  if ((await git.checkIsRepo()) && (await git.branchLocal()).current) {
+    const workspaceExists = fs.existsSync(tutureYMLPath);
+    const branchExists = (await git.branch({ '-a': true })).all
+      .map((branch) => branch.split('/').slice(-1)[0])
+      .includes(TUTURE_BRANCH);
+    return workspaceExists || branchExists;
+  }
+
+  return false;
 }

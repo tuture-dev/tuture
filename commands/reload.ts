@@ -1,14 +1,21 @@
-import fs from 'fs-extra';
+import chalk from 'chalk';
 import http from 'http';
-import yaml from 'js-yaml';
 import { flags } from '@oclif/command';
 
 import BaseCommand from '../base';
 import logger from '../utils/logger';
-import { Step, Tuture } from '../types';
-import { makeSteps, mergeSteps } from '../utils';
-import { isGitAvailable } from '../utils/git';
-import { TUTURE_YML_PATH } from '../constants';
+import { Step } from '../types';
+import { git } from '../utils/git';
+import { makeSteps, mergeSteps, isInitialized } from '../utils';
+import {
+  loadTuture,
+  saveTuture,
+  saveCheckpoint,
+  hasTutureChangedSinceCheckpoint,
+  initializeTutureBranch,
+} from '../utils/tuture';
+import { TUTURE_BRANCH } from '../constants';
+import { hasAssetsChangedSinceCheckpoint } from '../utils/assets';
 
 export default class Reload extends BaseCommand {
   static description = 'Sync tuture files with current repo';
@@ -41,26 +48,52 @@ export default class Reload extends BaseCommand {
   async run() {
     const { flags } = this.parse(Reload);
 
-    if (!fs.existsSync(TUTURE_YML_PATH)) {
-      logger.log('error', 'Tuture tutorial has not been initialized!');
+    if (!(await isInitialized())) {
+      logger.log(
+        'error',
+        `Tuture is not initialized. Run ${chalk.bold(
+          'tuture init',
+        )} to initialize.`,
+      );
       this.exit(1);
     }
 
-    if (!isGitAvailable()) {
-      logger.log('error', 'Git is not installed on your machine!');
+    if (
+      hasTutureChangedSinceCheckpoint() ||
+      hasAssetsChangedSinceCheckpoint()
+    ) {
+      logger.log(
+        'error',
+        'You have uncommitted changes. Commit them with tuture commit.',
+      );
       this.exit(1);
     }
 
-    const tuture: Tuture = yaml.safeLoad(
-      fs.readFileSync(TUTURE_YML_PATH).toString(),
-    );
+    await initializeTutureBranch();
+
+    // Trying to update tuture branch.
+    await git.checkout(TUTURE_BRANCH);
+
+    try {
+      await git.merge(['master']);
+    } catch {
+      logger.log('warning', 'master branch is empty.');
+    }
+
+    const tuture = await loadTuture(true);
+
     const currentSteps: Step[] = await makeSteps(
       this.userConfig.ignoredFiles,
       flags.contextLines,
     );
     tuture.steps = mergeSteps(tuture.steps, currentSteps);
 
-    fs.writeFileSync(TUTURE_YML_PATH, yaml.safeDump(tuture));
+    saveTuture(tuture);
     await this.notifyServer();
+
+    // Copy the last committed file.
+    await saveCheckpoint();
+
+    logger.log('success', 'Reload complete!');
   }
 }
