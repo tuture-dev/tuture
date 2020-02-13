@@ -1,11 +1,10 @@
-import fs from 'fs-extra';
 import { flags } from '@oclif/command';
 import { prompt } from 'inquirer';
 
 import BaseCommand from '../base';
 import logger from '../utils/logger';
-import * as git from '../utils/git';
-import { TUTURE_YML_PATH } from '../constants';
+import { git, removeGitHook } from '../utils/git';
+import { TUTURE_BRANCH } from '../constants';
 import { removeTutureSuite } from '../utils';
 
 type ConfirmResponse = {
@@ -40,17 +39,19 @@ export default class Destroy extends BaseCommand {
   async run() {
     const { flags } = this.parse(Destroy);
 
-    if (!fs.existsSync(TUTURE_YML_PATH)) {
-      logger.log('error', 'No Tuture tutorial to destroy!');
-      this.exit(1);
-    }
-
     if (!flags.force) {
       await this.promptConfirmDestroy();
     }
 
-    git.removeGitHook();
     await removeTutureSuite();
+    removeGitHook();
+
+    // Remove local tuture branch if exists.
+    const { all: allBranches } = await git.branchLocal();
+    if (allBranches.includes(TUTURE_BRANCH)) {
+      await git.branch(['-D', TUTURE_BRANCH]);
+      logger.log('success', 'Deleted tuture branch.');
+    }
 
     logger.log('success', 'Tuture tutorial has been destroyed!');
   }

@@ -3,13 +3,13 @@ import chalk from 'chalk';
 import fs from 'fs-extra';
 import { flags } from '@oclif/command';
 import { prompt } from 'inquirer';
-import yaml from 'js-yaml';
 
 import logger from '../utils/logger';
 import BaseCommand from '../base';
 import { Tuture, TutureMeta } from '../types';
 import { makeSteps, removeTutureSuite } from '../utils';
-import * as git from '../utils/git';
+import { saveTuture } from '../utils/tuture';
+import { git, inferGithubField, appendGitignore } from '../utils/git';
 import { TUTURE_YML_PATH } from '../constants';
 
 type ConfirmResponse = {
@@ -46,7 +46,7 @@ export default class Init extends BaseCommand {
     if (!(response as ConfirmResponse).answer) {
       this.exit(0);
     } else {
-      await git.initGit();
+      await git.init();
       logger.log('success', 'Git repository is initialized!');
     }
   }
@@ -100,11 +100,6 @@ export default class Init extends BaseCommand {
       this.exit(0);
     }
 
-    if (!git.isGitAvailable()) {
-      logger.log('error', 'Git is not installed on your machine!');
-      this.exit(1);
-    }
-
     if (!fs.existsSync('.git')) {
       await this.promptInitGit(flags.yes);
     }
@@ -122,7 +117,7 @@ export default class Init extends BaseCommand {
         ),
       };
 
-      const github = await git.inferGithubField();
+      const github = await inferGithubField();
       if (github) {
         logger.log(
           'info',
@@ -133,10 +128,8 @@ export default class Init extends BaseCommand {
         tuture.github = github;
       }
 
-      fs.writeFileSync(TUTURE_YML_PATH, yaml.safeDump(tuture));
-
-      git.appendGitignore(this.userConfig);
-      git.appendGitHook();
+      saveTuture(tuture);
+      appendGitignore(this.userConfig);
 
       logger.log('success', 'Tuture tutorial has been initialized!');
     } catch (err) {

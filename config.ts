@@ -1,12 +1,18 @@
+import path from 'path';
+import { TUTURE_ROOT } from './constants';
+
 export default {
-  // Path to assets directory.
-  assetsRoot: 'tuture-assets',
+  // Directory to store assets temporarily.
+  assetsRoot: path.join(TUTURE_ROOT, 'assets'),
+
+  // Time interval to synchronize all assets.
+  assetsSyncInterval: 10000,
 
   // Path to build outputs.
   buildPath: 'tuture-build',
 
   // Port to use for tuture-server.
-  port: 3000,
+  port: 3013,
 
   // Files that should be commited but won't be tracked by Tuture.
   ignoredFiles: [
@@ -15,7 +21,6 @@ export default {
     '.gitattributes',
 
     // Tuture-related files
-    'tuture.yml',
     '.tuturerc',
     '.tutureignore',
   ],

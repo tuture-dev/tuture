@@ -18,7 +18,7 @@
   "scripts": {
     "lint": "tslint -p . -t verbose",
     "test": "rimraf build && tsc && jest",
-    "build:editor": "cd editor && npm install && npm run build",
+    "build:editor": "cd editor && yarn && npm run build",
     "build:cli": "rimraf build && tsc",
     "build": "npm run build:editor && npm run build:cli && cp -r editor/build build/editor",
     "pkg": "./scripts/pack.sh",
@@ -58,6 +58,7 @@
     "parse-diff": "^0.4.2",
     "rc": "^1.2.8",
     "request": "^2.88.0",
+    "simple-git": "^1.129.0",
     "socket.io": "^2.1.1",
     "tmp": "^0.0.33",
     "which": "^1.3.1",

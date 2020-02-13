@@ -2,6 +2,7 @@ import { Command } from '@oclif/command';
 import fs from 'fs-extra';
 import rc from 'rc';
 
+import { git, appendGitHook, removeGitHook } from './utils/git';
 import defaultConfig from './config';
 import { TUTURE_ROOT, TUTURE_IGNORE_PATH } from './constants';
 
@@ -11,6 +12,8 @@ export default abstract class BaseCommand extends Command {
 
   async init() {
     this.userConfig = rc('tuture', defaultConfig);
+
+    appendGitHook();
 
     if (!fs.existsSync(TUTURE_ROOT)) {
       fs.mkdirSync(TUTURE_ROOT);
@@ -35,6 +38,15 @@ export default abstract class BaseCommand extends Command {
       fs.readdirSync(TUTURE_ROOT).length === 0
     ) {
       fs.removeSync(TUTURE_ROOT);
+      removeGitHook();
+    }
+
+    if (await git.checkIsRepo()) {
+      const { all } = await git.branchLocal();
+      if (all.includes('master')) {
+        // Ensure we are back to master branch.
+        await git.checkout(['-q', 'master']);
+      }
     }
   }
 }

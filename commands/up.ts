@@ -1,13 +1,17 @@
+import chalk from 'chalk';
 import open from 'open';
 import fs from 'fs-extra';
-import yaml from 'js-yaml';
+import getPort from 'get-port';
 import { flags } from '@oclif/command';
 
 import BaseCommand from '../base';
 import logger from '../utils/logger';
 import reload from './reload';
 import makeServer from '../server';
-import { TUTURE_YML_PATH, TUTURE_ROOT } from '../constants';
+import { isInitialized } from '../utils';
+import { syncImages } from '../utils/assets';
+import { TUTURE_ROOT } from '../constants';
+import { loadTuture } from '../utils/tuture';
 
 export default class Up extends BaseCommand {
   static description = 'Render and edit tutorial in browser';
@@ -16,16 +20,16 @@ export default class Up extends BaseCommand {
     help: flags.help({ char: 'h' }),
     port: flags.integer({
       char: 'p',
-      description: 'which port to use for tutorial server',
+      description: 'which port to use for editor server',
     }),
   };
 
   async fireTutureServer() {
-    const portToUse = this.userConfig.port;
+    const port = await getPort({ port: this.userConfig.port });
     const server = makeServer(this.userConfig);
 
-    server.listen(portToUse, () => {
-      const url = `http://localhost:${portToUse}`;
+    server.listen(port, () => {
+      const url = `http://localhost:${port}`;
       logger.log('success', `Tutorial editor is served on ${url}`);
 
       // Don't open browser in test environment.
@@ -39,16 +43,13 @@ export default class Up extends BaseCommand {
     const { flags } = this.parse(Up);
     this.userConfig = Object.assign(this.userConfig, flags);
 
-    if (!fs.existsSync(TUTURE_YML_PATH)) {
-      logger.log('error', 'tuture.yml not found!');
-      this.exit(1);
-    }
-
-    // Check for tuture.yml syntax.
-    try {
-      yaml.safeLoad(fs.readFileSync(TUTURE_YML_PATH).toString());
-    } catch (err) {
-      logger.log('error', err.message);
+    if (!(await isInitialized())) {
+      logger.log(
+        'error',
+        `Tuture is not initialized. Run ${chalk.bold(
+          'tuture init',
+        )} to initialize.`,
+      );
       this.exit(1);
     }
 
@@ -56,6 +57,13 @@ export default class Up extends BaseCommand {
     if (fs.readdirSync(TUTURE_ROOT).length === 0) {
       await reload.run([]);
     }
+
+    // Trying to load tuture.yml for sanity check.
+    await loadTuture();
+
+    // Background interval to synchronize assets.
+    syncImages();
+    setInterval(syncImages, this.userConfig.assetsSyncInterval);
 
     this.fireTutureServer();
   }
