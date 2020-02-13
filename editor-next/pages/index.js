@@ -1,6 +1,8 @@
-import { useState } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Layout, Menu, Icon, Drawer, Button } from 'antd';
+import {
+  Drawer, Button,
+} from 'antd';
 
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
@@ -21,14 +23,16 @@ function HomePage() {
     <div
       css={css`
         width: ${visible ? 'calc(100% - 300px)' : '100%'};
-      `}>
+      `}
+    >
       <div
         css={css`
           height: calc(100vh - 64px);
           width: calc(100%-300px);
           overflow: hidden;
           position: relative;
-        `}>
+        `}
+      >
         Render in this
         <div style={{ marginTop: 16 }}>
           <Button type="primary" onClick={showDrawer}>
@@ -42,7 +46,8 @@ function HomePage() {
           onClose={onChildrenClose}
           visible={childrenVisible}
           getContainer={false}
-          style={{ position: 'absolute' }}>
+          style={{ position: 'absolute' }}
+        >
           <p>Some contents...</p>
         </Drawer>
       </div>

@@ -1,6 +1,3 @@
-import MarkdownIt from 'markdown-it';
-import MarkdownItAnchor from 'markdown-it-anchor';
-import MarkdownItTocDoneRight from 'markdown-it-toc-done-right';
 import { Remarkable } from 'remarkable';
 import toc from 'markdown-toc';
 
@@ -108,7 +105,8 @@ function render(str, options) {
 }
 
 function Markdown(props) {
-  console.log('str', props.res);
+  const { res } = props;
+  console.log('str', res);
 
   return (
     <div
@@ -117,12 +115,14 @@ function Markdown(props) {
         flex-direction: row;
         justify-content: center;
         align-items: center;
-      `}>
+      `}
+    >
       <div
         css={css`
           width: 400px;
         `}
-        dangerouslySetInnerHTML={{ __html: md.render(markdownValue) }}></div>
+        dangerouslySetInnerHTML={{ __html: md.render(markdownValue) }}
+      />
     </div>
   );
 }

@@ -1,6 +1,7 @@
-import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Layout, Menu, Icon, Drawer, Button } from 'antd';
+import {
+  Layout, Menu, Icon, Drawer, Button,
+} from 'antd';
 
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
@@ -8,6 +9,7 @@ import { css, jsx } from '@emotion/core';
 const { Header, Sider, Content } = Layout;
 
 function ConnectedLayout(props) {
+  const { children } = props;
   const { visible } = useSelector((state) => state.drawer);
   const dispatch = useDispatch();
 
@@ -31,13 +33,15 @@ function ConnectedLayout(props) {
           }}
           onCollapse={(collapsed, type) => {
             console.log(collapsed, type);
-          }}>
+          }}
+        >
           <div
             className="logo"
             css={css`
               text-align: center;
               margin-top: 16px;
-            `}>
+            `}
+          >
             <img src="/images/logo.svg" alt="" />
           </div>
           <Menu
@@ -46,11 +50,13 @@ function ConnectedLayout(props) {
             `}
             theme="light"
             mode="inline"
-            defaultSelectedKeys={['1']}>
+            defaultSelectedKeys={['1']}
+          >
             <Menu.Item
               key="1"
               style={{ marginTop: '40px' }}
-              onClick={() => dispatch.drawer.setVisible(!visible)}>
+              onClick={() => dispatch.drawer.setVisible(!visible)}
+            >
               <Icon type="file" />
             </Menu.Item>
             <Menu.Item key="2" style={{ marginTop: '40px' }}>
@@ -81,7 +87,8 @@ function ConnectedLayout(props) {
               position: 'absolute',
               zIndex: 100,
               borderRight: '1px solid #E8E8E8',
-            }}>
+            }}
+          >
             <div>
               <p>Some contents...</p>
               <Button onClick={() => dispatch.drawer.setChildrenVisible(true)}>
@@ -94,12 +101,14 @@ function ConnectedLayout(props) {
               background-color: #fff;
               box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.05);
               border: 1px solid rgba(232, 232, 232, 1);
-            `}>
+            `}
+          >
             Header
             <Button
               css={css`
                 margin-left: 200px;
-              `}>
+              `}
+            >
               hello
             </Button>
           </Header>
@@ -108,17 +117,19 @@ function ConnectedLayout(props) {
               background: #fff;
               display: flex;
               flex-direction: row;
-            `}>
+            `}
+          >
             {visible && (
               <div
                 css={css`
                   height: calc(100vh - 64px);
                   width: 300px;
-                `}>
+                `}
+              >
                 hello tuture
               </div>
             )}
-            {props.children}
+            {children}
           </Content>
         </Layout>
       </Layout>

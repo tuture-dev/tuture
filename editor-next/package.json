@@ -14,8 +14,15 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "pretty-quick --staged"
+      "pre-commit": "lint-staged"
     }
+  },
+  "lint-staged": {
+    "*.js": [
+      "pretty-quick --staged",
+      "eslint --fix",
+      "git add"
+    ]
   },
   "dependencies": {
     "@emotion/core": "^10.0.27",
@@ -57,6 +64,7 @@
     "eslint-plugin-react": "^7.18.3",
     "eslint-plugin-react-hooks": "^1.7.0",
     "husky": "^4.2.1",
+    "lint-staged": "^10.0.7",
     "prettier": "1.19.1",
     "pretty-quick": "^2.0.1"
   }
