@@ -1,0 +1,10 @@
+*.md
+.github
+.next
+build
+dist
+node_modules
+tmp
+yarn.lock
+package.json
+next.config.js

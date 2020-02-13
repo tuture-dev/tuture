@@ -1,8 +1,5 @@
-import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  Drawer, Button,
-} from 'antd';
+import { Drawer, Button } from 'antd';
 
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
