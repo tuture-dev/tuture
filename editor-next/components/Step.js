@@ -4,7 +4,7 @@ import { css, jsx } from '@emotion/core';
 import DiffFile from './DiffFile';
 import Editure from './Editure';
 
-function Commit() {
+function Step() {
   return (
     <div
       css={css`
@@ -16,7 +16,7 @@ function Commit() {
         css={css`
           margin-bottom: 40px;
         `}>
-        Commit
+        Step
       </p>
       <div className="commit-pre-explain">
         <Editure />
@@ -45,4 +45,4 @@ function Commit() {
   );
 }
 
-export default Commit;
+export default Step;

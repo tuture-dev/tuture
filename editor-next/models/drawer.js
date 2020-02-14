@@ -1,10 +1,10 @@
-import { DRAWER_UNSELECT } from '../utils/constants';
+import { DRAWER_UNSELECT, PAGE_CATAGUE } from '../utils/constants';
 
 const drawer = {
   state: {
     childrenVisible: false,
     visible: false,
-    drawerType: DRAWER_UNSELECT,
+    drawerType: PAGE_CATAGUE,
     childrenDrawerType: DRAWER_UNSELECT,
   },
   reducers: {

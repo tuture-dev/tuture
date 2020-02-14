@@ -1,7 +1,7 @@
 import { Row, Col } from 'antd';
 
 import Content from './Content';
-import CommitFileList from './CommitFileList';
+import StepFileList from './StepFileList';
 
 function App() {
   return (
@@ -17,7 +17,7 @@ function App() {
         </Col>
         <Col xs={0} md={0} xl={5}>
           <div className="codeFileList">
-            <CommitFileList />
+            <StepFileList />
           </div>
         </Col>
       </Row>

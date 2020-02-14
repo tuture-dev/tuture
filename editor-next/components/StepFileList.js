@@ -1,4 +1,4 @@
-function CommitFileList() {
+function StepFileList() {
   return (
     <div>
       {['index.js', 'index.html', 'index.css'].map((item) => (
@@ -8,4 +8,4 @@ function CommitFileList() {
   );
 }
 
-export default CommitFileList;
+export default StepFileList;

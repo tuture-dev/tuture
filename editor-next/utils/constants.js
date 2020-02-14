@@ -1,10 +1,21 @@
 /**
- * Get Data Status constants
+ * Common Status constants
  */
 export const NORMAL = 'NORMAL';
+
+/**
+ * Get Data Status constants
+ */
 export const LOADING = 'LOADING';
 export const LOADING_SUCCESS = 'LOADING_SUCCESS';
 export const LOADING_ERROR = 'LOADING_ERROR';
+
+/**
+ * commit Status constants
+ */
+export const COMMIT = 'COMMIT';
+export const COMMIT_SUCCESS = 'COMMIT_SUCCESS';
+export const COMMIT_ERROR = 'COMMIT_ERROR';
 
 /**
  * Open drawer type constants

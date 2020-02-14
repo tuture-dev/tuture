@@ -32,7 +32,7 @@ function ChildrenDrawerComponent() {
       getContainer={false}
       style={{
         position: 'absolute',
-        zIndex: 100,
+        zIndex: 99,
         borderRight: '1px solid #E8E8E8',
       }}>
       <CreateEditArticle childrenDrawerType={childrenDrawerType} />

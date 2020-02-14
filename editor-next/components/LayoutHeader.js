@@ -1,11 +1,20 @@
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 import { Button } from 'antd';
+import { useDispatch } from 'react-redux';
 
 import ToolBar from './ToolBar';
 import LastSavedTimestamp from './LastSavedTimestamp';
 
+import { COMMIT } from '../utils/constants';
+
 function LayoutHeader() {
+  const dispatch = useDispatch();
+
+  function onCommitClick() {
+    dispatch.versionControl.setCommitStatus(COMMIT);
+  }
+
   return (
     <div
       className="layout-header"
@@ -26,7 +35,8 @@ function LayoutHeader() {
           type="primary"
           css={css`
             margin-left: 20px;
-          `}>
+          `}
+          onClick={onCommitClick}>
           提交
         </Button>
         <Button

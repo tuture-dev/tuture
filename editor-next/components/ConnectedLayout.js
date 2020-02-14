@@ -1,5 +1,7 @@
 import { useSelector, useDispatch } from 'react-redux';
-import { Layout, Menu, Icon } from 'antd';
+import {
+  Layout, Menu, Icon, Modal,
+} from 'antd';
 
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
@@ -12,17 +14,27 @@ import {
   COLLECTION_CATALOGUE,
   COLLECTION_SETTING,
   CONTACT_US,
+  NORMAL,
+  COMMIT,
 } from '../utils/constants';
 
 const { Header, Sider, Content } = Layout;
 
 function ConnectedLayout(props) {
   const { children } = props;
-  const { visible } = useSelector((state) => state.drawer);
+  const { commitStatus } = useSelector((state) => state.versionControl);
   const dispatch = useDispatch();
 
   function onToggleDrawer(toggleDrawerType) {
     dispatch.drawer.setDrawerType(toggleDrawerType);
+  }
+
+  function handleOk() {
+    dispatch.versionControl.setCommitStatus(NORMAL);
+  }
+
+  function handleCancel() {
+    dispatch.versionControl.setCommitStatus(NORMAL);
   }
 
   return (
@@ -97,20 +109,18 @@ function ConnectedLayout(props) {
               display: flex;
               flex-direction: row;
             `}>
-            {visible && (
-              <div
-                css={css`
-                  width: 301px;
-                  height: calc(100vh - 64px);
-                `}
-              />
-            )}
+            <div
+              css={css`
+                width: 298px;
+                height: calc(100vh - 64px);
+              `}
+            />
             <div
               css={css`
                 overflow: hidden;
                 position: relative;
                 height: calc(100vh - 64px);
-                width: ${visible ? 'calc(100% - 300px)' : '100%'};
+                width: calc(100% - 298px);
               `}>
               <ChildrenDrawerComponent />
               {children}
@@ -118,6 +128,15 @@ function ConnectedLayout(props) {
           </Content>
         </Layout>
       </Layout>
+      <Modal
+        title="Basic Modal"
+        visible={commitStatus === COMMIT}
+        onOk={handleOk}
+        onCancel={handleCancel}>
+        <p>Some contents...</p>
+        <p>Some contents...</p>
+        <p>Some contents...</p>
+      </Modal>
     </div>
   );
 }

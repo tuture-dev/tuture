@@ -19,14 +19,14 @@ import { App } from '../components';
 function HomePage() {
   const dispatch = useDispatch();
 
-  const { data, error } = useSWR('/api/getTutorialData', fetcher);
+  const { data, error } = useSWR('/api/getCollectionData', fetcher);
   let loadStatus = NORMAL;
 
   useEffect(() => {
     if (!data) {
       loadStatus = LOADING;
     } else {
-      dispatch.tutorial.setTutorialData(data);
+      dispatch.collection.setCollectionData(data);
       loadStatus = LOADING_SUCCESS;
     }
 
