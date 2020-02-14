@@ -32,3 +32,14 @@ export const CONTACT_US = 'CONTACT_US';
  */
 export const CREATE_ARTICLE = 'CREATE_ARTICLE';
 export const EDIT_ARTICLE = 'EDIT_ARTICLE';
+
+/**
+ *  breakpoint type constants
+ *
+ */
+export const XS = 'XS';
+export const SM = 'SM';
+export const MD = 'MD';
+export const LG = 'LG';
+export const XL = 'XL';
+export const XXL = 'XXL';

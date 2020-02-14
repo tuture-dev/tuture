@@ -34,6 +34,7 @@ function CollectionCatalogue() {
         <div>
           {['page1', 'page2', 'page3', 'page4', 'page5'].map((page) => (
             <div
+              key={page}
               css={css`
                 display: flex;
                 flex-direction: row;

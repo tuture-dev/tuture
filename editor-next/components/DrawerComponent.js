@@ -1,5 +1,6 @@
 import { useSelector } from 'react-redux';
 import { Drawer } from 'antd';
+import { useMediaQuery } from 'react-responsive';
 
 import {
   PAGE_CATAGUE,
@@ -28,9 +29,11 @@ const mapTypeToComponent = {
 };
 
 function DrawerComponent() {
-  const { drawerType } = useSelector((state) => state.drawer);
+  const { drawerType, visible } = useSelector((state) => state.drawer);
 
   const RenderComponent = mapTypeToComponent[drawerType];
+
+  const isLgBreakPoint = useMediaQuery({ query: '(max-width: 992px)' });
 
   return (
     <Drawer
@@ -39,13 +42,17 @@ function DrawerComponent() {
       width={300}
       mask={false}
       closable={false}
-      visible
+      visible={visible}
       getContainer={false}
       headerStyle={{
         background: '#f7f7fa',
       }}
       drawerStyle={{
         background: '#f7f7fa',
+      }}
+      style={{
+        position: isLgBreakPoint ? 'absolute' : 'static',
+        zIndex: isLgBreakPoint ? 1001 : 100,
       }}>
       {RenderComponent}
     </Drawer>

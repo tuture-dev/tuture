@@ -2,6 +2,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import {
   Layout, Menu, Icon, Modal,
 } from 'antd';
+import { useMediaQuery } from 'react-responsive';
 
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
@@ -23,9 +24,20 @@ const { Header, Sider, Content } = Layout;
 function ConnectedLayout(props) {
   const { children } = props;
   const { commitStatus } = useSelector((state) => state.versionControl);
+  const { visible, drawerType } = useSelector((state) => state.drawer);
   const dispatch = useDispatch();
 
+  const isLgBreakPoint = useMediaQuery({ query: '(max-width: 992px)' });
+
   function onToggleDrawer(toggleDrawerType) {
+    if (isLgBreakPoint && drawerType === toggleDrawerType) {
+      dispatch.drawer.setVisible(!visible);
+    }
+
+    if (isLgBreakPoint && !visible) {
+      dispatch.drawer.setVisible(true);
+    }
+
     dispatch.drawer.setDrawerType(toggleDrawerType);
   }
 
@@ -41,10 +53,13 @@ function ConnectedLayout(props) {
     <div>
       <Layout>
         <Sider
+          onBreakpoint={(broken) => {
+            dispatch.drawer.setVisible(!broken);
+          }}
           css={css`
             height: 100vh;
             background-color: #f7f7fa;
-            z-index: 1000;
+            z-index: 1002;
           `}
           breakpoint="lg"
           collapsed>
@@ -101,15 +116,16 @@ function ConnectedLayout(props) {
           `}>
           <Layout
             css={css`
-              width: 290px;
+              width: 300px;
               height: 100vh;
+              position: ${isLgBreakPoint ? 'absolute' : 'static'};
             `}>
             <DrawerComponent />
           </Layout>
           <Layout
             css={css`
               box-shadow: -10px 0 15px rgba(0, 0, 0, 0.04);
-              width: calc(100% - 310px);
+              width: ${isLgBreakPoint ? '100%' : 'calc(100% - 300px)'};
               z-index: 1000;
             `}>
             <Header

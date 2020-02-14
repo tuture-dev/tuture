@@ -5,7 +5,7 @@ function ToolBar() {
   return (
     <div
       css={css`
-        width: 400px;
+        width: 40px;
       `}>
       ToolBar
     </div>
