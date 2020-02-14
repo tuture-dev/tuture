@@ -10,6 +10,7 @@ function Content() {
       css={css`
         height: calc(100vh - 64px);
         overflow-y: scroll;
+        padding: 48px 60px 64px;
       `}>
       <PageHeader />
       <PageBody />
