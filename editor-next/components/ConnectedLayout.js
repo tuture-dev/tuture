@@ -1,20 +1,40 @@
 import { useSelector, useDispatch } from 'react-redux';
 import {
-  Layout, Menu, Icon, Drawer, Button,
+  Layout, Menu, Icon, Modal,
 } from 'antd';
 
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 
+import LayoutHeader from './LayoutHeader';
+import DrawerComponent from './DrawerComponent';
+import ChildrenDrawerComponent from './ChildrenDrawerComponent';
+import {
+  PAGE_CATAGUE,
+  COLLECTION_CATALOGUE,
+  COLLECTION_SETTING,
+  CONTACT_US,
+  NORMAL,
+  COMMIT,
+} from '../utils/constants';
+
 const { Header, Sider, Content } = Layout;
 
 function ConnectedLayout(props) {
   const { children } = props;
-  const { visible } = useSelector((state) => state.drawer);
+  const { commitStatus } = useSelector((state) => state.versionControl);
   const dispatch = useDispatch();
 
-  function onClose() {
-    dispatch.drawer.setVisible(false);
+  function onToggleDrawer(toggleDrawerType) {
+    dispatch.drawer.setDrawerType(toggleDrawerType);
+  }
+
+  function handleOk() {
+    dispatch.versionControl.setCommitStatus(NORMAL);
+  }
+
+  function handleCancel() {
+    dispatch.versionControl.setCommitStatus(NORMAL);
   }
 
   return (
@@ -27,112 +47,107 @@ function ConnectedLayout(props) {
             z-index: 1000;
           `}
           breakpoint="lg"
-          collapsed
-          onBreakpoint={(broken) => {
-            console.log(broken);
-          }}
-          onCollapse={(collapsed, type) => {
-            console.log(collapsed, type);
-          }}
-        >
+          collapsed>
           <div
             className="logo"
             css={css`
               text-align: center;
               margin-top: 16px;
-            `}
-          >
+            `}>
             <img src="/images/logo.svg" alt="" />
           </div>
           <Menu
             css={css`
               background-color: #f7f7fa;
+              border: none;
             `}
             theme="light"
             mode="inline"
-            defaultSelectedKeys={['1']}
-          >
+            defaultSelectedKeys={['1']}>
             <Menu.Item
               key="1"
+              title="页面目录"
               style={{ marginTop: '40px' }}
-              onClick={() => dispatch.drawer.setVisible(!visible)}
-            >
+              onClick={() => onToggleDrawer(PAGE_CATAGUE)}>
               <Icon type="file" />
             </Menu.Item>
-            <Menu.Item key="2" style={{ marginTop: '40px' }}>
+            <Menu.Item
+              key="2"
+              title="文集目录"
+              style={{ marginTop: '40px' }}
+              onClick={() => onToggleDrawer(COLLECTION_CATALOGUE)}>
               <Icon type="switcher" />
             </Menu.Item>
-            <Menu.Item key="3" style={{ marginTop: '40px' }}>
-              <Icon type="branches" />
-            </Menu.Item>
-            <Menu.Item key="4" style={{ marginTop: '40px' }}>
+            <Menu.Item
+              key="4"
+              title="文集设置"
+              style={{ marginTop: '40px' }}
+              onClick={() => onToggleDrawer(COLLECTION_SETTING)}>
               <Icon type="setting" />
             </Menu.Item>
-            <Menu.Item key="5" style={{ marginTop: '40px' }}>
+            <Menu.Item
+              key="5"
+              title="联系我们"
+              style={{ marginTop: '40px' }}
+              onClick={() => onToggleDrawer(CONTACT_US)}>
               <Icon type="contacts" />
             </Menu.Item>
           </Menu>
         </Sider>
-        <Layout>
-          <Drawer
-            title="Basic Drawer"
-            placement="left"
-            width={300}
-            mask={false}
-            closable={false}
-            onClose={onClose}
-            visible={visible}
-            getContainer={false}
-            style={{
-              position: 'absolute',
-              zIndex: 100,
-              borderRight: '1px solid #E8E8E8',
-            }}
-          >
-            <div>
-              <p>Some contents...</p>
-              <Button onClick={() => dispatch.drawer.setChildrenVisible(true)}>
-                修改信息
-              </Button>
-            </div>
-          </Drawer>
-          <Header
+        <Layout
+          css={css`
+            display: flex;
+            flex-direction: row;
+          `}>
+          <Layout
             css={css`
-              background-color: #fff;
-              box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.05);
-              border: 1px solid rgba(232, 232, 232, 1);
-            `}
-          >
-            Header
-            <Button
+              width: 290px;
+              height: 100vh;
+            `}>
+            <DrawerComponent />
+          </Layout>
+          <Layout
+            css={css`
+              box-shadow: -10px 0 15px rgba(0, 0, 0, 0.04);
+              width: calc(100% - 310px);
+              z-index: 1000;
+            `}>
+            <Header
               css={css`
-                margin-left: 200px;
-              `}
-            >
-              hello
-            </Button>
-          </Header>
-          <Content
-            css={css`
-              background: #fff;
-              display: flex;
-              flex-direction: row;
-            `}
-          >
-            {visible && (
+                background-color: #fff;
+                border-bottom: 1px solid rgba(232, 232, 232, 1);
+              `}>
+              <LayoutHeader />
+            </Header>
+            <Content
+              css={css`
+                background: #fff;
+                display: flex;
+                flex-direction: row;
+              `}>
               <div
                 css={css`
+                  overflow: hidden;
+                  position: relative;
                   height: calc(100vh - 64px);
-                  width: 300px;
-                `}
-              >
-                hello tuture
+                  width: 100%;
+                `}>
+                <ChildrenDrawerComponent />
+                {children}
               </div>
-            )}
-            {children}
-          </Content>
+            </Content>
+          </Layout>
         </Layout>
       </Layout>
+      <Modal
+        title="Basic Modal"
+        visible={commitStatus === COMMIT}
+        onOk={handleOk}
+        onCancel={handleCancel}>
+        <p>Some contents...</p>
+        <p>Some contents...</p>
+        <p>Some contents...</p>
+      </Modal>
     </div>
   );
 }

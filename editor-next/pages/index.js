@@ -1,53 +1,54 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { Drawer, Button } from 'antd';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { Spin } from 'antd';
+import useSWR from 'swr';
 
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 
+import fetcher from '../utils/fetcher';
+import {
+  NORMAL,
+  LOADING,
+  LOADING_SUCCESS,
+  LOADING_ERROR,
+} from '../utils/constants';
+
+import { App } from '../components';
+
 function HomePage() {
-  const { childrenVisible, visible } = useSelector((state) => state.drawer);
   const dispatch = useDispatch();
 
-  function showDrawer() {
-    dispatch.drawer.setChildrenVisible(true);
-  }
+  const { data, error } = useSWR('/api/getCollectionData', fetcher);
+  let loadStatus = NORMAL;
 
-  function onChildrenClose() {
-    dispatch.drawer.setChildrenVisible(false);
-  }
+  useEffect(() => {
+    if (!data) {
+      loadStatus = LOADING;
+    } else {
+      dispatch.collection.setCollectionData(data);
+      loadStatus = LOADING_SUCCESS;
+    }
+
+    if (error) {
+      loadStatus = LOADING_ERROR;
+    }
+  }, [data]);
 
   return (
     <div
       css={css`
-        width: ${visible ? 'calc(100% - 300px)' : '100%'};
-      `}
-    >
-      <div
-        css={css`
-          height: calc(100vh - 64px);
-          width: calc(100%-300px);
-          overflow: hidden;
-          position: relative;
-        `}
-      >
-        Render in this
-        <div style={{ marginTop: 16 }}>
-          <Button type="primary" onClick={showDrawer}>
-            Open
-          </Button>
+        width: 100%;
+      `}>
+      <Spin tip="加载中..." spinning={loadStatus === LOADING}>
+        <div
+          css={css`
+            height: calc(100vh - 64px);
+            width: 100%;
+          `}>
+          <App />
         </div>
-        <Drawer
-          title="Basic Drawer"
-          placement="left"
-          closable={false}
-          onClose={onChildrenClose}
-          visible={childrenVisible}
-          getContainer={false}
-          style={{ position: 'absolute' }}
-        >
-          <p>Some contents...</p>
-        </Drawer>
-      </div>
+      </Spin>
     </div>
   );
 }

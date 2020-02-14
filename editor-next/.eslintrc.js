@@ -9,5 +9,6 @@ module.exports = {
     'react/jsx-filename-extension': 'off',
     'react/react-in-jsx-scope': 'off',
     'react/jsx-props-no-spreading': 'off',
+    'react/jsx-closing-bracket-location': 'off',
   },
 };
