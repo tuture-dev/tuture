@@ -2,7 +2,7 @@ function StepFileList() {
   return (
     <div>
       {['index.js', 'index.html', 'index.css'].map((item) => (
-        <p>{item}</p>
+        <p key={item}>{item}</p>
       ))}
     </div>
   );

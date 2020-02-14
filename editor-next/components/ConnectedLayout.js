@@ -59,6 +59,7 @@ function ConnectedLayout(props) {
           <Menu
             css={css`
               background-color: #f7f7fa;
+              border: none;
             `}
             theme="light"
             mode="inline"
@@ -93,39 +94,49 @@ function ConnectedLayout(props) {
             </Menu.Item>
           </Menu>
         </Sider>
-        <Layout>
-          <DrawerComponent />
-          <Header
+        <Layout
+          css={css`
+            display: flex;
+            flex-direction: row;
+          `}>
+          <Layout
             css={css`
-              background-color: #fff;
-              box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.05);
-              border: 1px solid rgba(232, 232, 232, 1);
+              width: 290px;
+              height: 100vh;
             `}>
-            <LayoutHeader />
-          </Header>
-          <Content
+            <DrawerComponent />
+          </Layout>
+          <Layout
             css={css`
-              background: #fff;
-              display: flex;
-              flex-direction: row;
+              box-shadow: -10px 0 15px rgba(0, 0, 0, 0.04);
+              width: calc(100% - 310px);
+              z-index: 1000;
             `}>
-            <div
+            <Header
               css={css`
-                width: 298px;
-                height: calc(100vh - 64px);
-              `}
-            />
-            <div
-              css={css`
-                overflow: hidden;
-                position: relative;
-                height: calc(100vh - 64px);
-                width: calc(100% - 298px);
+                background-color: #fff;
+                border-bottom: 1px solid rgba(232, 232, 232, 1);
               `}>
-              <ChildrenDrawerComponent />
-              {children}
-            </div>
-          </Content>
+              <LayoutHeader />
+            </Header>
+            <Content
+              css={css`
+                background: #fff;
+                display: flex;
+                flex-direction: row;
+              `}>
+              <div
+                css={css`
+                  overflow: hidden;
+                  position: relative;
+                  height: calc(100vh - 64px);
+                  width: 100%;
+                `}>
+                <ChildrenDrawerComponent />
+                {children}
+              </div>
+            </Content>
+          </Layout>
         </Layout>
       </Layout>
       <Modal

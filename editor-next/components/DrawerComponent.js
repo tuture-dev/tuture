@@ -41,10 +41,11 @@ function DrawerComponent() {
       closable={false}
       visible
       getContainer={false}
-      style={{
-        position: 'absolute',
-        zIndex: 100,
-        borderRight: '1px solid #E8E8E8',
+      headerStyle={{
+        background: '#f7f7fa',
+      }}
+      drawerStyle={{
+        background: '#f7f7fa',
       }}>
       {RenderComponent}
     </Drawer>
