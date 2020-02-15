@@ -1,7 +1,5 @@
 import { useSelector, useDispatch } from 'react-redux';
-import {
-  Layout, Menu, Icon, Modal,
-} from 'antd';
+import { Layout, Menu, Icon, Modal } from 'antd';
 import { useMediaQuery } from 'react-responsive';
 
 /** @jsx jsx */
@@ -62,13 +60,15 @@ function ConnectedLayout(props) {
             z-index: 1002;
           `}
           breakpoint="lg"
-          collapsed>
+          collapsed
+        >
           <div
             className="logo"
             css={css`
               text-align: center;
               margin-top: 16px;
-            `}>
+            `}
+          >
             <img src="/images/logo.svg" alt="" />
           </div>
           <Menu
@@ -78,33 +78,38 @@ function ConnectedLayout(props) {
             `}
             theme="light"
             mode="inline"
-            defaultSelectedKeys={['1']}>
+            defaultSelectedKeys={['1']}
+          >
             <Menu.Item
               key="1"
               title="页面目录"
               style={{ marginTop: '40px' }}
-              onClick={() => onToggleDrawer(PAGE_CATAGUE)}>
+              onClick={() => onToggleDrawer(PAGE_CATAGUE)}
+            >
               <Icon type="file" />
             </Menu.Item>
             <Menu.Item
               key="2"
               title="文集目录"
               style={{ marginTop: '40px' }}
-              onClick={() => onToggleDrawer(COLLECTION_CATALOGUE)}>
+              onClick={() => onToggleDrawer(COLLECTION_CATALOGUE)}
+            >
               <Icon type="switcher" />
             </Menu.Item>
             <Menu.Item
               key="4"
               title="文集设置"
               style={{ marginTop: '40px' }}
-              onClick={() => onToggleDrawer(COLLECTION_SETTING)}>
+              onClick={() => onToggleDrawer(COLLECTION_SETTING)}
+            >
               <Icon type="setting" />
             </Menu.Item>
             <Menu.Item
               key="5"
               title="联系我们"
               style={{ marginTop: '40px' }}
-              onClick={() => onToggleDrawer(CONTACT_US)}>
+              onClick={() => onToggleDrawer(CONTACT_US)}
+            >
               <Icon type="contacts" />
             </Menu.Item>
           </Menu>
@@ -113,13 +118,15 @@ function ConnectedLayout(props) {
           css={css`
             display: flex;
             flex-direction: row;
-          `}>
+          `}
+        >
           <Layout
             css={css`
               width: 300px;
               height: 100vh;
               position: ${isLgBreakPoint ? 'absolute' : 'static'};
-            `}>
+            `}
+          >
             <DrawerComponent />
           </Layout>
           <Layout
@@ -127,12 +134,14 @@ function ConnectedLayout(props) {
               box-shadow: -10px 0 15px rgba(0, 0, 0, 0.04);
               width: ${isLgBreakPoint ? '100%' : 'calc(100% - 300px)'};
               z-index: 1000;
-            `}>
+            `}
+          >
             <Header
               css={css`
                 background-color: #fff;
                 border-bottom: 1px solid rgba(232, 232, 232, 1);
-              `}>
+              `}
+            >
               <LayoutHeader />
             </Header>
             <Content
@@ -140,14 +149,16 @@ function ConnectedLayout(props) {
                 background: #fff;
                 display: flex;
                 flex-direction: row;
-              `}>
+              `}
+            >
               <div
                 css={css`
                   overflow: hidden;
                   position: relative;
                   height: calc(100vh - 64px);
                   width: 100%;
-                `}>
+                `}
+              >
                 <ChildrenDrawerComponent />
                 {children}
               </div>
@@ -159,7 +170,8 @@ function ConnectedLayout(props) {
         title="Basic Modal"
         visible={commitStatus === COMMIT}
         onOk={handleOk}
-        onCancel={handleCancel}>
+        onCancel={handleCancel}
+      >
         <p>Some contents...</p>
         <p>Some contents...</p>
         <p>Some contents...</p>

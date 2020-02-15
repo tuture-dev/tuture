@@ -21,14 +21,17 @@ function Step(props) {
     <div
       css={css`
         margin: 40px 0;
-      `}>
+      `}
+    >
       <Input
         placeholder="无标题"
         value={step.name}
-        onChange={(e) => dispatch.collection.setStepTitle({
-          commit: step.commit,
-          value: e.target.value,
-        })}
+        onChange={(e) =>
+          dispatch.collection.setStepTitle({
+            commit: step.commit,
+            value: e.target.value,
+          })
+        }
         css={css`
           font-size: 24px;
           font-family: PingFangSC-Medium, PingFang SC;
@@ -53,7 +56,8 @@ function Step(props) {
             margin: 20px 0;
             border-top: 1px solid green;
             border-bottom: 1px solid yellow;
-          `}>
+          `}
+        >
           <div className="diffFile-pre-explain">
             <Editure
               commit={step.commit}

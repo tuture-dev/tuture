@@ -15,9 +15,7 @@ const { TextArea } = Input;
 function Editure(props) {
   const dispatch = useDispatch();
 
-  const {
-    commit, type, content = '', file = '',
-  } = props;
+  const { commit, type, content = '', file = '' } = props;
 
   function onChange(e) {
     if ([STEP_PRE_EXPLAIN, STEP_POST_EXPLAIN].includes(type)) {

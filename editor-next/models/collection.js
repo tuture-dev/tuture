@@ -104,9 +104,7 @@ const collection = {
       return state;
     },
     setDiffFileExplain(state, payload) {
-      const {
-        commit, content, file, type,
-      } = payload;
+      const { commit, content, file, type } = payload;
 
       const mapConstantToType = {
         [DIFF_PRE_EXPLAIN]: 'pre',
@@ -150,7 +148,9 @@ const collection = {
 
           nowArticle = {
             ...targetArticle,
-            steps: collectionModel.collection.steps.filter((step) => targetArticle.commits.includes(step.commit)),
+            steps: collectionModel.collection.steps.filter((step) =>
+              targetArticle.commits.includes(step.commit),
+            ),
           };
         }
 

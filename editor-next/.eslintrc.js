@@ -1,5 +1,5 @@
 module.exports = {
-  extends: ['airbnb'],
+  extends: ['airbnb', 'plugin:prettier/recommended'],
   parser: 'babel-eslint',
   rules: {
     'consistent-return': 'off',
@@ -12,5 +12,6 @@ module.exports = {
     'react/react-in-jsx-scope': 'off',
     'react/jsx-props-no-spreading': 'off',
     'react/jsx-closing-bracket-location': 'off',
+    'react/jsx-curly-newline': 'off',
   },
 };

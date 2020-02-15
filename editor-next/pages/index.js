@@ -39,13 +39,15 @@ function HomePage() {
     <div
       css={css`
         width: 100%;
-      `}>
+      `}
+    >
       <Spin tip="加载中..." spinning={loadStatus === LOADING}>
         <div
           css={css`
             height: calc(100vh - 64px);
             width: 100%;
-          `}>
+          `}
+        >
           <App />
         </div>
       </Spin>

@@ -16,7 +16,8 @@ function PageHeader() {
     <div
       css={css`
         border-bottom: 1px solid #e8e8e8;
-      `}>
+      `}
+    >
       <Input
         placeholder="无标题"
         value={name}
@@ -34,7 +35,9 @@ function PageHeader() {
         placeholder="无描述"
         value={description}
         autoSize
-        onChange={(e) => dispatch.collection.setArticleDescription(e.target.value)}
+        onChange={(e) =>
+          dispatch.collection.setArticleDescription(e.target.value)
+        }
         css={css`
           font-size: 14px;
           font-family: PingFangSC-Regular, PingFang SC;

@@ -8,19 +8,20 @@ import * as models from '../models';
 const initialState = {};
 const loadingOptions = {};
 
-const initializeStore = (preloadedState = initialState) => init({
-  models,
-  plugins: [
-    immerPlugin(),
-    selectPlugin(),
-    createLoadingPlugin(loadingOptions),
-  ],
-  redux: {
-    initialState: preloadedState,
-    devtoolOptions: {
-      trace: true,
+const initializeStore = (preloadedState = initialState) =>
+  init({
+    models,
+    plugins: [
+      immerPlugin(),
+      selectPlugin(),
+      createLoadingPlugin(loadingOptions),
+    ],
+    redux: {
+      initialState: preloadedState,
+      devtoolOptions: {
+        trace: true,
+      },
     },
-  },
-});
+  });
 
 export default initializeStore;

@@ -53,7 +53,8 @@ function DrawerComponent() {
       style={{
         position: isLgBreakPoint ? 'absolute' : 'static',
         zIndex: isLgBreakPoint ? 1001 : 100,
-      }}>
+      }}
+    >
       {RenderComponent}
     </Drawer>
   );
