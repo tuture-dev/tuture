@@ -9,6 +9,7 @@ export const globalStyles = (
 
       .ant-input {
         border: none !important;
+        padding: 0;
       }
 
       .ant-input:hover,

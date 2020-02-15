@@ -43,3 +43,12 @@ export const MD = 'MD';
 export const LG = 'LG';
 export const XL = 'XL';
 export const XXL = 'XXL';
+
+/**
+ *  Explain type constants
+ *
+ */
+export const STEP_PRE_EXPLAIN = 'STEP_PRE_EXPLAIN';
+export const STEP_POST_EXPLAIN = 'STEP_POST_EXPLAIN';
+export const DIFF_PRE_EXPLAIN = 'DIFF_PRE_EXPLAIN';
+export const DIFF_POST_EXPLAIN = 'DIFF_POST_EXPLAIN';

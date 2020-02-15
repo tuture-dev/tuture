@@ -1,45 +1,84 @@
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
+import { Input } from 'antd';
+import { useDispatch } from 'react-redux';
 
 import DiffFile from './DiffFile';
 import Editure from './Editure';
+import {
+  STEP_PRE_EXPLAIN,
+  STEP_POST_EXPLAIN,
+  DIFF_PRE_EXPLAIN,
+  DIFF_POST_EXPLAIN,
+} from '../utils/constants';
 
-function Step() {
+function Step(props) {
+  const dispatch = useDispatch();
+
+  const { step } = props;
+
   return (
     <div
       css={css`
-        border-top: 1px solid red;
-        border-bottom: 1px solid blue;
         margin: 40px 0;
       `}>
-      <p
+      <Input
+        placeholder="无标题"
+        value={step.name}
+        onChange={(e) => dispatch.collection.setStepTitle({
+          commit: step.commit,
+          value: e.target.value,
+        })}
         css={css`
-          margin-bottom: 40px;
-        `}>
-        Step
-      </p>
+          font-size: 24px;
+          font-family: PingFangSC-Medium, PingFang SC;
+          font-weight: 500;
+          color: rgba(0, 0, 0, 1);
+          line-height: 32px;
+          margin-bottom: 16px;
+        `}
+      />
+
       <div className="commit-pre-explain">
-        <Editure />
+        <Editure
+          commit={step.commit}
+          type={STEP_PRE_EXPLAIN}
+          content={step?.explain?.pre}
+        />
       </div>
-      {['diffFile1', 'diffFile2', 'diffFile3'].map((diffFile) => (
+      {step.diff.map((diffFile) => (
         <div
-          key={diffFile}
+          key={diffFile.file}
           css={css`
             margin: 20px 0;
             border-top: 1px solid green;
             border-bottom: 1px solid yellow;
           `}>
           <div className="diffFile-pre-explain">
-            <Editure />
+            <Editure
+              commit={step.commit}
+              file={diffFile.file}
+              type={DIFF_PRE_EXPLAIN}
+              content={diffFile?.explain?.pre}
+            />
           </div>
           <DiffFile diffFile={diffFile} />
           <div className="diffFile-post-explain">
-            <Editure />
+            <Editure
+              commit={step.commit}
+              file={diffFile.file}
+              type={DIFF_POST_EXPLAIN}
+              content={diffFile?.explain?.post}
+            />
           </div>
         </div>
       ))}
       <div className="commit-post-explain">
-        <Editure />
+        <Editure
+          commit={step.commit}
+          type={STEP_POST_EXPLAIN}
+          content={step?.explain?.post}
+        />
       </div>
     </div>
   );

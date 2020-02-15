@@ -1,5 +1,6 @@
 module.exports = {
   extends: ['airbnb'],
+  parser: 'babel-eslint',
   rules: {
     'consistent-return': 'off',
     'no-param-reassign': 'off',

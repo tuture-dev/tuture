@@ -1,11 +1,14 @@
+import { useSelector } from 'react-redux';
+
 import Step from './Step';
 
 function PageBody() {
+  const { steps = [] } = useSelector((state) => state.collection.nowArticle);
+
   return (
     <div>
-      PageBody
-      {['step1', 'step2', 'step3'].map((step) => (
-        <Step step={step} key={step} />
+      {steps.map((step) => (
+        <Step step={step} key={step.commit} />
       ))}
     </div>
   );

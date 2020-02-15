@@ -1,48 +1,12 @@
-/**
- *  interface File {
- *    file: string;
- *    display: boolean;
- *    explain: {
- *      pre: string;
- *      post: string;
- *      }
- *  }
- *
- *
- *  interface Step {
- *    name: string;
- *    commit: string;
- *    diff: Array<File>;
- *    explain: {
- *      pre: string;
- *      post: string;
- *    }
- *  }
- *
- * interface Article {
- *   name: string;
- *   id: string;
- *   topics: Array<string>;
- *   categories: Array<string>;
- *   description: string;
- *   steps: Array<Step>
- * }
- *
- *
- * interface Collection {
- *   name: string;
- *   id: string;
- *   topics: Array<string>;
- *   categories: Array<string>;
- *   description: string;
- *   articles: Array<Article>;
- * }
- *
- */
+import {
+  STEP_PRE_EXPLAIN,
+  STEP_POST_EXPLAIN,
+  DIFF_PRE_EXPLAIN,
+  DIFF_POST_EXPLAIN,
+} from '../utils/constants';
 
 const collection = {
   state: {
-    tuture: {},
     diff: [],
     collection: {
       articles: [],
@@ -50,10 +14,8 @@ const collection = {
     nowArticle: {},
   },
   reducers: {
-    // handle stagetCollectionDatate changes with pure functions
     setCollectionData(state, payload) {
       const { tuture, diff } = payload;
-      state.tuture = tuture;
       state.diff = diff;
       state.nowArticle = tuture;
       state.collection = { ...state.collection, ...tuture };
@@ -82,19 +44,110 @@ const collection = {
     setArticleDescription(state, payload) {
       state.nowArticle.description = payload;
 
-      if (state.collection.articles.length !== 0) {
-        state.collection.articles = state.collection.articles.map((article) => {
-          if (article.id === state.nowArticle.id) {
-            article.description = payload;
+      state.collection.description = payload;
 
-            return article;
+      return state;
+    },
+    setStepTitle(state, payload) {
+      const { commit, value } = payload;
+
+      state.nowArticle.steps = state.nowArticle.steps.map((step) => {
+        if (step.commit === commit) {
+          step.name = value;
+
+          return step;
+        }
+
+        return step;
+      });
+      state.collection.steps = state.collection.steps.map((step) => {
+        if (step.commit === commit) {
+          step.name = value;
+
+          return step;
+        }
+
+        return step;
+      });
+
+      return state;
+    },
+    setStepExplain(state, payload) {
+      const { commit, content, type } = payload;
+
+      const mapConstantToType = {
+        [STEP_PRE_EXPLAIN]: 'pre',
+        [STEP_POST_EXPLAIN]: 'post',
+      };
+
+      // set nowArticle
+      state.nowArticle.steps = state.nowArticle.steps.map((step) => {
+        if (step.commit === commit) {
+          if (step.explain) {
+            step.explain[mapConstantToType[type]] = content;
+          } else {
+            step.explain = { [mapConstantToType[type]]: content };
           }
+        }
 
-          return article;
-        });
-      } else {
-        state.collection.description = payload;
-      }
+        return step;
+      });
+
+      state.collection.steps = state.collection.steps.map((step) => {
+        if (step.commit === commit) {
+          if (step.explain) {
+            step.explain[mapConstantToType[type]] = content;
+          } else {
+            step.explain = { [mapConstantToType[type]]: content };
+          }
+        }
+
+        return step;
+      });
+
+      return state;
+    },
+    setDiffFileExplain(state, payload) {
+      const {
+        commit, content, file, type,
+      } = payload;
+
+      const mapConstantToType = {
+        [DIFF_PRE_EXPLAIN]: 'pre',
+        [DIFF_POST_EXPLAIN]: 'post',
+      };
+
+      // set nowArticle
+      state.nowArticle.steps = state.nowArticle.steps.map((step) => {
+        if (step.commit === commit) {
+          step.diff = step.diff.map((diffFile) => {
+            if (diffFile.file === file) {
+              if (diffFile.explain) {
+                diffFile.explain[mapConstantToType[type]] = content;
+              } else {
+                diffFile.explain = { [mapConstantToType[type]]: content };
+              }
+            }
+
+            return diffFile;
+          });
+        }
+
+        return step;
+      });
+
+      // set collection
+      state.collection.steps = state.collection.steps.map((step) => {
+        if (step.commit === commit) {
+          if (step.explain) {
+            step.explain[mapConstantToType[type]] = content;
+          } else {
+            step.explain = { [mapConstantToType[type]]: content };
+          }
+        }
+
+        return step;
+      });
 
       return state;
     },
