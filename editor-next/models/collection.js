@@ -132,7 +132,7 @@ const collection = {
       return state;
     },
   },
-  selectors: (slice) => ({
+  selectors: (slice, createSelector, hasProps) => ({
     nowArticle() {
       return slice((collectionModel) => {
         let nowArticle = {};
@@ -157,6 +157,15 @@ const collection = {
         return nowArticle;
       });
     },
+    getDiffItemByCommitAndFile: hasProps(function(__, props) {
+      return slice((collectionModel) => {
+        const diff = collectionModel.diff.filter(
+          (diffItem) => diffItem.commit === props.commit,
+        )[0];
+
+        return diff.diff.filter((diffItem) => diffItem.to === props.file)[0];
+      });
+    }),
   }),
 };
 

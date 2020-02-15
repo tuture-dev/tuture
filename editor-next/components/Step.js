@@ -49,34 +49,34 @@ function Step(props) {
           content={step?.explain?.pre}
         />
       </div>
-      {step.diff.map((diffFile) => (
-        <div
-          key={diffFile.file}
-          css={css`
-            margin: 20px 0;
-            border-top: 1px solid green;
-            border-bottom: 1px solid yellow;
-          `}
-        >
-          <div className="diffFile-pre-explain">
-            <Editure
-              commit={step.commit}
-              file={diffFile.file}
-              type={DIFF_PRE_EXPLAIN}
-              content={diffFile?.explain?.pre}
-            />
+      {step.diff
+        .filter((diffFile) => diffFile.display)
+        .map((diffFile) => (
+          <div
+            key={diffFile.file}
+            css={css`
+              margin: 20px 0;
+            `}
+          >
+            <div className="diffFile-pre-explain">
+              <Editure
+                commit={step.commit}
+                file={diffFile.file}
+                type={DIFF_PRE_EXPLAIN}
+                content={diffFile?.explain?.pre}
+              />
+            </div>
+            <DiffFile diffFile={diffFile} commit={step.commit} />
+            <div className="diffFile-post-explain">
+              <Editure
+                commit={step.commit}
+                file={diffFile.file}
+                type={DIFF_POST_EXPLAIN}
+                content={diffFile?.explain?.post}
+              />
+            </div>
           </div>
-          <DiffFile diffFile={diffFile} />
-          <div className="diffFile-post-explain">
-            <Editure
-              commit={step.commit}
-              file={diffFile.file}
-              type={DIFF_POST_EXPLAIN}
-              content={diffFile?.explain?.post}
-            />
-          </div>
-        </div>
-      ))}
+        ))}
       <div className="commit-post-explain">
         <Editure
           commit={step.commit}
