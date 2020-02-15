@@ -1,9 +1,9 @@
-import React from 'react';
 import { Provider } from 'react-redux';
 import NextApp from 'next/app';
 import withRedux from 'next-redux-wrapper';
 
 import makeStore from '../store';
+import { EditorContext, editor } from '../utils/editor';
 import { globalStyles } from '../shared/styles';
 import ConnectedLayout from '../components/ConnectedLayout';
 
@@ -21,9 +21,11 @@ class MyApp extends NextApp {
     return (
       <Provider store={store}>
         {globalStyles}
-        <ConnectedLayout>
-          <Component {...pageProps} />
-        </ConnectedLayout>
+        <EditorContext.Provider value={editor}>
+          <ConnectedLayout>
+            <Component {...pageProps} />
+          </ConnectedLayout>
+        </EditorContext.Provider>
       </Provider>
     );
   }
