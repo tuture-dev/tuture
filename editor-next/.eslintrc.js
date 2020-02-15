@@ -1,5 +1,5 @@
 module.exports = {
-  extends: ['airbnb'],
+  extends: ['airbnb', 'plugin:prettier/recommended'],
   parser: 'babel-eslint',
   env: {
     browser: true,
@@ -8,6 +8,7 @@ module.exports = {
     'consistent-return': 'off',
     'no-param-reassign': 'off',
     'jsx-a11y/click-events-have-key-events': 'off',
+    'max-len': ['error', { code: 114 }],
     'jsx-a11y/html-has-lang': 'off',
     'jsx-a11y/no-static-element-interactions': 'off',
     'import/prefer-default-export': 'off',
@@ -16,5 +17,6 @@ module.exports = {
     'react/react-in-jsx-scope': 'off',
     'react/jsx-props-no-spreading': 'off',
     'react/jsx-closing-bracket-location': 'off',
+    'react/jsx-curly-newline': 'off',
   },
 };

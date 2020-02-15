@@ -15,14 +15,17 @@ function Step(props) {
     <div
       css={css`
         margin: 40px 0;
-      `}>
+      `}
+    >
       <Input
         placeholder="无标题"
         value={step.name}
-        onChange={(e) => dispatch.collection.setStepTitle({
-          commit: step.commit,
-          value: e.target.value,
-        })}
+        onChange={(e) =>
+          dispatch.collection.setStepTitle({
+            commit: step.commit,
+            value: e.target.value,
+          })
+        }
         css={css`
           font-size: 24px;
           font-family: PingFangSC-Medium, PingFang SC;

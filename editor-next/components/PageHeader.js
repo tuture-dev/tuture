@@ -1,13 +1,14 @@
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 import { Input } from 'antd';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector, useStore } from 'react-redux';
 
 const { TextArea } = Input;
 
 function PageHeader() {
+  const store = useStore();
   const { name = '', description = '' } = useSelector(
-    (state) => state.collection.nowArticle,
+    store.select.collection.nowArticle,
   );
   const dispatch = useDispatch();
 
@@ -15,7 +16,8 @@ function PageHeader() {
     <div
       css={css`
         border-bottom: 1px solid #e8e8e8;
-      `}>
+      `}
+    >
       <Input
         placeholder="无标题"
         value={name}
@@ -33,7 +35,9 @@ function PageHeader() {
         placeholder="无描述"
         value={description}
         autoSize
-        onChange={(e) => dispatch.collection.setArticleDescription(e.target.value)}
+        onChange={(e) =>
+          dispatch.collection.setArticleDescription(e.target.value)
+        }
         css={css`
           font-size: 14px;
           font-family: PingFangSC-Regular, PingFang SC;
@@ -42,7 +46,8 @@ function PageHeader() {
           line-height: 22px;
           margin-bottom: 16px;
           resize: none;
-        `} />
+        `}
+      />
     </div>
   );
 }

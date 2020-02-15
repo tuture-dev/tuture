@@ -30,7 +30,8 @@ function CollectionCatalogue() {
       <div
         css={css`
           margin-top: 40px;
-        `}>
+        `}
+      >
         <div>
           {['page1', 'page2', 'page3', 'page4', 'page5'].map((page) => (
             <div
@@ -38,11 +39,13 @@ function CollectionCatalogue() {
               css={css`
                 display: flex;
                 flex-direction: row;
-              `}>
+              `}
+            >
               <p
                 css={css`
                   margin-right: 20px;
-                `}>
+                `}
+              >
                 {page}
               </p>
               <Button
@@ -50,7 +53,8 @@ function CollectionCatalogue() {
                 css={css`
                   margin-right: 20px;
                 `}
-                onClick={() => onToggleChildrenDrawer(EDIT_ARTICLE)}>
+                onClick={() => onToggleChildrenDrawer(EDIT_ARTICLE)}
+              >
                 编辑页面
               </Button>
             </div>
@@ -61,7 +65,8 @@ function CollectionCatalogue() {
           css={css`
             margin-top: 40px;
           `}
-          onClick={() => onToggleChildrenDrawer(CREATE_ARTICLE)}>
+          onClick={() => onToggleChildrenDrawer(CREATE_ARTICLE)}
+        >
           创建新页
         </Button>
       </div>

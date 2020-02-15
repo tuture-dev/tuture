@@ -6,7 +6,8 @@ function ToolBar() {
     <div
       css={css`
         width: 40px;
-      `}>
+      `}
+    >
       ToolBar
     </div>
   );
