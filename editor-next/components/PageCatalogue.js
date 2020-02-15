@@ -1,5 +1,6 @@
+import ContectUs from './ContactUs'
 function PageCatalogue() {
-  return <div>PageCatalogue</div>;
+  return <div><ContectUs></ContectUs></div> ;
 }
 
 export default PageCatalogue;
