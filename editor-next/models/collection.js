@@ -11,23 +11,31 @@ const collection = {
     collection: {
       articles: [],
     },
-    nowArticle: {},
+    nowArticleIndex: {},
   },
   reducers: {
     setCollectionData(state, payload) {
       const { tuture, diff } = payload;
       state.diff = diff;
-      state.nowArticle = tuture;
       state.collection = { ...state.collection, ...tuture };
+
+      if (state.collection.articles.length > 0) {
+        state.nowArticleIndex = {
+          type: 'article',
+          articleId: state.collection.articles[0].id,
+        };
+      } else {
+        state.nowArticleIndex = {
+          type: 'collection',
+        };
+      }
 
       return state;
     },
     setArticleTitle(state, payload) {
-      state.nowArticle.name = payload;
-
       if (state.collection.articles.length !== 0) {
         state.collection.articles = state.collection.articles.map((article) => {
-          if (article.id === state.nowArticle.id) {
+          if (article.id === state.nowArticleIndex.articleId) {
             article.name = payload;
 
             return article;
@@ -42,24 +50,25 @@ const collection = {
       return state;
     },
     setArticleDescription(state, payload) {
-      state.nowArticle.description = payload;
+      if (state.collection.articles.length !== 0) {
+        state.collection.articles = state.collection.articles.map((article) => {
+          if (article.id === state.nowArticleIndex.articleId) {
+            article.description = payload;
 
-      state.collection.description = payload;
+            return article;
+          }
+
+          return article;
+        });
+      } else {
+        state.collection.description = payload;
+      }
 
       return state;
     },
     setStepTitle(state, payload) {
       const { commit, value } = payload;
 
-      state.nowArticle.steps = state.nowArticle.steps.map((step) => {
-        if (step.commit === commit) {
-          step.name = value;
-
-          return step;
-        }
-
-        return step;
-      });
       state.collection.steps = state.collection.steps.map((step) => {
         if (step.commit === commit) {
           step.name = value;
@@ -79,19 +88,6 @@ const collection = {
         [STEP_PRE_EXPLAIN]: 'pre',
         [STEP_POST_EXPLAIN]: 'post',
       };
-
-      // set nowArticle
-      state.nowArticle.steps = state.nowArticle.steps.map((step) => {
-        if (step.commit === commit) {
-          if (step.explain) {
-            step.explain[mapConstantToType[type]] = content;
-          } else {
-            step.explain = { [mapConstantToType[type]]: content };
-          }
-        }
-
-        return step;
-      });
 
       state.collection.steps = state.collection.steps.map((step) => {
         if (step.commit === commit) {
@@ -117,8 +113,7 @@ const collection = {
         [DIFF_POST_EXPLAIN]: 'post',
       };
 
-      // set nowArticle
-      state.nowArticle.steps = state.nowArticle.steps.map((step) => {
+      state.collection.steps = state.collection.steps.map((step) => {
         if (step.commit === commit) {
           step.diff = step.diff.map((diffFile) => {
             if (diffFile.file === file) {
@@ -136,22 +131,33 @@ const collection = {
         return step;
       });
 
-      // set collection
-      state.collection.steps = state.collection.steps.map((step) => {
-        if (step.commit === commit) {
-          if (step.explain) {
-            step.explain[mapConstantToType[type]] = content;
-          } else {
-            step.explain = { [mapConstantToType[type]]: content };
-          }
-        }
-
-        return step;
-      });
-
       return state;
     },
   },
+  selectors: (slice) => ({
+    nowArticle() {
+      return slice((collectionModel) => {
+        let nowArticle = {};
+
+        const type = collectionModel.nowArticleIndex?.type;
+        if (type === 'collection') {
+          nowArticle = collectionModel.collection;
+        } else if (type === 'article') {
+          const articleId = collectionModel.nowArticleIndex?.articleId;
+          const targetArticle = collectionModel.collection.articles.filter(
+            (article) => article.id === articleId,
+          )[0];
+
+          nowArticle = {
+            ...targetArticle,
+            steps: collectionModel.collection.steps.filter((step) => targetArticle.commits.includes(step.commit)),
+          };
+        }
+
+        return nowArticle;
+      });
+    },
+  }),
 };
 
 export default collection;

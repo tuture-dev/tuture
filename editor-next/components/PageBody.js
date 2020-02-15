@@ -1,9 +1,10 @@
-import { useSelector } from 'react-redux';
+import { useSelector, useStore } from 'react-redux';
 
 import Step from './Step';
 
 function PageBody() {
-  const { steps = [] } = useSelector((state) => state.collection.nowArticle);
+  const store = useStore();
+  const { steps = [] } = useSelector(store.select.collection.nowArticle);
 
   return (
     <div>

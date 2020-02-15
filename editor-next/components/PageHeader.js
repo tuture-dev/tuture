@@ -1,13 +1,14 @@
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 import { Input } from 'antd';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector, useStore } from 'react-redux';
 
 const { TextArea } = Input;
 
 function PageHeader() {
+  const store = useStore();
   const { name = '', description = '' } = useSelector(
-    (state) => state.collection.nowArticle,
+    store.select.collection.nowArticle,
   );
   const dispatch = useDispatch();
 
@@ -42,7 +43,8 @@ function PageHeader() {
           line-height: 22px;
           margin-bottom: 16px;
           resize: none;
-        `} />
+        `}
+      />
     </div>
   );
 }
