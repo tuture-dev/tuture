@@ -51,7 +51,8 @@ function DrawerComponent() {
         background: '#f7f7fa',
       }}
       style={{
-        position: isLgBreakPoint ? 'absolute' : 'static',
+        // position: isLgBreakPoint ? 'absolute' : 'static',
+        position: 'absolute',
         zIndex: isLgBreakPoint ? 1001 : 100,
       }}
     >

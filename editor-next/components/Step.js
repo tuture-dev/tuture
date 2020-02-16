@@ -52,12 +52,7 @@ function Step(props) {
       {step.diff
         .filter((diffFile) => diffFile.display)
         .map((diffFile) => (
-          <div
-            key={diffFile.file}
-            css={css`
-              margin: 20px 0;
-            `}
-          >
+          <div key={diffFile.file}>
             <div className="diffFile-pre-explain">
               <Editure
                 commit={step.commit}

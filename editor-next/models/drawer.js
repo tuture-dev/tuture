@@ -3,7 +3,7 @@ import { DRAWER_UNSELECT, PAGE_CATAGUE } from '../utils/constants';
 const drawer = {
   state: {
     childrenVisible: false,
-    visible: true,
+    visible: false,
     drawerType: PAGE_CATAGUE,
     childrenDrawerType: DRAWER_UNSELECT,
   },

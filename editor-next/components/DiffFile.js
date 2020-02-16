@@ -1,40 +1,38 @@
 /** @jsx jsx */
 import { css, jsx, Global } from '@emotion/core';
-import classnames from 'classnames';
 import { useSelector, useStore } from 'react-redux';
-
-let nowLineNumber = 0;
-let nextAddCount = 0;
+import Highlight, { defaultProps } from 'prism-react-renderer';
+import vsDark from 'prism-react-renderer/themes/vsDark';
+import { Checkbox } from 'antd';
 
 const diffFileStyle = css`
   color: rgba(0, 0, 0, 0.84);
   display: block;
   /* padding-top: 8px; */
   padding-bottom: 10px;
-  background-color: rgba(0, 0, 0, 0.05);
+  background-color: rgb(30, 30, 30);
   margin: 32px 0;
 `;
 
 const diffFileHeaderStyle = css`
   font-family: 'Roboto Mono', Courier, monospace;
   font-size: 14px;
-  background-color: #00bc87;
+  background-color: rgb(17, 21, 24);
   color: rgba(255, 255, 255, 1);
+  border-bottom: 1px solid rgb(17, 21, 24);
+  box-shadow: #000000 0 6px 6px -6px;
   text-align: left;
   padding: 8px 0px 8px 20px;
   margin-bottom: 16px;
   position: relative;
 `;
 
-const diffStyle = css`
-  table-layout: fixed;
-  border-collapse: collapse;
-  overflow: auto;
-  width: 100%;
+const codeDeletionStyle = css`
+  background-color: #3e3133;
+`;
 
-  td {
-    vertical-align: top;
-  }
+const codeAdditionStyle = css`
+  background-color: rgb(53, 59, 69);
 `;
 
 function DiffFile(props) {
@@ -46,167 +44,106 @@ function DiffFile(props) {
     store.select.collection.getDiffItemByCommitAndFile({ file, commit }),
   );
 
-  // function renderLineNumber(lineNumber) {
-  //   return (
-  //     <td
-  //       css={css`
-  //         width: 8px;
-  //         padding: 0 16px;
-  //         color: rgba(0, 0, 0, 0.24);
-  //         &:empty:before {
-  //           content: ${lineNumber};
-  //         }
-  //       `}
-  //     />
-  //   );
-  // }
+  let codeString = '';
+  const DIFF_ADD = [];
+  const DIFF_DEL = [];
+  diffItem.chunks.map((chunk) => {
+    chunk.changes.map((change, index) => {
+      const { content } = change;
 
-  function renderRow(change, isAllInsert, i) {
-    const { type, content } = change;
-    const lang = diffFile.file
-      .split('.')
-      .pop()
-      .toLowerCase();
-
-    // const lineNumberClassName = classnames('diff-gutter', {
-    //   [`diff-gutter-${type}`]: !isAllInsert,
-    // });
-    const codeClassName = classnames('diff-code', {
-      [`diff-code-${type}`]: !isAllInsert,
-    });
-
-    // {this.renderLineNumber(lineNumberClassName, i + 1)}
-
-    // handle render code content
-    let code = content;
-
-    if (content !== 'normal' && content.length === 1) {
-      code = content.replace(/[+-]/, ' ');
-    } else if (content !== 'normal' && content.length > 1) {
-      code = content.slice(1);
-    }
-
-    return (
-      <tr
-        className="diff-line"
-        key={`change${i}`}
-        css={css`
-          line-height: 31px;
-          font-family: 'Roboto Mono', Courier, monospace;
-        `}
-      >
-        <td
-          className={classnames('diff-code', { [codeClassName]: true })}
-          css={css`
-            padding: 0 20px;
-            overflow: auto;
-          `}
-        >
-          <pre>
-            <code className={lang}>{code}</code>
-          </pre>
-        </td>
-      </tr>
-    );
-  }
-
-  function judgeAllRowInsertState(changes = [], key) {
-    // these lines of code are for display correct line number
-    if (key === 0) {
-      nowLineNumber = 0;
-    } else {
-      nowLineNumber += nextAddCount;
-    }
-    nextAddCount = changes.length;
-
-    let isAllInsert = true;
-    changes.map((change) => {
-      const { type } = change;
-      if (type !== 'add') {
-        isAllInsert = false;
+      if (/[+]/.test(content)) {
+        DIFF_ADD.push(index);
+      } else if (/[-]/.test(content)) {
+        DIFF_DEL.push(index);
       }
+
+      // handle render code content
+      let code = content;
+
+      if (content !== 'normal' && content.length === 1) {
+        code = content.replace(/[+-]/, ' ');
+      } else if (content !== 'normal' && content.length > 1) {
+        code = content.slice(1);
+      }
+      codeString += `${code}\n`;
 
       return change;
     });
-    return changes.map((change, i) => {
-      return renderRow(change, isAllInsert, nowLineNumber + i);
-    });
+
+    return chunk;
+  });
+
+  const lang = diffFile.file
+    .split('.')
+    .pop()
+    .toLowerCase();
+
+  function onChange(checkedValues) {
+    console.log('checked = ', checkedValues);
   }
 
   return (
     <div className="diff-file" css={diffFileStyle}>
       <header css={diffFileHeaderStyle}>{file}</header>
-      <table css={diffStyle}>
-        <tbody>
-          {diffItem.chunks.map((chunk, index) => {
-            if (index !== diffItem.chunks.length - 1) {
-              return (
-                <>
-                  {judgeAllRowInsertState(chunk.changes, index)}
-                  {judgeAllRowInsertState(
-                    [
-                      {
-                        type: 'normal',
-                        content: ' ...',
-                        normal: true,
-                      },
-                    ],
-                    index,
-                  )}
-                </>
-              );
-            }
-
-            return judgeAllRowInsertState(chunk.changes, index);
-          })}
-        </tbody>
-      </table>
-      <Global
-        styles={css`
-          .diff-gutter-add {
-            background-color: rgba(0, 0, 0, 0.07);
-          }
-
-          .diff-gutter-del {
-            background-color: rgba(0, 0, 0, 0.021);
-          }
-
-          .diff-code-add {
-            font-weight: 700;
-            background-color: rgba(0, 0, 0, 0.07);
-          }
-
-          .diff-code-del {
-            opacity: 0.3;
-            background-color: rgba(0, 0, 0, 0.07);
-          }
-
-          code,
-          pre {
-            line-height: 1.8;
-            text-align: left;
-            white-space: pre-wrap;
-            word-wrap: break-word;
-            word-break: break-all;
-            font-family: 'Roboto Mono', Monaco, Menlo, 'Courier New', Courier,
-              monospace;
-            font-size: 14px;
-            color: rgba(0, 0, 0, 0.84);
-          }
-
-          /* Code blocks */
-          pre {
-            margin: 0;
-          }
-
-          /* Inline code */
-          :not(pre) > code {
-            padding: 0.1em;
-            border-radius: 0.3em;
-            white-space: normal;
-          }
-        `}
-      />
+      <Highlight
+        {...defaultProps}
+        code={codeString}
+        language={lang}
+        theme={vsDark}
+      >
+        {({ className, style, tokens, getLineProps, getTokenProps }) => {
+          return (
+            <pre className={className} style={style}>
+              <Checkbox.Group
+                onChange={onChange}
+                css={css`
+                  width: 100%;
+                `}
+              >
+                {tokens.map((line, i) => (
+                  <div
+                    {...getLineProps({ line, key: i })}
+                    css={css`
+                      ${DIFF_ADD.includes(i) && codeAdditionStyle}
+                      ${DIFF_DEL.includes(i) &&
+                        codeDeletionStyle}
+                      padding: 0 16px;
+                    `}
+                  >
+                    <Checkbox label={i} value={i} />
+                    <span
+                      css={css`
+                        font-family: dm, Menlo, Monaco, 'Courier New', monospace;
+                        font-weight: normal;
+                        font-size: 15px;
+                        line-height: 23px;
+                        letter-spacing: 0px;
+                        color: #858585;
+                        margin-right: 16px;
+                        width: 25px;
+                        display: inline-block;
+                        text-align: right;
+                      `}
+                    >
+                      {i}
+                    </span>
+                    {line.map((token, key) => (
+                      <span
+                        {...getTokenProps({ token, key })}
+                        css={css`
+                          opacity: ${DIFF_DEL.includes(i) ? 0.3 : 1};
+                          font-weight: ${DIFF_ADD.includes(i) ? 700 : 'normal'};
+                        `}
+                      />
+                    ))}
+                  </div>
+                ))}
+              </Checkbox.Group>
+            </pre>
+          );
+        }}
+      </Highlight>
+      <Global styles={css``} />
     </div>
   );
 }
