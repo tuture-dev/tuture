@@ -13,6 +13,7 @@ const collection = {
     diff,
     collection: tuture,
     nowArticleId: tuture.articles[0].id,
+    nowCommit: '2b84923',
   },
   reducers: {
     setCollectionData(state, payload) {
@@ -124,6 +125,38 @@ const collection = {
 
       return state;
     },
+    setDiffItemHiddenLines(state, payload) {
+      const { file, commit, hiddenLines } = payload;
+
+      state.collection.steps = state.collection.steps.map((step) => {
+        if (step.commit === commit) {
+          step.diff = step.diff.map((diffFile) => {
+            if (diffFile.file === file) {
+              diffFile.hiddenLines = hiddenLines;
+            }
+
+            return diffFile;
+          });
+        }
+
+        return step;
+      });
+
+      return state;
+    },
+    switchFile(state, payload) {
+      const { removedIndex, addedIndex, commit } = payload;
+
+      state.collection.steps = state.collection.steps.map((step) => {
+        if (step.commit === commit) {
+          const oldDiff = step.diff[removedIndex];
+          step.diff.splice(removedIndex, 1);
+          step.diff.splice(addedIndex, 0, oldDiff);
+        }
+
+        return step;
+      });
+    },
     setArticleContent(state, payload) {
       const { fragment } = payload;
 
@@ -137,7 +170,7 @@ const collection = {
       return state;
     },
   },
-  selectors: (slice) => ({
+  selectors: (slice, createSelector, hasProps) => ({
     nowArticleMeta() {
       return slice((collectionModel) => {
         const {
@@ -169,6 +202,29 @@ const collection = {
         return steps;
       });
     },
+    getDiffItemByCommitAndFile: hasProps((__, props) => {
+      return slice(
+        (collectionModel) =>
+          collectionModel.diff
+            .filter((diffItem) => diffItem.commit === props.commit)[0]
+            .diff.filter((diffItem) => diffItem.to === props.file)[0],
+      );
+    }),
+    getStepFileListAndTitle: hasProps((__, props) => {
+      return slice((collectionModel) => {
+        const { commit } = props;
+        const nowStep = collectionModel.collection.steps.filter(
+          (step) => step.commit === commit,
+        )[0];
+
+        if (nowStep) {
+          const fileList = nowStep.diff.map((diffFile) => diffFile.file);
+          return { fileList, title: nowStep.name };
+        }
+
+        return { fileList: [], title: '' };
+      });
+    }),
   }),
 };
 

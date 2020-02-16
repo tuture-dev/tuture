@@ -18,5 +18,6 @@ module.exports = {
     'react/jsx-props-no-spreading': 'off',
     'react/jsx-closing-bracket-location': 'off',
     'react/jsx-curly-newline': 'off',
+    'react/jsx-no-duplicate-props': 'off',
   },
 };
