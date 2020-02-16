@@ -2955,17 +2955,22 @@ ecc-jsbn@~0.1.1:
     jsbn "~0.1.0"
     safer-buffer "^2.1.0"
 
-editure-constants@^0.0.3:
-  version "0.0.3"
-  resolved "https://registry.npm.taobao.org/editure-constants/download/editure-constants-0.0.3.tgz#1db927d8ac27937585dc1fe2697830d87d474a76"
-  integrity sha1-Hbkn2Kwnk3WF3B/iaXgw2H1HSnY=
+editure-constants@^0.0.4:
+  version "0.0.4"
+  resolved "https://registry.npm.taobao.org/editure-constants/download/editure-constants-0.0.4.tgz#b7ce772004b35f69c60a5e21c3aa6c8ced7e5ef8"
+  integrity sha1-t853IASzX2nGCl4hw6psjO1+Xvg=
 
-editure@^0.0.3:
-  version "0.0.3"
-  resolved "https://registry.npm.taobao.org/editure/download/editure-0.0.3.tgz#e5fe024146e6a2a20e6aa2c03c31ef914d0570d3"
-  integrity sha1-5f4CQUbmoqIOaqLAPDHvkU0FcNM=
+editure-constants@^0.0.5:
+  version "0.0.5"
+  resolved "https://registry.npm.taobao.org/editure-constants/download/editure-constants-0.0.5.tgz#e193211bb15d2f2064d98fd5559e2ee3c5dff642"
+  integrity sha1-4ZMhG7FdLyBk2Y/VVZ4u48Xf9kI=
+
+editure@0.0.4:
+  version "0.0.4"
+  resolved "https://registry.npm.taobao.org/editure/download/editure-0.0.4.tgz#4b016f005c4928359fb634863b08a9928eeeab01"
+  integrity sha1-SwFvAFxJKDWftjSGOwipko7uqwE=
   dependencies:
-    editure-constants "^0.0.3"
+    editure-constants "^0.0.4"
     is-url "^1.2.4"
     markdown-it "^10.0.0"
     slate-hyperscript "^0.57.1"
@@ -3115,20 +3120,6 @@ escape-string-regexp@^1.0.2, escape-string-regexp@^1.0.5:
   version "1.0.5"
   resolved "https://registry.npm.taobao.org/escape-string-regexp/download/escape-string-regexp-1.0.5.tgz#1b61c0562190a8dff6ae3bb2cf0200ca130b86d4"
   integrity sha1-G2HAViGQqN/2rjuyzwIAyhMLhtQ=
-
-eslint-config-prettier@^6.10.0:
-  version "6.10.0"
-  resolved "https://registry.npm.taobao.org/eslint-config-prettier/download/eslint-config-prettier-6.10.0.tgz#7b15e303bf9c956875c948f6b21500e48ded6a7f"
-  integrity sha1-exXjA7+clWh1yUj2shUA5I3tan8=
-  dependencies:
-    get-stdin "^6.0.0"
-
-eslint-plugin-prettier@^3.1.2:
-  version "3.1.2"
-  resolved "https://registry.npm.taobao.org/eslint-plugin-prettier/download/eslint-plugin-prettier-3.1.2.tgz?cache=0&sync_timestamp=1576383469583&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Feslint-plugin-prettier%2Fdownload%2Feslint-plugin-prettier-3.1.2.tgz#432e5a667666ab84ce72f945c72f77d996a5c9ba"
-  integrity sha1-Qy5aZnZmq4TOcvlFxy932Zalybo=
-  dependencies:
-    prettier-linter-helpers "^1.0.0"
 
 eslint-scope@^4.0.3:
   version "4.0.3"
@@ -3366,11 +3357,6 @@ fast-deep-equal@^3.1.1:
   version "3.1.1"
   resolved "https://registry.npm.taobao.org/fast-deep-equal/download/fast-deep-equal-3.1.1.tgz#545145077c501491e33b15ec408c294376e94ae4"
   integrity sha1-VFFFB3xQFJHjOxXsQIwpQ3bpSuQ=
-
-fast-diff@^1.1.2:
-  version "1.2.0"
-  resolved "https://registry.npm.taobao.org/fast-diff/download/fast-diff-1.2.0.tgz#73ee11982d86caaf7959828d519cfe927fac5f03"
-  integrity sha1-c+4RmC2Gyq95WYKNUZz+kn+sXwM=
 
 fast-json-stable-stringify@^2.0.0:
   version "2.1.0"
@@ -3638,11 +3624,6 @@ functional-red-black-tree@^1.0.1:
   version "1.0.1"
   resolved "https://registry.npm.taobao.org/functional-red-black-tree/download/functional-red-black-tree-1.0.1.tgz#1b0ab3bd553b2a0d6399d29c0e3ea0b252078327"
   integrity sha1-GwqzvVU7Kg1jmdKcDj6gslIHgyc=
-
-get-stdin@^6.0.0:
-  version "6.0.0"
-  resolved "https://registry.npm.taobao.org/get-stdin/download/get-stdin-6.0.0.tgz#9e09bf712b360ab9225e812048f71fde9c89657b"
-  integrity sha1-ngm/cSs2CrkiXoEgSPcf3pyJZXs=
 
 get-value@^2.0.3, get-value@^2.0.6:
   version "2.0.6"
@@ -6193,13 +6174,6 @@ prepend-http@^1.0.0:
   version "1.0.4"
   resolved "https://registry.npm.taobao.org/prepend-http/download/prepend-http-1.0.4.tgz#d4f4562b0ce3696e41ac52d0e002e57a635dc6dc"
   integrity sha1-1PRWKwzjaW5BrFLQ4ALlemNdxtw=
-
-prettier-linter-helpers@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.npm.taobao.org/prettier-linter-helpers/download/prettier-linter-helpers-1.0.0.tgz#d23d41fe1375646de2d0104d3454a3008802cf7b"
-  integrity sha1-0j1B/hN1ZG3i0BBNNFSjAIgCz3s=
-  dependencies:
-    fast-diff "^1.1.2"
 
 private@^0.1.6, private@^0.1.8:
   version "0.1.8"

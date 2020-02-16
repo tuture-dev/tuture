@@ -2,9 +2,7 @@ import React, { useRef } from 'react';
 import Modal from 'react-modal';
 import { useSlate } from 'slate-react';
 import { css } from 'emotion';
-import {
-  isMarkActive, insertLink, updateLink, selectLastPoint,
-} from 'editure';
+import { isMarkActive, insertLink, updateLink, selectLastPoint } from 'editure';
 import { LINK } from 'editure-constants';
 
 import {
@@ -66,12 +64,14 @@ const EditLink = ({ link, dispatch }) => {
       isOpen={isEditing}
       style={customStyles}
       ariaHideApp={false}
-      shouldCloseOnEsc>
+      shouldCloseOnEsc
+    >
       <p
         className={css`
           margin-top: 8px;
           margin-bottom: 8px;
-        `}>
+        `}
+      >
         文本
       </p>
       <input
@@ -85,7 +85,8 @@ const EditLink = ({ link, dispatch }) => {
         className={css`
           margin-top: 8px;
           margin-bottom: 8px;
-        `}>
+        `}
+      >
         链接
       </p>
       <input
@@ -99,20 +100,23 @@ const EditLink = ({ link, dispatch }) => {
       <div
         className={css`
           margin-top: 16px;
-        `}>
+        `}
+      >
         <button
           className={css`
             width: 60px;
           `}
           type="button"
-          onClick={onSubmit}>
+          onClick={onSubmit}
+        >
           确定
         </button>
         <span
           className={css`
             display: inline-block;
             width: 32px;
-          `}>
+          `}
+        >
           {' '}
         </span>
         <button
@@ -120,7 +124,8 @@ const EditLink = ({ link, dispatch }) => {
             width: 60px;
           `}
           type="button"
-          onClick={onCancel}>
+          onClick={onCancel}
+        >
           取消
         </button>
       </div>

@@ -18,7 +18,8 @@ const HistoryButton = ({ action = 'undo', title, icon }) => {
         } else if (action === 'undo') {
           editor.undo();
         }
-      }}>
+      }}
+    >
       <Icon type={icon} />
     </Button>
   );

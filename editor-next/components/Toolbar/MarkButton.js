@@ -15,7 +15,8 @@ const MarkButton = ({ format = '', icon, title }) => {
       handleMouseDown={(event) => {
         event.preventDefault();
         toggleMark(editor, format);
-      }}>
+      }}
+    >
       <Icon type={icon} />
     </Button>
   );

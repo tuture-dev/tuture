@@ -29,7 +29,8 @@ const LinkButton = React.forwardRef(({ dispatch }, ref) => {
       title="添加链接"
       active={isMarkActive(editor, LINK)}
       handleClick={onClick}
-      ref={ref}>
+      ref={ref}
+    >
       <Icon type="link" />
     </Button>
   );

@@ -5,29 +5,22 @@ import {
   DIFF_POST_EXPLAIN,
 } from '../utils/constants';
 
+import diff from '../utils/data/diff.json';
+import tuture from '../utils/data/converted-tuture.json';
+
 const collection = {
   state: {
-    diff: [],
-    collection: {
-      articles: [],
-    },
-    nowArticleIndex: {},
+    diff,
+    collection: tuture,
+    nowArticleId: tuture.articles[0].id,
   },
   reducers: {
     setCollectionData(state, payload) {
-      const { tuture, diff } = payload;
-      state.diff = diff;
-      state.collection = { ...state.collection, ...tuture };
+      state.diff = payload.diff;
+      state.collection = { ...state.collection, ...payload.tuture };
 
-      if (state.collection.articles.length > 0) {
-        state.nowArticleIndex = {
-          type: 'article',
-          articleId: state.collection.articles[0].id,
-        };
-      } else {
-        state.nowArticleIndex = {
-          type: 'collection',
-        };
+      if (state.collection.articles?.length > 0) {
+        state.nowArticleId = state.collection.articles[0].id;
       }
 
       return state;
@@ -35,7 +28,7 @@ const collection = {
     setArticleTitle(state, payload) {
       if (state.collection.articles.length !== 0) {
         state.collection.articles = state.collection.articles.map((article) => {
-          if (article.id === state.nowArticleIndex.articleId) {
+          if (article.id === state.nowArticleId) {
             article.name = payload;
 
             return article;
@@ -52,7 +45,7 @@ const collection = {
     setArticleDescription(state, payload) {
       if (state.collection.articles.length !== 0) {
         state.collection.articles = state.collection.articles.map((article) => {
-          if (article.id === state.nowArticleIndex.articleId) {
+          if (article.id === state.nowArticleId) {
             article.description = payload;
 
             return article;
@@ -131,30 +124,49 @@ const collection = {
 
       return state;
     },
+    setArticleContent(state, payload) {
+      const { fragment } = payload;
+
+      if (!fragment) return state;
+
+      state.collection.steps = state.collection.steps.map(
+        (step) =>
+          fragment.filter((node) => node.commit === step.commit)[0] || step,
+      );
+
+      return state;
+    },
   },
   selectors: (slice) => ({
-    nowArticle() {
+    nowArticleMeta() {
       return slice((collectionModel) => {
-        let nowArticle = {};
+        const {
+          collection: { articles, name, description },
+          nowArticleId,
+        } = collectionModel;
 
-        const type = collectionModel.nowArticleIndex?.type;
-        if (type === 'collection') {
-          nowArticle = collectionModel.collection;
-        } else if (type === 'article') {
-          const articleId = collectionModel.nowArticleIndex?.articleId;
-          const targetArticle = collectionModel.collection.articles.filter(
-            (article) => article.id === articleId,
-          )[0];
-
-          nowArticle = {
-            ...targetArticle,
-            steps: collectionModel.collection.steps.filter((step) =>
-              targetArticle.commits.includes(step.commit),
-            ),
-          };
+        if (nowArticleId) {
+          return articles.filter((elem) => elem.id === nowArticleId)[0];
         }
 
-        return nowArticle;
+        return { name, description };
+      });
+    },
+    nowArticleContent() {
+      return slice((collectionModel) => {
+        const {
+          collection: { articles, steps },
+          nowArticleId,
+        } = collectionModel;
+
+        if (nowArticleId) {
+          const article = articles.filter(
+            (elem) => elem.id.toString() === nowArticleId.toString(),
+          )[0];
+          return steps.filter((step) => article.commits.includes(step.commit));
+        }
+
+        return steps;
       });
     },
   }),

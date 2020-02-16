@@ -26,10 +26,10 @@ const Button = React.forwardRef(
         css`
           cursor: pointer;
           color: ${reversed
-          ? active
-            ? 'white'
-            : '#aaa'
-          : active
+            ? active
+              ? 'white'
+              : '#aaa'
+            : active
             ? 'black'
             : '#ccc'};
         `,

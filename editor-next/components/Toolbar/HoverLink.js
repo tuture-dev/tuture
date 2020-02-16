@@ -36,10 +36,10 @@ const HoverLink = ({ dispatch }) => {
 
     el.style.opacity = 1;
     el.style.top = `${rect.top + window.pageYOffset - el.offsetHeight}px`;
-    el.style.left = `${rect.left
-      + window.pageXOffset
-      - el.offsetWidth / 2
-      + rect.width / 2}px`;
+    el.style.left = `${rect.left +
+      window.pageXOffset -
+      el.offsetWidth / 2 +
+      rect.width / 2}px`;
   });
 
   const onClickEdit = (e) => {
@@ -77,7 +77,8 @@ const HoverLink = ({ dispatch }) => {
           background-color: #eee;
           border-radius: 4px;
           transition: opacity 0.75s;
-        `}>
+        `}
+      >
         <a href={urlValue} target="_blank" rel="noopener noreferrer">
           {urlValue}
         </a>

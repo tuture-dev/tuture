@@ -8,7 +8,7 @@ const { TextArea } = Input;
 function PageHeader() {
   const store = useStore();
   const { name = '', description = '' } = useSelector(
-    store.select.collection.nowArticle,
+    store.select.collection.nowArticleMeta,
   );
   const dispatch = useDispatch();
 

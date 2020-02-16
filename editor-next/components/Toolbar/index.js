@@ -26,7 +26,8 @@ const Toolbar = React.forwardRef(
             border-bottom: 2px solid #eee;
             margin-bottom: 20px;
           `,
-        )}>
+        )}
+      >
         <HistoryButton icon="undo" status="undo" title="撤销" />
         <HistoryButton icon="redo" status="redo" title="重做" />
         <MarkButton format={F.BOLD} icon="format_bold" title="加粗" />

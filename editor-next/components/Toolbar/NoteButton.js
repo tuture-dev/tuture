@@ -22,7 +22,8 @@ const NoteButton = () => {
     <Button
       title="提示框"
       onMouseEnter={() => setShowDropList(true)}
-      onMouseLeave={() => setShowDropList(false)}>
+      onMouseLeave={() => setShowDropList(false)}
+    >
       <Icon>note_add</Icon>
       {showDropList && (
         <div
@@ -42,14 +43,16 @@ const NoteButton = () => {
           onMouseDown={(e) => {
             e.preventDefault();
             setShowDropList(false);
-          }}>
+          }}
+        >
           <ul
             className={css`
               margin: 0;
               padding: 0;
               padding-inline-start: 0;
               list-style-type: none;
-            `}>
+            `}
+          >
             {levels.map((level) => (
               <li
                 key={level}
@@ -60,7 +63,8 @@ const NoteButton = () => {
                   &:hover {
                     background: #f1f1f1;
                   }
-                `}>
+                `}
+              >
                 <span onMouseDown={(e) => handleClickItem(e, level)}>
                   {level}
                 </span>

@@ -29,7 +29,8 @@ const ListItemElement = (props) => {
   return (
     <li
       {...attributes}
-      className={parent === F.BULLETED_LIST ? bulletedStyle : numberedStyle}>
+      className={parent === F.BULLETED_LIST ? bulletedStyle : numberedStyle}
+    >
       {children}
     </li>
   );
@@ -48,18 +49,21 @@ const CodeBlockElement = (props) => {
     updateBlock(editor, F.CODE_BLOCK, { lang: newLang });
   }
 
-  const selectValue = enumPrismLangToLanguage[enumPrismLangToLanguage[lang.toLocaleLowerCase()]];
+  const selectValue =
+    enumPrismLangToLanguage[enumPrismLangToLanguage[lang.toLocaleLowerCase()]];
 
   return (
     <div
       className={css`
         margin-bottom: 1em;
       `}
-      {...attributes}>
+      {...attributes}
+    >
       <select
         contentEditable={false}
         value={selectValue}
-        onChange={handleChange}>
+        onChange={handleChange}
+      >
         {languages.map((language) => (
           <option key={language} value={enumPrismLangToLanguage[language]}>
             {language}
@@ -71,7 +75,8 @@ const CodeBlockElement = (props) => {
           margin-top: 5px;
           padding: 10px 20px;
           background-color: #eee;
-        `}>
+        `}
+      >
         {children}
       </div>
     </div>
@@ -88,7 +93,8 @@ const HrElement = ({ attributes, children }) => {
       className={css`
         border-bottom: 2px solid #ddd;
         box-shadow: ${selected && focused ? '0 0 0 3px #B4D5FF' : 'none'};
-      `}>
+      `}
+    >
       {children}
     </div>
   );
@@ -156,9 +162,10 @@ const NoteElement = (props) => {
     border-left-color: ${palette[level].border};
     background-color: ${palette[level].background};
   `;
-  const iconStyle = level === 'default'
-    ? ''
-    : css`
+  const iconStyle =
+    level === 'default'
+      ? ''
+      : css`
     &::before {
       content: "${icons[level].content}";
       color: ${icons[level].color};
@@ -175,6 +182,80 @@ const NoteElement = (props) => {
         ))}
       </select>
       <div>{children}</div>
+    </div>
+  );
+};
+
+const StepElement = (props) => {
+  const { attributes, children, element } = props;
+
+  return (
+    <div {...attributes}>
+      <h2>{element.name}</h2>
+      {children}
+    </div>
+  );
+};
+
+const FileElement = (props) => {
+  const { attributes, children, element } = props;
+
+  return (
+    <div
+      {...attributes}
+      className={css`
+        display: ${element.display ? 'block' : 'none'};
+        margin: 3px;
+        padding: 3px;
+        border: 1px solid white;
+
+        &:hover {
+          border: 1px solid #ddd;
+        }
+      `}
+    >
+      {children}
+    </div>
+  );
+};
+
+const ExplainElement = (props) => {
+  const { attributes, children } = props;
+
+  return (
+    <div
+      {...attributes}
+      className={css`
+        margin: 3px;
+        padding: 3px;
+        border: 1px solid white;
+
+        &:hover {
+          border: 1px solid #ddd;
+        }
+      `}
+    >
+      {children}
+    </div>
+  );
+};
+
+const DiffBlockElement = (props) => {
+  const { attributes, element } = props;
+
+  return (
+    <div
+      {...attributes}
+      className={css`
+        margin: 3px;
+        padding: 3px;
+        border: 1px solid black;
+      `}
+    >
+      <p>
+        Diff for
+        {element.file}
+      </p>
     </div>
   );
 };
@@ -197,7 +278,8 @@ export default (props) => {
           {...attributes}
           className={css`
             padding-inline-start: 0;
-          `}>
+          `}
+        >
           {children}
         </ul>
       );
@@ -207,7 +289,8 @@ export default (props) => {
           {...attributes}
           className={css`
             padding-inline-start: 0;
-          `}>
+          `}
+        >
           {children}
         </ol>
       );
@@ -229,6 +312,14 @@ export default (props) => {
       return <ImageElement {...props} />;
     case F.HR:
       return <HrElement {...props} />;
+    case 'step':
+      return <StepElement {...props} />;
+    case 'file':
+      return <FileElement {...props} />;
+    case 'explain':
+      return <ExplainElement {...props} />;
+    case 'diff-block':
+      return <DiffBlockElement {...props} />;
     default:
       return <p {...attributes}>{children}</p>;
   }

@@ -21,7 +21,8 @@ const ImageButton = React.forwardRef((_, ref) => {
         event.preventDefault();
 
         ref.current.click();
-      }}>
+      }}
+    >
       <input
         type="file"
         ref={ref}

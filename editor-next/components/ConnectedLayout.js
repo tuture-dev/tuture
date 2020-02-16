@@ -1,6 +1,8 @@
-import { useSelector, useDispatch } from 'react-redux';
+import { useMemo } from 'react';
+import { useSelector, useDispatch, useStore } from 'react-redux';
 import { Layout, Menu, Icon, Modal } from 'antd';
 import { useMediaQuery } from 'react-responsive';
+import { Slate } from 'slate-react';
 
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
@@ -16,6 +18,7 @@ import {
   NORMAL,
   COMMIT,
 } from '../utils/constants';
+import { initializeEditor } from '../utils/editor';
 
 const { Header, Sider, Content } = Layout;
 
@@ -23,6 +26,10 @@ function ConnectedLayout(props) {
   const { children } = props;
   const { commitStatus } = useSelector((state) => state.versionControl);
   const { visible, drawerType } = useSelector((state) => state.drawer);
+
+  const store = useStore();
+  const value = useSelector(store.select.collection.nowArticleContent);
+
   const dispatch = useDispatch();
 
   const isLgBreakPoint = useMediaQuery({ query: '(max-width: 992px)' });
@@ -47,8 +54,14 @@ function ConnectedLayout(props) {
     dispatch.versionControl.setCommitStatus(NORMAL);
   }
 
+  function onContentChange(val) {
+    dispatch.collection.setArticleContent({ fragment: val });
+  }
+
+  const editor = useMemo(initializeEditor, []);
+
   return (
-    <div>
+    <Slate editor={editor} value={value} onChange={onContentChange}>
       <Layout>
         <Sider
           onBreakpoint={(broken) => {
@@ -176,7 +189,7 @@ function ConnectedLayout(props) {
         <p>Some contents...</p>
         <p>Some contents...</p>
       </Modal>
-    </div>
+    </Slate>
   );
 }
 

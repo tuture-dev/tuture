@@ -15,7 +15,8 @@ const BlockButton = ({ format = '', title, icon }) => {
       handleMouseDown={(event) => {
         event.preventDefault();
         toggleBlock(editor, format, {}, { unwrap: true });
-      }}>
+      }}
+    >
       <Icon type={icon} />
     </Button>
   );

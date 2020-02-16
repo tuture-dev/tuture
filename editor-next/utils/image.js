@@ -38,7 +38,8 @@ export const createDropListener = (editor) => (e) => {
 export const withImages = (editor) => {
   const { insertData, isVoid } = editor;
 
-  editor.isVoid = (element) => (element.type === IMAGE ? true : isVoid(element));
+  editor.isVoid = (element) =>
+    element.type === IMAGE ? true : isVoid(element);
 
   editor.insertData = (data) => {
     const { files } = data;
