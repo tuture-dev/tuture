@@ -131,6 +131,25 @@ const collection = {
 
       return state;
     },
+    setDiffItemHiddenLines(state, payload) {
+      const { file, commit, hiddenLines } = payload;
+
+      state.collection.steps = state.collection.steps.map((step) => {
+        if (step.commit === commit) {
+          step.diff = step.diff.map((diffFile) => {
+            if (diffFile.file === file) {
+              diffFile.hiddenLines = hiddenLines;
+            }
+
+            return diffFile;
+          });
+        }
+
+        return step;
+      });
+
+      return state;
+    },
   },
   selectors: (slice, createSelector, hasProps) => ({
     nowArticle() {

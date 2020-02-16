@@ -1,9 +1,11 @@
 /** @jsx jsx */
 import { css, jsx, Global } from '@emotion/core';
-import { useSelector, useStore } from 'react-redux';
+import { useSelector, useStore, useDispatch } from 'react-redux';
 import Highlight, { defaultProps } from 'prism-react-renderer';
 import vsDark from 'prism-react-renderer/themes/vsDark';
 import { Checkbox } from 'antd';
+
+import concatCodeStr from '../utils/concatCodeStr';
 
 const diffFileStyle = css`
   color: rgba(0, 0, 0, 0.84);
@@ -37,41 +39,17 @@ const codeAdditionStyle = css`
 
 function DiffFile(props) {
   const { diffFile, commit } = props;
-  const { file } = diffFile;
+  const { file, hiddenLines = [] } = diffFile;
 
+  const dispatch = useDispatch();
   const store = useStore();
   const diffItem = useSelector(
     store.select.collection.getDiffItemByCommitAndFile({ file, commit }),
   );
 
-  let codeString = '';
-  const DIFF_ADD = [];
-  const DIFF_DEL = [];
-  diffItem.chunks.map((chunk) => {
-    chunk.changes.map((change, index) => {
-      const { content } = change;
-
-      if (/[+]/.test(content)) {
-        DIFF_ADD.push(index);
-      } else if (/[-]/.test(content)) {
-        DIFF_DEL.push(index);
-      }
-
-      // handle render code content
-      let code = content;
-
-      if (content !== 'normal' && content.length === 1) {
-        code = content.replace(/[+-]/, ' ');
-      } else if (content !== 'normal' && content.length > 1) {
-        code = content.slice(1);
-      }
-      codeString += `${code}\n`;
-
-      return change;
-    });
-
-    return chunk;
-  });
+  const { codeStr = '', DIFF_ADD = [], DIFF_DEL = [] } = concatCodeStr(
+    diffItem,
+  );
 
   const lang = diffFile.file
     .split('.')
@@ -79,7 +57,11 @@ function DiffFile(props) {
     .toLowerCase();
 
   function onChange(checkedValues) {
-    console.log('checked = ', checkedValues);
+    dispatch.collection.setDiffItemHiddenLines({
+      commit,
+      file,
+      hiddenLines: checkedValues,
+    });
   }
 
   return (
@@ -87,7 +69,7 @@ function DiffFile(props) {
       <header css={diffFileHeaderStyle}>{file}</header>
       <Highlight
         {...defaultProps}
-        code={codeString}
+        code={codeStr}
         language={lang}
         theme={vsDark}
       >
@@ -96,6 +78,7 @@ function DiffFile(props) {
             <pre className={className} style={style}>
               <Checkbox.Group
                 onChange={onChange}
+                value={hiddenLines}
                 css={css`
                   width: 100%;
                 `}
