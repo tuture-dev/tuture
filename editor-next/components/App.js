@@ -8,7 +8,7 @@ function App() {
     <div>
       <Row>
         <Col xs={0} md={0} lg={5}>
-          <div className="assistLayout">辅助布局填充</div>
+          <div className="assistLayout" />
         </Col>
         <Col md={24} lg={19} xl={14}>
           <div className="content">

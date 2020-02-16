@@ -10,8 +10,10 @@ const collection = {
     diff: [],
     collection: {
       articles: [],
+      steps: [],
     },
     nowArticleIndex: {},
+    nowCommit: '2b84923',
   },
   reducers: {
     setCollectionData(state, payload) {
@@ -150,6 +152,21 @@ const collection = {
 
       return state;
     },
+    switchFile(state, payload) {
+      const { removedIndex, addedIndex, commit } = payload;
+
+      state.collection.steps = state.collection.steps.map((step) => {
+        if (step.commit === commit) {
+          const oldDiff = step.diff[removedIndex];
+          step.diff.splice(removedIndex, 1);
+          step.diff.splice(addedIndex, 0, oldDiff);
+        }
+
+        return step;
+      });
+
+      return state;
+    },
   },
   selectors: (slice, createSelector, hasProps) => ({
     nowArticle() {
@@ -183,6 +200,21 @@ const collection = {
         )[0];
 
         return diff.diff.filter((diffItem) => diffItem.to === props.file)[0];
+      });
+    }),
+    getStepFileListAndTitle: hasProps(function(__, props) {
+      return slice((collectionModel) => {
+        const { commit } = props;
+        const nowStep = collectionModel.collection.steps.filter(
+          (step) => step.commit === commit,
+        )[0];
+
+        if (nowStep) {
+          const fileList = nowStep.diff.map((diffFile) => diffFile.file);
+          return { fileList, title: nowStep.name };
+        }
+
+        return { fileList: [], title: '' };
       });
     }),
   }),
