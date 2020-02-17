@@ -9,9 +9,9 @@ const diffFileStyle = css`
   color: rgba(0, 0, 0, 0.84);
   display: block;
   /* padding-top: 8px; */
-  padding-bottom: 10px;
+  padding-bottom: 8px;
   background-color: rgb(30, 30, 30);
-  margin: 32px 0;
+  margin-bottom: 10px;
 `;
 
 const diffFileHeaderStyle = css`
@@ -22,8 +22,8 @@ const diffFileHeaderStyle = css`
   border-bottom: 1px solid rgb(17, 21, 24);
   box-shadow: #000000 0 6px 6px -6px;
   text-align: left;
-  padding: 8px 0px 8px 20px;
-  margin-bottom: 16px;
+  padding: 8px 0px 8px 16px;
+  margin-bottom: 8px;
   position: relative;
 `;
 

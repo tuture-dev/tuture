@@ -135,7 +135,7 @@ function ConnectedLayout(props) {
         >
           <Layout
             css={css`
-              width: 300px;
+              width: 18%;
               height: 100vh;
               position: ${isLgBreakPoint ? 'absolute' : 'static'};
             `}
@@ -145,7 +145,7 @@ function ConnectedLayout(props) {
           <Layout
             css={css`
               box-shadow: -10px 0 15px rgba(0, 0, 0, 0.04);
-              width: ${isLgBreakPoint ? '100%' : 'calc(100% - 300px)'};
+              width: ${isLgBreakPoint ? '100%' : '82%'};
               z-index: 1000;
             `}
           >

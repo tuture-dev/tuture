@@ -7,10 +7,7 @@ function App() {
   return (
     <div>
       <Row>
-        <Col xs={0} md={0} lg={1}>
-          <div className="assistLayout" />
-        </Col>
-        <Col md={24} lg={19} xl={18}>
+        <Col md={24} lg={19} xl={19}>
           <div className="content">
             <Content />
           </div>
