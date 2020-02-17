@@ -52,3 +52,11 @@ export const STEP_PRE_EXPLAIN = 'STEP_PRE_EXPLAIN';
 export const STEP_POST_EXPLAIN = 'STEP_POST_EXPLAIN';
 export const DIFF_PRE_EXPLAIN = 'DIFF_PRE_EXPLAIN';
 export const DIFF_POST_EXPLAIN = 'DIFF_POST_EXPLAIN';
+
+/**
+ * Additional block types.
+ */
+export const STEP = 'step';
+export const FILE = 'file';
+export const EXPLAIN = 'explain';
+export const DIFF_BLOCK = 'diff-block';

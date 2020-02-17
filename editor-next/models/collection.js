@@ -1,9 +1,4 @@
-import {
-  STEP_PRE_EXPLAIN,
-  STEP_POST_EXPLAIN,
-  DIFF_PRE_EXPLAIN,
-  DIFF_POST_EXPLAIN,
-} from '../utils/constants';
+import { FILE } from '../utils/constants';
 
 import diff from '../utils/data/diff.json';
 import tuture from '../utils/data/converted-tuture.json';
@@ -75,62 +70,12 @@ const collection = {
 
       return state;
     },
-    setStepExplain(state, payload) {
-      const { commit, content, type } = payload;
-
-      const mapConstantToType = {
-        [STEP_PRE_EXPLAIN]: 'pre',
-        [STEP_POST_EXPLAIN]: 'post',
-      };
-
-      state.collection.steps = state.collection.steps.map((step) => {
-        if (step.commit === commit) {
-          if (step.explain) {
-            step.explain[mapConstantToType[type]] = content;
-          } else {
-            step.explain = { [mapConstantToType[type]]: content };
-          }
-        }
-
-        return step;
-      });
-
-      return state;
-    },
-    setDiffFileExplain(state, payload) {
-      const { commit, content, file, type } = payload;
-
-      const mapConstantToType = {
-        [DIFF_PRE_EXPLAIN]: 'pre',
-        [DIFF_POST_EXPLAIN]: 'post',
-      };
-
-      state.collection.steps = state.collection.steps.map((step) => {
-        if (step.commit === commit) {
-          step.diff = step.diff.map((diffFile) => {
-            if (diffFile.file === file) {
-              if (diffFile.explain) {
-                diffFile.explain[mapConstantToType[type]] = content;
-              } else {
-                diffFile.explain = { [mapConstantToType[type]]: content };
-              }
-            }
-
-            return diffFile;
-          });
-        }
-
-        return step;
-      });
-
-      return state;
-    },
     setDiffItemHiddenLines(state, payload) {
       const { file, commit, hiddenLines } = payload;
 
       state.collection.steps = state.collection.steps.map((step) => {
         if (step.commit === commit) {
-          step.diff = step.diff.map((diffFile) => {
+          step.children = step.children.map((diffFile) => {
             if (diffFile.file === file) {
               diffFile.hiddenLines = hiddenLines;
             }
@@ -218,7 +163,9 @@ const collection = {
         )[0];
 
         if (nowStep) {
-          const fileList = nowStep.diff.map((diffFile) => diffFile.file);
+          const fileList = nowStep.children
+            .filter(({ type }) => type === FILE)
+            .map(({ file }) => file);
           return { fileList, title: nowStep.name };
         }
 
