@@ -115,6 +115,36 @@ export const globalStyles = (
         margin-top: 1em;
       }
 
+      .anticon > svg {
+        height: 16px;
+        width: 16px;
+      }
+
+      .ant-select-selection {
+        background: none;
+        border: none;
+        padding: 2px;
+      }
+
+      .ant-select-selection svg {
+        color: black;
+      }
+
+      .ant-select-selection:active {
+        border: none;
+        box-shadow: none;
+      }
+
+      .ant-select-selection:focus {
+        border: none;
+        box-shadow: none;
+      }
+
+      .ant-select-selection-selected-value {
+        font-size: 14px;
+        font-weight: 400;
+      }
+
       .ant-drawer-left.ant-drawer-open .ant-drawer-content-wrapper {
         box-shadow: none;
       }

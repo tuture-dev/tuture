@@ -1,13 +1,15 @@
-import React from 'react';
-import { Icon } from 'antd';
+import React, { useContext } from 'react';
 import { useSlate } from 'slate-react';
 import { css } from 'emotion';
 
 import Button from './Button';
+import ToolbarIcon from './ToolbarIcon';
+import { ButtonRefsContext } from '../../utils/hotkeys';
 import { uploadImage, createInsertImageCallback } from '../../utils/image';
 
-const ImageButton = React.forwardRef((_, ref) => {
+const ImageButton = () => {
   const editor = useSlate();
+  const { imageBtnRef: ref } = useContext(ButtonRefsContext);
 
   const onChange = (e) => {
     e.persist();
@@ -37,9 +39,9 @@ const ImageButton = React.forwardRef((_, ref) => {
           opacity: 0;
         `}
       />
-      <Icon type="file-image" />
+      <ToolbarIcon icon="icon-image" />
     </Button>
   );
-});
+};
 
 export default ImageButton;

@@ -10,9 +10,6 @@ const Menu = ({ className, ...props }) => (
         & > * {
           display: inline-block;
         }
-        & > * + * {
-          margin-left: 15px;
-        }
       `,
     )}
   />

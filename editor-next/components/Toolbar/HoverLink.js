@@ -1,18 +1,18 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Icon } from 'antd';
+import { useDispatch } from 'react-redux';
 import ReactDOM from 'react-dom';
+import { Icon } from 'antd';
 import { css } from 'emotion';
 import { useSlate } from 'slate-react';
 import { LINK } from 'editure-constants';
 import { isMarkActive, removeLink, getLinkData } from 'editure';
 
-import { startEditLink, updateLinkText, updateLinkUrl } from '../../utils/link';
-
 const Portal = ({ children }) => ReactDOM.createPortal(children, document.body);
 
-const HoverLink = ({ dispatch }) => {
+const HoverLink = () => {
   const [urlValue, setUrlValue] = useState('');
   const ref = useRef(null);
+  const dispatch = useDispatch();
   const editor = useSlate();
 
   // eslint-disable-next-line
@@ -45,15 +45,15 @@ const HoverLink = ({ dispatch }) => {
   const onClickEdit = (e) => {
     e.preventDefault();
 
-    // 点击编辑，隐藏此组件
+    // Hide this component after clicking Edit.
     const el = ref.current;
     el.removeAttribute('style');
 
-    dispatch(startEditLink());
+    dispatch.link.startEdit();
 
     const { text, url } = getLinkData(editor);
-    if (text) dispatch(updateLinkText(text));
-    if (url) dispatch(updateLinkUrl(url));
+    if (text) dispatch.link.setText(text);
+    if (url) dispatch.link.setUrl(url);
   };
 
   const onDeleteLink = (e) => {

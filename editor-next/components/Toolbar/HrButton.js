@@ -1,10 +1,10 @@
 import React from 'react';
-import { Icon } from 'antd';
 import { useSlate } from 'slate-react';
 import { insertVoid } from 'editure';
 import { HR } from 'editure-constants';
 
 import Button from './Button';
+import ToolbarIcon from './ToolbarIcon';
 
 const HrButton = () => {
   const editor = useSlate();
@@ -16,7 +16,7 @@ const HrButton = () => {
 
   return (
     <Button title="分割线" handleMouseDown={onMouseDown}>
-      <Icon type="line" />
+      <ToolbarIcon icon="icon-line" />
     </Button>
   );
 };

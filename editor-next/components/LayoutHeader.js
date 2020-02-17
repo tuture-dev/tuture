@@ -3,7 +3,7 @@ import { css, jsx } from '@emotion/core';
 import { Button } from 'antd';
 import { useDispatch } from 'react-redux';
 
-import ToolBar from './ToolBar';
+import ToolBar from './Toolbar';
 import LastSavedTimestamp from './LastSavedTimestamp';
 
 import { COMMIT } from '../utils/constants';

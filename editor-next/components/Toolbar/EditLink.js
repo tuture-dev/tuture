@@ -1,16 +1,10 @@
 import React, { useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import Modal from 'react-modal';
 import { useSlate } from 'slate-react';
 import { css } from 'emotion';
 import { isMarkActive, insertLink, updateLink, selectLastPoint } from 'editure';
 import { LINK } from 'editure-constants';
-
-import {
-  updateLinkText,
-  updateLinkUrl,
-  finishEditLink,
-  cancelEditLink,
-} from '../../utils/link';
 
 const customStyles = {
   content: {
@@ -24,15 +18,16 @@ const customStyles = {
   },
 };
 
-const EditLink = ({ link, dispatch }) => {
+const EditLink = () => {
   const editor = useSlate();
   const ref = useRef(null);
-  const { isEditing, text, url } = link;
+  const dispatch = useDispatch();
+  const { isEditing, text, url } = useSelector((state) => state.link);
 
   const onSubmit = (e) => {
     e.preventDefault();
 
-    // 回到上次编辑的光标位置
+    // Go back to last selected point.
     selectLastPoint(editor);
 
     if (text) {
@@ -43,14 +38,14 @@ const EditLink = ({ link, dispatch }) => {
       }
     }
 
-    dispatch(finishEditLink());
+    dispatch.link.reset();
   };
 
   const onCancel = (e) => {
     e.preventDefault();
 
     selectLastPoint(editor);
-    dispatch(cancelEditLink());
+    dispatch.link.reset();
   };
 
   const onKeyDown = (e) => {
@@ -79,7 +74,7 @@ const EditLink = ({ link, dispatch }) => {
         value={text}
         placeholder="添加描述"
         onKeyDown={onKeyDown}
-        onChange={(e) => dispatch(updateLinkText(e.target.value))}
+        onChange={(e) => dispatch.link.setText(e.target.value)}
       />
       <p
         className={css`
@@ -95,7 +90,7 @@ const EditLink = ({ link, dispatch }) => {
         value={url}
         placeholder="链接地址"
         onKeyDown={onKeyDown}
-        onChange={(e) => dispatch(updateLinkUrl(e.target.value))}
+        onChange={(e) => dispatch.link.setUrl(e.target.value)}
       />
       <div
         className={css`

@@ -1,84 +1,95 @@
 import React, { useState } from 'react';
+import { Select } from 'antd';
 import { useSlate } from 'slate-react';
 import { css, cx } from 'emotion';
 import { updateBlock } from 'editure';
 import { NOTE } from 'editure-constants';
 
-const levels = ['default', 'primary', 'success', 'info', 'warning', 'danger'];
+import IconFont from '../../IconFont';
 
-const palette = {
-  default: { border: '#777', background: '#f7f7f7' },
-  primary: { border: '#6f42c1', background: '#f5f0fa' },
-  success: { border: '#5cb85c', background: '#eff8f0' },
-  info: { border: '#428bca', background: '#eef7fa' },
-  warning: { border: '#f0ad4e', background: '#fdf8ea' },
-  danger: { border: '#d9534f', background: '#fcf1f2' },
-};
+const { Option } = Select;
 
-const icons = {
-  primary: { content: '\f055', color: '#6f42c1' },
-  success: { content: '\f058', color: '#5cb85c' },
-  info: { content: '\f05a', color: '#428bca' },
-  warning: { content: '\f056', color: '#f0ad4e' },
-  danger: { content: '\f056', color: '#d9534f' },
+export const levels = {
+  default: { name: '默认', border: '#777', background: '#f7f7f7' },
+  primary: { name: '主要', border: '#6f42c1', background: '#f5f0fa' },
+  success: { name: '成功', border: '#5cb85c', background: '#eff8f0' },
+  info: { name: '提示', border: '#428bca', background: '#eef7fa' },
+  warning: { name: '警告', border: '#f0ad4e', background: '#fdf8ea' },
+  danger: { name: '危险', border: '#d9534f', background: '#fcf1f2' },
 };
 
 function NoteElement(props) {
   const { attributes, children, element } = props;
   const { level: defaultLevel = 'default' } = element;
 
-  const realLevel = levels.includes(defaultLevel) ? defaultLevel : 'default';
+  const realLevel = Object.keys(levels).includes(defaultLevel)
+    ? defaultLevel
+    : 'default';
 
   const [level, setLevel] = useState(realLevel);
   const editor = useSlate();
 
-  function handleChange(event) {
-    const newLevel = event.target.value;
-    setLevel(newLevel);
-    updateBlock(editor, NOTE, { level: newLevel });
+  function handleChange(value) {
+    setLevel(value);
+    updateBlock(editor, NOTE, { level: value });
   }
 
   const baseStyle = css`
     margin: 1em 0;
     padding: 15px;
     padding-top: 5px;
-    padding-left: 45px;
     position: relative;
     border: 1px solid #eee;
     border-left-width: 5px;
     border-radius: 0px;
-    &::before {
-      font-family: 'FontAwesome';
-      font-size: larger;
-      left: 15px;
-      position: absolute;
-      top: 13px;
-    }
-  `;
-  const noteStyle = css`
-    border-left-color: ${palette[level].border};
-    background-color: ${palette[level].background};
-  `;
-  const iconStyle =
-    level === 'default'
-      ? ''
-      : css`
-    &::before {
-      content: "${icons[level].content}";
-      color: ${icons[level].color};
-    }
+    transition: background-color 1s;
   `;
 
+  const noteStyle = css`
+    border-left-color: ${levels[level].border};
+    background-color: ${levels[level].background};
+  `;
+
+  const suffixIcon = <IconFont type="icon-caret-down" />;
+
   return (
-    <div {...attributes} className={cx(baseStyle, noteStyle, iconStyle)}>
-      <select contentEditable={false} value={level} onChange={handleChange}>
-        {levels.map((elem) => (
-          <option key={elem} value={elem}>
-            {elem}
-          </option>
-        ))}
-      </select>
-      <div>{children}</div>
+    <div {...attributes} className={cx(baseStyle, noteStyle)}>
+      <Select
+        defaultValue={level}
+        suffixIcon={suffixIcon}
+        onChange={handleChange}
+        className={css`
+          padding: 2px 0;
+          margin: 0.5rem 0;
+          width: 100px;
+        `}
+      >
+        {Object.keys(levels).map((levelKey) => {
+          const { name } = levels[levelKey];
+          const icon = `icon-note-${levelKey}`;
+          return (
+            <Option key={levelKey} value={levelKey}>
+              <IconFont type={icon} />
+              <span
+                className={css`
+                  font-size: 16px;
+                  font-weight: 500;
+                  margin-left: 8px;
+                `}
+              >
+                {name}
+              </span>
+            </Option>
+          );
+        })}
+      </Select>
+      <div
+        className={css`
+          padding-left: 36px;
+        `}
+      >
+        {children}
+      </div>
     </div>
   );
 }

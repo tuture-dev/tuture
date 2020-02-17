@@ -1,14 +1,19 @@
-import React from 'react';
-import { Icon } from 'antd';
+import React, { useContext } from 'react';
+import { useDispatch } from 'react-redux';
 import { useSlate } from 'slate-react';
 import { LINK } from 'editure-constants';
 import { isMarkActive, removeLink, getSelectedString } from 'editure';
 
 import Button from './Button';
-import { updateLinkText, startEditLink } from '../../utils/link';
+import ToolbarIcon from './ToolbarIcon';
+import { ButtonRefsContext } from '../../utils/hotkeys';
 
-const LinkButton = React.forwardRef(({ dispatch }, ref) => {
+const LinkButton = () => {
   const editor = useSlate();
+  const dispatch = useDispatch();
+  const { linkBtnRef: ref } = useContext(ButtonRefsContext);
+
+  const isActive = isMarkActive(editor, LINK);
 
   const onClick = () => {
     const { selection } = editor;
@@ -20,20 +25,15 @@ const LinkButton = React.forwardRef(({ dispatch }, ref) => {
       return removeLink(editor);
     }
 
-    dispatch(updateLinkText(getSelectedString(editor)));
-    dispatch(startEditLink());
+    dispatch.link.setText(getSelectedString(editor));
+    dispatch.link.startEdit();
   };
 
   return (
-    <Button
-      title="添加链接"
-      active={isMarkActive(editor, LINK)}
-      handleClick={onClick}
-      ref={ref}
-    >
-      <Icon type="link" />
+    <Button title="添加链接" handleClick={onClick} ref={ref}>
+      <ToolbarIcon isActive={isActive} icon="icon-link" />
     </Button>
   );
-});
+};
 
 export default LinkButton;

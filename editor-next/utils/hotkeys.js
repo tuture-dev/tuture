@@ -1,3 +1,4 @@
+import React from 'react';
 import isHotkey from 'is-hotkey';
 import {
   getBeforeText,
@@ -110,7 +111,15 @@ function handleExitBlock(editor, event) {
   }
 }
 
-export default function createHotKeysHandler(editor, buttonRefs) {
+// Refs for controlling buttons.
+export const buttonRefs = {
+  imageBtnRef: React.createRef(),
+  linkBtnRef: React.createRef(),
+};
+
+export const ButtonRefsContext = React.createContext(buttonRefs);
+
+export default function createHotKeysHandler(editor) {
   const { imageBtnRef, linkBtnRef } = buttonRefs;
 
   return (event) => {
@@ -144,8 +153,7 @@ export default function createHotKeysHandler(editor, buttonRefs) {
       }
     }
 
-    // 全选，在代码块/引用里面按 mod+a 或者 shift + command + up
-    // 应该选择代码块/引用内的内容
+    // Logic for selecting all within the current container.
     if (isHotkey('mod+a', event)) {
       handleSelectAll(editor, event);
       return;
@@ -161,8 +169,7 @@ export default function createHotKeysHandler(editor, buttonRefs) {
       return;
     }
 
-    // 删除，在代码块/引用里面按 mod+delete 或者 shift + command + up
-    // 应该删除代码块/引用中当前行之前的内容
+    // Logic for deleting everything within the line before the cursor.
     if (isHotkey('mod+backspace', event)) {
       handleDeleteLine(editor, event);
       return;

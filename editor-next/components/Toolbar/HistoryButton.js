@@ -1,8 +1,8 @@
 import React from 'react';
-import { Icon } from 'antd';
 import { useSlate } from 'slate-react';
 
 import Button from './Button';
+import ToolbarIcon from './ToolbarIcon';
 
 const HistoryButton = ({ action = 'undo', title, icon }) => {
   const editor = useSlate();
@@ -20,7 +20,7 @@ const HistoryButton = ({ action = 'undo', title, icon }) => {
         }
       }}
     >
-      <Icon type={icon} />
+      <ToolbarIcon icon={icon} />
     </Button>
   );
 };
