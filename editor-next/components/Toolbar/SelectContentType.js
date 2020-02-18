@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { css } from 'emotion';
 import { Select } from 'antd';
 import { useSlate } from 'slate-react';
@@ -19,15 +19,9 @@ const types = {
 
 const SelectContentType = () => {
   const editor = useSlate();
-  const [type, setType] = useState(PARAGRAPH);
-
-  useEffect(() => {
-    const format = detectBlockFormat(editor, Object.keys(types));
-    if (format) setType(format);
-  }, []);
+  const type = detectBlockFormat(editor, Object.keys(types)) || PARAGRAPH;
 
   const handleChange = (value) => {
-    setType(value);
     toggleBlock(editor, value);
   };
 
@@ -36,11 +30,18 @@ const SelectContentType = () => {
   return (
     <Select
       value={type}
-      defaultValue={PARAGRAPH}
+      defaultValue={type}
       suffixIcon={suffixIcon}
       onChange={handleChange}
       className={css`
         width: 100px;
+        border-radius: 5px;
+        transition: background-color 0.5s;
+        background-color: white;
+
+        &:hover {
+          background-color: #e8e8e8;
+        }
       `}
     >
       {Object.keys(types).map((typeKey) => {
