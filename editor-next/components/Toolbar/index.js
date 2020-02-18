@@ -3,6 +3,7 @@ import { css } from 'emotion';
 import * as F from 'editure-constants';
 
 import Menu from './Menu';
+import EditLink from './EditLink';
 import SplitLine from './SplitLine';
 import SaveButton from './SaveButton';
 import MarkButton from './MarkButton';
@@ -22,6 +23,8 @@ const Toolbar = (props) => {
         position: relative;
       `}
     >
+      <EditLink />
+
       <SaveButton />
       <HistoryButton status="undo" icon="icon-undo" title="撤销" />
       <HistoryButton status="redo" icon="icon-redo" title="重做" />

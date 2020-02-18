@@ -7,6 +7,7 @@ import { Slate } from 'slate-react';
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 
+import { updateLastSelection } from 'editure';
 import LayoutHeader from './LayoutHeader';
 import DrawerComponent from './DrawerComponent';
 import ChildrenDrawerComponent from './ChildrenDrawerComponent';
@@ -60,6 +61,7 @@ function ConnectedLayout(props) {
   }
 
   const editor = useMemo(initializeEditor, []);
+  updateLastSelection(editor.selection);
 
   return (
     <ButtonRefsContext.Provider value={buttonRefs}>
