@@ -50,7 +50,8 @@ export const globalStyles = (
       }
 
       pre {
-        background-color: #eee;
+        color: white;
+        background-color: rgb(30, 30, 30);
         white-space: pre-wrap;
         margin: 0;
       }
@@ -124,10 +125,6 @@ export const globalStyles = (
         background: none;
         border: none;
         padding: 2px;
-      }
-
-      .ant-select-selection svg {
-        color: black;
       }
 
       .ant-select-selection:active {

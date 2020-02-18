@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
+import { Select } from 'antd';
 import { useSlate } from 'slate-react';
 import { css } from 'emotion';
-import { updateBlock } from 'editure';
 import { CODE_BLOCK } from 'editure-constants';
+import { updateBlock } from 'editure';
+import IconFont from '../../IconFont';
 
 const languages = [
   'Plain Text',
@@ -131,6 +133,8 @@ const bimapPrismLangandLanguage = (prismLangObj, index) => {
 
 prismLangArr.forEach(bimapPrismLangandLanguage);
 
+const { Option } = Select;
+
 function CodeBlockElement(props) {
   const { element, attributes, children } = props;
   const { lang: defaultLang = 'Plain Text' } = element;
@@ -138,38 +142,48 @@ function CodeBlockElement(props) {
   const [lang, setLang] = useState(defaultLang);
   const editor = useSlate();
 
-  function handleChange(event) {
-    const newLang = event.target.value;
-    setLang(newLang);
-    updateBlock(editor, CODE_BLOCK, { lang: newLang });
+  function handleChange(value) {
+    setLang(value);
+    updateBlock(editor, CODE_BLOCK, { lang: value });
   }
 
   const selectValue =
     enumPrismLangToLanguage[enumPrismLangToLanguage[lang.toLocaleLowerCase()]];
 
+  const suffixIcon = (
+    <IconFont type="icon-caret-down" style={{ color: 'white' }} />
+  );
+
   return (
     <div
-      className={css`
-        margin-bottom: 1em;
-      `}
       {...attributes}
+      className={css`
+        margin: 1em 0;
+        border-radius: 8px;
+        background-color: rgb(30, 30, 30);
+      `}
     >
-      <select
-        contentEditable={false}
-        value={selectValue}
-        onChange={handleChange}
-      >
-        {languages.map((language) => (
-          <option key={language} value={enumPrismLangToLanguage[language]}>
-            {language}
-          </option>
-        ))}
-      </select>
+      <div contentEditable={false}>
+        <Select
+          style={{ width: 120 }}
+          value={selectValue}
+          onChange={handleChange}
+          placeholder="选择语言"
+          suffixIcon={suffixIcon}
+          className={css`
+            color: white !important;
+          `}
+        >
+          {languages.map((language) => (
+            <Option key={language} value={enumPrismLangToLanguage[language]}>
+              {language}
+            </Option>
+          ))}
+        </Select>
+      </div>
       <div
         className={css`
-          margin-top: 5px;
           padding: 10px 20px;
-          background-color: #eee;
         `}
       >
         {children}
