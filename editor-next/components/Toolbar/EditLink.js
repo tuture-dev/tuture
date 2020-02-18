@@ -33,6 +33,8 @@ const EditLink = () => {
 
   const onKeyDown = (e) => {
     if (e.keyCode === 13) {
+      // Enter key.
+      e.preventDefault();
       handleOk();
     }
   };
@@ -55,6 +57,7 @@ const EditLink = () => {
       </p>
       <Input
         value={text}
+        autoFocus={!text}
         placeholder="添加描述"
         onKeyDown={onKeyDown}
         onChange={(e) => dispatch.link.setText(e.target.value)}
@@ -69,6 +72,7 @@ const EditLink = () => {
       </p>
       <Input
         value={url}
+        autoFocus={!!text}
         placeholder="链接地址"
         onKeyDown={onKeyDown}
         onChange={(e) => dispatch.link.setUrl(e.target.value)}

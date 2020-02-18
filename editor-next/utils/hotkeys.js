@@ -119,7 +119,7 @@ export const buttonRefs = {
 
 export const ButtonRefsContext = React.createContext(buttonRefs);
 
-export default function createHotKeysHandler(editor) {
+export const createHotKeysHandler = (editor) => {
   const { imageBtnRef, linkBtnRef } = buttonRefs;
 
   return (event) => {
@@ -188,4 +188,4 @@ export default function createHotKeysHandler(editor) {
       handleTabKey(editor, event);
     }
   };
-}
+};
