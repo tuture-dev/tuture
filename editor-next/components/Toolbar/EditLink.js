@@ -43,6 +43,7 @@ const EditLink = () => {
       visible={isEditing}
       onOk={handleOk}
       onCancel={handleCancel}
+      zIndex={1080}
     >
       <p
         className={css`

@@ -12,6 +12,25 @@ function PageHeader() {
   );
   const dispatch = useDispatch();
 
+  const noBorderAndShadow = css`
+    border: none;
+
+    &:hover {
+      border: none;
+      box-shadow: none;
+    }
+
+    &:active {
+      border: none;
+      box-shadow: none;
+    }
+
+    &:focus {
+      border: none;
+      box-shadow: none;
+    }
+  `;
+
   return (
     <div
       css={css`
@@ -29,6 +48,8 @@ function PageHeader() {
           color: rgba(0, 0, 0, 1);
           line-height: 32px;
           margin-bottom: 24px;
+
+          ${noBorderAndShadow};
         `}
       />
       <TextArea
@@ -46,6 +67,8 @@ function PageHeader() {
           line-height: 22px;
           margin-bottom: 16px;
           resize: none;
+
+          ${noBorderAndShadow};
         `}
       />
     </div>
