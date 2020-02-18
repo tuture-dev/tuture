@@ -105,7 +105,12 @@ function DiffBlockElement(props) {
   }
 
   return (
-    <div className="diff-file" css={diffFileStyle} {...attributes}>
+    <div
+      {...attributes}
+      contentEditable={false}
+      className="diff-file"
+      css={diffFileStyle}
+    >
       <header css={diffFileHeaderStyle}>{file}</header>
       <Highlight
         {...defaultProps}

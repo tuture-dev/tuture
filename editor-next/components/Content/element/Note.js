@@ -54,35 +54,37 @@ function NoteElement(props) {
 
   return (
     <div {...attributes} className={cx(baseStyle, noteStyle)}>
-      <Select
-        defaultValue={level}
-        suffixIcon={suffixIcon}
-        onChange={handleChange}
-        className={css`
-          padding: 2px 0;
-          margin: 0.5rem 0;
-          width: 100px;
-        `}
-      >
-        {Object.keys(levels).map((levelKey) => {
-          const { name } = levels[levelKey];
-          const icon = `icon-note-${levelKey}`;
-          return (
-            <Option key={levelKey} value={levelKey}>
-              <IconFont type={icon} />
-              <span
-                className={css`
-                  font-size: 16px;
-                  font-weight: 500;
-                  margin-left: 8px;
-                `}
-              >
-                {name}
-              </span>
-            </Option>
-          );
-        })}
-      </Select>
+      <div contentEditable={false}>
+        <Select
+          defaultValue={level}
+          suffixIcon={suffixIcon}
+          onChange={handleChange}
+          className={css`
+            padding: 2px 0;
+            margin: 0.5rem 0;
+            width: 100px;
+          `}
+        >
+          {Object.keys(levels).map((levelKey) => {
+            const { name } = levels[levelKey];
+            const icon = `icon-note-${levelKey}`;
+            return (
+              <Option key={levelKey} value={levelKey}>
+                <IconFont type={icon} />
+                <span
+                  className={css`
+                    font-size: 16px;
+                    font-weight: 500;
+                    margin-left: 8px;
+                  `}
+                >
+                  {name}
+                </span>
+              </Option>
+            );
+          })}
+        </Select>
+      </div>
       <div
         className={css`
           padding-left: 36px;
