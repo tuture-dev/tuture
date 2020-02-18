@@ -40,18 +40,24 @@
           "type": "explain",
           "children": [
             {
-              "type": "paragraph",
+              "type": "note",
+              "level": "primary",
               "children": [
                 {
-                  "text": "::: primary此教程属于"
-                },
-                {
-                  "text": "Node.js 后端工程师学习路线",
-                  "link": true,
-                  "url": "https://tuture.co/roadmaps/node/"
-                },
-                {
-                  "text": "的一部分，点击可查看全部内容。:::"
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": "此教程属于"
+                    },
+                    {
+                      "text": "Node.js 后端工程师学习路线",
+                      "link": true,
+                      "url": "https://tuture.co/roadmaps/node/"
+                    },
+                    {
+                      "text": "的一部分，点击可查看全部内容。"
+                    }
+                  ]
                 }
               ]
             },
@@ -801,12 +807,45 @@
             },
             {
               "type": "code-block",
+              "lang": "javascript",
               "children": [
                 {
                   "type": "code-line",
                   "children": [
                     {
-                      "text": "// 发送一串 HTML 代码res.send('HTML String');// 发送一个文件res.sendFile('file.zip');// 渲染一个模板引擎并发送res.render('index');"
+                      "text": "// 发送一串 HTML 代码"
+                    }
+                  ]
+                },
+                {
+                  "type": "code-line",
+                  "children": [
+                    {
+                      "text": "res.send('HTML String');"
+                    }
+                  ]
+                },
+                {
+                  "type": "code-line",
+                  "children": [
+                    {
+                      "text": "// 发送一个文件"
+                    }
+                  ]
+                },
+                {
+                  "type": "code-line",
+                  "children": [
+                    {
+                      "text": "// 渲染一个模板引擎并发送"
+                    }
+                  ]
+                },
+                {
+                  "type": "code-line",
+                  "children": [
+                    {
+                      "text": "res.render('index');"
                     }
                   ]
                 }
