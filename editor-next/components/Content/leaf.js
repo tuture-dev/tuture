@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { useSlate } from 'slate-react';
 import { css } from 'emotion';
 import { Popover, Popconfirm, Tooltip } from 'antd';
-import { getLinkData, removeLink } from 'editure';
+import { getLinkData, removeLink, selectLastPoint } from 'editure';
 
 import IconFont from '../IconFont';
 
@@ -30,6 +30,7 @@ const Link = (props) => {
   };
 
   const handleDeleteLink = () => {
+    selectLastPoint(editor);
     removeLink(editor);
   };
 
