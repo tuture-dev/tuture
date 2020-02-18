@@ -1,17 +1,10 @@
 import React from 'react';
 import { cx, css } from 'emotion';
 
-const Button = ({
-  className,
-  title,
-  handleMouseDown,
-  handleClick,
-  ...props
-}) => (
+const Button = ({ className, handleMouseDown, handleClick, ...props }) => (
   /* eslint-disable no-nested-ternary */
   <span
     {...props}
-    title={title}
     onMouseDown={handleMouseDown}
     onClick={handleClick}
     className={cx(

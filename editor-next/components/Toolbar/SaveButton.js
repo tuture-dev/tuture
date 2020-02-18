@@ -5,8 +5,8 @@ import ToolbarIcon from './ToolbarIcon';
 
 const SaveButton = () => {
   return (
-    <Button title="保存">
-      <ToolbarIcon icon="icon-save" />
+    <Button>
+      <ToolbarIcon icon="icon-save" title="保存" />
     </Button>
   );
 };

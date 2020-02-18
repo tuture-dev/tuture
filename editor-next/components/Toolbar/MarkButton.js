@@ -11,13 +11,12 @@ const MarkButton = ({ format = '', icon, title }) => {
 
   return (
     <Button
-      title={title}
       handleMouseDown={(event) => {
         event.preventDefault();
         toggleMark(editor, format);
       }}
     >
-      <ToolbarIcon isActive={isActive} icon={icon} />
+      <ToolbarIcon isActive={isActive} icon={icon} title={title} />
     </Button>
   );
 };

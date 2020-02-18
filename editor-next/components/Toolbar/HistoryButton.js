@@ -9,7 +9,6 @@ const HistoryButton = ({ action = 'undo', title, icon }) => {
 
   return (
     <Button
-      title={title}
       handleMouseDown={(event) => {
         event.preventDefault();
 
@@ -20,7 +19,7 @@ const HistoryButton = ({ action = 'undo', title, icon }) => {
         }
       }}
     >
-      <ToolbarIcon icon={icon} />
+      <ToolbarIcon icon={icon} title={title} />
     </Button>
   );
 };

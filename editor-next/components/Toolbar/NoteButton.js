@@ -29,8 +29,8 @@ const NoteButton = () => {
 
   return (
     <Dropdown overlay={menu} placement="bottomCenter">
-      <Button title="提示框">
-        <ToolbarIcon icon="icon-hint" />
+      <Button>
+        <ToolbarIcon icon="icon-hint" title="提示框" />
       </Button>
     </Dropdown>
   );

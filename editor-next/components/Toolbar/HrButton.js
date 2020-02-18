@@ -15,8 +15,8 @@ const HrButton = () => {
   };
 
   return (
-    <Button title="分割线" handleMouseDown={onMouseDown}>
-      <ToolbarIcon icon="icon-line" />
+    <Button handleMouseDown={onMouseDown}>
+      <ToolbarIcon icon="icon-line" title="分割线" />
     </Button>
   );
 };

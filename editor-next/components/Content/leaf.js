@@ -2,7 +2,7 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { useSlate } from 'slate-react';
 import { css } from 'emotion';
-import { Popover, Popconfirm } from 'antd';
+import { Popover, Popconfirm, Tooltip } from 'antd';
 import { getLinkData, removeLink } from 'editure';
 
 import IconFont from '../IconFont';
@@ -48,10 +48,18 @@ const Link = (props) => {
           {leaf.url}
         </a>
       </span>
-      <IconFont onClick={onClickEdit} className={iconStyle} type="icon-edit" />
-      <Popconfirm title="确认要删除此链接吗？" onConfirm={handleDeleteLink}>
-        <IconFont className={iconStyle} type="icon-delete" />
-      </Popconfirm>
+      <Tooltip title="编辑">
+        <IconFont
+          onClick={onClickEdit}
+          className={iconStyle}
+          type="icon-edit"
+        />
+      </Tooltip>
+      <Tooltip title="删除">
+        <Popconfirm title="确认要删除此链接吗？" onConfirm={handleDeleteLink}>
+          <IconFont className={iconStyle} type="icon-delete" />
+        </Popconfirm>
+      </Tooltip>
     </div>
   );
 

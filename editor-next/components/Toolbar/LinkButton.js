@@ -30,8 +30,8 @@ const LinkButton = () => {
   };
 
   return (
-    <Button title="添加链接" handleClick={onClick} ref={ref}>
-      <ToolbarIcon isActive={isActive} icon="icon-link" />
+    <Button handleClick={onClick} ref={ref}>
+      <ToolbarIcon isActive={isActive} icon="icon-link" title="链接" />
     </Button>
   );
 };

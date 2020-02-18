@@ -18,7 +18,6 @@ const ImageButton = () => {
 
   return (
     <Button
-      title="图片"
       handleMouseDown={(event) => {
         event.preventDefault();
 
@@ -39,7 +38,7 @@ const ImageButton = () => {
           opacity: 0;
         `}
       />
-      <ToolbarIcon icon="icon-image" />
+      <ToolbarIcon icon="icon-image" title="图片" />
     </Button>
   );
 };

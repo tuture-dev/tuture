@@ -11,13 +11,12 @@ const BlockButton = ({ format = '', title, icon }) => {
 
   return (
     <Button
-      title={title}
       handleMouseDown={(event) => {
         event.preventDefault();
         toggleBlock(editor, format, {}, { unwrap: true });
       }}
     >
-      <ToolbarIcon isActive={isActive} icon={icon} />
+      <ToolbarIcon isActive={isActive} icon={icon} title={title} />
     </Button>
   );
 };
