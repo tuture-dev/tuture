@@ -48,13 +48,35 @@ export default (props) => {
         </ol>
       );
     case F.H1:
-      return <h1 {...attributes}>{children}</h1>;
+      return (
+        <h1 {...attributes} id={element.id}>
+          {children}
+        </h1>
+      );
     case F.H2:
-      return <h2 {...attributes}>{children}</h2>;
+      return (
+        <h2 {...attributes} id={element.id}>
+          {children}
+        </h2>
+      );
     case F.H3:
-      return <h3 {...attributes}>{children}</h3>;
+      return (
+        <h3 {...attributes} id={element.id}>
+          {children}
+        </h3>
+      );
     case F.H4:
-      return <h4 {...attributes}>{children}</h4>;
+      return (
+        <h4 {...attributes} id={element.id}>
+          {children}
+        </h4>
+      );
+    case F.H5:
+      return (
+        <h5 {...attributes} id={element.id}>
+          {children}
+        </h5>
+      );
     case F.CODE_BLOCK:
       return <CodeBlockElement {...props} />;
     case F.CODE_LINE:
