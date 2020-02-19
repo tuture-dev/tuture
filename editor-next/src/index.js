@@ -2,14 +2,15 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 
-import './index.css';
 import App from './App';
 import ConnectedLayout from './components/ConnectedLayout';
+import { globalStyles } from './shared/styles';
 import store from './store';
 import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(
   <Provider store={store}>
+    {globalStyles}
     <ConnectedLayout>
       <App />
     </ConnectedLayout>
