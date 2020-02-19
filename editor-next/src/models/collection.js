@@ -54,15 +54,17 @@ const collection = {
     diff,
     collection: tuture,
     nowArticleId: tuture.articles[0].id,
-    nowCommit: '2b84923',
+    nowStepCommit: '372a021',
   },
   reducers: {
     setCollectionData(state, payload) {
       state.diff = payload.diff;
       state.collection = { ...state.collection, ...payload.tuture };
+      state.nowStepCommit = payload.tuture.steps[0].commit;
 
       if (state.collection.articles?.length > 0) {
         state.nowArticleId = state.collection.articles[0].id;
+        state.nowStepCommit = state.collection.articles[0].commits.slice(-1)[0];
       }
 
       return state;
@@ -140,9 +142,15 @@ const collection = {
 
       state.collection.steps = state.collection.steps.map((step) => {
         if (step.commit === commit) {
-          const oldDiff = step.diff[removedIndex];
-          step.diff.splice(removedIndex, 1);
-          step.diff.splice(addedIndex, 0, oldDiff);
+          const preExplain = step.children[0];
+          const postExplain = step.children.slice(-1)[0];
+          const fileList = step.children.slice(1, -1);
+
+          const oldFile = fileList[removedIndex];
+          fileList.splice(removedIndex, 1);
+          fileList.splice(addedIndex, 0, oldFile);
+
+          step.children = [preExplain, ...fileList, postExplain];
         }
 
         return step;
@@ -161,6 +169,9 @@ const collection = {
       );
 
       return state;
+    },
+    setNowStepCommit(state, payload) {
+      state.nowStepCommit = payload;
     },
   },
   selectors: (slice, createSelector, hasProps) => ({
