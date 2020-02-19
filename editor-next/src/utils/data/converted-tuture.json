@@ -32,32 +32,38 @@
   ],
   "steps": [
     {
-      "name": "旧时代：用内置 http 模块实现一个服务器",
       "commit": "372a021",
       "type": "step",
+      "id": "kPaILNVh",
       "children": [
         {
-          "type": "explain",
+          "commit": "372a021",
+          "type": "heading-two",
+          "id": "IYvRoVQc_",
+          "fixed": true,
           "children": [
             {
-              "type": "note",
-              "level": "primary",
+              "text": "旧时代：用内置 http 模块实现一个服务器"
+            }
+          ]
+        },
+        {
+          "type": "explain",
+          "fixed": true,
+          "children": [
+            {
+              "type": "paragraph",
               "children": [
                 {
-                  "type": "paragraph",
-                  "children": [
-                    {
-                      "text": "此教程属于"
-                    },
-                    {
-                      "text": "Node.js 后端工程师学习路线",
-                      "link": true,
-                      "url": "https://tuture.co/roadmaps/node/"
-                    },
-                    {
-                      "text": "的一部分，点击可查看全部内容。"
-                    }
-                  ]
+                  "text": "::: primary此教程属于"
+                },
+                {
+                  "text": "Node.js 后端工程师学习路线",
+                  "link": true,
+                  "url": "https://tuture.co/roadmaps/node/"
+                },
+                {
+                  "text": "的一部分，点击可查看全部内容。:::"
                 }
               ]
             },
@@ -75,7 +81,8 @@
                 {
                   "text": "预备知识"
                 }
-              ]
+              ],
+              "id": "Tp-R2eFU"
             },
             {
               "type": "paragraph",
@@ -131,7 +138,8 @@
                 {
                   "text": "所用技术"
                 }
-              ]
+              ],
+              "id": "bjpY3oL8d"
             },
             {
               "type": "bulleted-list",
@@ -183,7 +191,8 @@
                 {
                   "text": "学习目标"
                 }
-              ]
+              ],
+              "id": "GtgyRw55R"
             },
             {
               "type": "paragraph",
@@ -289,9 +298,15 @@
           "children": [
             {
               "type": "explain",
+              "fixed": true,
               "children": [
                 {
-                  "text": ""
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
                 }
               ]
             },
@@ -312,9 +327,15 @@
             },
             {
               "type": "explain",
+              "fixed": true,
               "children": [
                 {
-                  "text": ""
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
                 }
               ]
             }
@@ -327,6 +348,7 @@
           "children": [
             {
               "type": "explain",
+              "fixed": true,
               "children": [
                 {
                   "type": "heading-three",
@@ -334,7 +356,8 @@
                     {
                       "text": "用内置 http 模块创建服务器"
                     }
-                  ]
+                  ],
+                  "id": "yaolzB6VA"
                 },
                 {
                   "type": "paragraph",
@@ -400,6 +423,7 @@
             },
             {
               "type": "explain",
+              "fixed": true,
               "children": [
                 {
                   "type": "paragraph",
@@ -541,6 +565,7 @@
         },
         {
           "type": "explain",
+          "fixed": true,
           "children": [
             {
               "type": "paragraph",
@@ -639,12 +664,24 @@
       ]
     },
     {
-      "name": "新时代：用 Express 搭建服务器",
       "commit": "2b84923",
       "type": "step",
+      "id": "ne_MNyPlG",
       "children": [
         {
+          "commit": "2b84923",
+          "type": "heading-two",
+          "id": "CWKcWi8A3",
+          "fixed": true,
+          "children": [
+            {
+              "text": "新时代：用 Express 搭建服务器"
+            }
+          ]
+        },
+        {
           "type": "explain",
+          "fixed": true,
           "children": [
             {
               "type": "paragraph",
@@ -709,7 +746,8 @@
                 {
                   "text": "更强大的 Request 和 Response 对象"
                 }
-              ]
+              ],
+              "id": "tIjKGggHU"
             },
             {
               "type": "paragraph",
@@ -807,45 +845,12 @@
             },
             {
               "type": "code-block",
-              "lang": "javascript",
               "children": [
                 {
                   "type": "code-line",
                   "children": [
                     {
-                      "text": "// 发送一串 HTML 代码"
-                    }
-                  ]
-                },
-                {
-                  "type": "code-line",
-                  "children": [
-                    {
-                      "text": "res.send('HTML String');"
-                    }
-                  ]
-                },
-                {
-                  "type": "code-line",
-                  "children": [
-                    {
-                      "text": "// 发送一个文件"
-                    }
-                  ]
-                },
-                {
-                  "type": "code-line",
-                  "children": [
-                    {
-                      "text": "// 渲染一个模板引擎并发送"
-                    }
-                  ]
-                },
-                {
-                  "type": "code-line",
-                  "children": [
-                    {
-                      "text": "res.render('index');"
+                      "text": "// 发送一串 HTML 代码res.send('HTML String');// 发送一个文件res.sendFile('file.zip');// 渲染一个模板引擎并发送res.render('index');"
                     }
                   ]
                 }
@@ -914,7 +919,8 @@
                 {
                   "text": "路由机制"
                 }
-              ]
+              ],
+              "id": "4Qe0mQ-0X"
             },
             {
               "type": "paragraph",
@@ -1085,9 +1091,15 @@
           "children": [
             {
               "type": "explain",
+              "fixed": true,
               "children": [
                 {
-                  "text": ""
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
                 }
               ]
             },
@@ -1108,9 +1120,15 @@
             },
             {
               "type": "explain",
+              "fixed": true,
               "children": [
                 {
-                  "text": ""
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
                 }
               ]
             }
@@ -1123,9 +1141,15 @@
           "children": [
             {
               "type": "explain",
+              "fixed": true,
               "children": [
                 {
-                  "text": ""
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
                 }
               ]
             },
@@ -1146,9 +1170,15 @@
             },
             {
               "type": "explain",
+              "fixed": true,
               "children": [
                 {
-                  "text": ""
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
                 }
               ]
             }
@@ -1161,6 +1191,7 @@
           "children": [
             {
               "type": "explain",
+              "fixed": true,
               "children": [
                 {
                   "type": "heading-three",
@@ -1168,7 +1199,8 @@
                     {
                       "text": "nodemon 加速开发"
                     }
-                  ]
+                  ],
+                  "id": "0S55KCtAz"
                 },
                 {
                   "type": "paragraph",
@@ -1237,9 +1269,15 @@
             },
             {
               "type": "explain",
+              "fixed": true,
               "children": [
                 {
-                  "text": ""
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
                 }
               ]
             }
@@ -1252,6 +1290,7 @@
           "children": [
             {
               "type": "explain",
+              "fixed": true,
               "children": [
                 {
                   "type": "heading-three",
@@ -1259,7 +1298,8 @@
                     {
                       "text": "正式实现"
                     }
-                  ]
+                  ],
+                  "id": "ilVz0TSRy"
                 },
                 {
                   "type": "paragraph",
@@ -1288,6 +1328,7 @@
             },
             {
               "type": "explain",
+              "fixed": true,
               "children": [
                 {
                   "type": "paragraph",
@@ -1331,6 +1372,7 @@
         },
         {
           "type": "explain",
+          "fixed": true,
           "children": [
             {
               "type": "paragraph",
@@ -1379,12 +1421,24 @@
       ]
     },
     {
-      "name": "编写第一个中间件",
       "commit": "f331722",
       "type": "step",
+      "id": "dtM13UK8v",
       "children": [
         {
+          "commit": "f331722",
+          "type": "heading-two",
+          "id": "cEjB7pYsQ",
+          "fixed": true,
+          "children": [
+            {
+              "text": "编写第一个中间件"
+            }
+          ]
+        },
+        {
           "type": "explain",
+          "fixed": true,
           "children": [
             {
               "type": "paragraph",
@@ -1407,7 +1461,8 @@
                 {
                   "text": "理解中间件"
                 }
-              ]
+              ],
+              "id": "AuoRcWJfB"
             },
             {
               "type": "paragraph",
@@ -1521,7 +1576,8 @@
                 {
                   "text": "Express 中间件的定义"
                 }
-              ]
+              ],
+              "id": "PicIa4IpD"
             },
             {
               "type": "paragraph",
@@ -1628,7 +1684,8 @@
                 {
                   "text": "全局中间件"
                 }
-              ]
+              ],
+              "id": "oUTcJ7mK7"
             },
             {
               "type": "paragraph",
@@ -1671,7 +1728,8 @@
                 {
                   "text": "路由中间件"
                 }
-              ]
+              ],
+              "id": "78RsqrX_X"
             },
             {
               "type": "paragraph",
@@ -1725,6 +1783,7 @@
           "children": [
             {
               "type": "explain",
+              "fixed": true,
               "children": [
                 {
                   "type": "heading-three",
@@ -1732,7 +1791,8 @@
                     {
                       "text": "编写中间件"
                     }
-                  ]
+                  ],
+                  "id": "u-3-e1QDa4"
                 },
                 {
                   "type": "paragraph",
@@ -1761,6 +1821,7 @@
             },
             {
               "type": "explain",
+              "fixed": true,
               "children": [
                 {
                   "type": "paragraph",
@@ -1818,6 +1879,7 @@
         },
         {
           "type": "explain",
+          "fixed": true,
           "children": [
             {
               "type": "paragraph",
@@ -1883,12 +1945,24 @@
       ]
     },
     {
-      "name": "用模板引擎渲染页面",
       "commit": "5ed1e6c",
       "type": "step",
+      "id": "8d-mdMbFFd",
       "children": [
         {
+          "commit": "5ed1e6c",
+          "type": "heading-two",
+          "id": "sKa5sOFgWt",
+          "fixed": true,
+          "children": [
+            {
+              "text": "用模板引擎渲染页面"
+            }
+          ]
+        },
+        {
           "type": "explain",
+          "fixed": true,
           "children": [
             {
               "type": "paragraph",
@@ -1956,6 +2030,7 @@
           "children": [
             {
               "type": "explain",
+              "fixed": true,
               "children": [
                 {
                   "type": "paragraph",
@@ -1984,9 +2059,15 @@
             },
             {
               "type": "explain",
+              "fixed": true,
               "children": [
                 {
-                  "text": ""
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
                 }
               ]
             }
@@ -1999,6 +2080,7 @@
           "children": [
             {
               "type": "explain",
+              "fixed": true,
               "children": [
                 {
                   "type": "paragraph",
@@ -2027,9 +2109,15 @@
             },
             {
               "type": "explain",
+              "fixed": true,
               "children": [
                 {
-                  "text": ""
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
                 }
               ]
             }
@@ -2042,6 +2130,7 @@
           "children": [
             {
               "type": "explain",
+              "fixed": true,
               "children": [
                 {
                   "type": "paragraph",
@@ -2119,6 +2208,7 @@
             },
             {
               "type": "explain",
+              "fixed": true,
               "children": [
                 {
                   "type": "paragraph",
@@ -2146,9 +2236,15 @@
           "children": [
             {
               "type": "explain",
+              "fixed": true,
               "children": [
                 {
-                  "text": ""
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
                 }
               ]
             },
@@ -2169,9 +2265,15 @@
             },
             {
               "type": "explain",
+              "fixed": true,
               "children": [
                 {
-                  "text": ""
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
                 }
               ]
             }
@@ -2184,9 +2286,15 @@
           "children": [
             {
               "type": "explain",
+              "fixed": true,
               "children": [
                 {
-                  "text": ""
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
                 }
               ]
             },
@@ -2207,9 +2315,15 @@
             },
             {
               "type": "explain",
+              "fixed": true,
               "children": [
                 {
-                  "text": ""
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
                 }
               ]
             }
@@ -2217,6 +2331,7 @@
         },
         {
           "type": "explain",
+          "fixed": true,
           "children": [
             {
               "type": "paragraph",
@@ -2257,12 +2372,24 @@
       ]
     },
     {
-      "name": "添加静态文件服务",
       "commit": "b8585d2",
       "type": "step",
+      "id": "YIfIa3onul",
       "children": [
         {
+          "commit": "b8585d2",
+          "type": "heading-two",
+          "id": "5qBw-TsD1z",
+          "fixed": true,
+          "children": [
+            {
+              "text": "添加静态文件服务"
+            }
+          ]
+        },
+        {
           "type": "explain",
+          "fixed": true,
           "children": [
             {
               "type": "paragraph",
@@ -2288,6 +2415,7 @@
           "children": [
             {
               "type": "explain",
+              "fixed": true,
               "children": [
                 {
                   "type": "paragraph",
@@ -2323,6 +2451,7 @@
             },
             {
               "type": "explain",
+              "fixed": true,
               "children": [
                 {
                   "type": "paragraph",
@@ -2377,6 +2506,7 @@
           "children": [
             {
               "type": "explain",
+              "fixed": true,
               "children": [
                 {
                   "type": "paragraph",
@@ -2405,6 +2535,7 @@
             },
             {
               "type": "explain",
+              "fixed": true,
               "children": [
                 {
                   "type": "paragraph",
@@ -2433,6 +2564,7 @@
           "children": [
             {
               "type": "explain",
+              "fixed": true,
               "children": [
                 {
                   "type": "paragraph",
@@ -2461,9 +2593,15 @@
             },
             {
               "type": "explain",
+              "fixed": true,
               "children": [
                 {
-                  "text": ""
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
                 }
               ]
             }
@@ -2476,6 +2614,7 @@
           "children": [
             {
               "type": "explain",
+              "fixed": true,
               "children": [
                 {
                   "type": "paragraph",
@@ -2504,9 +2643,15 @@
             },
             {
               "type": "explain",
+              "fixed": true,
               "children": [
                 {
-                  "text": ""
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
                 }
               ]
             }
@@ -2519,9 +2664,15 @@
           "children": [
             {
               "type": "explain",
+              "fixed": true,
               "children": [
                 {
-                  "text": ""
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
                 }
               ]
             },
@@ -2542,9 +2693,15 @@
             },
             {
               "type": "explain",
+              "fixed": true,
               "children": [
                 {
-                  "text": ""
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
                 }
               ]
             }
@@ -2556,9 +2713,15 @@
           "children": [
             {
               "type": "explain",
+              "fixed": true,
               "children": [
                 {
-                  "text": ""
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
                 }
               ]
             },
@@ -2579,9 +2742,15 @@
             },
             {
               "type": "explain",
+              "fixed": true,
               "children": [
                 {
-                  "text": ""
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
                 }
               ]
             }
@@ -2589,6 +2758,7 @@
         },
         {
           "type": "explain",
+          "fixed": true,
           "children": [
             {
               "type": "paragraph",
@@ -2637,12 +2807,24 @@
       ]
     },
     {
-      "name": "处理 404 和服务器错误",
       "commit": "93ec144",
       "type": "step",
+      "id": "TM6H0bmksS",
       "children": [
         {
+          "commit": "93ec144",
+          "type": "heading-two",
+          "id": "6mhVmhJlkS",
+          "fixed": true,
+          "children": [
+            {
+              "text": "处理 404 和服务器错误"
+            }
+          ]
+        },
+        {
           "type": "explain",
+          "fixed": true,
           "children": [
             {
               "type": "paragraph",
@@ -2817,7 +2999,8 @@
                 {
                   "text": "处理 404"
                 }
-              ]
+              ],
+              "id": "5S2jk4hPjr"
             },
             {
               "type": "paragraph",
@@ -2858,7 +3041,8 @@
                 {
                   "text": "处理内部错误"
                 }
-              ]
+              ],
+              "id": "lE4CqkvQtW"
             },
             {
               "type": "paragraph",
@@ -3050,6 +3234,7 @@
           "children": [
             {
               "type": "explain",
+              "fixed": true,
               "children": [
                 {
                   "type": "heading-three",
@@ -3057,7 +3242,8 @@
                     {
                       "text": "实现自定义处理逻辑"
                     }
-                  ]
+                  ],
+                  "id": "XObCvwpjK2"
                 },
                 {
                   "type": "paragraph",
@@ -3086,6 +3272,7 @@
             },
             {
               "type": "explain",
+              "fixed": true,
               "children": [
                 {
                   "type": "paragraph",
@@ -3139,6 +3326,7 @@
           "children": [
             {
               "type": "explain",
+              "fixed": true,
               "children": [
                 {
                   "type": "paragraph",
@@ -3167,9 +3355,15 @@
             },
             {
               "type": "explain",
+              "fixed": true,
               "children": [
                 {
-                  "text": ""
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
                 }
               ]
             }
@@ -3182,9 +3376,15 @@
           "children": [
             {
               "type": "explain",
+              "fixed": true,
               "children": [
                 {
-                  "text": ""
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
                 }
               ]
             },
@@ -3205,9 +3405,15 @@
             },
             {
               "type": "explain",
+              "fixed": true,
               "children": [
                 {
-                  "text": ""
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
                 }
               ]
             }
@@ -3215,6 +3421,7 @@
         },
         {
           "type": "explain",
+          "fixed": true,
           "children": [
             {
               "type": "paragraph",
@@ -3270,12 +3477,24 @@
       ]
     },
     {
-      "name": "三行代码实现 JSON API",
       "commit": "266304b",
       "type": "step",
+      "id": "baPLpbPRY4",
       "children": [
         {
+          "commit": "266304b",
+          "type": "heading-two",
+          "id": "yJFWGy-g5u",
+          "fixed": true,
+          "children": [
+            {
+              "text": "三行代码实现 JSON API"
+            }
+          ]
+        },
+        {
           "type": "explain",
+          "fixed": true,
           "children": [
             {
               "type": "paragraph",
@@ -3357,6 +3576,7 @@
           "children": [
             {
               "type": "explain",
+              "fixed": true,
               "children": [
                 {
                   "type": "paragraph",
@@ -3392,6 +3612,7 @@
             },
             {
               "type": "explain",
+              "fixed": true,
               "children": [
                 {
                   "type": "paragraph",
@@ -3452,9 +3673,15 @@
           "children": [
             {
               "type": "explain",
+              "fixed": true,
               "children": [
                 {
-                  "text": ""
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
                 }
               ]
             },
@@ -3475,9 +3702,15 @@
             },
             {
               "type": "explain",
+              "fixed": true,
               "children": [
                 {
-                  "text": ""
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
                 }
               ]
             }
@@ -3485,21 +3718,39 @@
         },
         {
           "type": "explain",
+          "fixed": true,
           "children": [
             {
-              "text": ""
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": ""
+                }
+              ]
             }
           ]
         }
       ]
     },
     {
-      "name": "使用子路由拆分逻辑",
       "commit": "fc4e804",
       "type": "step",
+      "id": "E3LNXXTjH2",
       "children": [
         {
+          "commit": "fc4e804",
+          "type": "heading-two",
+          "id": "F_XO_b54uC",
+          "fixed": true,
+          "children": [
+            {
+              "text": "使用子路由拆分逻辑"
+            }
+          ]
+        },
+        {
           "type": "explain",
+          "fixed": true,
           "children": [
             {
               "type": "paragraph",
@@ -3640,6 +3891,7 @@
           "children": [
             {
               "type": "explain",
+              "fixed": true,
               "children": [
                 {
                   "type": "heading-three",
@@ -3647,7 +3899,8 @@
                     {
                       "text": "正式实现"
                     }
-                  ]
+                  ],
+                  "id": "3XkFLgzG_f"
                 },
                 {
                   "type": "paragraph",
@@ -3676,9 +3929,15 @@
             },
             {
               "type": "explain",
+              "fixed": true,
               "children": [
                 {
-                  "text": ""
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
                 }
               ]
             }
@@ -3691,6 +3950,7 @@
           "children": [
             {
               "type": "explain",
+              "fixed": true,
               "children": [
                 {
                   "type": "paragraph",
@@ -3719,9 +3979,15 @@
             },
             {
               "type": "explain",
+              "fixed": true,
               "children": [
                 {
-                  "text": ""
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
                 }
               ]
             }
@@ -3734,6 +4000,7 @@
           "children": [
             {
               "type": "explain",
+              "fixed": true,
               "children": [
                 {
                   "type": "paragraph",
@@ -3769,6 +4036,7 @@
             },
             {
               "type": "explain",
+              "fixed": true,
               "children": [
                 {
                   "type": "paragraph",
@@ -3804,6 +4072,7 @@
         },
         {
           "type": "explain",
+          "fixed": true,
           "children": [
             {
               "type": "paragraph",

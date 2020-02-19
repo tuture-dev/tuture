@@ -1,14 +1,9 @@
 import React from 'react';
 
 function StepElement(props) {
-  const { attributes, children, element } = props;
+  const { attributes, children } = props;
 
-  return (
-    <div {...attributes}>
-      <h2 id={element.commit}>{element.name}</h2>
-      {children}
-    </div>
-  );
+  return <div {...attributes}>{children}</div>;
 }
 
 export default StepElement;

@@ -1,5 +1,6 @@
-import { FILE, STEP } from '../utils/constants';
+import * as F from 'editure-constants';
 
+import { FILE, STEP } from '../utils/constants';
 import diff from '../utils/data/diff.json';
 import tuture from '../utils/data/converted-tuture.json';
 
@@ -24,6 +25,28 @@ function unflatten(fragment) {
   }
 
   return steps;
+}
+
+function isHeading(node) {
+  return [F.H1, F.H2, F.H3, F.H4, F.H5].includes(node.type);
+}
+
+function getHeadingText(node) {
+  return node.children.map((child) => child.text).join('');
+}
+
+function getHeadings(nodes) {
+  return nodes
+    .map((node) => {
+      if (isHeading(node)) {
+        return { ...node, title: getHeadingText(node) };
+      }
+      if (node.children) {
+        return getHeadings(node.children);
+      }
+      return null;
+    })
+    .filter((node) => node);
 }
 
 const collection = {
@@ -183,6 +206,25 @@ const collection = {
         }
 
         return flatten(steps);
+      });
+    },
+    nowArticleCatalogue() {
+      return slice((collectionModel) => {
+        const {
+          collection: { articles, steps },
+          nowArticleId,
+        } = collectionModel;
+
+        if (nowArticleId) {
+          const article = articles.filter(
+            (elem) => elem.id.toString() === nowArticleId.toString(),
+          )[0];
+          return getHeadings(
+            steps.filter((step) => article.commits.includes(step.commit)),
+          ).flat(5);
+        }
+
+        return getHeadings(steps).flat(5);
       });
     },
     getDiffItemByCommitAndFile: hasProps((__, props) => {
