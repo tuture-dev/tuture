@@ -140,7 +140,7 @@ function ConnectedLayout(props) {
           >
             <Layout
               css={css`
-                width: 18%;
+                width: 300px;
                 height: 100vh;
                 position: ${isLgBreakPoint ? 'absolute' : 'static'};
               `}

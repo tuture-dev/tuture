@@ -1,17 +1,25 @@
 import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { Button } from 'antd';
+import { useSelector, useDispatch, useStore } from 'react-redux';
+import { Button, Collapse } from 'antd';
 
 /** @jsx jsx */
-import { css, jsx } from '@emotion/core';
+import { css, jsx, Global } from '@emotion/core';
 
-import { CREATE_ARTICLE, EDIT_ARTICLE } from '../utils/constants';
+import { CREATE_ARTICLE } from '../utils/constants';
+
+const { Panel } = Collapse;
 
 function CollectionCatalogue() {
   const { childrenVisible, childrenDrawerType } = useSelector(
     (state) => state.drawer,
   );
+
+  const store = useStore();
   const dispatch = useDispatch();
+
+  const collectionCatalogue = useSelector(
+    store.select.collection.getCollectionCatalogue,
+  );
 
   function onToggleChildrenDrawer(toggleChildrenDrawerType) {
     if (childrenDrawerType === toggleChildrenDrawerType) {
@@ -25,42 +33,70 @@ function CollectionCatalogue() {
     dispatch.drawer.setChildrenDrawerType(toggleChildrenDrawerType);
   }
 
+  function onChange() {}
+
   return (
     <div>
-      CollectionCatalogue
       <div
         css={css`
           margin-top: 40px;
         `}
       >
-        <div>
-          {['page1', 'page2', 'page3', 'page4', 'page5'].map((page) => (
-            <div
-              key={page}
+        <Collapse
+          defaultActiveKey={['1']}
+          expandIconPosition="right"
+          onChange={onChange}
+          css={css`
+            border: none;
+            background: transparent;
+
+            & > .ant-collapse-item {
+              border: none;
+            }
+          `}
+        >
+          {collectionCatalogue.map((article, index) => (
+            <Panel
+              header={article.name}
+              key={index}
               css={css`
-                display: flex;
-                flex-direction: row;
+                margin-bottom: 24px;
+                background: rgb(247, 247, 250);
+
+                & > .ant-collapse-content {
+                  border-top: none;
+                  background: transparent;
+
+                  font-family: PingFangSC-Regular;
+                  font-size: 14px;
+                  color: rgba(0, 0, 0, 0.65);
+                  line-height: 22px;
+                }
+
+                & > .ant-collapse-header {
+                  background: transparent;
+                  font-size: 14px;
+                  font-family: PingFangSC-Regular, PingFang SC;
+                  font-weight: 400;
+                  color: rgba(0, 0, 0, 1);
+                  line-height: 20px;
+                }
+
+                &.ant-collapse-item-active > .ant-collapse-header {
+                  background: #fff;
+                }
               `}
             >
-              <p
+              <div
                 css={css`
-                  margin-right: 20px;
+                  padding-left: 32px;
                 `}
               >
-                {page}
-              </p>
-              <Button
-                type="primary"
-                css={css`
-                  margin-right: 20px;
-                `}
-                onClick={() => onToggleChildrenDrawer(EDIT_ARTICLE)}
-              >
-                编辑页面
-              </Button>
-            </div>
+                {article.commitArrWithName.map((commitItem) => commitItem.name)}
+              </div>
+            </Panel>
           ))}
-        </div>
+        </Collapse>
         <Button
           type="primary"
           css={css`
@@ -71,6 +107,15 @@ function CollectionCatalogue() {
           创建新页
         </Button>
       </div>
+      <Global
+        styles={css`
+          .ant-collapse-icon-position-right
+            > .ant-collapse-item
+            > .ant-collapse-header {
+            padding: 7px 16px;
+          }
+        `}
+      />
     </div>
   );
 }

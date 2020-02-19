@@ -210,6 +210,41 @@ const collection = {
         return { fileList: [], title: '' };
       });
     }),
+    getCommitName: hasProps((__, props) => {
+      return slice((collectionModel) => {
+        const { commit } = props;
+
+        const name = collectionModel.collection.steps.filter(
+          (step) => step.commit === commit,
+        )[0].name;
+
+        return name;
+      });
+    }),
+    getCommitArrName: hasProps(function(__, props) {
+      const { commitArr } = props;
+
+      const commitArrWithName = commitArr.map((commit) => ({
+        commit,
+        name: this.getCommitName({ commit }),
+      }));
+
+      return commitArrWithName;
+    }),
+    getCollectionCatalogue() {
+      return slice((collectionModel) => {
+        const { articles = [] } = collectionModel.collection;
+
+        const collectionCatalogue = articles.map((article) => ({
+          ...article,
+          commitArrWithName: this.getCommitArrName({
+            commitArr: article.commits,
+          }),
+        }));
+
+        return collectionCatalogue;
+      });
+    },
   }),
 };
 
