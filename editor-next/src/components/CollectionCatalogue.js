@@ -33,6 +33,8 @@ function CollectionCatalogue() {
     dispatch.drawer.setChildrenDrawerType(toggleChildrenDrawerType);
   }
 
+  console.log('collectionCatalogue', collectionCatalogue);
+
   function onChange() {}
 
   return (
@@ -92,7 +94,9 @@ function CollectionCatalogue() {
                   padding-left: 32px;
                 `}
               >
-                {article.commitArrWithName.map((commitItem) => commitItem.name)}
+                {article.commitArrWithName.map((commitItem) => (
+                  <p key={commitItem.commit}>{commitItem.name}</p>
+                ))}
               </div>
             </Panel>
           ))}

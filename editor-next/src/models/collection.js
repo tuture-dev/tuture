@@ -252,36 +252,32 @@ const collection = {
         return { fileList: [], title: '' };
       });
     }),
-    getCommitName: hasProps((__, props) => {
-      return slice((collectionModel) => {
-        const { commit } = props;
-
-        const name = collectionModel.collection.steps.filter(
-          (step) => step.commit === commit,
-        )[0].name;
-
-        return name;
-      });
-    }),
-    getCommitArrName: hasProps(function(__, props) {
-      const { commitArr } = props;
-
-      const commitArrWithName = commitArr.map((commit) => ({
-        commit,
-        name: this.getCommitName({ commit }),
-      }));
-
-      return commitArrWithName;
-    }),
     getCollectionCatalogue() {
       return slice((collectionModel) => {
+        const getCommitName = (commit) => {
+          const steps = collectionModel.collection.steps.filter(
+            (step) => step.commit === commit,
+          );
+
+          return getHeadings(steps)
+            .flat(5)
+            .filter((node) => node.commit)[0].title;
+        };
+
+        const getCommitArrName = (commitArr) => {
+          const commitArrWithName = commitArr.map((commit) => ({
+            commit,
+            name: getCommitName(commit),
+          }));
+
+          return commitArrWithName;
+        };
+
         const { articles = [] } = collectionModel.collection;
 
         const collectionCatalogue = articles.map((article) => ({
           ...article,
-          commitArrWithName: this.getCommitArrName({
-            commitArr: article.commits,
-          }),
+          commitArrWithName: getCommitArrName(article.commits),
         }));
 
         return collectionCatalogue;
