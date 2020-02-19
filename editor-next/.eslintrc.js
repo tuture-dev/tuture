@@ -1,10 +1,11 @@
 module.exports = {
-  extends: ['airbnb', 'plugin:prettier/recommended'],
+  extends: ['react-app', 'plugin:prettier/recommended'],
   parser: 'babel-eslint',
   env: {
     browser: true,
   },
   rules: {
+    'no-restricted-syntax': 'off',
     'consistent-return': 'off',
     'no-param-reassign': 'off',
     'jsx-a11y/click-events-have-key-events': 'off',
