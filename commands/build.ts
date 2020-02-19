@@ -307,11 +307,6 @@ export default class Build extends BaseCommand {
         // Override outmost metadata with split metadata.
         const splitMeta = { ...meta, ...split };
 
-        // Ensure the order for created timestamp.
-        if (created) {
-          splitMeta.created = new Date(Date.parse(created.toString()) + index);
-        }
-
         return this.tutorialTmpl(
           splitMeta,
           steps.slice(start, end),
