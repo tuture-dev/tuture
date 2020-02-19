@@ -9,3 +9,7 @@ tmp
 yarn.lock
 package.json
 next.config.js
+*.png
+*.svg
+
+src/serviceWorker.js

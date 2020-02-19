@@ -14,10 +14,11 @@ module.exports = {
     'import/prefer-default-export': 'off',
     'react/prop-types': 'off',
     'react/jsx-filename-extension': 'off',
-    'react/react-in-jsx-scope': 'off',
+    'react/react-in-jsx-scope': 'error',
     'react/jsx-props-no-spreading': 'off',
     'react/jsx-closing-bracket-location': 'off',
     'react/jsx-curly-newline': 'off',
     'react/jsx-no-duplicate-props': 'off',
+    'no-unused-vars': ['error', { varsIgnorePattern: 'React' }],
   },
 };
