@@ -25,6 +25,7 @@ function Content() {
         overflow-y: scroll;
         padding: 48px 60px 64px;
       `}
+      id="scroll-container"
     >
       <PageHeader />
       <Editable

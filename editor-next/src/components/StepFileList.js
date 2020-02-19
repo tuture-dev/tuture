@@ -9,13 +9,13 @@ function StepFileList() {
   const dispatch = useDispatch();
   const store = useStore();
 
-  const { nowCommit } = useSelector((state) => state.collection);
+  const { nowStepCommit } = useSelector((state) => state.collection);
   const { fileList, title } = useSelector(
-    store.select.collection.getStepFileListAndTitle({ commit: nowCommit }),
+    store.select.collection.getStepFileListAndTitle({ commit: nowStepCommit }),
   );
 
   function onDrop(res) {
-    dispatch.collection.switchFile({ ...res, commit: nowCommit });
+    dispatch.collection.switchFile({ ...res, commit: nowStepCommit });
   }
 
   return (

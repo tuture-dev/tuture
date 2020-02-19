@@ -5,7 +5,7 @@ function StepElement(props) {
 
   return (
     <div {...attributes}>
-      <h2>{element.name}</h2>
+      <h2 id={element.commit}>{element.name}</h2>
       {children}
     </div>
   );
