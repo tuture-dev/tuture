@@ -2,7 +2,6 @@ import React from 'react';
 import { css } from 'emotion';
 import * as F from 'editure-constants';
 
-import StepElement from './Step';
 import FileElement from './File';
 import ExplainElement from './Explain';
 import NoteElement from './Note';
@@ -88,9 +87,9 @@ export default (props) => {
     case F.HR:
       return <HrElement {...props} />;
     case STEP:
-      return <StepElement {...props} />;
+      return null;
     case FILE:
-      return <FileElement {...props} />;
+      return element.display ? <FileElement {...props} /> : null;
     case EXPLAIN:
       return <ExplainElement {...props} />;
     case DIFF_BLOCK:
