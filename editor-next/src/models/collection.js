@@ -1,7 +1,30 @@
-import { FILE } from '../utils/constants';
+import { FILE, STEP } from '../utils/constants';
 
 import diff from '../utils/data/diff.json';
 import tuture from '../utils/data/converted-tuture.json';
+
+function flatten(steps) {
+  return steps
+    .map(({ name, commit, children }) => [
+      { name, commit, type: STEP, children: [{ text: '' }] },
+      ...children,
+    ])
+    .reduce((a, b) => a.concat(b));
+}
+
+function unflatten(fragment) {
+  const steps = [{ ...fragment[0], children: [] }];
+
+  for (const node of fragment.slice(1)) {
+    if (node.type === STEP) {
+      steps.push({ ...node, children: [] });
+    } else {
+      steps.slice(-1)[0].children.push(node);
+    }
+  }
+
+  return steps;
+}
 
 const collection = {
   state: {
@@ -107,9 +130,11 @@ const collection = {
 
       if (!fragment) return state;
 
+      const newSteps = unflatten(fragment);
+
       state.collection.steps = state.collection.steps.map(
         (step) =>
-          fragment.filter((node) => node.commit === step.commit)[0] || step,
+          newSteps.filter((node) => node.commit === step.commit)[0] || step,
       );
 
       return state;
@@ -141,10 +166,12 @@ const collection = {
           const article = articles.filter(
             (elem) => elem.id.toString() === nowArticleId.toString(),
           )[0];
-          return steps.filter((step) => article.commits.includes(step.commit));
+          return flatten(
+            steps.filter((step) => article.commits.includes(step.commit)),
+          );
         }
 
-        return steps;
+        return flatten(steps);
       });
     },
     getDiffItemByCommitAndFile: hasProps((__, props) => {
