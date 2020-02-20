@@ -161,15 +161,9 @@ const collection = {
 
       state.collection.steps = state.collection.steps.map((step) => {
         if (step.commit === commit) {
-          const preExplain = step.children[0];
-          const postExplain = step.children.slice(-1)[0];
-          const fileList = step.children.slice(1, -1);
-
-          const oldFile = fileList[removedIndex];
-          fileList.splice(removedIndex, 1);
-          fileList.splice(addedIndex, 0, oldFile);
-
-          step.children = [preExplain, ...fileList, postExplain];
+          const oldFile = step.children[removedIndex + 2];
+          step.children.splice(removedIndex + 2, 1);
+          step.children.splice(addedIndex + 2, 0, oldFile);
         }
 
         return step;
@@ -265,7 +259,12 @@ const collection = {
           const fileList = nowStep.children
             .filter(({ type }) => type === FILE)
             .map(({ file }) => file);
-          return { fileList, title: nowStep.name };
+          return {
+            fileList,
+            title: getHeadings([nowStep])
+              .flat(5)
+              .filter((node) => node.commit)[0].title,
+          };
         }
 
         return { fileList: [], title: '' };
