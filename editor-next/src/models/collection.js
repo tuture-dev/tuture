@@ -36,17 +36,15 @@ function getHeadingText(node) {
 }
 
 function getHeadings(nodes) {
-  return nodes
-    .map((node) => {
-      if (isHeading(node)) {
-        return { ...node, title: getHeadingText(node) };
-      }
-      if (node.children) {
-        return getHeadings(node.children);
-      }
-      return null;
-    })
-    .filter((node) => node);
+  return nodes.flatMap((node) => {
+    if (isHeading(node)) {
+      return { ...node, title: getHeadingText(node) };
+    }
+    if (node.children) {
+      return getHeadings(node.children);
+    }
+    return [];
+  });
 }
 
 const collection = {
@@ -221,10 +219,10 @@ const collection = {
           )[0];
           return getHeadings(
             steps.filter((step) => article.commits.includes(step.commit)),
-          ).flat(5);
+          );
         }
 
-        return getHeadings(steps).flat(5);
+        return getHeadings(steps);
       });
     },
     getDiffItemByCommitAndFile: hasProps((__, props) => {
