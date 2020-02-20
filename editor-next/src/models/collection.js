@@ -5,20 +5,33 @@ import diff from '../utils/data/diff.json';
 import tuture from '../utils/data/converted-tuture.json';
 
 function flatten(steps) {
-  return steps
-    .map(({ name, commit, children }) => [
-      { name, commit, type: STEP, children: [{ text: '' }] },
-      ...children,
-    ])
-    .reduce((a, b) => a.concat(b));
+  return steps.flatMap(({ commit, id, children }) => [
+    { commit, id, type: STEP, children: [{ text: '' }] },
+    ...children.flatMap((node) => {
+      if (node.type === FILE && node.display) {
+        const { file } = node;
+        return [
+          { file, type: FILE, children: [{ text: '' }] },
+          ...node.children,
+        ];
+      }
+      return node;
+    }),
+  ]);
 }
 
 function unflatten(fragment) {
   const steps = [{ ...fragment[0], children: [] }];
 
-  for (const node of fragment.slice(1)) {
+  for (let i = 1; i < fragment.length; i++) {
+    const node = fragment[i];
     if (node.type === STEP) {
       steps.push({ ...node, children: [] });
+    } else if (node.type === FILE && node.display) {
+      steps
+        .slice(-1)[0]
+        .children.push({ ...node, children: fragment.slice(i + 1, i + 4) });
+      i += 3;
     } else {
       steps.slice(-1)[0].children.push(node);
     }
@@ -36,17 +49,15 @@ function getHeadingText(node) {
 }
 
 function getHeadings(nodes) {
-  return nodes
-    .map((node) => {
-      if (isHeading(node)) {
-        return { ...node, title: getHeadingText(node) };
-      }
-      if (node.children) {
-        return getHeadings(node.children);
-      }
-      return null;
-    })
-    .filter((node) => node);
+  return nodes.flatMap((node) => {
+    if (isHeading(node)) {
+      return { ...node, title: getHeadingText(node) };
+    }
+    if (node.children) {
+      return getHeadings(node.children);
+    }
+    return [];
+  });
 }
 
 const collection = {
@@ -221,10 +232,10 @@ const collection = {
           )[0];
           return getHeadings(
             steps.filter((step) => article.commits.includes(step.commit)),
-          ).flat(5);
+          );
         }
 
-        return getHeadings(steps).flat(5);
+        return getHeadings(steps);
       });
     },
     getDiffItemByCommitAndFile: hasProps((__, props) => {
