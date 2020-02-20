@@ -106,7 +106,7 @@ function CollectionCatalogue() {
                 `}
                 onClick={() => onToggleChildrenDrawer(EDIT_ARTICLE)}
               >
-                <Icon type="ellipsis" />
+                <Icon type="more" />
               </span>
             </li>
           ))}
