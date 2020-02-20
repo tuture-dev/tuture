@@ -43,17 +43,20 @@ function PageCatalogue() {
   const nowArticleCatalogue = useSelector(
     store.select.collection.nowArticleCatalogue,
   );
+  const { nowStepCommit } = useSelector((state) => state.collection);
   const nowArticleCatalogueArr = getNowArticleCatalogueArr(nowArticleCatalogue);
 
   function onChange(link) {
     const commit = getCommit(link.slice(1), nowArticleCatalogueArr);
 
     if (link && commit) {
-      dispatch.collection.setNowStepCommit(commit);
+      const needSetPreviousStepCommit = nowStepCommit === commit;
+      dispatch.collection.setNowStepCommit({
+        commit,
+        needSetPreviousStepCommit,
+      });
     }
   }
-
-  console.log('nowArticleCatalogue', nowArticleCatalogue);
 
   return (
     <div
@@ -76,6 +79,12 @@ function PageCatalogue() {
             title={item.title}
             css={css`
               padding-left: ${getHeadingDepth(item.type) * 16}px;
+
+              & > a {
+                color: ${getHeadingDepth(item.type) === 1
+                  ? 'rgba(0,0 ,0, 1)'
+                  : 'rgba(0, 0, 0, .65)'};
+              }
             `}
           />
         ))}
