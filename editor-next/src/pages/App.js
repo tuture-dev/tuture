@@ -4,7 +4,7 @@ import { Spin } from 'antd';
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 
-import { App } from './components';
+import { App } from '../components';
 
 function HomePage() {
   // const dispatch = useDispatch();

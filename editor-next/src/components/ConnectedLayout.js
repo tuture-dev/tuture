@@ -150,7 +150,7 @@ function ConnectedLayout(props) {
             <Layout
               css={css`
                 box-shadow: -10px 0 15px rgba(0, 0, 0, 0.04);
-                width: ${isLgBreakPoint ? '100%' : '82%'};
+                width: ${isLgBreakPoint ? '100%' : '79%'};
                 z-index: 1000;
               `}
             >

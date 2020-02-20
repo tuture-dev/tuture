@@ -80,6 +80,14 @@ const collection = {
 
       return state;
     },
+    setNowArticle(state, payload) {
+      state.nowArticleId = payload;
+      state.nowStepCommit = state.collection.articles
+        .filter((article) => article.id === payload)[0]
+        .commits.slice(-1)[0];
+
+      return state;
+    },
     setArticleTitle(state, payload) {
       if (state.collection.articles.length !== 0) {
         state.collection.articles = state.collection.articles.map((article) => {

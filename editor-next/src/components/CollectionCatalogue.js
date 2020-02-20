@@ -1,18 +1,18 @@
 import React from 'react';
 import { useSelector, useDispatch, useStore } from 'react-redux';
-import { Button, Collapse } from 'antd';
+import { Menu } from 'antd';
+import { Link } from 'react-router-dom';
 
 /** @jsx jsx */
 import { css, jsx, Global } from '@emotion/core';
 
-import { CREATE_ARTICLE } from '../utils/constants';
-
-const { Panel } = Collapse;
+const { SubMenu } = Menu;
 
 function CollectionCatalogue() {
-  const { childrenVisible, childrenDrawerType } = useSelector(
-    (state) => state.drawer,
-  );
+  // const { childrenVisible, childrenDrawerType } = useSelector(
+  //   (state) => state.drawer,
+  // );
+  const { nowArticleId } = useSelector((state) => state.collection);
 
   const store = useStore();
   const dispatch = useDispatch();
@@ -21,34 +21,34 @@ function CollectionCatalogue() {
     store.select.collection.getCollectionCatalogue,
   );
 
-  function onToggleChildrenDrawer(toggleChildrenDrawerType) {
-    if (childrenDrawerType === toggleChildrenDrawerType) {
-      dispatch.drawer.setChildrenVisible(!childrenVisible);
-    }
+  // function onToggleChildrenDrawer(toggleChildrenDrawerType) {
+  //   if (childrenDrawerType === toggleChildrenDrawerType) {
+  //     dispatch.drawer.setChildrenVisible(!childrenVisible);
+  //   }
 
-    if (!childrenVisible) {
-      dispatch.drawer.setChildrenVisible(true);
-    }
+  //   if (!childrenVisible) {
+  //     dispatch.drawer.setChildrenVisible(true);
+  //   }
 
-    dispatch.drawer.setChildrenDrawerType(toggleChildrenDrawerType);
+  //   dispatch.drawer.setChildrenDrawerType(toggleChildrenDrawerType);
+  // }
+
+  function handleSwitchArticle(articleId) {
+    dispatch.collection.setNowArticle(articleId);
   }
-
-  console.log('collectionCatalogue', collectionCatalogue);
-
-  function onChange() {}
 
   return (
     <div>
       <div
         css={css`
-          margin-top: 40px;
+          margin-top: 32px;
         `}
       >
-        <Collapse
-          defaultActiveKey={['1']}
-          expandIconPosition="right"
-          onChange={onChange}
+        <Menu
+          defaultSelectedKeys={['1']}
+          mode="inline"
           css={css`
+            width: 100%;
             border: none;
             background: transparent;
 
@@ -57,59 +57,41 @@ function CollectionCatalogue() {
             }
           `}
         >
-          {collectionCatalogue.map((article, index) => (
-            <Panel
-              header={article.name}
-              key={index}
+          {collectionCatalogue.map((article) => (
+            <SubMenu
+              key={article.id}
+              title={
+                <Link
+                  to={`/articles/${article.id}`}
+                  css={css`
+                    color: #000;
+                  `}
+                >
+                  {article.name}
+                </Link>
+              }
+              onTitleClick={() => handleSwitchArticle(article.id)}
               css={css`
-                margin-bottom: 24px;
-                background: rgb(247, 247, 250);
+                background: transparent;
 
-                & > .ant-collapse-content {
-                  border-top: none;
-                  background: transparent;
-
-                  font-family: PingFangSC-Regular;
-                  font-size: 14px;
-                  color: rgba(0, 0, 0, 0.65);
-                  line-height: 22px;
+                &.ant-menu-submenu-open > .ant-menu-submenu-title {
+                  background: ${article.id === nowArticleId
+                    ? '#fff'
+                    : 'transparent'};
+                  padding-right: 24px;
                 }
 
-                & > .ant-collapse-header {
+                & > .ant-menu {
                   background: transparent;
-                  font-size: 14px;
-                  font-family: PingFangSC-Regular, PingFang SC;
-                  font-weight: 400;
-                  color: rgba(0, 0, 0, 1);
-                  line-height: 20px;
-                }
-
-                &.ant-collapse-item-active > .ant-collapse-header {
-                  background: #fff;
                 }
               `}
             >
-              <div
-                css={css`
-                  padding-left: 32px;
-                `}
-              >
-                {article.commitArrWithName.map((commitItem) => (
-                  <p key={commitItem.commit}>{commitItem.name}</p>
-                ))}
-              </div>
-            </Panel>
+              {article.commitArrWithName.map((commitItem) => (
+                <Menu.Item key={commitItem.commit}>{commitItem.name}</Menu.Item>
+              ))}
+            </SubMenu>
           ))}
-        </Collapse>
-        <Button
-          type="primary"
-          css={css`
-            margin-top: 40px;
-          `}
-          onClick={() => onToggleChildrenDrawer(CREATE_ARTICLE)}
-        >
-          创建新页
-        </Button>
+        </Menu>
       </div>
       <Global
         styles={css`

@@ -1,19 +1,29 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
+import { Route, BrowserRouter as Router } from 'react-router-dom';
 
-import App from './App';
 import ConnectedLayout from './components/ConnectedLayout';
 import { globalStyles } from './shared/styles';
 import store from './store';
 import * as serviceWorker from './serviceWorker';
 
+import App from './pages/App';
+import Article from './pages/Article';
+
 ReactDOM.render(
   <Provider store={store}>
     {globalStyles}
-    <ConnectedLayout>
-      <App />
-    </ConnectedLayout>
+    <Router>
+      <ConnectedLayout>
+        <Route path="/articles/:id">
+          <Article />
+        </Route>
+        <Route path="/" exact>
+          <App />
+        </Route>
+      </ConnectedLayout>
+    </Router>
   </Provider>,
   document.getElementById('root'),
 );
