@@ -34,6 +34,7 @@ function ChildrenDrawerComponent() {
       style={{
         position: 'absolute',
         zIndex: 99,
+        marginLeft: '-1px',
       }}
     >
       <CreateEditArticle childrenDrawerType={childrenDrawerType} />
