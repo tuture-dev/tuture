@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 
 import { useSelector, useDispatch, useStore } from 'react-redux';
 import { Layout, Menu, Icon, Modal } from 'antd';
@@ -34,10 +34,9 @@ const mapKeyToDrawerType = {
 function ConnectedLayout(props) {
   const { children } = props;
   const { commitStatus } = useSelector((state) => state.versionControl);
-  const { visible, drawerType, childrenVisible } = useSelector(
+  const { visible, drawerType, childrenVisible, selectedKeys } = useSelector(
     (state) => state.drawer,
   );
-  const [selectedKeys, setSelectedKeys] = useState([]);
 
   const store = useStore();
   const value = useSelector(store.select.collection.nowArticleContent);
@@ -68,16 +67,16 @@ function ConnectedLayout(props) {
       dispatch({ type: 'drawer/setVisible', payload: true });
       dispatch({ type: 'drawer/setDrawerType', payload: toggleDrawerType });
 
-      setSelectedKeys([key]);
+      dispatch({ type: 'drawer/setSelectedKeys', payload: [key] });
     } else {
       if (drawerType === toggleDrawerType) {
         dispatch({ type: 'drawer/setVisible', payload: false });
 
-        setSelectedKeys([]);
+        dispatch({ type: 'drawer/setSelectedKeys', payload: [] });
       } else {
         dispatch({ type: 'drawer/setDrawerType', payload: toggleDrawerType });
 
-        setSelectedKeys([key]);
+        dispatch({ type: 'drawer/setSelectedKeys', payload: [key] });
       }
     }
 

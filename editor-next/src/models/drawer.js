@@ -6,12 +6,9 @@ const drawer = {
     visible: false,
     drawerType: '',
     childrenDrawerType: DRAWER_UNSELECT,
+    selectedKeys: [],
   },
   reducers: {
-    setChildrenVisible(state, payload) {
-      state.childrenVisible = payload;
-      return state;
-    },
     setVisible(state, payload) {
       state.visible = payload;
 
@@ -20,6 +17,15 @@ const drawer = {
     setDrawerType(state, payload) {
       state.drawerType = payload;
 
+      return state;
+    },
+    setSelectedKeys(state, payload) {
+      state.selectedKeys = payload;
+
+      return state;
+    },
+    setChildrenVisible(state, payload) {
+      state.childrenVisible = payload;
       return state;
     },
     setChildrenDrawerType(state, payload) {

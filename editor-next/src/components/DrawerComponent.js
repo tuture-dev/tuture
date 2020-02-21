@@ -33,6 +33,7 @@ function DrawerComponent() {
 
   const handleClose = () => {
     dispatch({ type: 'drawer/setVisible', payload: false });
+    dispatch({ type: 'drawer/setSelectedKeys', payload: [] });
   };
 
   return (
