@@ -143,148 +143,146 @@ const FCForm = forwardRef(({ form }, ref) => {
   const { TextArea } = Input;
 
   return (
-    <div>
-      <div
+    <div
+      css={css`
+        padding: 0 24px;
+      `}
+    >
+      <Form
+        ref={form}
+        layout="vertical"
         css={css`
-          margin-top: -5px;
+          background-color: #fff;
+          width: 260px;
+          height: 700px;
         `}
       >
-        <Form
-          ref={form}
-          layout="vertical"
+        <Form.Item
+          label="文集封面"
           css={css`
-            background-color: #fff;
-            width: 260px;
-            height: 700px;
-            padding: 20px 20px 40px 10px;
+            with: 100%;
+            height: 180px;
+            margin-bottom: 10px;
           `}
         >
-          <Form.Item
-            label="文集封面"
-            css={css`
-              with: 100%;
-              height: 180px;
-              margin-bottom: 10px;
-            `}
-          >
-            {getFieldDecorator('dragger', {
-              // valuePropName: 'fileList',
-              // getValueFromEvent: normFile,
-            })(
-              <>
-                <Upload.Dragger
-                  name="files"
-                  action="/upload.do"
-                  showUploadList={false}
-                  onChange={handleChange}
-                >
-                  {src ? loadImage : uploadButton}
-                </Upload.Dragger>
-                <Modal
-                  title="修改封面"
-                  visible={visible}
-                  onOk={handleOk}
-                  onCancel={handleCancel}
+          {getFieldDecorator('dragger', {
+            // valuePropName: 'fileList',
+            // getValueFromEvent: normFile,
+          })(
+            <>
+              <Upload.Dragger
+                name="files"
+                action="/upload.do"
+                showUploadList={false}
+                onChange={handleChange}
+              >
+                {src ? loadImage : uploadButton}
+              </Upload.Dragger>
+              <Modal
+                title="修改封面"
+                visible={visible}
+                onOk={handleOk}
+                onCancel={handleCancel}
+              >
+                <div
+                  css={css`
+                    display: flex;
+                  `}
                 >
                   <div
                     css={css`
-                      display: flex;
+                      flex: 1;
+                      margin-right: 20px;
                     `}
                   >
-                    <div
-                      css={css`
-                        flex: 1;
-                        margin-right: 20px;
-                      `}
-                    >
-                      {imageUrl && (
-                        <ReactCrop
-                          src={imageUrl}
-                          crop={crop}
-                          ruleOfThirds
-                          onImageLoaded={onImageLoaded}
-                          onComplete={onCropComplete}
-                          onChange={onCropChange}
-                        />
-                      )}
-                    </div>
-                    <div
-                      css={css`
-                        flex: 1;
-                      `}
-                    >
-                      {croppedImageUrl && (
-                        <img alt="Crop" src={croppedImageUrl} />
-                      )}
-                    </div>
+                    {imageUrl && (
+                      <ReactCrop
+                        src={imageUrl}
+                        crop={crop}
+                        ruleOfThirds
+                        onImageLoaded={onImageLoaded}
+                        onComplete={onCropComplete}
+                        onChange={onCropChange}
+                      />
+                    )}
                   </div>
-                </Modal>
-              </>,
-            )}
-          </Form.Item>
-          <Form.Item
-            label="文集标题"
-            css={css`
-              margin-top: 30px;
-              margin-bottom: 10px;
-            `}
-          >
-            {getFieldDecorator('username', {
-              rules: [
-                {
-                  required: true,
-                  message: '请输入标题',
-                },
-              ],
-            })(<Input placeholder="请输入标题" />)}
-          </Form.Item>
-          <Form.Item
-            label="文集标签"
-            hasFeedback
-            css={css`
-              margin-bottom: 10px;
-            `}
-          >
-            {getFieldDecorator('select', {
-              rules: [{ required: true, message: '请选择标签' }],
-            })(
-              <Select
-                mode="tags"
-                tokenSeparators={[',']}
-                placeholder="输入或点击选择标签"
-              >
-                {children}
-              </Select>,
-            )}
-          </Form.Item>
-          <Form.Item label="文集摘要">
-            {getFieldDecorator('textarea', {
-              rules: [{ required: true, message: '请输入文集的摘要' }],
-            })(
-              <TextArea
-                placeholder="请输入文集的摘要"
-                autoSize={{ maxRows: 6 }}
-              />,
-            )}
-          </Form.Item>
-          <div
-            css={css`
-              margin-top: 30px;
-              padding-bottom: 20px;
-              border-bottom: 1px solid rgba(0, 0, 0, 0.15);
-            `}
-          >
-            <Button
-              css={css`
-                margin-right: 90px;
-              `}
+                  <div
+                    css={css`
+                      flex: 1;
+                    `}
+                  >
+                    {croppedImageUrl && (
+                      <img alt="Crop" src={croppedImageUrl} />
+                    )}
+                  </div>
+                </div>
+              </Modal>
+            </>,
+          )}
+        </Form.Item>
+        <Form.Item
+          label="文集标题"
+          css={css`
+            margin-top: 30px;
+            margin-bottom: 10px;
+          `}
+        >
+          {getFieldDecorator('username', {
+            rules: [
+              {
+                required: true,
+                message: '请输入标题',
+              },
+            ],
+          })(<Input placeholder="请输入标题" />)}
+        </Form.Item>
+        <Form.Item
+          label="文集标签"
+          hasFeedback
+          css={css`
+            margin-bottom: 10px;
+          `}
+        >
+          {getFieldDecorator('select', {
+            rules: [{ required: true, message: '请选择标签' }],
+          })(
+            <Select
+              mode="tags"
+              tokenSeparators={[',']}
+              placeholder="输入或点击选择标签"
             >
-              取消
-            </Button>
-            <Button type="primary">确认</Button>
-          </div>
-        </Form>
-      </div>
+              {children}
+            </Select>,
+          )}
+        </Form.Item>
+        <Form.Item label="文集摘要">
+          {getFieldDecorator('textarea', {
+            rules: [{ required: true, message: '请输入文集的摘要' }],
+          })(
+            <TextArea
+              placeholder="请输入文集的摘要"
+              autoSize={{ maxRows: 6 }}
+            />,
+          )}
+        </Form.Item>
+        <div
+          css={css`
+            margin-top: 30px;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+          `}
+        >
+          <Button
+            css={css`
+              margin-right: 90px;
+            `}
+          >
+            取消
+          </Button>
+          <Button type="primary">确认</Button>
+        </div>
+      </Form>
     </div>
   );
 });
