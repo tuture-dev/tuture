@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 
 import { useSelector, useDispatch, useStore } from 'react-redux';
 import { Layout, Menu, Icon, Modal } from 'antd';
-import { useMediaQuery } from 'react-responsive';
+// import { useMediaQuery } from 'react-responsive';
 import { Slate } from 'slate-react';
 import logo from '../assets/images/logo.svg';
 
@@ -34,7 +34,7 @@ function ConnectedLayout(props) {
 
   const dispatch = useDispatch();
 
-  const isLgBreakPoint = useMediaQuery({ query: '(max-width: 992px)' });
+  // const isLgBreakPoint = useMediaQuery({ query: '(max-width: 992px)' });
 
   function onToggleDrawer(toggleDrawerType) {
     dispatch.drawer.setVisible(true);
@@ -63,20 +63,19 @@ function ConnectedLayout(props) {
         <DrawerComponent />
         <Layout>
           <Sider
-            css={css`
-              height: 100vh;
-              background-color: #f7f7fa;
-              z-index: 1002;
-            `}
-            breakpoint="lg"
-            collapsed
+            width={60}
+            style={{
+              borderRight: '1px solid #eee',
+              backgroundColor: 'white',
+              zIndex: '1002',
+            }}
           >
             <div
               className="logo"
               css={css`
                 width: 32px;
+                margin: auto;
                 text-align: center;
-                margin-left: 24px;
               `}
             >
               <img
@@ -89,8 +88,9 @@ function ConnectedLayout(props) {
             </div>
             <Menu
               css={css`
-                background-color: #f7f7fa;
+                background-color: white;
                 border: none;
+                margin: auto;
               `}
               theme="light"
               mode="inline"
@@ -122,56 +122,46 @@ function ConnectedLayout(props) {
               </Menu.Item>
             </Menu>
           </Sider>
-          <Layout
-            css={css`
-              display: flex;
-              flex-direction: row;
-            `}
-          >
-            <Layout
+          <Layout>
+            <Header
               css={css`
-                width: 300px;
-                height: 100vh;
-                background-color: #f7f7fa;
-                position: ${isLgBreakPoint ? 'absolute' : 'static'};
+                background-color: #fff;
+                padding: 0 6%;
+                border-bottom: 1px solid rgba(232, 232, 232, 1);
               `}
             >
-              <PageCatalogue />
-            </Layout>
-            <Layout
-              css={css`
-                box-shadow: -10px 0 15px rgba(0, 0, 0, 0.04);
-                width: ${isLgBreakPoint ? '100%' : '79%'};
-                z-index: 1000;
-              `}
-            >
-              <Header
-                css={css`
-                  background-color: #fff;
-                  border-bottom: 1px solid rgba(232, 232, 232, 1);
-                `}
-              >
-                <LayoutHeader />
-              </Header>
-              <Content
-                css={css`
-                  background: #fff;
-                  display: flex;
-                  flex-direction: row;
-                `}
-              >
-                <div
+              <LayoutHeader />
+            </Header>
+            <Content>
+              <Layout>
+                <Sider
+                  width={280}
+                  style={{
+                    paddingTop: '5px',
+                    paddingLeft: '5px',
+                    backgroundColor: '#f7f7fa',
+                  }}
+                >
+                  <PageCatalogue />
+                </Sider>
+                <Content
                   css={css`
-                    overflow: hidden;
-                    position: relative;
-                    height: calc(100vh - 64px);
-                    width: 100%;
+                    background: #fff;
                   `}
                 >
-                  {children}
-                </div>
-              </Content>
-            </Layout>
+                  <div
+                    css={css`
+                      overflow: hidden;
+                      position: relative;
+                      height: calc(100vh - 64px);
+                      width: 100%;
+                    `}
+                  >
+                    {children}
+                  </div>
+                </Content>
+              </Layout>
+            </Content>
           </Layout>
         </Layout>
         <Modal

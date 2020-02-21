@@ -23,7 +23,7 @@ function LayoutHeader() {
       css={css`
         display: flex;
         flex-direction: row;
-        justify-content: space-between;
+        justify-content: space-around;
       `}
     >
       <ToolBar />

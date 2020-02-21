@@ -34,6 +34,10 @@ function StepFileList() {
         background-color: #f7f7fa;
         height: calc(100vh - 64px);
         padding: 48px 16px;
+        position: fixed;
+        top: 64px;
+        right: 3px;
+        width: 220px;
       `}
     >
       <h4

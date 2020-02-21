@@ -43,7 +43,7 @@ function DrawerComponent() {
       visible={visible}
       onClose={handleClose}
       style={{
-        marginLeft: '80px',
+        marginLeft: '60px',
       }}
     >
       <ChildrenDrawerComponent />
