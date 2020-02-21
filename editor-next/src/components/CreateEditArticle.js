@@ -17,8 +17,12 @@ import {
   Checkbox,
   Button,
 } from 'antd';
+import { useSelector } from 'react-redux';
+
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
+
+import { EDIT_ARTICLE } from '../utils/constants';
 
 const getBase64 = (img, callback) => {
   const reader = new FileReader();
@@ -27,6 +31,8 @@ const getBase64 = (img, callback) => {
 };
 
 const FCForm = forwardRef(({ form }, ref) => {
+  const { childrenDrawerType } = useSelector((state) => state.drawer);
+
   useImperativeHandle(ref, () => ({
     form,
   }));
@@ -387,48 +393,50 @@ const FCForm = forwardRef(({ form }, ref) => {
           <Button type="primary">确认</Button>
         </div>
       </Form>
-      <div
-        css={css`
-          display: ${displayType};
-        `}
-      >
+      {childrenDrawerType === EDIT_ARTICLE && (
         <div
           css={css`
-            margin-top: 10px;
+            display: ${displayType};
           `}
         >
-          <span
+          <div
             css={css`
-              font-size: 14px;
-              font-family: PingFangSC-Medium, PingFang SC;
-              font-weight: 500;
-              color: rgba(0, 0, 0, 1);
-              line-height: 22px;
-              cursor: pointer;
+              margin-top: 10px;
             `}
           >
-            导出为 Markdown
-          </span>
-        </div>
-        <div
-          css={css`
-            margin-top: 10px;
-          `}
-        >
-          <span
+            <span
+              css={css`
+                font-size: 14px;
+                font-family: PingFangSC-Medium, PingFang SC;
+                font-weight: 500;
+                color: rgba(0, 0, 0, 1);
+                line-height: 22px;
+                cursor: pointer;
+              `}
+            >
+              导出为 Markdown
+            </span>
+          </div>
+          <div
             css={css`
-              font-size: 14px;
-              font-family: PingFangSC-Medium, PingFang SC;
-              font-weight: 500;
-              color: rgba(0, 0, 0, 1);
-              line-height: 22px;
-              cursor: pointer;
+              margin-top: 10px;
             `}
           >
-            删除此页
-          </span>
+            <span
+              css={css`
+                font-size: 14px;
+                font-family: PingFangSC-Medium, PingFang SC;
+                font-weight: 500;
+                color: rgba(0, 0, 0, 1);
+                line-height: 22px;
+                cursor: pointer;
+              `}
+            >
+              删除此页
+            </span>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 });
