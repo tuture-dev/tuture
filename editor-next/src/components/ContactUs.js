@@ -1,12 +1,9 @@
 import React from 'react';
-import { Icon } from 'antd';
-import logo from '../assets/images/contact_us/tuture.png';
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 
-const IconFont = Icon.createFromIconfontCN({
-  scriptUrl: '//at.alicdn.com/t/font_1629955_vk4u8yutamd.js',
-});
+import IconFont from './IconFont';
+import logo from '../assets/images/logo.svg';
 
 const link = css`
   width: 284px;
@@ -19,8 +16,8 @@ const link = css`
   margin-top: 16px;
 `;
 const icon = css`
-  width: 24px;
-  height: 24px;
+  width: 16px;
+  height: 16px;
   margin-left: 16px;
   margin-top: 12px;
 `;
@@ -93,6 +90,7 @@ const items = itemsData.map((item) => (
     <IconFont css={arrow} type="icon-arrowright" />
   </a>
 ));
+
 function ContactUs() {
   return (
     <div
