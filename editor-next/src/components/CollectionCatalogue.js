@@ -94,7 +94,15 @@ function CollectionCatalogue() {
 
               `}
             >
-              <span>
+              <span
+                css={css`
+                  display: inline-block;
+                  max-width: 224px;
+                  white-space: nowrap;
+                  text-overflow: ellipsis;
+                  overflow: hidden;
+                `}
+              >
                 <Link to={`/articles/${item.id}`} css={itemTitleStyle}>
                   {item.name}
                 </Link>
