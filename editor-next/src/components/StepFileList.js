@@ -83,6 +83,11 @@ function StepFileList() {
               <span
                 css={css`
                   color: ${file.display ? 'rgba(0, 0, 0, 0.65)' : '#bfbfbf'};
+                  display: inline-block;
+                  max-width: 120px;
+                  white-space: nowrap;
+                  text-overflow: ellipsis;
+                  overflow: hidden;
                 `}
               >
                 {file.file}
