@@ -17,7 +17,7 @@ import {
   Checkbox,
   Button,
 } from 'antd';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
@@ -31,6 +31,7 @@ const getBase64 = (img, callback) => {
 };
 
 const FCForm = forwardRef(({ form }, ref) => {
+  const dispatch = useDispatch();
   const { childrenDrawerType } = useSelector((state) => state.drawer);
 
   useImperativeHandle(ref, () => ({
@@ -387,6 +388,9 @@ const FCForm = forwardRef(({ form }, ref) => {
             css={css`
               margin-right: 115px;
             `}
+            onClick={() =>
+              dispatch({ type: 'drawer/setChildrenVisible', payload: false })
+            }
           >
             取消
           </Button>
