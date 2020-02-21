@@ -106,16 +106,15 @@ function ConnectedLayout(props) {
             <div
               className="logo"
               css={css`
-                width: 32px;
                 text-align: center;
-                margin-left: 24px;
               `}
             >
               <img
                 src={logo}
                 alt=""
                 css={css`
-                  width: 100%;
+                  width: 24px;
+                  height: 24px;
                 `}
               />
             </div>

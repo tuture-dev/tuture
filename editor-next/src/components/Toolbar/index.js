@@ -1,6 +1,8 @@
 import React from 'react';
-import { css } from 'emotion';
 import * as F from 'editure-constants';
+
+/** @jsx jsx */
+import { css, jsx } from '@emotion/core';
 
 import Menu from './Menu';
 import EditLink from './EditLink';
@@ -19,7 +21,7 @@ const Toolbar = (props) => {
   return (
     <Menu
       {...props}
-      className={css`
+      css={css`
         position: relative;
       `}
     >

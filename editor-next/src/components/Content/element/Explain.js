@@ -1,5 +1,7 @@
 import React from 'react';
-import { css } from 'emotion';
+
+/** @jsx jsx */
+import { css, jsx } from '@emotion/core';
 
 function ExplainElement(props) {
   const { attributes, children } = props;
@@ -7,7 +9,7 @@ function ExplainElement(props) {
   return (
     <div
       {...attributes}
-      className={css`
+      css={css`
         margin: 3px;
         padding: 3px;
         border: 1px solid white;

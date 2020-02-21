@@ -1,17 +1,17 @@
 import React from 'react';
-import { cx, css } from 'emotion';
+
+/** @jsx jsx */
+import { css, jsx } from '@emotion/core';
 
 const Menu = ({ className, ...props }) => (
   <div
     {...props}
-    className={cx(
-      className,
-      css`
-        & > * {
-          display: inline-block;
-        }
-      `,
-    )}
+    className={className}
+    css={css`
+      & > * {
+        display: inline-block;
+      }
+    `}
   />
 );
 

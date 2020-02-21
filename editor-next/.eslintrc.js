@@ -4,6 +4,7 @@ module.exports = {
   env: {
     browser: true,
   },
+  plugins: ['emotion'],
   rules: {
     'no-restricted-syntax': 'off',
     'consistent-return': 'off',
@@ -21,5 +22,9 @@ module.exports = {
     'react/jsx-curly-newline': 'off',
     'react/jsx-no-duplicate-props': 'off',
     'no-unused-vars': ['error', { varsIgnorePattern: 'React' }],
+    'emotion/jsx-import': 'error',
+    'emotion/no-vanilla': 'error',
+    'emotion/import-from-emotion': 'error',
+    'emotion/styled-import': 'error',
   },
 };

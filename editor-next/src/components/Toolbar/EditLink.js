@@ -2,7 +2,10 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Modal, Input } from 'antd';
 import { useSlate } from 'slate-react';
-import { css } from 'emotion';
+
+/** @jsx jsx */
+import { css, jsx } from '@emotion/core';
+
 import { isMarkActive, insertLink, updateLink, selectLastPoint } from 'editure';
 import { LINK } from 'editure-constants';
 
@@ -48,7 +51,7 @@ const EditLink = () => {
       zIndex={1080}
     >
       <p
-        className={css`
+        css={css`
           margin-top: 8px;
           margin-bottom: 8px;
         `}
@@ -65,7 +68,7 @@ const EditLink = () => {
         }
       />
       <p
-        className={css`
+        css={css`
           margin-top: 8px;
           margin-bottom: 8px;
         `}
