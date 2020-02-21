@@ -184,22 +184,10 @@ const collection = {
       return state;
     },
     setNowStepCommit(state, payload) {
-      console.log('payload', payload);
-      if (payload.needSetPreviousStepCommit) {
-        let nowStepCommitIndex = 0;
-        state.collection.steps.map((step, index) => {
-          if (step.commit === payload.commit) {
-            nowStepCommitIndex = index;
-          }
-        });
-
-        state.nowStepCommit =
-          state.collection.steps[
-            nowStepCommitIndex - 1 > 0 ? nowStepCommitIndex - 1 : 0
-          ].commit;
-      } else {
+      if (payload.commit) {
         state.nowStepCommit = payload.commit;
       }
+      return state;
     },
     setFileShowStatus(state, payload) {
       state.collection.steps = state.collection.steps.map((step) => {
