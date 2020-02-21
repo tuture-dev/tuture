@@ -54,7 +54,8 @@ function CollectionCatalogue() {
     store.select.collection.getCollectionCatalogue,
   );
 
-  function onToggleChildrenDrawer(toggleChildrenDrawerType) {
+  function onToggleChildrenDrawer(e, toggleChildrenDrawerType) {
+    e.stopPropagation();
     if (childrenDrawerType === toggleChildrenDrawerType) {
       dispatch.drawer.setChildrenVisible(!childrenVisible);
     }
@@ -67,6 +68,7 @@ function CollectionCatalogue() {
   }
 
   function onCatalogueItemClick(articleId) {
+    dispatch.drawer.setVisible(false);
     setSelectItem(articleId);
     dispatch.collection.setNowArticle(articleId);
   }
@@ -103,7 +105,7 @@ function CollectionCatalogue() {
                     color: #02b875;
                   }
                 `}
-                onClick={() => onToggleChildrenDrawer(EDIT_ARTICLE)}
+                onClick={(e) => onToggleChildrenDrawer(e, EDIT_ARTICLE)}
               >
                 <IconFont type="icon-moreread" />
               </span>
@@ -124,9 +126,9 @@ function CollectionCatalogue() {
 
               background: ${selectAddNewPage ? '#FFF' : 'transparent'};
             `}
-            onClick={() => {
+            onClick={(e) => {
               setSelectAddNewPage(!selectAddNewPage);
-              onToggleChildrenDrawer(CREATE_ARTICLE);
+              onToggleChildrenDrawer(e, CREATE_ARTICLE);
             }}
           >
             <span css={itemTitleStyle}>添加新页</span>

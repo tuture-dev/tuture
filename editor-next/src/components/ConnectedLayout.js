@@ -11,9 +11,7 @@ import { css, jsx } from '@emotion/core';
 import { updateLastSelection } from 'editure';
 import LayoutHeader from './LayoutHeader';
 import DrawerComponent from './DrawerComponent';
-import ChildrenDrawerComponent from './ChildrenDrawerComponent';
 import {
-  PAGE_CATAGUE,
   COLLECTION_CATALOGUE,
   COLLECTION_SETTING,
   CONTACT_US,
@@ -22,13 +20,13 @@ import {
 } from '../utils/constants';
 import { initializeEditor } from '../utils/editor';
 import { buttonRefs, ButtonRefsContext } from '../utils/hotkeys';
+import PageCatalogue from './PageCatalogue';
 
 const { Header, Sider, Content } = Layout;
 
 function ConnectedLayout(props) {
   const { children } = props;
   const { commitStatus } = useSelector((state) => state.versionControl);
-  const { visible, drawerType } = useSelector((state) => state.drawer);
 
   const store = useStore();
   const value = useSelector(store.select.collection.nowArticleContent);
@@ -38,14 +36,8 @@ function ConnectedLayout(props) {
   const isLgBreakPoint = useMediaQuery({ query: '(max-width: 992px)' });
 
   function onToggleDrawer(toggleDrawerType) {
-    if (isLgBreakPoint && drawerType === toggleDrawerType) {
-      dispatch.drawer.setVisible(!visible);
-    }
-
-    if (isLgBreakPoint && !visible) {
-      dispatch.drawer.setVisible(true);
-    }
-
+    dispatch.drawer.setVisible(true);
+    dispatch.drawer.setChildrenVisible(false);
     dispatch.drawer.setDrawerType(toggleDrawerType);
   }
 
@@ -67,11 +59,9 @@ function ConnectedLayout(props) {
   return (
     <ButtonRefsContext.Provider value={buttonRefs}>
       <Slate editor={editor} value={value} onChange={onContentChange}>
+        <DrawerComponent />
         <Layout>
           <Sider
-            onBreakpoint={(broken) => {
-              dispatch.drawer.setVisible(!broken);
-            }}
             css={css`
               height: 100vh;
               background-color: #f7f7fa;
@@ -96,18 +86,10 @@ function ConnectedLayout(props) {
               `}
               theme="light"
               mode="inline"
-              defaultSelectedKeys={['1']}
+              selectable={false}
             >
               <Menu.Item
                 key="1"
-                title="页面目录"
-                style={{ marginTop: '40px' }}
-                onClick={() => onToggleDrawer(PAGE_CATAGUE)}
-              >
-                <Icon type="file" />
-              </Menu.Item>
-              <Menu.Item
-                key="2"
                 title="文集目录"
                 style={{ marginTop: '40px' }}
                 onClick={() => onToggleDrawer(COLLECTION_CATALOGUE)}
@@ -115,7 +97,7 @@ function ConnectedLayout(props) {
                 <Icon type="switcher" />
               </Menu.Item>
               <Menu.Item
-                key="4"
+                key="2"
                 title="文集设置"
                 style={{ marginTop: '40px' }}
                 onClick={() => onToggleDrawer(COLLECTION_SETTING)}
@@ -123,7 +105,7 @@ function ConnectedLayout(props) {
                 <Icon type="setting" />
               </Menu.Item>
               <Menu.Item
-                key="5"
+                key="3"
                 title="联系我们"
                 style={{ marginTop: '40px' }}
                 onClick={() => onToggleDrawer(CONTACT_US)}
@@ -142,10 +124,11 @@ function ConnectedLayout(props) {
               css={css`
                 width: 300px;
                 height: 100vh;
+                background-color: #f7f7fa;
                 position: ${isLgBreakPoint ? 'absolute' : 'static'};
               `}
             >
-              <DrawerComponent />
+              <PageCatalogue />
             </Layout>
             <Layout
               css={css`
@@ -177,7 +160,6 @@ function ConnectedLayout(props) {
                     width: 100%;
                   `}
                 >
-                  <ChildrenDrawerComponent />
                   {children}
                 </div>
               </Content>
