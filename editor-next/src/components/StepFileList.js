@@ -17,14 +17,20 @@ function StepFileList() {
   );
 
   function onDrop(res) {
-    dispatch.collection.switchFile({ ...res, commit: nowStepCommit });
+    dispatch({
+      type: 'collection/switchFile',
+      payload: { ...res, commit: nowStepCommit },
+    });
   }
 
   function onToggleShowFile(file) {
-    dispatch.collection.setFileShowStatus({
-      commit: nowStepCommit,
-      ...file,
-      display: !file.display,
+    dispatch({
+      type: 'collection/setFileShowStatus',
+      payload: {
+        commit: nowStepCommit,
+        ...file,
+        display: !file.display,
+      },
     });
   }
 

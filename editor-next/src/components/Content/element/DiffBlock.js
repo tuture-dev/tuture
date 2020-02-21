@@ -97,10 +97,13 @@ function DiffBlockElement(props) {
     .toLowerCase();
 
   function onChange(checkedValues) {
-    dispatch.collection.setDiffItemHiddenLines({
-      commit,
-      file,
-      hiddenLines: checkedValues,
+    dispatch({
+      type: 'collection/setDiffItemHiddenLines',
+      payload: {
+        commit,
+        file,
+        hiddenLines: checkedValues,
+      },
     });
   }
 

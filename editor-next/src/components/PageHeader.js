@@ -59,7 +59,10 @@ function PageHeader() {
         value={description}
         autoSize
         onChange={(e) =>
-          dispatch.collection.setArticleDescription(e.target.value)
+          dispatch({
+            type: 'collection/setArticleDescription',
+            payload: e.target.value,
+          })
         }
         css={css`
           font-size: 14px;

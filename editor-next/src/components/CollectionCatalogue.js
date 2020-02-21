@@ -57,20 +57,26 @@ function CollectionCatalogue() {
   function onToggleChildrenDrawer(e, toggleChildrenDrawerType) {
     e.stopPropagation();
     if (childrenDrawerType === toggleChildrenDrawerType) {
-      dispatch.drawer.setChildrenVisible(!childrenVisible);
+      dispatch({
+        type: 'drawer/setChildrenVisible',
+        payload: !childrenVisible,
+      });
     }
 
     if (!childrenVisible) {
-      dispatch.drawer.setChildrenVisible(true);
+      dispatch({ type: 'drawer/setChildrenVisible', payload: true });
     }
 
-    dispatch.drawer.setChildrenDrawerType(toggleChildrenDrawerType);
+    dispatch({
+      type: 'drawer/setChildrenDrawerType',
+      payload: toggleChildrenDrawerType,
+    });
   }
 
   function onCatalogueItemClick(articleId) {
-    dispatch.drawer.setVisible(false);
+    dispatch({ type: 'drawer/setVisible', payload: false });
     setSelectItem(articleId);
-    dispatch.collection.setNowArticle(articleId);
+    dispatch({ type: 'collection/setNowArticle', payload: articleId });
   }
 
   return (

@@ -23,10 +23,10 @@ const Link = (props) => {
 
   const onClickEdit = () => {
     const { text, url } = getLinkData(editor);
-    if (text) dispatch.link.setText(text);
-    if (url) dispatch.link.setUrl(url);
+    if (text) dispatch({ type: 'link/setText', payload: text });
+    if (url) dispatch({ type: 'link/setUrl', payload: url });
 
-    dispatch.link.startEdit();
+    dispatch({ type: 'link/startEdit' });
   };
 
   const handleDeleteLink = () => {

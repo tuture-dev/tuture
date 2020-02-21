@@ -18,7 +18,7 @@ function ChildrenDrawerComponent() {
   );
 
   function onClose() {
-    dispatch.drawer.setChildrenVisible(false);
+    dispatch({ type: 'drawer/setChildrenVisible', payload: false });
   }
 
   return (

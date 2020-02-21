@@ -47,7 +47,7 @@ function PageCatalogue() {
     const commit = getCommit(link.slice(1), nowArticleCatalogue);
 
     if (link && commit) {
-      dispatch.collection.setNowStepCommit({ commit });
+      dispatch({ type: 'collection/setNowStepCommit', payload: { commit } });
     }
   }
 

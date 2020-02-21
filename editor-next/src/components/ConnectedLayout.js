@@ -28,6 +28,9 @@ const { Header, Sider, Content } = Layout;
 function ConnectedLayout(props) {
   const { children } = props;
   const { commitStatus } = useSelector((state) => state.versionControl);
+  const { visible, drawerType, childrenDrawerType } = useSelector(
+    (state) => state.drawer,
+  );
 
   const store = useStore();
   const value = useSelector(store.select.collection.nowArticleContent);
@@ -37,21 +40,34 @@ function ConnectedLayout(props) {
   const isLgBreakPoint = useMediaQuery({ query: '(max-width: 992px)' });
 
   function onToggleDrawer(toggleDrawerType) {
-    dispatch.drawer.setVisible(true);
-    dispatch.drawer.setChildrenVisible(false);
-    dispatch.drawer.setDrawerType(toggleDrawerType);
+    if (!drawerType) {
+      dispatch({ type: 'drawer/setVisible', payload: true });
+    }
+
+    if (drawerType === toggleDrawerType) {
+      dispatch({ type: 'drawer/setVisible', payload: !visible });
+    }
+
+    if (childrenDrawerType) {
+      dispatch({ type: 'drawer/setChildrenVisible', payload: false });
+    }
+
+    dispatch({ type: 'drawer/setDrawerType', payload: toggleDrawerType });
   }
 
   function handleOk() {
-    dispatch.versionControl.setCommitStatus(NORMAL);
+    dispatch({ type: 'versionControl/setCommitStatus', payload: NORMAL });
   }
 
   function handleCancel() {
-    dispatch.versionControl.setCommitStatus(NORMAL);
+    dispatch({ type: 'versionControl/setCommitStatus', payload: NORMAL });
   }
 
   function onContentChange(val) {
-    dispatch.collection.setArticleContent({ fragment: val });
+    dispatch({
+      type: 'collection/setArticleContent',
+      payload: { fragment: val },
+    });
   }
 
   const editor = useMemo(initializeEditor, []);
@@ -94,7 +110,6 @@ function ConnectedLayout(props) {
               `}
               theme="light"
               mode="inline"
-              selectable={false}
             >
               <Menu.Item
                 key="1"

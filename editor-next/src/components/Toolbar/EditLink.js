@@ -23,12 +23,12 @@ const EditLink = () => {
       }
     }
 
-    dispatch.link.reset();
+    dispatch({ type: 'link/reset' });
   };
 
   const handleCancel = () => {
     selectLastPoint(editor);
-    dispatch.link.reset();
+    dispatch({ type: 'link/reset' });
   };
 
   const onKeyDown = (e) => {
@@ -60,7 +60,9 @@ const EditLink = () => {
         autoFocus={!text}
         placeholder="添加描述"
         onKeyDown={onKeyDown}
-        onChange={(e) => dispatch.link.setText(e.target.value)}
+        onChange={(e) =>
+          dispatch({ type: 'link/setText', payload: e.target.value })
+        }
       />
       <p
         className={css`
@@ -75,7 +77,9 @@ const EditLink = () => {
         autoFocus={!!text}
         placeholder="链接地址"
         onKeyDown={onKeyDown}
-        onChange={(e) => dispatch.link.setUrl(e.target.value)}
+        onChange={(e) =>
+          dispatch({ type: 'link/setUrl', payload: e.target.value })
+        }
       />
     </Modal>
   );

@@ -49,11 +49,11 @@ const HoverLink = () => {
     const el = ref.current;
     el.removeAttribute('style');
 
-    dispatch.link.startEdit();
+    dispatch({ type: 'link/startEdit' });
 
     const { text, url } = getLinkData(editor);
-    if (text) dispatch.link.setText(text);
-    if (url) dispatch.link.setUrl(url);
+    if (text) dispatch({ type: 'link/setText', payload: text });
+    if (url) dispatch({ type: 'link/setUrl', payload: url });
   };
 
   const onDeleteLink = (e) => {

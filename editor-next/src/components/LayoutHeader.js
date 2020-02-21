@@ -14,7 +14,7 @@ function LayoutHeader() {
   const dispatch = useDispatch();
 
   function onCommitClick() {
-    dispatch.versionControl.setCommitStatus(COMMIT);
+    dispatch({ type: 'versionControl/setCommitStatus', payload: COMMIT });
   }
 
   return (

@@ -32,7 +32,7 @@ function DrawerComponent() {
   const RenderComponent = mapTypeToComponent[drawerType];
 
   const handleClose = () => {
-    dispatch.drawer.setVisible(false);
+    dispatch({ type: 'drawer/setVisible', payload: false });
   };
 
   return (
