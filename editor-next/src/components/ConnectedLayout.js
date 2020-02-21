@@ -4,6 +4,7 @@ import { useSelector, useDispatch, useStore } from 'react-redux';
 import { Layout, Menu, Icon, Modal } from 'antd';
 import { useMediaQuery } from 'react-responsive';
 import { Slate } from 'slate-react';
+import logo from '../assets/images/contact_us/tuture.png';
 
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
@@ -73,11 +74,19 @@ function ConnectedLayout(props) {
             <div
               className="logo"
               css={css`
+                width: 40px;
                 text-align: center;
-                margin-top: 16px;
+                margin-left: 20px;
+                margin-top: -5px;
               `}
             >
-              <img src="/images/logo.svg" alt="" />
+              <img
+                src={logo}
+                alt=""
+                css={css`
+                  width: 100%;
+                `}
+              />
             </div>
             <Menu
               css={css`
