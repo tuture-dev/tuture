@@ -5,6 +5,8 @@ import { css, jsx, Global } from '@emotion/core';
 import { useSelector, useStore, useDispatch } from 'react-redux';
 import { Container, Draggable } from 'react-smooth-dnd';
 
+import IconFont from './IconFont';
+
 function StepFileList() {
   const dispatch = useDispatch();
   const store = useStore();
@@ -16,6 +18,14 @@ function StepFileList() {
 
   function onDrop(res) {
     dispatch.collection.switchFile({ ...res, commit: nowStepCommit });
+  }
+
+  function onToggleShowFile(file) {
+    dispatch.collection.setFileShowStatus({
+      commit: nowStepCommit,
+      ...file,
+      display: !file.display,
+    });
   }
 
   return (
@@ -50,9 +60,9 @@ function StepFileList() {
         dropPlaceholderAnimationDuration={200}
       >
         {fileList.map((file) => (
-          <Draggable key={file}>
+          <Draggable key={file.file}>
             <div
-              key={file}
+              key={file.file}
               css={css`
                 max-width: 194px;
                 height: 36px;
@@ -61,9 +71,47 @@ function StepFileList() {
                 border-radius: 4px;
                 margin-bottom: 8px;
                 padding: 8px;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+
+                &:hover {
+                  cursor: pointer;
+                }
               `}
             >
-              <span>{file}</span>
+              <span
+                css={css`
+                  color: ${file.display ? 'rgba(0, 0, 0, 0.65)' : '#bfbfbf'};
+                  display: inline-block;
+                  max-width: 120px;
+                  white-space: nowrap;
+                  text-overflow: ellipsis;
+                  overflow: hidden;
+                `}
+              >
+                {file.file}
+              </span>
+              <span>
+                <IconFont
+                  type={file.display ? 'icon-eye' : 'icon-eye-close'}
+                  onClick={() => onToggleShowFile(file)}
+                  css={css`
+                    margin-right: 4px;
+                    &:hover {
+                      color: #02b875;
+                    }
+                  `}
+                />
+                <IconFont
+                  type="icon-menu"
+                  css={css`
+                    &:hover {
+                      color: #02b875;
+                    }
+                  `}
+                />
+              </span>
             </div>
           </Draggable>
         ))}

@@ -184,7 +184,27 @@ const collection = {
       return state;
     },
     setNowStepCommit(state, payload) {
-      state.nowStepCommit = payload;
+      if (payload.commit) {
+        state.nowStepCommit = payload.commit;
+      }
+      return state;
+    },
+    setFileShowStatus(state, payload) {
+      state.collection.steps = state.collection.steps.map((step) => {
+        if (step.commit === payload.commit) {
+          step.children = step.children.map((file) => {
+            if (file.file === payload.file) {
+              file.display = payload.display;
+            }
+
+            return file;
+          });
+        }
+
+        return step;
+      });
+
+      return state;
     },
   },
   selectors: (slice, createSelector, hasProps) => ({
@@ -258,7 +278,7 @@ const collection = {
         if (nowStep) {
           const fileList = nowStep.children
             .filter(({ type }) => type === FILE)
-            .map(({ file }) => file);
+            .map(({ file, display = true }) => ({ file, display }));
           return {
             fileList,
             title: getHeadings([nowStep])

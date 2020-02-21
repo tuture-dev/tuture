@@ -7,17 +7,16 @@ import { css, jsx } from '@emotion/core';
 
 const { Link } = Anchor;
 
-function getNowArticleCatalogueArr(nowArticleCatalogue) {
-  return nowArticleCatalogue.filter((item) => item.commit);
-}
+function getCommit(linkId, catalogue) {
+  const index = catalogue.map(({ id }) => id).indexOf(linkId);
 
-function getCommit(link, nowArticleCatalogueArr) {
-  let commit = '';
-  nowArticleCatalogueArr
-    .filter((item) => item.id === link)
-    .map((item) => (commit = item.commit));
+  for (let i = index; i >= 0; i--) {
+    if (catalogue[i].commit) {
+      return catalogue[i].commit;
+    }
+  }
 
-  return commit;
+  return null;
 }
 
 function getHeadingDepth(type) {
@@ -43,17 +42,14 @@ function PageCatalogue() {
   const nowArticleCatalogue = useSelector(
     store.select.collection.nowArticleCatalogue,
   );
-  const nowArticleCatalogueArr = getNowArticleCatalogueArr(nowArticleCatalogue);
 
   function onChange(link) {
-    const commit = getCommit(link.slice(1), nowArticleCatalogueArr);
+    const commit = getCommit(link.slice(1), nowArticleCatalogue);
 
     if (link && commit) {
-      dispatch.collection.setNowStepCommit(commit);
+      dispatch.collection.setNowStepCommit({ commit });
     }
   }
-
-  console.log('nowArticleCatalogue', nowArticleCatalogue);
 
   return (
     <div
@@ -76,6 +72,12 @@ function PageCatalogue() {
             title={item.title}
             css={css`
               padding-left: ${getHeadingDepth(item.type) * 16}px;
+
+              & > a {
+                color: ${getHeadingDepth(item.type) === 1
+                  ? 'rgba(0,0 ,0, 1)'
+                  : 'rgba(0, 0, 0, .65)'};
+              }
             `}
           />
         ))}

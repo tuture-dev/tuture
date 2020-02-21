@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch, useStore } from 'react-redux';
-import { Icon, Divider } from 'antd';
+import { Divider } from 'antd';
 import { Link } from 'react-router-dom';
 
 /** @jsx jsx */
 import { css, jsx, Global } from '@emotion/core';
 
 import { EDIT_ARTICLE, CREATE_ARTICLE } from '../utils/constants';
+import IconFont from './IconFont';
 
 const listStyle = css`
   list-style: none;
@@ -53,7 +54,8 @@ function CollectionCatalogue() {
     store.select.collection.getCollectionCatalogue,
   );
 
-  function onToggleChildrenDrawer(toggleChildrenDrawerType) {
+  function onToggleChildrenDrawer(e, toggleChildrenDrawerType) {
+    e.stopPropagation();
     if (childrenDrawerType === toggleChildrenDrawerType) {
       dispatch.drawer.setChildrenVisible(!childrenVisible);
     }
@@ -66,6 +68,7 @@ function CollectionCatalogue() {
   }
 
   function onCatalogueItemClick(articleId) {
+    dispatch.drawer.setVisible(false);
     setSelectItem(articleId);
     dispatch.collection.setNowArticle(articleId);
   }
@@ -91,22 +94,28 @@ function CollectionCatalogue() {
 
               `}
             >
-              <span>
+              <span
+                css={css`
+                  display: inline-block;
+                  max-width: 224px;
+                  white-space: nowrap;
+                  text-overflow: ellipsis;
+                  overflow: hidden;
+                `}
+              >
                 <Link to={`/articles/${item.id}`} css={itemTitleStyle}>
                   {item.name}
                 </Link>
               </span>
               <span
                 css={css`
-                  visibility: hidden;
-
                   &:hover {
                     color: #02b875;
                   }
                 `}
-                onClick={() => onToggleChildrenDrawer(EDIT_ARTICLE)}
+                onClick={(e) => onToggleChildrenDrawer(e, EDIT_ARTICLE)}
               >
-                <Icon type="more" />
+                <IconFont type="icon-moreread" />
               </span>
             </li>
           ))}
@@ -125,14 +134,14 @@ function CollectionCatalogue() {
 
               background: ${selectAddNewPage ? '#FFF' : 'transparent'};
             `}
-            onClick={() => {
+            onClick={(e) => {
               setSelectAddNewPage(!selectAddNewPage);
-              onToggleChildrenDrawer(CREATE_ARTICLE);
+              onToggleChildrenDrawer(e, CREATE_ARTICLE);
             }}
           >
             <span css={itemTitleStyle}>添加新页</span>
             <span>
-              <Icon type="plus" />
+              <IconFont type="icon-plus" />
             </span>
           </li>
         </ul>

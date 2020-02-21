@@ -26,15 +26,10 @@ function ChildrenDrawerComponent() {
       title={mapTypeToTitle[childrenDrawerType]}
       placement="left"
       width={300}
-      mask
-      closable
       onClose={onClose}
       visible={childrenVisible}
-      getContainer={false}
       style={{
-        position: 'absolute',
-        zIndex: 99,
-        marginLeft: '-1px',
+        marginLeft: '80px',
       }}
     >
       <CreateEditArticle childrenDrawerType={childrenDrawerType} />
