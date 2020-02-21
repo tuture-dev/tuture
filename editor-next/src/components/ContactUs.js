@@ -1,7 +1,12 @@
 import React from 'react';
-
+import { Icon } from 'antd';
+import logo from '../assets/images/contact_us/tuture.png';
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
+
+const IconFont = Icon.createFromIconfontCN({
+  scriptUrl: '//at.alicdn.com/t/font_1629955_vk4u8yutamd.js',
+});
 
 const link = css`
   width: 284px;
@@ -17,59 +22,64 @@ const icon = css`
   width: 24px;
   height: 24px;
   margin-left: 16px;
-  margin-top: 8px;
+  margin-top: 12px;
 `;
 const labelText = css`
   margin-left: 8px;
   display: inline-block;
-  width: 84px;
-  color: black;
+  width: 120px;
+  font-size: 14px;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 1);
 `;
 
 const arrow = css`
   width: 10px;
   height: 10px;
   margin-top: 14px;
-  margin-left: 125px;
+  margin-left: 80px;
 `;
 const itemsData = [
   {
     id: '1',
     href: 'https://tuture.co/',
-    icon: '/images/contact_us/tuture.png',
+    icon: { logo },
     labelText: '图雀社区主站',
   },
   {
     id: '2',
     href: 'https://github.com/tuture-dev/tuture',
-    icon: '/images/contact_us/github.png',
+    icon: 'icon-github-fill',
     labelText: '写作工具地址',
   },
   {
     id: '3',
     href: 'https://zhuanlan.zhihu.com/tuture',
-    icon: '/images/contact_us/zhihu.png',
+    icon: 'icon-zhihu-circle-fill',
     labelText: '知乎专栏',
   },
   {
     id: '4',
     href: 'https://tuture.co/images/social/wechat.png',
-    icon: '/images/contact_us/we_chat.png',
+    icon: 'icon-wechat',
     labelText: '微信公众号',
   },
   {
     id: '5',
     href: 'https://juejin.im/user/5b33414351882574b9694d28',
-    icon: '/images/contact_us/juejin.png',
+    icon: 'icon-juejin',
     labelText: '掘金专栏',
   },
   {
     id: '6',
     href: 'https://www.imooc.com/u/8413857/articles',
-    icon: '/images/contact_us/imooc.png',
+    icon: 'icon-mukewang',
     labelText: '慕课手记',
   },
 ];
+const item_f = itemsData[0];
+itemsData.shift();
 const items = itemsData.map((item) => (
   <a
     key={item.id}
@@ -78,9 +88,9 @@ const items = itemsData.map((item) => (
     rel="noopener noreferrer"
     css={link}
   >
-    <img css={icon} src={item.icon} alt="tuture" />
+    <IconFont css={icon} type={item.icon} />
     <span css={labelText}>{item.labelText}</span>
-    <img css={arrow} src="/images/contact_us/arrowright.png" alt="arrow" />
+    <IconFont css={arrow} type="icon-arrowright" />
   </a>
 ));
 function ContactUs() {
@@ -92,6 +102,17 @@ function ContactUs() {
         }
       `}
     >
+      <a
+        key={item_f.id}
+        href={item_f.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        css={link}
+      >
+        <img css={icon} src={logo} alt="tuture" />
+        <span css={labelText}>{item_f.labelText}</span>
+        <IconFont css={arrow} type="icon-arrowright" />
+      </a>
       {items}
     </div>
   );
