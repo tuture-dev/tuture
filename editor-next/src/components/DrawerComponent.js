@@ -45,6 +45,12 @@ function DrawerComponent() {
       style={{
         marginLeft: '80px',
       }}
+      headerStyle={{
+        background: '#F7F7FA',
+      }}
+      drawerStyle={{
+        background: '#F7F7FA',
+      }}
     >
       <ChildrenDrawerComponent />
       {RenderComponent}

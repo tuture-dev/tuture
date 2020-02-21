@@ -152,7 +152,6 @@ const FCForm = forwardRef(({ form }, ref) => {
         ref={form}
         layout="vertical"
         css={css`
-          background-color: #fff;
           width: 260px;
           height: 700px;
         `}
