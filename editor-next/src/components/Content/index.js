@@ -3,11 +3,13 @@ import React, { useCallback } from 'react';
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 import { Editable, useSlate } from 'slate-react';
+import { Row, Col, Affix } from 'antd';
 
 import Element from './element';
 import Leaf from './leaf';
 import PageHeader from '../PageHeader';
 import StepFileList from '../StepFileList';
+import PageCatalogue from '../PageCatalogue';
 import { createDropListener } from '../../utils/image';
 import { createHotKeysHandler } from '../../utils/hotkeys';
 
@@ -20,30 +22,38 @@ function Content() {
   const dropListener = createDropListener(editor);
 
   return (
-    <>
-      <div
-        css={css`
-          height: calc(100vh - 64px);
-          overflow-y: scroll;
-          padding: 48px 60px 64px;
-          padding-right: 300px;
-        `}
-        id="scroll-container"
-      >
-        <PageHeader />
-        <Editable
-          placeholder="Enter something ..."
-          renderElement={renderElement}
-          renderLeaf={renderLeaf}
-          onKeyDown={hotKeyHandler}
-          onDrop={dropListener}
-          onCopy={(e) => {
-            e.clipboardData.setData('application/x-editure-fragment', true);
-          }}
-        />
-      </div>
-      <StepFileList />
-    </>
+    <Row>
+      <Col span={0} lg={5}>
+        <Affix offsetTop={64}>
+          <PageCatalogue />
+        </Affix>
+      </Col>
+      <Col span={24} lg={19} xl={14}>
+        <div
+          css={css`
+            padding: 48px 60px 64px;
+          `}
+          id="scroll-container"
+        >
+          <PageHeader />
+          <Editable
+            placeholder="Enter something ..."
+            renderElement={renderElement}
+            renderLeaf={renderLeaf}
+            onKeyDown={hotKeyHandler}
+            onDrop={dropListener}
+            onCopy={(e) => {
+              e.clipboardData.setData('application/x-editure-fragment', true);
+            }}
+          />
+        </div>
+      </Col>
+      <Col span={0} xl={5}>
+        <Affix offsetTop={64}>
+          <StepFileList />
+        </Affix>
+      </Col>
+    </Row>
   );
 }
 

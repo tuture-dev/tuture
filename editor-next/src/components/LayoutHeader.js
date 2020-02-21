@@ -19,7 +19,6 @@ function LayoutHeader() {
 
   return (
     <div
-      className="layout-header"
       css={css`
         display: flex;
         flex-direction: row;
