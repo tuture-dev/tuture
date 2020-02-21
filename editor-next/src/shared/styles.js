@@ -20,25 +20,21 @@ export const globalStyles = (
       h1 {
         font-size: 28px;
         line-height: 36px;
-        padding: 7px 0;
       }
 
       h2 {
         font-size: 24px;
         line-height: 32px;
-        padding: 7px 0;
       }
 
       h3 {
         font-size: 20px;
         line-height: 28px;
-        padding: 7px 0;
       }
 
       h4 {
         font-size: 16px;
         line-height: 24px;
-        padding: 7px 0;
       }
 
       p {
@@ -54,7 +50,7 @@ export const globalStyles = (
         color: white;
         background-color: rgb(30, 30, 30);
         white-space: pre-wrap;
-        margin: 0;
+        margin: 0 !important;
       }
 
       :not(pre) > code {
@@ -113,7 +109,7 @@ export const globalStyles = (
         color: #096dd9;
       }
 
-      [data-slate-editor] > * + * {
+      [data-slate-node='element']:not(li) {
         margin-top: 1em;
       }
 
