@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 
 import { useSelector, useDispatch, useStore } from 'react-redux';
 import { Layout, Menu, Icon, Modal } from 'antd';
@@ -25,12 +25,19 @@ import PageCatalogue from './PageCatalogue';
 
 const { Header, Sider, Content } = Layout;
 
+const mapKeyToDrawerType = {
+  '1': COLLECTION_CATALOGUE,
+  '2': COLLECTION_SETTING,
+  '3': CONTACT_US,
+};
+
 function ConnectedLayout(props) {
   const { children } = props;
   const { commitStatus } = useSelector((state) => state.versionControl);
-  const { visible, drawerType, childrenDrawerType } = useSelector(
+  const { visible, drawerType, childrenVisible } = useSelector(
     (state) => state.drawer,
   );
+  const [selectedKeys, setSelectedKeys] = useState([]);
 
   const store = useStore();
   const value = useSelector(store.select.collection.nowArticleContent);
@@ -38,22 +45,6 @@ function ConnectedLayout(props) {
   const dispatch = useDispatch();
 
   const isLgBreakPoint = useMediaQuery({ query: '(max-width: 992px)' });
-
-  function onToggleDrawer(toggleDrawerType) {
-    if (!drawerType) {
-      dispatch({ type: 'drawer/setVisible', payload: true });
-    }
-
-    if (drawerType === toggleDrawerType) {
-      dispatch({ type: 'drawer/setVisible', payload: !visible });
-    }
-
-    if (childrenDrawerType) {
-      dispatch({ type: 'drawer/setChildrenVisible', payload: false });
-    }
-
-    dispatch({ type: 'drawer/setDrawerType', payload: toggleDrawerType });
-  }
 
   function handleOk() {
     dispatch({ type: 'versionControl/setCommitStatus', payload: NORMAL });
@@ -68,6 +59,31 @@ function ConnectedLayout(props) {
       type: 'collection/setArticleContent',
       payload: { fragment: val },
     });
+  }
+
+  function oMenuClick({ key }) {
+    const toggleDrawerType = mapKeyToDrawerType[key];
+
+    if (!visible) {
+      dispatch({ type: 'drawer/setVisible', payload: true });
+      dispatch({ type: 'drawer/setDrawerType', payload: toggleDrawerType });
+
+      setSelectedKeys([key]);
+    } else {
+      if (drawerType === toggleDrawerType) {
+        dispatch({ type: 'drawer/setVisible', payload: false });
+
+        setSelectedKeys([]);
+      } else {
+        dispatch({ type: 'drawer/setDrawerType', payload: toggleDrawerType });
+
+        setSelectedKeys([key]);
+      }
+    }
+
+    if (childrenVisible) {
+      dispatch({ type: 'drawer/setChildrenVisible', payload: false });
+    }
   }
 
   const editor = useMemo(initializeEditor, []);
@@ -110,29 +126,16 @@ function ConnectedLayout(props) {
               `}
               theme="light"
               mode="inline"
+              selectedKeys={selectedKeys}
+              onClick={oMenuClick}
             >
-              <Menu.Item
-                key="1"
-                title="文集目录"
-                style={{ marginTop: '40px' }}
-                onClick={() => onToggleDrawer(COLLECTION_CATALOGUE)}
-              >
+              <Menu.Item key="1" title="文集目录" style={{ marginTop: '40px' }}>
                 <Icon type="switcher" />
               </Menu.Item>
-              <Menu.Item
-                key="2"
-                title="文集设置"
-                style={{ marginTop: '40px' }}
-                onClick={() => onToggleDrawer(COLLECTION_SETTING)}
-              >
+              <Menu.Item key="2" title="文集设置" style={{ marginTop: '40px' }}>
                 <Icon type="setting" />
               </Menu.Item>
-              <Menu.Item
-                key="3"
-                title="联系我们"
-                style={{ marginTop: '40px' }}
-                onClick={() => onToggleDrawer(CONTACT_US)}
-              >
+              <Menu.Item key="3" title="联系我们" style={{ marginTop: '40px' }}>
                 <Icon type="contacts" />
               </Menu.Item>
             </Menu>
