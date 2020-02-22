@@ -15,6 +15,7 @@
     "antd": "^3.26.9",
     "classnames": "^2.2.6",
     "customize-cra": "^0.9.1",
+    "dayjs": "^1.8.20",
     "editure": "^0.0.7",
     "editure-constants": "^0.0.7",
     "emotion": "^10.0.27",

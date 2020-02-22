@@ -1,7 +1,16 @@
 import React from 'react';
+import dayjs from 'dayjs';
+import { useSelector } from 'react-redux';
 
 function LastSavedTimestamp() {
-  return <div>最后更改于 今天 20:14</div>;
+  const lastSaved = useSelector((state) => state.collection.lastSaved);
+  return (
+    <div>
+      {lastSaved
+        ? `上次保存时间：今天 ${dayjs(lastSaved).format('HH:mm')}`
+        : ''}
+    </div>
+  );
 }
 
 export default LastSavedTimestamp;

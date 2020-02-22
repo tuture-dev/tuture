@@ -3661,6 +3661,11 @@ date-fns@^2.0.1:
   resolved "https://registry.npm.taobao.org/date-fns/download/date-fns-2.9.0.tgz#d0b175a5c37ed5f17b97e2272bbc1fa5aec677d2"
   integrity sha1-0LF1pcN+1fF7l+InK7wfpa7Gd9I=
 
+dayjs@^1.8.20:
+  version "1.8.20"
+  resolved "https://registry.npm.taobao.org/dayjs/download/dayjs-1.8.20.tgz?cache=0&sync_timestamp=1580814066440&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fdayjs%2Fdownload%2Fdayjs-1.8.20.tgz#724a5cb6ad1f6fc066b0bd9a800dedcc7886f19e"
+  integrity sha1-ckpctq0fb8BmsL2agA3tzHiG8Z4=
+
 debounce@^1.2.0:
   version "1.2.0"
   resolved "https://registry.npm.taobao.org/debounce/download/debounce-1.2.0.tgz#44a540abc0ea9943018dc0eaa95cce87f65cd131"

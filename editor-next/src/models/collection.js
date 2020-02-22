@@ -64,6 +64,7 @@ const collection = {
     collection: null,
     nowArticleId: null,
     nowStepCommit: null,
+    lastSaved: null,
   },
   reducers: {
     setCollectionData(state, payload) {
@@ -184,6 +185,10 @@ const collection = {
 
       return state;
     },
+    setLastSaved(state, payload) {
+      state.lastSaved = payload;
+      return state;
+    },
   },
   effects: (dispatch) => ({
     async fetchCollection() {
@@ -206,7 +211,9 @@ const collection = {
           },
           body: JSON.stringify(rootState.collection.collection),
         });
+
         if (response.ok) {
+          dispatch.collection.setLastSaved(new Date());
           if (payload?.showMessage) {
             message.success('保存内容成功！');
           }
