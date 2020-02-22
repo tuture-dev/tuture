@@ -43,9 +43,7 @@ function DrawerComponent() {
       width={300}
       visible={visible}
       onClose={handleClose}
-      style={{
-        marginLeft: '80px',
-      }}
+      getContainer={false}
       headerStyle={{
         background: '#F7F7FA',
       }}

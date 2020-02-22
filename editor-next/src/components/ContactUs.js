@@ -6,7 +6,7 @@ import IconFont from './IconFont';
 import logo from '../assets/images/logo.svg';
 
 const link = css`
-  width: 284px;
+  width: 252px;
   height: 40px;
   display: flex;
   flex-direction: row;
@@ -119,6 +119,8 @@ function ContactUs() {
         a:first-of-type {
           margin-top: 0px !important;
         }
+
+        padding-left: 24px;
       `}
     >
       <a

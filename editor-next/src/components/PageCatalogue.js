@@ -54,16 +54,26 @@ function PageCatalogue() {
   return (
     <div
       css={css`
-        margin-left: 4px;
+        padding-top: 40px;
+        padding-left: 8px;
+        padding-right: 8px;
+        height: calc(100vh - 64px);
+        background-color: #f7f7fa;
       `}
     >
       <Anchor
         css={css`
           background: transparent;
+
+          & .ant-anchor-ink::before {
+            background: transparent;
+          }
         `}
+        bounds={0}
         targetOffset={64}
-        getContainer={() => document.getElementById('scroll-container')}
         onChange={onChange}
+        affix={false}
+        showInkInFixed
       >
         {nowArticleCatalogue.map((item) => (
           <Link

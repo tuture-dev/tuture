@@ -23,6 +23,27 @@ const Toolbar = (props) => {
       {...props}
       css={css`
         position: relative;
+
+        & .ant-select-selection {
+          background: none;
+          border: none;
+          padding: 2px;
+        }
+
+        & .ant-select-selection:active {
+          border: none;
+          box-shadow: none;
+        }
+
+        & .ant-select-selection:focus {
+          border: none;
+          box-shadow: none;
+        }
+
+        & .ant-select-selection-selected-value {
+          font-size: 14px;
+          font-weight: 400;
+        }
       `}
     >
       <EditLink />

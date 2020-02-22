@@ -1,8 +1,7 @@
 import React, { useMemo } from 'react';
 
 import { useSelector, useDispatch, useStore } from 'react-redux';
-import { Layout, Menu, Icon, Modal } from 'antd';
-import { useMediaQuery } from 'react-responsive';
+import { Layout, Menu, Icon, Modal, Affix } from 'antd';
 import { Slate } from 'slate-react';
 import logo from '../assets/images/logo.svg';
 
@@ -21,7 +20,6 @@ import {
 } from '../utils/constants';
 import { initializeEditor } from '../utils/editor';
 import { buttonRefs, ButtonRefsContext } from '../utils/hotkeys';
-import PageCatalogue from './PageCatalogue';
 
 const { Header, Sider, Content } = Layout;
 
@@ -42,8 +40,6 @@ function ConnectedLayout(props) {
   const value = useSelector(store.select.collection.nowArticleContent);
 
   const dispatch = useDispatch();
-
-  const isLgBreakPoint = useMediaQuery({ query: '(max-width: 992px)' });
 
   function handleOk() {
     dispatch({ type: 'versionControl/setCommitStatus', payload: NORMAL });
@@ -91,103 +87,94 @@ function ConnectedLayout(props) {
   return (
     <ButtonRefsContext.Provider value={buttonRefs}>
       <Slate editor={editor} value={value} onChange={onContentChange}>
-        <DrawerComponent />
         <Layout>
-          <Sider
-            css={css`
-              height: 100vh;
-              background-color: #f7f7fa;
-              z-index: 1002;
-            `}
-            breakpoint="lg"
-            collapsed
-          >
-            <div
-              className="logo"
+          <Affix style={{ zIndex: 1008 }}>
+            <Sider
+              width={100}
               css={css`
-                text-align: center;
-              `}
-            >
-              <img
-                src={logo}
-                alt=""
-                css={css`
-                  width: 24px;
-                  height: 24px;
-                `}
-              />
-            </div>
-            <Menu
-              css={css`
-                background-color: #f7f7fa;
-                border: none;
-              `}
-              theme="light"
-              mode="inline"
-              selectedKeys={selectedKeys}
-              onClick={oMenuClick}
-            >
-              <Menu.Item key="1" title="文集目录" style={{ marginTop: '40px' }}>
-                <Icon type="switcher" />
-              </Menu.Item>
-              <Menu.Item key="2" title="文集设置" style={{ marginTop: '40px' }}>
-                <Icon type="setting" />
-              </Menu.Item>
-              <Menu.Item key="3" title="联系我们" style={{ marginTop: '40px' }}>
-                <Icon type="contacts" />
-              </Menu.Item>
-            </Menu>
-          </Sider>
-          <Layout
-            css={css`
-              display: flex;
-              flex-direction: row;
-            `}
-          >
-            <Layout
-              css={css`
-                width: 300px;
                 height: 100vh;
                 background-color: #f7f7fa;
-                position: ${isLgBreakPoint ? 'absolute' : 'static'};
+                border-right: '1px solid #eee';
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
               `}
+              collapsed
             >
-              <PageCatalogue />
-            </Layout>
-            <Layout
-              css={css`
-                box-shadow: -10px 0 15px rgba(0, 0, 0, 0.04);
-                width: ${isLgBreakPoint ? '100%' : '79%'};
-                z-index: 1000;
-              `}
-            >
+              <div
+                className="logo"
+                css={css`
+                  width: 100%;
+                  text-align: center;
+                  padding-top: 24px;
+                `}
+              >
+                <img
+                  src={logo}
+                  alt=""
+                  css={css`
+                    width: 24px;
+                    height: 24px;
+                  `}
+                />
+              </div>
+              <Menu
+                css={css`
+                  background-color: #f7f7fa;
+                  border: none;
+                  margin: auto;
+                `}
+                theme="light"
+                mode="inline"
+                selectedKeys={selectedKeys}
+                onClick={oMenuClick}
+              >
+                <Menu.Item
+                  key="1"
+                  title="文集目录"
+                  style={{ marginTop: '40px' }}
+                >
+                  <Icon type="switcher" />
+                </Menu.Item>
+                <Menu.Item
+                  key="2"
+                  title="文集设置"
+                  style={{ marginTop: '40px' }}
+                >
+                  <Icon type="setting" />
+                </Menu.Item>
+                <Menu.Item
+                  key="3"
+                  title="联系我们"
+                  style={{ marginTop: '40px' }}
+                >
+                  <Icon type="contacts" />
+                </Menu.Item>
+              </Menu>
+            </Sider>
+          </Affix>
+          <Layout>
+            <Affix>
               <Header
                 css={css`
                   background-color: #fff;
+                  padding: 0 3%;
                   border-bottom: 1px solid rgba(232, 232, 232, 1);
+                  min-width: 1200px;
                 `}
               >
                 <LayoutHeader />
               </Header>
-              <Content
-                css={css`
-                  background: #fff;
-                  display: flex;
-                  flex-direction: row;
-                `}
-              >
-                <div
-                  css={css`
-                    overflow: hidden;
-                    position: relative;
-                    height: calc(100vh - 64px);
-                    width: 100%;
-                  `}
-                >
-                  {children}
-                </div>
-              </Content>
-            </Layout>
+            </Affix>
+            <Content
+              css={css`
+                background: #fff;
+                position: relative;
+              `}
+            >
+              <Affix style={{ position: 'absolute', zIndex: 1005 }}>
+                <DrawerComponent />
+              </Affix>
+              {children}
+            </Content>
           </Layout>
         </Layout>
         <Modal
