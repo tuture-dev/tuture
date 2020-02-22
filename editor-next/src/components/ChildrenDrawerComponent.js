@@ -28,10 +28,8 @@ function ChildrenDrawerComponent() {
       width={300}
       onClose={onClose}
       visible={childrenVisible}
-      style={{
-        marginLeft: '60px',
-        zIndex: 1007,
-      }}
+      zIndex={1007}
+      style={{ marginLeft: '80px' }}
     >
       <CreateEditArticle childrenDrawerType={childrenDrawerType} />
     </Drawer>

@@ -87,6 +87,9 @@ function ConnectedLayout(props) {
   return (
     <ButtonRefsContext.Provider value={buttonRefs}>
       <Slate editor={editor} value={value} onChange={onContentChange}>
+        <Affix>
+          <DrawerComponent />
+        </Affix>
         <Layout>
           <Affix style={{ zIndex: 1008 }}>
             <Sider
@@ -170,9 +173,6 @@ function ConnectedLayout(props) {
                 position: relative;
               `}
             >
-              <Affix style={{ position: 'absolute', zIndex: 1005 }}>
-                <DrawerComponent />
-              </Affix>
               {children}
             </Content>
           </Layout>

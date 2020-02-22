@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Drawer } from 'antd';
+import { Drawer, Affix } from 'antd';
 
 import {
   COLLECTION_CATALOGUE,
@@ -38,20 +38,24 @@ function DrawerComponent() {
 
   return (
     <Drawer
+      id="drawer"
       title={mapTypeToTitle[drawerType]}
       placement="left"
       width={300}
       visible={visible}
       onClose={handleClose}
-      getContainer={false}
       headerStyle={{
         background: '#F7F7FA',
       }}
       drawerStyle={{
         background: '#F7F7FA',
       }}
+      zIndex={1005}
+      style={{ marginLeft: '80px' }}
     >
-      <ChildrenDrawerComponent />
+      <Affix>
+        <ChildrenDrawerComponent />
+      </Affix>
       {RenderComponent}
     </Drawer>
   );
