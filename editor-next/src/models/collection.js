@@ -323,10 +323,11 @@ const collection = {
     },
     getAllCommits() {
       return slice((collectionModel) => {
-        const commits = collectionModel.collection.steps.map((step) => ({
+        const commits = collectionModel.collection.steps.map((step, index) => ({
           commit: step?.commit,
           name: getHeadings([step])[0].title,
           isSelected: step?.isSelected,
+          key: index,
         }));
 
         return commits;
@@ -343,14 +344,19 @@ const collection = {
           (elem) => elem.id.toString() === nowArticleId.toString(),
         )[0];
 
-        const nowArticleSteps = steps.filter((step) =>
-          article.commits.includes(step.commit),
-        );
+        let nowArticleSteps = [];
+
+        steps.map((step, index) => {
+          if (article.commits.includes(step.commit)) {
+            nowArticleSteps.push({ ...step, key: index });
+          }
+        });
 
         const commits = nowArticleSteps.map((step) => ({
           commit: step?.commit,
           name: getHeadings([step])[0].title,
           isSelected: step?.isSelected,
+          key: step.key,
         }));
 
         return commits;

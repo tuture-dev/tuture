@@ -11,7 +11,7 @@ const { Option } = Select;
 
 function makeSelectableCommits(commits = []) {
   const selectableCommits = commits.map((commit) => ({
-    key: commit.commit,
+    key: commit.key,
     title: commit.name,
     description: commit.name,
     disabled: commit.isSelected,
@@ -21,7 +21,7 @@ function makeSelectableCommits(commits = []) {
 }
 
 function makeTargetKeys(commits = []) {
-  const targetKeys = commits.map((commit) => commit.commit);
+  const targetKeys = commits.map((commit) => commit.key);
 
   return targetKeys;
 }
@@ -40,9 +40,8 @@ function CreateEditArticle(props) {
     store.select.collection.getNowArticleCommits,
   );
 
-  const [targetKeys, setTargetKeys] = useState(
-    makeTargetKeys(nowArticleCommits) || [],
-  );
+  const initialTargetKeys = makeTargetKeys(nowArticleCommits);
+  const [targetKeys, setTargetKeys] = useState(initialTargetKeys || []);
 
   // get nowArticle Meta
   const articleData = useSelector(store.select.collection.nowArticleMeta);
@@ -52,7 +51,6 @@ function CreateEditArticle(props) {
   console.log('props', props, nowArticleMeta);
 
   const initialTags = nowArticleMeta?.tags || [];
-  const initialTargetCommits = [];
   const initialCover = nowArticleMeta?.cover
     ? [
         {
@@ -81,10 +79,24 @@ function CreateEditArticle(props) {
   }
 
   function handleChange(nextTargetKeys, direction, moveKeys) {
-    setFieldsValue({
-      commits: nextTargetKeys,
+    const sortedNextTargetKeys = nextTargetKeys.sort((prev, post) => {
+      if (prev > post) {
+        return 1;
+      }
+
+      if (prev < post) {
+        return -1;
+      }
+
+      return 0;
     });
-    setTargetKeys(nextTargetKeys);
+
+    console.log('sortedNextTargetKeys', sortedNextTargetKeys);
+
+    setFieldsValue({
+      commits: sortedNextTargetKeys,
+    });
+    setTargetKeys(sortedNextTargetKeys);
 
     console.log('targetKeys: ', nextTargetKeys);
     console.log('direction: ', direction);
@@ -191,17 +203,21 @@ function CreateEditArticle(props) {
             </Select>,
           )}
         </Form.Item>
-        <Form.Item label="选择 Commits">
+        <Form.Item label="选择步骤">
           {getFieldDecorator('commits', {
-            rules: [{ required: true, message: '请选择文章涉及的 Commits' }],
-            initialValue: initialTargetCommits,
+            rules: [{ required: true, message: '请选择文章涉及的步骤' }],
+            initialValue: initialTargetKeys,
           })(
             <Transfer
               dataSource={selectableCommits}
-              titles={['现有 Commits', '已选 Commits']}
+              titles={['所有步骤', '已选步骤']}
               targetKeys={targetKeys}
               operations={['选择', '释放']}
               css={css``}
+              listStyle={{
+                width: 320,
+                height: 300,
+              }}
               selectedKeys={selectedKeys}
               onChange={handleChange}
               onSelectChange={handleSelectChange}
@@ -216,14 +232,11 @@ function CreateEditArticle(props) {
             width: 100%;
           `}
         >
-          <div
-            css={css`
-              display: flex;
-              flex-direction: row;
-              justify-content: space-between;
-            `}
-          >
+          <div>
             <Button
+              css={css`
+                margin-right: 16px;
+              `}
               onClick={() =>
                 dispatch({ type: 'drawer/setChildrenVisible', payload: false })
               }
