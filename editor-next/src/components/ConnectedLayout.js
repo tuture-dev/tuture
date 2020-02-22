@@ -39,6 +39,13 @@ function ConnectedLayout(props) {
     dispatch.collection.fetchCollection();
   }, [dispatch]);
 
+  useEffect(() => {
+    const saveInterval = setInterval(() => {
+      dispatch.collection.saveCollection();
+    }, 5000);
+    return () => clearInterval(saveInterval);
+  }, [dispatch]);
+
   const isLgBreakPoint = useMediaQuery({ query: '(max-width: 992px)' });
 
   function onToggleDrawer(toggleDrawerType) {

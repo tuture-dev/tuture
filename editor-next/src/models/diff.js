@@ -1,3 +1,7 @@
+import { message } from 'antd';
+
+import { diffApi } from '../utils/api';
+
 const diff = {
   state: {
     diff: null,
@@ -10,11 +14,13 @@ const diff = {
   },
   effects: (dispatch) => ({
     async fetchDiff() {
-      const response = await fetch(
-        'https://tuture-staging-1257259601.cos.ap-shanghai.myqcloud.com/diff.json',
-      );
-      const data = await response.json();
-      dispatch({ type: 'diff/setDiffData', payload: data });
+      try {
+        const response = await fetch(diffApi);
+        const data = await response.json();
+        dispatch.diff.setDiffData(data);
+      } catch {
+        message.error('数据获取失败，请稍后重试！');
+      }
     },
   }),
   selectors: (slice, createSelector, hasProps) => ({

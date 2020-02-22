@@ -1,5 +1,7 @@
+import { message } from 'antd';
 import * as F from 'editure-constants';
 
+import { collectionApi, saveApi } from '../utils/api';
 import { FILE, STEP } from '../utils/constants';
 
 function flatten(steps) {
@@ -186,12 +188,34 @@ const collection = {
   },
   effects: (dispatch) => ({
     async fetchCollection() {
-      const response = await fetch(
-        `https://tuture-staging-1257259601.cos.ap-shanghai.myqcloud.com/converted-tuture.json`,
-      );
-      const data = await response.json();
-      console.log('data', data);
-      dispatch({ type: 'collection/setCollectionData', payload: data });
+      try {
+        const response = await fetch(collectionApi);
+        const data = await response.json();
+
+        dispatch.collection.setCollectionData(data);
+      } catch {
+        message.error('获取数据失败！');
+      }
+    },
+    async saveCollection(payload, rootState) {
+      try {
+        const response = await fetch(saveApi, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+          },
+          body: JSON.stringify(rootState.collection.collection),
+        });
+        if (response.ok && payload.showMessage) {
+          message.success('保存内容成功！');
+        }
+        if (!response.ok) {
+          message.error('保存内容失败！');
+        }
+      } catch {
+        message.error('保存内容失败！');
+      }
     },
   }),
   selectors: (slice, createSelector, hasProps) => ({
