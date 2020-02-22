@@ -8,7 +8,7 @@ import { Step } from '../types';
 import { git } from '../utils/git';
 import { makeSteps, mergeSteps, isInitialized } from '../utils';
 import {
-  loadTuture,
+  loadCollection,
   saveTuture,
   saveCheckpoint,
   hasTutureChangedSinceCheckpoint,
@@ -80,7 +80,7 @@ export default class Reload extends BaseCommand {
       logger.log('warning', 'master branch is empty.');
     }
 
-    const tuture = await loadTuture(true);
+    const tuture = await loadCollection(true);
 
     const currentSteps: Step[] = await makeSteps(
       this.userConfig.ignoredFiles,

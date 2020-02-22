@@ -6,7 +6,7 @@ import BaseCommand from '../base';
 import logger from '../utils/logger';
 import { git } from '../utils/git';
 import { initializeTutureBranch } from '../utils/tuture';
-import { TUTURE_BRANCH, TUTURE_YML_PATH } from '../constants';
+import { TUTURE_BRANCH, COLLECTION_PATH } from '../constants';
 
 export default class Push extends BaseCommand {
   static description = 'Push the tuture branch to remote';
@@ -26,7 +26,7 @@ export default class Push extends BaseCommand {
     // Checkout tuture branch and add tuture.yml.
     await git.checkout(TUTURE_BRANCH);
 
-    if (!fs.existsSync(TUTURE_YML_PATH)) {
+    if (!fs.existsSync(COLLECTION_PATH)) {
       logger.log(
         'error',
         `Cannot push empty tuture branch. Please commit your tutorial with ${chalk.bold(

@@ -1,8 +1,8 @@
 import path from 'path';
 
-export const TUTURE_YML_PATH = 'tuture.yml';
+export const COLLECTION_PATH = 'collection.json';
 
-export const TUTURE_YML_CHECKPOINT = 'tuture.last-committed.yml';
+export const COLLECTION_CHECKPOINT = 'collection.last-committed.json';
 
 export const ASSETS_JSON_PATH = 'tuture-assets.json';
 

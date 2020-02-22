@@ -9,7 +9,7 @@ import socketio from 'socket.io';
 
 import { DIFF_PATH, EDITOR_STATIC_PATH, EDITOR_PATH } from './constants';
 import { uploadSingle } from './utils/assets';
-import { loadTuture, saveTuture } from './utils/tuture';
+import { loadCollection, saveTuture } from './utils/tuture';
 
 const workspace = process.env.TUTURE_PATH || process.cwd();
 const diffPath = path.join(workspace, DIFF_PATH);
@@ -59,9 +59,9 @@ const makeServer = (config: any) => {
     res.json(JSON.parse(fs.readFileSync(diffPath).toString()));
   });
 
-  app.get('/tuture', async (_, res) => {
-    const tuture = await loadTuture();
-    res.json(tuture);
+  app.get('/collection', async (_, res) => {
+    const collection = await loadCollection();
+    res.json(collection);
   });
 
   app.post('/save', (req, res) => {

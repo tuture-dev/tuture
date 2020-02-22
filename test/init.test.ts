@@ -13,7 +13,7 @@ import {
   SyncRunner,
 } from './utils';
 import defaultConfig from '../config';
-import { TUTURE_ROOT, DIFF_PATH, TUTURE_YML_PATH } from '../constants';
+import { TUTURE_ROOT, DIFF_PATH, COLLECTION_PATH } from '../constants';
 import { Tuture } from '../types';
 
 // Tmp directories used in tests.
@@ -34,7 +34,7 @@ describe('tuture init -y', () => {
     });
 
     it('should have all needed files created', () => {
-      expect(fs.existsSync(path.join(nonRepoPath, TUTURE_YML_PATH))).toBe(true);
+      expect(fs.existsSync(path.join(nonRepoPath, COLLECTION_PATH))).toBe(true);
       expect(fs.existsSync(path.join(nonRepoPath, DIFF_PATH))).toBe(true);
     });
   });
