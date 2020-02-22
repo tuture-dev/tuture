@@ -67,20 +67,16 @@ const collection = {
   reducers: {
     setCollectionData(state, payload) {
       state.collection = payload;
-      state.nowStepCommit = payload.steps[0].commit;
 
-      if (payload.articles?.length > 0) {
+      if (payload.articles?.length > 0 && !state.nowArticleId) {
         state.nowArticleId = payload.articles[0].id;
-        state.nowStepCommit = payload.articles[0].commits.slice(-1)[0];
       }
 
       return state;
     },
     setNowArticle(state, payload) {
       state.nowArticleId = payload;
-      state.nowStepCommit = state.collection.articles
-        .filter((article) => article.id === payload)[0]
-        .commits.slice(-1)[0];
+      state.nowStepCommit = null;
 
       return state;
     },
@@ -261,6 +257,16 @@ const collection = {
         }
 
         return getHeadings(steps);
+      });
+    },
+    nowStepCommit() {
+      return slice((collectionModel) => {
+        if (!collectionModel.collection) {
+          return null;
+        }
+
+        const { articles, steps } = collectionModel.collection;
+        return articles?.length > 0 ? articles[0].commits[0] : steps[0].commit;
       });
     },
     getStepFileListAndTitle: hasProps((__, props) => {
