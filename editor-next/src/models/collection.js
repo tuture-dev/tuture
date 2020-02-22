@@ -211,7 +211,7 @@ const collection = {
     nowArticleMeta() {
       return slice((collectionModel) => {
         const {
-          collection: { articles, name, description },
+          collection: { articles, name, description, tags, cover },
           nowArticleId,
         } = collectionModel;
 
@@ -219,7 +219,7 @@ const collection = {
           return articles.filter((elem) => elem.id === nowArticleId)[0];
         }
 
-        return { name, description };
+        return { name, description, tags, cover };
       });
     },
     nowArticleContent() {
@@ -319,6 +319,41 @@ const collection = {
         }));
 
         return collectionCatalogue;
+      });
+    },
+    getAllCommits() {
+      return slice((collectionModel) => {
+        const commits = collectionModel.collection.steps.map((step) => ({
+          commit: step?.commit,
+          name: getHeadings([step])[0].title,
+          isSelected: step?.isSelected,
+        }));
+
+        return commits;
+      });
+    },
+    getNowArticleCommits() {
+      return slice((collectionModel) => {
+        const {
+          collection: { articles, steps },
+          nowArticleId,
+        } = collectionModel;
+
+        const article = articles.filter(
+          (elem) => elem.id.toString() === nowArticleId.toString(),
+        )[0];
+
+        const nowArticleSteps = steps.filter((step) =>
+          article.commits.includes(step.commit),
+        );
+
+        const commits = nowArticleSteps.map((step) => ({
+          commit: step?.commit,
+          name: getHeadings([step])[0].title,
+          isSelected: step?.isSelected,
+        }));
+
+        return commits;
       });
     },
   }),

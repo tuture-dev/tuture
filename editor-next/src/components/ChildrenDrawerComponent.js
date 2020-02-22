@@ -25,7 +25,7 @@ function ChildrenDrawerComponent() {
     <Drawer
       title={mapTypeToTitle[childrenDrawerType]}
       placement="left"
-      width={300}
+      width={520}
       onClose={onClose}
       visible={childrenVisible}
       zIndex={12}

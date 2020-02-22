@@ -1,35 +1,68 @@
 import React, { useState } from 'react';
 import { Form, Input, Icon, Button, Select, Transfer, Upload } from 'antd';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector, useStore } from 'react-redux';
 
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 
+import { EDIT_ARTICLE } from '../utils/constants';
+
 const { Option } = Select;
 
-const mockData = [];
-for (let i = 0; i < 20; i++) {
-  mockData.push({
-    key: i.toString(),
-    title: `content${i + 1}`,
-    description: `description of content${i + 1}`,
-    disabled: i % 3 < 1,
-  });
+function makeSelectableCommits(commits = []) {
+  const selectableCommits = commits.map((commit) => ({
+    key: commit.commit,
+    title: commit.name,
+    description: commit.name,
+    disabled: commit.isSelected,
+  }));
+
+  return selectableCommits;
 }
 
-const oriTargetKeys = mockData
-  .filter((item) => +item.key % 3 > 1)
-  .map((item) => item.key);
+function makeTargetKeys(commits = []) {
+  const targetKeys = commits.map((commit) => commit.commit);
+
+  return targetKeys;
+}
 
 function CreateEditArticle(props) {
   const dispatch = useDispatch();
-  const [targetKeys, setTargetKeys] = useState(oriTargetKeys);
   const [selectedKeys, setSelectedKeys] = useState([]);
   const [fileList, setFileList] = useState([]);
 
-  const initialTags = [];
+  // get all commit
+  const store = useStore();
+  const allCommits = useSelector(store.select.collection.getAllCommits);
+  const selectableCommits = makeSelectableCommits(allCommits);
+
+  const nowArticleCommits = useSelector(
+    store.select.collection.getNowArticleCommits,
+  );
+
+  const [targetKeys, setTargetKeys] = useState(
+    makeTargetKeys(nowArticleCommits) || [],
+  );
+
+  // get nowArticle Meta
+  const articleData = useSelector(store.select.collection.nowArticleMeta);
+  const nowArticleMeta =
+    props.childrenDrawerType === EDIT_ARTICLE ? articleData : {};
+
+  console.log('props', props, nowArticleMeta);
+
+  const initialTags = nowArticleMeta?.tags || [];
   const initialTargetCommits = [];
-  const initialCover = [];
+  const initialCover = nowArticleMeta?.cover
+    ? [
+        {
+          url: nowArticleMeta?.cover,
+          uid: '-1',
+          name: 'tuture.jpg',
+          status: 'done',
+        },
+      ]
+    : [];
   const coverProps = {
     action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
     listType: 'picture',
@@ -131,6 +164,7 @@ function CreateEditArticle(props) {
         >
           {getFieldDecorator('name', {
             rules: [{ required: true, message: '请输入文章标题' }],
+            initialValue: nowArticleMeta?.name || '',
           })(<Input placeholder="标题" />)}
         </Form.Item>
         <Form.Item
@@ -163,23 +197,11 @@ function CreateEditArticle(props) {
             initialValue: initialTargetCommits,
           })(
             <Transfer
-              dataSource={mockData}
+              dataSource={selectableCommits}
               titles={['现有 Commits', '已选 Commits']}
               targetKeys={targetKeys}
               operations={['选择', '释放']}
-              listStyle={{
-                width: '100%',
-              }}
-              css={css`
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-
-                & .ant-transfer-operation {
-                  margin-top: 8px;
-                  margin-bottom: 8px;
-                }
-              `}
+              css={css``}
               selectedKeys={selectedKeys}
               onChange={handleChange}
               onSelectChange={handleSelectChange}
