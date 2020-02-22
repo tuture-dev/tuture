@@ -2,15 +2,16 @@ import { message } from 'antd';
 import { insertVoid } from 'editure';
 import { IMAGE } from 'editure-constants';
 
-import { uploadApi } from './api';
-
 export const uploadImage = (file, callback) => {
   const data = new FormData();
   data.append('file', file);
 
-  fetch(uploadApi, {
+  fetch('/upload', {
     method: 'POST',
     body: data,
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
   })
     .then((res) => res.json())
     .then((res) => callback(null, res.path))
@@ -18,6 +19,8 @@ export const uploadImage = (file, callback) => {
 };
 
 export const createInsertImageCallback = (editor) => (err, url) => {
+  console.log('err', err);
+  console.log('url', url);
   if (err) return message.error('图片上传失败！');
   insertVoid(editor, IMAGE, { url });
 };

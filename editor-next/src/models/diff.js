@@ -1,7 +1,5 @@
 import { message } from 'antd';
 
-import { diffApi } from '../utils/api';
-
 const diff = {
   state: {
     diff: null,
@@ -15,7 +13,7 @@ const diff = {
   effects: (dispatch) => ({
     async fetchDiff() {
       try {
-        const response = await fetch(diffApi);
+        const response = await fetch('/diff');
         const data = await response.json();
         dispatch.diff.setDiffData(data);
       } catch {

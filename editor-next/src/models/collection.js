@@ -1,7 +1,6 @@
 import { message } from 'antd';
 import * as F from 'editure-constants';
 
-import { collectionApi, saveApi } from '../utils/api';
 import { FILE, STEP } from '../utils/constants';
 
 function flatten(steps) {
@@ -189,7 +188,7 @@ const collection = {
   effects: (dispatch) => ({
     async fetchCollection() {
       try {
-        const response = await fetch(collectionApi);
+        const response = await fetch('/collection');
         const data = await response.json();
 
         dispatch.collection.setCollectionData(data);
@@ -199,7 +198,7 @@ const collection = {
     },
     async saveCollection(payload, rootState) {
       try {
-        const response = await fetch(saveApi, {
+        const response = await fetch('/save', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -207,13 +206,16 @@ const collection = {
           },
           body: JSON.stringify(rootState.collection.collection),
         });
-        if (response.ok && payload.showMessage) {
-          message.success('保存内容成功！');
-        }
-        if (!response.ok) {
+        if (response.ok) {
+          if (payload?.showMessage) {
+            message.success('保存内容成功！');
+          }
+        } else if (!response.ok) {
+          console.log('response', response);
           message.error('保存内容失败！');
         }
-      } catch {
+      } catch (err) {
+        console.log('catched', err);
         message.error('保存内容失败！');
       }
     },
