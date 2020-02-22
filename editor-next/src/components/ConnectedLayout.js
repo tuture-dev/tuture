@@ -121,11 +121,7 @@ function ConnectedLayout(props) {
               </Menu>
             </Sider>
           </Affix>
-          <Layout
-            css={css`
-              overflow: scroll;
-            `}
-          >
+          <Layout>
             <Affix>
               <Header
                 css={css`

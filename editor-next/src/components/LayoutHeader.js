@@ -2,7 +2,7 @@ import React from 'react';
 
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
-import { Button } from 'antd';
+import { Button, Row, Col } from 'antd';
 import { useDispatch } from 'react-redux';
 
 import ToolBar from './Toolbar';
@@ -18,22 +18,14 @@ function LayoutHeader() {
   }
 
   return (
-    <div
-      css={css`
-        display: flex;
-        flex-direction: row;
-        justify-content: space-around;
-      `}
-    >
-      <ToolBar />
-      <div
-        css={css`
-          display: flex;
-          flex-direction: row;
-          align-items: center;
-        `}
-      >
+    <Row>
+      <Col span={4}>
         <LastSavedTimestamp />
+      </Col>
+      <Col span={15} push={2}>
+        <ToolBar />
+      </Col>
+      <Col span={5} push={2}>
         <Button
           type="primary"
           css={css`
@@ -51,8 +43,8 @@ function LayoutHeader() {
         >
           发布
         </Button>
-      </div>
-    </div>
+      </Col>
+    </Row>
   );
 }
 
