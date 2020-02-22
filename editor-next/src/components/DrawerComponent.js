@@ -50,7 +50,7 @@ function DrawerComponent() {
       drawerStyle={{
         background: '#F7F7FA',
       }}
-      zIndex={2}
+      zIndex={11}
       style={{ marginLeft: '80px' }}
     >
       <Affix>

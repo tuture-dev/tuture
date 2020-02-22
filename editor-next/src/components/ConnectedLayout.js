@@ -91,7 +91,7 @@ function ConnectedLayout(props) {
           <DrawerComponent />
         </Affix>
         <Layout>
-          <Affix style={{ zIndex: 11 }}>
+          <Affix style={{ zIndex: 13 }}>
             <Sider
               width={100}
               css={css`
