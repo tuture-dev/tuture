@@ -218,7 +218,7 @@ const collection = {
         return article;
       });
 
-      const { commits } = payload;
+      const { commits = [] } = payload;
       state.collection.steps = state.collection.steps.map((step) => {
         if (commits.includes(step.commit)) {
           step.isSelected = true;
