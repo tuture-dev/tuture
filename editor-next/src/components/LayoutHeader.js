@@ -19,13 +19,13 @@ function LayoutHeader() {
 
   return (
     <Row>
-      <Col span={4}>
+      <Col span={4} push={1}>
         <LastSavedTimestamp />
       </Col>
       <Col span={15} push={2}>
         <ToolBar />
       </Col>
-      <Col span={5} push={2}>
+      <Col span={5} push={1}>
         <Button
           type="primary"
           css={css`
