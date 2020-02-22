@@ -1,18 +1,23 @@
+import React from 'react';
 import { useSelector } from 'react-redux';
 import { Spin } from 'antd';
-
-import { App } from '../components/';
 
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 
-function Article() {
+import { App } from '../components';
+
+function Home() {
   const loading = useSelector(
     ({ loading }) => loading.models.collection || loading.models.diff,
   );
 
   return (
-    <div>
+    <div
+      css={css`
+        width: 100%;
+      `}
+    >
       <Spin tip="加载中..." spinning={loading}>
         <div
           css={css`
@@ -27,4 +32,4 @@ function Article() {
   );
 }
 
-export default Article;
+export default Home;

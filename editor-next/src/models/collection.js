@@ -1,8 +1,6 @@
 import * as F from 'editure-constants';
 
 import { FILE, STEP } from '../utils/constants';
-import diff from '../utils/data/diff.json';
-import tuture from '../utils/data/converted-tuture.json';
 
 function flatten(steps) {
   return steps.flatMap(({ commit, id, children }) => [
@@ -62,20 +60,18 @@ function getHeadings(nodes) {
 
 const collection = {
   state: {
-    diff,
-    collection: tuture,
-    nowArticleId: tuture.articles[0].id,
-    nowStepCommit: '372a021',
+    collection: null,
+    nowArticleId: null,
+    nowStepCommit: null,
   },
   reducers: {
     setCollectionData(state, payload) {
-      state.diff = payload.diff;
-      state.collection = { ...state.collection, ...payload.tuture };
-      state.nowStepCommit = payload.tuture.steps[0].commit;
+      state.collection = payload;
+      state.nowStepCommit = payload.steps[0].commit;
 
-      if (state.collection.articles?.length > 0) {
-        state.nowArticleId = state.collection.articles[0].id;
-        state.nowStepCommit = state.collection.articles[0].commits.slice(-1)[0];
+      if (payload.articles?.length > 0) {
+        state.nowArticleId = payload.articles[0].id;
+        state.nowStepCommit = payload.articles[0].commits.slice(-1)[0];
       }
 
       return state;
@@ -119,21 +115,6 @@ const collection = {
       } else {
         state.collection.description = payload;
       }
-
-      return state;
-    },
-    setStepTitle(state, payload) {
-      const { commit, value } = payload;
-
-      state.collection.steps = state.collection.steps.map((step) => {
-        if (step.commit === commit) {
-          step.name = value;
-
-          return step;
-        }
-
-        return step;
-      });
 
       return state;
     },
@@ -207,9 +188,23 @@ const collection = {
       return state;
     },
   },
+  effects: (dispatch) => ({
+    async fetchCollection() {
+      const response = await fetch(
+        `https://tuture-staging-1257259601.cos.ap-shanghai.myqcloud.com/converted-tuture.json`,
+      );
+      const data = await response.json();
+      console.log('data', data);
+      dispatch({ type: 'collection/setCollectionData', payload: data });
+    },
+  }),
   selectors: (slice, createSelector, hasProps) => ({
     nowArticleMeta() {
       return slice((collectionModel) => {
+        if (!collectionModel.collection) {
+          return null;
+        }
+
         const {
           collection: { articles, name, description },
           nowArticleId,
@@ -224,6 +219,10 @@ const collection = {
     },
     nowArticleContent() {
       return slice((collectionModel) => {
+        if (!collectionModel.collection) {
+          return [{ type: F.PARAGRAPH, children: [{ text: '' }] }];
+        }
+
         const {
           collection: { articles, steps },
           nowArticleId,
@@ -243,6 +242,10 @@ const collection = {
     },
     nowArticleCatalogue() {
       return slice((collectionModel) => {
+        if (!collectionModel.collection) {
+          return [];
+        }
+
         const {
           collection: { articles, steps },
           nowArticleId,
@@ -260,16 +263,12 @@ const collection = {
         return getHeadings(steps);
       });
     },
-    getDiffItemByCommitAndFile: hasProps((__, props) => {
-      return slice(
-        (collectionModel) =>
-          collectionModel.diff
-            .filter((diffItem) => diffItem.commit === props.commit)[0]
-            .diff.filter((diffItem) => diffItem.to === props.file)[0],
-      );
-    }),
     getStepFileListAndTitle: hasProps((__, props) => {
       return slice((collectionModel) => {
+        if (!collectionModel.collection) {
+          return { fileList: [], title: '' };
+        }
+
         const { commit } = props;
         const nowStep = collectionModel.collection.steps.filter(
           (step) => step.commit === commit,
@@ -292,6 +291,10 @@ const collection = {
     }),
     getCollectionCatalogue() {
       return slice((collectionModel) => {
+        if (!collectionModel.collection) {
+          return [];
+        }
+
         const getCommitName = (commit) => {
           const steps = collectionModel.collection.steps.filter(
             (step) => step.commit === commit,

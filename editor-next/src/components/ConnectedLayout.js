@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useEffect } from 'react';
 
 import { useSelector, useDispatch, useStore } from 'react-redux';
 import { Layout, Menu, Icon, Modal } from 'antd';
@@ -33,6 +33,11 @@ function ConnectedLayout(props) {
   const value = useSelector(store.select.collection.nowArticleContent);
 
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch.diff.fetchDiff();
+    dispatch.collection.fetchCollection();
+  }, [dispatch]);
 
   const isLgBreakPoint = useMediaQuery({ query: '(max-width: 992px)' });
 
