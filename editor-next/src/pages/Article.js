@@ -11,7 +11,8 @@ import { css, jsx } from '@emotion/core';
 function Article() {
   const dispatch = useDispatch();
   const loading = useSelector(
-    ({ loading }) => loading.models.collection || loading.models.diff,
+    ({ loading }) =>
+      loading.effects.collection.fetchCollection || loading.models.diff,
   );
   const match = useRouteMatch();
 

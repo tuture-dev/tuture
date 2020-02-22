@@ -9,7 +9,8 @@ import { App } from '../components';
 
 function Home() {
   const loading = useSelector(
-    ({ loading }) => loading.models.collection || loading.models.diff,
+    ({ loading }) =>
+      loading.effects.collection.fetchCollection || loading.models.diff,
   );
 
   return (
