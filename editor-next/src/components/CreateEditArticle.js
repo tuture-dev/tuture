@@ -9,38 +9,58 @@ import { EDIT_ARTICLE } from '../utils/constants';
 
 const { Option } = Select;
 
-function makeSelectableCommits(commits = []) {
+function makeSelectableCommits(commits = [], targetCommits) {
   const selectableCommits = commits.map((commit) => ({
-    key: commit.key,
+    key: commit.key.toString(),
     title: commit.name,
     description: commit.name,
-    disabled: commit.isSelected,
+    disabled: targetCommits.includes(commit.key.toString())
+      ? false
+      : commit.isSelected,
   }));
 
   return selectableCommits;
 }
 
 function makeTargetKeys(commits = []) {
-  const targetKeys = commits.map((commit) => commit.key);
+  const targetKeys = commits.map((commit) => commit.key.toString());
 
   return targetKeys;
 }
 
+function getCommitsFromKeys(keys, commits) {
+  const targetCommits = commits
+    .filter((_, index) => keys.includes(index.toString()))
+    .map((commit) => commit.commit);
+
+  return targetCommits;
+}
+
 function CreateEditArticle(props) {
+  const store = useStore();
   const dispatch = useDispatch();
   const [selectedKeys, setSelectedKeys] = useState([]);
   const [fileList, setFileList] = useState([]);
-
-  // get all commit
-  const store = useStore();
-  const allCommits = useSelector(store.select.collection.getAllCommits);
-  const selectableCommits = makeSelectableCommits(allCommits);
 
   const nowArticleCommits = useSelector(
     store.select.collection.getNowArticleCommits,
   );
 
-  const initialTargetKeys = makeTargetKeys(nowArticleCommits);
+  const initialTargetKeys =
+    props.childrenDrawerType === EDIT_ARTICLE
+      ? makeTargetKeys(nowArticleCommits)
+      : [];
+
+  console.log('initialTargetKeys', initialTargetKeys);
+
+  // get all commit
+
+  const allCommits = useSelector(store.select.collection.getAllCommits);
+  const selectableCommits = makeSelectableCommits(
+    allCommits,
+    initialTargetKeys,
+  );
+
   const [targetKeys, setTargetKeys] = useState(initialTargetKeys || []);
 
   // get nowArticle Meta
@@ -74,6 +94,32 @@ function CreateEditArticle(props) {
     props.form.validateFields((err, values) => {
       if (!err) {
         console.log('Received values of form: ', values);
+        const { cover, name, tags, commits } = values;
+
+        const targetCommits = getCommitsFromKeys(commits, allCommits);
+
+        let res = {
+          commits: targetCommits,
+          name,
+        };
+
+        if (tags) {
+          res = { ...res, tags };
+        }
+
+        if (cover) {
+          const url =
+            Array.isArray(cover?.fileList) && cover?.fileList.length > 0
+              ? cover?.fileList[0].url
+              : '';
+          res = { cover: url };
+        }
+
+        if (props.childrenDrawerType === EDIT_ARTICLE) {
+          dispatch.collection.editArticle(res);
+        } else {
+          dispatch.collection.createArticle(res);
+        }
       }
     });
   }

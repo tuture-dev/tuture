@@ -1,4 +1,5 @@
 import * as F from 'editure-constants';
+import shortid from 'shortid';
 
 import { FILE, STEP } from '../utils/constants';
 import diff from '../utils/data/diff.json';
@@ -199,6 +200,47 @@ const collection = {
 
             return file;
           });
+        }
+
+        return step;
+      });
+
+      return state;
+    },
+    editArticle(state, payload) {
+      const { nowArticleId } = state;
+
+      state.collection.articles = state.collection.articles.map((article) => {
+        if (article.id === nowArticleId) {
+          article = { ...article, ...payload };
+        }
+
+        return article;
+      });
+
+      const { commits } = payload;
+      state.collection.steps = state.collection.steps.map((step) => {
+        if (commits.includes(step.commit)) {
+          step.isSelected = true;
+        }
+
+        return step;
+      });
+
+      return state;
+    },
+    createArticle(state, payload) {
+      const id = shortid.generate();
+
+      state.collection.articles.push({
+        id,
+        ...payload,
+      });
+
+      const { commits } = payload;
+      state.collection.steps = state.collection.steps.map((step) => {
+        if (commits.includes(step.commit)) {
+          step.isSelected = true;
         }
 
         return step;
