@@ -91,7 +91,7 @@ function ConnectedLayout(props) {
           <DrawerComponent />
         </Affix>
         <Layout>
-          <Affix style={{ zIndex: 1008 }}>
+          <Affix style={{ zIndex: 11 }}>
             <Sider
               width={100}
               css={css`
@@ -107,7 +107,7 @@ function ConnectedLayout(props) {
                 css={css`
                   width: 100%;
                   text-align: center;
-                  padding-top: 24px;
+                  padding-top: 20px;
                 `}
               >
                 <img
@@ -116,6 +116,8 @@ function ConnectedLayout(props) {
                   css={css`
                     width: 24px;
                     height: 24px;
+                    margin: 0;
+                    padding: 0;
                   `}
                 />
               </div>
@@ -159,7 +161,7 @@ function ConnectedLayout(props) {
               <Header
                 css={css`
                   background-color: #fff;
-                  padding: 0 3%;
+                  padding: 0;
                   border-bottom: 1px solid rgba(232, 232, 232, 1);
                   min-width: 1200px;
                 `}

@@ -47,7 +47,7 @@ function StepFileList() {
           font-size: 16px;
           font-family: PingFangSC-Medium, PingFang SC;
           font-weight: 500;
-          color: rgba(0, 0, 0, 1);
+          color: #595959;
           line-height: 24px;
           margin-bottom: 16px;
         `}

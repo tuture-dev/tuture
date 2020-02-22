@@ -1,5 +1,5 @@
 import React from 'react';
-import { Anchor } from 'antd';
+import { Anchor, Divider } from 'antd';
 import { useDispatch, useSelector, useStore } from 'react-redux';
 
 /** @jsx jsx */
@@ -61,6 +61,31 @@ function PageCatalogue() {
         background-color: #f7f7fa;
       `}
     >
+      <div
+        css={css`
+          padding-left: 16px;
+          padding-right: 16px;
+        `}
+      >
+        <h4
+          css={css`
+            font-size: 16px;
+            font-family: PingFangSC-Medium, PingFang SC;
+            font-weight: 500;
+            color: #595959;
+            line-height: 24px;
+            margin-bottom: 4px;
+          `}
+        >
+          大纲
+        </h4>
+
+        <Divider
+          css={css`
+            margin: 16px 0;
+          `}
+        />
+      </div>
       <Anchor
         css={css`
           background: transparent;
@@ -69,11 +94,9 @@ function PageCatalogue() {
             background: transparent;
           }
         `}
-        bounds={0}
         targetOffset={64}
         onChange={onChange}
         affix={false}
-        showInkInFixed
       >
         {nowArticleCatalogue.map((item) => (
           <Link
