@@ -40,7 +40,7 @@ function ConnectedLayout(props) {
   useEffect(() => {
     const saveInterval = setInterval(() => {
       dispatch.collection.saveCollection();
-    }, 5000);
+    }, 10000);
     return () => clearInterval(saveInterval);
   }, [dispatch]);
 

@@ -65,6 +65,7 @@ const collection = {
     nowArticleId: null,
     nowStepCommit: null,
     lastSaved: null,
+    saveFailed: false,
   },
   reducers: {
     setCollectionData(state, payload) {
@@ -189,6 +190,10 @@ const collection = {
       state.lastSaved = payload;
       return state;
     },
+    setSaveFailed(state, payload) {
+      state.saveFailed = payload;
+      return state;
+    },
   },
   effects: (dispatch) => ({
     async fetchCollection() {
@@ -214,16 +219,15 @@ const collection = {
 
         if (response.ok) {
           dispatch.collection.setLastSaved(new Date());
+          dispatch.collection.setSaveFailed(false);
           if (payload?.showMessage) {
             message.success('保存内容成功！');
           }
         } else if (!response.ok) {
-          console.log('response', response);
-          message.error('保存内容失败！');
+          dispatch.collection.setSaveFailed(true);
         }
       } catch (err) {
-        console.log('catched', err);
-        message.error('保存内容失败！');
+        dispatch.collection.setSaveFailed(true);
       }
     },
   }),
