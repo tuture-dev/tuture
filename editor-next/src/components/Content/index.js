@@ -22,7 +22,30 @@ function Content() {
   const dropListener = createDropListener(editor);
 
   return (
-    <Row>
+    <Row
+      css={css`
+        & textarea {
+          font-family: 'Roboto', 'Ubuntu Mono', Consolas, monospace;
+          line-height: 1.4;
+          background: #eee;
+        }
+        & input {
+          font-family: 'Roboto', 'Ubuntu Mono', Consolas, monospace;
+          line-height: 1.4;
+          box-sizing: border-box;
+          font-size: 0.85em;
+          width: 100%;
+          padding: 0.5em;
+          border: 2px solid #ddd;
+          background: #fafafa;
+        }
+
+        & input:focus {
+          outline: 0;
+          border-color: blue;
+        }
+      `}
+    >
       <Col span={0} lg={5}>
         <Affix offsetTop={64}>
           <PageCatalogue />

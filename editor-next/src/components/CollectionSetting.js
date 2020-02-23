@@ -156,6 +156,7 @@ function CollectionSetting(props) {
             <Select
               mode="tags"
               placeholder="输入文集标签"
+              allowClear
               onChange={handleTagsChange}
             >
               {getFieldValue('tags').map((tag) => (
