@@ -42,8 +42,12 @@ function CreateEditArticle(props) {
   const [selectedKeys, setSelectedKeys] = useState([]);
   const [fileList, setFileList] = useState([]);
 
+  // get editArticle Commits
+  const { editArticleId } = useSelector((state) => state.collection);
   const nowArticleCommits = useSelector(
-    store.select.collection.getNowArticleCommits,
+    store.select.collection.getNowArticleCommits({
+      nowArticleId: editArticleId,
+    }),
   );
 
   const initialTargetKeys =
@@ -64,7 +68,9 @@ function CreateEditArticle(props) {
   const [targetKeys, setTargetKeys] = useState(initialTargetKeys || []);
 
   // get nowArticle Meta
-  const articleData = useSelector(store.select.collection.nowArticleMeta);
+  const articleData = useSelector(
+    store.select.collection.nowArticleMeta({ nowArticleId: editArticleId }),
+  );
   const nowArticleMeta =
     props.childrenDrawerType === EDIT_ARTICLE ? articleData : {};
 
@@ -81,6 +87,7 @@ function CreateEditArticle(props) {
         },
       ]
     : [];
+  const initialName = nowArticleMeta?.name || '';
   const coverProps = {
     action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
     listType: 'picture',
@@ -112,7 +119,7 @@ function CreateEditArticle(props) {
             Array.isArray(cover?.fileList) && cover?.fileList.length > 0
               ? cover?.fileList[0].url
               : '';
-          res = { cover: url };
+          res = { ...res, cover: url };
         }
 
         if (props.childrenDrawerType === EDIT_ARTICLE) {
@@ -124,7 +131,7 @@ function CreateEditArticle(props) {
     });
   }
 
-  function handleChange(nextTargetKeys, direction, moveKeys) {
+  function handleTargetChange(nextTargetKeys, direction, moveKeys) {
     const sortedNextTargetKeys = nextTargetKeys.sort((prev, post) => {
       if (prev > post) {
         return 1;
@@ -160,7 +167,7 @@ function CreateEditArticle(props) {
     return option.description.indexOf(inputValue) > -1;
   }
 
-  function onCoverChange({ fileList }) {
+  function handleCoverChange({ fileList }) {
     let resultFileList = [...fileList];
 
     // 1. Limit the number of uploaded files
@@ -181,6 +188,14 @@ function CreateEditArticle(props) {
       cover: resultFileList,
     });
   }
+
+  function handleTagsChange(tags) {
+    setFieldsValue({
+      tags,
+    });
+  }
+
+  console.log('value');
 
   return (
     <div
@@ -205,7 +220,7 @@ function CreateEditArticle(props) {
           })(
             <Upload
               fileList={fileList}
-              onChange={onCoverChange}
+              onChange={handleCoverChange}
               {...coverProps}
             >
               <Button>
@@ -222,7 +237,7 @@ function CreateEditArticle(props) {
         >
           {getFieldDecorator('name', {
             rules: [{ required: true, message: '请输入文章标题' }],
-            initialValue: nowArticleMeta?.name || '',
+            initialValue: initialName,
           })(<Input placeholder="标题" />)}
         </Form.Item>
         <Form.Item
@@ -237,11 +252,7 @@ function CreateEditArticle(props) {
             <Select
               mode="tags"
               placeholder="输入文章标签"
-              onChange={(tags) => {
-                setFieldsValue({
-                  tags,
-                });
-              }}
+              onChange={handleTagsChange}
             >
               {getFieldValue('tags').map((tag) => (
                 <Option key={tag}>{tag}</Option>
@@ -265,7 +276,7 @@ function CreateEditArticle(props) {
                 height: 300,
               }}
               selectedKeys={selectedKeys}
-              onChange={handleChange}
+              onChange={handleTargetChange}
               onSelectChange={handleSelectChange}
               showSearch
               filterOption={filterOption}
@@ -299,4 +310,4 @@ function CreateEditArticle(props) {
   );
 }
 
-export default Form.create({ name: 'CreateEditArticle ' })(CreateEditArticle);
+export default Form.create({ name: 'CreateEditArticle' })(CreateEditArticle);

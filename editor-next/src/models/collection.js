@@ -67,6 +67,7 @@ const collection = {
     collection: tuture,
     nowArticleId: tuture.articles[0].id,
     nowStepCommit: '372a021',
+    editArticleId: '',
   },
   reducers: {
     setCollectionData(state, payload) {
@@ -207,6 +208,11 @@ const collection = {
 
       return state;
     },
+    setEditArticleId(state, payload) {
+      state.editArticleId = payload;
+
+      return state;
+    },
     editArticle(state, payload) {
       const { nowArticleId } = state;
 
@@ -250,11 +256,11 @@ const collection = {
     },
   },
   selectors: (slice, createSelector, hasProps) => ({
-    nowArticleMeta() {
+    nowArticleMeta: hasProps((__, props) => {
       return slice((collectionModel) => {
+        const { nowArticleId } = props;
         const {
           collection: { articles, name, description, tags, cover },
-          nowArticleId,
         } = collectionModel;
 
         if (nowArticleId) {
@@ -263,7 +269,7 @@ const collection = {
 
         return { name, description, tags, cover };
       });
-    },
+    }),
     nowArticleContent() {
       return slice((collectionModel) => {
         const {
@@ -375,11 +381,12 @@ const collection = {
         return commits;
       });
     },
-    getNowArticleCommits() {
+    getNowArticleCommits: hasProps((__, props) => {
       return slice((collectionModel) => {
+        const { nowArticleId } = props;
+
         const {
           collection: { articles, steps },
-          nowArticleId,
         } = collectionModel;
 
         const article = articles.filter(
@@ -403,7 +410,7 @@ const collection = {
 
         return commits;
       });
-    },
+    }),
   }),
 };
 

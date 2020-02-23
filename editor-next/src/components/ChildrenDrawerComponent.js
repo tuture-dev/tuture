@@ -26,6 +26,7 @@ function ChildrenDrawerComponent() {
       title={mapTypeToTitle[childrenDrawerType]}
       placement="left"
       width={800}
+      destroyOnClose
       onClose={onClose}
       visible={childrenVisible}
       zIndex={12}

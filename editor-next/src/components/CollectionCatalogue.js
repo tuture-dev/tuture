@@ -54,7 +54,7 @@ function CollectionCatalogue() {
     store.select.collection.getCollectionCatalogue,
   );
 
-  function onToggleChildrenDrawer(e, toggleChildrenDrawerType) {
+  function onToggleChildrenDrawer(e, toggleChildrenDrawerType, articleId) {
     e.stopPropagation();
     if (childrenDrawerType === toggleChildrenDrawerType) {
       dispatch({
@@ -65,6 +65,10 @@ function CollectionCatalogue() {
 
     if (!childrenVisible) {
       dispatch({ type: 'drawer/setChildrenVisible', payload: true });
+    }
+
+    if (toggleChildrenDrawerType === EDIT_ARTICLE) {
+      dispatch.collection.setEditArticleId(articleId);
     }
 
     dispatch({
@@ -119,7 +123,9 @@ function CollectionCatalogue() {
                     color: #02b875;
                   }
                 `}
-                onClick={(e) => onToggleChildrenDrawer(e, EDIT_ARTICLE)}
+                onClick={(e) =>
+                  onToggleChildrenDrawer(e, EDIT_ARTICLE, item.id)
+                }
               >
                 <IconFont type="icon-moreread" />
               </span>
