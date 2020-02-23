@@ -30,7 +30,6 @@ function LayoutHeader() {
           `}
           onClick={onCommitClick}
         >
-          <CommitModal />
           提交
         </Button>
         <Button
@@ -41,6 +40,7 @@ function LayoutHeader() {
         >
           同步
         </Button>
+        <CommitModal />
       </Col>
     </Row>
   );
