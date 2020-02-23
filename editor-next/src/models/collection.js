@@ -268,6 +268,11 @@ const collection = {
 
       return state;
     },
+    editCollection(state, payload) {
+      state.collection = { ...state.collection, ...payload };
+
+      return state;
+    },
   },
   effects: (dispatch) => ({
     async editArticle() {
@@ -277,6 +282,10 @@ const collection = {
     async createArticle() {
       message.success('创建成功');
       dispatch.drawer.setChildrenVisible(false);
+    },
+    async editCollection() {
+      message.success('保存成功');
+      dispatch.drawer.setVisible(false);
     },
   }),
   selectors: (slice, createSelector, hasProps) => ({
@@ -330,6 +339,15 @@ const collection = {
         }
 
         return getHeadings(steps);
+      });
+    },
+    collectionMeta() {
+      return slice((collectionModel) => {
+        const {
+          collection: { name, cover, description, tags },
+        } = collectionModel;
+
+        return { name, cover, description, tags };
       });
     },
     getDiffItemByCommitAndFile: hasProps((__, props) => {
