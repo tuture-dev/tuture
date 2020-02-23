@@ -4,10 +4,25 @@ import { css, Global } from '@emotion/core';
 export const globalStyles = (
   <Global
     styles={css`
-      html {
+      html,
+      input,
+      textarea {
         font-family: 'Roboto', 'Ubuntu Mono', Consolas, monospace;
         line-height: 1.4;
         background: #eee;
+      }
+
+      input {
+        box-sizing: border-box;
+        font-size: 0.85em;
+        width: 100%;
+        border: 2px solid #ddd;
+        background: #fafafa;
+      }
+
+      input:focus {
+        outline: 0;
+        border-color: blue;
       }
 
       body {

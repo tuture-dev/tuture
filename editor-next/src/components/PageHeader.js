@@ -51,6 +51,7 @@ function PageHeader() {
           color: rgba(0, 0, 0, 1);
           line-height: 32px;
           margin-bottom: 24px;
+          padding: 0;
 
           ${noBorderAndShadow};
         `}
@@ -73,6 +74,7 @@ function PageHeader() {
           line-height: 22px;
           margin-bottom: 16px;
           resize: none;
+          padding: 0;
 
           ${noBorderAndShadow};
         `}
