@@ -77,6 +77,18 @@ function concatCodeStr(diffItem) {
   return { codeStr, DIFF_ADD, DIFF_DEL };
 }
 
+function getHiddenLines(checkedLines, allLines) {
+  const hiddenLines = allLines.filter((line) => !checkedLines.includes(line));
+
+  return hiddenLines;
+}
+
+function getShowLines(hiddenLines, allLines) {
+  const showLines = allLines.filter((line) => !hiddenLines.includes(line));
+
+  return showLines;
+}
+
 function DiffBlockElement(props) {
   const { attributes, element } = props;
   const { file, commit, hiddenLines = [] } = element;
@@ -96,24 +108,16 @@ function DiffBlockElement(props) {
     .pop()
     .toLowerCase();
 
-  function onChange(checkedValues) {
-    dispatch({
-      type: 'collection/setDiffItemHiddenLines',
-      payload: {
-        commit,
-        file,
-        hiddenLines: checkedValues,
-      },
+  function onChange(hiddenLines) {
+    dispatch.collection.setDiffItemHiddenLines({
+      commit,
+      file,
+      hiddenLines,
     });
   }
 
   return (
-    <div
-      {...attributes}
-      contentEditable={false}
-      className="diff-file"
-      css={diffFileStyle}
-    >
+    <div {...attributes} className="diff-file" css={diffFileStyle}>
       <header css={diffFileHeaderStyle}>{file}</header>
       <Highlight
         {...defaultProps}
@@ -122,11 +126,17 @@ function DiffBlockElement(props) {
         theme={vsDark}
       >
         {({ className, style, tokens, getLineProps, getTokenProps }) => {
+          const allLines = tokens.map((_, index) => index);
+          const showLines = getShowLines(hiddenLines, allLines);
+
           return (
             <pre className={className} style={style}>
               <Checkbox.Group
-                onChange={onChange}
-                value={hiddenLines}
+                onChange={(checkedLines) => {
+                  const hiddenLines = getHiddenLines(checkedLines, allLines);
+                  onChange(hiddenLines);
+                }}
+                value={showLines}
                 css={css`
                   width: 100%;
                 `}
