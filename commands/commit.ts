@@ -9,8 +9,8 @@ import logger from '../utils/logger';
 import { git } from '../utils/git';
 import { assetsTablePath, assetsTableCheckpoint } from '../utils/assets';
 import {
-  tutureYMLPath,
-  tutureYMLCheckpoint,
+  collectionPath,
+  collectionCheckpoint,
   initializeTutureBranch,
 } from '../utils/tuture';
 import { TUTURE_BRANCH } from '../constants';
@@ -54,9 +54,9 @@ export default class Commit extends BaseCommand {
     // Trying to copy and add tuture.yml to staging.
     const targetTutureYML = path.join(
       process.cwd(),
-      path.basename(tutureYMLPath),
+      path.basename(collectionPath),
     );
-    fs.copySync(tutureYMLPath, targetTutureYML);
+    fs.copySync(collectionPath, targetTutureYML);
     await git.add(targetTutureYML);
 
     // Trying to copy and add tuture-assets.json to staging.
@@ -69,7 +69,7 @@ export default class Commit extends BaseCommand {
       await git.add(targetAssetsTable);
     }
 
-    fs.removeSync(tutureYMLCheckpoint);
+    fs.removeSync(collectionCheckpoint);
     fs.removeSync(assetsTableCheckpoint);
 
     // Commit changes to tuture branch.

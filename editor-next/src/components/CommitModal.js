@@ -1,0 +1,53 @@
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Modal, Input } from 'antd';
+import { css } from 'emotion';
+
+const CommitModal = () => {
+  const dispatch = useDispatch();
+  const message = useSelector((state) => state.commit.message);
+  const isEditing = useSelector((state) => state.commit.isEditing);
+  const loading = useSelector(
+    (state) => state.loading.effects.collection.commit,
+  );
+  const placeholder = `提交于 ${new Date()}`;
+
+  const handleChange = (e) => {
+    dispatch.commit.setMessage(e.target.value);
+  };
+
+  const handleOk = () => {
+    if (!message) {
+      dispatch.commit.setMessage(placeholder);
+    }
+
+    dispatch.collection.commit(message);
+  };
+
+  return (
+    <Modal
+      title="提交"
+      visible={isEditing}
+      confirmLoading={loading}
+      onOk={handleOk}
+      zIndex={1080}
+    >
+      <p
+        className={css`
+          margin-top: 8px;
+          margin-bottom: 8px;
+        `}
+      >
+        提交信息
+      </p>
+      <Input
+        autoFocus
+        value={message}
+        placeholder={placeholder}
+        onChange={handleChange}
+      />
+    </Modal>
+  );
+};
+
+export default CommitModal;

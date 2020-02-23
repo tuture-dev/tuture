@@ -9,9 +9,12 @@ const { TextArea } = Input;
 
 function PageHeader() {
   const store = useStore();
-  const { name = '', description = '' } = useSelector(
-    store.select.collection.nowArticleMeta,
-  );
+  const meta = useSelector(store.select.collection.nowArticleMeta) || {
+    name: '',
+    description: '',
+  };
+  const { name, description } = meta;
+
   const dispatch = useDispatch();
 
   const noBorderAndShadow = css`

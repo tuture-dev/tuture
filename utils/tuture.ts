@@ -1,39 +1,38 @@
 import chalk from 'chalk';
 import fs from 'fs-extra';
 import path from 'path';
-import yaml from 'js-yaml';
 
 import { Tuture } from '../types';
 import logger from '../utils/logger';
 import { git } from '../utils/git';
 import {
   TUTURE_ROOT,
-  TUTURE_YML_PATH,
+  COLLECTION_PATH,
   TUTURE_BRANCH,
   ASSETS_JSON_PATH,
-  TUTURE_YML_CHECKPOINT,
+  COLLECTION_CHECKPOINT,
 } from '../constants';
 import { assetsTablePath, assetsTableCheckpoint } from './assets';
 
-export const tutureYMLPath = path.join(
+export const collectionPath = path.join(
   process.env.TUTURE_PATH || process.cwd(),
   TUTURE_ROOT,
-  TUTURE_YML_PATH,
+  COLLECTION_PATH,
 );
 
-export const tutureYMLCheckpoint = path.join(
+export const collectionCheckpoint = path.join(
   process.env.TUTURE_PATH || process.cwd(),
   TUTURE_ROOT,
-  TUTURE_YML_CHECKPOINT,
+  COLLECTION_CHECKPOINT,
 );
 
 export function hasTutureChangedSinceCheckpoint() {
-  if (!fs.existsSync(tutureYMLCheckpoint)) {
+  if (!fs.existsSync(collectionCheckpoint)) {
     return false;
   }
   return !fs
-    .readFileSync(tutureYMLPath)
-    .equals(fs.readFileSync(tutureYMLCheckpoint));
+    .readFileSync(collectionPath)
+    .equals(fs.readFileSync(collectionCheckpoint));
 }
 
 /**
@@ -66,12 +65,12 @@ export async function hasRemoteTutureBranch() {
 /**
  * Load Tuture object from tuture.yml.
  */
-export async function loadTuture(fromBranch = false): Promise<Tuture> {
-  if (!fs.existsSync(tutureYMLPath)) {
+export async function loadCollection(fromBranch = false): Promise<Tuture> {
+  if (!fs.existsSync(collectionPath)) {
     await initializeTutureBranch();
     await git.checkout(TUTURE_BRANCH);
 
-    if (!fs.existsSync(TUTURE_YML_PATH)) {
+    if (!fs.existsSync(COLLECTION_PATH)) {
       logger.log(
         'error',
         `Cannot load tuture. Please run ${chalk.bold(
@@ -82,23 +81,23 @@ export async function loadTuture(fromBranch = false): Promise<Tuture> {
       process.exit(1);
     }
 
-    fs.copySync(TUTURE_YML_PATH, tutureYMLPath);
+    fs.copySync(COLLECTION_PATH, collectionPath);
     if (fs.existsSync(ASSETS_JSON_PATH)) {
       fs.copySync(ASSETS_JSON_PATH, assetsTablePath);
     }
   }
 
-  if (fromBranch && fs.existsSync(TUTURE_YML_PATH)) {
-    return yaml.safeLoad(fs.readFileSync(TUTURE_YML_PATH).toString());
+  if (fromBranch && fs.existsSync(COLLECTION_PATH)) {
+    return JSON.parse(fs.readFileSync(COLLECTION_PATH).toString());
   }
-  return yaml.safeLoad(fs.readFileSync(tutureYMLPath).toString());
+  return JSON.parse(fs.readFileSync(collectionPath).toString());
 }
 
 /**
  * Save Tuture object back to tuture.yml (temporary workspace).
  */
 export function saveTuture(tuture: Tuture) {
-  fs.writeFileSync(tutureYMLPath, yaml.safeDump(tuture));
+  fs.writeFileSync(collectionPath, JSON.stringify(tuture));
 }
 
 /**
@@ -128,7 +127,7 @@ export async function initializeTutureBranch() {
 
 export async function saveCheckpoint() {
   // Copy the last committed file.
-  fs.copySync(tutureYMLPath, tutureYMLCheckpoint, { overwrite: true });
+  fs.copySync(collectionPath, collectionCheckpoint, { overwrite: true });
 
   if (fs.existsSync(assetsTablePath)) {
     fs.copySync(assetsTablePath, assetsTableCheckpoint, {
