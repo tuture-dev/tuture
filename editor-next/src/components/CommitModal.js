@@ -26,12 +26,18 @@ const CommitModal = () => {
     dispatch.collection.commit(message);
   };
 
+  const handleCancel = (e) => {
+    e.preventDefault();
+    dispatch.commit.reset();
+  };
+
   return (
     <Modal
       title="提交"
       visible={isEditing}
       confirmLoading={loading}
       onOk={handleOk}
+      onCancel={handleCancel}
       zIndex={1080}
     >
       <p
