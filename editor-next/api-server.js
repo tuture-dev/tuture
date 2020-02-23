@@ -31,6 +31,12 @@ app.post('/upload', (req, res) => {
   res.json({ path: 'https://tuture.co/images/covers/abfd872.jpg' });
 });
 
+app.post('/commit', (req, res) => {
+  setTimeout(() => {
+    res.sendStatus(200);
+  }, 1000);
+});
+
 app.listen(8000, () => {
   console.log('API server is running!');
 });

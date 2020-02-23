@@ -6,15 +6,14 @@ import { Button, Row, Col } from 'antd';
 import { useDispatch } from 'react-redux';
 
 import ToolBar from './Toolbar';
+import CommitModal from './CommitModal';
 import LastSavedTimestamp from './LastSavedTimestamp';
-
-import { COMMIT } from '../utils/constants';
 
 function LayoutHeader() {
   const dispatch = useDispatch();
 
   function onCommitClick() {
-    dispatch.versionControl.setCommitStatus(COMMIT);
+    dispatch.commit.startEdit();
   }
 
   return (
@@ -33,6 +32,7 @@ function LayoutHeader() {
           `}
           onClick={onCommitClick}
         >
+          <CommitModal />
           提交
         </Button>
         <Button

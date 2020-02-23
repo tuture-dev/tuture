@@ -223,12 +223,32 @@ const collection = {
           if (payload?.showMessage) {
             message.success('保存内容成功！');
           }
-        } else if (!response.ok) {
+        } else {
           dispatch.collection.setSaveFailed(true);
         }
       } catch (err) {
         dispatch.collection.setSaveFailed(true);
       }
+    },
+    async commit(payload) {
+      const response = await fetch('/commit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify({
+          message: payload,
+        }),
+      });
+
+      if (response.ok) {
+        message.success('提交成功！');
+      } else {
+        message.error('提交失败！');
+      }
+
+      dispatch.commit.reset();
     },
   }),
   selectors: (slice, createSelector, hasProps) => ({
