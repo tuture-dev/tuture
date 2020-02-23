@@ -10,7 +10,7 @@ import { Tuture, TutureMeta } from '../types';
 import { makeSteps, removeTutureSuite } from '../utils';
 import { saveTuture } from '../utils/tuture';
 import { git, inferGithubField, appendGitignore } from '../utils/git';
-import { TUTURE_YML_PATH } from '../constants';
+import { COLLECTION_PATH } from '../constants';
 
 type ConfirmResponse = {
   answer: boolean;
@@ -34,14 +34,14 @@ export default class Init extends BaseCommand {
     const response = yes
       ? { answer: true }
       : await prompt([
-        {
-          name: 'answer',
-          type: 'confirm',
-          message:
+          {
+            name: 'answer',
+            type: 'confirm',
+            message:
               'You are not in a Git repository, do you want to initialize one?',
-          default: false,
-        },
-      ]);
+            default: false,
+          },
+        ]);
 
     if (!(response as ConfirmResponse).answer) {
       this.exit(0);
@@ -55,24 +55,24 @@ export default class Init extends BaseCommand {
     const answer: any = yes
       ? { name: 'My Awesome Tutorial' }
       : await prompt([
-        {
-          name: 'name',
-          message: 'Tutorial Name',
-          default: 'My Awesome Tutorial',
-        },
-        {
-          name: 'description',
-          message: 'Description',
-        },
-        {
-          name: 'topics',
-          message: 'Topics',
-        },
-        {
-          name: 'categories',
-          message: 'Categories',
-        },
-      ]);
+          {
+            name: 'name',
+            message: 'Tutorial Name',
+            default: 'My Awesome Tutorial',
+          },
+          {
+            name: 'description',
+            message: 'Description',
+          },
+          {
+            name: 'topics',
+            message: 'Topics',
+          },
+          {
+            name: 'categories',
+            message: 'Categories',
+          },
+        ]);
     answer.id = crypto.randomBytes(16).toString('hex');
 
     // TODO: process user input with inquirer built-ins
@@ -95,7 +95,7 @@ export default class Init extends BaseCommand {
   async run() {
     const { flags } = this.parse(Init);
 
-    if (fs.existsSync(TUTURE_YML_PATH)) {
+    if (fs.existsSync(COLLECTION_PATH)) {
       logger.log('success', 'Tuture tutorial has already been initialized!');
       this.exit(0);
     }

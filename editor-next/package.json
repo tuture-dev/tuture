@@ -15,6 +15,7 @@
     "antd": "^3.26.9",
     "classnames": "^2.2.6",
     "customize-cra": "^0.9.1",
+    "dayjs": "^1.8.20",
     "editure": "^0.0.7",
     "editure-constants": "^0.0.7",
     "emotion": "^10.0.27",
@@ -36,7 +37,7 @@
     "slate-react": "^0.57.1"
   },
   "scripts": {
-    "start": "react-app-rewired start",
+    "start": "concurrently \"node api-server.js\" \"react-app-rewired start\"",
     "build": "react-app-rewired build",
     "test": "react-app-rewired test",
     "eject": "react-scripts eject",
@@ -45,6 +46,7 @@
   "eslintConfig": {
     "extends": "react-app"
   },
+  "proxy": "http://localhost:8000/",
   "browserslist": {
     "production": [
       ">0.2%",
@@ -61,6 +63,7 @@
     "babel-eslint": "^10.0.3",
     "babel-plugin-emotion": "^10.0.27",
     "babel-plugin-import": "^1.13.0",
+    "concurrently": "^5.1.0",
     "less": "^3.11.1",
     "less-loader": "^5.0.0",
     "react-app-rewired": "^2.1.5"

@@ -1,7 +1,7 @@
 import fs from 'fs-extra';
 
 import { Step } from '../types';
-import { tutureYMLPath } from './tuture';
+import { collectionPath } from './tuture';
 import { TUTURE_ROOT, TUTURE_BRANCH } from '../constants';
 import { git, storeDiff, getGitDiff } from './git';
 
@@ -95,7 +95,7 @@ export function mergeSteps(prevSteps: Step[], currentSteps: Step[]) {
  */
 export async function isInitialized() {
   if ((await git.checkIsRepo()) && (await git.branchLocal()).current) {
-    const workspaceExists = fs.existsSync(tutureYMLPath);
+    const workspaceExists = fs.existsSync(collectionPath);
     const branchExists = (await git.branch({ '-a': true })).all
       .map((branch) => branch.split('/').slice(-1)[0])
       .includes(TUTURE_BRANCH);

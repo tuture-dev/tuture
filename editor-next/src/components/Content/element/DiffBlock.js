@@ -84,7 +84,7 @@ function DiffBlockElement(props) {
   const dispatch = useDispatch();
   const store = useStore();
   const diffItem = useSelector(
-    store.select.collection.getDiffItemByCommitAndFile({ file, commit }),
+    store.select.diff.getDiffItemByCommitAndFile({ file, commit }),
   );
 
   const { codeStr = '', DIFF_ADD = [], DIFF_DEL = [] } = concatCodeStr(

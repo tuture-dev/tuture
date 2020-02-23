@@ -1,27 +1,24 @@
-import { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { useRouteMatch } from 'react-router-dom';
+import React from 'react';
+import { useSelector } from 'react-redux';
 import { Spin } from 'antd';
-
-import { App } from '../components/';
 
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 
-function Article() {
-  const dispatch = useDispatch();
+import { App } from '../components';
+
+function Home() {
   const loading = useSelector(
     ({ loading }) =>
       loading.effects.collection.fetchCollection || loading.models.diff,
   );
-  const match = useRouteMatch();
-
-  useEffect(() => {
-    dispatch.collection.setNowArticle(match.params.id);
-  }, [dispatch, match]);
 
   return (
-    <div>
+    <div
+      css={css`
+        width: 100%;
+      `}
+    >
       <Spin tip="加载中..." spinning={loading}>
         <div
           css={css`
@@ -36,4 +33,4 @@ function Article() {
   );
 }
 
-export default Article;
+export default Home;

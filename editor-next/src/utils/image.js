@@ -1,23 +1,27 @@
+import { message } from 'antd';
 import { insertVoid } from 'editure';
 import { IMAGE } from 'editure-constants';
-
-const IMAGE_HOSTING_URL = 'https://imgkr.com/api/files/upload';
 
 export const uploadImage = (file, callback) => {
   const data = new FormData();
   data.append('file', file);
 
-  fetch(IMAGE_HOSTING_URL, {
+  fetch('/upload', {
     method: 'POST',
     body: data,
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
   })
     .then((res) => res.json())
-    .then((resObj) => callback(null, resObj.data))
+    .then((res) => callback(null, res.path))
     .catch((err) => callback(err));
 };
 
 export const createInsertImageCallback = (editor) => (err, url) => {
-  if (err) return alert('图片上传失败，请检查网络连接并重新尝试');
+  console.log('err', err);
+  console.log('url', url);
+  if (err) return message.error('图片上传失败！');
   insertVoid(editor, IMAGE, { url });
 };
 

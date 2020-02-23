@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import { useMemo, useEffect } from 'react';
 
 import { useSelector, useDispatch, useStore } from 'react-redux';
 import { Layout, Menu, Icon, Modal, Affix } from 'antd';
@@ -41,6 +41,18 @@ function ConnectedLayout(props) {
   const value = useSelector(store.select.collection.nowArticleContent);
 
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch.diff.fetchDiff();
+    dispatch.collection.fetchCollection();
+  }, [dispatch]);
+
+  useEffect(() => {
+    const saveInterval = setInterval(() => {
+      dispatch.collection.saveCollection();
+    }, 10000);
+    return () => clearInterval(saveInterval);
+  }, [dispatch]);
 
   function handleOk() {
     dispatch({ type: 'versionControl/setCommitStatus', payload: NORMAL });

@@ -8,7 +8,7 @@ import { File, Change } from 'parse-diff';
 import BaseCommand from '../base';
 import { isInitialized } from '../utils';
 import logger from '../utils/logger';
-import { loadTuture } from '../utils/tuture';
+import { loadCollection } from '../utils/tuture';
 import { Asset, loadAssetsTable, checkAssets } from '../utils/assets';
 import { generateUserProfile } from '../utils/internals';
 import { DIFF_PATH } from '../constants';
@@ -368,7 +368,7 @@ export default class Build extends BaseCommand {
       this.exit(1);
     }
 
-    const tuture = await loadTuture();
+    const tuture = await loadCollection();
     const rawDiffs: RawDiff[] = JSON.parse(
       fs.readFileSync(DIFF_PATH).toString(),
     );

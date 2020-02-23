@@ -11,7 +11,7 @@ import makeServer from '../server';
 import { isInitialized } from '../utils';
 import { syncImages } from '../utils/assets';
 import { TUTURE_ROOT } from '../constants';
-import { loadTuture } from '../utils/tuture';
+import { loadCollection } from '../utils/tuture';
 
 export default class Up extends BaseCommand {
   static description = 'Render and edit tutorial in browser';
@@ -59,7 +59,7 @@ export default class Up extends BaseCommand {
     }
 
     // Trying to load tuture.yml for sanity check.
-    await loadTuture();
+    await loadCollection();
 
     // Background interval to synchronize assets.
     syncImages();

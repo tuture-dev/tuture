@@ -115,12 +115,13 @@ function handleExitBlock(editor, event) {
 export const buttonRefs = {
   imageBtnRef: React.createRef(),
   linkBtnRef: React.createRef(),
+  saveBtnRef: React.createRef(),
 };
 
 export const ButtonRefsContext = React.createContext(buttonRefs);
 
 export const createHotKeysHandler = (editor) => {
-  const { imageBtnRef, linkBtnRef } = buttonRefs;
+  const { imageBtnRef, linkBtnRef, saveBtnRef } = buttonRefs;
 
   return (event) => {
     /* eslint-disable no-restricted-syntax */
@@ -151,6 +152,11 @@ export const createHotKeysHandler = (editor) => {
 
         return;
       }
+    }
+
+    if (isHotkey('mod+s', event)) {
+      event.preventDefault();
+      saveBtnRef.current.click();
     }
 
     // Logic for selecting all within the current container.

@@ -2,7 +2,7 @@ import fs from 'fs-extra';
 import path from 'path';
 
 import { createEmptyDir, tutureRunnerFactory, SyncRunner } from './utils';
-import { DIFF_PATH, TUTURE_YML_PATH, TUTURE_ROOT } from '../constants';
+import { DIFF_PATH, COLLECTION_PATH, TUTURE_ROOT } from '../constants';
 
 // Tmp directories used in tests.
 const tmpDirs: string[] = Array();
@@ -30,7 +30,7 @@ describe('tuture build', () => {
     // Add necessary files to repoPath.
     fs.mkdirSync(path.join(repoPath, TUTURE_ROOT));
     fs.writeFileSync(path.join(repoPath, DIFF_PATH), testDiffJSON);
-    fs.writeFileSync(path.join(repoPath, TUTURE_YML_PATH), testTutureYML);
+    fs.writeFileSync(path.join(repoPath, COLLECTION_PATH), testTutureYML);
 
     describe('output to default tutorial.md', () => {
       const cp = tutureRunner(['build']);

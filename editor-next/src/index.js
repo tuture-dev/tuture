@@ -8,7 +8,7 @@ import { globalStyles } from './shared/styles';
 import store from './store';
 import * as serviceWorker from './serviceWorker';
 
-import App from './pages/App';
+import Home from './pages/Home';
 import Article from './pages/Article';
 
 ReactDOM.render(
@@ -20,7 +20,7 @@ ReactDOM.render(
           <Article />
         </Route>
         <Route path="/" exact>
-          <App />
+          <Home />
         </Route>
       </ConnectedLayout>
     </Router>

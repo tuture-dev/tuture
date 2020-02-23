@@ -39,9 +39,8 @@ function getHeadingDepth(type) {
 function PageCatalogue() {
   const dispatch = useDispatch();
   const store = useStore();
-  const nowArticleCatalogue = useSelector(
-    store.select.collection.nowArticleCatalogue,
-  );
+  const nowArticleCatalogue =
+    useSelector(store.select.collection.nowArticleCatalogue) || [];
 
   function onChange(link) {
     const commit = getCommit(link.slice(1), nowArticleCatalogue);

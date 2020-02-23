@@ -1,10 +1,8 @@
+import { message } from 'antd';
 import * as F from 'editure-constants';
 import shortid from 'shortid';
-import { message } from 'antd';
 
 import { FILE, STEP } from '../utils/constants';
-import diff from '../utils/data/diff.json';
-import tuture from '../utils/data/converted-tuture.json';
 
 function flatten(steps) {
   return steps.flatMap(({ commit, id, children }) => [
@@ -64,21 +62,19 @@ function getHeadings(nodes) {
 
 const collection = {
   state: {
-    diff,
-    collection: tuture,
-    nowArticleId: tuture.articles[0].id,
-    nowStepCommit: '372a021',
+    collection: null,
+    nowArticleId: null,
+    nowStepCommit: null,
+    lastSaved: null,
+    saveFailed: false,
     editArticleId: '',
   },
   reducers: {
     setCollectionData(state, payload) {
-      state.diff = payload.diff;
-      state.collection = { ...state.collection, ...payload.tuture };
-      state.nowStepCommit = payload.tuture.steps[0].commit;
+      state.collection = payload;
 
-      if (state.collection.articles?.length > 0) {
-        state.nowArticleId = state.collection.articles[0].id;
-        state.nowStepCommit = state.collection.articles[0].commits.slice(-1)[0];
+      if (payload.articles?.length > 0 && !state.nowArticleId) {
+        state.nowArticleId = payload.articles[0].id;
       }
 
       return state;
@@ -126,21 +122,6 @@ const collection = {
       } else {
         state.collection.description = payload;
       }
-
-      return state;
-    },
-    setStepTitle(state, payload) {
-      const { commit, value } = payload;
-
-      state.collection.steps = state.collection.steps.map((step) => {
-        if (step.commit === commit) {
-          step.name = value;
-
-          return step;
-        }
-
-        return step;
-      });
 
       return state;
     },
@@ -284,6 +265,14 @@ const collection = {
 
       return state;
     },
+    setLastSaved(state, payload) {
+      state.lastSaved = payload;
+      return state;
+    },
+    setSaveFailed(state, payload) {
+      state.saveFailed = payload;
+      return state;
+    },
   },
   effects: (dispatch) => ({
     async editArticle() {
@@ -298,11 +287,69 @@ const collection = {
       message.success('保存成功');
       dispatch.drawer.setVisible(false);
     },
+    async fetchCollection() {
+      try {
+        const response = await fetch('/collection');
+        const data = await response.json();
+
+        dispatch.collection.setCollectionData(data);
+      } catch {
+        message.error('获取数据失败！');
+      }
+    },
+    async saveCollection(payload, rootState) {
+      try {
+        const response = await fetch('/save', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+          },
+          body: JSON.stringify(rootState.collection.collection),
+        });
+
+        if (response.ok) {
+          dispatch.collection.setLastSaved(new Date());
+          dispatch.collection.setSaveFailed(false);
+          if (payload?.showMessage) {
+            message.success('保存内容成功！');
+          }
+        } else {
+          dispatch.collection.setSaveFailed(true);
+        }
+      } catch (err) {
+        dispatch.collection.setSaveFailed(true);
+      }
+    },
+    async commit(payload) {
+      const response = await fetch('/commit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify({
+          message: payload,
+        }),
+      });
+
+      if (response.ok) {
+        message.success('提交成功！');
+      } else {
+        message.error('提交失败！');
+      }
+
+      dispatch.commit.reset();
+    },
   }),
   selectors: (slice, createSelector, hasProps) => ({
     nowArticleMeta: hasProps((__, props) => {
       return slice((collectionModel) => {
         const { nowArticleId } = props;
+        if (!collectionModel.collection) {
+          return null;
+        }
+
         const {
           collection: { articles, name, description, tags, cover },
         } = collectionModel;
@@ -316,6 +363,10 @@ const collection = {
     }),
     nowArticleContent() {
       return slice((collectionModel) => {
+        if (!collectionModel.collection) {
+          return [{ type: F.PARAGRAPH, children: [{ text: '' }] }];
+        }
+
         const {
           collection: { articles, steps },
           nowArticleId,
@@ -335,6 +386,10 @@ const collection = {
     },
     nowArticleCatalogue() {
       return slice((collectionModel) => {
+        if (!collectionModel.collection) {
+          return [];
+        }
+
         const {
           collection: { articles, steps },
           nowArticleId,
@@ -369,8 +424,22 @@ const collection = {
             .diff.filter((diffItem) => diffItem.to === props.file)[0],
       );
     }),
+    nowStepCommit() {
+      return slice((collectionModel) => {
+        if (!collectionModel.collection) {
+          return null;
+        }
+
+        const { articles, steps } = collectionModel.collection;
+        return articles?.length > 0 ? articles[0].commits[0] : steps[0].commit;
+      });
+    },
     getStepFileListAndTitle: hasProps((__, props) => {
       return slice((collectionModel) => {
+        if (!collectionModel.collection) {
+          return { fileList: [], title: '' };
+        }
+
         const { commit } = props;
         const nowStep = collectionModel.collection.steps.filter(
           (step) => step.commit === commit,
@@ -393,6 +462,10 @@ const collection = {
     }),
     getCollectionCatalogue() {
       return slice((collectionModel) => {
+        if (!collectionModel.collection) {
+          return [];
+        }
+
         const getCommitName = (commit) => {
           const steps = collectionModel.collection.steps.filter(
             (step) => step.commit === commit,
