@@ -33,7 +33,7 @@ function CollectionSetting(props) {
   const initialName = nowArticleMeta?.name || '';
   const initialDescription = nowArticleMeta?.description || '';
   const coverProps = {
-    action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
+    action: 'http://localhost:3000/upload',
     listType: 'picture',
     defaultFileList: [],
   };
@@ -63,8 +63,9 @@ function CollectionSetting(props) {
         if (cover) {
           const url =
             Array.isArray(cover?.fileList) && cover?.fileList.length > 0
-              ? cover?.fileList[0].url
+              ? cover?.fileList[0].url || cover?.fileList[0].response.path
               : '';
+
           res = { ...res, cover: url };
         }
 

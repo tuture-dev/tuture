@@ -6,7 +6,7 @@ export const uploadImage = (file, callback) => {
   const data = new FormData();
   data.append('file', file);
 
-  fetch('/upload', {
+  fetch('http://localhost:3000/upload', {
     method: 'POST',
     body: data,
     headers: {

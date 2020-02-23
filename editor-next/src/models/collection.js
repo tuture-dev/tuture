@@ -83,7 +83,7 @@ const collection = {
       state.nowArticleId = payload;
 
       // May set nowArticleId to null
-      if (payload) {
+      if (payload && state.collection) {
         state.nowStepCommit = state.collection.articles
           .filter((article) => article.id === payload)[0]
           .commits.slice(-1)[0];
