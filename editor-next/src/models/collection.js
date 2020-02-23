@@ -85,9 +85,13 @@ const collection = {
     },
     setNowArticle(state, payload) {
       state.nowArticleId = payload;
-      state.nowStepCommit = state.collection.articles
-        .filter((article) => article.id === payload)[0]
-        .commits.slice(-1)[0];
+
+      // May set nowArticleId to null
+      if (payload) {
+        state.nowStepCommit = state.collection.articles
+          .filter((article) => article.id === payload)[0]
+          .commits.slice(-1)[0];
+      }
 
       return state;
     },
@@ -270,6 +274,13 @@ const collection = {
     },
     editCollection(state, payload) {
       state.collection = { ...state.collection, ...payload };
+
+      return state;
+    },
+    deleteArticle(state, payload) {
+      state.collection.articles = state.collection.articles.filter(
+        (article) => article.id !== payload,
+      );
 
       return state;
     },

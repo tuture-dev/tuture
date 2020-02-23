@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Drawer, Affix } from 'antd';
+import { Drawer } from 'antd';
 
 import {
   COLLECTION_CATALOGUE,
@@ -8,7 +8,6 @@ import {
   CONTACT_US,
 } from '../utils/constants';
 
-import ChildrenDrawerComponent from './ChildrenDrawerComponent';
 import CollectionCatalogue from './CollectionCatalogue';
 import CollectionSetting from './CollectionSetting';
 import ContactUs from './ContactUs';
@@ -53,9 +52,6 @@ function DrawerComponent() {
       zIndex={11}
       style={{ marginLeft: '80px' }}
     >
-      <Affix>
-        <ChildrenDrawerComponent />
-      </Affix>
       {RenderComponent}
     </Drawer>
   );

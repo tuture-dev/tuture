@@ -41,7 +41,7 @@ function LayoutHeader() {
             margin-left: 20px;
           `}
         >
-          发布
+          同步
         </Button>
       </Col>
     </Row>

@@ -11,6 +11,7 @@ import { css, jsx } from '@emotion/core';
 import { updateLastSelection } from 'editure';
 import LayoutHeader from './LayoutHeader';
 import DrawerComponent from './DrawerComponent';
+import ChildrenDrawerComponent from './ChildrenDrawerComponent';
 import {
   COLLECTION_CATALOGUE,
   COLLECTION_SETTING,
@@ -89,6 +90,9 @@ function ConnectedLayout(props) {
       <Slate editor={editor} value={value} onChange={onContentChange}>
         <Affix>
           <DrawerComponent />
+        </Affix>
+        <Affix>
+          <ChildrenDrawerComponent />
         </Affix>
         <Layout>
           <Affix style={{ zIndex: 13 }}>

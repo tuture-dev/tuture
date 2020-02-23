@@ -1,6 +1,17 @@
 import React, { useState } from 'react';
-import { Form, Input, Icon, Button, Select, Transfer, Upload } from 'antd';
+import {
+  Form,
+  Input,
+  Icon,
+  Button,
+  Select,
+  Transfer,
+  Upload,
+  Divider,
+  Modal,
+} from 'antd';
 import { useDispatch, useSelector, useStore } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
@@ -8,6 +19,7 @@ import { css, jsx } from '@emotion/core';
 import { EDIT_ARTICLE } from '../utils/constants';
 
 const { Option } = Select;
+const { confirm } = Modal;
 
 function makeSelectableCommits(commits = [], targetCommits) {
   const selectableCommits = commits.map((commit) => ({
@@ -44,17 +56,46 @@ function getRelasedCommits(initialTargetKeys, nowTargetKeys, allCommits) {
   return getCommitsFromKeys(releasedCommitKeys, allCommits);
 }
 
+function showDeleteConfirm(name, dispatch, articleId, nowArticleId, history) {
+  confirm({
+    title: `确定要删除 ${name}`,
+    okText: '确定',
+    okType: 'danger',
+    cancelText: '取消',
+    onOk() {
+      dispatch.drawer.setChildrenVisible(false);
+
+      // If nowEditArticle is nowSelectedArticle, then need re-select nowArticle
+      // and jump to the first article or collection page
+      if (articleId === nowArticleId) {
+        dispatch.collection.setNowArticle('');
+
+        history.push('/');
+      }
+      dispatch.collection.deleteArticle(articleId);
+    },
+    onCancel() {
+      console.log('取消');
+    },
+  });
+}
+
 function CreateEditArticle(props) {
   const store = useStore();
   const dispatch = useDispatch();
   const [selectedKeys, setSelectedKeys] = useState([]);
   const [fileList, setFileList] = useState([]);
 
+  // get router history && first article id for delete jump
+  const history = useHistory();
+
   // submit status
   const loading = useSelector((state) => state.loading.models.collection);
 
   // get editArticle Commits
-  const { editArticleId } = useSelector((state) => state.collection);
+  const { editArticleId, nowArticleId } = useSelector(
+    (state) => state.collection,
+  );
   const nowArticleCommits = useSelector(
     store.select.collection.getNowArticleCommits({
       nowArticleId: editArticleId,
@@ -329,6 +370,45 @@ function CreateEditArticle(props) {
           </div>
         </Form.Item>
       </Form>
+      {props.childrenDrawerType === EDIT_ARTICLE && (
+        <>
+          <Divider />
+          <div
+            onClick={() =>
+              showDeleteConfirm(
+                nowArticleMeta.name,
+                dispatch,
+                editArticleId,
+                nowArticleId,
+                history,
+              )
+            }
+            css={css`
+              &:hover span,
+              &:hover svg {
+                color: #02b875;
+                cursor: pointer;
+              }
+            `}
+          >
+            <Icon type="delete" />
+
+            <span
+              css={css`
+                margin-left: 8px;
+                font-size: 14px;
+                font-family: PingFangSC-Medium, PingFang SC;
+                font-weight: 500;
+                color: rgba(0, 0, 0, 1);
+                line-height: 22px;
+              `}
+            >
+              删除此文章
+            </span>
+          </div>
+        </>
+      )}
+      <Modal />
     </div>
   );
 }
