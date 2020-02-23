@@ -1,5 +1,6 @@
 import * as F from 'editure-constants';
 import shortid from 'shortid';
+import { message } from 'antd';
 
 import { FILE, STEP } from '../utils/constants';
 import diff from '../utils/data/diff.json';
@@ -214,10 +215,10 @@ const collection = {
       return state;
     },
     editArticle(state, payload) {
-      const { nowArticleId } = state;
+      const { editArticleId } = state;
 
       state.collection.articles = state.collection.articles.map((article) => {
-        if (article.id === nowArticleId) {
+        if (article.id === editArticleId) {
           article = { ...article, ...payload };
         }
 
@@ -254,7 +255,30 @@ const collection = {
 
       return state;
     },
+    releaseCommits(state, payload) {
+      const needReleasedCommits = payload;
+
+      state.collection.steps = state.collection.steps.map((step) => {
+        if (needReleasedCommits.includes(step.commit)) {
+          step.isSelected = false;
+        }
+
+        return step;
+      });
+
+      return state;
+    },
   },
+  effects: (dispatch) => ({
+    async editArticle() {
+      message.success('保存成功');
+      dispatch.drawer.setChildrenVisible(false);
+    },
+    async createArticle() {
+      message.success('创建成功');
+      dispatch.drawer.setChildrenVisible(false);
+    },
+  }),
   selectors: (slice, createSelector, hasProps) => ({
     nowArticleMeta: hasProps((__, props) => {
       return slice((collectionModel) => {
@@ -392,6 +416,10 @@ const collection = {
         const article = articles.filter(
           (elem) => elem.id.toString() === nowArticleId.toString(),
         )[0];
+
+        if (!article) {
+          return [];
+        }
 
         let nowArticleSteps = [];
 

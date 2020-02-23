@@ -36,11 +36,22 @@ function getCommitsFromKeys(keys, commits) {
   return targetCommits;
 }
 
+function getRelasedCommits(initialTargetKeys, nowTargetKeys, allCommits) {
+  const releasedCommitKeys = initialTargetKeys.filter(
+    (commit) => !nowTargetKeys.includes(commit),
+  );
+
+  return getCommitsFromKeys(releasedCommitKeys, allCommits);
+}
+
 function CreateEditArticle(props) {
   const store = useStore();
   const dispatch = useDispatch();
   const [selectedKeys, setSelectedKeys] = useState([]);
   const [fileList, setFileList] = useState([]);
+
+  // submit status
+  const loading = useSelector((state) => state.loading.models.collection);
 
   // get editArticle Commits
   const { editArticleId } = useSelector((state) => state.collection);
@@ -98,6 +109,7 @@ function CreateEditArticle(props) {
 
   function handleSubmit(e) {
     e.preventDefault();
+
     props.form.validateFields((err, values) => {
       if (!err) {
         console.log('Received values of form: ', values);
@@ -123,7 +135,18 @@ function CreateEditArticle(props) {
         }
 
         if (props.childrenDrawerType === EDIT_ARTICLE) {
+          // If is EDIT_ARTICLE and release some commits, should set isSelected false back
+          const relasedCommits = getRelasedCommits(
+            initialTargetKeys,
+            commits,
+            allCommits,
+          );
+
           dispatch.collection.editArticle(res);
+
+          if (relasedCommits) {
+            dispatch.collection.releaseCommits(relasedCommits);
+          }
         } else {
           dispatch.collection.createArticle(res);
         }
@@ -300,7 +323,7 @@ function CreateEditArticle(props) {
             >
               取消
             </Button>
-            <Button htmlType="submit" type="primary">
+            <Button htmlType="submit" type="primary" loading={loading}>
               确认
             </Button>
           </div>

@@ -45,7 +45,6 @@ function CollectionCatalogue() {
     (state) => state.drawer,
   );
   const [selectItem, setSelectItem] = useState('');
-  const [selectAddNewPage, setSelectAddNewPage] = useState(false);
 
   const store = useStore();
   const dispatch = useDispatch();
@@ -144,10 +143,11 @@ function CollectionCatalogue() {
             css={css`
               ${listItemStyle}
 
-              background: ${selectAddNewPage ? '#FFF' : 'transparent'};
+              &: hover {
+                background: #fff;
+              }
             `}
             onClick={(e) => {
-              setSelectAddNewPage(!selectAddNewPage);
               onToggleChildrenDrawer(e, CREATE_ARTICLE);
             }}
           >
