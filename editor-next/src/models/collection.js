@@ -448,7 +448,7 @@ const collection = {
         if (nowStep) {
           const fileList = nowStep.children
             .filter(({ type }) => type === FILE)
-            .map(({ file, display = true }) => ({ file, display }));
+            .map(({ file, display = false }) => ({ file, display }));
           return {
             fileList,
             title: getHeadings([nowStep])
