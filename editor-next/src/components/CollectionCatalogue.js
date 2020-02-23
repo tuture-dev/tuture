@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useSelector, useDispatch, useStore } from 'react-redux';
 import { Divider } from 'antd';
 import { Link } from 'react-router-dom';

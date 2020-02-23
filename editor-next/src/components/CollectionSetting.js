@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Form, Input, Icon, Button, Select, Upload } from 'antd';
 import { useDispatch, useSelector, useStore } from 'react-redux';
 

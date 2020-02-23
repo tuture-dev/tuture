@@ -1,4 +1,3 @@
-import React from 'react';
 import { useSelected, useFocused } from 'slate-react';
 
 /** @jsx jsx */

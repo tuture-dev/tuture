@@ -1,4 +1,3 @@
-import React from 'react';
 import { BULLETED_LIST } from 'editure-constants';
 
 /** @jsx jsx */

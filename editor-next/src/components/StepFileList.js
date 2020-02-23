@@ -1,5 +1,3 @@
-import React from 'react';
-
 /** @jsx jsx */
 import { css, jsx, Global } from '@emotion/core';
 import { useSelector, useStore, useDispatch } from 'react-redux';

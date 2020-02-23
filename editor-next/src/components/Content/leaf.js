@@ -1,4 +1,3 @@
-import React from 'react';
 import { useDispatch } from 'react-redux';
 import { useSlate } from 'slate-react';
 import { Popover, Popconfirm, Tooltip } from 'antd';

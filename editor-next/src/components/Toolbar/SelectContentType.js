@@ -1,4 +1,3 @@
-import React from 'react';
 import { Select } from 'antd';
 import { useSlate } from 'slate-react';
 import { toggleBlock, detectBlockFormat } from 'editure';

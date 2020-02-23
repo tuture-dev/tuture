@@ -1,4 +1,3 @@
-import React from 'react';
 import { Anchor, Divider } from 'antd';
 import { useDispatch, useSelector, useStore } from 'react-redux';
 

@@ -525,7 +525,7 @@ const collection = {
 
         let nowArticleSteps = [];
 
-        steps.map((step, index) => {
+        steps.forEach((step, index) => {
           if (article.commits.includes(step.commit)) {
             nowArticleSteps.push({ ...step, key: index });
           }
