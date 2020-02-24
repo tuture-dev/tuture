@@ -1,4 +1,5 @@
 *.md
+*.html
 *.json
 .github
 build

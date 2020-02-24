@@ -74,9 +74,6 @@ function showDeleteConfirm(name, dispatch, articleId, nowArticleId, history) {
       }
       dispatch.collection.deleteArticle(articleId);
     },
-    onCancel() {
-      console.log('取消');
-    },
   });
 }
 
@@ -107,8 +104,6 @@ function CreateEditArticle(props) {
       ? makeTargetKeys(nowArticleCommits)
       : [];
 
-  console.log('initialTargetKeys', initialTargetKeys);
-
   // get all commit
 
   const allCommits = useSelector(store.select.collection.getAllCommits);
@@ -120,28 +115,25 @@ function CreateEditArticle(props) {
   const [targetKeys, setTargetKeys] = useState(initialTargetKeys || []);
 
   // get nowArticle Meta
-  const articleData = useSelector(
-    store.select.collection.nowArticleMeta({ nowArticleId: editArticleId }),
+  const meta = useSelector(
+    store.select.collection.getArticleMetaById({ id: editArticleId }),
   );
-  const nowArticleMeta =
-    props.childrenDrawerType === EDIT_ARTICLE ? articleData : {};
+  const articleMeta = props.childrenDrawerType === EDIT_ARTICLE ? meta : {};
 
-  console.log('props', props, nowArticleMeta);
-
-  const initialTags = nowArticleMeta?.tags || [];
-  const initialCover = nowArticleMeta?.cover
+  const initialTags = articleMeta?.tags || [];
+  const initialCover = articleMeta?.cover
     ? [
         {
-          url: nowArticleMeta?.cover,
+          url: articleMeta?.cover,
           uid: '-1',
           name: 'tuture.jpg',
           status: 'done',
         },
       ]
     : [];
-  const initialName = nowArticleMeta?.name || '';
+  const initialName = articleMeta?.name || '';
   const coverProps = {
-    action: 'http://localhost:3000/upload',
+    action: '/upload',
     listType: 'picture',
     defaultFileList: [],
   };
@@ -153,7 +145,6 @@ function CreateEditArticle(props) {
 
     props.form.validateFields((err, values) => {
       if (!err) {
-        console.log('Received values of form: ', values);
         const { cover, name, tags, commits } = values;
 
         const targetCommits = getCommitsFromKeys(commits, allCommits);
@@ -195,7 +186,7 @@ function CreateEditArticle(props) {
     });
   }
 
-  function handleTargetChange(nextTargetKeys, direction, moveKeys) {
+  function handleTargetChange(nextTargetKeys) {
     const sortedNextTargetKeys = nextTargetKeys.sort((prev, post) => {
       if (prev > post) {
         return 1;
@@ -208,23 +199,14 @@ function CreateEditArticle(props) {
       return 0;
     });
 
-    console.log('sortedNextTargetKeys', sortedNextTargetKeys);
-
     setFieldsValue({
       commits: sortedNextTargetKeys,
     });
     setTargetKeys(sortedNextTargetKeys);
-
-    console.log('targetKeys: ', nextTargetKeys);
-    console.log('direction: ', direction);
-    console.log('moveKeys: ', moveKeys);
   }
 
   function handleSelectChange(sourceSelectedKeys, targetSelectedKeys) {
     setSelectedKeys([...sourceSelectedKeys, ...targetSelectedKeys]);
-
-    console.log('sourceSelectedKeys: ', sourceSelectedKeys);
-    console.log('targetSelectedKeys: ', targetSelectedKeys);
   }
 
   function filterOption(inputValue, option) {
@@ -254,12 +236,8 @@ function CreateEditArticle(props) {
   }
 
   function handleTagsChange(tags) {
-    setFieldsValue({
-      tags,
-    });
+    setFieldsValue({ tags });
   }
-
-  console.log('value');
 
   return (
     <div
@@ -376,7 +354,7 @@ function CreateEditArticle(props) {
           <div
             onClick={() =>
               showDeleteConfirm(
-                nowArticleMeta.name,
+                articleMeta.name,
                 dispatch,
                 editArticleId,
                 nowArticleId,

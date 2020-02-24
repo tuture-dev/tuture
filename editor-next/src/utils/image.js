@@ -6,7 +6,7 @@ export const uploadImage = (file, callback) => {
   const data = new FormData();
   data.append('file', file);
 
-  fetch('http://localhost:3000/upload', {
+  fetch('/upload', {
     method: 'POST',
     body: data,
     headers: {
@@ -19,8 +19,6 @@ export const uploadImage = (file, callback) => {
 };
 
 export const createInsertImageCallback = (editor) => (err, url) => {
-  console.log('err', err);
-  console.log('url', url);
   if (err) return message.error('图片上传失败！');
   insertVoid(editor, IMAGE, { url });
 };

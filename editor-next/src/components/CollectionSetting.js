@@ -17,23 +17,23 @@ function CollectionSetting(props) {
   const loading = useSelector((state) => state.loading.models.collection);
 
   // get nowArticle Meta
-  const nowArticleMeta = useSelector(store.select.collection.collectionMeta);
+  const collectionMeta = useSelector(store.select.collection.collectionMeta);
 
-  const initialTags = nowArticleMeta?.tags || [];
-  const initialCover = nowArticleMeta?.cover
+  const initialTags = collectionMeta?.tags || [];
+  const initialCover = collectionMeta?.cover
     ? [
         {
-          url: nowArticleMeta?.cover,
+          url: collectionMeta?.cover,
           uid: '-1',
           name: 'tuture.jpg',
           status: 'done',
         },
       ]
     : [];
-  const initialName = nowArticleMeta?.name || '';
-  const initialDescription = nowArticleMeta?.description || '';
+  const initialName = collectionMeta?.name || '';
+  const initialDescription = collectionMeta?.description || '';
   const coverProps = {
-    action: 'http://localhost:3000/upload',
+    action: '/upload',
     listType: 'picture',
     defaultFileList: [],
   };
@@ -45,7 +45,6 @@ function CollectionSetting(props) {
 
     props.form.validateFields((err, values) => {
       if (!err) {
-        console.log('Received values of form: ', values);
         const { cover, name, tags, description } = values;
 
         let res = {

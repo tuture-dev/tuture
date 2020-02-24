@@ -2,67 +2,17 @@ import { message } from 'antd';
 import * as F from 'editure-constants';
 import shortid from 'shortid';
 
-import { FILE, STEP } from '../utils/constants';
-
-function flatten(steps) {
-  return steps.flatMap(({ commit, id, children }) => [
-    { commit, id, type: STEP, children: [{ text: '' }] },
-    ...children.flatMap((node) => {
-      if (node.type === FILE && node.display) {
-        const { file } = node;
-        return [
-          { file, type: FILE, children: [{ text: '' }] },
-          ...node.children,
-        ];
-      }
-      return node;
-    }),
-  ]);
-}
-
-function unflatten(fragment) {
-  const steps = [{ ...fragment[0], children: [] }];
-
-  for (let i = 1; i < fragment.length; i++) {
-    const node = fragment[i];
-    if (node.type === STEP) {
-      steps.push({ ...node, children: [] });
-    } else if (node.type === FILE && node.display) {
-      steps
-        .slice(-1)[0]
-        .children.push({ ...node, children: fragment.slice(i + 1, i + 4) });
-      i += 3;
-    } else {
-      steps.slice(-1)[0].children.push(node);
-    }
-  }
-
-  return steps;
-}
-
-function isHeading(node) {
-  return [F.H1, F.H2, F.H3, F.H4, F.H5].includes(node.type);
-}
-
-function getHeadingText(node) {
-  return node.children.map((child) => child.text).join('');
-}
-
-function getHeadings(nodes) {
-  return nodes.flatMap((node) => {
-    if (isHeading(node)) {
-      return { ...node, title: getHeadingText(node) };
-    }
-    if (node.children) {
-      return getHeadings(node.children);
-    }
-    return [];
-  });
-}
+import { FILE } from '../utils/constants';
+import { flatten, unflatten, getHeadings } from '../utils/collection';
 
 const collection = {
   state: {
-    collection: null,
+    collection: {
+      name: null,
+      id: null,
+      articles: [],
+      steps: [],
+    },
     nowArticleId: null,
     nowStepCommit: null,
     lastSaved: null,
@@ -128,19 +78,18 @@ const collection = {
     setDiffItemHiddenLines(state, payload) {
       const { file, commit, hiddenLines } = payload;
 
-      state.collection.steps = state.collection.steps.map((step) => {
+      for (const step of state.collection.steps) {
         if (step.commit === commit) {
-          step.children = step.children.map((diffFile) => {
-            if (diffFile.file === file) {
-              diffFile.hiddenLines = hiddenLines;
+          for (const childNode of step.children) {
+            if (childNode.type === FILE && childNode.file === file) {
+              childNode.children[1].hiddenLines = hiddenLines;
+              break;
             }
+          }
 
-            return diffFile;
-          });
+          break;
         }
-
-        return step;
-      });
+      }
 
       return state;
     },
@@ -343,24 +292,26 @@ const collection = {
     },
   }),
   selectors: (slice, createSelector, hasProps) => ({
-    nowArticleMeta: hasProps((__, props) => {
+    nowArticleMeta() {
       return slice((collectionModel) => {
-        const { nowArticleId } = props;
         if (!collectionModel.collection) {
-          return null;
+          return {};
         }
 
         const {
-          collection: { articles, name, description, tags, cover },
+          collection: { articles },
+          nowArticleId,
         } = collectionModel;
 
         if (nowArticleId) {
-          return articles.filter((elem) => elem.id === nowArticleId)[0];
+          return articles.filter(
+            (elem) => elem.id.toString() === nowArticleId.toString(),
+          )[0];
         }
 
-        return { name, description, tags, cover };
+        return {};
       });
-    }),
+    },
     nowArticleContent() {
       return slice((collectionModel) => {
         if (!collectionModel.collection) {
@@ -407,23 +358,6 @@ const collection = {
         return getHeadings(steps);
       });
     },
-    collectionMeta() {
-      return slice((collectionModel) => {
-        const {
-          collection: { name, cover, description, tags },
-        } = collectionModel;
-
-        return { name, cover, description, tags };
-      });
-    },
-    getDiffItemByCommitAndFile: hasProps((__, props) => {
-      return slice(
-        (collectionModel) =>
-          collectionModel.diff
-            .filter((diffItem) => diffItem.commit === props.commit)[0]
-            .diff.filter((diffItem) => diffItem.to === props.file)[0],
-      );
-    }),
     nowStepCommit() {
       return slice((collectionModel) => {
         if (!collectionModel.collection) {
@@ -434,6 +368,41 @@ const collection = {
         return articles?.length > 0 ? articles[0].commits[0] : steps[0].commit;
       });
     },
+    collectionMeta() {
+      return slice((collectionModel) => {
+        const {
+          collection: { name, cover, description, tags },
+        } = collectionModel;
+
+        return { name, cover, description, tags };
+      });
+    },
+    getArticleMetaById: hasProps((__, props) => {
+      return slice((collectionModel) => {
+        const { id } = props;
+        if (!collectionModel.collection) {
+          return {};
+        }
+
+        const {
+          collection: { articles, name, description, tags, cover },
+        } = collectionModel;
+
+        if (id) {
+          return articles.filter((elem) => elem.id === id)[0];
+        }
+
+        return { name, description, tags, cover };
+      });
+    }),
+    getDiffItemByCommitAndFile: hasProps((__, props) => {
+      return slice(
+        (collectionModel) =>
+          collectionModel.diff
+            .filter((diffItem) => diffItem.commit === props.commit)[0]
+            .diff.filter((diffItem) => diffItem.to === props.file)[0],
+      );
+    }),
     getStepFileListAndTitle: hasProps((__, props) => {
       return slice((collectionModel) => {
         if (!collectionModel.collection) {
@@ -449,12 +418,9 @@ const collection = {
           const fileList = nowStep.children
             .filter(({ type }) => type === FILE)
             .map(({ file, display = false }) => ({ file, display }));
-          return {
-            fileList,
-            title: getHeadings([nowStep])
-              .flat(5)
-              .filter((node) => node.commit)[0].title,
-          };
+          const title = getHeadings([nowStep]).filter((node) => node.commit)[0]
+            .title;
+          return { fileList, title };
         }
 
         return { fileList: [], title: '' };
