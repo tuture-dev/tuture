@@ -38,6 +38,9 @@ function ConnectedLayout(props) {
   );
 
   const store = useStore();
+  const { name: pageTitle } = useSelector(
+    store.select.collection.nowArticleMeta,
+  );
   const value = useSelector(store.select.collection.nowArticleContent);
 
   const dispatch = useDispatch();
@@ -46,6 +49,12 @@ function ConnectedLayout(props) {
     dispatch.diff.fetchDiff();
     dispatch.collection.fetchCollection();
   }, [dispatch]);
+
+  useEffect(() => {
+    if (pageTitle) {
+      document.title = pageTitle;
+    }
+  }, [pageTitle]);
 
   useEffect(() => {
     const saveInterval = setInterval(() => {
