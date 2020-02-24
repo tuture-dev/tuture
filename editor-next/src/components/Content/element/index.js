@@ -3,7 +3,6 @@ import * as F from 'editure-constants';
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 
-import FileElement from './File';
 import ExplainElement from './Explain';
 import NoteElement from './Note';
 import ImageElement from './Image';
@@ -90,7 +89,7 @@ export default (props) => {
     case STEP:
       return null;
     case FILE:
-      return element.display ? <FileElement {...props} /> : null;
+      return null;
     case EXPLAIN:
       return <ExplainElement {...props} />;
     case DIFF_BLOCK:

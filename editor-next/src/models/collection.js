@@ -9,9 +9,9 @@ function flatten(steps) {
     { commit, id, type: STEP, children: [{ text: '' }] },
     ...children.flatMap((node) => {
       if (node.type === FILE && node.display) {
-        const { file } = node;
+        const { file, display } = node;
         return [
-          { file, type: FILE, children: [{ text: '' }] },
+          { file, display, type: FILE, children: [{ text: '' }] },
           ...node.children,
         ];
       }
@@ -128,19 +128,18 @@ const collection = {
     setDiffItemHiddenLines(state, payload) {
       const { file, commit, hiddenLines } = payload;
 
-      state.collection.steps = state.collection.steps.map((step) => {
+      for (const step of state.collection.steps) {
         if (step.commit === commit) {
-          step.children = step.children.map((diffFile) => {
-            if (diffFile.file === file) {
-              diffFile.hiddenLines = hiddenLines;
+          for (const childNode of step.children) {
+            if (childNode.type === FILE && childNode.file === file) {
+              childNode.children[1].hiddenLines = hiddenLines;
+              break;
             }
+          }
 
-            return diffFile;
-          });
+          break;
         }
-
-        return step;
-      });
+      }
 
       return state;
     },
@@ -449,12 +448,9 @@ const collection = {
           const fileList = nowStep.children
             .filter(({ type }) => type === FILE)
             .map(({ file, display = false }) => ({ file, display }));
-          return {
-            fileList,
-            title: getHeadings([nowStep])
-              .flat(5)
-              .filter((node) => node.commit)[0].title,
-          };
+          const title = getHeadings([nowStep]).filter((node) => node.commit)[0]
+            .title;
+          return { fileList, title };
         }
 
         return { fileList: [], title: '' };
