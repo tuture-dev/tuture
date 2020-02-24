@@ -1,8 +1,22 @@
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
+import { Node } from 'slate';
+
+const emptyChildrenStyles = css`
+  border: 1px solid #ddd;
+  position: relative;
+
+  &::before {
+    content: '写一点解释...';
+    position: absolute;
+    bottom: 4px;
+    color: #bfbfbf;
+  }
+`;
 
 function ExplainElement(props) {
-  const { attributes, children } = props;
+  const { attributes, children, element } = props;
+  const explainStr = Node.string(element);
 
   return (
     <div
@@ -15,6 +29,8 @@ function ExplainElement(props) {
         &:hover {
           border: 1px solid #ddd;
         }
+
+        ${!explainStr && emptyChildrenStyles}
       `}
     >
       {children}
