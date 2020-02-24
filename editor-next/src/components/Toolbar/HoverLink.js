@@ -2,10 +2,12 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import ReactDOM from 'react-dom';
 import { Icon } from 'antd';
-import { css } from 'emotion';
 import { useSlate } from 'slate-react';
 import { LINK } from 'editure-constants';
 import { isMarkActive, removeLink, getLinkData } from 'editure';
+
+/** @jsx jsx */
+import { css, jsx } from '@emotion/core';
 
 const Portal = ({ children }) => ReactDOM.createPortal(children, document.body);
 
@@ -49,11 +51,11 @@ const HoverLink = () => {
     const el = ref.current;
     el.removeAttribute('style');
 
-    dispatch.link.startEdit();
+    dispatch({ type: 'link/startEdit' });
 
     const { text, url } = getLinkData(editor);
-    if (text) dispatch.link.setText(text);
-    if (url) dispatch.link.setUrl(url);
+    if (text) dispatch({ type: 'link/setText', payload: text });
+    if (url) dispatch({ type: 'link/setUrl', payload: url });
   };
 
   const onDeleteLink = (e) => {
@@ -65,7 +67,7 @@ const HoverLink = () => {
     <Portal>
       <div
         ref={ref}
-        className={css`
+        css={css`
           padding: 8px 7px 6px;
           position: absolute;
           z-index: 1;

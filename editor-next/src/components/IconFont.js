@@ -1,4 +1,3 @@
-import React from 'react';
 import { Icon } from 'antd';
 
 const IconFont = Icon.createFromIconfontCN({

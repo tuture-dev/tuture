@@ -1,6 +1,8 @@
-import React, { useContext } from 'react';
+import { useContext } from 'react';
 import { useSlate } from 'slate-react';
-import { css } from 'emotion';
+
+/** @jsx jsx */
+import { css, jsx } from '@emotion/core';
 
 import Button from './Button';
 import ToolbarIcon from './ToolbarIcon';
@@ -28,7 +30,7 @@ const ImageButton = () => {
         type="file"
         ref={ref}
         onChange={onChange}
-        className={css`
+        css={css`
           position: absolute;
           z-index: -1;
           left: 0;

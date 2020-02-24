@@ -1,301 +1,203 @@
-import React, {
-  useState,
-  createRef,
-  forwardRef,
-  useImperativeHandle,
-} from 'react';
-import ReactCrop from 'react-image-crop';
-import 'react-image-crop/dist/ReactCrop.css';
-import { Form, Upload, Icon, Modal, Input, Select, Button } from 'antd';
+import { useState } from 'react';
+import { Form, Input, Icon, Button, Select, Upload } from 'antd';
+import { useDispatch, useSelector, useStore } from 'react-redux';
+
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 
-const getBase64 = (img, callback) => {
-  const reader = new FileReader();
-  reader.addEventListener('load', () => callback(reader.result));
-  reader.readAsDataURL(img);
-};
+const { Option } = Select;
+const { TextArea } = Input;
 
-const FCForm = forwardRef(({ form }, ref) => {
-  useImperativeHandle(ref, () => ({
-    form,
-  }));
+function CollectionSetting(props) {
+  const store = useStore();
+  const dispatch = useDispatch();
+  const [fileList, setFileList] = useState([]);
 
-  const { getFieldDecorator } = form;
+  // submit status
+  const loading = useSelector((state) => state.loading.models.collection);
 
-  const [imageUrl, setImageUrl] = useState();
-  const [visible, setVisible] = useState(false);
-  const [src, setSrc] = useState(null);
-  const [crop, setCrop] = useState({
-    unit: '%',
-    width: 40,
-    aspect: 100 / 67,
-  });
-  const [imageRef, setImageRef] = useState();
-  const [croppedImageUrl, setCroppedImageUrl] = useState();
+  // get nowArticle Meta
+  const nowArticleMeta = useSelector(store.select.collection.collectionMeta);
 
-  const handleChange = (info) => {
-    //Get this url from response in real world.
-    getBase64(
-      info.file.originFileObj,
-      (imageUrl) => setImageUrl(imageUrl),
-      setVisible(true),
-    );
+  const initialTags = nowArticleMeta?.tags || [];
+  const initialCover = nowArticleMeta?.cover
+    ? [
+        {
+          url: nowArticleMeta?.cover,
+          uid: '-1',
+          name: 'tuture.jpg',
+          status: 'done',
+        },
+      ]
+    : [];
+  const initialName = nowArticleMeta?.name || '';
+  const initialDescription = nowArticleMeta?.description || '';
+  const coverProps = {
+    action: 'http://localhost:3000/upload',
+    listType: 'picture',
+    defaultFileList: [],
   };
 
-  // If you setState the crop in here you should return false.
-  const onImageLoaded = (image) => {
-    setImageRef(image);
-  };
+  const { getFieldDecorator, setFieldsValue, getFieldValue } = props.form;
 
-  const onCropComplete = (crop) => {
-    makeClientCrop(crop);
-  };
+  function handleSubmit(e) {
+    e.preventDefault();
 
-  const onCropChange = (crop) => {
-    // You could also use percentCrop:
-    // this.setState({ crop: percentCrop });
-    setCrop(crop);
-  };
+    props.form.validateFields((err, values) => {
+      if (!err) {
+        console.log('Received values of form: ', values);
+        const { cover, name, tags, description } = values;
 
-  const makeClientCrop = async (crop) => {
-    if (imageRef && crop.width && crop.height) {
-      const croppedImageUrl = await getCroppedImg(
-        imageRef,
-        crop,
-        'newFile.jpeg',
-      );
+        let res = {
+          name,
+        };
 
-      console.log('croppedImageUrl', croppedImageUrl);
-      setCroppedImageUrl(croppedImageUrl);
-    }
-  };
+        if (tags) {
+          res = { ...res, tags };
+        }
 
-  const getCroppedImg = (image, crop) => {
-    const canvas = document.createElement('canvas');
-    const scaleX = image.naturalWidth / image.width;
-    const scaleY = image.naturalHeight / image.height;
-    canvas.width = crop.width;
-    canvas.height = crop.height;
-    const ctx = canvas.getContext('2d');
+        if (description) {
+          res = { ...res, description };
+        }
 
-    ctx.drawImage(
-      image,
-      crop.x * scaleX,
-      crop.y * scaleY,
-      crop.width * scaleX,
-      crop.height * scaleY,
-      0,
-      0,
-      crop.width,
-      crop.height,
-    );
+        if (cover) {
+          const url =
+            Array.isArray(cover?.fileList) && cover?.fileList.length > 0
+              ? cover?.fileList[0].url || cover?.fileList[0].response.path
+              : '';
 
-    const base64Image = canvas.toDataURL('image/jpeg');
+          res = { ...res, cover: url };
+        }
 
-    return base64Image;
-  };
+        dispatch.collection.editCollection(res);
+      }
+    });
+  }
 
-  const handleOk = (e) => {
-    console.log(e);
-    setVisible(false);
-    setSrc(croppedImageUrl);
-  };
+  function handleCoverChange({ fileList }) {
+    let resultFileList = [...fileList];
 
-  const handleCancel = (e) => {
-    console.log(e);
-    setVisible(false);
-  };
+    // 1. Limit the number of uploaded files
+    // Only to show two recent uploaded files, and old ones will be replaced by the new
+    resultFileList = resultFileList.slice(-1);
 
-  const deleteImage = (e) => {
-    setSrc(null);
-    e.stopPropagation();
-  };
+    // 2. Read from response and show file link
+    resultFileList = resultFileList.map((file) => {
+      if (file.response) {
+        // Component will show file.url as link
+        file.url = file.response.url;
+      }
+      return file;
+    });
 
-  const loadImage = (
-    <div>
-      <img src={src} alt="avatar" />
-      <span
-        onClick={deleteImage}
-        css={css`
-          position: absolute;
-          top: -5px;
-          right: 5px;
-          font-size: 30px;
-          z-index: 1;
-        `}
-      >
-        ×
-      </span>
-    </div>
-  );
-  const uploadButton = (
-    <div>
-      <p className="ant-upload-drag-icon">
-        <Icon type="inbox" />
-      </p>
-      <p className="ant-upload-text">点击或将文件拖拽到这里上传</p>
-      <p className="ant-upload-hint">支持扩展名：.jpg .png .jpeg</p>
-    </div>
-  );
+    setFileList(resultFileList);
+    setFieldsValue({
+      cover: resultFileList,
+    });
+  }
 
-  const children = [];
-  const { TextArea } = Input;
+  function handleTagsChange(tags) {
+    setFieldsValue({
+      tags,
+    });
+  }
 
   return (
     <div
       css={css`
+        width: 100%;
         padding: 0 24px;
+
+        & img {
+          margin: 0;
+        }
       `}
     >
-      <Form
-        ref={form}
-        layout="vertical"
-        css={css`
-          background-color: #fff;
-          width: 260px;
-          height: 700px;
-        `}
-      >
+      <Form layout="vertical" onSubmit={handleSubmit}>
         <Form.Item
           label="文集封面"
           css={css`
-            with: 100%;
-            height: 180px;
-            margin-bottom: 10px;
+            width: 100%;
           `}
         >
-          {getFieldDecorator('dragger', {
-            // valuePropName: 'fileList',
-            // getValueFromEvent: normFile,
+          {getFieldDecorator('cover', {
+            initialValue: initialCover,
           })(
-            <>
-              <Upload.Dragger
-                name="files"
-                action="/upload.do"
-                showUploadList={false}
-                onChange={handleChange}
-              >
-                {src ? loadImage : uploadButton}
-              </Upload.Dragger>
-              <Modal
-                title="修改封面"
-                visible={visible}
-                onOk={handleOk}
-                onCancel={handleCancel}
-              >
-                <div
-                  css={css`
-                    display: flex;
-                  `}
-                >
-                  <div
-                    css={css`
-                      flex: 1;
-                      margin-right: 20px;
-                    `}
-                  >
-                    {imageUrl && (
-                      <ReactCrop
-                        src={imageUrl}
-                        crop={crop}
-                        ruleOfThirds
-                        onImageLoaded={onImageLoaded}
-                        onComplete={onCropComplete}
-                        onChange={onCropChange}
-                      />
-                    )}
-                  </div>
-                  <div
-                    css={css`
-                      flex: 1;
-                    `}
-                  >
-                    {croppedImageUrl && (
-                      <img alt="Crop" src={croppedImageUrl} />
-                    )}
-                  </div>
-                </div>
-              </Modal>
-            </>,
+            <Upload
+              fileList={fileList}
+              onChange={handleCoverChange}
+              {...coverProps}
+            >
+              <Button>
+                <Icon type="upload" /> 上传封面
+              </Button>
+            </Upload>,
           )}
         </Form.Item>
         <Form.Item
           label="文集标题"
           css={css`
-            margin-top: 30px;
-            margin-bottom: 10px;
+            width: 100%;
           `}
         >
-          {getFieldDecorator('username', {
-            rules: [
-              {
-                required: true,
-                message: '请输入标题',
-              },
-            ],
-          })(<Input placeholder="请输入标题" />)}
+          {getFieldDecorator('name', {
+            rules: [{ required: true, message: '请输入文集标题' }],
+            initialValue: initialName,
+          })(<Input placeholder="标题" />)}
         </Form.Item>
         <Form.Item
-          label="文集标签"
-          hasFeedback
+          label="标签"
           css={css`
-            margin-bottom: 10px;
+            width: 100%;
           `}
         >
-          {getFieldDecorator('select', {
-            rules: [{ required: true, message: '请选择标签' }],
+          {getFieldDecorator('tags', {
+            initialValue: initialTags,
           })(
             <Select
               mode="tags"
-              tokenSeparators={[',']}
-              placeholder="输入或点击选择标签"
+              placeholder="输入文集标签"
+              allowClear
+              onChange={handleTagsChange}
             >
-              {children}
+              {getFieldValue('tags').map((tag) => (
+                <Option key={tag}>{tag}</Option>
+              ))}
             </Select>,
           )}
         </Form.Item>
         <Form.Item label="文集摘要">
-          {getFieldDecorator('textarea', {
-            rules: [{ required: true, message: '请输入文集的摘要' }],
+          {getFieldDecorator('description', {
+            initialValue: initialDescription,
           })(
             <TextArea
-              placeholder="请输入文集的摘要"
-              autoSize={{ maxRows: 6 }}
+              placeholder="请输入文集摘要"
+              autoSize={{ minRows: 4, maxRows: 8 }}
             />,
           )}
         </Form.Item>
-        <div
+        <Form.Item
           css={css`
-            margin-top: 30px;
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
+            width: 100%;
           `}
         >
-          <Button
-            css={css`
-              margin-right: 90px;
-            `}
-          >
-            取消
-          </Button>
-          <Button type="primary">确认</Button>
-        </div>
+          <div>
+            <Button
+              css={css`
+                margin-right: 16px;
+              `}
+              onClick={() => dispatch.drawer.setVisible(false)}
+            >
+              取消
+            </Button>
+            <Button htmlType="submit" type="primary" loading={loading}>
+              确认
+            </Button>
+          </div>
+        </Form.Item>
       </Form>
     </div>
   );
-});
-const EnhancedFCForm = Form.create()(FCForm);
-
-function CollectionSetting() {
-  const formRef = createRef();
-  return (
-    <EnhancedFCForm
-      onSubmit={() => console.log(formRef.form.getFieldValue('name'))}
-      wrappedComponentRef={formRef}
-    />
-  );
 }
 
-export default CollectionSetting;
+export default Form.create({ name: 'CollectionSetting' })(CollectionSetting);

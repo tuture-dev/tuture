@@ -25,8 +25,8 @@ const LinkButton = () => {
       return removeLink(editor);
     }
 
-    dispatch.link.setText(getSelectedString(editor));
-    dispatch.link.startEdit();
+    dispatch({ type: 'link/setText', payload: getSelectedString(editor) });
+    dispatch({ type: 'link/startEdit' });
   };
 
   return (

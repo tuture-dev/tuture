@@ -1,447 +1,416 @@
-import {
-  useState,
-  createRef,
-  forwardRef,
-  useImperativeHandle,
-  useEffect,
-} from 'react';
-import ReactCrop from 'react-image-crop';
-import 'react-image-crop/dist/ReactCrop.css';
+import React, { useState } from 'react';
 import {
   Form,
-  Upload,
-  Icon,
-  Modal,
   Input,
-  Select,
-  Checkbox,
+  Icon,
   Button,
+  Select,
+  Transfer,
+  Upload,
+  Divider,
+  Modal,
 } from 'antd';
+import { useDispatch, useSelector, useStore } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 
-const getBase64 = (img, callback) => {
-  const reader = new FileReader();
-  reader.addEventListener('load', () => callback(reader.result));
-  reader.readAsDataURL(img);
-};
+import { EDIT_ARTICLE } from '../utils/constants';
 
-const FCForm = forwardRef(({ form }, ref) => {
-  useImperativeHandle(ref, () => ({
-    form,
+const { Option } = Select;
+const { confirm } = Modal;
+
+function makeSelectableCommits(commits = [], targetCommits) {
+  const selectableCommits = commits.map((commit) => ({
+    key: commit.key.toString(),
+    title: commit.name,
+    description: commit.name,
+    disabled: targetCommits.includes(commit.key.toString())
+      ? false
+      : commit.isSelected,
   }));
 
-  const { getFieldDecorator } = form;
+  return selectableCommits;
+}
 
-  const [imageUrl, setImageUrl] = useState();
-  const [visible, setVisible] = useState(false);
-  const [src, setSrc] = useState(null);
-  const [crop, setCrop] = useState({
-    unit: '%',
-    width: 40,
-    aspect: 100 / 67,
+function makeTargetKeys(commits = []) {
+  const targetKeys = commits.map((commit) => commit.key.toString());
+
+  return targetKeys;
+}
+
+function getCommitsFromKeys(keys, commits) {
+  const targetCommits = commits
+    .filter((_, index) => keys.includes(index.toString()))
+    .map((commit) => commit.commit);
+
+  return targetCommits;
+}
+
+function getRelasedCommits(initialTargetKeys, nowTargetKeys, allCommits) {
+  const releasedCommitKeys = initialTargetKeys.filter(
+    (commit) => !nowTargetKeys.includes(commit),
+  );
+
+  return getCommitsFromKeys(releasedCommitKeys, allCommits);
+}
+
+function showDeleteConfirm(name, dispatch, articleId, nowArticleId, history) {
+  confirm({
+    title: `确定要删除 ${name}`,
+    okText: '确定',
+    okType: 'danger',
+    cancelText: '取消',
+    onOk() {
+      dispatch.drawer.setChildrenVisible(false);
+
+      // If nowEditArticle is nowSelectedArticle, then need re-select nowArticle
+      // and jump to the first article or collection page
+      if (articleId === nowArticleId) {
+        dispatch.collection.setNowArticle('');
+
+        history.push('/');
+      }
+      dispatch.collection.deleteArticle(articleId);
+    },
+    onCancel() {
+      console.log('取消');
+    },
   });
-  const [imageRef, setImageRef] = useState();
-  const [croppedImageUrl, setCroppedImageUrl] = useState();
-  const normFile = (e) => {
-    console.log('Upload event:', e);
-    // if (Array.isArray(e)) {
-    //   return e;
-    // }
-    // return e && e.fileList;
+}
+
+function CreateEditArticle(props) {
+  const store = useStore();
+  const dispatch = useDispatch();
+  const [selectedKeys, setSelectedKeys] = useState([]);
+  const [fileList, setFileList] = useState([]);
+
+  // get router history && first article id for delete jump
+  const history = useHistory();
+
+  // submit status
+  const loading = useSelector((state) => state.loading.models.collection);
+
+  // get editArticle Commits
+  const { editArticleId, nowArticleId } = useSelector(
+    (state) => state.collection,
+  );
+  const nowArticleCommits = useSelector(
+    store.select.collection.getNowArticleCommits({
+      nowArticleId: editArticleId,
+    }),
+  );
+
+  const initialTargetKeys =
+    props.childrenDrawerType === EDIT_ARTICLE
+      ? makeTargetKeys(nowArticleCommits)
+      : [];
+
+  console.log('initialTargetKeys', initialTargetKeys);
+
+  // get all commit
+
+  const allCommits = useSelector(store.select.collection.getAllCommits);
+  const selectableCommits = makeSelectableCommits(
+    allCommits,
+    initialTargetKeys,
+  );
+
+  const [targetKeys, setTargetKeys] = useState(initialTargetKeys || []);
+
+  // get nowArticle Meta
+  const articleData = useSelector(
+    store.select.collection.nowArticleMeta({ nowArticleId: editArticleId }),
+  );
+  const nowArticleMeta =
+    props.childrenDrawerType === EDIT_ARTICLE ? articleData : {};
+
+  console.log('props', props, nowArticleMeta);
+
+  const initialTags = nowArticleMeta?.tags || [];
+  const initialCover = nowArticleMeta?.cover
+    ? [
+        {
+          url: nowArticleMeta?.cover,
+          uid: '-1',
+          name: 'tuture.jpg',
+          status: 'done',
+        },
+      ]
+    : [];
+  const initialName = nowArticleMeta?.name || '';
+  const coverProps = {
+    action: 'http://localhost:3000/upload',
+    listType: 'picture',
+    defaultFileList: [],
   };
-  const handleChange = (info) => {
-    //Get this url from response in real world.
-    getBase64(
-      info.file.originFileObj,
-      (imageUrl) => setImageUrl(imageUrl),
-      setVisible(true),
-    );
-  };
-  // const handleChange = e => {
-  //   if (e.target.files && e.target.files.length > 0) {
-  //     const reader = new FileReader();
-  //     reader.addEventListener('load', () =>
-  //       setImageUrl(reader.result),
-  //       setVisible(true)
-  //     );
-  //     reader.readAsDataURL(e.target.files[0]);
-  //   }
-  // }
 
-  // If you setState the crop in here you should return false.
-  const onImageLoaded = (image) => {
-    setImageRef(image);
-  };
+  const { getFieldDecorator, setFieldsValue, getFieldValue } = props.form;
 
-  const onCropComplete = (crop) => {
-    makeClientCrop(crop);
-  };
+  function handleSubmit(e) {
+    e.preventDefault();
 
-  const onCropChange = (crop) => {
-    // You could also use percentCrop:
-    // this.setState({ crop: percentCrop });
-    setCrop(crop);
-  };
+    props.form.validateFields((err, values) => {
+      if (!err) {
+        console.log('Received values of form: ', values);
+        const { cover, name, tags, commits } = values;
 
-  const makeClientCrop = async (crop) => {
-    if (imageRef && crop.width && crop.height) {
-      const croppedImageUrl = await getCroppedImg(
-        imageRef,
-        crop,
-        'newFile.jpeg',
-      );
-      setCroppedImageUrl(croppedImageUrl);
-    }
-  };
+        const targetCommits = getCommitsFromKeys(commits, allCommits);
 
-  const getCroppedImg = (image, crop, fileName) => {
-    const canvas = document.createElement('canvas');
-    const scaleX = image.naturalWidth / image.width;
-    const scaleY = image.naturalHeight / image.height;
-    canvas.width = crop.width;
-    canvas.height = crop.height;
-    const ctx = canvas.getContext('2d');
+        let res = {
+          commits: targetCommits,
+          name,
+        };
 
-    ctx.drawImage(
-      image,
-      crop.x * scaleX,
-      crop.y * scaleY,
-      crop.width * scaleX,
-      crop.height * scaleY,
-      0,
-      0,
-      crop.width,
-      crop.height,
-    );
-
-    return new Promise((resolve) => {
-      canvas.toBlob((blob) => {
-        console.log(this);
-        if (!blob) {
-          //reject(new Error('Canvas is empty'));
-          console.error('Canvas is empty');
-          return;
+        if (tags) {
+          res = { ...res, tags };
         }
-        blob.name = fileName;
-        window.URL.revokeObjectURL(this.fileUrl);
-        this.fileUrl = window.URL.createObjectURL(blob);
-        resolve(this.fileUrl);
-      }, 'image/jpeg');
+
+        if (cover) {
+          const url =
+            Array.isArray(cover?.fileList) && cover?.fileList.length > 0
+              ? cover?.fileList[0].url || cover?.fileList[0].response.path
+              : '';
+          res = { ...res, cover: url };
+        }
+
+        if (props.childrenDrawerType === EDIT_ARTICLE) {
+          // If is EDIT_ARTICLE and release some commits, should set isSelected false back
+          const relasedCommits = getRelasedCommits(
+            initialTargetKeys,
+            commits,
+            allCommits,
+          );
+
+          dispatch.collection.editArticle(res);
+
+          if (relasedCommits) {
+            dispatch.collection.releaseCommits(relasedCommits);
+          }
+        } else {
+          dispatch.collection.createArticle(res);
+        }
+      }
     });
-  };
+  }
 
-  const handleOk = (e) => {
-    console.log(e);
-    setVisible(false);
-    setSrc(croppedImageUrl);
-  };
+  function handleTargetChange(nextTargetKeys, direction, moveKeys) {
+    const sortedNextTargetKeys = nextTargetKeys.sort((prev, post) => {
+      if (prev > post) {
+        return 1;
+      }
 
-  const handleCancel = (e) => {
-    console.log(e);
-    setVisible(false);
-  };
+      if (prev < post) {
+        return -1;
+      }
 
-  const deleteImage = (e) => {
-    setImageUrl(false);
-    e.stopPropagation();
-  };
+      return 0;
+    });
 
-  const loadImage = (
-    <div>
-      <img src={src} alt="avatar" />
-      <span
-        onClick={deleteImage}
-        css={css`
-          position: absolute;
-          top: -5px;
-          right: 5px;
-          font-size: 30px;
-          z-index: 1;
-        `}
-      >
-        ×
-      </span>
-    </div>
-  );
-  const uploadButton = (
-    <div>
-      <p className="ant-upload-drag-icon">
-        <Icon type="inbox" />
-      </p>
-      <p className="ant-upload-text">点击或将文件拖拽到这里上传</p>
-      <p className="ant-upload-hint">支持扩展名：.jpg .png .jpeg</p>
-    </div>
-  );
+    console.log('sortedNextTargetKeys', sortedNextTargetKeys);
 
-  const children = [];
-  const { Search } = Input;
+    setFieldsValue({
+      commits: sortedNextTargetKeys,
+    });
+    setTargetKeys(sortedNextTargetKeys);
 
-  const CheckboxGroup = Checkbox.Group;
-  const plainOptions = [
-    '11111111111111111111',
-    '222222222222222222',
-    '33333333333333333',
-    '4444444444444444444',
-    '5555555555555555555',
-    '6666666666666666666',
-  ];
-  const [checkedList, setCheckedList] = useState([]);
-  const [indeterminate, setIndeterminate] = useState(true);
-  const [checkAll, setCheckAll] = useState(false);
+    console.log('targetKeys: ', nextTargetKeys);
+    console.log('direction: ', direction);
+    console.log('moveKeys: ', moveKeys);
+  }
 
-  const onChange = (checkedList) => {
-    setCheckedList(checkedList);
-    setIndeterminate(
-      !!checkedList.length && checkedList.length < plainOptions.length,
-    );
-    setCheckAll(checkedList.length === plainOptions.length);
-  };
-  const onCheckAllChange = (e) => {
-    setCheckedList(e.target.checked ? plainOptions : []);
-    setIndeterminate(false);
-    setCheckAll(e.target.checked);
-  };
+  function handleSelectChange(sourceSelectedKeys, targetSelectedKeys) {
+    setSelectedKeys([...sourceSelectedKeys, ...targetSelectedKeys]);
 
-  const [displayType, setDisplayType] = useState();
-  useEffect(() => {
-    const type = 'editPage';
-    if (type === 'createPage') {
-      setDisplayType('none');
-    } else if (type === 'editPage') {
-      setDisplayType('block');
-    }
-  }, []);
+    console.log('sourceSelectedKeys: ', sourceSelectedKeys);
+    console.log('targetSelectedKeys: ', targetSelectedKeys);
+  }
+
+  function filterOption(inputValue, option) {
+    return option.description.indexOf(inputValue) > -1;
+  }
+
+  function handleCoverChange({ fileList }) {
+    let resultFileList = [...fileList];
+
+    // 1. Limit the number of uploaded files
+    // Only to show two recent uploaded files, and old ones will be replaced by the new
+    resultFileList = resultFileList.slice(-1);
+
+    // 2. Read from response and show file link
+    resultFileList = resultFileList.map((file) => {
+      if (file.response) {
+        // Component will show file.url as link
+        file.url = file.response.url;
+      }
+      return file;
+    });
+
+    setFileList(resultFileList);
+    setFieldsValue({
+      cover: resultFileList,
+    });
+  }
+
+  function handleTagsChange(tags) {
+    setFieldsValue({
+      tags,
+    });
+  }
+
+  console.log('value');
+
   return (
     <div
       css={css`
+        width: 100%;
         padding: 0 24px;
+
+        & img {
+          margin: 0;
+        }
       `}
     >
-      <Form ref={form} layout="vertical">
+      <Form layout="vertical" onSubmit={handleSubmit}>
         <Form.Item
           label="封面"
           css={css`
             width: 100%;
-            height: 180px;
-            margin-bottom: 20px;
           `}
         >
-          {getFieldDecorator('dragger', {
-            valuePropName: 'fileList',
-            getValueFromEvent: normFile,
+          {getFieldDecorator('cover', {
+            initialValue: initialCover,
           })(
-            <>
-              <Upload.Dragger
-                name="files"
-                action="/upload.do"
-                onChange={handleChange}
-              >
-                {src ? loadImage : uploadButton}
-              </Upload.Dragger>
-              <Modal
-                title="修改头像"
-                visible={visible}
-                onOk={handleOk}
-                onCancel={handleCancel}
-              >
-                {imageUrl && (
-                  <ReactCrop
-                    src={imageUrl}
-                    crop={crop}
-                    ruleOfThirds
-                    onImageLoaded={onImageLoaded}
-                    onComplete={onCropComplete}
-                    onChange={onCropChange}
-                  />
-                )}
-                {croppedImageUrl && <img alt="Crop" src={croppedImageUrl} />}
-              </Modal>
-            </>,
+            <Upload
+              fileList={fileList}
+              onChange={handleCoverChange}
+              {...coverProps}
+            >
+              <Button>
+                <Icon type="upload" /> 上传封面
+              </Button>
+            </Upload>,
           )}
         </Form.Item>
         <Form.Item
           label="标题"
           css={css`
-            margin-bottom: 5px;
+            width: 100%;
           `}
         >
-          {getFieldDecorator('username', {
-            rules: [
-              {
-                required: true,
-                message: '请输入标题',
-              },
-            ],
-          })(<Input placeholder="请输入标题" />)}
+          {getFieldDecorator('name', {
+            rules: [{ required: true, message: '请输入文章标题' }],
+            initialValue: initialName,
+          })(<Input placeholder="标题" />)}
         </Form.Item>
         <Form.Item
           label="标签"
-          hasFeedback
           css={css`
-            margin-bottom: 5px;
+            width: 100%;
           `}
         >
-          {getFieldDecorator('select', {
-            rules: [{ required: true, message: '请选择标签' }],
+          {getFieldDecorator('tags', {
+            initialValue: initialTags,
           })(
             <Select
               mode="tags"
-              tokenSeparators={[',']}
-              placeholder="输入或点击选择标签"
+              placeholder="输入文章标签"
+              onChange={handleTagsChange}
             >
-              {children}
+              {getFieldValue('tags').map((tag) => (
+                <Option key={tag}>{tag}</Option>
+              ))}
             </Select>,
           )}
         </Form.Item>
+        <Form.Item label="选择步骤">
+          {getFieldDecorator('commits', {
+            rules: [{ required: true, message: '请选择文章涉及的步骤' }],
+            initialValue: initialTargetKeys,
+          })(
+            <Transfer
+              dataSource={selectableCommits}
+              titles={['所有步骤', '已选步骤']}
+              targetKeys={targetKeys}
+              operations={['选择', '释放']}
+              css={css``}
+              listStyle={{
+                width: 320,
+                height: 300,
+              }}
+              selectedKeys={selectedKeys}
+              onChange={handleTargetChange}
+              onSelectChange={handleSelectChange}
+              showSearch
+              filterOption={filterOption}
+              render={(item) => item.title}
+            />,
+          )}
+        </Form.Item>
         <Form.Item
-          label="选择 Commit"
           css={css`
-            height: 200px;
-            margin-bottom: 5px;
+            width: 100%;
           `}
         >
-          <div
-            css={css`
-              height: 180px;
-              border-radius: 4px;
-              border: 1px solid rgba(0, 0, 0, 0.15);
-            `}
-          >
-            <div
+          <div>
+            <Button
               css={css`
-                padding: 5px;
-                border-bottom: 2px solid rgba(0, 0, 0, 0.15);
-                margin-bottom: 6px;
+                margin-right: 16px;
               `}
+              onClick={() =>
+                dispatch({ type: 'drawer/setChildrenVisible', payload: false })
+              }
             >
-              <Checkbox
-                indeterminate={indeterminate}
-                onChange={onCheckAllChange}
-                checked={checkAll}
-                css={css`
-                  padding-left: 5px;
-                `}
-              >
-                <span
-                  css={css`
-                    display: inline-block;
-                    margin-right: 90px;
-                  `}
-                >
-                  2/13项
-                </span>
-                <span>Commits</span>
-              </Checkbox>
-            </div>
-            <div
-              css={css`
-                height: 50px;
-                margin-top: 5px;
-              `}
-            >
-              <div
-                css={css`
-                  width: 240px;
-                  margin: 5px auto;
-                `}
-              >
-                <Search
-                  placeholder="请输入 Commit 标题"
-                  onSearch={(value) => console.log(value)}
-                />
-              </div>
-              <div
-                css={css`
-                  padding-left: 5px;
-                  height: 99px;
-                  overflow: auto;
-                `}
-              >
-                <CheckboxGroup
-                  options={plainOptions}
-                  value={checkedList}
-                  onChange={onChange}
-                  css={css`
-                    padding-left: 5px;
-                  `}
-                />
-              </div>
-            </div>
+              取消
+            </Button>
+            <Button htmlType="submit" type="primary" loading={loading}>
+              确认
+            </Button>
           </div>
         </Form.Item>
-        <div
-          css={css`
-            margin-top: 30px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.15);
-          `}
-        >
-          <Button
-            css={css`
-              margin-right: 115px;
-            `}
-          >
-            取消
-          </Button>
-          <Button type="primary">确认</Button>
-        </div>
       </Form>
-      <div
-        css={css`
-          display: ${displayType};
-        `}
-      >
-        <div
-          css={css`
-            margin-top: 10px;
-          `}
-        >
-          <span
+      {props.childrenDrawerType === EDIT_ARTICLE && (
+        <>
+          <Divider />
+          <div
+            onClick={() =>
+              showDeleteConfirm(
+                nowArticleMeta.name,
+                dispatch,
+                editArticleId,
+                nowArticleId,
+                history,
+              )
+            }
             css={css`
-              font-size: 14px;
-              font-family: PingFangSC-Medium, PingFang SC;
-              font-weight: 500;
-              color: rgba(0, 0, 0, 1);
-              line-height: 22px;
-              cursor: pointer;
+              &:hover span,
+              &:hover svg {
+                color: #02b875;
+                cursor: pointer;
+              }
             `}
           >
-            导出为 Markdown
-          </span>
-        </div>
-        <div
-          css={css`
-            margin-top: 10px;
-          `}
-        >
-          <span
-            css={css`
-              font-size: 14px;
-              font-family: PingFangSC-Medium, PingFang SC;
-              font-weight: 500;
-              color: rgba(0, 0, 0, 1);
-              line-height: 22px;
-              cursor: pointer;
-            `}
-          >
-            删除此页
-          </span>
-        </div>
-      </div>
-    </div>
-  );
-});
-const EnhancedFCForm = Form.create()(FCForm);
+            <Icon type="delete" />
 
-function CreateEditArticle() {
-  const formRef = createRef();
-  return (
-    <EnhancedFCForm
-      onSubmit={() => console.log(formRef.form.getFieldValue('name'))}
-      wrappedComponentRef={formRef}
-    />
+            <span
+              css={css`
+                margin-left: 8px;
+                font-size: 14px;
+                font-family: PingFangSC-Medium, PingFang SC;
+                font-weight: 500;
+                color: rgba(0, 0, 0, 1);
+                line-height: 22px;
+              `}
+            >
+              删除此文章
+            </span>
+          </div>
+        </>
+      )}
+      <Modal />
+    </div>
   );
 }
 
-export default CreateEditArticle;
+export default Form.create({ name: 'CreateEditArticle' })(CreateEditArticle);

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useSelector, useDispatch, useStore } from 'react-redux';
 import { Divider } from 'antd';
 import { Link } from 'react-router-dom';
@@ -45,7 +45,6 @@ function CollectionCatalogue() {
     (state) => state.drawer,
   );
   const [selectItem, setSelectItem] = useState('');
-  const [selectAddNewPage, setSelectAddNewPage] = useState(false);
 
   const store = useStore();
   const dispatch = useDispatch();
@@ -54,23 +53,33 @@ function CollectionCatalogue() {
     store.select.collection.getCollectionCatalogue,
   );
 
-  function onToggleChildrenDrawer(e, toggleChildrenDrawerType) {
+  function onToggleChildrenDrawer(e, toggleChildrenDrawerType, articleId) {
     e.stopPropagation();
     if (childrenDrawerType === toggleChildrenDrawerType) {
-      dispatch.drawer.setChildrenVisible(!childrenVisible);
+      dispatch({
+        type: 'drawer/setChildrenVisible',
+        payload: !childrenVisible,
+      });
     }
 
     if (!childrenVisible) {
-      dispatch.drawer.setChildrenVisible(true);
+      dispatch({ type: 'drawer/setChildrenVisible', payload: true });
     }
 
-    dispatch.drawer.setChildrenDrawerType(toggleChildrenDrawerType);
+    if (toggleChildrenDrawerType === EDIT_ARTICLE) {
+      dispatch.collection.setEditArticleId(articleId);
+    }
+
+    dispatch({
+      type: 'drawer/setChildrenDrawerType',
+      payload: toggleChildrenDrawerType,
+    });
   }
 
   function onCatalogueItemClick(articleId) {
-    dispatch.drawer.setVisible(false);
+    dispatch({ type: 'drawer/setVisible', payload: false });
     setSelectItem(articleId);
-    dispatch.collection.setNowArticle(articleId);
+    dispatch({ type: 'collection/setNowArticle', payload: articleId });
   }
 
   return (
@@ -113,7 +122,9 @@ function CollectionCatalogue() {
                     color: #02b875;
                   }
                 `}
-                onClick={(e) => onToggleChildrenDrawer(e, EDIT_ARTICLE)}
+                onClick={(e) =>
+                  onToggleChildrenDrawer(e, EDIT_ARTICLE, item.id)
+                }
               >
                 <IconFont type="icon-moreread" />
               </span>
@@ -132,10 +143,11 @@ function CollectionCatalogue() {
             css={css`
               ${listItemStyle}
 
-              background: ${selectAddNewPage ? '#FFF' : 'transparent'};
+              &: hover {
+                background: #fff;
+              }
             `}
             onClick={(e) => {
-              setSelectAddNewPage(!selectAddNewPage);
               onToggleChildrenDrawer(e, CREATE_ARTICLE);
             }}
           >

@@ -1,6 +1,7 @@
-import React from 'react';
-import { css } from 'emotion';
 import * as F from 'editure-constants';
+
+/** @jsx jsx */
+import { css, jsx } from '@emotion/core';
 
 import FileElement from './File';
 import ExplainElement from './Explain';
@@ -28,7 +29,7 @@ export default (props) => {
       return (
         <ul
           {...attributes}
-          className={css`
+          css={css`
             padding-inline-start: 0;
           `}
         >
@@ -39,7 +40,7 @@ export default (props) => {
       return (
         <ol
           {...attributes}
-          className={css`
+          css={css`
             padding-inline-start: 0;
           `}
         >

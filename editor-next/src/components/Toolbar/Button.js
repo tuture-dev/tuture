@@ -1,5 +1,7 @@
 import React from 'react';
-import { cx, css } from 'emotion';
+
+/** @jsx jsx */
+import { css, jsx } from '@emotion/core';
 
 const Button = React.forwardRef(
   ({ className, handleMouseDown, handleClick, ...props }, ref) => (
@@ -9,12 +11,10 @@ const Button = React.forwardRef(
       ref={ref}
       onMouseDown={handleMouseDown}
       onClick={handleClick}
-      className={cx(
-        className,
-        css`
-          cursor: pointer;
-        `,
-      )}
+      className={className}
+      css={css`
+        cursor: pointer;
+      `}
     />
     /* eslint-enable no-nested-ternary */
   ),

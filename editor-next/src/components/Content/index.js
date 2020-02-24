@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import { useCallback } from 'react';
 
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
@@ -32,8 +32,28 @@ function Content() {
         <div
           css={css`
             padding: 48px 60px 64px;
+
+            & .ant-select-selection {
+              background: none;
+              border: none;
+              padding: 2px;
+            }
+
+            & .ant-select-selection:active {
+              border: none;
+              box-shadow: none;
+            }
+
+            & .ant-select-selection:focus {
+              border: none;
+              box-shadow: none;
+            }
+
+            & .ant-select-selection-selected-value {
+              font-size: 14px;
+              font-weight: 400;
+            }
           `}
-          id="scroll-container"
         >
           <PageHeader />
           <Editable

@@ -6,6 +6,7 @@ module.exports = override(
     libraryDirectory: 'es',
     style: true,
   }),
+  fixBabelImports('emotion'),
   addLessLoader({
     javascriptEnabled: true,
     modifyVars: { '@primary-color': '#02b875' },

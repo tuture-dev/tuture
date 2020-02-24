@@ -1,9 +1,11 @@
-import React from 'react';
-import { css } from 'emotion';
 import { Select } from 'antd';
 import { useSlate } from 'slate-react';
 import { toggleBlock, detectBlockFormat } from 'editure';
 import { H1, H2, H3, H4, H5, PARAGRAPH } from 'editure-constants';
+
+/** @jsx jsx */
+import { css, jsx } from '@emotion/core';
+
 import IconFont from '../IconFont';
 
 const { Option } = Select;
@@ -33,7 +35,7 @@ const SelectContentType = () => {
       defaultValue={type}
       suffixIcon={suffixIcon}
       onChange={handleChange}
-      className={css`
+      css={css`
         width: 100px;
         border-radius: 5px;
         transition: background-color 0.5s;
@@ -50,7 +52,7 @@ const SelectContentType = () => {
           <Option
             key={typeKey}
             value={typeKey}
-            className={css`
+            css={css`
               font-size: ${fontSize};
               font-weight: ${fontWeight};
             `}

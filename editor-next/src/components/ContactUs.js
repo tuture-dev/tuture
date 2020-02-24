@@ -1,4 +1,3 @@
-import React from 'react';
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 
@@ -6,21 +5,34 @@ import IconFont from './IconFont';
 import logo from '../assets/images/logo.svg';
 
 const link = css`
-  width: 284px;
+  width: 252px;
   height: 40px;
-  line-height: 40px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
   background: rgba(255, 255, 255, 1);
   border-radius: 4px;
   border: 1px solid rgba(232, 232, 232, 1);
   display: flex;
   margin-top: 16px;
+  padding: 0 16px;
+
+  &:hover {
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.08);
+  }
+
+  transition: box-shadow 0.3s;
 `;
 const icon = css`
-  width: 16px;
-  height: 16px;
-  margin-left: 16px;
-  margin-top: 12px;
+  margin: 0;
+  padding: 0;
+
+  & > svg {
+    width: 24px;
+    height: 24px;
+  }
 `;
+
 const labelText = css`
   margin-left: 8px;
   display: inline-block;
@@ -34,8 +46,16 @@ const labelText = css`
 const arrow = css`
   width: 10px;
   height: 10px;
-  margin-top: 14px;
+  margin: 0;
+  padding: 0;
   margin-left: 80px;
+  color: #565d64;
+
+  &:hover {
+    color: #02b875;
+  }
+
+  transition: color 0.3s;
 `;
 const itemsData = [
   {
@@ -98,6 +118,8 @@ function ContactUs() {
         a:first-of-type {
           margin-top: 0px !important;
         }
+
+        padding-left: 24px;
       `}
     >
       <a

@@ -1,8 +1,10 @@
-import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Modal, Input } from 'antd';
 import { useSlate } from 'slate-react';
-import { css } from 'emotion';
+
+/** @jsx jsx */
+import { css, jsx } from '@emotion/core';
+
 import { isMarkActive, insertLink, updateLink, selectLastPoint } from 'editure';
 import { LINK } from 'editure-constants';
 
@@ -23,12 +25,12 @@ const EditLink = () => {
       }
     }
 
-    dispatch.link.reset();
+    dispatch({ type: 'link/reset' });
   };
 
   const handleCancel = () => {
     selectLastPoint(editor);
-    dispatch.link.reset();
+    dispatch({ type: 'link/reset' });
   };
 
   const onKeyDown = (e) => {
@@ -48,7 +50,7 @@ const EditLink = () => {
       zIndex={1080}
     >
       <p
-        className={css`
+        css={css`
           margin-top: 8px;
           margin-bottom: 8px;
         `}
@@ -60,10 +62,12 @@ const EditLink = () => {
         autoFocus={!text}
         placeholder="添加描述"
         onKeyDown={onKeyDown}
-        onChange={(e) => dispatch.link.setText(e.target.value)}
+        onChange={(e) =>
+          dispatch({ type: 'link/setText', payload: e.target.value })
+        }
       />
       <p
-        className={css`
+        css={css`
           margin-top: 8px;
           margin-bottom: 8px;
         `}
@@ -75,7 +79,9 @@ const EditLink = () => {
         autoFocus={!!text}
         placeholder="链接地址"
         onKeyDown={onKeyDown}
-        onChange={(e) => dispatch.link.setUrl(e.target.value)}
+        onChange={(e) =>
+          dispatch({ type: 'link/setUrl', payload: e.target.value })
+        }
       />
     </Modal>
   );

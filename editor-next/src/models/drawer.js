@@ -1,17 +1,14 @@
-import { DRAWER_UNSELECT, PAGE_CATAGUE } from '../utils/constants';
+import { DRAWER_UNSELECT } from '../utils/constants';
 
 const drawer = {
   state: {
     childrenVisible: false,
     visible: false,
-    drawerType: PAGE_CATAGUE,
+    drawerType: '',
     childrenDrawerType: DRAWER_UNSELECT,
+    selectedKeys: [],
   },
   reducers: {
-    setChildrenVisible(state, payload) {
-      state.childrenVisible = payload;
-      return state;
-    },
     setVisible(state, payload) {
       state.visible = payload;
 
@@ -20,6 +17,15 @@ const drawer = {
     setDrawerType(state, payload) {
       state.drawerType = payload;
 
+      return state;
+    },
+    setSelectedKeys(state, payload) {
+      state.selectedKeys = payload;
+
+      return state;
+    },
+    setChildrenVisible(state, payload) {
+      state.childrenVisible = payload;
       return state;
     },
     setChildrenDrawerType(state, payload) {

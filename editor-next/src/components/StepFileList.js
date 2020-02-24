@@ -1,5 +1,3 @@
-import React from 'react';
-
 /** @jsx jsx */
 import { css, jsx, Global } from '@emotion/core';
 import { useSelector, useStore, useDispatch } from 'react-redux';
@@ -17,14 +15,20 @@ function StepFileList() {
   );
 
   function onDrop(res) {
-    dispatch.collection.switchFile({ ...res, commit: nowStepCommit });
+    dispatch({
+      type: 'collection/switchFile',
+      payload: { ...res, commit: nowStepCommit },
+    });
   }
 
   function onToggleShowFile(file) {
-    dispatch.collection.setFileShowStatus({
-      commit: nowStepCommit,
-      ...file,
-      display: !file.display,
+    dispatch({
+      type: 'collection/setFileShowStatus',
+      payload: {
+        commit: nowStepCommit,
+        ...file,
+        display: !file.display,
+      },
     });
   }
 
@@ -41,7 +45,7 @@ function StepFileList() {
           font-size: 16px;
           font-family: PingFangSC-Medium, PingFang SC;
           font-weight: 500;
-          color: rgba(0, 0, 0, 1);
+          color: #595959;
           line-height: 24px;
           margin-bottom: 16px;
         `}

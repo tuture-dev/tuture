@@ -1,6 +1,7 @@
-import React from 'react';
-import { css } from 'emotion';
 import { useFocused, useSelected } from 'slate-react';
+
+/** @jsx jsx */
+import { css, jsx } from '@emotion/core';
 
 function ImageElement(props) {
   const { attributes, children, element } = props;
@@ -13,7 +14,7 @@ function ImageElement(props) {
         <img
           src={element.url}
           alt={element.url}
-          className={css`
+          css={css`
             display: block;
             margin-left: auto;
             margin-right: auto;

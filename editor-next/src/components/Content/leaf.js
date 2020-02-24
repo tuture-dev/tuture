@@ -1,9 +1,10 @@
-import React from 'react';
 import { useDispatch } from 'react-redux';
 import { useSlate } from 'slate-react';
-import { css } from 'emotion';
 import { Popover, Popconfirm, Tooltip } from 'antd';
 import { getLinkData, removeLink, selectLastPoint } from 'editure';
+
+/** @jsx jsx */
+import { css, jsx } from '@emotion/core';
 
 import IconFont from '../IconFont';
 
@@ -23,10 +24,10 @@ const Link = (props) => {
 
   const onClickEdit = () => {
     const { text, url } = getLinkData(editor);
-    if (text) dispatch.link.setText(text);
-    if (url) dispatch.link.setUrl(url);
+    if (text) dispatch({ type: 'link/setText', payload: text });
+    if (url) dispatch({ type: 'link/setUrl', payload: url });
 
-    dispatch.link.startEdit();
+    dispatch({ type: 'link/startEdit' });
   };
 
   const handleDeleteLink = () => {
@@ -42,7 +43,7 @@ const Link = (props) => {
           href={leaf.url || '#'}
           target="_blank"
           rel="noopener noreferrer"
-          className={css`
+          css={css`
             margin-right: 3px;
           `}
         >
@@ -50,15 +51,11 @@ const Link = (props) => {
         </a>
       </span>
       <Tooltip title="编辑">
-        <IconFont
-          onClick={onClickEdit}
-          className={iconStyle}
-          type="icon-edit"
-        />
+        <IconFont onClick={onClickEdit} css={iconStyle} type="icon-edit" />
       </Tooltip>
       <Tooltip title="删除">
         <Popconfirm title="确认要删除此链接吗？" onConfirm={handleDeleteLink}>
-          <IconFont className={iconStyle} type="icon-delete" />
+          <IconFont css={iconStyle} type="icon-delete" />
         </Popconfirm>
       </Tooltip>
     </div>

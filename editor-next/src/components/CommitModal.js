@@ -1,7 +1,9 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Modal, Input } from 'antd';
-import { css } from 'emotion';
+
+/** @jsx jsx */
+import { css, jsx } from '@emotion/core';
 
 const CommitModal = () => {
   const dispatch = useDispatch();
@@ -24,16 +26,22 @@ const CommitModal = () => {
     dispatch.collection.commit(message);
   };
 
+  const handleCancel = (e) => {
+    e.preventDefault();
+    dispatch.commit.reset();
+  };
+
   return (
     <Modal
       title="提交"
       visible={isEditing}
       confirmLoading={loading}
       onOk={handleOk}
+      onCancel={handleCancel}
       zIndex={1080}
     >
       <p
-        className={css`
+        css={css`
           margin-top: 8px;
           margin-bottom: 8px;
         `}

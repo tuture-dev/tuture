@@ -1,13 +1,14 @@
-import React from 'react';
-import { css } from 'emotion';
 import { Tooltip } from 'antd';
+
+/** @jsx jsx */
+import { css, jsx } from '@emotion/core';
 
 import IconFont from '../IconFont';
 
 const ToolbarIcon = ({ isActive, icon, title }) => (
   <Tooltip title={title} placement="bottom">
     <IconFont
-      className={css`
+      css={css`
         padding: 8px;
         color: black;
         margin: 0 1px;

@@ -12,6 +12,19 @@ export const globalStyles = (
         background: #eee;
       }
 
+      input {
+        box-sizing: border-box;
+        font-size: 0.85em;
+        width: 100%;
+        border: 2px solid #ddd;
+        background: #fafafa;
+      }
+
+      input:focus {
+        outline: 0;
+        border-color: blue;
+      }
+
       body {
         margin: 0;
         line-height: 24px;
@@ -86,20 +99,6 @@ export const globalStyles = (
       td {
         padding: 10px;
         border: 2px solid #ddd;
-      }
-
-      input {
-        box-sizing: border-box;
-        font-size: 0.85em;
-        width: 100%;
-        padding: 0.5em;
-        border: 2px solid #ddd;
-        background: #fafafa;
-      }
-
-      input:focus {
-        outline: 0;
-        border-color: blue;
       }
 
       a {

@@ -2099,6 +2099,11 @@ eslint-module-utils@^2.4.1:
     debug "^2.6.9"
     pkg-dir "^2.0.0"
 
+eslint-plugin-emotion@^10.0.27:
+  version "10.0.27"
+  resolved "https://registry.npm.taobao.org/eslint-plugin-emotion/download/eslint-plugin-emotion-10.0.27.tgz#577a4265cc679f7bb826437a92fb9d709928e0a7"
+  integrity sha1-V3pCZcxnn3u4JkN6kvudcJko4Kc=
+
 eslint-plugin-flowtype@^4.6.0:
   version "4.6.0"
   resolved "https://registry.yarnpkg.com/eslint-plugin-flowtype/-/eslint-plugin-flowtype-4.6.0.tgz#82b2bd6f21770e0e5deede0228e456cb35308451"

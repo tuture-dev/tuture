@@ -1,5 +1,3 @@
-import React from 'react';
-
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 import { Button, Row, Col } from 'antd';
@@ -18,13 +16,13 @@ function LayoutHeader() {
 
   return (
     <Row>
-      <Col span={4}>
+      <Col span={4} push={1}>
         <LastSavedTimestamp />
       </Col>
       <Col span={15} push={2}>
         <ToolBar />
       </Col>
-      <Col span={5} push={2}>
+      <Col span={5} push={1}>
         <Button
           type="primary"
           css={css`
@@ -32,7 +30,6 @@ function LayoutHeader() {
           `}
           onClick={onCommitClick}
         >
-          <CommitModal />
           提交
         </Button>
         <Button
@@ -41,8 +38,9 @@ function LayoutHeader() {
             margin-left: 20px;
           `}
         >
-          发布
+          同步
         </Button>
+        <CommitModal />
       </Col>
     </Row>
   );

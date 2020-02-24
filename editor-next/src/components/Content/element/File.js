@@ -1,5 +1,5 @@
-import React from 'react';
-import { css } from 'emotion';
+/** @jsx jsx */
+import { css, jsx } from '@emotion/core';
 
 function FileElement(props) {
   const { attributes, children } = props;
@@ -7,7 +7,7 @@ function FileElement(props) {
   return (
     <div
       {...attributes}
-      className={css`
+      css={css`
         display: block;
         margin: 3px;
         padding: 3px;

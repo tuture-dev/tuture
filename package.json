@@ -98,6 +98,7 @@
     "eslint-config-airbnb": "^18.0.1",
     "eslint-config-prettier": "^6.10.0",
     "eslint-config-react-app": "^5.2.0",
+    "eslint-plugin-emotion": "^10.0.27",
     "eslint-plugin-flowtype": "^4.6.0",
     "eslint-plugin-html": "^6.0.0",
     "eslint-plugin-import": "^2.20.1",

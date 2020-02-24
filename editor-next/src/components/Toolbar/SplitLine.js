@@ -1,10 +1,10 @@
-import React from 'react';
-import { css } from 'emotion';
+/** @jsx jsx */
+import { css, jsx } from '@emotion/core';
 
 const SplitLine = () => {
   return (
     <span
-      className={css`
+      css={css`
         margin: 0 1px;
         color: #e8e8e8;
         font-size: large;

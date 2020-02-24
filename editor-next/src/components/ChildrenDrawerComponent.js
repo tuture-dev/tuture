@@ -18,19 +18,19 @@ function ChildrenDrawerComponent() {
   );
 
   function onClose() {
-    dispatch.drawer.setChildrenVisible(false);
+    dispatch({ type: 'drawer/setChildrenVisible', payload: false });
   }
 
   return (
     <Drawer
       title={mapTypeToTitle[childrenDrawerType]}
       placement="left"
-      width={300}
+      width={800}
+      destroyOnClose
       onClose={onClose}
       visible={childrenVisible}
-      style={{
-        marginLeft: '60px',
-      }}
+      zIndex={12}
+      style={{ marginLeft: '80px' }}
     >
       <CreateEditArticle childrenDrawerType={childrenDrawerType} />
     </Drawer>

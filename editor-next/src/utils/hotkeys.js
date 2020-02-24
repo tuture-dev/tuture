@@ -13,6 +13,8 @@ import {
 } from 'editure';
 import * as F from 'editure-constants';
 
+import { EXPLAIN } from '../utils/constants';
+
 const MARK_HOTKEYS = {
   'mod+b': F.BOLD,
   'mod+i': F.ITALIC,
@@ -36,7 +38,7 @@ const BLOCK_HOTKEYS = {
   'mod+alt+-': F.HR,
 };
 
-const containerBlocks = [F.BLOCK_QUOTE, F.CODE_BLOCK, F.NOTE];
+const containerBlocks = [F.BLOCK_QUOTE, F.CODE_BLOCK, F.NOTE, EXPLAIN];
 
 function handleTabKey(editor, event) {
   event.preventDefault();
@@ -67,6 +69,7 @@ function handleShiftTabKey(editor, event) {
 
 function handleSelectAll(editor, event) {
   const format = detectBlockFormat(editor, containerBlocks);
+
   if (format) {
     event.preventDefault();
     selectWithinBlock(editor, format, { how: 'all' });
@@ -83,7 +86,7 @@ function handleSelectUpperLeftAll(editor, event) {
 
 function handleSelectLowerRightAll(editor, event) {
   const format = detectBlockFormat(editor, containerBlocks);
-  if (detectBlockFormat(editor, [F.CODE_BLOCK, F.BLOCK_QUOTE, F.NOTE])) {
+  if (format) {
     event.preventDefault();
     selectWithinBlock(editor, format, { how: 'lower-right' });
   }

@@ -1,6 +1,7 @@
-import React from 'react';
-import { css } from 'emotion';
 import * as F from 'editure-constants';
+
+/** @jsx jsx */
+import { css, jsx } from '@emotion/core';
 
 import Menu from './Menu';
 import EditLink from './EditLink';
@@ -19,8 +20,29 @@ const Toolbar = (props) => {
   return (
     <Menu
       {...props}
-      className={css`
+      css={css`
         position: relative;
+
+        & .ant-select-selection {
+          background: none;
+          border: none;
+          padding: 2px;
+        }
+
+        & .ant-select-selection:active {
+          border: none;
+          box-shadow: none;
+        }
+
+        & .ant-select-selection:focus {
+          border: none;
+          box-shadow: none;
+        }
+
+        & .ant-select-selection-selected-value {
+          font-size: 14px;
+          font-weight: 400;
+        }
       `}
     >
       <EditLink />

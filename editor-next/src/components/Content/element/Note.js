@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Select } from 'antd';
 import { useSlate } from 'slate-react';
-import { css, cx } from 'emotion';
 import { updateBlock } from 'editure';
 import { NOTE } from 'editure-constants';
+
+/** @jsx jsx */
+import { css, jsx } from '@emotion/core';
 
 import IconFont from '../../IconFont';
 
@@ -53,13 +55,19 @@ function NoteElement(props) {
   const suffixIcon = <IconFont type="icon-caret-down" />;
 
   return (
-    <div {...attributes} className={cx(baseStyle, noteStyle)}>
+    <div
+      {...attributes}
+      css={css`
+        ${baseStyle};
+        ${noteStyle};
+      `}
+    >
       <div contentEditable={false}>
         <Select
           defaultValue={level}
           suffixIcon={suffixIcon}
           onChange={handleChange}
-          className={css`
+          css={css`
             padding: 2px 0;
             margin: 0.5rem 0;
             width: 100px;
@@ -72,7 +80,7 @@ function NoteElement(props) {
               <Option key={levelKey} value={levelKey}>
                 <IconFont type={icon} />
                 <span
-                  className={css`
+                  css={css`
                     font-size: 16px;
                     font-weight: 500;
                     margin-left: 8px;
@@ -86,7 +94,7 @@ function NoteElement(props) {
         </Select>
       </div>
       <div
-        className={css`
+        css={css`
           padding-left: 36px;
         `}
       >

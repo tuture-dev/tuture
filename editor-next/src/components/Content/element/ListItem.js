@@ -1,6 +1,7 @@
-import React from 'react';
-import { css } from 'emotion';
 import { BULLETED_LIST } from 'editure-constants';
+
+/** @jsx jsx */
+import { css, jsx } from '@emotion/core';
 
 const bulletedListStyleType = ['disc', 'circle', 'square'];
 
@@ -24,7 +25,7 @@ function ListItemElement(props) {
   return (
     <li
       {...attributes}
-      className={parent === BULLETED_LIST ? bulletedStyle : numberedStyle}
+      css={parent === BULLETED_LIST ? bulletedStyle : numberedStyle}
     >
       {children}
     </li>

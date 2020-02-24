@@ -8,7 +8,6 @@ import {
   CONTACT_US,
 } from '../utils/constants';
 
-import ChildrenDrawerComponent from './ChildrenDrawerComponent';
 import CollectionCatalogue from './CollectionCatalogue';
 import CollectionSetting from './CollectionSetting';
 import ContactUs from './ContactUs';
@@ -32,21 +31,27 @@ function DrawerComponent() {
   const RenderComponent = mapTypeToComponent[drawerType];
 
   const handleClose = () => {
-    dispatch.drawer.setVisible(false);
+    dispatch({ type: 'drawer/setVisible', payload: false });
+    dispatch({ type: 'drawer/setSelectedKeys', payload: [] });
   };
 
   return (
     <Drawer
+      id="drawer"
       title={mapTypeToTitle[drawerType]}
       placement="left"
       width={300}
       visible={visible}
       onClose={handleClose}
-      style={{
-        marginLeft: '60px',
+      headerStyle={{
+        background: '#F7F7FA',
       }}
+      drawerStyle={{
+        background: '#F7F7FA',
+      }}
+      zIndex={11}
+      style={{ marginLeft: '80px' }}
     >
-      <ChildrenDrawerComponent />
       {RenderComponent}
     </Drawer>
   );

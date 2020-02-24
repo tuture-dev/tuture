@@ -1,9 +1,12 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Select } from 'antd';
 import { useSlate } from 'slate-react';
-import { css } from 'emotion';
 import { CODE_BLOCK } from 'editure-constants';
 import { updateBlock } from 'editure';
+
+/** @jsx jsx */
+import { css, jsx } from '@emotion/core';
+
 import IconFont from '../../IconFont';
 
 const languages = [
@@ -157,7 +160,7 @@ function CodeBlockElement(props) {
   return (
     <div
       {...attributes}
-      className={css`
+      css={css`
         margin: 1em 0;
         border-radius: 8px;
         background-color: rgb(30, 30, 30);
@@ -170,7 +173,7 @@ function CodeBlockElement(props) {
           onChange={handleChange}
           placeholder="选择语言"
           suffixIcon={suffixIcon}
-          className={css`
+          css={css`
             color: white !important;
           `}
         >
@@ -182,7 +185,7 @@ function CodeBlockElement(props) {
         </Select>
       </div>
       <div
-        className={css`
+        css={css`
           padding: 10px 20px;
         `}
       >
