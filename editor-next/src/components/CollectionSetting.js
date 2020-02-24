@@ -33,7 +33,7 @@ function CollectionSetting(props) {
   const initialName = collectionMeta?.name || '';
   const initialDescription = collectionMeta?.description || '';
   const coverProps = {
-    action: 'http://localhost:3000/upload',
+    action: '/upload',
     listType: 'picture',
     defaultFileList: [],
   };
@@ -45,7 +45,6 @@ function CollectionSetting(props) {
 
     props.form.validateFields((err, values) => {
       if (!err) {
-        console.log('Received values of form: ', values);
         const { cover, name, tags, description } = values;
 
         let res = {

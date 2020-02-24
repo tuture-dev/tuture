@@ -74,9 +74,6 @@ function showDeleteConfirm(name, dispatch, articleId, nowArticleId, history) {
       }
       dispatch.collection.deleteArticle(articleId);
     },
-    onCancel() {
-      console.log('取消');
-    },
   });
 }
 
@@ -136,7 +133,7 @@ function CreateEditArticle(props) {
     : [];
   const initialName = articleMeta?.name || '';
   const coverProps = {
-    action: 'http://localhost:3000/upload',
+    action: '/upload',
     listType: 'picture',
     defaultFileList: [],
   };
