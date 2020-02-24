@@ -11,6 +11,7 @@ const diffFileStyle = css`
   /* padding-top: 8px; */
   padding-bottom: 8px;
   background-color: rgb(30, 30, 30);
+  border-radius: 8px;
   margin-bottom: 10px;
 `;
 
@@ -24,6 +25,7 @@ const diffFileHeaderStyle = css`
   text-align: left;
   padding: 8px 0px 8px 16px;
   margin-bottom: 8px;
+  border-radius: 8px;
   position: relative;
 `;
 
@@ -108,6 +110,10 @@ function DiffBlockElement(props) {
     .pop()
     .toLowerCase();
 
+  const isHidden = (i) => hiddenLines.includes(i);
+  const isCodeAddition = (i) => !diffItem.new && DIFF_ADD.includes(i);
+  const isCodeDeletion = (i) => !diffItem.new && DIFF_DEL.includes(i);
+
   function onChange(hiddenLines) {
     dispatch.collection.setDiffItemHiddenLines({
       commit,
@@ -145,8 +151,8 @@ function DiffBlockElement(props) {
                   <div
                     {...getLineProps({ line, key: i })}
                     css={css`
-                      ${DIFF_ADD.includes(i) && codeAdditionStyle}
-                      ${DIFF_DEL.includes(i) &&
+                      ${isCodeAddition(i) && codeAdditionStyle}
+                      ${isCodeDeletion(i) &&
                         codeDeletionStyle}
                       padding: 0 16px;
                     `}
@@ -172,8 +178,10 @@ function DiffBlockElement(props) {
                       <span
                         {...getTokenProps({ token, key })}
                         css={css`
-                          opacity: ${DIFF_DEL.includes(i) ? 0.3 : 1};
-                          font-weight: ${DIFF_ADD.includes(i) ? 700 : 'normal'};
+                          opacity: ${isHidden(i) || isCodeDeletion(i)
+                            ? 0.3
+                            : 1};
+                          font-weight: ${isCodeAddition(i) ? 700 : 'normal'};
                         `}
                       />
                     ))}
