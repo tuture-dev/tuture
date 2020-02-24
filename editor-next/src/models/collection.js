@@ -259,7 +259,6 @@ const collection = {
 
         if (response.ok) {
           dispatch.collection.setLastSaved(new Date());
-          dispatch.collection.setSaveFailed(false);
           if (payload?.showMessage) {
             message.success('保存内容成功！');
           }
