@@ -110,14 +110,12 @@ function CreateEditArticle(props) {
     (state) => state.collection,
   );
 
-  // get all commit
-
+  // get all steps
   const collectionSteps = collection.steps.map((step, index) => ({
     key: index,
     id: step.id,
     articleId: step.articleId,
     title: getHeadings([step])[0].title,
-    // disabled: step.articleId === editArticleId,
   }));
 
   const initialTargetKeys =
@@ -135,7 +133,7 @@ function CreateEditArticle(props) {
   );
   const articleMeta = props.childrenDrawerType === EDIT_ARTICLE ? meta : {};
 
-  const initialTags = articleMeta?.tags || [];
+  const initialTags = articleMeta?.topics || [];
   const initialCover = articleMeta?.cover
     ? [
         {
@@ -165,7 +163,7 @@ function CreateEditArticle(props) {
         const article = { name };
 
         if (tags) {
-          article.tags = tags;
+          article.topics = tags;
         }
 
         if (cover) {
