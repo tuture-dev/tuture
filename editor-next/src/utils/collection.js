@@ -2,8 +2,8 @@ import * as F from 'editure-constants';
 import { FILE, STEP } from '../utils/constants';
 
 export function flatten(steps) {
-  return steps.flatMap(({ commit, id, children }) => [
-    { commit, id, type: STEP, children: [{ text: '' }] },
+  return steps.flatMap(({ commit, id, articleId, children }) => [
+    { commit, id, articleId, type: STEP, children: [{ text: '' }] },
     ...children.flatMap((node) => {
       if (node.type === FILE && node.display) {
         const { file, display } = node;
