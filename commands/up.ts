@@ -11,7 +11,7 @@ import makeServer from '../server';
 import { isInitialized } from '../utils';
 import { syncImages } from '../utils/assets';
 import { TUTURE_ROOT } from '../constants';
-import { loadCollection } from '../utils/tuture';
+import { loadCollection } from '../utils/collection';
 
 export default class Up extends BaseCommand {
   static description = 'Render and edit tutorial in browser';

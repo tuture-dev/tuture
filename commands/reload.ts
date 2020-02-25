@@ -5,16 +5,13 @@ import { flags } from '@oclif/command';
 import BaseCommand from '../base';
 import logger from '../utils/logger';
 import { Step } from '../types';
-import { git } from '../utils/git';
 import { makeSteps, mergeSteps, isInitialized } from '../utils';
 import {
   loadCollection,
-  saveTuture,
+  saveCollection,
   saveCheckpoint,
   hasTutureChangedSinceCheckpoint,
-  initializeTutureBranch,
-} from '../utils/tuture';
-import { TUTURE_BRANCH } from '../constants';
+} from '../utils/collection';
 import { hasAssetsChangedSinceCheckpoint } from '../utils/assets';
 
 export default class Reload extends BaseCommand {
@@ -69,26 +66,15 @@ export default class Reload extends BaseCommand {
       this.exit(1);
     }
 
-    await initializeTutureBranch();
-
-    // Trying to update tuture branch.
-    await git.checkout(TUTURE_BRANCH);
-
-    try {
-      await git.merge(['master']);
-    } catch {
-      logger.log('warning', 'master branch is empty.');
-    }
-
-    const tuture = await loadCollection(true);
+    const collection = await loadCollection(true);
 
     const currentSteps: Step[] = await makeSteps(
       this.userConfig.ignoredFiles,
       flags.contextLines,
     );
-    tuture.steps = mergeSteps(tuture.steps, currentSteps);
+    collection.steps = mergeSteps(collection.steps, currentSteps);
 
-    saveTuture(tuture);
+    saveCollection(collection);
     await this.notifyServer();
 
     // Copy the last committed file.

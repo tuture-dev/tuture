@@ -5,7 +5,7 @@ import { flags } from '@oclif/command';
 import BaseCommand from '../base';
 import logger from '../utils/logger';
 import { git } from '../utils/git';
-import { initializeTutureBranch } from '../utils/tuture';
+import { initializeTutureBranch } from '../utils/collection';
 import { TUTURE_BRANCH, COLLECTION_PATH } from '../constants';
 
 export default class Push extends BaseCommand {

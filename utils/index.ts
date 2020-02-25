@@ -1,7 +1,9 @@
 import fs from 'fs-extra';
+import shortid from 'shortid';
 
 import { Step } from '../types';
-import { collectionPath } from './tuture';
+import { emptyExplain } from './nodes';
+import { collectionPath } from './collection';
 import { TUTURE_ROOT, TUTURE_BRANCH } from '../constants';
 import { git, storeDiff, getGitDiff } from './git';
 
@@ -42,11 +44,25 @@ export async function makeSteps(
   await storeDiff(commits, contextLines);
 
   const stepProms: Promise<Step>[] = logs.map(async ({ message, hash }) => {
+    const files = await getGitDiff(hash, ignoredFiles || []);
     return {
-      name: message,
+      type: 'step',
+      id: shortid.generate(),
+      articleId: null,
       commit: hash,
-      diff: await getGitDiff(hash, ignoredFiles || []),
-    };
+      children: [
+        {
+          type: 'heading-two',
+          commit: hash,
+          id: shortid.generate(),
+          fixed: true,
+          children: [{ text: message }],
+        },
+        emptyExplain,
+        ...files,
+        emptyExplain,
+      ],
+    } as Step;
   });
 
   const steps = await Promise.all(stepProms);

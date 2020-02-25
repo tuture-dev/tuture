@@ -2,9 +2,9 @@ import chalk from 'chalk';
 import fs from 'fs-extra';
 import path from 'path';
 
-import { Tuture } from '../types';
-import logger from '../utils/logger';
-import { git } from '../utils/git';
+import { Collection } from '../types';
+import logger from './logger';
+import { git } from './git';
 import {
   TUTURE_ROOT,
   COLLECTION_PATH,
@@ -63,9 +63,9 @@ export async function hasRemoteTutureBranch() {
 }
 
 /**
- * Load Tuture object from tuture.yml.
+ * Load collection.
  */
-export async function loadCollection(fromBranch = false): Promise<Tuture> {
+export async function loadCollection(fromBranch = false): Promise<Collection> {
   if (!fs.existsSync(collectionPath)) {
     await initializeTutureBranch();
     await git.checkout(TUTURE_BRANCH);
@@ -94,10 +94,10 @@ export async function loadCollection(fromBranch = false): Promise<Tuture> {
 }
 
 /**
- * Save Tuture object back to tuture.yml (temporary workspace).
+ * Save the entire collection back to workspace.
  */
-export function saveTuture(tuture: Tuture) {
-  fs.writeFileSync(collectionPath, JSON.stringify(tuture));
+export function saveCollection(collection: Collection) {
+  fs.writeFileSync(collectionPath, JSON.stringify(collection, null, 2));
 }
 
 /**
