@@ -67,6 +67,7 @@ function CreateEditArticle(props) {
     id: step.id,
     articleId: step.articleId,
     title: getHeadings([step])[0].title,
+    disabled: !!step.articleId && step.articleId !== editArticleId,
   }));
 
   const initialTargetKeys =
@@ -77,6 +78,8 @@ function CreateEditArticle(props) {
       : [];
 
   const [targetKeys, setTargetKeys] = useState(initialTargetKeys || []);
+
+  console.log('targetKeys', initialTargetKeys, targetKeys);
 
   // get nowArticle Meta
   const meta = useSelector(
