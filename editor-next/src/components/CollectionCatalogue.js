@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useSelector, useDispatch, useStore } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Divider } from 'antd';
 import { Link } from 'react-router-dom';
 
@@ -46,12 +46,8 @@ function CollectionCatalogue() {
   );
   const [selectItem, setSelectItem] = useState('');
 
-  const store = useStore();
   const dispatch = useDispatch();
-
-  const collectionCatalogue = useSelector(
-    store.select.collection.getCollectionCatalogue,
-  );
+  const { articles } = useSelector((state) => state.collection.collection);
 
   function onToggleChildrenDrawer(e, toggleChildrenDrawerType, articleId) {
     e.stopPropagation();
@@ -86,21 +82,22 @@ function CollectionCatalogue() {
     <div>
       <div>
         <ul className="catalogue" css={listStyle}>
-          {collectionCatalogue.map((item) => (
+          {articles.map((article) => (
             <li
               className="catalogue-item"
-              key={item.id}
-              id={item.id}
-              onClick={() => onCatalogueItemClick(item.id)}
+              key={article.id}
+              id={article.id}
+              onClick={() => onCatalogueItemClick(article.id)}
               css={css`
                 ${listItemStyle}
 
-                background: ${selectItem === item.id ? '#FFF' : 'transparent'};
+                background: ${
+                  selectItem === article.id ? '#FFF' : 'transparent'
+                };
 
                 &:hover > span {
                   visibility: visible;
                 }
-
               `}
             >
               <span
@@ -112,8 +109,8 @@ function CollectionCatalogue() {
                   overflow: hidden;
                 `}
               >
-                <Link to={`/articles/${item.id}`} css={itemTitleStyle}>
-                  {item.name}
+                <Link to={`/articles/${article.id}`} css={itemTitleStyle}>
+                  {article.name}
                 </Link>
               </span>
               <span
@@ -123,7 +120,7 @@ function CollectionCatalogue() {
                   }
                 `}
                 onClick={(e) =>
-                  onToggleChildrenDrawer(e, EDIT_ARTICLE, item.id)
+                  onToggleChildrenDrawer(e, EDIT_ARTICLE, article.id)
                 }
               >
                 <IconFont type="icon-moreread" />

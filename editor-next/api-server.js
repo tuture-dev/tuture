@@ -21,9 +21,7 @@ app.get('/collection', async (_, res) => {
 });
 
 app.post('/save', (req, res) => {
-  const body = req.body;
-  body.updated = new Date();
-  fs.writeFileSync(collectionPath, JSON.stringify(body, null, 2));
+  fs.writeFileSync(collectionPath, JSON.stringify(req.body, null, 2));
   res.sendStatus(200);
 });
 

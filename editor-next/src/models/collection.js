@@ -7,12 +7,7 @@ import { flatten, unflatten, getHeadings } from '../utils/collection';
 
 const collection = {
   state: {
-    collection: {
-      name: null,
-      id: null,
-      articles: [],
-      steps: [],
-    },
+    collection: null,
     nowArticleId: null,
     nowStepCommit: null,
     lastSaved: null,
@@ -34,9 +29,9 @@ const collection = {
 
       // May set nowArticleId to null
       if (payload && state.collection) {
-        state.nowStepCommit = state.collection.articles
-          .filter((article) => article.id === payload)[0]
-          .commits.slice(-1)[0];
+        state.nowStepCommit = state.collection.steps.filter(
+          ({ articleId }) => articleId === payload,
+        )[0];
       }
 
       return state;
@@ -151,54 +146,25 @@ const collection = {
     editArticle(state, payload) {
       const { editArticleId } = state;
 
-      state.collection.articles = state.collection.articles.map((article) => {
-        if (article.id === editArticleId) {
-          article = { ...article, ...payload };
-        }
-
-        return article;
-      });
-
-      const { commits = [] } = payload;
-      state.collection.steps = state.collection.steps.map((step) => {
-        if (commits.includes(step.commit)) {
-          step.isSelected = true;
-        }
-
-        return step;
-      });
+      state.collection.articles = state.collection.articles.map((article) =>
+        article.id === editArticleId ? { ...article, ...payload } : article,
+      );
 
       return state;
     },
     createArticle(state, payload) {
       const id = shortid.generate();
 
-      state.collection.articles.push({
-        id,
-        ...payload,
-      });
-
-      const { commits } = payload;
-      state.collection.steps = state.collection.steps.map((step) => {
-        if (commits.includes(step.commit)) {
-          step.isSelected = true;
-        }
-
-        return step;
-      });
+      state.collection.articles.push({ id, ...payload });
 
       return state;
     },
-    releaseCommits(state, payload) {
-      const needReleasedCommits = payload;
+    setStepById(state, payload) {
+      const { stepId, stepProps } = payload;
 
-      state.collection.steps = state.collection.steps.map((step) => {
-        if (needReleasedCommits.includes(step.commit)) {
-          step.isSelected = false;
-        }
-
-        return step;
-      });
+      state.collection.steps = state.collection.steps.map((step) =>
+        step.id === stepId ? { ...step, ...stepProps } : step,
+      );
 
       return state;
     },
@@ -318,16 +284,13 @@ const collection = {
         }
 
         const {
-          collection: { articles, steps },
+          collection: { steps },
           nowArticleId,
         } = collectionModel;
 
         if (nowArticleId) {
-          const article = articles.filter(
-            (elem) => elem.id.toString() === nowArticleId.toString(),
-          )[0];
           return flatten(
-            steps.filter((step) => article.commits.includes(step.commit)),
+            steps.filter(({ articleId }) => articleId === nowArticleId),
           );
         }
 
@@ -341,30 +304,17 @@ const collection = {
         }
 
         const {
-          collection: { articles, steps },
+          collection: { steps },
           nowArticleId,
         } = collectionModel;
 
         if (nowArticleId) {
-          const article = articles.filter(
-            (elem) => elem.id.toString() === nowArticleId.toString(),
-          )[0];
           return getHeadings(
-            steps.filter((step) => article.commits.includes(step.commit)),
+            steps.filter(({ articleId }) => articleId === nowArticleId),
           );
         }
 
         return getHeadings(steps);
-      });
-    },
-    nowStepCommit() {
-      return slice((collectionModel) => {
-        if (!collectionModel.collection) {
-          return null;
-        }
-
-        const { articles, steps } = collectionModel.collection;
-        return articles?.length > 0 ? articles[0].commits[0] : steps[0].commit;
       });
     },
     collectionMeta() {
@@ -394,14 +344,6 @@ const collection = {
         return { name, description, tags, cover };
       });
     }),
-    getDiffItemByCommitAndFile: hasProps((__, props) => {
-      return slice(
-        (collectionModel) =>
-          collectionModel.diff
-            .filter((diffItem) => diffItem.commit === props.commit)[0]
-            .diff.filter((diffItem) => diffItem.to === props.file)[0],
-      );
-    }),
     getStepFileListAndTitle: hasProps((__, props) => {
       return slice((collectionModel) => {
         if (!collectionModel.collection) {
@@ -423,87 +365,6 @@ const collection = {
         }
 
         return { fileList: [], title: '' };
-      });
-    }),
-    getCollectionCatalogue() {
-      return slice((collectionModel) => {
-        if (!collectionModel.collection) {
-          return [];
-        }
-
-        const getCommitName = (commit) => {
-          const steps = collectionModel.collection.steps.filter(
-            (step) => step.commit === commit,
-          );
-
-          return getHeadings(steps)
-            .flat(5)
-            .filter((node) => node.commit)[0].title;
-        };
-
-        const getCommitArrName = (commitArr) => {
-          const commitArrWithName = commitArr.map((commit) => ({
-            commit,
-            name: getCommitName(commit),
-          }));
-
-          return commitArrWithName;
-        };
-
-        const { articles = [] } = collectionModel.collection;
-
-        const collectionCatalogue = articles.map((article) => ({
-          ...article,
-          commitArrWithName: getCommitArrName(article.commits),
-        }));
-
-        return collectionCatalogue;
-      });
-    },
-    getAllCommits() {
-      return slice((collectionModel) => {
-        const commits = collectionModel.collection.steps.map((step, index) => ({
-          commit: step?.commit,
-          name: getHeadings([step])[0].title,
-          isSelected: step?.isSelected,
-          key: index,
-        }));
-
-        return commits;
-      });
-    },
-    getNowArticleCommits: hasProps((__, props) => {
-      return slice((collectionModel) => {
-        const { nowArticleId } = props;
-
-        const {
-          collection: { articles, steps },
-        } = collectionModel;
-
-        const article = articles.filter(
-          (elem) => elem.id.toString() === nowArticleId.toString(),
-        )[0];
-
-        if (!article) {
-          return [];
-        }
-
-        let nowArticleSteps = [];
-
-        steps.forEach((step, index) => {
-          if (article.commits.includes(step.commit)) {
-            nowArticleSteps.push({ ...step, key: index });
-          }
-        });
-
-        const commits = nowArticleSteps.map((step) => ({
-          commit: step?.commit,
-          name: getHeadings([step])[0].title,
-          isSelected: step?.isSelected,
-          key: step.key,
-        }));
-
-        return commits;
       });
     }),
   }),

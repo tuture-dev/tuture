@@ -9,25 +9,22 @@
   "categories": ["后端", "Node.js", "入门"],
   "articles": [
     {
-      "name": "第一杯茶，从旧时代到新时代（一）",
+      "name": "第一杯茶，从旧时代到ci时代（一）",
       "description": "正当移动互联网进入白热化阶段时，以微信小程序为代表的一类“轻应用”异军突起。它们无需下载，使用方便，“用完即走”，同时功能也较为完备，一经推出即得到了各大平台和及用户的热烈追捧。但是问题也随之而来——开发者们要同时维护 Web 端、移动端、微信小程序、支付宝小程序等等多套用户界面，其维护成本可以想象。作为一个优秀的多端统一开发解决方案，Taro 的出现则改变了这一情况。正值 Taro 2.x 进入 beta 阶段，让我们沏上一杯茶，开始我们的 Taro 多端小程序开发之旅吧。",
-      "cover": "https://tuture.co/images/covers/34a473b.jpg",
-      "id": "34a473b9e9e5e3dafcc619ab152750af",
-      "commits": ["372a021", "2b84923"]
+      "cover": "",
+      "id": "34a473b9e9e5e3dafcc619ab152750af"
     },
     {
       "name": "第二杯茶，掌握核心科技（二）",
       "description": "在上一篇教程中，我们用熟悉的 React 和 Hooks 搞定了“奥特曼俱乐部”的雏形。在这一篇文章中，我们将用 Taro 自带的路由功能实现多页面跳转，并用 Taro UI 组件库升级之前略显简陋的界面。",
-      "cover": "https://tuture.co/images/covers/af69225.jpg",
-      "id": "af6922503ad1941b09b324ffa35f33ea",
-      "commits": ["f331722", "5ed1e6c", "b8585d2"]
+      "cover": "",
+      "id": "af6922503ad1941b09b324ffa35f33ea"
     },
     {
       "name": "第三杯茶，向更远处进发（三）",
       "description": "能够借助所在平台实现“一键登录”是小程序的一大优势，大大降低了用户的使用门槛，但是各平台处理登录和鉴权的方式又存在较大的差异。在这一篇文章中，我们将带你踩过“多端登录”的“坑”，让用户能够在不同的平台轻松登录我们的应用。",
       "cover": "https://tuture.co/images/covers/5e10118.jpg",
-      "id": "5e10118be51d454165777203",
-      "commits": ["93ec144", "266304b", "fc4e804"]
+      "id": "5e10118be51d454165777203"
     }
   ],
   "steps": [
@@ -35,6 +32,7 @@
       "commit": "372a021",
       "type": "step",
       "id": "kPaILNVh",
+      "articleId": "34a473b9e9e5e3dafcc619ab152750af",
       "children": [
         {
           "commit": "372a021",
@@ -667,6 +665,7 @@
       "commit": "2b84923",
       "type": "step",
       "id": "ne_MNyPlG",
+      "articleId": "34a473b9e9e5e3dafcc619ab152750af",
       "children": [
         {
           "commit": "2b84923",
@@ -1424,6 +1423,7 @@
       "commit": "f331722",
       "type": "step",
       "id": "dtM13UK8v",
+      "articleId": "af6922503ad1941b09b324ffa35f33ea",
       "children": [
         {
           "commit": "f331722",
@@ -1948,6 +1948,7 @@
       "commit": "5ed1e6c",
       "type": "step",
       "id": "8d-mdMbFFd",
+      "articleId": "af6922503ad1941b09b324ffa35f33ea",
       "children": [
         {
           "commit": "5ed1e6c",
@@ -2375,6 +2376,7 @@
       "commit": "b8585d2",
       "type": "step",
       "id": "YIfIa3onul",
+      "articleId": "af6922503ad1941b09b324ffa35f33ea",
       "children": [
         {
           "commit": "b8585d2",
@@ -2810,6 +2812,7 @@
       "commit": "93ec144",
       "type": "step",
       "id": "TM6H0bmksS",
+      "articleId": "5e10118be51d454165777203",
       "children": [
         {
           "commit": "93ec144",
@@ -3480,6 +3483,7 @@
       "commit": "266304b",
       "type": "step",
       "id": "baPLpbPRY4",
+      "articleId": "5e10118be51d454165777203",
       "children": [
         {
           "commit": "266304b",
@@ -3736,6 +3740,7 @@
       "commit": "fc4e804",
       "type": "step",
       "id": "E3LNXXTjH2",
+      "articleId": "5e10118be51d454165777203",
       "children": [
         {
           "commit": "fc4e804",
@@ -4102,6 +4107,5 @@
         }
       ]
     }
-  ],
-  "updated": "2020-02-23T00:50:18.122Z"
+  ]
 }
