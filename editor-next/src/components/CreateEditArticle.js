@@ -23,55 +23,6 @@ import { getHeadings } from '../utils/collection';
 const { Option } = Select;
 const { confirm } = Modal;
 
-function getStepsWithUpdatedArticleIds(
-  collection,
-  editArticleId,
-  selectedStepIndexes,
-) {
-  const articleIds = collection.articles.map(({ id }) => id);
-  const prevArticleId = articleIds[articleIds.indexOf(editArticleId) - 1];
-  const nextArticleId = articleIds[articleIds.indexOf(editArticleId) + 1];
-
-  const collectionStepIds = collection.steps.map(({ id }) => id);
-  const initialStepIds = collection.steps
-    .filter(({ id }) => id === editArticleId)
-    .map(({ id }) => id);
-  const selectedStepIds = collectionStepIds.filter((_, index) =>
-    selectedStepIndexes.includes(index),
-  );
-
-  const firstSelected = selectedStepIds[0];
-  const lastSelected = selectedStepIds.slice(-1)[0];
-
-  const stepsReleasedToPrevArticle = initialStepIds.includes(firstSelected)
-    ? initialStepIds.slice(0, initialStepIds.indexOf(firstSelected))
-    : [];
-
-  const stepsReleasedToNextArticle = initialStepIds.includes(lastSelected)
-    ? initialStepIds.slice(initialStepIds.indexOf(lastSelected) + 1)
-    : [];
-
-  const addedSteps = collection.steps
-    .filter(
-      (step, index) =>
-        step.articleId !== editArticleId && selectedStepIndexes.includes(index),
-    )
-    .map(({ id }) => id);
-
-  return collection.steps.map((step) => {
-    if (stepsReleasedToPrevArticle.includes(step.id)) {
-      return { ...step, articleId: prevArticleId };
-    }
-    if (stepsReleasedToNextArticle.includes(step.id)) {
-      return { ...step, articleId: nextArticleId };
-    }
-    if (addedSteps.includes(step.id)) {
-      return { ...step, articleId: editArticleId };
-    }
-    return step;
-  });
-}
-
 function showDeleteConfirm(name, dispatch, articleId, nowArticleId, history) {
   confirm({
     title: `确定要删除 ${name}`,
@@ -178,17 +129,24 @@ function CreateEditArticle(props) {
           dispatch.collection.editArticle(article);
           dispatch.drawer.setVisible(false);
 
-          const updatedSteps = getStepsWithUpdatedArticleIds(
-            collection,
-            editArticleId,
-            steps,
-          );
-
-          updatedSteps.forEach((step) => {
-            dispatch.collection.setStepById({
-              stepId: step.id,
-              stepProps: { articleId: step.articleId },
-            });
+          collectionSteps.forEach((step, index) => {
+            if (step.articleId === editArticleId) {
+              if (!steps.includes(index)) {
+                // Remove this step from currently edited article.
+                dispatch.collection.setStepById({
+                  stepId: step.id,
+                  stepProps: { articleId: null },
+                });
+              }
+            } else {
+              if (steps.includes(index)) {
+                // Add this step to the currently edited article.
+                dispatch.collection.setStepById({
+                  stepId: step.id,
+                  stepProps: { articleId: editArticleId },
+                });
+              }
+            }
           });
         } else {
           article.id = shortid.generate();
