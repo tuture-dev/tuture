@@ -1938,17 +1938,17 @@ ecc-jsbn@~0.1.1:
     jsbn "~0.1.0"
     safer-buffer "^2.1.0"
 
-editure-constants@^0.0.8:
-  version "0.0.8"
-  resolved "https://registry.npm.taobao.org/editure-constants/download/editure-constants-0.0.8.tgz?cache=0&sync_timestamp=1582682773594&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fediture-constants%2Fdownload%2Fediture-constants-0.0.8.tgz#0d192d3a14751a98266c7776c72148c8366f536f"
-  integrity sha1-DRktOhR1GpgmbHd2xyFIyDZvU28=
+editure-constants@0.0.11, editure-constants@^0.0.11:
+  version "0.0.11"
+  resolved "https://registry.yarnpkg.com/editure-constants/-/editure-constants-0.0.11.tgz#e8548199058812f6381054275b80b5cb9fe59c68"
+  integrity sha512-LDTnEw1iRCozRvOgFGPvYZ1ExIxhxq5ZZj/82eBhf4gy2Ry1vtOIHtfwCN/RKX/imMYdLxBMALQ0o9mHAh4KQA==
 
-editure@^0.0.8:
-  version "0.0.8"
-  resolved "https://registry.npm.taobao.org/editure/download/editure-0.0.8.tgz?cache=0&sync_timestamp=1582682778510&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fediture%2Fdownload%2Fediture-0.0.8.tgz#6e81e9d028281843a1d4375e8e122553b3e2c142"
-  integrity sha1-boHp0CgoGEOh1DdejhIlU7PiwUI=
+editure@0.0.11:
+  version "0.0.11"
+  resolved "https://registry.yarnpkg.com/editure/-/editure-0.0.11.tgz#913cc148fe5bb7cc6887208b61a0df20862e8711"
+  integrity sha512-HLOprwuyqw2Mso6Ua2zowU3aG9W6uyXO0M8Ho+YNcGUY6mCqgl/cUnqEIMlCghvASPmMA+bABIvkVbEdY/GdKg==
   dependencies:
-    editure-constants "^0.0.8"
+    editure-constants "^0.0.11"
     escape-html "^1.0.3"
     is-url "^1.2.4"
     jsdom "^16.1.0"
