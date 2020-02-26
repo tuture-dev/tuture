@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Divider } from 'antd';
+import { Divider, Icon } from 'antd';
 import { Link } from 'react-router-dom';
 
 /** @jsx jsx */
@@ -37,6 +37,10 @@ const itemTitleStyle = css`
   font-size: 14px;
   font-family: PingFangSC-Regular, PingFang SC;
   font-weight: 400;
+  color: rgba(0, 0, 0, 1);
+`;
+
+const linkDefaultStyle = css`
   color: rgba(0, 0, 0, 1);
 `;
 
@@ -140,7 +144,7 @@ function CollectionCatalogue() {
             css={css`
               ${listItemStyle}
 
-              &: hover {
+              &:hover {
                 background: #fff;
               }
             `}
@@ -153,6 +157,25 @@ function CollectionCatalogue() {
               <IconFont type="icon-plus" />
             </span>
           </li>
+          <Link to="/toc" css={linkDefaultStyle}>
+            <li
+              css={css`
+                ${listItemStyle}
+
+                &:hover {
+                  background: #fff;
+                }
+              `}
+              onClick={(e) => {
+                onToggleChildrenDrawer(e, CREATE_ARTICLE);
+              }}
+            >
+              <span css={itemTitleStyle}>编排目录</span>
+              <span>
+                <Icon type="profile" />
+              </span>
+            </li>
+          </Link>
         </ul>
       </div>
       <Global

@@ -10,6 +10,7 @@ import * as serviceWorker from './serviceWorker';
 
 import Home from './pages/Home';
 import Article from './pages/Article';
+import Toc from './pages/Toc';
 
 ReactDOM.render(
   <Provider store={store}>
@@ -18,6 +19,9 @@ ReactDOM.render(
       <ConnectedLayout>
         <Route path="/articles/:id">
           <Article />
+        </Route>
+        <Route path="/toc">
+          <Toc />
         </Route>
         <Route path="/" exact>
           <Home />
