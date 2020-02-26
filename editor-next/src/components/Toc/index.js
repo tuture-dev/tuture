@@ -78,6 +78,7 @@ function Toc() {
     defaultUnassignedStepList,
   );
 
+  const [searchValue, setSearchValue] = useState('');
   const [activeArticle, setActiveArticle] = useState('');
   const [articleStepList, setArticleStepList] = useState(
     defaultArticleStepList,
@@ -98,6 +99,14 @@ function Toc() {
     }
 
     if (activeArticle === articleStep.articleId) {
+      return true;
+    }
+
+    return false;
+  });
+  const filteredUnassignedStepList = unassignedStepList.filter((step) => {
+    const isQualified = step.name.indexOf(searchValue);
+    if (isQualified >= 0) {
       return true;
     }
 
@@ -301,7 +310,7 @@ function Toc() {
               >
                 <Search
                   placeholder="搜索步骤的标题"
-                  onSearch={(value) => console.log(value)}
+                  onSearch={(value) => setSearchValue(value)}
                   style={{ height: '40px' }}
                 />
               </div>
@@ -313,7 +322,7 @@ function Toc() {
                   margin: 0;
                 `}
               >
-                {unassignedStepList.map((item) => (
+                {filteredUnassignedStepList.map((item) => (
                   <li
                     key={item.id}
                     onClick={() => handleAddStep(item)}
@@ -330,7 +339,17 @@ function Toc() {
                       }
                     `}
                   >
-                    <span>{item.name}</span>
+                    <span
+                      css={css`
+                        width: 170px;
+                        display: inline-block;
+                        white-space: nowrap;
+                        text-overflow: ellipsis;
+                        overflow: hidden;
+                      `}
+                    >
+                      {item.name}
+                    </span>
                     <span
                       className="list-item-action"
                       css={css`
