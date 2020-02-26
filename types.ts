@@ -1,18 +1,18 @@
-export interface Explain {
+import { Element } from 'slate';
+
+export interface Explain extends Element {
   type: 'explain';
   fixed: true;
-  children: any[];
 }
 
-export interface DiffBlock {
+export interface DiffBlock extends Element {
   type: 'diff-block';
   file: string;
   commit: string;
   hiddenLines?: Array<number>;
-  children: any[];
 }
 
-export interface File {
+export interface File extends Element {
   type: 'file';
   file: string;
   display?: boolean;
@@ -21,27 +21,27 @@ export interface File {
 
 export interface Meta {
   name: string;
-  description: string;
+  description?: string;
   id: string;
-  cover: string;
-  created: Date;
-  topics: string[];
-  categories: string[];
+  cover?: string;
+  created?: Date;
+  topics?: string[];
+  categories?: string[];
+  github?: string;
 }
 
 export interface Article extends Meta {
   commits: string[];
 }
 
-export interface StepTitle {
+export interface StepTitle extends Element {
   type: 'heading-two';
   commit: string;
   id: string;
   fixed: true;
-  children: Node[];
 }
 
-export interface Step {
+export interface Step extends Element {
   type: 'step';
   id: string;
   articleId?: string | null;
@@ -51,7 +51,6 @@ export interface Step {
 }
 
 export interface Collection extends Meta {
-  github?: string;
   articles: Article[];
   steps: Step[];
 }
