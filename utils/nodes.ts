@@ -1,6 +1,7 @@
+import { PARAGRAPH } from 'editure-constants';
 import { Explain } from '../types';
 
-export const emptyChildren = [{ type: 'paragraph', children: [{ text: '' }] }];
+export const emptyChildren = [{ type: PARAGRAPH, children: [{ text: '' }] }];
 
 export const emptyExplain: Explain = {
   type: 'explain',
