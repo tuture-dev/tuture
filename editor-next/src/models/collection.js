@@ -1,9 +1,16 @@
 import { message } from 'antd';
 import * as F from 'editure-constants';
 import shortid from 'shortid';
+import pick from 'lodash.pick';
 
 import { FILE } from '../utils/constants';
-import { flatten, unflatten, getHeadings } from '../utils/collection';
+import {
+  flatten,
+  unflatten,
+  getHeadings,
+  getStepTitle,
+  getNumFromStepId,
+} from '../utils/collection';
 
 const collection = {
   state: {
@@ -188,6 +195,12 @@ const collection = {
       state.saveFailed = payload;
       return state;
     },
+    updateSteps(state, payload) {
+      state.collection.steps = payload;
+    },
+    updateArticles(state, payload) {
+      state.collection.articles = payload;
+    },
   },
   effects: (dispatch) => ({
     async editArticle() {
@@ -359,14 +372,56 @@ const collection = {
           const fileList = nowStep.children
             .filter(({ type }) => type === FILE)
             .map(({ file, display = false }) => ({ file, display }));
-          const title = getHeadings([nowStep]).filter((node) => node.commit)[0]
-            .title;
+          const title = getStepTitle(nowStep);
           return { fileList, title };
         }
 
         return { fileList: [], title: '' };
       });
     }),
+    getArticleStepList() {
+      return slice((collectionModel) => {
+        const articles = collectionModel.collection?.articles || [];
+        const steps = collectionModel.collection?.steps || [];
+
+        const articleStepList = articles.reduce(
+          (initialArticleStepList, nowArticle) => {
+            const articleItem = {
+              ...pick(nowArticle, ['id', 'name']),
+              level: 0,
+            };
+            const stepList = steps
+              .filter((step) => step?.articleId === nowArticle.id)
+              .map((step) => ({
+                ...pick(step, ['id', 'articleId']),
+                level: 1,
+                number: getNumFromStepId(step.id, steps),
+                name: getStepTitle(step),
+              }));
+
+            return initialArticleStepList.concat(articleItem, ...stepList);
+          },
+          [],
+        );
+
+        return articleStepList;
+      });
+    },
+    getUnassignedStepList() {
+      return slice((collectionModel) => {
+        const steps = collectionModel.collection?.steps || [];
+        const unassignedStepList = steps
+          .filter((step) => !step?.articleId)
+          .map((step) => ({
+            id: step.id,
+            level: 1,
+            number: getNumFromStepId(step.id, steps),
+            name: getStepTitle(step),
+          }));
+
+        return unassignedStepList;
+      });
+    },
   }),
 };
 

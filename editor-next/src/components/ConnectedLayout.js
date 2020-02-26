@@ -46,6 +46,8 @@ function ConnectedLayout(props) {
 
   const dispatch = useDispatch();
 
+  console.log('props', props);
+
   useEffect(() => {
     dispatch.diff.fetchDiff();
     dispatch.collection.fetchCollection();

@@ -82,6 +82,11 @@ function CollectionCatalogue() {
     dispatch({ type: 'collection/setNowArticle', payload: articleId });
   }
 
+  function onTocItemClick() {
+    dispatch({ type: 'drawer/setVisible', payload: false });
+    setSelectItem('');
+  }
+
   return (
     <div>
       <div>
@@ -157,6 +162,7 @@ function CollectionCatalogue() {
               <IconFont type="icon-plus" />
             </span>
           </li>
+
           <Link to="/toc" css={linkDefaultStyle}>
             <li
               css={css`
@@ -166,9 +172,7 @@ function CollectionCatalogue() {
                   background: #fff;
                 }
               `}
-              onClick={(e) => {
-                onToggleChildrenDrawer(e, CREATE_ARTICLE);
-              }}
+              onClick={onTocItemClick}
             >
               <span css={itemTitleStyle}>编排目录</span>
               <span>

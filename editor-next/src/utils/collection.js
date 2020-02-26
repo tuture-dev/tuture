@@ -56,3 +56,15 @@ export function getHeadings(nodes) {
     return [];
   });
 }
+
+export function getStepTitle(nowStep) {
+  const title = getHeadings([nowStep]).filter((node) => node.commit)[0].title;
+
+  return title;
+}
+
+export function getNumFromStepId(stepId, steps) {
+  const num = steps.findIndex((step) => step.id === stepId);
+
+  return num;
+}

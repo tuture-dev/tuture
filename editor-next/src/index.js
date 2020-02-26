@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { Route, BrowserRouter as Router } from 'react-router-dom';
+import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
 
 import ConnectedLayout from './components/ConnectedLayout';
 import { globalStyles } from './shared/styles';
@@ -17,15 +17,17 @@ ReactDOM.render(
     {globalStyles}
     <Router>
       <ConnectedLayout>
-        <Route path="/articles/:id">
-          <Article />
-        </Route>
-        <Route path="/toc">
-          <Toc />
-        </Route>
-        <Route path="/" exact>
-          <Home />
-        </Route>
+        <Switch>
+          <Route path="/toc">
+            <Toc />
+          </Route>
+          <Route path="/articles/:id">
+            <Article />
+          </Route>
+          <Route path="/" exact>
+            <Home />
+          </Route>
+        </Switch>
       </ConnectedLayout>
     </Router>
   </Provider>,
