@@ -336,10 +336,10 @@ const collection = {
     collectionMeta() {
       return slice((collectionModel) => {
         const {
-          collection: { name, cover, description, tags },
+          collection: { name, cover, description, topics },
         } = collectionModel;
 
-        return { name, cover, description, tags };
+        return { name, cover, description, topics };
       });
     },
     getArticleMetaById: hasProps((__, props) => {
@@ -350,14 +350,14 @@ const collection = {
         }
 
         const {
-          collection: { articles, name, description, tags, cover },
+          collection: { articles, name, description, topics, cover },
         } = collectionModel;
 
         if (id) {
           return articles.filter((elem) => elem.id === id)[0];
         }
 
-        return { name, description, tags, cover };
+        return { name, description, topics, cover };
       });
     }),
     getStepFileListAndTitle: hasProps((__, props) => {

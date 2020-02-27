@@ -11,7 +11,6 @@ const { TextArea } = Input;
 function CollectionSetting(props) {
   const store = useStore();
   const dispatch = useDispatch();
-  const [fileList, setFileList] = useState([]);
 
   // submit status
   const loading = useSelector((state) => state.loading.models.collection);
@@ -19,7 +18,7 @@ function CollectionSetting(props) {
   // get nowArticle Meta
   const collectionMeta = useSelector(store.select.collection.collectionMeta);
 
-  const initialTags = collectionMeta?.topics || [];
+  const initialTopics = collectionMeta?.topics || [];
   const initialCover = collectionMeta?.cover
     ? [
         {
@@ -35,8 +34,10 @@ function CollectionSetting(props) {
   const coverProps = {
     action: '/upload',
     listType: 'picture',
-    defaultFileList: [],
+    defaultFileList: [initialCover],
   };
+
+  const [fileList, setFileList] = useState(initialCover);
 
   const { getFieldDecorator, setFieldsValue, getFieldValue } = props.form;
 
@@ -45,25 +46,31 @@ function CollectionSetting(props) {
 
     props.form.validateFields((err, values) => {
       if (!err) {
-        const { cover, name, tags, description } = values;
+        const { cover, name, topics, description } = values;
 
         let res = {
           name,
         };
 
-        if (tags) {
-          res = { ...res, tags };
+        if (topics) {
+          res = { ...res, topics };
         }
 
         if (description) {
           res = { ...res, description };
         }
 
+        console.log('topics', topics);
+
         if (cover) {
-          const url =
+          let url =
             Array.isArray(cover?.fileList) && cover?.fileList.length > 0
               ? cover?.fileList[0].url || cover?.fileList[0].response.path
               : '';
+
+          if (!url && Array.isArray(cover) && cover.length > 0) {
+            url = cover[0].url;
+          }
 
           res = { ...res, cover: url };
         }
@@ -95,9 +102,9 @@ function CollectionSetting(props) {
     });
   }
 
-  function handleTagsChange(tags) {
+  function handleTopicsChange(topics) {
     setFieldsValue({
-      tags,
+      topics,
     });
   }
 
@@ -150,17 +157,17 @@ function CollectionSetting(props) {
             width: 100%;
           `}
         >
-          {getFieldDecorator('tags', {
-            initialValue: initialTags,
+          {getFieldDecorator('topics', {
+            initialValue: initialTopics,
           })(
             <Select
               mode="tags"
               placeholder="输入文集标签"
               allowClear
-              onChange={handleTagsChange}
+              onChange={handleTopicsChange}
             >
-              {getFieldValue('tags').map((tag) => (
-                <Option key={tag}>{tag}</Option>
+              {getFieldValue('topics').map((topic) => (
+                <Option key={topic}>{topic}</Option>
               ))}
             </Select>,
           )}
