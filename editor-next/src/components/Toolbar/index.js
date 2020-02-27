@@ -48,8 +48,8 @@ const Toolbar = (props) => {
       <EditLink />
 
       <SaveButton />
-      <HistoryButton status="undo" icon="icon-undo" title="撤销" />
-      <HistoryButton status="redo" icon="icon-redo" title="重做" />
+      <HistoryButton action="undo" icon="icon-undo" title="撤销" />
+      <HistoryButton action="redo" icon="icon-redo" title="重做" />
 
       <SplitLine />
 
