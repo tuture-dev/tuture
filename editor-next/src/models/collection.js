@@ -2,6 +2,7 @@ import { message } from 'antd';
 import * as F from 'editure-constants';
 import shortid from 'shortid';
 import pick from 'lodash.pick';
+import omit from 'lodash.omit';
 
 import { FILE } from '../utils/constants';
 import {
@@ -184,6 +185,13 @@ const collection = {
       state.collection.articles = state.collection.articles.filter(
         (article) => article.id !== payload,
       );
+      state.collection.steps = state.collection.steps.map((step) => {
+        if (step?.articleId === payload) {
+          step = omit(step, ['articleId']);
+        }
+
+        return step;
+      });
 
       return state;
     },

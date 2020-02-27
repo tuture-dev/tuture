@@ -8,7 +8,10 @@ import * as models from '../models';
 const loadingOptions = {};
 let devtoolOptions = { disabled: true };
 
-if (process.env.NODE_ENV === 'development') {
+if (
+  process.env.NODE_ENV === 'development' ||
+  process.env.NODE_ENV === 'production'
+) {
   devtoolOptions = {
     ...devtoolOptions,
     trace: true,
