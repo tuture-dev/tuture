@@ -1938,15 +1938,15 @@ ecc-jsbn@~0.1.1:
     jsbn "~0.1.0"
     safer-buffer "^2.1.0"
 
-editure-constants@0.0.11, editure-constants@^0.0.11:
+editure-constants@^0.0.11:
   version "0.0.11"
   resolved "https://registry.yarnpkg.com/editure-constants/-/editure-constants-0.0.11.tgz#e8548199058812f6381054275b80b5cb9fe59c68"
   integrity sha512-LDTnEw1iRCozRvOgFGPvYZ1ExIxhxq5ZZj/82eBhf4gy2Ry1vtOIHtfwCN/RKX/imMYdLxBMALQ0o9mHAh4KQA==
 
-editure@0.0.11:
+editure@^0.0.11:
   version "0.0.11"
-  resolved "https://registry.yarnpkg.com/editure/-/editure-0.0.11.tgz#913cc148fe5bb7cc6887208b61a0df20862e8711"
-  integrity sha512-HLOprwuyqw2Mso6Ua2zowU3aG9W6uyXO0M8Ho+YNcGUY6mCqgl/cUnqEIMlCghvASPmMA+bABIvkVbEdY/GdKg==
+  resolved "https://registry.npm.taobao.org/editure/download/editure-0.0.11.tgz#913cc148fe5bb7cc6887208b61a0df20862e8711"
+  integrity sha1-kTzBSP5bt8xohyCLYaDfIIYuhxE=
   dependencies:
     editure-constants "^0.0.11"
     escape-html "^1.0.3"
