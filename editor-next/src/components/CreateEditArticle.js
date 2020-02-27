@@ -40,6 +40,7 @@ function showDeleteConfirm(name, dispatch, articleId, nowArticleId, history) {
         history.push('/');
       }
       dispatch.collection.deleteArticle(articleId);
+      dispatch.collection.saveCollection();
     },
   });
 }
@@ -165,6 +166,8 @@ function CreateEditArticle(props) {
             }
           });
         }
+
+        dispatch.collection.saveCollection();
       }
     });
   }

@@ -9,6 +9,10 @@ module.exports = override(
   fixBabelImports('emotion'),
   addLessLoader({
     javascriptEnabled: true,
-    modifyVars: { '@primary-color': '#02b875' },
+    modifyVars: {
+      '@primary-color': '#02b875',
+      '@text-selection-bg': 'rgba(27,162,227,.2)',
+      '@text-color-inverse': 'inherit',
+    },
   }),
 );

@@ -69,6 +69,7 @@ function CollectionSetting(props) {
         }
 
         dispatch.collection.editCollection(res);
+        dispatch.collection.saveCollection();
       }
     });
   }
