@@ -1,4 +1,5 @@
 import { message } from 'antd';
+import { isCommitEqual } from '../utils/commit';
 
 const diff = {
   state: {
@@ -23,13 +24,24 @@ const diff = {
   }),
   selectors: (slice, createSelector, hasProps) => ({
     getDiffItemByCommitAndFile: hasProps((__, props) => {
-      return slice((diffModel) =>
-        diffModel.diff
-          ? diffModel.diff
-              .filter((diffItem) => diffItem.commit === props.commit)[0]
-              .diff.filter((diffItem) => diffItem.to === props.file)[0]
-          : { chunks: [] },
-      );
+      return slice((diffModel) => {
+        const emptyVal = { chunks: [] };
+        if (!diffModel?.diff) {
+          return emptyVal;
+        }
+
+        const commit = diffModel.diff.filter((item) =>
+          isCommitEqual(item.commit, props.commit),
+        )[0];
+
+        if (!commit) {
+          return emptyVal;
+        }
+
+        return (
+          commit.diff.filter((item) => item.to === props.file)[0] || emptyVal
+        );
+      });
     }),
   }),
 };
