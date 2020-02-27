@@ -7,6 +7,7 @@ import ConnectedLayout from './components/ConnectedLayout';
 import { globalStyles } from './shared/styles';
 import store from './store';
 import * as serviceWorker from './serviceWorker';
+import { ScrollToTop } from './components';
 
 import Home from './pages/Home';
 import Article from './pages/Article';
@@ -16,6 +17,7 @@ ReactDOM.render(
   <Provider store={store}>
     {globalStyles}
     <Router>
+      <ScrollToTop />
       <ConnectedLayout>
         <Switch>
           <Route path="/toc">
