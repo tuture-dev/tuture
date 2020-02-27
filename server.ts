@@ -1,4 +1,5 @@
 import crypto from 'crypto';
+import cp from 'child_process';
 import fs from 'fs-extra';
 import http from 'http';
 import path from 'path';
@@ -9,7 +10,7 @@ import socketio from 'socket.io';
 
 import { DIFF_PATH, EDITOR_STATIC_PATH, EDITOR_PATH } from './constants';
 import { uploadSingle } from './utils/assets';
-import { loadCollection, saveTuture } from './utils/tuture';
+import { loadCollection, saveCollection } from './utils/collection';
 
 const workspace = process.env.TUTURE_PATH || process.cwd();
 const diffPath = path.join(workspace, DIFF_PATH);
@@ -65,9 +66,7 @@ const makeServer = (config: any) => {
   });
 
   app.post('/save', (req, res) => {
-    const body = req.body;
-    body.updated = new Date();
-    saveTuture(body);
+    saveCollection(req.body);
     res.sendStatus(200);
   });
 
@@ -93,6 +92,16 @@ const makeServer = (config: any) => {
     uploadSingle(savePath);
 
     res.json({ path: savePath });
+  });
+
+  app.post('/commit', (req, res) => {
+    cp.execFile('tuture', ['commit', '-m', req.body.message], {}, (err) => {
+      if (err) {
+        res.sendStatus(500);
+      } else {
+        res.sendStatus(200);
+      }
+    });
   });
 
   app.get('/reload', (_, res) => {

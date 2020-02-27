@@ -12,49 +12,16 @@ import {
 } from 'antd';
 import { useDispatch, useSelector, useStore } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import shortid from 'shortid';
 
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 
 import { EDIT_ARTICLE } from '../utils/constants';
+import { getHeadings } from '../utils/collection';
 
 const { Option } = Select;
 const { confirm } = Modal;
-
-function makeSelectableCommits(commits = [], targetCommits) {
-  const selectableCommits = commits.map((commit) => ({
-    key: commit.key.toString(),
-    title: commit.name,
-    description: commit.name,
-    disabled: targetCommits.includes(commit.key.toString())
-      ? false
-      : commit.isSelected,
-  }));
-
-  return selectableCommits;
-}
-
-function makeTargetKeys(commits = []) {
-  const targetKeys = commits.map((commit) => commit.key.toString());
-
-  return targetKeys;
-}
-
-function getCommitsFromKeys(keys, commits) {
-  const targetCommits = commits
-    .filter((_, index) => keys.includes(index.toString()))
-    .map((commit) => commit.commit);
-
-  return targetCommits;
-}
-
-function getRelasedCommits(initialTargetKeys, nowTargetKeys, allCommits) {
-  const releasedCommitKeys = initialTargetKeys.filter(
-    (commit) => !nowTargetKeys.includes(commit),
-  );
-
-  return getCommitsFromKeys(releasedCommitKeys, allCommits);
-}
 
 function showDeleteConfirm(name, dispatch, articleId, nowArticleId, history) {
   confirm({
@@ -90,29 +57,29 @@ function CreateEditArticle(props) {
   const loading = useSelector((state) => state.loading.models.collection);
 
   // get editArticle Commits
-  const { editArticleId, nowArticleId } = useSelector(
+  const { editArticleId, nowArticleId, collection } = useSelector(
     (state) => state.collection,
   );
-  const nowArticleCommits = useSelector(
-    store.select.collection.getNowArticleCommits({
-      nowArticleId: editArticleId,
-    }),
-  );
+
+  // get all steps
+  const collectionSteps = collection.steps.map((step, index) => ({
+    key: index,
+    id: step.id,
+    articleId: step.articleId,
+    title: getHeadings([step])[0].title,
+    disabled: !!step.articleId && step.articleId !== editArticleId,
+  }));
 
   const initialTargetKeys =
     props.childrenDrawerType === EDIT_ARTICLE
-      ? makeTargetKeys(nowArticleCommits)
+      ? collectionSteps
+          .filter((step) => step.articleId === editArticleId)
+          .map((step) => step.key)
       : [];
 
-  // get all commit
-
-  const allCommits = useSelector(store.select.collection.getAllCommits);
-  const selectableCommits = makeSelectableCommits(
-    allCommits,
-    initialTargetKeys,
-  );
-
   const [targetKeys, setTargetKeys] = useState(initialTargetKeys || []);
+
+  console.log('targetKeys', initialTargetKeys, targetKeys);
 
   // get nowArticle Meta
   const meta = useSelector(
@@ -120,7 +87,7 @@ function CreateEditArticle(props) {
   );
   const articleMeta = props.childrenDrawerType === EDIT_ARTICLE ? meta : {};
 
-  const initialTags = articleMeta?.tags || [];
+  const initialTags = articleMeta?.topics || [];
   const initialCover = articleMeta?.cover
     ? [
         {
@@ -145,17 +112,12 @@ function CreateEditArticle(props) {
 
     props.form.validateFields((err, values) => {
       if (!err) {
-        const { cover, name, tags, commits } = values;
+        const { cover, name, tags, steps } = values;
 
-        const targetCommits = getCommitsFromKeys(commits, allCommits);
-
-        let res = {
-          commits: targetCommits,
-          name,
-        };
+        const article = { name };
 
         if (tags) {
-          res = { ...res, tags };
+          article.topics = tags;
         }
 
         if (cover) {
@@ -163,24 +125,45 @@ function CreateEditArticle(props) {
             Array.isArray(cover?.fileList) && cover?.fileList.length > 0
               ? cover?.fileList[0].url || cover?.fileList[0].response.path
               : '';
-          res = { ...res, cover: url };
+          article.cover = url;
         }
 
         if (props.childrenDrawerType === EDIT_ARTICLE) {
-          // If is EDIT_ARTICLE and release some commits, should set isSelected false back
-          const relasedCommits = getRelasedCommits(
-            initialTargetKeys,
-            commits,
-            allCommits,
-          );
+          dispatch.collection.editArticle(article);
+          dispatch.drawer.setVisible(false);
 
-          dispatch.collection.editArticle(res);
-
-          if (relasedCommits) {
-            dispatch.collection.releaseCommits(relasedCommits);
-          }
+          collectionSteps.forEach((step, index) => {
+            if (step.articleId === editArticleId) {
+              if (!steps.includes(index)) {
+                // Remove this step from currently edited article.
+                dispatch.collection.setStepById({
+                  stepId: step.id,
+                  stepProps: { articleId: null },
+                });
+              }
+            } else {
+              if (steps.includes(index)) {
+                // Add this step to the currently edited article.
+                dispatch.collection.setStepById({
+                  stepId: step.id,
+                  stepProps: { articleId: editArticleId },
+                });
+              }
+            }
+          });
         } else {
-          dispatch.collection.createArticle(res);
+          article.id = shortid.generate();
+          dispatch.collection.createArticle(article);
+
+          // Update articleId field for selected steps.
+          collectionSteps.forEach((step, index) => {
+            if (steps.includes(index)) {
+              dispatch.collection.setStepById({
+                stepId: step.id,
+                stepProps: { articleId: article.id },
+              });
+            }
+          });
         }
       }
     });
@@ -199,9 +182,7 @@ function CreateEditArticle(props) {
       return 0;
     });
 
-    setFieldsValue({
-      commits: sortedNextTargetKeys,
-    });
+    setFieldsValue({ steps: sortedNextTargetKeys });
     setTargetKeys(sortedNextTargetKeys);
   }
 
@@ -303,16 +284,15 @@ function CreateEditArticle(props) {
           )}
         </Form.Item>
         <Form.Item label="选择步骤">
-          {getFieldDecorator('commits', {
-            rules: [{ required: true, message: '请选择文章涉及的步骤' }],
+          {getFieldDecorator('steps', {
+            rules: [{ required: true, message: '请选择文章包含的步骤' }],
             initialValue: initialTargetKeys,
           })(
             <Transfer
-              dataSource={selectableCommits}
+              dataSource={collectionSteps}
               titles={['所有步骤', '已选步骤']}
               targetKeys={targetKeys}
               operations={['选择', '释放']}
-              css={css``}
               listStyle={{
                 width: 320,
                 height: 300,

@@ -12,7 +12,7 @@ import {
   collectionPath,
   collectionCheckpoint,
   initializeTutureBranch,
-} from '../utils/tuture';
+} from '../utils/collection';
 import { TUTURE_BRANCH } from '../constants';
 
 export default class Commit extends BaseCommand {

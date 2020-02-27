@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { useSelector, useDispatch, useStore } from 'react-redux';
-import { Divider } from 'antd';
+import { useSelector, useDispatch } from 'react-redux';
+import { Divider, Icon } from 'antd';
 import { Link } from 'react-router-dom';
 
 /** @jsx jsx */
@@ -40,18 +40,18 @@ const itemTitleStyle = css`
   color: rgba(0, 0, 0, 1);
 `;
 
+const linkDefaultStyle = css`
+  color: rgba(0, 0, 0, 1);
+`;
+
 function CollectionCatalogue() {
   const { childrenVisible, childrenDrawerType } = useSelector(
     (state) => state.drawer,
   );
   const [selectItem, setSelectItem] = useState('');
 
-  const store = useStore();
   const dispatch = useDispatch();
-
-  const collectionCatalogue = useSelector(
-    store.select.collection.getCollectionCatalogue,
-  );
+  const { articles } = useSelector((state) => state.collection.collection);
 
   function onToggleChildrenDrawer(e, toggleChildrenDrawerType, articleId) {
     e.stopPropagation();
@@ -82,25 +82,31 @@ function CollectionCatalogue() {
     dispatch({ type: 'collection/setNowArticle', payload: articleId });
   }
 
+  function onTocItemClick() {
+    dispatch({ type: 'drawer/setVisible', payload: false });
+    setSelectItem('');
+  }
+
   return (
     <div>
       <div>
         <ul className="catalogue" css={listStyle}>
-          {collectionCatalogue.map((item) => (
+          {articles.map((article) => (
             <li
               className="catalogue-item"
-              key={item.id}
-              id={item.id}
-              onClick={() => onCatalogueItemClick(item.id)}
+              key={article.id}
+              id={article.id}
+              onClick={() => onCatalogueItemClick(article.id)}
               css={css`
                 ${listItemStyle}
 
-                background: ${selectItem === item.id ? '#FFF' : 'transparent'};
+                background: ${
+                  selectItem === article.id ? '#FFF' : 'transparent'
+                };
 
                 &:hover > span {
                   visibility: visible;
                 }
-
               `}
             >
               <span
@@ -112,8 +118,8 @@ function CollectionCatalogue() {
                   overflow: hidden;
                 `}
               >
-                <Link to={`/articles/${item.id}`} css={itemTitleStyle}>
-                  {item.name}
+                <Link to={`/articles/${article.id}`} css={itemTitleStyle}>
+                  {article.name}
                 </Link>
               </span>
               <span
@@ -123,7 +129,7 @@ function CollectionCatalogue() {
                   }
                 `}
                 onClick={(e) =>
-                  onToggleChildrenDrawer(e, EDIT_ARTICLE, item.id)
+                  onToggleChildrenDrawer(e, EDIT_ARTICLE, article.id)
                 }
               >
                 <IconFont type="icon-moreread" />
@@ -143,7 +149,7 @@ function CollectionCatalogue() {
             css={css`
               ${listItemStyle}
 
-              &: hover {
+              &:hover {
                 background: #fff;
               }
             `}
@@ -156,6 +162,24 @@ function CollectionCatalogue() {
               <IconFont type="icon-plus" />
             </span>
           </li>
+
+          <Link to="/toc" css={linkDefaultStyle}>
+            <li
+              css={css`
+                ${listItemStyle}
+
+                &:hover {
+                  background: #fff;
+                }
+              `}
+              onClick={onTocItemClick}
+            >
+              <span css={itemTitleStyle}>编排目录</span>
+              <span>
+                <Icon type="profile" />
+              </span>
+            </li>
+          </Link>
         </ul>
       </div>
       <Global

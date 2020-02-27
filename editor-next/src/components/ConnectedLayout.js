@@ -3,6 +3,7 @@ import { useMemo, useEffect } from 'react';
 import { useSelector, useDispatch, useStore } from 'react-redux';
 import { Layout, Menu, Icon, Modal, Affix } from 'antd';
 import { Slate } from 'slate-react';
+
 import logo from '../assets/images/logo.svg';
 
 /** @jsx jsx */
@@ -44,6 +45,8 @@ function ConnectedLayout(props) {
   const value = useSelector(store.select.collection.nowArticleContent);
 
   const dispatch = useDispatch();
+
+  console.log('props', props);
 
   useEffect(() => {
     dispatch.diff.fetchDiff();

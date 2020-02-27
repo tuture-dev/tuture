@@ -19,7 +19,7 @@ function CollectionSetting(props) {
   // get nowArticle Meta
   const collectionMeta = useSelector(store.select.collection.collectionMeta);
 
-  const initialTags = collectionMeta?.tags || [];
+  const initialTags = collectionMeta?.topics || [];
   const initialCover = collectionMeta?.cover
     ? [
         {

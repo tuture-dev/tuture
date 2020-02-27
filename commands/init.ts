@@ -6,9 +6,9 @@ import { prompt } from 'inquirer';
 
 import logger from '../utils/logger';
 import BaseCommand from '../base';
-import { Tuture, TutureMeta } from '../types';
+import { Collection, Meta } from '../types';
 import { makeSteps, removeTutureSuite } from '../utils';
-import { saveTuture } from '../utils/tuture';
+import { saveCollection } from '../utils/collection';
 import { git, inferGithubField, appendGitignore } from '../utils/git';
 import { COLLECTION_PATH } from '../constants';
 
@@ -51,7 +51,7 @@ export default class Init extends BaseCommand {
     }
   }
 
-  async promptMetaData(yes: boolean): Promise<TutureMeta> {
+  async promptMetaData(yes: boolean): Promise<Meta> {
     const answer: any = yes
       ? { name: 'My Awesome Tutorial' }
       : await prompt([
@@ -89,7 +89,7 @@ export default class Init extends BaseCommand {
       delete answer.categories;
     }
 
-    return answer as TutureMeta;
+    return answer as Meta;
   }
 
   async run() {
@@ -104,17 +104,23 @@ export default class Init extends BaseCommand {
       await this.promptInitGit(flags.yes);
     }
 
-    const tutureMeta = await this.promptMetaData(flags.yes);
+    const meta = await this.promptMetaData(flags.yes);
+    const steps = await makeSteps(
+      this.userConfig.ignoredFiles,
+      flags.contextLines,
+    );
 
     try {
-      const tuture: Tuture = {
-        ...tutureMeta,
+      const collection: Collection = {
+        ...meta,
         created: new Date(),
-        updated: new Date(),
-        steps: await makeSteps(
-          this.userConfig.ignoredFiles,
-          flags.contextLines,
-        ),
+        articles: [
+          {
+            ...meta,
+            commits: steps.map((step) => step.commit),
+          },
+        ],
+        steps,
       };
 
       const github = await inferGithubField();
@@ -125,10 +131,10 @@ export default class Init extends BaseCommand {
             github,
           )}. Feel free to revise or delete it.`,
         );
-        tuture.github = github;
+        collection.github = github;
       }
 
-      saveTuture(tuture);
+      saveCollection(collection);
       appendGitignore(this.userConfig);
 
       logger.log('success', 'Tuture tutorial has been initialized!');

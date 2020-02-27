@@ -1,44 +1,57 @@
-export interface Explain {
-  pre?: string;
-  post?: string;
+import { Element } from 'slate';
+
+export interface Explain extends Element {
+  type: 'explain';
+  fixed: true;
 }
 
-export interface Diff {
+export interface DiffBlock extends Element {
+  type: 'diff-block';
   file: string;
-  explain?: Explain;
-  display?: boolean;
+  commit: string;
+  hiddenLines?: Array<number>;
 }
 
-export interface TutureMeta {
+export interface File extends Element {
+  type: 'file';
+  file: string;
+  display?: boolean;
+  children: [Explain, DiffBlock, Explain];
+}
+
+export interface Meta {
   name: string;
+  description?: string;
+  id: string;
+  cover?: string;
+  created?: Date;
   topics?: string[];
   categories?: string[];
-  description?: string;
-  created?: Date;
-  updated?: Date;
-  cover?: string;
   github?: string;
 }
 
-export interface Split extends TutureMeta {
-  start: string;
-  end: string;
+export interface Article extends Meta {
+  commits: string[];
 }
 
-export interface Commit {
-  name: string;
+export interface StepTitle extends Element {
+  type: 'heading-two';
   commit: string;
+  id: string;
+  fixed: true;
 }
 
-export interface Step extends Commit {
-  explain?: Explain;
-  diff: Diff[];
+export interface Step extends Element {
+  type: 'step';
+  id: string;
+  articleId?: string | null;
   outdated?: boolean;
+  commit: string;
+  children: Array<StepTitle | Explain | File>;
 }
 
-export interface Tuture extends TutureMeta {
-  id?: string;
-  splits?: Split[];
+export interface Collection extends Meta {
+  articles: Article[];
   steps: Step[];
 }
 

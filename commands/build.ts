@@ -1,22 +1,23 @@
 import fs from 'fs-extra';
 import path from 'path';
 import chalk from 'chalk';
-import zip from 'lodash.zip';
+import { Element } from 'slate';
+import { toMarkdown } from 'editure';
 import { flags } from '@oclif/command';
-import { File, Change } from 'parse-diff';
+import { File as DiffFile, ChangeType } from 'parse-diff';
 
 import BaseCommand from '../base';
 import { isInitialized } from '../utils';
 import logger from '../utils/logger';
-import { loadCollection } from '../utils/tuture';
+import { loadCollection } from '../utils/collection';
 import { Asset, loadAssetsTable, checkAssets } from '../utils/assets';
 import { generateUserProfile } from '../utils/internals';
 import { DIFF_PATH } from '../constants';
-import { Diff, Step, Tuture, TutureMeta } from '../types';
+import { DiffBlock, Step, Collection, Meta } from '../types';
 
 type RawDiff = {
   commit: string;
-  diff: File[];
+  diff: DiffFile[];
 };
 
 // Internal hints for rendering code lines.
@@ -34,6 +35,48 @@ const diffRenderHints: { [mode: string]: { [diffType: string]: string } } = {
     omit: '...',
   },
 };
+
+function concatCodeStr(diffItem: DiffFile) {
+  let codeStr = '';
+  const DIFF_ADD: number[] = [];
+  const DIFF_DEL: number[] = [];
+
+  diffItem.chunks.map((chunk, chunkIndex) => {
+    chunk.changes.map((change, index) => {
+      const { content } = change;
+
+      if (/[+]/.test(content)) {
+        DIFF_ADD.push(index);
+      } else if (/[-]/.test(content)) {
+        DIFF_DEL.push(index);
+      }
+
+      // handle render code content
+      let code = content;
+
+      if (content !== 'normal' && content.length === 1) {
+        code = content.replace(/[+-]/, ' ');
+      } else if (content !== 'normal' && content.length > 1) {
+        code = content.slice(1);
+      }
+
+      if (
+        chunkIndex === diffItem.chunks.length - 1 &&
+        index === chunk.changes.length - 1
+      ) {
+        codeStr += code;
+      } else {
+        codeStr += `${code}\n`;
+      }
+
+      return change;
+    });
+
+    return chunk;
+  });
+
+  return { codeStr, DIFF_ADD, DIFF_DEL };
+}
 
 export default class Build extends BaseCommand {
   static description = 'Build tutorial into a markdown document';
@@ -63,16 +106,8 @@ export default class Build extends BaseCommand {
   }
 
   // Template for metadata of hexo posts.
-  hexoFrontMatterTmpl(meta: TutureMeta) {
-    const {
-      name,
-      description,
-      topics,
-      categories,
-      created,
-      updated,
-      cover,
-    } = meta;
+  hexoFrontMatterTmpl(meta: Meta) {
+    const { name, description, topics, categories, created, cover } = meta;
     const elements = ['---', `title: "${name.replace('"', '')}"`];
     if (description) {
       elements.push(
@@ -94,9 +129,6 @@ export default class Build extends BaseCommand {
     if (created) {
       elements.push(`date: ${new Date(created).toISOString()}`);
     }
-    if (updated) {
-      elements.push(`updated: ${new Date(updated).toISOString()}`);
-    }
     if (cover) {
       elements.push(`photos:\n  - ${cover}`);
     }
@@ -106,66 +138,55 @@ export default class Build extends BaseCommand {
   }
 
   // Template for single line of change.
-  changeTmpl(change: Change, newFile = false) {
+  changeTmpl(content: string, type: ChangeType, newFile = false) {
     let prefix = '';
     const mode = this.userConfig.hexo ? 'hexo' : 'plain';
 
-    if (mode === 'plain' && change.type === 'del') {
+    if (mode === 'plain' && type === 'del') {
       return null;
     }
 
     if (!newFile) {
-      prefix = diffRenderHints[mode][change.type];
+      prefix = diffRenderHints[mode][type];
     }
 
-    return prefix + change.content.slice(1);
-  }
-
-  // Template for explanation string.
-  explainTmpl(explain: string | undefined) {
-    let text = this.sanitize(explain);
-
-    if (this.userConfig.hexo) {
-      text = text.replace(/::: (\w+)([^]+?):::/g, (_, type, content) => {
-        return `{% note ${type} %}${content}{% endnote %}`;
-      });
-    } else {
-      text = text.replace(/::: (\w+)([^]+?):::/g, (_, __, content: string) =>
-        content
-          .trim()
-          .split(/\r?\n/)
-          .map((elem) => `> ${elem}`)
-          .join('\n'),
-      );
-    }
-
-    return text;
+    return prefix + content;
   }
 
   // Template for code blocks.
-  codeBlockTmpl(file: File, link?: string) {
-    const filename = path.basename(file.to || '');
+  diffBlockTmpl(diff: DiffFile, hiddenLines?: number[], link?: string) {
+    const filename = path.basename(diff.to || '');
     const lang = filename ? filename.split('.').slice(-1)[0] : '';
     const mode = this.userConfig.hexo ? 'hexo' : 'plain';
 
-    const code = file.chunks
-      .map((chunk) => {
-        const { changes } = chunk;
-        return changes
-          ? changes
-              .map((change) => this.changeTmpl(change, file.new))
-              .filter((elem) => elem !== null)
-              .join('\n')
-          : null;
+    const { codeStr, DIFF_ADD, DIFF_DEL } = concatCodeStr(diff);
+    const code = codeStr
+      .split('\n')
+      .map((line, index) => {
+        if (hiddenLines && hiddenLines.includes(index)) {
+          if (hiddenLines.includes(index - 1)) {
+            // If previous line is already hidden, don't show this line.
+            return null;
+          }
+          const spaces = line.length - line.trimLeft().length;
+          return `${' '.repeat(spaces)}// ...`;
+        } else if (DIFF_ADD.includes(index)) {
+          return this.changeTmpl(line, 'add', diff.new);
+        } else if (DIFF_DEL.includes(index)) {
+          return this.changeTmpl(line, 'del', diff.new);
+        } else {
+          return line;
+        }
       })
-      .filter((elem) => elem)
-      .join(diffRenderHints[mode]['omit']);
+      .filter((line) => line !== null)
+      .map((line) => (line && line.match(/^\s+$/) ? '' : line))
+      .join('\n');
 
     const head = [lang];
 
     if (mode === 'hexo') {
-      if (file.to) {
-        head.push(file.to);
+      if (diff.to) {
+        head.push(diff.to);
         if (link) {
           head.push(link);
           head.push('查看完整代码');
@@ -176,66 +197,63 @@ export default class Build extends BaseCommand {
     return `\`\`\`${head.join(' ')}\n${code}\n\`\`\``;
   }
 
-  // Markdown template for a Diff object.
-  diffTmpl(diff: Diff, file: File, link?: string) {
-    const elements = [
-      diff.explain ? this.explainTmpl(diff.explain.pre) : '',
-      this.codeBlockTmpl(file, link),
-      diff.explain ? this.explainTmpl(diff.explain.post) : '',
-    ];
-
-    return elements
-      .filter((elem) => elem)
-      .join('\n\n')
-      .trim();
+  noteBlockTmpl(content: string, level: string) {
+    if (this.userConfig.hexo) {
+      return `{% note ${level} %}\n${content}\n{% endnote %}`;
+    }
+    return `::: ${level}\n${content}\n:::`;
   }
 
-  // Markdown template for a single Step.
-  stepTmpl(step: Step, files: File[], github?: string) {
-    const { name, explain, diff, commit } = step;
-    const elements = [
-      this.sanitize(`## ${name}`),
-      explain ? this.explainTmpl(explain.pre) : '',
-      zip(diff, files)
-        .map((zipObj) => {
-          const [diff, file] = zipObj;
-          const link =
-            github && file ? `${github}/blob/${commit}/${file.to}` : undefined;
-          return diff && file && diff.display
-            ? this.diffTmpl(diff, file, link)
-            : '';
-        })
-        .filter((elem) => elem)
-        .join('\n\n'),
-      explain ? this.explainTmpl(explain.post) : '',
-    ];
-
-    return elements
-      .filter((elem) => elem)
-      .join('\n\n')
-      .trim();
+  getDiffFile(rawDiffs: RawDiff[], commit: string, file: string) {
+    return rawDiffs
+      .filter((rawDiff) => rawDiff.commit === commit)[0]
+      .diff.filter((diffFile) => diffFile.to === file)[0];
   }
 
   // Markdown template for the whole tutorial.
-  tutorialTmpl(meta: TutureMeta, steps: Step[], rawDiffs: RawDiff[]) {
-    const { name, description, github, cover } = meta;
-    const elements = [
-      zip(steps, rawDiffs)
-        .map((zipObj) => {
-          const [step, rawDiff] = zipObj;
-          if (!step || !rawDiff) return '';
+  tutorialTmpl(meta: Meta, steps: Step[], rawDiffs: RawDiff[]) {
+    const { name, description, cover, github } = meta;
 
-          // Sort raw diffs according to tuture.yml
-          const filenames = step.diff.map((diff) => diff.file);
-          const files = filenames.map((filename) =>
-            rawDiff.diff.find((elem) => elem.to === filename),
-          ) as File[];
+    const stepConverter = (node: Element) => {
+      return node.children.map((n) => toMarkdown(n)).join('\n\n');
+    };
 
-          return this.stepTmpl(step, files, github);
-        })
-        .filter((elem) => elem)
-        .join('\n\n'),
-    ];
+    const fileConverter = (node: Element) => {
+      return node.display
+        ? node.children.map((n) => toMarkdown(n)).join('\n\n')
+        : '';
+    };
+
+    const explainConverter = (node: Element) => {
+      return node.children.map((n) => toMarkdown(n)).join('\n\n');
+    };
+
+    const diffBlockConverter = (node: Element) => {
+      const { commit, file, hiddenLines } = node as DiffBlock;
+      const diff = this.getDiffFile(rawDiffs, commit, file);
+      const link = github ? `${github}/blob/${commit}/${file}` : undefined;
+
+      return this.diffBlockTmpl(diff, hiddenLines, link);
+    };
+
+    const noteBlockConverter = (node: Element) => {
+      const { level = 'default', children } = node;
+      const content = children.map((n) => toMarkdown(n)).join('\n\n');
+
+      return this.noteBlockTmpl(content, level);
+    };
+
+    const customBlockConverters = {
+      step: stepConverter,
+      file: fileConverter,
+      explain: explainConverter,
+      ['diff-block']: diffBlockConverter,
+      note: noteBlockConverter,
+    };
+
+    const elements = steps.map((step) =>
+      toMarkdown(step, undefined, customBlockConverters),
+    );
 
     // Add cover to the front.
     if (this.userConfig.hexo) {
@@ -272,63 +290,49 @@ export default class Build extends BaseCommand {
     return updated;
   }
 
-  generateTutorials(tuture: Tuture, rawDiffs: RawDiff[]) {
+  generateTutorials(collection: Collection, rawDiffs: RawDiff[]) {
     const {
       name,
-      splits,
+      articles,
       description,
       topics,
       categories,
       github,
       steps,
       created,
-      updated,
       cover,
-    } = tuture;
+    } = collection;
 
-    const meta: TutureMeta = {
+    const meta = {
       topics,
       categories,
       github,
       created,
-      updated,
       name,
       description,
       cover,
     };
 
-    let tutorials: string[] = [];
-    let titles: string[] = [];
+    const titles = articles.map(
+      (split, index) => split.name || `${name} (${index + 1})`,
+    );
 
-    if (splits) {
-      const commits = rawDiffs.map((diff) => diff.commit);
-      titles = splits.map(
-        (split, index) => split.name || `${name} (${index + 1})`,
+    // Iterate over each split of tutorial.
+    const tutorials = articles.map((article, index) => {
+      const articleSteps = steps.filter(
+        (step) => step.articleId === article.id,
       );
 
-      // Iterate over each split of tutorial.
-      tutorials = splits.map((split, index) => {
-        const start = commits.indexOf(split.start);
-        const end = commits.indexOf(split.end) + 1;
+      // Override outmost metadata with article metadata.
+      const articleMeta = { ...meta, ...article };
 
-        // Override outmost metadata with split metadata.
-        const splitMeta = { ...meta, ...split };
+      // Ensure the order for created timestamp.
+      if (created) {
+        articleMeta.created = new Date(Date.parse(created.toString()) + index);
+      }
 
-        // Ensure the order for created timestamp.
-        if (created) {
-          splitMeta.created = new Date(Date.parse(created.toString()) + index);
-        }
-
-        return this.tutorialTmpl(
-          splitMeta,
-          steps.slice(start, end),
-          rawDiffs.slice(start, end),
-        );
-      });
-    } else {
-      tutorials = [this.tutorialTmpl(meta, steps, rawDiffs)];
-      titles = [name];
-    }
+      return this.tutorialTmpl(articleMeta, articleSteps, rawDiffs);
+    });
 
     return [tutorials, titles];
   }
@@ -368,7 +372,7 @@ export default class Build extends BaseCommand {
       this.exit(1);
     }
 
-    const tuture = await loadCollection();
+    const collection = await loadCollection();
     const rawDiffs: RawDiff[] = JSON.parse(
       fs.readFileSync(DIFF_PATH).toString(),
     );
@@ -383,19 +387,11 @@ export default class Build extends BaseCommand {
       );
     }
 
-    if (flags.out && tuture.splits) {
-      logger.log(
-        'error',
-        'Cannot specify output target when tutorial splitting is enabled.',
-      );
-      this.exit(1);
-    }
-
-    if (flags.hexo && !tuture.github) {
+    if (flags.hexo && !collection.github) {
       logger.log('warning', 'No github field provided.');
     }
 
-    const [tutorials, titles] = this.generateTutorials(tuture, rawDiffs);
+    const [tutorials, titles] = this.generateTutorials(collection, rawDiffs);
     this.saveTutorials(tutorials, titles, assets);
   }
 }

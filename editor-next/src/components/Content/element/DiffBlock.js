@@ -172,7 +172,7 @@ function DiffBlockElement(props) {
                         text-align: right;
                       `}
                     >
-                      {i}
+                      {i + 1}
                     </span>
                     {line.map((token, key) => (
                       <span

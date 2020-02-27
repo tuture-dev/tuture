@@ -4,7 +4,9 @@ import path from 'path';
 import parseDiff from 'parse-diff';
 import simplegit from 'simple-git/promise';
 
-import logger from '../utils/logger';
+import logger from './logger';
+import { emptyChildren, emptyExplain } from './nodes';
+import { File, DiffBlock } from '../types';
 import { TUTURE_ROOT } from '../constants';
 
 // Interface for running git commands.
@@ -23,10 +25,22 @@ export async function getGitDiff(commit: string, ignoredFiles: string[]) {
   changedFiles = changedFiles.slice(0, changedFiles.length - 1);
 
   return changedFiles.map((file) => {
-    const fileObj: any = { file };
+    const diffBlock: DiffBlock = {
+      type: 'diff-block',
+      file,
+      commit,
+      hiddenLines: [],
+      children: emptyChildren,
+    };
+    const fileObj: File = {
+      type: 'file',
+      file,
+      children: [emptyExplain, diffBlock, emptyExplain],
+    };
     if (!ignoredFiles.some((pattern: string) => mm.isMatch(file, pattern))) {
       fileObj.display = true;
     }
+
     return fileObj;
   });
 }

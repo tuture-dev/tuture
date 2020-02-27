@@ -1,7 +1,7 @@
 import crypto from 'crypto';
 import { prompt } from 'inquirer';
 
-import { TutureMeta } from '../types';
+import { Meta } from '../types';
 
 type ConfirmResponse = {
   answer: boolean;
@@ -22,24 +22,24 @@ export async function promptMetaData(yes: boolean) {
   const answer: any = yes
     ? { name: 'My Awesome Tutorial' }
     : await prompt([
-      {
-        name: 'name',
-        message: 'Tutorial Name',
-        default: 'My Awesome Tutorial',
-      },
-      {
-        name: 'description',
-        message: 'Description',
-      },
-      {
-        name: 'topics',
-        message: 'Topics',
-      },
-      {
-        name: 'categories',
-        message: 'Categories',
-      },
-    ]);
+        {
+          name: 'name',
+          message: 'Tutorial Name',
+          default: 'My Awesome Tutorial',
+        },
+        {
+          name: 'description',
+          message: 'Description',
+        },
+        {
+          name: 'topics',
+          message: 'Topics',
+        },
+        {
+          name: 'categories',
+          message: 'Categories',
+        },
+      ]);
   answer.id = crypto.randomBytes(16).toString('hex');
 
   // TODO: process user input with inquirer built-ins
@@ -56,5 +56,5 @@ export async function promptMetaData(yes: boolean) {
     delete answer.categories;
   }
 
-  return answer as TutureMeta;
+  return answer as Meta;
 }
