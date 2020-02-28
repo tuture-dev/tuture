@@ -96,6 +96,7 @@ function PageCatalogue() {
         targetOffset={64}
         onChange={onChange}
         affix={false}
+        getContainer={() => document.getElementById('scroll-container')}
       >
         {nowArticleCatalogue.map((item) => (
           <Link
