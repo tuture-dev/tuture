@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Form,
   Input,
@@ -51,6 +51,7 @@ function CreateEditArticle(props) {
   const store = useStore();
   const dispatch = useDispatch();
   const [selectedKeys, setSelectedKeys] = useState([]);
+  const [collectionStepsState, setCollectionStepsState] = useState([]);
 
   // get router history && first article id for delete jump
   const history = useHistory();
@@ -63,14 +64,23 @@ function CreateEditArticle(props) {
     (state) => state.collection,
   );
 
+  const steps = collection?.steps || [];
+  const articles = collection?.articles || [];
+
   // get all steps
-  const collectionSteps = collection.steps.map((step, index) => ({
+  const collectionSteps = steps.map((step, index) => ({
     key: index,
     id: step.id,
     articleId: step.articleId,
     title: getHeadings([step])[0].title,
-    ...getArtcleMetaById(step.articleId, collection.articles),
+    ...getArtcleMetaById(step.articleId, articles),
   }));
+
+  useEffect(() => {
+    if (collectionSteps) {
+      setCollectionStepsState(collectionSteps);
+    }
+  }, [collection, collectionSteps]);
 
   const initialTargetKeys =
     props.childrenDrawerType === EDIT_ARTICLE
@@ -80,8 +90,6 @@ function CreateEditArticle(props) {
       : [];
 
   const [targetKeys, setTargetKeys] = useState(initialTargetKeys || []);
-
-  console.log('targetKeys', initialTargetKeys, targetKeys);
 
   // get nowArticle Meta
   const meta = useSelector(
@@ -135,8 +143,6 @@ function CreateEditArticle(props) {
 
           article.cover = url;
         }
-
-        console.log('article', article, editArticleId);
 
         if (props.childrenDrawerType === EDIT_ARTICLE) {
           dispatch.collection.editArticle(article);
@@ -194,6 +200,16 @@ function CreateEditArticle(props) {
       return 0;
     });
 
+    // check nowTargetKeys status
+    const newCollectionStepsState = collectionStepsState.map((step) => {
+      if (targetKeys.includes(step.key) && !nextTargetKeys.includes(step.key)) {
+        return { ...step, articleId: '', articleIndex: '', articleName: '' };
+      }
+
+      return step;
+    });
+
+    setCollectionStepsState(newCollectionStepsState);
     setFieldsValue({ steps: sortedNextTargetKeys });
     setTargetKeys(sortedNextTargetKeys);
   }
@@ -301,7 +317,7 @@ function CreateEditArticle(props) {
             initialValue: initialTargetKeys,
           })(
             <Transfer
-              dataSource={collectionSteps}
+              dataSource={collectionStepsState}
               titles={['所有步骤', '已选步骤']}
               targetKeys={targetKeys}
               operations={['选择', '释放']}
