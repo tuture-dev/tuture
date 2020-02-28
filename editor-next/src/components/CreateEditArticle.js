@@ -79,11 +79,13 @@ function CreateEditArticle(props) {
     ...getArtcleMetaById(step.articleId, articles),
   }));
 
+  // prettier-ignore
   useEffect(() => {
     if (collectionSteps) {
       setCollectionStepsState(collectionSteps);
     }
-  }, [collection, collectionSteps]);
+
+  }, [collection]);
 
   const initialTargetKeys =
     props.childrenDrawerType === EDIT_ARTICLE
