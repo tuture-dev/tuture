@@ -4,7 +4,7 @@ import { useSlate } from 'slate-react';
 import Button from './Button';
 import ToolbarIcon from './ToolbarIcon';
 
-const HistoryButton = ({ action = 'undo', title, icon }) => {
+const HistoryButton = ({ action, title, icon }) => {
   const editor = useSlate();
 
   return (
