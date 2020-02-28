@@ -139,7 +139,7 @@ function PageHeader() {
           font-family: PingFangSC-Regular, PingFang SC;
           font-weight: 400;
           color: rgba(0, 0, 0, 0.65);
-          line-height: 22px;
+          line-height: 24px !important;
           margin-bottom: 16px;
           resize: none;
           padding: 0;
