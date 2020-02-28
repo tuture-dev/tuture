@@ -19,6 +19,8 @@ function StepFileList() {
       type: 'collection/switchFile',
       payload: { ...res, commit: nowStepCommit },
     });
+
+    dispatch.collection.saveCollection();
   }
 
   function onToggleShowFile(file) {
@@ -30,6 +32,8 @@ function StepFileList() {
         display: !file.display,
       },
     });
+
+    dispatch.collection.saveCollection();
   }
 
   return (

@@ -325,7 +325,6 @@ function Toc() {
                 {filteredUnassignedStepList.map((item) => (
                   <li
                     key={item.id}
-                    onClick={() => handleAddStep(item)}
                     css={css`
                       ${listItemStyle}
                       height: 52px;
@@ -352,6 +351,7 @@ function Toc() {
                     </span>
                     <span
                       className="list-item-action"
+                      onClick={() => handleAddStep(item)}
                       css={css`
                         ${listItemActionStyle}
 

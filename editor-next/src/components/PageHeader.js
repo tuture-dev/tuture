@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 import { Input } from 'antd';
@@ -34,6 +36,8 @@ function PageHeader() {
     store.select.collection.getArticleMetaById({ id: nowArticleId }),
   );
   const dispatch = useDispatch();
+  const [timeoutHeaderState, setTimeoutHeaderState] = useState(null);
+  const [timeoutDescriptionState, setTimeoutDescriptionState] = useState(null);
 
   function onToggleChildrenDrawer(e) {
     e.stopPropagation();
@@ -41,6 +45,38 @@ function PageHeader() {
     dispatch.drawer.setChildrenVisible(true);
     dispatch.collection.setEditArticleId(nowArticleId);
     dispatch.drawer.setChildrenDrawerType(EDIT_ARTICLE);
+  }
+
+  function resetTimeout(id, newId) {
+    clearTimeout(id);
+
+    return newId;
+  }
+
+  function handleSaveCollection() {
+    dispatch.collection.saveCollection();
+  }
+
+  function handleHeaderChange(e) {
+    dispatch.collection.setArticleTitle(e.target.value);
+
+    setTimeoutHeaderState(
+      resetTimeout(timeoutHeaderState, setTimeout(handleSaveCollection, 1000)),
+    );
+  }
+
+  function handleDescriptionChange(e) {
+    dispatch({
+      type: 'collection/setArticleDescription',
+      payload: e.target.value,
+    });
+
+    setTimeoutDescriptionState(
+      resetTimeout(
+        timeoutDescriptionState,
+        setTimeout(handleSaveCollection, 1000),
+      ),
+    );
   }
 
   return (
@@ -61,7 +97,7 @@ function PageHeader() {
         <Input
           placeholder="无标题"
           value={name}
-          onChange={(e) => dispatch.collection.setArticleTitle(e.target.value)}
+          onChange={handleHeaderChange}
           css={css`
             font-size: 30px;
             font-family: PingFangSC-Medium, PingFang SC;
@@ -97,12 +133,7 @@ function PageHeader() {
         placeholder="无描述"
         value={description}
         autoSize
-        onChange={(e) =>
-          dispatch({
-            type: 'collection/setArticleDescription',
-            payload: e.target.value,
-          })
-        }
+        onChange={handleDescriptionChange}
         css={css`
           font-size: 14px;
           font-family: PingFangSC-Regular, PingFang SC;

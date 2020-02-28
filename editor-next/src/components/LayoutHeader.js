@@ -2,7 +2,7 @@ import React from 'react';
 
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
-import { Button, Row, Col, Breadcrumb } from 'antd';
+import { Button, Row, Col, Breadcrumb, notification } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouteMatch, Link } from 'react-router-dom';
 
@@ -67,6 +67,12 @@ function LayoutHeader() {
               css={css`
                 margin-left: 20px;
               `}
+              onClick={() =>
+                notification.info({
+                  message: '此功能正在研发中，敬请期待！',
+                  top: 72,
+                })
+              }
             >
               同步
             </Button>

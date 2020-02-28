@@ -109,19 +109,19 @@ function CollectionCatalogue() {
                 }
               `}
             >
-              <span
-                css={css`
-                  display: inline-block;
-                  max-width: 224px;
-                  white-space: nowrap;
-                  text-overflow: ellipsis;
-                  overflow: hidden;
-                `}
-              >
-                <Link to={`/articles/${article.id}`} css={itemTitleStyle}>
+              <Link to={`/articles/${article.id}`} css={itemTitleStyle}>
+                <span
+                  css={css`
+                    display: inline-block;
+                    max-width: 224px;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                    overflow: hidden;
+                  `}
+                >
                   {article.name}
-                </Link>
-              </span>
+                </span>
+              </Link>
               <span
                 css={css`
                   &:hover {

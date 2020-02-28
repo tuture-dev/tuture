@@ -1,7 +1,7 @@
-import { useMemo, useEffect } from 'react';
+import { useMemo, useEffect, useState } from 'react';
 
 import { useSelector, useDispatch, useStore } from 'react-redux';
-import { Layout, Menu, Icon, Modal, Affix } from 'antd';
+import { Layout, Menu, Icon, Modal, Affix, BackTop } from 'antd';
 import { Slate } from 'slate-react';
 
 import logo from '../assets/images/logo.svg';
@@ -37,6 +37,7 @@ function ConnectedLayout(props) {
   const { visible, drawerType, childrenVisible, selectedKeys } = useSelector(
     (state) => state.drawer,
   );
+  const [timeoutState, setTimeoutState] = useState(null);
 
   const store = useStore();
   const { name: pageTitle } = useSelector(
@@ -59,13 +60,6 @@ function ConnectedLayout(props) {
     }
   }, [pageTitle]);
 
-  useEffect(() => {
-    const saveInterval = setInterval(() => {
-      dispatch.collection.saveCollection();
-    }, 10000);
-    return () => clearInterval(saveInterval);
-  }, [dispatch]);
-
   function handleOk() {
     dispatch({ type: 'versionControl/setCommitStatus', payload: NORMAL });
   }
@@ -74,11 +68,25 @@ function ConnectedLayout(props) {
     dispatch({ type: 'versionControl/setCommitStatus', payload: NORMAL });
   }
 
+  function handleSaveCollection() {
+    dispatch.collection.saveCollection();
+  }
+
+  function resetTimeout(id, newId) {
+    clearTimeout(id);
+
+    return newId;
+  }
+
   function onContentChange(val) {
     dispatch({
       type: 'collection/setArticleContent',
       payload: { fragment: val },
     });
+
+    setTimeoutState(
+      resetTimeout(timeoutState, setTimeout(handleSaveCollection, 1000)),
+    );
   }
 
   function oMenuClick({ key }) {
@@ -204,6 +212,11 @@ function ConnectedLayout(props) {
               `}
             >
               {children}
+              <BackTop
+                css={css`
+                  right: 24px;
+                `}
+              />
             </Content>
           </Layout>
         </Layout>

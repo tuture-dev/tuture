@@ -62,6 +62,8 @@ const toc = {
       dispatch.collection.updateArticles(articles);
       dispatch.collection.updateSteps(steps);
 
+      dispatch.collection.saveCollection();
+
       message.success('目录保存成功');
       this.setSaveStatus(false);
     },
