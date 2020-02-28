@@ -12,7 +12,7 @@ import {
   getStepTitle,
   getNumFromStepId,
 } from '../utils/collection';
-import { isCommitEqual } from '../utils/commit';
+import { isCommitEqual, timeout } from '../utils/commit';
 
 const collection = {
   state: {
@@ -260,21 +260,28 @@ const collection = {
       }
     },
     async commit(payload) {
-      const response = await fetch('/commit', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
-        body: JSON.stringify({
-          message: payload,
-        }),
-      });
+      try {
+        const response = await timeout(
+          5000,
+          fetch('/commit', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Accept: 'application/json',
+            },
+            body: JSON.stringify({
+              message: payload,
+            }),
+          }),
+        );
 
-      if (response.ok) {
-        message.success('提交成功！');
-      } else {
-        message.error('提交失败！');
+        if (response.ok) {
+          message.success('提交成功！');
+        } else {
+          message.error('提交失败！');
+        }
+      } catch (err) {
+        message.error('提交超时');
       }
 
       dispatch.commit.reset();

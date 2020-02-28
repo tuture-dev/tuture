@@ -13,7 +13,9 @@ function CollectionSetting(props) {
   const dispatch = useDispatch();
 
   // submit status
-  const loading = useSelector((state) => state.loading.models.collection);
+  const { editCollection: editCollectionLoading } = useSelector(
+    (state) => state.loading.effects.collection,
+  );
 
   // get nowArticle Meta
   const collectionMeta = useSelector(store.select.collection.collectionMeta);
@@ -197,7 +199,11 @@ function CollectionSetting(props) {
             >
               取消
             </Button>
-            <Button htmlType="submit" type="primary" loading={loading}>
+            <Button
+              htmlType="submit"
+              type="primary"
+              loading={editCollectionLoading}
+            >
               确认
             </Button>
           </div>
