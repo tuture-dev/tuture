@@ -19,9 +19,6 @@ export default class Reload extends BaseCommand {
 
   static flags = {
     help: flags.help({ char: 'h' }),
-    contextLines: flags.integer({
-      description: 'number of context lines for showing git diff',
-    }),
   };
 
   // Notify server to reload.
@@ -68,10 +65,7 @@ export default class Reload extends BaseCommand {
 
     const collection = await loadCollection(true);
 
-    const currentSteps: Step[] = await makeSteps(
-      this.userConfig.ignoredFiles,
-      flags.contextLines,
-    );
+    const currentSteps: Step[] = await makeSteps(this.userConfig.ignoredFiles);
     collection.steps = mergeSteps(collection.steps, currentSteps);
 
     const lastArticleId = collection.articles.slice(-1)[0].id;
