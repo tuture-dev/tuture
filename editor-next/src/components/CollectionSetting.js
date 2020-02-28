@@ -24,9 +24,9 @@ function CollectionSetting(props) {
   const initialCover = collectionMeta?.cover
     ? [
         {
-          url: collectionMeta?.cover,
+          url: `/${collectionMeta?.cover}`,
           uid: '-1',
-          name: 'tuture.jpg',
+          name: collectionMeta?.cover.split('/').slice(-1)[0],
           status: 'done',
         },
       ]

@@ -6,7 +6,7 @@ import { prompt } from 'inquirer';
 
 import logger from '../utils/logger';
 import BaseCommand from '../base';
-import { Collection, Meta } from '../types';
+import { Collection, Meta, Step } from '../types';
 import { makeSteps, removeTutureSuite } from '../utils';
 import { saveCollection } from '../utils/collection';
 import { git, inferGithubField, appendGitignore } from '../utils/git';
@@ -24,9 +24,6 @@ export default class Init extends BaseCommand {
     yes: flags.boolean({
       char: 'y',
       description: 'do not ask for prompts',
-    }),
-    contextLines: flags.integer({
-      description: 'number of context lines for showing git diff',
     }),
   };
 
@@ -105,21 +102,17 @@ export default class Init extends BaseCommand {
     }
 
     const meta = await this.promptMetaData(flags.yes);
-    const steps = await makeSteps(
-      this.userConfig.ignoredFiles,
-      flags.contextLines,
-    );
+    const steps = await makeSteps(this.userConfig.ignoredFiles);
+
+    steps.forEach((step) => {
+      step.articleId = meta.id;
+    });
 
     try {
       const collection: Collection = {
         ...meta,
         created: new Date(),
-        articles: [
-          {
-            ...meta,
-            commits: steps.map((step) => step.commit),
-          },
-        ],
+        articles: [meta],
         steps,
       };
 

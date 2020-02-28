@@ -19,9 +19,6 @@ export default class Reload extends BaseCommand {
 
   static flags = {
     help: flags.help({ char: 'h' }),
-    contextLines: flags.integer({
-      description: 'number of context lines for showing git diff',
-    }),
   };
 
   // Notify server to reload.
@@ -43,7 +40,7 @@ export default class Reload extends BaseCommand {
   }
 
   async run() {
-    const { flags } = this.parse(Reload);
+    this.parse(Reload);
 
     if (!(await isInitialized())) {
       logger.log(
@@ -67,21 +64,17 @@ export default class Reload extends BaseCommand {
     }
 
     const collection = await loadCollection(true);
-
-    const currentSteps: Step[] = await makeSteps(
-      this.userConfig.ignoredFiles,
-      flags.contextLines,
-    );
-    collection.steps = mergeSteps(collection.steps, currentSteps);
-
+    const currentSteps: Step[] = await makeSteps(this.userConfig.ignoredFiles);
     const lastArticleId = collection.articles.slice(-1)[0].id;
-    for (const step of collection.steps.reverse()) {
-      if (!step.articleId) {
+
+    currentSteps.forEach((step) => {
+      // For newly added steps, assign it to the last article.
+      if (!collection.steps.map((step) => step.id).includes(step.id)) {
         step.articleId = lastArticleId;
-      } else {
-        break;
       }
-    }
+    });
+
+    collection.steps = mergeSteps(collection.steps, currentSteps);
 
     saveCollection(collection);
     await this.notifyServer();

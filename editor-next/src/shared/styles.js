@@ -10,6 +10,7 @@ export const globalStyles = (
         font-family: 'Roboto', 'Ubuntu Mono', Consolas, monospace;
         line-height: 1.4;
         background: #eee;
+        word-break: break-all;
       }
 
       input {

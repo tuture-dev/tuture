@@ -1,7 +1,7 @@
 import fs from 'fs-extra';
 import mm from 'micromatch';
 import path from 'path';
-import parseDiff from 'parse-diff';
+import parseDiff, { File as DiffFile } from 'parse-diff';
 import simplegit from 'simple-git/promise';
 
 import logger from './logger';
@@ -12,6 +12,48 @@ import { TUTURE_ROOT } from '../constants';
 // Interface for running git commands.
 // https://github.com/steveukx/git-js
 export const git = simplegit().silent(true);
+
+function getHiddenLines(diffItem: DiffFile): number[] {
+  // Number of context normal lines to show for each diff.
+  const context = 3;
+
+  if (diffItem.chunks.length === 0) {
+    return [];
+  }
+
+  // An array to indicate whether a line should be shown.
+  const shownArr = diffItem.chunks[0].changes.map(
+    (change) => change.type !== 'normal',
+  );
+
+  let contextCounter = -1;
+  for (let i = 0; i < shownArr.length; i++) {
+    if (shownArr[i]) {
+      contextCounter = context;
+    } else {
+      contextCounter--;
+      if (contextCounter >= 0) {
+        shownArr[i] = true;
+      }
+    }
+  }
+
+  contextCounter = -1;
+  for (let i = shownArr.length - 1; i >= 0; i--) {
+    if (shownArr[i]) {
+      contextCounter = context;
+    } else {
+      contextCounter--;
+      if (contextCounter >= 0) {
+        shownArr[i] = true;
+      }
+    }
+  }
+
+  return shownArr
+    .map((elem, index) => (elem ? null : index))
+    .filter((elem) => elem !== null) as number[];
+}
 
 /**
  * Get all changed files of a given commit.
@@ -24,37 +66,40 @@ export async function getGitDiff(commit: string, ignoredFiles: string[]) {
     .split('\n');
   changedFiles = changedFiles.slice(0, changedFiles.length - 1);
 
-  return changedFiles.map((file) => {
-    const diffBlock: DiffBlock = {
-      type: 'diff-block',
-      file,
-      commit,
-      hiddenLines: [],
-      children: emptyChildren,
-    };
-    const fileObj: File = {
-      type: 'file',
-      file,
-      children: [emptyExplain, diffBlock, emptyExplain],
-    };
-    if (!ignoredFiles.some((pattern: string) => mm.isMatch(file, pattern))) {
-      fileObj.display = true;
-    }
+  const fileProms = changedFiles.map((file) => {
+    return new Promise<File>(async (resolve) => {
+      const diffItem = parseDiff(
+        await git.raw(['show', '-U99999', commit, file]),
+      )[0];
+      const diffBlock: DiffBlock = {
+        type: 'diff-block',
+        file,
+        commit,
+        hiddenLines: getHiddenLines(diffItem),
+        children: emptyChildren,
+      };
+      const fileObj: File = {
+        type: 'file',
+        file,
+        children: [emptyExplain, diffBlock, emptyExplain],
+      };
+      if (!ignoredFiles.some((pattern: string) => mm.isMatch(file, pattern))) {
+        fileObj.display = true;
+      }
 
-    return fileObj;
+      resolve(fileObj);
+    });
   });
+
+  return await Promise.all(fileProms);
 }
 
 /**
  * Store diff of all commits.
  */
-export async function storeDiff(commits: string[], contextLines?: number) {
+export async function storeDiff(commits: string[]) {
   const diffPromises = commits.map(async (commit: string) => {
-    const command = ['show', commit];
-    if (contextLines) {
-      command.splice(1, 0, `-U${contextLines}`);
-    }
-
+    const command = ['show', '-U99999', commit];
     const output = await git.raw(command);
     const diffText = output
       .replace(/\\ No newline at end of file\n/g, '')

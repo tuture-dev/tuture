@@ -105,9 +105,9 @@ function CreateEditArticle(props) {
   const initialCover = articleMeta?.cover
     ? [
         {
-          url: articleMeta?.cover,
+          url: `/${articleMeta?.cover}`,
           uid: '-1',
-          name: 'tuture.jpg',
+          name: articleMeta?.cover.split('/').slice(-1)[0],
           status: 'done',
         },
       ]
