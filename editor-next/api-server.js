@@ -5,7 +5,7 @@ const morgan = require('morgan');
 
 const app = express();
 const mockRoot = path.join('src', 'utils', 'data');
-const collectionPath = path.join(mockRoot, 'converted-tuture.json');
+const collectionPath = path.join(mockRoot, 'collection.json');
 const diffPath = path.join(mockRoot, 'diff.json');
 
 app.use(morgan('dev'));

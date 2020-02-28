@@ -30,9 +30,9 @@
   "steps": [
     {
       "commit": "372a021",
-      "type": "step",
       "id": "kPaILNVh",
       "articleId": "34a473b9e9e5e3dafcc619ab152750af",
+      "type": "step",
       "children": [
         {
           "commit": "372a021",
@@ -663,9 +663,9 @@
     },
     {
       "commit": "2b84923",
-      "type": "step",
       "id": "ne_MNyPlG",
       "articleId": "34a473b9e9e5e3dafcc619ab152750af",
+      "type": "step",
       "children": [
         {
           "commit": "2b84923",
@@ -1323,7 +1323,8 @@
                     }
                   ]
                 }
-              ]
+              ],
+              "hiddenLines": [3, 4]
             },
             {
               "type": "explain",
