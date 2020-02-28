@@ -79,7 +79,19 @@ export default (props) => {
     case F.CODE_BLOCK:
       return <CodeBlockElement {...props} />;
     case F.CODE_LINE:
-      return <pre {...attributes}>{children}</pre>;
+      return (
+        <tr {...attributes}>
+          <td
+            css={css`
+              white-space: pre;
+              display: block;
+              color: #fff;
+            `}
+          >
+            {children}
+          </td>
+        </tr>
+      );
     case F.NOTE:
       return <NoteElement {...props} />;
     case F.IMAGE:

@@ -160,6 +160,7 @@ function DiffBlockElement(props) {
 
                     & td {
                       padding: 0;
+                      padding-right: 32px;
                       border: none;
                     }
 

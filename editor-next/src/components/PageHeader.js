@@ -1,12 +1,9 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 import { Input } from 'antd';
 import { useDispatch, useSelector, useStore } from 'react-redux';
-
-import IconFont from './IconFont';
-import { EDIT_ARTICLE } from '../utils/constants';
 
 const noBorderAndShadow = css`
   border: none;
@@ -38,14 +35,7 @@ function PageHeader() {
   const dispatch = useDispatch();
   const [timeoutHeaderState, setTimeoutHeaderState] = useState(null);
   const [timeoutDescriptionState, setTimeoutDescriptionState] = useState(null);
-
-  function onToggleChildrenDrawer(e) {
-    e.stopPropagation();
-
-    dispatch.drawer.setChildrenVisible(true);
-    dispatch.collection.setEditArticleId(nowArticleId);
-    dispatch.drawer.setChildrenDrawerType(EDIT_ARTICLE);
-  }
+  const descriptionEl = useRef(null);
 
   function resetTimeout(id, newId) {
     clearTimeout(id);
@@ -88,16 +78,21 @@ function PageHeader() {
       <div
         css={css`
           display: flex;
-          flex-direction: row;
-          justify-content: space-between;
-          align-items: center;
           margin-bottom: 24px;
+          position: relative;
         `}
       >
-        <Input
+        <TextArea
           placeholder="无标题"
           value={name}
           onChange={handleHeaderChange}
+          autoSize
+          maxLength={128}
+          rows={1}
+          onPressEnter={(e) => {
+            e.preventDefault();
+            descriptionEl.current.focus();
+          }}
           css={css`
             font-size: 30px;
             font-family: PingFangSC-Medium, PingFang SC;
@@ -105,31 +100,13 @@ function PageHeader() {
             color: rgba(0, 0, 0, 1);
             line-height: 32px;
             padding: 0;
-            max-width: 600px;
-
+            resize: none;
             ${noBorderAndShadow};
           `}
         />
-
-        <span
-          css={css`
-            &:hover {
-              color: #02b875;
-              cursor: pointer;
-            }
-          `}
-          onClick={onToggleChildrenDrawer}
-        >
-          <IconFont
-            type="icon-moreread"
-            css={css`
-              width: 24px;
-              height: 24px;
-            `}
-          />
-        </span>
       </div>
       <TextArea
+        ref={descriptionEl}
         placeholder="无描述"
         value={description}
         autoSize
