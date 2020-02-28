@@ -57,7 +57,10 @@ function CreateEditArticle(props) {
   const history = useHistory();
 
   // submit status
-  const loading = useSelector((state) => state.loading.models.collection);
+  const {
+    editArticle: editArticleLoading,
+    createArticle: createArticleLoading,
+  } = useSelector((state) => state.loading.effects.collection);
 
   // get editArticle Commits
   const { editArticleId, nowArticleId, collection } = useSelector(
@@ -377,7 +380,11 @@ function CreateEditArticle(props) {
             >
               取消
             </Button>
-            <Button htmlType="submit" type="primary" loading={loading}>
+            <Button
+              htmlType="submit"
+              type="primary"
+              loading={editArticleLoading || createArticleLoading}
+            >
               确认
             </Button>
           </div>
