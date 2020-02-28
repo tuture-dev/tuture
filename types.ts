@@ -30,9 +30,7 @@ export interface Meta {
   github?: string;
 }
 
-export interface Article extends Meta {
-  commits: string[];
-}
+export interface Article extends Meta {}
 
 export interface StepTitle extends Element {
   type: 'heading-two';

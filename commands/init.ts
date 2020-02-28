@@ -104,16 +104,15 @@ export default class Init extends BaseCommand {
     const meta = await this.promptMetaData(flags.yes);
     const steps = await makeSteps(this.userConfig.ignoredFiles);
 
+    steps.forEach((step) => {
+      step.articleId = meta.id;
+    });
+
     try {
       const collection: Collection = {
         ...meta,
         created: new Date(),
-        articles: [
-          {
-            ...meta,
-            commits: steps.map((step: Step) => step.commit),
-          },
-        ],
+        articles: [meta],
         steps,
       };
 
