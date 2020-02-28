@@ -1,7 +1,7 @@
 import { useMemo, useEffect, useState } from 'react';
 
 import { useSelector, useDispatch, useStore } from 'react-redux';
-import { Layout, Menu, Icon, Modal, Affix } from 'antd';
+import { Layout, Menu, Icon, Modal, Affix, BackTop } from 'antd';
 import { Slate } from 'slate-react';
 
 import logo from '../assets/images/logo.svg';
@@ -212,6 +212,11 @@ function ConnectedLayout(props) {
               `}
             >
               {children}
+              <BackTop
+                css={css`
+                  right: 24px;
+                `}
+              />
             </Content>
           </Layout>
         </Layout>
