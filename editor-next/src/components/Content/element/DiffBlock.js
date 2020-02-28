@@ -8,8 +8,7 @@ import { Checkbox } from 'antd';
 const diffFileStyle = css`
   color: rgba(0, 0, 0, 0.84);
   display: block;
-  /* padding-top: 8px; */
-  padding-bottom: 8px;
+  padding-top: 8px;
   background-color: rgb(30, 30, 30);
   border-radius: 8px;
   margin-bottom: 10px;
@@ -132,59 +131,113 @@ function DiffBlockElement(props) {
           const showLines = getShowLines(hiddenLines, allLines);
 
           return (
-            <pre className={className} style={style}>
-              <Checkbox.Group
-                onChange={(checkedLines) => {
-                  const hiddenLines = getHiddenLines(checkedLines, allLines);
-                  onChange(hiddenLines);
-                }}
-                value={showLines}
+            <Checkbox.Group
+              onChange={(checkedLines) => {
+                const hiddenLines = getHiddenLines(checkedLines, allLines);
+                onChange(hiddenLines);
+              }}
+              value={showLines}
+              css={css`
+                width: 100%;
+              `}
+            >
+              <div
                 css={css`
-                  width: 100%;
+                  overflow-x: auto;
+                  padding-bottom: 16px;
                 `}
               >
-                {tokens.map((line, i) => (
-                  <div
-                    {...getLineProps({ line, key: i })}
-                    css={css`
-                      ${isCodeAddition(i) && codeAdditionStyle}
-                      ${isCodeDeletion(i) &&
-                        codeDeletionStyle}
-                      padding: 0 16px;
-                    `}
-                  >
-                    <Checkbox label={i} value={i} />
-                    <span
+                <table
+                  className={className}
+                  style={style}
+                  css={css`
+                    padding-bottom: 16px;
+                    width: 100%;
+                    border-spacing: 0;
+                    border-collapse: collapse;
+
+                    & td {
+                      padding: 0;
+                      border: none;
+                    }
+
+                    font-family: 'SFMono-Regular', Consolas, 'Liberation Mono',
+                      Menlo, Courier, monospace;
+                  `}
+                >
+                  {tokens.map((line, i) => (
+                    <tr
+                      {...getLineProps({ line, key: i })}
                       css={css`
-                        font-family: dm, Menlo, Monaco, 'Courier New', monospace;
-                        font-weight: normal;
-                        font-size: 15px;
-                        line-height: 23px;
-                        letter-spacing: 0px;
-                        color: #858585;
-                        margin-right: 16px;
-                        width: 25px;
-                        display: inline-block;
-                        text-align: right;
+                        ${isCodeAddition(i) && codeAdditionStyle}
+                        ${isCodeDeletion(i) &&
+                          codeDeletionStyle}
+                  white-space: pre;
+                        width: auto;
                       `}
                     >
-                      {i + 1}
-                    </span>
-                    {line.map((token, key) => (
-                      <span
-                        {...getTokenProps({ token, key })}
+                      <td style={{ width: '28px' }}>
+                        <Checkbox
+                          label={i}
+                          value={i}
+                          css={css`
+                            padding-left: 12px;
+                          `}
+                        />
+                      </td>
+                      <td style={{ width: '52px' }}>
+                        <span
+                          css={css`
+                            font-family: dm, Menlo, Monaco, 'Courier New',
+                              monospace;
+                            font-weight: normal;
+                            font-size: 12px;
+                            line-height: 23px;
+                            letter-spacing: 0px;
+                            color: #858585;
+                            margin-right: 16px;
+                            width: 32px;
+                            margin-left: 4px;
+                            display: inline-block;
+                            text-align: right;
+                          `}
+                        >
+                          {i + 1}
+                        </span>
+                      </td>
+                      <td
                         css={css`
-                          opacity: ${isHidden(i) || isCodeDeletion(i)
-                            ? 0.3
-                            : 1};
-                          font-weight: ${isCodeAddition(i) ? 700 : 'normal'};
+                          white-space: pre;
+                          display: block;
                         `}
-                      />
-                    ))}
-                  </div>
-                ))}
-              </Checkbox.Group>
-            </pre>
+                      >
+                        <span
+                          css={css`
+                            width: auto;
+                          `}
+                        >
+                          {line.map((token, key) => (
+                            <span
+                              {...getTokenProps({ token, key })}
+                              css={css`
+                                opacity: ${isHidden(i) || isCodeDeletion(i)
+                                  ? 0.3
+                                  : 1};
+                                filter: blur(${isHidden(i) ? '1.5' : '0'}px);
+                                font-size: 14px;
+                                font-weight: ${isCodeAddition(i)
+                                  ? 700
+                                  : 'normal'};
+                              `}
+                            />
+                          ))}
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                </table>
+              </div>
+            </Checkbox.Group>
           );
         }}
       </Highlight>

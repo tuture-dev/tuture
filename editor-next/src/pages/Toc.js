@@ -3,7 +3,7 @@ import { css, jsx } from '@emotion/core';
 import { useSelector } from 'react-redux';
 import { Spin } from 'antd';
 
-import TocComponent from '../components/Toc';
+import { Toc as TocComponent } from '../components/';
 
 function Toc() {
   const loading = useSelector(

@@ -14,11 +14,12 @@ function Article() {
     ({ loading }) =>
       loading.effects.collection.fetchCollection || loading.models.diff,
   );
-  const match = useRouteMatch();
+  const match = useRouteMatch('/articles/:id');
+  const { id = '' } = match?.params;
 
   useEffect(() => {
-    dispatch.collection.setNowArticle(match.params.id);
-  }, [dispatch, match]);
+    dispatch.collection.setNowArticle(id);
+  }, [dispatch, id]);
 
   return (
     <div>
