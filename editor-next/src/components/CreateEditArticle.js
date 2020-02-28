@@ -84,7 +84,6 @@ function CreateEditArticle(props) {
     if (collectionSteps) {
       setCollectionStepsState(collectionSteps);
     }
-
   }, [collection]);
 
   const initialTargetKeys =
