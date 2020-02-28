@@ -17,7 +17,7 @@ export const uploadImage = (file, callback) => {
 
 export const createInsertImageCallback = (editor) => (err, url) => {
   if (err) {
-    return message.error(err);
+    return message.error(String(err));
   }
   insertVoid(editor, IMAGE, { url });
 };
