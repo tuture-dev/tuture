@@ -115,6 +115,8 @@ function DiffBlockElement(props) {
       file,
       hiddenLines,
     });
+
+    dispatch.collection.saveCollection();
   }
 
   return (
