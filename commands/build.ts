@@ -7,7 +7,7 @@ import { flags } from '@oclif/command';
 import { File as DiffFile, ChangeType } from 'parse-diff';
 
 import BaseCommand from '../base';
-import { isInitialized } from '../utils';
+import { isInitialized, isCommitEqual } from '../utils';
 import logger from '../utils/logger';
 import { loadCollection } from '../utils/collection';
 import { Asset, loadAssetsTable, checkAssets } from '../utils/assets';
@@ -206,7 +206,7 @@ export default class Build extends BaseCommand {
 
   getDiffFile(rawDiffs: RawDiff[], commit: string, file: string) {
     return rawDiffs
-      .filter((rawDiff) => rawDiff.commit === commit)[0]
+      .filter((rawDiff) => isCommitEqual(rawDiff.commit, commit))[0]
       .diff.filter((diffFile) => diffFile.to === file)[0];
   }
 

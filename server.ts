@@ -49,13 +49,6 @@ const makeServer = (config: any) => {
   app.use('/static', express.static(EDITOR_STATIC_PATH));
   app.use(`/${assetsRoot}`, express.static(assetsRoot));
 
-  app.get('/', (_, res) => {
-    const html = fs
-      .readFileSync(path.join(EDITOR_PATH, 'index.html'))
-      .toString();
-    res.send(html);
-  });
-
   app.get('/diff', (_, res) => {
     res.json(JSON.parse(fs.readFileSync(diffPath).toString()));
   });
@@ -107,6 +100,13 @@ const makeServer = (config: any) => {
   app.get('/reload', (_, res) => {
     io.emit('reload');
     res.sendStatus(200);
+  });
+
+  app.get('*', (_, res) => {
+    const html = fs
+      .readFileSync(path.join(EDITOR_PATH, 'index.html'))
+      .toString();
+    res.send(html);
   });
 
   return app;

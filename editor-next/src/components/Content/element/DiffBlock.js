@@ -41,13 +41,13 @@ function concatCodeStr(diffItem) {
   const DIFF_ADD = [];
   const DIFF_DEL = [];
 
-  diffItem.chunks.map((chunk, chunkIndex) => {
-    chunk.changes.map((change, index) => {
-      const { content } = change;
+  diffItem.chunks.forEach((chunk, chunkIndex) => {
+    chunk.changes.forEach((change, index) => {
+      const { type, content } = change;
 
-      if (/[+]/.test(content)) {
+      if (type === 'add') {
         DIFF_ADD.push(index);
-      } else if (/[-]/.test(content)) {
+      } else if (type === 'del') {
         DIFF_DEL.push(index);
       }
 
@@ -68,11 +68,7 @@ function concatCodeStr(diffItem) {
       } else {
         codeStr += `${code}\n`;
       }
-
-      return change;
     });
-
-    return chunk;
   });
 
   return { codeStr, DIFF_ADD, DIFF_DEL };
@@ -127,7 +123,7 @@ function DiffBlockElement(props) {
       <Highlight
         {...defaultProps}
         code={codeStr}
-        language={lang}
+        language={lang === 'vue' ? 'html' : lang}
         theme={vsDark}
       >
         {({ className, style, tokens, getLineProps, getTokenProps }) => {

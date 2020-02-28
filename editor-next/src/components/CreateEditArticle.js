@@ -49,7 +49,6 @@ function CreateEditArticle(props) {
   const store = useStore();
   const dispatch = useDispatch();
   const [selectedKeys, setSelectedKeys] = useState([]);
-  const [fileList, setFileList] = useState([]);
 
   // get router history && first article id for delete jump
   const history = useHistory();
@@ -88,7 +87,7 @@ function CreateEditArticle(props) {
   );
   const articleMeta = props.childrenDrawerType === EDIT_ARTICLE ? meta : {};
 
-  const initialTags = articleMeta?.topics || [];
+  const initialTopics = articleMeta?.topics || [];
   const initialCover = articleMeta?.cover
     ? [
         {
@@ -106,6 +105,7 @@ function CreateEditArticle(props) {
     defaultFileList: [],
   };
 
+  const [fileList, setFileList] = useState(initialCover);
   const { getFieldDecorator, setFieldsValue, getFieldValue } = props.form;
 
   function handleSubmit(e) {
@@ -113,21 +113,30 @@ function CreateEditArticle(props) {
 
     props.form.validateFields((err, values) => {
       if (!err) {
-        const { cover, name, tags, steps } = values;
+        const { cover, name, topics, steps } = values;
 
         const article = { name };
 
-        if (tags) {
-          article.topics = tags;
+        if (topics) {
+          article.topics = topics;
         }
 
+        console.log('cover', cover);
+
         if (cover) {
-          const url =
+          let url =
             Array.isArray(cover?.fileList) && cover?.fileList.length > 0
               ? cover?.fileList[0].url || cover?.fileList[0].response.path
               : '';
+
+          if (!url && Array.isArray(cover) && cover.length > 0) {
+            url = cover[0].url;
+          }
+
           article.cover = url;
         }
+
+        console.log('article', article, editArticleId);
 
         if (props.childrenDrawerType === EDIT_ARTICLE) {
           dispatch.collection.editArticle(article);
@@ -219,8 +228,8 @@ function CreateEditArticle(props) {
     });
   }
 
-  function handleTagsChange(tags) {
-    setFieldsValue({ tags });
+  function handleTopicsChange(topics) {
+    setFieldsValue({ topics });
   }
 
   return (
@@ -272,16 +281,16 @@ function CreateEditArticle(props) {
             width: 100%;
           `}
         >
-          {getFieldDecorator('tags', {
-            initialValue: initialTags,
+          {getFieldDecorator('topics', {
+            initialValue: initialTopics,
           })(
             <Select
               mode="tags"
               placeholder="输入文章标签"
-              onChange={handleTagsChange}
+              onChange={handleTopicsChange}
             >
-              {getFieldValue('tags').map((tag) => (
-                <Option key={tag}>{tag}</Option>
+              {getFieldValue('topics').map((topic) => (
+                <Option key={topic}>{topic}</Option>
               ))}
             </Select>,
           )}

@@ -9,17 +9,16 @@ export const uploadImage = (file, callback) => {
   fetch('/upload', {
     method: 'POST',
     body: data,
-    headers: {
-      'Content-Type': 'multipart/form-data',
-    },
   })
     .then((res) => res.json())
-    .then((res) => callback(null, res.path))
+    .then((data) => callback(null, data.path))
     .catch((err) => callback(err));
 };
 
 export const createInsertImageCallback = (editor) => (err, url) => {
-  if (err) return message.error('图片上传失败！');
+  if (err) {
+    return message.error(err);
+  }
   insertVoid(editor, IMAGE, { url });
 };
 
