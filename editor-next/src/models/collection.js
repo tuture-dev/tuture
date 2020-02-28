@@ -11,6 +11,7 @@ import {
   getStepTitle,
   getNumFromStepId,
 } from '../utils/collection';
+import { isCommitEqual } from '../utils/commit';
 
 const collection = {
   state: {
@@ -81,7 +82,7 @@ const collection = {
       const { file, commit, hiddenLines } = payload;
 
       for (const step of state.collection.steps) {
-        if (step.commit === commit) {
+        if (isCommitEqual(step.commit, commit)) {
           for (const childNode of step.children) {
             if (childNode.type === FILE && childNode.file === file) {
               childNode.children[1].hiddenLines = hiddenLines;
@@ -99,7 +100,7 @@ const collection = {
       const { removedIndex, addedIndex, commit } = payload;
 
       state.collection.steps = state.collection.steps.map((step) => {
-        if (step.commit === commit) {
+        if (isCommitEqual(step.commit, commit)) {
           const oldFile = step.children[removedIndex + 2];
           step.children.splice(removedIndex + 2, 1);
           step.children.splice(addedIndex + 2, 0, oldFile);
@@ -117,7 +118,9 @@ const collection = {
 
       state.collection.steps = state.collection.steps.map(
         (step) =>
-          newSteps.filter((node) => node.commit === step.commit)[0] || step,
+          newSteps.filter((node) =>
+            isCommitEqual(node.commit, step.commit),
+          )[0] || step,
       );
 
       return state;
@@ -130,7 +133,7 @@ const collection = {
     },
     setFileShowStatus(state, payload) {
       state.collection.steps = state.collection.steps.map((step) => {
-        if (step.commit === payload.commit) {
+        if (isCommitEqual(step.commit, payload.commit)) {
           step.children = step.children.map((file) => {
             if (file.file === payload.file) {
               file.display = payload.display;
@@ -333,10 +336,10 @@ const collection = {
     collectionMeta() {
       return slice((collectionModel) => {
         const {
-          collection: { name, cover, description, tags },
+          collection: { name, cover, description, topics },
         } = collectionModel;
 
-        return { name, cover, description, tags };
+        return { name, cover, description, topics };
       });
     },
     getArticleMetaById: hasProps((__, props) => {
@@ -347,14 +350,14 @@ const collection = {
         }
 
         const {
-          collection: { articles, name, description, tags, cover },
+          collection: { articles, name, description, topics, cover },
         } = collectionModel;
 
         if (id) {
           return articles.filter((elem) => elem.id === id)[0];
         }
 
-        return { name, description, tags, cover };
+        return { name, description, topics, cover };
       });
     }),
     getStepFileListAndTitle: hasProps((__, props) => {
@@ -364,8 +367,8 @@ const collection = {
         }
 
         const { commit } = props;
-        const nowStep = collectionModel.collection.steps.filter(
-          (step) => step.commit === commit,
+        const nowStep = collectionModel.collection.steps.filter((step) =>
+          isCommitEqual(step.commit, commit),
         )[0];
 
         if (nowStep) {

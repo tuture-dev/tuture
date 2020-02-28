@@ -10,7 +10,7 @@ import { git, storeDiff, getGitDiff } from './git';
 /**
  * Compare if two commit hashes are equal.
  */
-function isCommitEqual(hash1: string, hash2: string) {
+export function isCommitEqual(hash1: string, hash2: string) {
   return hash1.startsWith(hash2) || hash2.startsWith(hash1);
 }
 

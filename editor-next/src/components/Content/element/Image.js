@@ -7,13 +7,14 @@ function ImageElement(props) {
   const { attributes, children, element } = props;
   const selected = useSelected();
   const focused = useFocused();
+  const path = element.url.startsWith('http') ? element.url : `/${element.url}`;
 
   return (
     <div {...attributes}>
       <div contentEditable={false}>
         <img
-          src={element.url}
-          alt={element.url}
+          src={path}
+          alt={path}
           css={css`
             display: block;
             margin-left: auto;

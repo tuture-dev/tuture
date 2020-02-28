@@ -74,6 +74,15 @@ export default class Reload extends BaseCommand {
     );
     collection.steps = mergeSteps(collection.steps, currentSteps);
 
+    const lastArticleId = collection.articles.slice(-1)[0].id;
+    for (const step of collection.steps.reverse()) {
+      if (!step.articleId) {
+        step.articleId = lastArticleId;
+      } else {
+        break;
+      }
+    }
+
     saveCollection(collection);
     await this.notifyServer();
 

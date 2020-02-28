@@ -2,11 +2,14 @@ const express = require('express');
 const fs = require('fs-extra');
 const path = require('path');
 const morgan = require('morgan');
+const multer = require('multer');
 
 const app = express();
 const mockRoot = path.join('src', 'utils', 'data');
-const collectionPath = path.join(mockRoot, 'converted-tuture.json');
+const collectionPath = path.join(mockRoot, 'collection.json');
 const diffPath = path.join(mockRoot, 'diff.json');
+
+const upload = multer({ dest: 'uploads/' });
 
 app.use(morgan('dev'));
 app.use(express.json({ limit: '50mb' }));
@@ -25,7 +28,8 @@ app.post('/save', (req, res) => {
   res.sendStatus(200);
 });
 
-app.post('/upload', (req, res) => {
+app.post('/upload', upload.single('file'), (req, res) => {
+  console.log('detect upload', req.file);
   res.json({ path: 'https://tuture.co/images/covers/abfd872.jpg' });
 });
 
