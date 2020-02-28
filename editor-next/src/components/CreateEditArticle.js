@@ -9,6 +9,8 @@ import {
   Upload,
   Divider,
   Modal,
+  Tag,
+  Tooltip,
 } from 'antd';
 import { useDispatch, useSelector, useStore } from 'react-redux';
 import { useHistory } from 'react-router-dom';
@@ -18,7 +20,7 @@ import shortid from 'shortid';
 import { css, jsx } from '@emotion/core';
 
 import { EDIT_ARTICLE } from '../utils/constants';
-import { getHeadings } from '../utils/collection';
+import { getHeadings, getArtcleMetaById } from '../utils/collection';
 
 const { Option } = Select;
 const { confirm } = Modal;
@@ -67,7 +69,7 @@ function CreateEditArticle(props) {
     id: step.id,
     articleId: step.articleId,
     title: getHeadings([step])[0].title,
-    disabled: !!step.articleId && step.articleId !== editArticleId,
+    ...getArtcleMetaById(step.articleId, collection.articles),
   }));
 
   const initialTargetKeys =
@@ -120,8 +122,6 @@ function CreateEditArticle(props) {
         if (topics) {
           article.topics = topics;
         }
-
-        console.log('cover', cover);
 
         if (cover) {
           let url =
@@ -314,7 +314,34 @@ function CreateEditArticle(props) {
               onSelectChange={handleSelectChange}
               showSearch
               filterOption={filterOption}
-              render={(item) => item.title}
+              render={(item) => {
+                if (targetKeys.includes(item.key)) {
+                  return item.title;
+                }
+
+                return (
+                  <span>
+                    {item?.articleId && (
+                      <Tooltip
+                        title={`此步骤已经被文章 ${item?.articleName} 选择了`}
+                      >
+                        <Tag
+                          color="#02b875"
+                          css={css`
+                            color: #fff;
+                            &:hover {
+                              cursor: pointer;
+                            }
+                          `}
+                        >
+                          {item.articleIndex + 1}
+                        </Tag>
+                      </Tooltip>
+                    )}
+                    <span>{item.title}</span>
+                  </span>
+                );
+              }}
             />,
           )}
         </Form.Item>
