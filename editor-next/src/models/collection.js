@@ -343,9 +343,8 @@ const collection = {
     },
     collectionMeta() {
       return slice((collectionModel) => {
-        const {
-          collection: { name, cover, description, topics },
-        } = collectionModel;
+        const { name, cover, description, topics } =
+          collectionModel?.collection || {};
 
         return { name, cover, description, topics };
       });
@@ -357,9 +356,8 @@ const collection = {
           return {};
         }
 
-        const {
-          collection: { articles, name, description, topics, cover },
-        } = collectionModel;
+        const { articles, name, description, topics, cover } =
+          collectionModel?.collection || {};
 
         if (id) {
           return articles.filter((elem) => elem.id === id)[0];
