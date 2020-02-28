@@ -193,23 +193,24 @@ function ConnectedLayout(props) {
             </Sider>
           </Affix>
           <Layout>
-            <Affix>
-              <Header
-                css={css`
-                  background-color: #fff;
-                  padding: 0;
-                  border-bottom: 1px solid rgba(232, 232, 232, 1);
-                  min-width: 1200px;
-                `}
-              >
-                <LayoutHeader />
-              </Header>
-            </Affix>
+            <Header
+              css={css`
+                background-color: #fff;
+                padding: 0;
+                border-bottom: 1px solid rgba(232, 232, 232, 1);
+                min-width: 1200px;
+              `}
+            >
+              <LayoutHeader />
+            </Header>
             <Content
               css={css`
                 background: #fff;
                 position: relative;
+                height: calc(100vh - 64px);
+                overflow: auto;
               `}
+              id="scroll-container"
             >
               {children}
               <BackTop

@@ -24,7 +24,7 @@ function Content() {
   return (
     <Row>
       <Col span={0} lg={5}>
-        <Affix offsetTop={64}>
+        <Affix target={() => document.getElementById('scroll-container')}>
           <PageCatalogue />
         </Affix>
       </Col>
@@ -69,7 +69,7 @@ function Content() {
         </div>
       </Col>
       <Col span={0} xl={5}>
-        <Affix offsetTop={64}>
+        <Affix target={() => document.getElementById('scroll-container')}>
           <StepFileList />
         </Affix>
       </Col>

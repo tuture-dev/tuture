@@ -1,4 +1,5 @@
 import * as F from 'editure-constants';
+
 import { FILE, STEP } from '../utils/constants';
 
 export function flatten(steps) {
@@ -67,4 +68,21 @@ export function getNumFromStepId(stepId, steps) {
   const num = steps.findIndex((step) => step.id === stepId);
 
   return num;
+}
+
+export function getArtcleMetaById(articleId = '', articles = []) {
+  let targetArticleIndex = 0;
+  const targetArticle = articles.filter((article, index) => {
+    if (article.id === articleId) {
+      targetArticleIndex = index;
+      return true;
+    }
+
+    return false;
+  })[0];
+
+  return {
+    articleIndex: targetArticleIndex,
+    articleName: targetArticle?.name || '',
+  };
 }

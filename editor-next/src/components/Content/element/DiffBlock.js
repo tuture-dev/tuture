@@ -3,7 +3,7 @@ import { css, jsx, Global } from '@emotion/core';
 import { useSelector, useStore, useDispatch } from 'react-redux';
 import Highlight, { defaultProps } from 'prism-react-renderer';
 import vsDark from 'prism-react-renderer/themes/vsDark';
-import { Checkbox } from 'antd';
+import { Checkbox, Tooltip } from 'antd';
 
 const diffFileStyle = css`
   color: rgba(0, 0, 0, 0.84);
@@ -115,6 +115,8 @@ function DiffBlockElement(props) {
       file,
       hiddenLines,
     });
+
+    dispatch.collection.saveCollection();
   }
 
   return (
@@ -176,15 +178,28 @@ function DiffBlockElement(props) {
                         width: auto;
                       `}
                     >
-                      <td style={{ width: '28px' }}>
-                        <Checkbox
-                          label={i}
-                          value={i}
+                      <Tooltip
+                        placement="left"
+                        title={showLines.includes(i) ? '隐藏此行' : '显示此行'}
+                      >
+                        <td
                           css={css`
-                            padding-left: 12px;
+                            width: 28px;
+
+                            &:hover {
+                              cursor: pointer;
+                            }
                           `}
-                        />
-                      </td>
+                        >
+                          <Checkbox
+                            label={i}
+                            value={i}
+                            css={css`
+                              padding-left: 12px;
+                            `}
+                          />
+                        </td>
+                      </Tooltip>
                       <td style={{ width: '52px' }}>
                         <span
                           css={css`
@@ -209,6 +224,7 @@ function DiffBlockElement(props) {
                         css={css`
                           white-space: pre;
                           display: block;
+                          padding-right: 32px;
                         `}
                       >
                         <span

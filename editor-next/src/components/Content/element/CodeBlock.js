@@ -187,9 +187,28 @@ function CodeBlockElement(props) {
       <div
         css={css`
           padding: 10px 20px;
+          overflow-x: auto;
         `}
       >
-        {children}
+        <table
+          css={css`
+            padding-bottom: 16px;
+            width: 100%;
+            border-spacing: 0;
+            border-collapse: collapse;
+
+            & td {
+              padding: 0;
+              padding-right: 32px;
+              border: none;
+            }
+
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo,
+              Courier, monospace;
+          `}
+        >
+          <tbody>{children}</tbody>
+        </table>
       </div>
     </div>
   );

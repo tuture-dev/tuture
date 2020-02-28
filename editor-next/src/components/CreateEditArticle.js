@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Form,
   Input,
@@ -9,6 +9,8 @@ import {
   Upload,
   Divider,
   Modal,
+  Tag,
+  Tooltip,
 } from 'antd';
 import { useDispatch, useSelector, useStore } from 'react-redux';
 import { useHistory } from 'react-router-dom';
@@ -18,7 +20,7 @@ import shortid from 'shortid';
 import { css, jsx } from '@emotion/core';
 
 import { EDIT_ARTICLE } from '../utils/constants';
-import { getHeadings } from '../utils/collection';
+import { getHeadings, getArtcleMetaById } from '../utils/collection';
 
 const { Option } = Select;
 const { confirm } = Modal;
@@ -49,26 +51,40 @@ function CreateEditArticle(props) {
   const store = useStore();
   const dispatch = useDispatch();
   const [selectedKeys, setSelectedKeys] = useState([]);
+  const [collectionStepsState, setCollectionStepsState] = useState([]);
 
   // get router history && first article id for delete jump
   const history = useHistory();
 
   // submit status
-  const loading = useSelector((state) => state.loading.models.collection);
+  const {
+    editArticle: editArticleLoading,
+    createArticle: createArticleLoading,
+  } = useSelector((state) => state.loading.effects.collection);
 
   // get editArticle Commits
   const { editArticleId, nowArticleId, collection } = useSelector(
     (state) => state.collection,
   );
 
+  const steps = collection?.steps || [];
+  const articles = collection?.articles || [];
+
   // get all steps
-  const collectionSteps = collection.steps.map((step, index) => ({
+  const collectionSteps = steps.map((step, index) => ({
     key: index,
     id: step.id,
     articleId: step.articleId,
     title: getHeadings([step])[0].title,
-    disabled: !!step.articleId && step.articleId !== editArticleId,
+    ...getArtcleMetaById(step.articleId, articles),
   }));
+
+  // prettier-ignore
+  useEffect(() => {
+    if (collectionSteps) {
+      setCollectionStepsState(collectionSteps);
+    }
+  }, [collection]);
 
   const initialTargetKeys =
     props.childrenDrawerType === EDIT_ARTICLE
@@ -78,8 +94,6 @@ function CreateEditArticle(props) {
       : [];
 
   const [targetKeys, setTargetKeys] = useState(initialTargetKeys || []);
-
-  console.log('targetKeys', initialTargetKeys, targetKeys);
 
   // get nowArticle Meta
   const meta = useSelector(
@@ -121,8 +135,6 @@ function CreateEditArticle(props) {
           article.topics = topics;
         }
 
-        console.log('cover', cover);
-
         if (cover) {
           let url =
             Array.isArray(cover?.fileList) && cover?.fileList.length > 0
@@ -135,8 +147,6 @@ function CreateEditArticle(props) {
 
           article.cover = url;
         }
-
-        console.log('article', article, editArticleId);
 
         if (props.childrenDrawerType === EDIT_ARTICLE) {
           dispatch.collection.editArticle(article);
@@ -194,6 +204,16 @@ function CreateEditArticle(props) {
       return 0;
     });
 
+    // check nowTargetKeys status
+    const newCollectionStepsState = collectionStepsState.map((step) => {
+      if (targetKeys.includes(step.key) && !nextTargetKeys.includes(step.key)) {
+        return { ...step, articleId: '', articleIndex: '', articleName: '' };
+      }
+
+      return step;
+    });
+
+    setCollectionStepsState(newCollectionStepsState);
     setFieldsValue({ steps: sortedNextTargetKeys });
     setTargetKeys(sortedNextTargetKeys);
   }
@@ -301,7 +321,7 @@ function CreateEditArticle(props) {
             initialValue: initialTargetKeys,
           })(
             <Transfer
-              dataSource={collectionSteps}
+              dataSource={collectionStepsState}
               titles={['所有步骤', '已选步骤']}
               targetKeys={targetKeys}
               operations={['选择', '释放']}
@@ -314,7 +334,34 @@ function CreateEditArticle(props) {
               onSelectChange={handleSelectChange}
               showSearch
               filterOption={filterOption}
-              render={(item) => item.title}
+              render={(item) => {
+                if (targetKeys.includes(item.key)) {
+                  return item.title;
+                }
+
+                return (
+                  <span>
+                    {item?.articleId && (
+                      <Tooltip
+                        title={`此步骤已经被文章 ${item?.articleName} 选择了`}
+                      >
+                        <Tag
+                          color="#02b875"
+                          css={css`
+                            color: #fff;
+                            &:hover {
+                              cursor: pointer;
+                            }
+                          `}
+                        >
+                          {item.articleIndex + 1}
+                        </Tag>
+                      </Tooltip>
+                    )}
+                    <span>{item.title}</span>
+                  </span>
+                );
+              }}
             />,
           )}
         </Form.Item>
@@ -334,7 +381,11 @@ function CreateEditArticle(props) {
             >
               取消
             </Button>
-            <Button htmlType="submit" type="primary" loading={loading}>
+            <Button
+              htmlType="submit"
+              type="primary"
+              loading={editArticleLoading || createArticleLoading}
+            >
               确认
             </Button>
           </div>
