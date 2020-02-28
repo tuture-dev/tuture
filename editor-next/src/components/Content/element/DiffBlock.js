@@ -176,7 +176,7 @@ function DiffBlockElement(props) {
                         width: auto;
                       `}
                     >
-                      <td>
+                      <td style={{ width: '28px' }}>
                         <Checkbox
                           label={i}
                           value={i}
@@ -185,7 +185,7 @@ function DiffBlockElement(props) {
                           `}
                         />
                       </td>
-                      <td>
+                      <td style={{ width: '52px' }}>
                         <span
                           css={css`
                             font-family: dm, Menlo, Monaco, 'Courier New',
@@ -223,6 +223,7 @@ function DiffBlockElement(props) {
                                 opacity: ${isHidden(i) || isCodeDeletion(i)
                                   ? 0.3
                                   : 1};
+                                filter: blur(${isHidden(i) ? '1.5' : '0'}px);
                                 font-size: 14px;
                                 font-weight: ${isCodeAddition(i)
                                   ? 700
