@@ -14,8 +14,6 @@ function StepFileList() {
     store.select.collection.getStepFileListAndTitle({ commit: nowStepCommit }),
   );
 
-  console.log('fileList', fileList);
-
   function onDrop(res) {
     dispatch({
       type: 'collection/switchFile',
