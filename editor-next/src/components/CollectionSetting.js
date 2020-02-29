@@ -62,8 +62,6 @@ function CollectionSetting(props) {
           res = { ...res, description };
         }
 
-        console.log('topics', topics);
-
         if (cover) {
           let url =
             Array.isArray(cover?.fileList) && cover?.fileList.length > 0
