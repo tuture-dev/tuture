@@ -81,40 +81,49 @@ function PageCatalogue() {
 
         <Divider
           css={css`
-            margin: 16px 0;
+            margin: 16px 0 0;
           `}
         />
       </div>
-      <Anchor
+      <div
         css={css`
-          background: transparent;
-
-          & .ant-anchor-ink::before {
-            background: transparent;
-          }
+          padding-top: 16px;
+          padding-bottom: 48px;
+          max-height: calc(100vh - 64px - 70px - 10px);
+          overflow-y: auto;
         `}
-        targetOffset={64}
-        onChange={onChange}
-        affix={false}
-        getContainer={() => document.getElementById('scroll-container')}
       >
-        {nowArticleCatalogue.map((item) => (
-          <Link
-            key={item.id}
-            href={`#${item.id}`}
-            title={item.title}
-            css={css`
-              padding-left: ${getHeadingDepth(item.type) * 16}px;
+        <Anchor
+          css={css`
+            background: transparent;
 
-              & > a {
-                color: ${getHeadingDepth(item.type) === 1
-                  ? 'rgba(0,0 ,0, 1)'
-                  : 'rgba(0, 0, 0, .65)'};
-              }
-            `}
-          />
-        ))}
-      </Anchor>
+            & .ant-anchor-ink::before {
+              background: transparent;
+            }
+          `}
+          targetOffset={64}
+          onChange={onChange}
+          affix={false}
+          getContainer={() => document.getElementById('scroll-container')}
+        >
+          {nowArticleCatalogue.map((item) => (
+            <Link
+              key={item.id}
+              href={`#${item.id}`}
+              title={item.title}
+              css={css`
+                padding-left: ${getHeadingDepth(item.type) * 16}px;
+
+                & > a {
+                  color: ${getHeadingDepth(item.type) === 1
+                    ? 'rgba(0,0 ,0, 1)'
+                    : 'rgba(0, 0, 0, .65)'};
+                }
+              `}
+            />
+          ))}
+        </Anchor>
+      </div>
     </div>
   );
 }
