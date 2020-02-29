@@ -63,25 +63,32 @@ export default class Reload extends BaseCommand {
       this.exit(1);
     }
 
-    const collection = await loadCollection(true);
-    const currentSteps: Step[] = await makeSteps(this.userConfig.ignoredFiles);
-    const lastArticleId = collection.articles.slice(-1)[0].id;
+    try {
+      const collection = await loadCollection(true);
+      const currentSteps: Step[] = await makeSteps(
+        this.userConfig.ignoredFiles,
+      );
+      const lastArticleId = collection.articles.slice(-1)[0].id;
 
-    currentSteps.forEach((step) => {
-      // For newly added steps, assign it to the last article.
-      if (!collection.steps.map((step) => step.id).includes(step.id)) {
-        step.articleId = lastArticleId;
-      }
-    });
+      currentSteps.forEach((step) => {
+        // For newly added steps, assign it to the last article.
+        if (!collection.steps.map((step) => step.id).includes(step.id)) {
+          step.articleId = lastArticleId;
+        }
+      });
 
-    collection.steps = mergeSteps(collection.steps, currentSteps);
+      collection.steps = mergeSteps(collection.steps, currentSteps);
 
-    saveCollection(collection);
-    await this.notifyServer();
+      saveCollection(collection);
+      await this.notifyServer();
 
-    // Copy the last committed file.
-    await saveCheckpoint();
+      // Copy the last committed file.
+      await saveCheckpoint();
 
-    logger.log('success', 'Reload complete!');
+      logger.log('success', 'Reload complete!');
+    } catch (err) {
+      logger.log('error', err.message);
+      this.exit(1);
+    }
   }
 }
