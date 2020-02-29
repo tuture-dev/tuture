@@ -67,31 +67,38 @@ export async function getGitDiff(commit: string, ignoredFiles: string[]) {
   changedFiles = changedFiles.slice(0, changedFiles.length - 1);
 
   const fileProms = changedFiles.map((file) => {
-    return new Promise<File>(async (resolve) => {
-      const diffItem = parseDiff(
-        await git.raw(['show', '-U99999', commit, file]),
-      )[0];
-      const diffBlock: DiffBlock = {
-        type: 'diff-block',
-        file,
-        commit,
-        hiddenLines: getHiddenLines(diffItem),
-        children: emptyChildren,
-      };
-      const fileObj: File = {
-        type: 'file',
-        file,
-        children: [emptyExplain, diffBlock, emptyExplain],
-      };
-      if (!ignoredFiles.some((pattern: string) => mm.isMatch(file, pattern))) {
-        fileObj.display = true;
-      }
+    return new Promise<File | null>(async (resolve) => {
+      try {
+        const diffItem = parseDiff(
+          await git.raw(['show', '-U99999', commit, file]),
+        )[0];
+        const diffBlock: DiffBlock = {
+          type: 'diff-block',
+          file,
+          commit,
+          hiddenLines: getHiddenLines(diffItem),
+          children: emptyChildren,
+        };
+        const fileObj: File = {
+          type: 'file',
+          file,
+          children: [emptyExplain, diffBlock, emptyExplain],
+        };
+        if (
+          !ignoredFiles.some((pattern: string) => mm.isMatch(file, pattern))
+        ) {
+          fileObj.display = true;
+        }
 
-      resolve(fileObj);
+        resolve(fileObj);
+      } catch {
+        resolve(null);
+      }
     });
   });
 
-  return await Promise.all(fileProms);
+  const files = await Promise.all(fileProms);
+  return files.filter((file) => file !== null);
 }
 
 /**
