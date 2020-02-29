@@ -58,6 +58,12 @@ function PageCatalogue() {
         padding-right: 8px;
         height: calc(100vh - 64px);
         background-color: #f7f7fa;
+        &::-webkit-scrollbar {
+          display: none;
+        }
+
+        -ms-overflow-style: none; // IE 10+
+        overflow: -moz-scrollbars-none; // Firefox
       `}
     >
       <div
@@ -91,6 +97,13 @@ function PageCatalogue() {
           padding-bottom: 48px;
           max-height: calc(100vh - 64px - 70px - 10px);
           overflow-y: auto;
+
+          &::-webkit-scrollbar {
+            display: none;
+          }
+
+          -ms-overflow-style: none; // IE 10+
+          overflow: -moz-scrollbars-none; // Firefox
         `}
       >
         <Anchor

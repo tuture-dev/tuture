@@ -42,6 +42,12 @@ function StepFileList() {
         background-color: #f7f7fa;
         height: calc(100vh - 64px);
         padding: 48px 16px;
+        &::-webkit-scrollbar {
+          display: none;
+        }
+
+        -ms-overflow-style: none; // IE 10+
+        overflow: -moz-scrollbars-none; // Firefox
       `}
     >
       <h4
@@ -62,6 +68,13 @@ function StepFileList() {
           padding-bottom: 48px;
           max-height: calc(100vh - 64px - 70px - 10px);
           overflow-y: auto;
+
+          &::-webkit-scrollbar {
+            display: none;
+          }
+
+          -ms-overflow-style: none; // IE 10+
+          overflow: -moz-scrollbars-none; // Firefox
         `}
       >
         <Container
