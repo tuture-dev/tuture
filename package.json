@@ -17,7 +17,7 @@
   },
   "scripts": {
     "lint:cli": "eslint . --ext .ts",
-    "lint:editor": "eslint editor-next",
+    "lint:editor": "eslint editor",
     "test": "rimraf build && tsc && jest",
     "build:editor": "cd editor && yarn && npm run build",
     "build:cli": "rimraf build && tsc",

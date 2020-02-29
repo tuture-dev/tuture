@@ -6,7 +6,7 @@ import { prompt } from 'inquirer';
 
 import logger from '../utils/logger';
 import BaseCommand from '../base';
-import { Collection, Meta, Step } from '../types';
+import { Collection, Meta } from '../types';
 import { makeSteps, removeTutureSuite } from '../utils';
 import { saveCollection } from '../utils/collection';
 import { git, inferGithubField, appendGitignore } from '../utils/git';
@@ -102,13 +102,14 @@ export default class Init extends BaseCommand {
     }
 
     const meta = await this.promptMetaData(flags.yes);
-    const steps = await makeSteps(this.userConfig.ignoredFiles);
-
-    steps.forEach((step) => {
-      step.articleId = meta.id;
-    });
 
     try {
+      const steps = await makeSteps(this.userConfig.ignoredFiles);
+
+      steps.forEach((step) => {
+        step.articleId = meta.id;
+      });
+
       const collection: Collection = {
         ...meta,
         created: new Date(),

@@ -72,12 +72,6 @@ function Toc() {
   );
   const isSaving = useSelector((state) => state.toc.isSaving);
 
-  console.log(
-    'defaultArticleStepList',
-    defaultArticleStepList,
-    defaultUnassignedStepList,
-  );
-
   const [searchValue, setSearchValue] = useState('');
   const [activeArticle, setActiveArticle] = useState('');
   const [articleStepList, setArticleStepList] = useState(
@@ -113,8 +107,6 @@ function Toc() {
     return false;
   });
 
-  console.log('filteredArticleList', filteredArticleList);
-
   function toggleActiveArticle(articleId) {
     if (activeArticle === articleId) {
       setActiveArticle('');
@@ -124,7 +116,6 @@ function Toc() {
   }
 
   function handleAddStep(stepItem) {
-    console.log('stepItem', stepItem);
     if (!activeArticle) {
       message.warning('请选中文章，再添加步骤');
     } else {
@@ -257,9 +248,6 @@ function Toc() {
       cancelText: '取消',
       onOk() {
         handleDeleteArticle(articleStepItem);
-      },
-      onCancel() {
-        console.log('取消删除文章');
       },
     });
   }

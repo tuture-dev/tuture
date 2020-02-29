@@ -36,6 +36,13 @@ const diffRenderHints: { [mode: string]: { [diffType: string]: string } } = {
   },
 };
 
+const noteLevels: { [level: string]: { name: string } } = {
+  success: { name: '成功' },
+  info: { name: '提示' },
+  warning: { name: '注意' },
+  danger: { name: '危险' },
+};
+
 function concatCodeStr(diffItem: DiffFile) {
   let codeStr = '';
   const DIFF_ADD: number[] = [];
@@ -43,11 +50,11 @@ function concatCodeStr(diffItem: DiffFile) {
 
   diffItem.chunks.map((chunk, chunkIndex) => {
     chunk.changes.map((change, index) => {
-      const { content } = change;
+      const { content, type } = change;
 
-      if (/[+]/.test(content)) {
+      if (type === 'add') {
         DIFF_ADD.push(index);
-      } else if (/[-]/.test(content)) {
+      } else if (type === 'del') {
         DIFF_DEL.push(index);
       }
 
@@ -199,7 +206,10 @@ export default class Build extends BaseCommand {
 
   noteBlockTmpl(content: string, level: string) {
     if (this.userConfig.hexo) {
-      return `{% note ${level} %}\n${content}\n{% endnote %}`;
+      const title = noteLevels[level]
+        ? `**${noteLevels[level].name}**\n\n`
+        : '';
+      return `{% note ${level} %}\n${title}${content}\n{% endnote %}`;
     }
     return `::: ${level}\n${content}\n:::`;
   }
@@ -269,10 +279,11 @@ export default class Build extends BaseCommand {
       );
     }
 
-    return `${elements
+    return elements
       .filter((elem) => elem)
       .join('\n\n')
-      .trim()}\n`;
+      .trim()
+      .replace(/\n{3,}/g, '\n\n');
   }
 
   replaceAssetPaths(tutorial: string, assets: Asset[]) {

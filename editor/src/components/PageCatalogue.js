@@ -42,7 +42,6 @@ function PageCatalogue() {
     useSelector(store.select.collection.nowArticleCatalogue) || [];
 
   function onChange(link) {
-    console.log('link', link);
     const commit = getCommit(link.slice(1), nowArticleCatalogue);
 
     if (link && commit) {
