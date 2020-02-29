@@ -7,8 +7,8 @@ import { CREATE_ARTICLE, EDIT_ARTICLE } from '../utils/constants';
 import CreateEditArticle from './CreateEditArticle';
 
 const mapTypeToTitle = {
-  [CREATE_ARTICLE]: '新建页面',
-  [EDIT_ARTICLE]: '编辑页面',
+  [CREATE_ARTICLE]: '新建文章',
+  [EDIT_ARTICLE]: '编辑文章',
 };
 
 function ChildrenDrawerComponent() {
