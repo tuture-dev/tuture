@@ -1,9 +1,9 @@
 /** @jsx jsx */
 import { css, jsx, Global } from '@emotion/core';
 import { useSelector, useStore, useDispatch } from 'react-redux';
-import Highlight, { defaultProps } from 'prism-react-renderer';
-import vsDark from 'prism-react-renderer/themes/vsDark';
 import { Checkbox, Tooltip } from 'antd';
+import SyntaxHighlighter from 'react-syntax-highlighter';
+import { atelierCaveDark } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 
 const diffFileStyle = css`
   color: rgba(0, 0, 0, 0.84);
@@ -122,142 +122,12 @@ function DiffBlockElement(props) {
   return (
     <div {...attributes} className="diff-file" css={diffFileStyle}>
       <header css={diffFileHeaderStyle}>{file}</header>
-      <Highlight
-        {...defaultProps}
-        code={codeStr}
+      <SyntaxHighlighter
         language={lang === 'vue' ? 'html' : lang}
-        theme={vsDark}
+        style={atelierCaveDark}
       >
-        {({ className, style, tokens, getLineProps, getTokenProps }) => {
-          const allLines = tokens.map((_, index) => index);
-          const showLines = getShowLines(hiddenLines, allLines);
-
-          return (
-            <Checkbox.Group
-              onChange={(checkedLines) => {
-                const hiddenLines = getHiddenLines(checkedLines, allLines);
-                onChange(hiddenLines);
-              }}
-              value={showLines}
-              css={css`
-                width: 100%;
-              `}
-            >
-              <div
-                css={css`
-                  overflow-x: auto;
-                  padding-bottom: 16px;
-                `}
-              >
-                <table
-                  className={className}
-                  style={style}
-                  css={css`
-                    padding-bottom: 16px;
-                    width: 100%;
-                    border-spacing: 0;
-                    border-collapse: collapse;
-
-                    & td {
-                      padding: 0;
-                      border: none;
-                    }
-
-                    font-family: 'SFMono-Regular', Consolas, 'Liberation Mono',
-                      Menlo, Courier, monospace;
-                  `}
-                >
-                  {tokens.map((line, i) => (
-                    <tr
-                      {...getLineProps({ line, key: i })}
-                      css={css`
-                        ${isCodeAddition(i) && codeAdditionStyle}
-                        ${isCodeDeletion(i) &&
-                          codeDeletionStyle}
-                  white-space: pre;
-                        width: auto;
-                      `}
-                    >
-                      <Tooltip
-                        placement="left"
-                        title={showLines.includes(i) ? '隐藏此行' : '显示此行'}
-                      >
-                        <td
-                          css={css`
-                            width: 28px;
-
-                            &:hover {
-                              cursor: pointer;
-                            }
-                          `}
-                        >
-                          <Checkbox
-                            label={i}
-                            value={i}
-                            css={css`
-                              padding-left: 12px;
-                            `}
-                          />
-                        </td>
-                      </Tooltip>
-                      <td style={{ width: '52px' }}>
-                        <span
-                          css={css`
-                            font-family: dm, Menlo, Monaco, 'Courier New',
-                              monospace;
-                            font-weight: normal;
-                            font-size: 12px;
-                            line-height: 23px;
-                            letter-spacing: 0px;
-                            color: #858585;
-                            margin-right: 16px;
-                            width: 32px;
-                            margin-left: 4px;
-                            display: inline-block;
-                            text-align: right;
-                          `}
-                        >
-                          {i + 1}
-                        </span>
-                      </td>
-                      <td
-                        css={css`
-                          white-space: pre;
-                          display: block;
-                          padding-right: 32px;
-                        `}
-                      >
-                        <span
-                          css={css`
-                            width: auto;
-                          `}
-                        >
-                          {line.map((token, key) => (
-                            <span
-                              {...getTokenProps({ token, key })}
-                              css={css`
-                                opacity: ${isHidden(i) || isCodeDeletion(i)
-                                  ? 0.3
-                                  : 1};
-                                filter: blur(${isHidden(i) ? '1.5' : '0'}px);
-                                font-size: 14px;
-                                font-weight: ${isCodeAddition(i)
-                                  ? 700
-                                  : 'normal'};
-                              `}
-                            />
-                          ))}
-                        </span>
-                      </td>
-                    </tr>
-                  ))}
-                </table>
-              </div>
-            </Checkbox.Group>
-          );
-        }}
-      </Highlight>
-      <Global styles={css``} />
+        {codeStr}
+      </SyntaxHighlighter>
     </div>
   );
 }
