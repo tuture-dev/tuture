@@ -215,9 +215,16 @@ export default class Build extends BaseCommand {
   }
 
   getDiffFile(rawDiffs: RawDiff[], commit: string, file: string) {
-    return rawDiffs
-      .filter((rawDiff) => isCommitEqual(rawDiff.commit, commit))[0]
-      .diff.filter((diffFile) => diffFile.to === file)[0];
+    const diffItem = rawDiffs.filter((rawDiff) =>
+      isCommitEqual(rawDiff.commit, commit),
+    )[0];
+
+    if (!diffItem) {
+      logger.log('warning', `Commit ${commit} is not found.`);
+      return null;
+    }
+
+    return diffItem.diff.filter((diffFile) => diffFile.to === file)[0];
   }
 
   // Markdown template for the whole tutorial.
@@ -243,7 +250,7 @@ export default class Build extends BaseCommand {
       const diff = this.getDiffFile(rawDiffs, commit, file);
       const link = github ? `${github}/blob/${commit}/${file}` : undefined;
 
-      return this.diffBlockTmpl(diff, hiddenLines, link);
+      return diff ? this.diffBlockTmpl(diff, hiddenLines, link) : '';
     };
 
     const noteBlockConverter = (node: Element) => {
