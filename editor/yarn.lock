@@ -723,7 +723,7 @@
   dependencies:
     "@babel/helper-plugin-utils" "^7.8.3"
 
-"@babel/plugin-transform-runtime@7.8.3":
+"@babel/plugin-transform-runtime@7.8.3", "@babel/plugin-transform-runtime@^7.8.3":
   version "7.8.3"
   resolved "https://registry.npm.taobao.org/@babel/plugin-transform-runtime/download/@babel/plugin-transform-runtime-7.8.3.tgz#c0153bc0a5375ebc1f1591cb7eea223adea9f169"
   integrity sha1-wBU7wKU3XrwfFZHLfuoiOt6p8Wk=
@@ -9743,6 +9743,13 @@ react-smooth-dnd@^0.11.1:
   dependencies:
     prop-types ">=15.6.0"
     smooth-dnd "0.12.1"
+
+react-table@^7.0.0-rc.16:
+  version "7.0.0-rc.16"
+  resolved "https://registry.npm.taobao.org/react-table/download/react-table-7.0.0-rc.16.tgz#61aa22e5c6e4796ea3a0085653f5e4bb90bdab5d"
+  integrity sha1-Yaoi5cbkeW6joAhWU/Xku5C9q10=
+  dependencies:
+    "@babel/plugin-transform-runtime" "^7.8.3"
 
 react@^16.12.0:
   version "16.12.0"
