@@ -1,3 +1,5 @@
+import React from 'react';
+
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 import { useSelector, useStore, useDispatch } from 'react-redux';
@@ -152,4 +154,4 @@ function DiffBlockElement(props) {
   );
 }
 
-export default DiffBlockElement;
+export default React.memo(DiffBlockElement);
