@@ -1,9 +1,8 @@
 /** @jsx jsx */
-import { css, jsx, Global } from '@emotion/core';
+import { css, jsx } from '@emotion/core';
 import { useSelector, useStore, useDispatch } from 'react-redux';
-import { Checkbox, Tooltip } from 'antd';
-import SyntaxHighlighter from 'react-syntax-highlighter';
-import { atelierCaveDark } from 'react-syntax-highlighter/dist/esm/styles/hljs';
+import { Checkbox } from 'antd';
+import SyntaxHighlighter from '../../Highlight';
 
 const diffFileStyle = css`
   color: rgba(0, 0, 0, 0.84);
@@ -28,22 +27,16 @@ const diffFileHeaderStyle = css`
   position: relative;
 `;
 
-const codeDeletionStyle = css`
-  background-color: #3e3133;
-`;
-
-const codeAdditionStyle = css`
-  background-color: rgb(53, 59, 69);
-`;
-
 function concatCodeStr(diffItem) {
   let codeStr = '';
   const DIFF_ADD = [];
   const DIFF_DEL = [];
+  let allLines = [];
 
   diffItem.chunks.forEach((chunk, chunkIndex) => {
     chunk.changes.forEach((change, index) => {
       const { type, content } = change;
+      allLines = allLines.concat(index);
 
       if (type === 'add') {
         DIFF_ADD.push(index);
@@ -71,7 +64,7 @@ function concatCodeStr(diffItem) {
     });
   });
 
-  return { codeStr, DIFF_ADD, DIFF_DEL };
+  return { codeStr, DIFF_ADD, DIFF_DEL, allLines };
 }
 
 function getHiddenLines(checkedLines, allLines) {
@@ -96,9 +89,12 @@ function DiffBlockElement(props) {
     store.select.diff.getDiffItemByCommitAndFile({ file, commit }),
   );
 
-  const { codeStr = '', DIFF_ADD = [], DIFF_DEL = [] } = concatCodeStr(
-    diffItem,
-  );
+  const {
+    codeStr = '',
+    DIFF_ADD = [],
+    DIFF_DEL = [],
+    allLines = [],
+  } = concatCodeStr(diffItem);
 
   const lang = file
     .split('.')
@@ -119,15 +115,39 @@ function DiffBlockElement(props) {
     dispatch.collection.saveCollection();
   }
 
+  const showLines = getShowLines(hiddenLines, allLines);
+
   return (
     <div {...attributes} className="diff-file" css={diffFileStyle}>
       <header css={diffFileHeaderStyle}>{file}</header>
-      <SyntaxHighlighter
-        language={lang === 'vue' ? 'html' : lang}
-        style={atelierCaveDark}
+      <Checkbox.Group
+        onChange={(checkedLines) => {
+          const hiddenLines = getHiddenLines(checkedLines, allLines);
+          onChange(hiddenLines);
+        }}
+        value={showLines}
+        css={css`
+          width: 100%;
+        `}
       >
-        {codeStr}
-      </SyntaxHighlighter>
+        <SyntaxHighlighter
+          language={lang === 'vue' ? 'html' : lang}
+          PreTag="table"
+          CodeTag="tr"
+          showLineNumbers
+          showLineChecker
+          wrapLines
+          lineProps={(lineNum) => {
+            return {
+              isCodeAddition: isCodeAddition(lineNum),
+              isHidden: isHidden(lineNum),
+              isCodeDeletion: isCodeDeletion(lineNum),
+            };
+          }}
+        >
+          {codeStr}
+        </SyntaxHighlighter>
+      </Checkbox.Group>
     </div>
   );
 }
