@@ -1,11 +1,13 @@
 import fs from 'fs-extra';
+import mm from 'micromatch';
 import shortid from 'shortid';
+import { File as DiffFile } from 'parse-diff';
 
-import { Step } from '../types';
-import { emptyExplain } from './nodes';
+import { Step, File, DiffBlock } from '../types';
+import { emptyExplain, emptyChildren } from './nodes';
 import { collectionPath } from './collection';
 import { TUTURE_ROOT, TUTURE_BRANCH } from '../constants';
-import { git, storeDiff, getGitDiff } from './git';
+import { git, storeDiff } from './git';
 
 /**
  * Compare if two commit hashes are equal.
@@ -19,6 +21,66 @@ export function isCommitEqual(hash1: string, hash2: string) {
  */
 export async function removeTutureSuite() {
   await fs.remove(TUTURE_ROOT);
+}
+
+function getHiddenLines(diffItem: DiffFile): number[] {
+  // Number of context normal lines to show for each diff.
+  const context = 3;
+
+  if (diffItem.chunks.length === 0) {
+    return [];
+  }
+
+  // An array to indicate whether a line should be shown.
+  const shownArr = diffItem.chunks[0].changes.map(
+    (change) => change.type !== 'normal',
+  );
+
+  let contextCounter = -1;
+  for (let i = 0; i < shownArr.length; i++) {
+    if (shownArr[i]) {
+      contextCounter = context;
+    } else {
+      contextCounter--;
+      if (contextCounter >= 0) {
+        shownArr[i] = true;
+      }
+    }
+  }
+
+  contextCounter = -1;
+  for (let i = shownArr.length - 1; i >= 0; i--) {
+    if (shownArr[i]) {
+      contextCounter = context;
+    } else {
+      contextCounter--;
+      if (contextCounter >= 0) {
+        shownArr[i] = true;
+      }
+    }
+  }
+
+  return shownArr
+    .map((elem, index) => (elem ? null : index))
+    .filter((elem) => elem !== null) as number[];
+}
+
+function convertFile(commit: string, file: DiffFile, display = false) {
+  const diffBlock: DiffBlock = {
+    type: 'diff-block',
+    file: file.to!,
+    commit,
+    hiddenLines: getHiddenLines(file),
+    children: emptyChildren,
+  };
+  const fileObj: File = {
+    type: 'file',
+    file: file.to!,
+    display,
+    children: [emptyExplain, diffBlock, emptyExplain],
+  };
+
+  return fileObj;
 }
 
 /**
@@ -38,10 +100,11 @@ export async function makeSteps(ignoredFiles?: string[]) {
 
   // Store all diff into .tuture/diff.json
   const commits = logs.map(({ hash }) => hash);
-  await storeDiff(commits);
+  const diffs = await storeDiff(commits);
 
   const stepProms: Promise<Step>[] = logs.map(async ({ message, hash }) => {
-    const files = await getGitDiff(hash, ignoredFiles || []);
+    const diff = diffs.filter((diff) => isCommitEqual(diff.commit, hash))[0];
+    const files = diff.diff;
     return {
       type: 'step',
       id: shortid.generate(),
@@ -56,7 +119,14 @@ export async function makeSteps(ignoredFiles?: string[]) {
           children: [{ text: message }],
         },
         emptyExplain,
-        ...files,
+        ...files.map((diffFile) => {
+          const display =
+            ignoredFiles &&
+            !ignoredFiles.some((pattern: string) =>
+              mm.isMatch(diffFile.to!, pattern),
+            );
+          return convertFile(hash, diffFile, display);
+        }),
         emptyExplain,
       ],
     } as Step;

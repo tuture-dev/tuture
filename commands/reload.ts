@@ -80,7 +80,6 @@ export default class Reload extends BaseCommand {
       collection.steps = mergeSteps(collection.steps, currentSteps);
 
       saveCollection(collection);
-      await this.notifyServer();
 
       // Download assets if necessary.
       syncImages();
