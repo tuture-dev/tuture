@@ -25,11 +25,11 @@ const MARK_HOTKEYS = {
 };
 
 const BLOCK_HOTKEYS = {
-  'mod+0': F.PARAGRAPH,
-  'mod+1': F.H1,
-  'mod+2': F.H2,
-  'mod+3': F.H3,
-  'mod+4': F.H4,
+  'mod+alt+0': F.PARAGRAPH,
+  'mod+alt+1': F.H1,
+  'mod+alt+2': F.H2,
+  'mod+alt+3': F.H3,
+  'mod+alt+4': F.H4,
   'mod+shift+c': F.CODE_BLOCK,
   'mod+shift+i': F.IMAGE,
   'mod+shift+u': F.BLOCK_QUOTE,
