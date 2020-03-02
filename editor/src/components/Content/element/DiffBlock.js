@@ -1,9 +1,10 @@
+import React from 'react';
+
 /** @jsx jsx */
-import { css, jsx, Global } from '@emotion/core';
+import { css, jsx } from '@emotion/core';
 import { useSelector, useStore, useDispatch } from 'react-redux';
-import Highlight, { defaultProps } from 'prism-react-renderer';
-import vsDark from 'prism-react-renderer/themes/vsDark';
-import { Checkbox, Tooltip } from 'antd';
+import { Checkbox } from 'antd';
+import SyntaxHighlighter from '../../Highlight';
 
 const diffFileStyle = css`
   color: rgba(0, 0, 0, 0.84);
@@ -28,22 +29,16 @@ const diffFileHeaderStyle = css`
   position: relative;
 `;
 
-const codeDeletionStyle = css`
-  background-color: #3e3133;
-`;
-
-const codeAdditionStyle = css`
-  background-color: rgb(53, 59, 69);
-`;
-
 function concatCodeStr(diffItem) {
   let codeStr = '';
   const DIFF_ADD = [];
   const DIFF_DEL = [];
+  let allLines = [];
 
   diffItem.chunks.forEach((chunk, chunkIndex) => {
     chunk.changes.forEach((change, index) => {
       const { type, content } = change;
+      allLines = allLines.concat(index);
 
       if (type === 'add') {
         DIFF_ADD.push(index);
@@ -71,7 +66,7 @@ function concatCodeStr(diffItem) {
     });
   });
 
-  return { codeStr, DIFF_ADD, DIFF_DEL };
+  return { codeStr, DIFF_ADD, DIFF_DEL, allLines };
 }
 
 function getHiddenLines(checkedLines, allLines) {
@@ -96,9 +91,12 @@ function DiffBlockElement(props) {
     store.select.diff.getDiffItemByCommitAndFile({ file, commit }),
   );
 
-  const { codeStr = '', DIFF_ADD = [], DIFF_DEL = [] } = concatCodeStr(
-    diffItem,
-  );
+  const {
+    codeStr = '',
+    DIFF_ADD = [],
+    DIFF_DEL = [],
+    allLines = [],
+  } = concatCodeStr(diffItem);
 
   const lang = file
     .split('.')
@@ -119,147 +117,41 @@ function DiffBlockElement(props) {
     dispatch.collection.saveCollection();
   }
 
+  const showLines = getShowLines(hiddenLines, allLines);
+
   return (
     <div {...attributes} className="diff-file" css={diffFileStyle}>
       <header css={diffFileHeaderStyle}>{file}</header>
-      <Highlight
-        {...defaultProps}
-        code={codeStr}
-        language={lang === 'vue' ? 'html' : lang}
-        theme={vsDark}
-      >
-        {({ className, style, tokens, getLineProps, getTokenProps }) => {
-          const allLines = tokens.map((_, index) => index);
-          const showLines = getShowLines(hiddenLines, allLines);
-
-          return (
-            <Checkbox.Group
-              onChange={(checkedLines) => {
-                const hiddenLines = getHiddenLines(checkedLines, allLines);
-                onChange(hiddenLines);
-              }}
-              value={showLines}
-              css={css`
-                width: 100%;
-              `}
-            >
-              <div
-                css={css`
-                  overflow-x: auto;
-                  padding-bottom: 16px;
-                `}
-              >
-                <table
-                  className={className}
-                  style={style}
-                  css={css`
-                    padding-bottom: 16px;
-                    width: 100%;
-                    border-spacing: 0;
-                    border-collapse: collapse;
-
-                    & td {
-                      padding: 0;
-                      border: none;
-                    }
-
-                    font-family: 'SFMono-Regular', Consolas, 'Liberation Mono',
-                      Menlo, Courier, monospace;
-                  `}
-                >
-                  {tokens.map((line, i) => (
-                    <tr
-                      {...getLineProps({ line, key: i })}
-                      css={css`
-                        ${isCodeAddition(i) && codeAdditionStyle}
-                        ${isCodeDeletion(i) &&
-                          codeDeletionStyle}
-                  white-space: pre;
-                        width: auto;
-                      `}
-                    >
-                      <Tooltip
-                        placement="left"
-                        title={showLines.includes(i) ? '隐藏此行' : '显示此行'}
-                      >
-                        <td
-                          css={css`
-                            width: 28px;
-
-                            &:hover {
-                              cursor: pointer;
-                            }
-                          `}
-                        >
-                          <Checkbox
-                            label={i}
-                            value={i}
-                            css={css`
-                              padding-left: 12px;
-                            `}
-                          />
-                        </td>
-                      </Tooltip>
-                      <td style={{ width: '52px' }}>
-                        <span
-                          css={css`
-                            font-family: dm, Menlo, Monaco, 'Courier New',
-                              monospace;
-                            font-weight: normal;
-                            font-size: 12px;
-                            line-height: 23px;
-                            letter-spacing: 0px;
-                            color: #858585;
-                            margin-right: 16px;
-                            width: 32px;
-                            margin-left: 4px;
-                            display: inline-block;
-                            text-align: right;
-                          `}
-                        >
-                          {i + 1}
-                        </span>
-                      </td>
-                      <td
-                        css={css`
-                          white-space: pre;
-                          display: block;
-                          padding-right: 32px;
-                        `}
-                      >
-                        <span
-                          css={css`
-                            width: auto;
-                          `}
-                        >
-                          {line.map((token, key) => (
-                            <span
-                              {...getTokenProps({ token, key })}
-                              css={css`
-                                opacity: ${isHidden(i) || isCodeDeletion(i)
-                                  ? 0.3
-                                  : 1};
-                                filter: blur(${isHidden(i) ? '1.5' : '0'}px);
-                                font-size: 14px;
-                                font-weight: ${isCodeAddition(i)
-                                  ? 700
-                                  : 'normal'};
-                              `}
-                            />
-                          ))}
-                        </span>
-                      </td>
-                    </tr>
-                  ))}
-                </table>
-              </div>
-            </Checkbox.Group>
-          );
+      <Checkbox.Group
+        onChange={(checkedLines) => {
+          const hiddenLines = getHiddenLines(checkedLines, allLines);
+          onChange(hiddenLines);
         }}
-      </Highlight>
-      <Global styles={css``} />
+        value={showLines}
+        css={css`
+          width: 100%;
+        `}
+      >
+        <SyntaxHighlighter
+          language={lang === 'vue' ? 'html' : lang}
+          PreTag="table"
+          CodeTag="tr"
+          showLineNumbers
+          showLineChecker
+          wrapLines
+          lineProps={(lineNum) => {
+            return {
+              isCodeAddition: isCodeAddition(lineNum),
+              isHidden: isHidden(lineNum),
+              isCodeDeletion: isCodeDeletion(lineNum),
+            };
+          }}
+        >
+          {codeStr}
+        </SyntaxHighlighter>
+      </Checkbox.Group>
     </div>
   );
 }
 
-export default DiffBlockElement;
+export default React.memo(DiffBlockElement);
