@@ -19,11 +19,11 @@
     "lint:cli": "eslint . --ext .ts",
     "lint:editor": "eslint editor",
     "test": "rimraf build && tsc && jest",
-    "build:editor": "cd editor && yarn && npm run build",
+    "build:editor": "cd editor && yarn && yarn build",
     "build:cli": "rimraf build && tsc",
-    "build": "npm run build:editor && npm run build:cli && cp -r editor/build build/editor",
+    "build": "yarn build:editor && yarn build:cli && cp -r editor/build build/editor",
     "pkg": "./scripts/pack.sh",
-    "prepack": "npm run build"
+    "prepack": "yarn build && rimraf build/**/*.map"
   },
   "repository": {
     "type": "git",

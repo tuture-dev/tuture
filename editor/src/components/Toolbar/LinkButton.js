@@ -6,12 +6,17 @@ import { isMarkActive, removeLink, getSelectedString } from 'editure';
 
 import Button from './Button';
 import ToolbarIcon from './ToolbarIcon';
-import { ButtonRefsContext } from '../../utils/hotkeys';
+import {
+  MARK_HOTKEYS,
+  getHotkeyHint,
+  ButtonRefsContext,
+} from '../../utils/hotkeys';
 
 const LinkButton = () => {
   const editor = useSlate();
   const dispatch = useDispatch();
   const { linkBtnRef: ref } = useContext(ButtonRefsContext);
+  const { hotkey, title } = MARK_HOTKEYS[LINK];
 
   const isActive = isMarkActive(editor, LINK);
 
@@ -31,7 +36,11 @@ const LinkButton = () => {
 
   return (
     <Button handleClick={onClick} ref={ref}>
-      <ToolbarIcon isActive={isActive} icon="icon-link" title="链接" />
+      <ToolbarIcon
+        isActive={isActive}
+        icon="icon-link"
+        title={`${title}\n${getHotkeyHint(hotkey)}`}
+      />
     </Button>
   );
 };

@@ -120,7 +120,13 @@ export function uploadSingle(localPath: string) {
  * and download images from hosting sites.
  */
 export function syncImages() {
-  if (locked) return;
+  if (locked) {
+    logger.log(
+      'warning',
+      'tuture-assets.json is being read by another program.',
+    );
+    return;
+  }
 
   locked = true;
   const assets = loadAssetsTable();

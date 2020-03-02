@@ -1,3 +1,5 @@
+import { Tooltip } from 'antd';
+
 /** @jsx jsx */
 import { css, jsx, Global } from '@emotion/core';
 import { useSelector, useStore, useDispatch } from 'react-redux';
@@ -90,58 +92,62 @@ function StepFileList() {
         >
           {fileList.map((file) => (
             <Draggable key={file.file}>
-              <div
-                key={file.file}
-                css={css`
-                  max-width: 194px;
-                  height: 36px;
-                  background: rgba(255, 255, 255, 1);
-                  box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.05);
-                  border-radius: 4px;
-                  margin-bottom: 8px;
-                  padding: 8px;
-                  display: flex;
-                  flex-direction: row;
-                  justify-content: space-between;
-
-                  &:hover {
-                    cursor: pointer;
-                  }
-                `}
-              >
-                <span
+              <Tooltip title={file.file} placement="left" mouseEnterDelay={0.5}>
+                <div
+                  key={file.file}
                   css={css`
-                    color: ${file.display ? 'rgba(0, 0, 0, 0.65)' : '#bfbfbf'};
-                    display: inline-block;
-                    max-width: 120px;
-                    white-space: nowrap;
-                    text-overflow: ellipsis;
-                    overflow: hidden;
+                    max-width: 194px;
+                    height: 36px;
+                    background: rgba(255, 255, 255, 1);
+                    box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.05);
+                    border-radius: 4px;
+                    margin-bottom: 8px;
+                    padding: 8px;
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-between;
+
+                    &:hover {
+                      cursor: pointer;
+                    }
                   `}
                 >
-                  {file.file}
-                </span>
-                <span>
-                  <IconFont
-                    type={file.display ? 'icon-eye' : 'icon-eye-close'}
-                    onClick={() => onToggleShowFile(file)}
+                  <span
                     css={css`
-                      margin-right: 4px;
-                      &:hover {
-                        color: #02b875;
-                      }
+                      color: ${file.display
+                        ? 'rgba(0, 0, 0, 0.65)'
+                        : '#bfbfbf'};
+                      display: inline-block;
+                      max-width: 120px;
+                      white-space: nowrap;
+                      text-overflow: ellipsis;
+                      overflow: hidden;
                     `}
-                  />
-                  <IconFont
-                    type="icon-menu"
-                    css={css`
-                      &:hover {
-                        color: #02b875;
-                      }
-                    `}
-                  />
-                </span>
-              </div>
+                  >
+                    {file.file}
+                  </span>
+                  <span>
+                    <IconFont
+                      type={file.display ? 'icon-eye' : 'icon-eye-close'}
+                      onClick={() => onToggleShowFile(file)}
+                      css={css`
+                        margin-right: 4px;
+                        &:hover {
+                          color: #02b875;
+                        }
+                      `}
+                    />
+                    <IconFont
+                      type="icon-menu"
+                      css={css`
+                        &:hover {
+                          color: #02b875;
+                        }
+                      `}
+                    />
+                  </span>
+                </div>
+              </Tooltip>
             </Draggable>
           ))}
         </Container>

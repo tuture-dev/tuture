@@ -12,7 +12,7 @@ import {
   saveCheckpoint,
   hasTutureChangedSinceCheckpoint,
 } from '../utils/collection';
-import { hasAssetsChangedSinceCheckpoint } from '../utils/assets';
+import { hasAssetsChangedSinceCheckpoint, syncImages } from '../utils/assets';
 
 export default class Reload extends BaseCommand {
   static description = 'Sync tuture files with current repo';
@@ -81,6 +81,9 @@ export default class Reload extends BaseCommand {
 
       saveCollection(collection);
       await this.notifyServer();
+
+      // Download assets if necessary.
+      syncImages();
 
       // Copy the last committed file.
       await saveCheckpoint();
