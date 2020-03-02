@@ -1,17 +1,23 @@
 import { useContext } from 'react';
 import { useSlate } from 'slate-react';
+import { IMAGE } from 'editure-constants';
 
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 
 import Button from './Button';
 import ToolbarIcon from './ToolbarIcon';
-import { ButtonRefsContext } from '../../utils/hotkeys';
+import {
+  BLOCK_HOTKEYS,
+  getHotkeyHint,
+  ButtonRefsContext,
+} from '../../utils/hotkeys';
 import { uploadImage, createInsertImageCallback } from '../../utils/image';
 
 const ImageButton = () => {
   const editor = useSlate();
   const { imageBtnRef: ref } = useContext(ButtonRefsContext);
+  const { hotkey, title } = BLOCK_HOTKEYS[IMAGE];
 
   const onChange = (e) => {
     e.persist();
@@ -40,7 +46,10 @@ const ImageButton = () => {
           opacity: 0;
         `}
       />
-      <ToolbarIcon icon="icon-image" title="图片" />
+      <ToolbarIcon
+        icon="icon-image"
+        title={`${title}\n${getHotkeyHint(hotkey)}`}
+      />
     </Button>
   );
 };

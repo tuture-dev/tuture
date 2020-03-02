@@ -48,8 +48,8 @@ const Toolbar = (props) => {
       <EditLink />
 
       <SaveButton />
-      <HistoryButton action="undo" icon="icon-undo" title="撤销" />
-      <HistoryButton action="redo" icon="icon-redo" title="重做" />
+      <HistoryButton action="undo" icon="icon-undo" />
+      <HistoryButton action="redo" icon="icon-redo" />
 
       <SplitLine />
 
@@ -57,43 +57,27 @@ const Toolbar = (props) => {
 
       <SplitLine />
 
-      <MarkButton format={F.BOLD} icon="icon-bold" title="加粗" />
-      <MarkButton format={F.ITALIC} icon="icon-italic" title="斜体" />
-      <MarkButton format={F.UNDERLINE} icon="icon-underline" title="下划线" />
-      <MarkButton
-        format={F.STRIKETHROUGH}
-        icon="icon-strikethrough"
-        title="删除线"
-      />
-      <MarkButton format={F.CODE} icon="icon-code" title="内联代码" />
+      <MarkButton format={F.BOLD} icon="icon-bold" />
+      <MarkButton format={F.ITALIC} icon="icon-italic" />
+      <MarkButton format={F.UNDERLINE} icon="icon-underline" />
+      <MarkButton format={F.STRIKETHROUGH} icon="icon-strikethrough" />
+      <MarkButton format={F.CODE} icon="icon-code" />
 
       <SplitLine />
 
-      <BlockButton
-        format={F.NUMBERED_LIST}
-        icon="icon-orderedlist"
-        title="有序列表"
-      />
-      <BlockButton
-        format={F.BULLETED_LIST}
-        icon="icon-unorderedlist"
-        title="无序列表"
-      />
+      <BlockButton format={F.NUMBERED_LIST} icon="icon-orderedlist" />
+      <BlockButton format={F.BULLETED_LIST} icon="icon-unorderedlist" />
 
       <SplitLine />
 
-      <BlockButton
-        format={F.CODE_BLOCK}
-        icon="icon-codelibrary"
-        title="代码块"
-      />
+      <BlockButton format={F.CODE_BLOCK} icon="icon-codelibrary" />
       <NoteButton />
       <ImageButton />
 
       <SplitLine />
 
       <LinkButton />
-      <BlockButton format={F.BLOCK_QUOTE} icon="icon-blockquote" title="引用" />
+      <BlockButton format={F.BLOCK_QUOTE} icon="icon-blockquote" />
       <HrButton />
     </Menu>
   );

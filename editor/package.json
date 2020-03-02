@@ -32,7 +32,8 @@
     "shortid": "^2.2.15",
     "slate": "^0.57.1",
     "slate-history": "^0.57.1",
-    "slate-react": "^0.57.1"
+    "slate-react": "^0.57.1",
+    "ua-parser-js": "^0.7.21"
   },
   "scripts": {
     "start": "concurrently \"node api-server.js\" \"react-app-rewired start\"",

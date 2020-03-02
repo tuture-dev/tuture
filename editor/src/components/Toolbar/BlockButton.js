@@ -4,10 +4,12 @@ import { isBlockActive, toggleBlock } from 'editure';
 
 import Button from './Button';
 import ToolbarIcon from './ToolbarIcon';
+import { BLOCK_HOTKEYS, getHotkeyHint } from '../../utils/hotkeys';
 
-const BlockButton = ({ format = '', title, icon }) => {
+const BlockButton = ({ format, icon }) => {
   const editor = useSlate();
   const isActive = isBlockActive(editor, format);
+  const { hotkey, title } = BLOCK_HOTKEYS[format];
 
   return (
     <Button
@@ -16,7 +18,11 @@ const BlockButton = ({ format = '', title, icon }) => {
         toggleBlock(editor, format, {}, { unwrap: true });
       }}
     >
-      <ToolbarIcon isActive={isActive} icon={icon} title={title} />
+      <ToolbarIcon
+        isActive={isActive}
+        icon={icon}
+        title={`${title}\n${getHotkeyHint(hotkey)}`}
+      />
     </Button>
   );
 };

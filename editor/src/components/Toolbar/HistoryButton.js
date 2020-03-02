@@ -3,9 +3,11 @@ import { useSlate } from 'slate-react';
 
 import Button from './Button';
 import ToolbarIcon from './ToolbarIcon';
+import { OP_HOTKEYS, getHotkeyHint } from '../../utils/hotkeys';
 
-const HistoryButton = ({ action, title, icon }) => {
+const HistoryButton = ({ action, icon }) => {
   const editor = useSlate();
+  const { hotkey, title } = OP_HOTKEYS[action];
 
   return (
     <Button
@@ -19,7 +21,7 @@ const HistoryButton = ({ action, title, icon }) => {
         }
       }}
     >
-      <ToolbarIcon icon={icon} title={title} />
+      <ToolbarIcon icon={icon} title={`${title}\n${getHotkeyHint(hotkey)}`} />
     </Button>
   );
 };
