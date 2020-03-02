@@ -242,7 +242,9 @@ export default class Build extends BaseCommand {
     };
 
     const explainConverter = (node: Element) => {
-      return node.children.map((n) => toMarkdown(n)).join('\n\n');
+      return this.sanitize(
+        node.children.map((n) => toMarkdown(n)).join('\n\n'),
+      );
     };
 
     const diffBlockConverter = (node: Element) => {
