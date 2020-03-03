@@ -358,6 +358,7 @@ export default function(defaultAstGenerator, defaultStyle) {
                       white-space: pre;
                       padding-right: 32px;
                       width: auto;
+                      display: inline-block;
 
                       opacity: ${isHidden || isCodeDeletion ? 0.3 : 1};
                       filter: blur(${isHidden ? '1.5' : '0'}px);
