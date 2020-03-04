@@ -6,6 +6,7 @@ import { css, jsx } from '@emotion/core';
 import ExplainElement from './Explain';
 import NoteElement from './Note';
 import ImageElement from './Image';
+import StepTitle from './StepTitle';
 import HrElement from './Hr';
 import CodeBlockElement from './CodeBlock';
 import DiffBlockElement from './DiffBlock';
@@ -53,7 +54,9 @@ export default (props) => {
         </h1>
       );
     case F.H2:
-      return (
+      return element.fixed ? (
+        <StepTitle {...props} />
+      ) : (
         <h2 {...attributes} id={element.id}>
           {children}
         </h2>
