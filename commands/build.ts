@@ -228,7 +228,7 @@ export default class Build extends BaseCommand {
   }
 
   // Markdown template for the whole tutorial.
-  tutorialTmpl(meta: Meta, steps: Step[], rawDiffs: RawDiff[]) {
+  articleTmpl(meta: Meta, steps: Step[], rawDiffs: RawDiff[]) {
     const { name, description, cover, github } = meta;
 
     const stepConverter = (node: Element) => {
@@ -346,12 +346,7 @@ export default class Build extends BaseCommand {
       // Override outmost metadata with article metadata.
       const articleMeta = { ...meta, ...article };
 
-      // Ensure the order for created timestamp.
-      if (created) {
-        articleMeta.created = new Date(Date.parse(created.toString()) + index);
-      }
-
-      return this.tutorialTmpl(articleMeta, articleSteps, rawDiffs);
+      return this.articleTmpl(articleMeta, articleSteps, rawDiffs);
     });
 
     return [tutorials, titles];
