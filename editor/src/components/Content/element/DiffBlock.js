@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import LazyLoad from 'react-lazy-load';
 
 /** @jsx jsx */
@@ -28,6 +28,27 @@ const diffFileHeaderStyle = css`
   margin-bottom: 8px;
   border-radius: 8px;
   position: relative;
+`;
+
+const loadingAnimation = css`
+  background: linear-gradient(270deg, #111, #fff);
+  background-size: 400% 400%;
+  margin-top: 1em;
+  border-radius: 8px;
+
+  animation: AnimationName 3s ease infinite;
+
+  @keyframes AnimationName {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
 `;
 
 function concatCodeStr(diffItem) {
@@ -83,12 +104,14 @@ function getShowLines(hiddenLines, allLines) {
 }
 
 function Placeholder() {
-  return <div>placeholder</div>;
+  return <div></div>;
 }
 
 function DiffBlockElement(props) {
   const { attributes, element } = props;
   const { file, commit, hiddenLines = [] } = element;
+
+  const [loading, setLoading] = useState(true);
 
   const dispatch = useDispatch();
   const store = useStore();
@@ -123,45 +146,55 @@ function DiffBlockElement(props) {
   }
 
   const showLines = getShowLines(hiddenLines, allLines);
-  const isLoaded = allLines.length > 0;
   const height = 22 * allLines.length + 100;
 
-  return !isLoaded ? (
+  return allLines.length === 0 ? (
     <Placeholder />
   ) : (
-    <LazyLoad height={height} offsetTop={1000}>
-      <div {...attributes} className="diff-file" css={diffFileStyle}>
-        <header css={diffFileHeaderStyle}>{file}</header>
-        <Checkbox.Group
-          onChange={(checkedLines) => {
-            const hiddenLines = getHiddenLines(checkedLines, allLines);
-            onChange(hiddenLines);
-          }}
-          value={showLines}
-          css={css`
-            width: 100%;
-          `}
-        >
-          <SyntaxHighlighter
-            language={lang === 'vue' ? 'html' : lang}
-            PreTag="table"
-            CodeTag="tr"
-            showLineNumbers
-            showLineChecker
-            wrapLines
-            lineProps={(lineNum) => {
-              return {
-                isCodeAddition: isCodeAddition(lineNum),
-                isHidden: isHidden(lineNum),
-                isCodeDeletion: isCodeDeletion(lineNum),
-              };
+    <div
+      css={css`
+        height: ${height};
+        ${loading && loadingAnimation}
+      `}
+    >
+      <LazyLoad
+        height={height}
+        offsetVertical={2000}
+        onContentVisible={() => setLoading(false)}
+      >
+        <div {...attributes} className="diff-file" css={diffFileStyle}>
+          <header css={diffFileHeaderStyle}>{file}</header>
+          <Checkbox.Group
+            onChange={(checkedLines) => {
+              const hiddenLines = getHiddenLines(checkedLines, allLines);
+              onChange(hiddenLines);
             }}
+            value={showLines}
+            css={css`
+              width: 100%;
+            `}
           >
-            {codeStr}
-          </SyntaxHighlighter>
-        </Checkbox.Group>
-      </div>
-    </LazyLoad>
+            <SyntaxHighlighter
+              language={lang === 'vue' ? 'html' : lang}
+              PreTag="table"
+              CodeTag="tr"
+              showLineNumbers
+              showLineChecker
+              wrapLines
+              lineProps={(lineNum) => {
+                return {
+                  isCodeAddition: isCodeAddition(lineNum),
+                  isHidden: isHidden(lineNum),
+                  isCodeDeletion: isCodeDeletion(lineNum),
+                };
+              }}
+            >
+              {codeStr}
+            </SyntaxHighlighter>
+          </Checkbox.Group>
+        </div>
+      </LazyLoad>
+    </div>
   );
 }
 
