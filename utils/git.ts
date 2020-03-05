@@ -8,7 +8,7 @@ import { TUTURE_ROOT } from '../constants';
 
 // Interface for running git commands.
 // https://github.com/steveukx/git-js
-export const git = simplegit();
+export const git = simplegit().silent(true);
 
 /**
  * Store diff of all commits.
