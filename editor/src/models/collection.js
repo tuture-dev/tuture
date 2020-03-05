@@ -165,8 +165,8 @@ const collection = {
     },
     createArticle(state, payload) {
       const id = shortid.generate();
-
-      state.collection.articles.push({ id, ...payload });
+      const created = new Date();
+      state.collection.articles.push({ id, created, ...payload });
 
       return state;
     },

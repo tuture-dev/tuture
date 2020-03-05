@@ -172,6 +172,7 @@ function CreateEditArticle(props) {
             }
           });
         } else {
+          // Create new article.
           article.id = shortid.generate();
           dispatch.collection.createArticle(article);
 
@@ -184,6 +185,10 @@ function CreateEditArticle(props) {
               });
             }
           });
+
+          dispatch.drawer.setVisible(false);
+          dispatch.drawer.setChildrenVisible(false);
+          history.push(`/articles/${article.id}`);
         }
 
         dispatch.collection.saveCollection();
