@@ -7,6 +7,17 @@ import { getLinkData, removeLink, selectLastPoint } from 'editure';
 import { css, jsx } from '@emotion/core';
 
 import IconFont from '../IconFont';
+import styles from '../Highlight/styles/atom-dark';
+
+function getStyleFromClassNameArr(classNameArr) {
+  let style = {};
+
+  classNameArr.forEach((className) => {
+    style = { ...style, ...styles[className] };
+  });
+
+  return style;
+}
 
 const Link = (props) => {
   const { attributes, children, leaf } = props;
@@ -100,8 +111,18 @@ export default (props) => {
     children = <Link {...props}>{children}</Link>;
   }
 
+  if (leaf.codeHighlight) {
+    console.log('lefa', leaf);
+  }
+
+  let highlightProperty = {};
+
+  if (leaf.codeHighlight) {
+    highlightProperty.style = getStyleFromClassNameArr(leaf.className);
+  }
+
   return (
-    <span {...attributes} className={leaf.prismToken ? leaf.className : ''}>
+    <span {...attributes} {...highlightProperty}>
       {children}
     </span>
   );

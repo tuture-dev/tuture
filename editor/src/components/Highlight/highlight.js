@@ -86,7 +86,7 @@ function flattenCodeTree(tree, className = [], newTree = []) {
   return newTree;
 }
 
-function wrapLinesInSpan(codeTree, lineProps) {
+export function wrapLinesInSpan(codeTree, lineProps) {
   const tree = flattenCodeTree(codeTree.value);
   const newTree = [];
   let lastLineBreakIndex = -1;
@@ -171,7 +171,12 @@ function defaultRenderer({ rows, stylesheet, useInlineStyles }) {
   );
 }
 
-function getCodeTree({ astGenerator, language, code, defaultCodeValue }) {
+export function getCodeTree({
+  astGenerator,
+  language,
+  code,
+  defaultCodeValue,
+}) {
   if (astGenerator.getLanguage) {
     const hasLanguage = language && astGenerator.getLanguage(language);
     if (language === 'text') {
