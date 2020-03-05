@@ -5,9 +5,10 @@ import { css, jsx } from '@emotion/core';
 
 function ImageElement(props) {
   const { attributes, children, element } = props;
+  const { url } = element;
   const selected = useSelected();
   const focused = useFocused();
-  const path = element.url.startsWith('http') ? element.url : `/${element.url}`;
+  const path = url.startsWith('http') || url.startsWith('/') ? url : `/${url}`;
 
   return (
     <div {...attributes}>
