@@ -6,6 +6,7 @@ import BaseCommand from '../base';
 import logger from '../utils/logger';
 import { Step } from '../types';
 import { makeSteps, mergeSteps, isInitialized } from '../utils';
+import { git } from '../utils/git';
 import {
   loadCollection,
   saveCollection,
@@ -65,6 +66,10 @@ export default class Reload extends BaseCommand {
 
     try {
       const collection = await loadCollection(true);
+
+      // Checkout master branch and add tuture.yml.
+      await git.checkout('master');
+
       const currentSteps: Step[] = await makeSteps(
         this.userConfig.ignoredFiles,
       );
