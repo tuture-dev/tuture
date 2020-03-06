@@ -41,6 +41,8 @@ const EditLink = () => {
     }
   };
 
+  console.log('text', text);
+
   return (
     <Modal
       title="添加/编辑链接"
@@ -48,6 +50,7 @@ const EditLink = () => {
       onOk={handleOk}
       onCancel={handleCancel}
       zIndex={1080}
+      destroyOnClose
     >
       <p
         css={css`
