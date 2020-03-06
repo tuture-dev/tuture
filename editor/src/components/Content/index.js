@@ -3,10 +3,9 @@ import { useCallback } from 'react';
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 import { Editable, useSlate } from 'slate-react';
+import { useSelector } from 'react-redux';
 import { Row, Col, Affix } from 'antd';
-import { isBlockActive } from 'editure';
 import { Node } from 'slate';
-import { CODE_BLOCK } from 'editure-constants';
 import refractor from 'refractor';
 
 import Element from './element';
@@ -29,13 +28,13 @@ function createDecoration({ path, textStart, textEnd, className }) {
 
 function Content() {
   const editor = useSlate();
-  const renderElement = useCallback(Element, []);
-  const renderLeaf = useCallback(Leaf, []);
+  const lang = useSelector((state) => state.slate.lang);
+
+  const renderElement = useCallback((props) => <Element {...props} />, [lang]);
+  const renderLeaf = useCallback((props) => <Leaf {...props} />, [lang]);
 
   const hotKeyHandler = createHotKeysHandler(editor);
   const dropListener = createDropListener(editor);
-
-  const isCodeBlock = isBlockActive(editor, CODE_BLOCK);
 
   const decorate = useCallback(
     ([node, path]) => {
@@ -94,11 +93,13 @@ function Content() {
         });
       });
 
+      console.log('ranges', ranges);
+
       return ranges;
 
       // const defaultCodeValue = [{ type: 'text', value: code }];
     },
-    [isCodeBlock],
+    [lang],
   );
 
   return (

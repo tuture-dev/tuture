@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Select } from 'antd';
 import { useSlate } from 'slate-react';
 import { CODE_BLOCK } from 'editure-constants';
+import { useDispatch } from 'react-redux';
 import { updateBlock } from 'editure';
 
 /** @jsx jsx */
@@ -141,12 +142,17 @@ const { Option } = Select;
 function CodeBlockElement(props) {
   const { element, attributes, children } = props;
   const { lang: defaultLang = 'Plain Text' } = element;
+  const dispatch = useDispatch();
 
   const [lang, setLang] = useState(defaultLang);
   const editor = useSlate();
 
   function handleChange(value) {
     setLang(value);
+
+    console.log('editor', value, editor.selection);
+    dispatch.slate.setLang(value);
+
     updateBlock(editor, CODE_BLOCK, { lang: value });
   }
 

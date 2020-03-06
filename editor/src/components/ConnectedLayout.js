@@ -112,6 +112,8 @@ function ConnectedLayout(props) {
     }
   }
 
+  console.log('value', value);
+
   const editor = useMemo(initializeEditor, []);
   updateLastSelection(editor.selection);
 
