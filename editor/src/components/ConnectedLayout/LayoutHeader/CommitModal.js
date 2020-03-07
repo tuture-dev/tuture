@@ -9,9 +9,7 @@ const CommitModal = () => {
   const dispatch = useDispatch();
   const message = useSelector((state) => state.commit.message);
   const isEditing = useSelector((state) => state.commit.isEditing);
-  const loading = useSelector(
-    (state) => state.loading.effects.collection.commit,
-  );
+  const loading = useSelector((state) => state.loading.effects.commit.commit);
   const placeholder = `提交于 ${new Date()}`;
 
   const handleChange = (e) => {
@@ -23,7 +21,7 @@ const CommitModal = () => {
       dispatch.commit.setMessage(placeholder);
     }
 
-    dispatch.collection.commit(message);
+    dispatch.commit.commit(message);
   };
 
   const handleCancel = (e) => {
