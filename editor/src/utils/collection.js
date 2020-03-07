@@ -1,6 +1,6 @@
 import * as F from 'editure-constants';
 
-import { FILE, STEP } from '../utils/constants';
+import { FILE, STEP, DIFF_BLOCK } from '../utils/constants';
 
 export function flatten(steps) {
   return steps.flatMap(({ commit, id, articleId, children }) => [
@@ -9,7 +9,7 @@ export function flatten(steps) {
       if (node.type === FILE && node.display) {
         const { file, display } = node;
         return [
-          { file, display, type: FILE, children: [{ text: '' }] },
+          { file, display, commit, type: FILE, children: [{ text: '' }] },
           ...node.children,
         ];
       }
@@ -26,10 +26,22 @@ export function unflatten(fragment) {
     if (node.type === STEP) {
       steps.push({ ...node, children: [] });
     } else if (node.type === FILE && node.display) {
-      steps
-        .slice(-1)[0]
-        .children.push({ ...node, children: fragment.slice(i + 1, i + 4) });
-      i += 3;
+      const children = fragment.slice(i + 1, i + 4);
+
+      // If the second child is not a diff block, restore it.
+      if (children[1].type !== DIFF_BLOCK) {
+        children.splice(1, 0, {
+          type: DIFF_BLOCK,
+          file: node.file,
+          commit: node.commit,
+          hiddenLines: [],
+        });
+        i += 2;
+      } else {
+        i += 3;
+      }
+
+      steps.slice(-1)[0].children.push({ ...node, children });
     } else {
       steps.slice(-1)[0].children.push(node);
     }
