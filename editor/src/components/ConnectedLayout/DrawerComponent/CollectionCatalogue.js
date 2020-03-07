@@ -6,8 +6,8 @@ import { Link } from 'react-router-dom';
 /** @jsx jsx */
 import { css, jsx, Global } from '@emotion/core';
 
-import { EDIT_ARTICLE, CREATE_ARTICLE } from '../utils/constants';
-import IconFont from './IconFont';
+import IconFont from 'components/IconFont';
+import { EDIT_ARTICLE, CREATE_ARTICLE } from 'utils/constants';
 
 const listStyle = css`
   list-style: none;

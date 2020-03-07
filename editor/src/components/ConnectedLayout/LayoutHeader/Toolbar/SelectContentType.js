@@ -3,10 +3,10 @@ import { useSlate } from 'slate-react';
 import { toggleBlock, detectBlockFormat } from 'editure';
 import { H1, H2, H3, H4, H5, PARAGRAPH } from 'editure-constants';
 
+import IconFont from 'components/IconFont';
+
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
-
-import IconFont from '../IconFont';
 
 const { Option } = Select;
 

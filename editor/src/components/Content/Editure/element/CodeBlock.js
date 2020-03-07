@@ -8,7 +8,7 @@ import { updateBlock } from 'editure';
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 
-import IconFont from '../../IconFont';
+import IconFont from 'components/IconFont';
 
 const languages = [
   'Plain Text',

@@ -4,13 +4,10 @@ import { useSlate } from 'slate-react';
 import { LINK } from 'editure-constants';
 import { isMarkActive, removeLink, getSelectedString } from 'editure';
 
+import { MARK_HOTKEYS, getHotkeyHint, ButtonRefsContext } from 'utils/hotkeys';
+
 import Button from './Button';
 import ToolbarIcon from './ToolbarIcon';
-import {
-  MARK_HOTKEYS,
-  getHotkeyHint,
-  ButtonRefsContext,
-} from '../../utils/hotkeys';
 
 const LinkButton = () => {
   const editor = useSlate();

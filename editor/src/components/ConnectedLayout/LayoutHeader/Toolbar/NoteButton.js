@@ -4,10 +4,11 @@ import { useSlate } from 'slate-react';
 import { toggleBlock } from 'editure';
 import { NOTE } from 'editure-constants';
 
+import { levels } from 'utils/note';
+import IconFont from 'components/IconFont';
+
 import Button from './Button';
-import IconFont from '../IconFont';
 import ToolbarIcon from './ToolbarIcon';
-import { levels } from '../Content/element/Note';
 
 const NoteButton = () => {
   const editor = useSlate();

@@ -1,9 +1,10 @@
 import React, { useContext } from 'react';
 import { useDispatch } from 'react-redux';
 
+import { ButtonRefsContext } from 'utils/hotkeys';
+
 import Button from './Button';
 import ToolbarIcon from './ToolbarIcon';
-import { ButtonRefsContext } from '../../utils/hotkeys';
 
 const SaveButton = () => {
   const dispatch = useDispatch();

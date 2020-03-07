@@ -1,9 +1,10 @@
 import React from 'react';
 import { useSlate } from 'slate-react';
 
+import { OP_HOTKEYS, getHotkeyHint } from 'utils/hotkeys';
+
 import Button from './Button';
 import ToolbarIcon from './ToolbarIcon';
-import { OP_HOTKEYS, getHotkeyHint } from '../../utils/hotkeys';
 
 const HistoryButton = ({ action, icon }) => {
   const editor = useSlate();

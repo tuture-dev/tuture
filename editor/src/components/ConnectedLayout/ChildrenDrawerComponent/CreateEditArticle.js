@@ -19,8 +19,8 @@ import shortid from 'shortid';
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 
-import { EDIT_ARTICLE } from '../utils/constants';
-import { getHeadings, getArtcleMetaById } from '../utils/collection';
+import { EDIT_ARTICLE } from 'utils/constants';
+import { getHeadings, getArtcleMetaById } from 'utils/collection';
 
 const { Option } = Select;
 const { confirm } = Modal;

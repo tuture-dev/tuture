@@ -5,14 +5,11 @@ import { IMAGE } from 'editure-constants';
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 
+import { BLOCK_HOTKEYS, getHotkeyHint, ButtonRefsContext } from 'utils/hotkeys';
+import { uploadImage, createInsertImageCallback } from 'utils/image';
+
 import Button from './Button';
 import ToolbarIcon from './ToolbarIcon';
-import {
-  BLOCK_HOTKEYS,
-  getHotkeyHint,
-  ButtonRefsContext,
-} from '../../utils/hotkeys';
-import { uploadImage, createInsertImageCallback } from '../../utils/image';
 
 const ImageButton = () => {
   const editor = useSlate();

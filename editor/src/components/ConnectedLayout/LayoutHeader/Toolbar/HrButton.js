@@ -3,9 +3,10 @@ import { useSlate } from 'slate-react';
 import { insertVoid } from 'editure';
 import { HR } from 'editure-constants';
 
+import { BLOCK_HOTKEYS, getHotkeyHint } from 'utils/hotkeys';
+
 import Button from './Button';
 import ToolbarIcon from './ToolbarIcon';
-import { BLOCK_HOTKEYS, getHotkeyHint } from '../../utils/hotkeys';
 
 const HrButton = () => {
   const editor = useSlate();

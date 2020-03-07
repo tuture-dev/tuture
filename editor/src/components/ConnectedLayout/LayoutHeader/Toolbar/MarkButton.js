@@ -1,21 +1,22 @@
 import React from 'react';
 import { useSlate } from 'slate-react';
-import { isBlockActive, toggleBlock } from 'editure';
+import { isMarkActive, toggleMark } from 'editure';
+
+import { MARK_HOTKEYS, getHotkeyHint } from 'utils/hotkeys';
 
 import Button from './Button';
 import ToolbarIcon from './ToolbarIcon';
-import { BLOCK_HOTKEYS, getHotkeyHint } from '../../utils/hotkeys';
 
-const BlockButton = ({ format, icon }) => {
+const MarkButton = ({ format, icon }) => {
   const editor = useSlate();
-  const isActive = isBlockActive(editor, format);
-  const { hotkey, title } = BLOCK_HOTKEYS[format];
+  const isActive = isMarkActive(editor, format);
+  const { hotkey, title } = MARK_HOTKEYS[format];
 
   return (
     <Button
       handleMouseDown={(event) => {
         event.preventDefault();
-        toggleBlock(editor, format, {}, { unwrap: true });
+        toggleMark(editor, format);
       }}
     >
       <ToolbarIcon
@@ -27,4 +28,4 @@ const BlockButton = ({ format, icon }) => {
   );
 };
 
-export default BlockButton;
+export default MarkButton;

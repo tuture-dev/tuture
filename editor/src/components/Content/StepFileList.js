@@ -5,7 +5,7 @@ import { css, jsx, Global } from '@emotion/core';
 import { useSelector, useStore, useDispatch } from 'react-redux';
 import { Container, Draggable } from 'react-smooth-dnd';
 
-import IconFont from './IconFont';
+import IconFont from 'components/IconFont';
 
 function StepFileList() {
   const dispatch = useDispatch();

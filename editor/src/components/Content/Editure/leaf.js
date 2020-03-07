@@ -6,7 +6,7 @@ import { getLinkData, removeLink, selectLastPoint } from 'editure';
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 
-import IconFont from '../IconFont';
+import IconFont from 'components/IconFont';
 import styles from '../Highlight/styles/atom-dark';
 
 function getStyleFromClassNameArr(classNameArr) {

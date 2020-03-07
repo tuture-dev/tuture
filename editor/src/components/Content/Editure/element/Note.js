@@ -4,21 +4,13 @@ import { useSlate } from 'slate-react';
 import { updateBlock } from 'editure';
 import { NOTE } from 'editure-constants';
 
+import { levels } from 'utils/note';
+import IconFont from 'components/IconFont';
+
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 
-import IconFont from '../../IconFont';
-
 const { Option } = Select;
-
-export const levels = {
-  default: { name: '默认', border: '#777', background: '#f7f7f7' },
-  primary: { name: '主要', border: '#6f42c1', background: '#f5f0fa' },
-  success: { name: '成功', border: '#5cb85c', background: '#eff8f0' },
-  info: { name: '提示', border: '#428bca', background: '#eef7fa' },
-  warning: { name: '注意', border: '#f0ad4e', background: '#fdf8ea' },
-  danger: { name: '危险', border: '#d9534f', background: '#fcf1f2' },
-};
 
 function NoteElement(props) {
   const { attributes, children, element } = props;

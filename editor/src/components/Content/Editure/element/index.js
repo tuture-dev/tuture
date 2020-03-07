@@ -3,6 +3,8 @@ import * as F from 'editure-constants';
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 
+import { STEP, FILE, EXPLAIN, DIFF_BLOCK } from 'utils/constants';
+
 import ExplainElement from './Explain';
 import NoteElement from './Note';
 import ImageElement from './Image';
@@ -10,7 +12,6 @@ import HrElement from './Hr';
 import CodeBlockElement from './CodeBlock';
 import DiffBlockElement from './DiffBlock';
 import ListItemElement from './ListItem';
-import { STEP, FILE, EXPLAIN, DIFF_BLOCK } from '../../../utils/constants';
 
 export default (props) => {
   const { attributes, children, element } = props;

@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Drawer } from 'antd';
 
-import { CREATE_ARTICLE, EDIT_ARTICLE } from '../utils/constants';
+import { CREATE_ARTICLE, EDIT_ARTICLE } from 'utils/constants';
 
 import CreateEditArticle from './CreateEditArticle';
 

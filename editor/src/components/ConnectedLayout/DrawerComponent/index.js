@@ -6,7 +6,7 @@ import {
   COLLECTION_CATALOGUE,
   COLLECTION_SETTING,
   CONTACT_US,
-} from '../utils/constants';
+} from 'utils/constants';
 
 import CollectionCatalogue from './CollectionCatalogue';
 import CollectionSetting from './CollectionSetting';
