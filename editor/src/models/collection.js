@@ -321,11 +321,13 @@ const collection = {
 
         if (nowArticleId) {
           return flatten(
-            steps.filter(({ articleId }) => articleId === nowArticleId),
+            steps.filter(
+              (step) => step.articleId === nowArticleId && !step.outdated,
+            ),
           );
         }
 
-        return flatten(steps);
+        return flatten(steps.filter((step) => !step.outdated));
       });
     },
     nowArticleCatalogue() {
@@ -341,11 +343,13 @@ const collection = {
 
         if (nowArticleId) {
           return getHeadings(
-            steps.filter(({ articleId }) => articleId === nowArticleId),
+            steps.filter(
+              (step) => step.articleId === nowArticleId && !step.outdated,
+            ),
           );
         }
 
-        return getHeadings(steps);
+        return getHeadings(steps.filter((step) => !step.outdated));
       });
     },
     collectionMeta() {
