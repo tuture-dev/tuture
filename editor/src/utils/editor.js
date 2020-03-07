@@ -49,11 +49,11 @@ const withExplainLayout = (editor) => {
 
 const plugins = [
   withReact,
-  withHistory,
   withExplainLayout,
   withImages,
   ...defaultPlugins,
   withCommitHeaderLayout,
+  withHistory,
 ];
 
 export const initializeEditor = () =>

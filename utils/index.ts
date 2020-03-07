@@ -4,7 +4,7 @@ import shortid from 'shortid';
 import { File as DiffFile } from 'parse-diff';
 
 import { Step, File, DiffBlock } from '../types';
-import { emptyExplain, emptyChildren } from './nodes';
+import { getEmptyExplain, getEmptyChildren } from './nodes';
 import { collectionPath } from './collection';
 import { TUTURE_ROOT, TUTURE_BRANCH } from '../constants';
 import { git, storeDiff } from './git';
@@ -71,13 +71,13 @@ function convertFile(commit: string, file: DiffFile, display = false) {
     file: file.to!,
     commit,
     hiddenLines: getHiddenLines(file),
-    children: emptyChildren,
+    children: getEmptyChildren(),
   };
   const fileObj: File = {
     type: 'file',
     file: file.to!,
     display,
-    children: [emptyExplain, diffBlock, emptyExplain],
+    children: [getEmptyExplain(), diffBlock, getEmptyExplain()],
   };
 
   return fileObj;
@@ -118,7 +118,7 @@ export async function makeSteps(ignoredFiles?: string[]) {
           fixed: true,
           children: [{ text: message }],
         },
-        emptyExplain,
+        getEmptyExplain,
         ...files.map((diffFile) => {
           const display =
             ignoredFiles &&
@@ -127,7 +127,7 @@ export async function makeSteps(ignoredFiles?: string[]) {
             );
           return convertFile(hash, diffFile, display);
         }),
-        emptyExplain,
+        getEmptyExplain,
       ],
     } as Step;
   });
@@ -138,39 +138,30 @@ export async function makeSteps(ignoredFiles?: string[]) {
 
 /**
  * Merge previous and current steps. All previous explain will be kept.
- * If any step is rebased out, it will be marked outdated.
+ * If any step is rebased out, it will be marked outdated and added to the end.
  */
 export function mergeSteps(prevSteps: Step[], currentSteps: Step[]) {
-  // Mark steps not included in latest steps as outdated.
-  prevSteps.forEach((prevStep) => {
-    if (
-      !currentSteps.find(({ commit }) => isCommitEqual(commit, prevStep.commit))
-    ) {
-      prevStep.outdated = true; /* eslint no-param-reassign: "off"  */
-    }
+  const steps = currentSteps.map((currentStep) => {
+    const prevStep = prevSteps.filter((step) =>
+      isCommitEqual(step.commit, currentStep.commit),
+    )[0];
+
+    // If previous step with the same commit exists, copy it.
+    // Or just return the new step.
+    return prevStep || currentStep;
   });
 
-  let [i, j] = [0, 0];
-  const mergedSteps: Step[] = [];
+  // Outdated steps are those not included in current git history.
+  const outdatedSteps = prevSteps
+    .filter((prevStep) => {
+      const currentStep = currentSteps.filter((step) =>
+        isCommitEqual(step.commit, prevStep.commit),
+      )[0];
+      return !currentStep;
+    })
+    .map((prevStep) => ({ ...prevStep, outdated: true }));
 
-  while (i < prevSteps.length || j < currentSteps.length) {
-    if (i >= prevSteps.length) {
-      mergedSteps.push(currentSteps[j]);
-      j += 1;
-    } else if (j >= currentSteps.length || prevSteps[i].outdated) {
-      mergedSteps.push(prevSteps[i]);
-      i += 1;
-    } else if (isCommitEqual(prevSteps[i].commit, currentSteps[j].commit)) {
-      mergedSteps.push(prevSteps[i]);
-      i += 1;
-      j += 1;
-    } else {
-      mergedSteps.push(currentSteps[j]);
-      j += 1;
-    }
-  }
-
-  return mergedSteps;
+  return steps.concat(outdatedSteps);
 }
 
 /**

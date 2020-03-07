@@ -12,7 +12,7 @@ import {
   getStepTitle,
   getNumFromStepId,
 } from '../utils/collection';
-import { isCommitEqual, timeout } from '../utils/commit';
+import { isCommitEqual } from '../utils/commit';
 
 const collection = {
   state: {
@@ -165,8 +165,8 @@ const collection = {
     },
     createArticle(state, payload) {
       const id = shortid.generate();
-
-      state.collection.articles.push({ id, ...payload });
+      const created = new Date();
+      state.collection.articles.push({ id, created, ...payload });
 
       return state;
     },
@@ -259,33 +259,6 @@ const collection = {
         dispatch.collection.setSaveFailed(true);
       }
     },
-    async commit(payload) {
-      try {
-        const response = await timeout(
-          5000,
-          fetch('/commit', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              Accept: 'application/json',
-            },
-            body: JSON.stringify({
-              message: payload,
-            }),
-          }),
-        );
-
-        if (response.ok) {
-          message.success('提交成功！');
-        } else {
-          message.error('提交失败！');
-        }
-      } catch (err) {
-        message.error('提交超时');
-      }
-
-      dispatch.commit.reset();
-    },
   }),
   selectors: (slice, createSelector, hasProps) => ({
     nowArticleMeta() {
@@ -321,11 +294,13 @@ const collection = {
 
         if (nowArticleId) {
           return flatten(
-            steps.filter(({ articleId }) => articleId === nowArticleId),
+            steps.filter(
+              (step) => step.articleId === nowArticleId && !step.outdated,
+            ),
           );
         }
 
-        return flatten(steps);
+        return flatten(steps.filter((step) => !step.outdated));
       });
     },
     nowArticleCatalogue() {
@@ -341,11 +316,13 @@ const collection = {
 
         if (nowArticleId) {
           return getHeadings(
-            steps.filter(({ articleId }) => articleId === nowArticleId),
+            steps.filter(
+              (step) => step.articleId === nowArticleId && !step.outdated,
+            ),
           );
         }
 
-        return getHeadings(steps);
+        return getHeadings(steps.filter((step) => !step.outdated));
       });
     },
     collectionMeta() {
