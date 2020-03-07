@@ -211,7 +211,8 @@ export default class Build extends BaseCommand {
         : '';
       return `{% note ${level} %}\n${title}${content}\n{% endnote %}`;
     }
-    return `::: ${level}\n${content}\n:::`;
+    const lines = [`**${noteLevels[level].name}**`, '', ...content.split('\n')];
+    return lines.map((line) => (line ? `> ${line}` : '>')).join('\n');
   }
 
   getDiffFile(rawDiffs: RawDiff[], commit: string, file: string) {
