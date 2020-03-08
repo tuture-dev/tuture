@@ -11,7 +11,7 @@ module.exports = override(
     javascriptEnabled: true,
     modifyVars: {
       '@primary-color': '#02b875',
-      '@text-selection-bg': 'rgba(27,162,227,.2)',
+      '@text-selection-bg': '#d8d8dc',
       '@text-color-inverse': 'inherit',
     },
   }),
