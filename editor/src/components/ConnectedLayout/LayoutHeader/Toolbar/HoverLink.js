@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import ReactDOM from 'react-dom';
 import { Icon } from 'antd';
-import { useSlate } from 'slate-react';
+import { useSlate } from 'tuture-slate-react';
 import { LINK } from 'editure-constants';
 import { isMarkActive, removeLink, getLinkData } from 'editure';
 

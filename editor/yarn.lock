@@ -1430,11 +1430,6 @@
   dependencies:
     "@babel/types" "^7.3.0"
 
-"@types/debounce@^1.2.0":
-  version "1.2.0"
-  resolved "https://registry.npm.taobao.org/@types/debounce/download/@types/debounce-1.2.0.tgz#9ee99259f41018c640b3929e1bb32c3dcecdb192"
-  integrity sha1-numSWfQQGMZAs5KeG7MsPc7NsZI=
-
 "@types/eslint-visitor-keys@^1.0.0":
   version "1.0.0"
   resolved "https://registry.npm.taobao.org/@types/eslint-visitor-keys/download/@types/eslint-visitor-keys-1.0.0.tgz?cache=0&sync_timestamp=1580841793837&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40types%2Feslint-visitor-keys%2Fdownload%2F%40types%2Feslint-visitor-keys-1.0.0.tgz#1ee30d79544ca84d68d4b3cdb0af4f205663dd2d"
@@ -1488,6 +1483,11 @@
   version "7.0.4"
   resolved "https://registry.npm.taobao.org/@types/json-schema/download/@types/json-schema-7.0.4.tgz#38fd73ddfd9b55abb1e1b2ed578cb55bd7b7d339"
   integrity sha1-OP1z3f2bVaux4bLtV4y1W9e30zk=
+
+"@types/lodash@^4.14.149":
+  version "4.14.149"
+  resolved "https://registry.npmjs.org/@types/lodash/-/lodash-4.14.149.tgz#1342d63d948c6062838fbf961012f74d4e638440"
+  integrity sha512-ijGqzZt/b7BfzcK9vTrS6MFljQRPn5BFWOx8oE0GYxribu6uV+aA9zZuXI1zc/etK9E8nrgdoF2+LgUw7+9tJQ==
 
 "@types/minimatch@*":
   version "3.0.3"
@@ -3677,11 +3677,6 @@ dayjs@^1.8.20:
   version "1.8.20"
   resolved "https://registry.npm.taobao.org/dayjs/download/dayjs-1.8.20.tgz?cache=0&sync_timestamp=1580814066440&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fdayjs%2Fdownload%2Fdayjs-1.8.20.tgz#724a5cb6ad1f6fc066b0bd9a800dedcc7886f19e"
   integrity sha1-ckpctq0fb8BmsL2agA3tzHiG8Z4=
-
-debounce@^1.2.0:
-  version "1.2.0"
-  resolved "https://registry.npm.taobao.org/debounce/download/debounce-1.2.0.tgz#44a540abc0ea9943018dc0eaa95cce87f65cd131"
-  integrity sha1-RKVAq8DqmUMBjcDqqVzOh/Zc0TE=
 
 debug@2.6.9, debug@^2.2.0, debug@^2.3.3, debug@^2.6.0, debug@^2.6.9:
   version "2.6.9"
@@ -10547,44 +10542,12 @@ slash@^3.0.0:
   resolved "https://registry.npm.taobao.org/slash/download/slash-3.0.0.tgz#6539be870c165adbd5240220dbe361f1bc4d4634"
   integrity sha1-ZTm+hwwWWtvVJAIg2+Nh8bxNRjQ=
 
-slate-history@^0.57.1:
-  version "0.57.1"
-  resolved "https://registry.npm.taobao.org/slate-history/download/slate-history-0.57.1.tgz#2938537f3f95768a69460ec5035be0333216c278"
-  integrity sha1-KThTfz+VdoppRg7FA1vgMzIWwng=
-  dependencies:
-    immer "^5.0.0"
-    is-plain-object "^3.0.0"
-
 slate-hyperscript@^0.57.1:
   version "0.57.1"
   resolved "https://registry.npm.taobao.org/slate-hyperscript/download/slate-hyperscript-0.57.1.tgz#d72fdedb527672302bd32d4e6d96c96eac91bbac"
   integrity sha1-1y/e21J2cjAr0y1ObZbJbqyRu6w=
   dependencies:
     is-plain-object "^3.0.0"
-
-slate-react@^0.57.1:
-  version "0.57.1"
-  resolved "https://registry.npm.taobao.org/slate-react/download/slate-react-0.57.1.tgz#219a95b7caaea365a7f6fac5f3f5aa2e9da62295"
-  integrity sha1-IZqVt8quo2Wn9vrF8/WqLp2mIpU=
-  dependencies:
-    "@types/debounce" "^1.2.0"
-    "@types/is-hotkey" "^0.1.1"
-    debounce "^1.2.0"
-    direction "^1.0.3"
-    is-hotkey "^0.1.6"
-    is-plain-object "^3.0.0"
-    scroll-into-view-if-needed "^2.2.20"
-
-slate@^0.57.1:
-  version "0.57.1"
-  resolved "https://registry.npm.taobao.org/slate/download/slate-0.57.1.tgz#dc99d9a77840894c9e3d3bc1185b67ee36c17686"
-  integrity sha1-3JnZp3hAiUyePTvBGFtn7jbBdoY=
-  dependencies:
-    "@types/esrever" "^0.2.0"
-    esrever "^0.2.0"
-    immer "^5.0.0"
-    is-plain-object "^3.0.0"
-    tiny-warning "^1.0.3"
 
 slice-ansi@^2.1.0:
   version "2.1.0"
@@ -11349,6 +11312,38 @@ tunnel-agent@^0.6.0:
   integrity sha1-J6XeoGs2sEoKmWZ3SykIaPD8QP0=
   dependencies:
     safe-buffer "^5.0.1"
+
+tuture-slate-history@^0.57.3:
+  version "0.57.3"
+  resolved "https://registry.npmjs.org/tuture-slate-history/-/tuture-slate-history-0.57.3.tgz#9815674a4519c912675db18bcdebc8e86dced74f"
+  integrity sha512-D/X1zLV9DxI6MfHYV8Aj7crrmcw2v81vo5Vmqe5FH9304CPV52es/KNz0i+FtZaMRPWZovExWLT/4wQkDb5SFA==
+  dependencies:
+    immer "^5.0.0"
+    is-plain-object "^3.0.0"
+
+tuture-slate-react@^0.57.3:
+  version "0.57.3"
+  resolved "https://registry.npmjs.org/tuture-slate-react/-/tuture-slate-react-0.57.3.tgz#d74494fef39e42a3d7d5ea4c5f35346d6d7f9093"
+  integrity sha512-Rzq+AxHoaFYhctudm9kZpKgyXAcaVewxZx146Echoxi2tgjBrYca/WwKnynONibS7cUciJh/qzd4bHobl6gJWQ==
+  dependencies:
+    "@types/is-hotkey" "^0.1.1"
+    "@types/lodash" "^4.14.149"
+    direction "^1.0.3"
+    is-hotkey "^0.1.6"
+    is-plain-object "^3.0.0"
+    lodash "^4.17.4"
+    scroll-into-view-if-needed "^2.2.20"
+
+tuture-slate@^0.57.3:
+  version "0.57.3"
+  resolved "https://registry.npmjs.org/tuture-slate/-/tuture-slate-0.57.3.tgz#5c513952ec066bcf376b30f89b9ded05ec228074"
+  integrity sha512-fcPeCP0Aya58F2h2hf1tVJEXbkXIBe4o4PSSCV0LQYNUj7ONNbu/5Xy0gtJqnRFQZOGuiyNLNsVsSn8BJmRNUA==
+  dependencies:
+    "@types/esrever" "^0.2.0"
+    esrever "^0.2.0"
+    immer "^5.0.0"
+    is-plain-object "^3.0.0"
+    tiny-warning "^1.0.3"
 
 tweetnacl@^0.14.3, tweetnacl@~0.14.0:
   version "0.14.5"

@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { useSlate } from 'slate-react';
+import { useSlate } from 'tuture-slate-react';
 import { IMAGE } from 'editure-constants';
 
 /** @jsx jsx */

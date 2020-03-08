@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 
 /** @jsx jsx */
 import { jsx } from '@emotion/core';
-import { Editable, useSlate } from 'slate-react';
+import { Editable, useSlate } from 'tuture-slate-react';
 import { useSelector } from 'react-redux';
 import { Node } from 'slate';
 import refractor from 'refractor';

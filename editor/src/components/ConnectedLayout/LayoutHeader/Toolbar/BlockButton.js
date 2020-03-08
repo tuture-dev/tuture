@@ -1,5 +1,5 @@
 import React from 'react';
-import { useSlate } from 'slate-react';
+import { useSlate } from 'tuture-slate-react';
 import { isBlockActive, toggleBlock } from 'editure';
 
 import { BLOCK_HOTKEYS, getHotkeyHint } from 'utils/hotkeys';

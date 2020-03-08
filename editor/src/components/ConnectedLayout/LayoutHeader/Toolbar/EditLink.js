@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { Modal, Input } from 'antd';
-import { useSlate } from 'slate-react';
+import { useSlate } from 'tuture-slate-react';
 
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';

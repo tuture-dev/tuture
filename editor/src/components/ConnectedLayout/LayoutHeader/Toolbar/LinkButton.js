@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { useDispatch } from 'react-redux';
-import { useSlate } from 'slate-react';
+import { useSlate } from 'tuture-slate-react';
 import { LINK } from 'editure-constants';
 import { isMarkActive, removeLink, getSelectedString } from 'editure';
 

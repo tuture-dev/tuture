@@ -1,5 +1,5 @@
 import { createEditor, Transforms, Range, Editor } from 'slate';
-import { withReact } from 'slate-react';
+import { withReact } from 'tuture-slate-react';
 import { withHistory } from 'slate-history';
 import { defaultPlugins } from 'editure';
 import * as F from 'editure-constants';

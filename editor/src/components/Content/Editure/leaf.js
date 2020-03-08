@@ -1,5 +1,5 @@
 import { useDispatch } from 'react-redux';
-import { useSlate } from 'slate-react';
+import { useSlate } from 'tuture-slate-react';
 import { Popover, Popconfirm, Tooltip } from 'antd';
 import { getLinkData, removeLink, selectLastPoint } from 'editure';
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Dropdown, Menu } from 'antd';
-import { useSlate } from 'slate-react';
+import { useSlate } from 'tuture-slate-react';
 import { toggleBlock } from 'editure';
 import { NOTE } from 'editure-constants';
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useSlate } from 'slate-react';
+import { useSlate } from 'tuture-slate-react';
 import { isMarkActive, toggleMark } from 'editure';
 
 import { MARK_HOTKEYS, getHotkeyHint } from 'utils/hotkeys';

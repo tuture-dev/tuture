@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Select } from 'antd';
-import { useSlate } from 'slate-react';
+import { useSlate } from 'tuture-slate-react';
 import { updateBlock } from 'editure';
 import { NOTE } from 'editure-constants';
 

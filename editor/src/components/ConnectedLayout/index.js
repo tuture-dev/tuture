@@ -2,7 +2,7 @@ import { useMemo, useEffect, useState } from 'react';
 
 import { useSelector, useDispatch, useStore } from 'react-redux';
 import { Layout, Affix, BackTop } from 'antd';
-import { Slate } from 'slate-react';
+import { Slate } from 'tuture-slate-react';
 import { updateLastSelection } from 'editure';
 
 /** @jsx jsx */

@@ -1,4 +1,4 @@
-import { useFocused, useSelected } from 'slate-react';
+import { useFocused, useSelected } from 'tuture-slate-react';
 
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
