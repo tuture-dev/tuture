@@ -1,6 +1,6 @@
-import { createEditor, Transforms, Range, Editor } from 'slate';
+import { createEditor, Transforms, Range, Editor } from 'tuture-slate';
 import { withReact } from 'tuture-slate-react';
-import { withHistory } from 'slate-history';
+import { withHistory } from 'tuture-slate-history';
 import { defaultPlugins } from 'editure';
 import * as F from 'editure-constants';
 
@@ -47,12 +47,23 @@ const withExplainLayout = (editor) => {
   return editor;
 };
 
+const withDiffBlockVoid = (editor) => {
+  const { isVoid } = editor;
+
+  editor.isVoid = (element) => {
+    return element.type === 'diff-block' ? true : isVoid(element);
+  };
+
+  return editor;
+};
+
 const plugins = [
   withReact,
   withExplainLayout,
   withImages,
   ...defaultPlugins,
   withCommitHeaderLayout,
+  withDiffBlockVoid,
   withHistory,
 ];
 

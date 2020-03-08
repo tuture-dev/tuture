@@ -4034,23 +4034,23 @@ ecc-jsbn@~0.1.1:
     jsbn "~0.1.0"
     safer-buffer "^2.1.0"
 
-editure-constants@^0.0.14:
-  version "0.0.14"
-  resolved "https://registry.npm.taobao.org/editure-constants/download/editure-constants-0.0.14.tgz#c6c5f7f6d09e30b225f0520f134b40d364865985"
-  integrity sha1-xsX39tCeMLIl8FIPE0tA02SGWYU=
+editure-constants@^0.0.15:
+  version "0.0.15"
+  resolved "https://registry.npmjs.org/editure-constants/-/editure-constants-0.0.15.tgz#e2d1e7c9472063e20e3ee9604a13fd9d7b8813b5"
+  integrity sha512-hviPm4Yi9nu77ojfcj692WpRxex0ertiyfWtxhddCKv4g4gXZzLdMmNoBBAfNY9g2iFad/HI1rV4MeMANBpktA==
 
-editure@^0.0.14:
-  version "0.0.14"
-  resolved "https://registry.npm.taobao.org/editure/download/editure-0.0.14.tgz#d9a68ed26a2291f28458d41fada183ef1c1968b1"
-  integrity sha1-2aaO0moikfKEWNQfraGD7xwZaLE=
+editure@^0.0.15:
+  version "0.0.15"
+  resolved "https://registry.npmjs.org/editure/-/editure-0.0.15.tgz#b9067a7d6bd83bf2b1be5bdd4a7d56f36b942d1f"
+  integrity sha512-eV8ZA3EnfnSzRU/VewAA8OJOkawKMOve7uWSYrAzb0exe+9U52sG1Y+hl4a9qJ0dkDUgUI1xUBki7Z1y6WHihg==
   dependencies:
-    editure-constants "^0.0.14"
+    editure-constants "^0.0.15"
     escape-html "^1.0.3"
     is-url "^1.2.4"
     jsdom "^16.1.0"
     markdown-it "^10.0.0"
     shortid "^2.2.15"
-    slate-hyperscript "^0.57.1"
+    tuture-slate-hyperscript "^0.57.3"
 
 ee-first@1.1.1:
   version "1.1.1"
@@ -10542,13 +10542,6 @@ slash@^3.0.0:
   resolved "https://registry.npm.taobao.org/slash/download/slash-3.0.0.tgz#6539be870c165adbd5240220dbe361f1bc4d4634"
   integrity sha1-ZTm+hwwWWtvVJAIg2+Nh8bxNRjQ=
 
-slate-hyperscript@^0.57.1:
-  version "0.57.1"
-  resolved "https://registry.npm.taobao.org/slate-hyperscript/download/slate-hyperscript-0.57.1.tgz#d72fdedb527672302bd32d4e6d96c96eac91bbac"
-  integrity sha1-1y/e21J2cjAr0y1ObZbJbqyRu6w=
-  dependencies:
-    is-plain-object "^3.0.0"
-
 slice-ansi@^2.1.0:
   version "2.1.0"
   resolved "https://registry.npm.taobao.org/slice-ansi/download/slice-ansi-2.1.0.tgz#cacd7693461a637a5788d92a7dd4fba068e81636"
@@ -11319,6 +11312,13 @@ tuture-slate-history@^0.57.3:
   integrity sha512-D/X1zLV9DxI6MfHYV8Aj7crrmcw2v81vo5Vmqe5FH9304CPV52es/KNz0i+FtZaMRPWZovExWLT/4wQkDb5SFA==
   dependencies:
     immer "^5.0.0"
+    is-plain-object "^3.0.0"
+
+tuture-slate-hyperscript@^0.57.3:
+  version "0.57.3"
+  resolved "https://registry.npmjs.org/tuture-slate-hyperscript/-/tuture-slate-hyperscript-0.57.3.tgz#2d574126d8c9c80ec5dcf288cd669abb2f83302d"
+  integrity sha512-UaI/MhOjU1Zxm0qn82HznW7pI195H/RuxXoS1zYxhwevMYbS+dtJEIUUDOWjLRjmD/5xKq2xtnJMbdx4yxCltw==
+  dependencies:
     is-plain-object "^3.0.0"
 
 tuture-slate-react@^0.57.3:

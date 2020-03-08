@@ -4,7 +4,7 @@ import { useCallback } from 'react';
 import { jsx } from '@emotion/core';
 import { Editable, useSlate } from 'tuture-slate-react';
 import { useSelector } from 'react-redux';
-import { Node } from 'slate';
+import { Node } from 'tuture-slate';
 import refractor from 'refractor';
 
 import { createDropListener } from 'utils/image';

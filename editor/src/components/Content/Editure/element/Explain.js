@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
-import { Node } from 'slate';
+import { Node } from 'tuture-slate';
 
 const emptyChildrenStyles = css`
   border: 1px solid #ddd;
