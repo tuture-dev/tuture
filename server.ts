@@ -14,11 +14,11 @@ import { loadCollection, saveCollection } from './utils/collection';
 
 const workspace = process.env.TUTURE_PATH || process.cwd();
 const diffPath = path.join(workspace, DIFF_PATH);
+const assetsRoot = '.tuture/assets';
 
 const makeServer = (config: any) => {
   const app = express();
   const server = http.createServer(app);
-  const { assetsRoot } = config;
 
   // Socket.IO server instance.
   const io = socketio(server);
@@ -47,7 +47,7 @@ const makeServer = (config: any) => {
   app.use(express.json({ limit: '50mb' }));
   app.use(express.urlencoded({ extended: false }));
   app.use('/static', express.static(EDITOR_STATIC_PATH));
-  app.use(`/${assetsRoot}`, express.static(assetsRoot));
+  app.use(`/.tuture/assets`, express.static(assetsRoot));
 
   app.get('/diff', (_, res) => {
     res.json(JSON.parse(fs.readFileSync(diffPath).toString()));
