@@ -64,6 +64,10 @@ const makeServer = (config: any) => {
   });
 
   app.post('/upload', checkAssetsRoot, upload.single('file'), (req, res) => {
+    if (!req.file) {
+      return res.status(400).send({ message: '未指定图片！' });
+    }
+
     const { originalname } = req.file;
     let savePath = path.join(assetsRoot, originalname);
 

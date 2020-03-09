@@ -10,8 +10,18 @@ export const uploadImage = (file, callback) => {
     method: 'POST',
     body: data,
   })
-    .then((res) => res.json())
-    .then((data) => callback(null, data.path))
+    .then((res) => {
+      if (res.status !== 200) {
+        throw new Error(res.statusText);
+      }
+      res.json();
+    })
+    .then((data) => {
+      if (!data.path) {
+        throw new Error('服务器返回的路径无效');
+      }
+      callback(null, data.path);
+    })
     .catch((err) => callback(err));
 };
 
