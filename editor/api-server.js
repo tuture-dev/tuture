@@ -32,7 +32,10 @@ app.post('/save', (req, res) => {
 
 app.post('/upload', upload.single('file'), (req, res) => {
   console.log('detect upload', req.file);
-  res.json({ path: 'https://tuture.co/images/covers/abfd872.jpg' });
+  res.json({
+    path:
+      'https://imgkr.cn-bj.ufileos.com/c5db4935-7704-4773-b613-31d92482dfb4.jpg',
+  });
 });
 
 app.post('/commit', (req, res) => {
