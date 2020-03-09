@@ -162,9 +162,13 @@ export function syncImages() {
               fs.mkdirpSync(path.dirname(localPath));
             }
 
-            return request
-              .get(hostingUri as string)
-              .pipe(fs.createWriteStream(localPath));
+            return setTimeout(() => {
+              request
+                .get(hostingUri as string)
+                .pipe(fs.createWriteStream(localPath));
+
+              resolve({ localPath, hostingUri } as Asset);
+            }, Math.random() * 1000);
           }
 
           // Not uploaded yet, trying to upload.
