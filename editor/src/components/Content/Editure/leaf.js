@@ -111,10 +111,6 @@ export default (props) => {
     children = <Link {...props}>{children}</Link>;
   }
 
-  if (leaf.codeHighlight) {
-    console.log('lefa', leaf);
-  }
-
   let highlightProperty = {};
 
   if (leaf.codeHighlight) {
