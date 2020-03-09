@@ -118,7 +118,7 @@ export async function makeSteps(ignoredFiles?: string[]) {
           fixed: true,
           children: [{ text: message }],
         },
-        getEmptyExplain,
+        getEmptyExplain(),
         ...files.map((diffFile) => {
           const display =
             ignoredFiles &&
@@ -127,7 +127,7 @@ export async function makeSteps(ignoredFiles?: string[]) {
             );
           return convertFile(hash, diffFile, display);
         }),
-        getEmptyExplain,
+        getEmptyExplain(),
       ],
     } as Step;
   });
