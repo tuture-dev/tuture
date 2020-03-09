@@ -1,5 +1,6 @@
 import React from 'react';
 import { Checkbox, Tooltip } from 'antd';
+import { useDispatch } from 'react-redux';
 
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
@@ -34,25 +35,84 @@ function getLineNumbers({ lines, startingLineNumber, style }) {
   });
 }
 
-function getLineChecker({ lines, startingLineNumber, style }) {
+function getLineChecker({ lines, startingLineNumber, style, lineProps }) {
   return lines.map((_, i) => {
     const number = i + startingLineNumber;
+
+    const { isHidden = false } =
+      (typeof lineProps === 'function' ? lineProps(i) : lineProps) || {};
+
     return (
-      <span
-        key={`line-${i}`}
-        className="react-syntax-highlighter-line-number"
-        style={typeof style === 'function' ? style(number) : style}
-      >
-        <Checkbox
-          label={i}
-          value={i}
+      <Tooltip placement="left" title={isHidden ? '显示此行' : '隐藏此行'}>
+        <span
+          key={`line-${i}`}
+          className="react-syntax-highlighter-line-number"
+          style={typeof style === 'function' ? style(number) : style}
           css={css`
-            padding-left: 12px;
+            display: inline-block;
+            height: 22px;
           `}
-        />
-      </span>
+        >
+          <Checkbox
+            label={i}
+            value={i}
+            css={css`
+              padding-left: 12px;
+            `}
+          />
+        </span>
+      </Tooltip>
     );
   });
+}
+
+function LineCheckers({
+  codeString,
+  checkerStyle = {},
+  allLines = [],
+  showLines = [],
+  commit = '',
+  file = '',
+  lineProps,
+}) {
+  const dispatch = useDispatch();
+
+  function onChange(hiddenLines) {
+    dispatch.collection.setDiffItemHiddenLines({
+      commit,
+      file,
+      hiddenLines,
+    });
+
+    dispatch.collection.saveCollection();
+  }
+
+  function getHiddenLines(checkedLines, allLines) {
+    const hiddenLines = allLines.filter((line) => !checkedLines.includes(line));
+
+    return hiddenLines;
+  }
+
+  return (
+    <Checkbox.Group
+      onChange={(checkedLines) => {
+        const hiddenLines = getHiddenLines(checkedLines, allLines);
+        onChange(hiddenLines);
+      }}
+      value={showLines}
+      css={css`
+        float: left;
+        width: 28px;
+        margin: 0.5em 0;
+      `}
+    >
+      {getLineChecker({
+        lines: codeString.replace(/\n$/, '').split('\n'),
+        style: checkerStyle,
+        lineProps,
+      })}
+    </Checkbox.Group>
+  );
 }
 
 function createLineElement({ children, className = [] }) {
@@ -209,6 +269,10 @@ export default function(defaultAstGenerator, defaultStyle) {
     startingLineNumber = 1,
     lineNumberStyle,
     wrapLines,
+    allLines,
+    showLines,
+    commit,
+    file,
     lineProps = {},
     renderer,
     PreTag = 'pre',
@@ -227,12 +291,19 @@ export default function(defaultAstGenerator, defaultStyle) {
         })
       : [];
 
-    const lineCheckers = showLineChecker
-      ? getLineChecker({
-          lines: code.replace(/\n$/, '').split('\n'),
-          style: lineNumberStyle,
-        })
-      : [null];
+    const lineCheckers = showLineChecker ? (
+      <LineCheckers
+        codeString={code}
+        checkerStyle={lineNumberStyle}
+        allLines={allLines}
+        showLines={showLines}
+        commit={commit}
+        file={file}
+        lineProps={lineProps}
+      />
+    ) : (
+      [null]
+    );
 
     const defaultPreStyle = style.hljs ||
       style['pre[class*="language-"]'] || {
@@ -282,102 +353,88 @@ export default function(defaultAstGenerator, defaultStyle) {
     });
 
     return (
-      <div
-        css={css`
-          overflow-x: auto;
-          padding-bottom: 16px;
-        `}
-      >
-        <PreTag
-          {...preProps}
+      <div>
+        {lineCheckers}
+        <div
           css={css`
-            width: 100%;
-            border-spacing: 0;
-            border-collapse: collapse;
-
-            & td {
-              padding: 0;
-              border: none;
-            }
-
-            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo,
-              Courier, monospace;
+            overflow-x: auto;
+            padding-bottom: 16px;
           `}
         >
-          <tbody>
-            {renderCodeRows.map((renderCodeRow, index) => {
-              const {
-                isCodeAddition = false,
-                isCodeDeletion = false,
-                isHidden = false,
-              } =
-                (typeof lineProps === 'function'
-                  ? lineProps(index)
-                  : lineProps) || {};
+          <PreTag
+            {...preProps}
+            css={css`
+              width: 100%;
+              border-spacing: 0;
+              border-collapse: collapse;
 
-              return (
-                <tr
-                  css={css`
-                    white-space: pre;
+              & td {
+                padding: 0;
+                border: none;
+              }
 
-                    ${isCodeAddition && codeAdditionStyle}
-                    ${isCodeDeletion && codeDeletionStyle}
-                  `}
-                >
-                  <Tooltip
-                    placement="left"
-                    title={isHidden ? '显示此行' : '隐藏此行'}
+              font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo,
+                Courier, monospace;
+            `}
+          >
+            <tbody>
+              {renderCodeRows.map((renderCodeRow, index) => {
+                const {
+                  isCodeAddition = false,
+                  isCodeDeletion = false,
+                  isHidden = false,
+                } =
+                  (typeof lineProps === 'function'
+                    ? lineProps(index)
+                    : lineProps) || {};
+
+                return (
+                  <tr
+                    css={css`
+                      white-space: pre;
+
+                      ${isCodeAddition && codeAdditionStyle}
+                      ${isCodeDeletion && codeDeletionStyle}
+                    `}
                   >
                     <td
                       css={css`
-                        width: 28px;
-
-                        &:hover {
-                          cursor: pointer;
-                        }
+                        width: 52px;
+                        font-family: dm, Menlo, Monaco, 'Courier New', monospace;
+                        font-weight: normal;
+                        font-size: 12px;
+                        letter-spacing: 0px;
+                        color: #858585;
+                        margin-right: 16px;
+                        width: 32px;
+                        margin-left: 4px;
+                        display: inline-block;
+                        text-align: right;
                       `}
                     >
-                      {lineCheckers[index]}
+                      {lineNumbers[index]}
                     </td>
-                  </Tooltip>
+                    <td
+                      css={css`
+                        white-space: pre;
+                        padding-right: 32px;
+                        width: auto;
+                        display: inline-block;
 
-                  <td
-                    css={css`
-                      width: 52px;
-                      font-family: dm, Menlo, Monaco, 'Courier New', monospace;
-                      font-weight: normal;
-                      font-size: 12px;
-                      letter-spacing: 0px;
-                      color: #858585;
-                      margin-right: 16px;
-                      width: 32px;
-                      margin-left: 4px;
-                      display: inline-block;
-                      text-align: right;
-                    `}
-                  >
-                    {lineNumbers[index]}
-                  </td>
-                  <td
-                    css={css`
-                      white-space: pre;
-                      padding-right: 32px;
-                      width: auto;
-                      display: inline-block;
-
-                      opacity: ${isHidden || isCodeDeletion ? 0.3 : 1};
-                      filter: blur(${isHidden ? '1.5' : '0'}px);
-                      font-size: 14px;
-                      font-weight: ${isCodeAddition ? 700 : 'normal'};
-                    `}
-                  >
-                    {renderCodeRow}
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </PreTag>
+                        opacity: ${isHidden || isCodeDeletion ? 0.3 : 1};
+                        filter: blur(${isHidden ? '1.5' : '0'}px);
+                        font-size: 14px;
+                        font-weight: ${isCodeAddition ? 700 : 'normal'};
+                      `}
+                    >
+                      {renderCodeRow}
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </PreTag>
+        </div>
       </div>
     );
   };
