@@ -10,9 +10,6 @@ import {
   ASSETS_JSON_CHECKPOINT,
 } from '../constants';
 
-// A dead simple mutex lock.
-let locked = false;
-
 export interface Asset {
   localPath: string;
   hostingUri?: string;
@@ -29,6 +26,22 @@ export const assetsTableCheckpoint = path.join(
   TUTURE_ROOT,
   ASSETS_JSON_CHECKPOINT,
 );
+
+const assetsTableLock = `${assetsTablePath}.lock`;
+
+function createAssetsLock() {
+  fs.writeFileSync(assetsTableLock, '');
+}
+
+function isAssetsLocked() {
+  return fs.existsSync(assetsTableLock);
+}
+
+function removeAssetsLock() {
+  if (isAssetsLocked()) {
+    fs.removeSync(assetsTableLock);
+  }
+}
 
 export function hasAssetsChangedSinceCheckpoint() {
   if (!fs.existsSync(assetsTableCheckpoint)) {
@@ -96,11 +109,11 @@ export function upload(localPath: string, callback: Function) {
  */
 export function uploadSingle(localPath: string) {
   const newAsset: Asset = { localPath };
-  if (locked) {
+  if (isAssetsLocked()) {
     return;
   }
 
-  locked = true;
+  createAssetsLock();
   const assets = loadAssetsTable();
   upload(localPath, (err: Error, data: string) => {
     if (!err) {
@@ -111,7 +124,7 @@ export function uploadSingle(localPath: string) {
     saveAssetsTable(assets);
 
     // Unlock anyway.
-    locked = false;
+    removeAssetsLock();
   });
 }
 
@@ -120,7 +133,7 @@ export function uploadSingle(localPath: string) {
  * and download images from hosting sites.
  */
 export function syncImages() {
-  if (locked) {
+  if (isAssetsLocked()) {
     logger.log(
       'warning',
       'tuture-assets.json is being read by another program.',
@@ -128,7 +141,7 @@ export function syncImages() {
     return;
   }
 
-  locked = true;
+  createAssetsLock();
   const assets = loadAssetsTable();
 
   const syncTasks = assets
@@ -172,12 +185,17 @@ export function syncImages() {
         }),
     );
 
-  Promise.all(syncTasks).then((syncedAssets) => {
-    // Save synced assets table if updated.
-    if (JSON.stringify(assets) !== JSON.stringify(syncedAssets)) {
-      saveAssetsTable(syncedAssets);
-      logger.log('success', 'Synchronized assets table.');
-    }
-    locked = false;
-  });
+  Promise.all(syncTasks)
+    .then((syncedAssets) => {
+      // Save synced assets table if updated.
+      if (JSON.stringify(assets) !== JSON.stringify(syncedAssets)) {
+        saveAssetsTable(syncedAssets);
+        logger.log('success', 'Synchronized assets table.');
+      }
+      removeAssetsLock();
+    })
+    .catch((err) => {
+      logger.log('error', err.message);
+      removeAssetsLock();
+    });
 }
