@@ -425,14 +425,14 @@ export default function(defaultAstGenerator, defaultStyle) {
             `}
           >
             <tbody {...getTableBodyProps()}>
-              {rows.map((row, index) => {
+              {rows.map((row, rowIndex) => {
                 const {
                   isCodeAddition = false,
                   isCodeDeletion = false,
                   isHidden = false,
                 } =
                   (typeof lineProps === 'function'
-                    ? lineProps(index)
+                    ? lineProps(rowIndex)
                     : lineProps) || {};
 
                 prepareRow(row);
