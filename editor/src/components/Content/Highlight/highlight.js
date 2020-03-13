@@ -37,7 +37,6 @@ const diffCodeCellStyle = (isHidden, isCodeAddition, isCodeDeletion) => css`
   display: inline-block;
 
   opacity: ${isHidden || isCodeDeletion ? 0.3 : 1};
-  filter: blur(${isHidden ? '1.5' : '0'}px);
   font-size: 14px;
   font-weight: ${isCodeAddition ? 700 : 'normal'};
 `;
