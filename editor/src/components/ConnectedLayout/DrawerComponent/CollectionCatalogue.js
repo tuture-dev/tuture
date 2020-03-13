@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Divider, Icon } from 'antd';
+import { Divider } from 'antd';
 import { Link } from 'react-router-dom';
 
 /** @jsx jsx */
@@ -40,10 +40,6 @@ const itemTitleStyle = css`
   color: rgba(0, 0, 0, 1);
 `;
 
-const linkDefaultStyle = css`
-  color: rgba(0, 0, 0, 1);
-`;
-
 function CollectionCatalogue() {
   const { childrenVisible, childrenDrawerType } = useSelector(
     (state) => state.drawer,
@@ -80,11 +76,6 @@ function CollectionCatalogue() {
     dispatch({ type: 'drawer/setVisible', payload: false });
     setSelectItem(articleId);
     dispatch({ type: 'collection/setNowArticle', payload: articleId });
-  }
-
-  function onTocItemClick() {
-    dispatch({ type: 'drawer/setVisible', payload: false });
-    setSelectItem('');
   }
 
   return (
@@ -162,24 +153,6 @@ function CollectionCatalogue() {
               <IconFont type="icon-plus" />
             </span>
           </li>
-
-          <Link to="/toc" css={linkDefaultStyle}>
-            <li
-              css={css`
-                ${listItemStyle}
-
-                &:hover {
-                  background: #fff;
-                }
-              `}
-              onClick={onTocItemClick}
-            >
-              <span css={itemTitleStyle}>编排目录</span>
-              <span>
-                <Icon type="profile" />
-              </span>
-            </li>
-          </Link>
         </ul>
       </div>
       <Global
