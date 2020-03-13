@@ -148,7 +148,6 @@ function DiffBlockElement(props) {
           >
             <div className="diff-file" css={diffFileStyle}>
               <header css={diffFileHeaderStyle}>{file}</header>
-
               <SyntaxHighlighter
                 language={lang === 'vue' ? 'html' : lang}
                 PreTag="table"

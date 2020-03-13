@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Checkbox, Tooltip } from 'antd';
 import { useDispatch } from 'react-redux';
+import { useTable } from 'react-table';
 
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
@@ -13,6 +14,32 @@ const codeDeletionStyle = css`
 
 const codeAdditionStyle = css`
   background-color: rgb(53, 59, 69);
+`;
+
+const lineNumberCellStyle = css`
+  width: 52px;
+  font-family: dm, Menlo, Monaco, 'Courier New', monospace;
+  font-weight: normal;
+  font-size: 12px;
+  letter-spacing: 0px;
+  color: #858585;
+  margin-right: 16px;
+  width: 32px;
+  margin-left: 4px;
+  display: inline-block;
+  text-align: right;
+`;
+
+const diffCodeCellStyle = (isHidden, isCodeAddition, isCodeDeletion) => css`
+  white-space: pre;
+  padding-right: 32px;
+  width: auto;
+  display: inline-block;
+
+  opacity: ${isHidden || isCodeDeletion ? 0.3 : 1};
+  filter: blur(${isHidden ? '1.5' : '0'}px);
+  font-size: 14px;
+  font-weight: ${isCodeAddition ? 700 : 'normal'};
 `;
 
 const newLineRegex = /\n/g;
@@ -262,7 +289,6 @@ export default function(defaultAstGenerator, defaultStyle) {
     children,
     style = defaultStyle,
     customStyle = {},
-    codeTagProps = { style: style['code[class*="language-"]'] },
     useInlineStyles = true,
     showLineNumbers = false,
     showLineChecker = false,
@@ -276,7 +302,6 @@ export default function(defaultAstGenerator, defaultStyle) {
     lineProps = {},
     renderer,
     PreTag = 'pre',
-    CodeTag = 'code',
     code = Array.isArray(children) ? children[0] : children,
     astGenerator,
     ...rest
@@ -315,16 +340,6 @@ export default function(defaultAstGenerator, defaultStyle) {
         })
       : Object.assign({}, rest, { className: 'hljs' });
 
-    if (!astGenerator) {
-      return (
-        <PreTag {...preProps}>
-          {lineCheckers}
-          {lineNumbers}
-          <CodeTag {...codeTagProps}>{code}</CodeTag>
-        </PreTag>
-      );
-    }
-
     /*
      * some custom renderers rely on individual row elements so we need to turn wrapLines on
      * if renderer is provided and wrapLines is undefined
@@ -352,6 +367,38 @@ export default function(defaultAstGenerator, defaultStyle) {
       useInlineStyles,
     });
 
+    console.log('lineNumbers', lineNumbers, renderCodeRows);
+    const vanillaData = lineNumbers.map((lineNumber, index) => ({
+      lineNumber,
+      diffCodeRow: renderCodeRows[index],
+    }));
+
+    const columns = useMemo(
+      () => [
+        {
+          Header: 'diffBlock',
+          columns: [
+            {
+              Header: '行号',
+              accessor: 'lineNumber',
+            },
+            {
+              Header: '代码块',
+              accessor: 'diffCodeRow',
+            },
+          ],
+        },
+      ],
+      [],
+    );
+
+    const data = useMemo(() => vanillaData, []);
+
+    const { getTableProps, getTableBodyProps, rows, prepareRow } = useTable({
+      columns,
+      data,
+    });
+
     return (
       <div>
         {lineCheckers}
@@ -363,6 +410,7 @@ export default function(defaultAstGenerator, defaultStyle) {
         >
           <PreTag
             {...preProps}
+            {...getTableProps()}
             css={css`
               width: 100%;
               border-spacing: 0;
@@ -377,8 +425,8 @@ export default function(defaultAstGenerator, defaultStyle) {
                 Courier, monospace;
             `}
           >
-            <tbody>
-              {renderCodeRows.map((renderCodeRow, index) => {
+            <tbody {...getTableBodyProps()}>
+              {rows.map((row, index) => {
                 const {
                   isCodeAddition = false,
                   isCodeDeletion = false,
@@ -388,8 +436,10 @@ export default function(defaultAstGenerator, defaultStyle) {
                     ? lineProps(index)
                     : lineProps) || {};
 
+                prepareRow(row);
                 return (
                   <tr
+                    {...row.getRowProps()}
                     css={css`
                       white-space: pre;
 
@@ -397,38 +447,24 @@ export default function(defaultAstGenerator, defaultStyle) {
                       ${isCodeDeletion && codeDeletionStyle}
                     `}
                   >
-                    <td
-                      css={css`
-                        width: 52px;
-                        font-family: dm, Menlo, Monaco, 'Courier New', monospace;
-                        font-weight: normal;
-                        font-size: 12px;
-                        letter-spacing: 0px;
-                        color: #858585;
-                        margin-right: 16px;
-                        width: 32px;
-                        margin-left: 4px;
-                        display: inline-block;
-                        text-align: right;
-                      `}
-                    >
-                      {lineNumbers[index]}
-                    </td>
-                    <td
-                      css={css`
-                        white-space: pre;
-                        padding-right: 32px;
-                        width: auto;
-                        display: inline-block;
-
-                        opacity: ${isHidden || isCodeDeletion ? 0.3 : 1};
-                        filter: blur(${isHidden ? '1.5' : '0'}px);
-                        font-size: 14px;
-                        font-weight: ${isCodeAddition ? 700 : 'normal'};
-                      `}
-                    >
-                      {renderCodeRow}
-                    </td>
+                    {row.cells.map((cell, cellIndex) => {
+                      return (
+                        <td
+                          {...cell.getCellProps()}
+                          css={
+                            cellIndex === 0
+                              ? lineNumberCellStyle
+                              : diffCodeCellStyle(
+                                  isHidden,
+                                  isCodeAddition,
+                                  isCodeDeletion,
+                                )
+                          }
+                        >
+                          {cell.render('Cell')}
+                        </td>
+                      );
+                    })}
                   </tr>
                 );
               })}
