@@ -104,7 +104,7 @@ function MainMenu() {
         <Menu.Item key="1" title="文集目录" style={{ marginTop: '40px' }}>
           <Icon type="switcher" />
         </Menu.Item>
-        <Menu.Item key="2" title="目录编排" style={{ marginTop: '40px' }}>
+        <Menu.Item key="2" title="步骤编排" style={{ marginTop: '40px' }}>
           <Icon type="profile" />
         </Menu.Item>
         <Menu.Item key="3" title="文集设置" style={{ marginTop: '40px' }}>
