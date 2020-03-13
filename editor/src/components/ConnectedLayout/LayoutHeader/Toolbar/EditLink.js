@@ -41,8 +41,6 @@ const EditLink = () => {
     }
   };
 
-  console.log('text', text);
-
   return (
     <Modal
       title="添加/编辑链接"

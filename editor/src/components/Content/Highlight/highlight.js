@@ -366,7 +366,6 @@ export default function(defaultAstGenerator, defaultStyle) {
       useInlineStyles,
     });
 
-    console.log('lineNumbers', lineNumbers, renderCodeRows);
     const vanillaData = lineNumbers.map((lineNumber, index) => ({
       lineNumber,
       diffCodeRow: renderCodeRows[index],

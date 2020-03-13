@@ -150,7 +150,6 @@ function CodeBlockElement(props) {
   function handleChange(value) {
     setLang(value);
 
-    console.log('editor', value, editor.selection);
     dispatch.slate.setLang(value);
 
     updateBlock(editor, CODE_BLOCK, { lang: value });
