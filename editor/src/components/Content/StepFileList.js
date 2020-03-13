@@ -96,7 +96,7 @@ function StepFileList() {
                 <div
                   key={file.file}
                   css={css`
-                    max-width: 194px;
+                    max-width: 100%;
                     height: 36px;
                     background: rgba(255, 255, 255, 1);
                     box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.05);
@@ -118,7 +118,7 @@ function StepFileList() {
                         ? 'rgba(0, 0, 0, 0.65)'
                         : '#bfbfbf'};
                       display: inline-block;
-                      max-width: 120px;
+                      max-width: calc(100% - 36px);
                       white-space: nowrap;
                       text-overflow: ellipsis;
                       overflow: hidden;
