@@ -20,7 +20,11 @@ const toc = {
   },
   effects: (dispatch) => ({
     async save(payload, rootState) {
-      const { articleStepList = [], unassignedStepList = [] } = payload;
+      const {
+        articleStepList = [],
+        unassignedStepList = [],
+        deleteOutdatedStepList = [],
+      } = payload;
       let { steps = [] } = rootState.collection.collection || {};
       let { articles = [] } = rootState.collection.collection || {};
 
@@ -58,6 +62,9 @@ const toc = {
 
         return step;
       });
+
+      // delete outdated deleted step
+      steps = steps.filter((step) => !deleteOutdatedStepList.includes(step.id));
 
       dispatch.collection.updateArticles(articles);
       dispatch.collection.updateSteps(steps);

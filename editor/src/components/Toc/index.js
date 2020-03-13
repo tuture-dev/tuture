@@ -93,12 +93,17 @@ function Toc() {
   const [unassignedStepList, setUnassignedStepList] = useState(
     defaultUnassignedStepList,
   );
+  const [deleteOutdatedStepList, setDeleteOutdatedStepList] = useState([]);
 
   useEffect(() => {
     if (isSaving) {
-      dispatch.toc.save({ articleStepList, unassignedStepList });
+      dispatch.toc.save({
+        articleStepList,
+        unassignedStepList,
+        deleteOutdatedStepList,
+      });
     }
-  }, [articleStepList, dispatch.toc, isSaving, unassignedStepList]);
+  }, [isSaving]);
 
   useEffect(() => {
     setUnassignedStepList(defaultUnassignedStepList);
@@ -214,15 +219,6 @@ function Toc() {
     e.stopPropagation();
 
     if (articleStepItem?.articleId) {
-      const articleStepsLen = articleStepList.filter(
-        (articleStep) => articleStep?.articleId === activeArticle,
-      ).length;
-
-      if (articleStepsLen === 1) {
-        message.error('一篇文章至少包含一个步骤');
-        return;
-      }
-
       const newArticleStepList = articleStepList.filter(
         (articleStep) => articleStep.id !== articleStepItem.id,
       );
@@ -387,10 +383,14 @@ function Toc() {
                     <Popconfirm
                       title={`确定删除此过时步骤 ${item.name} 吗？`}
                       onConfirm={() => {
-                        dispatch.collection.deleteStep(item.id);
-                        dispatch.collection.saveCollection();
+                        setDeleteOutdatedStepList(
+                          deleteOutdatedStepList.concat(item.id),
+                        );
 
-                        message.success(`你已删除过时步骤 ${item.name}`);
+                        const newUnassignedStepList = unassignedStepList.filter(
+                          (step) => step.id !== item.id,
+                        );
+                        setUnassignedStepList(newUnassignedStepList);
                       }}
                       okText="确认"
                       cancelText="取消"
