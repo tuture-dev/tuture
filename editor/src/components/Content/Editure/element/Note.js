@@ -6,6 +6,7 @@ import { NOTE } from 'editure-constants';
 
 import { levels } from 'utils/note';
 import IconFont from 'components/IconFont';
+import { IS_MAC } from 'utils/getOS';
 
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
@@ -52,6 +53,11 @@ function NoteElement(props) {
       css={css`
         ${baseStyle};
         ${noteStyle};
+        position: relative;
+
+        &:hover .shortcut-hint {
+          visibility: visible;
+        }
       `}
     >
       <div contentEditable={false}>
@@ -88,10 +94,25 @@ function NoteElement(props) {
       <div
         css={css`
           padding-left: 36px;
+          padding-bottom: 20px;
         `}
       >
         {children}
       </div>
+      <span
+        contentEditable={false}
+        css={css`
+          color: rgb(157, 170, 182);
+          position: absolute;
+          right: 4px;
+          bottom: 0px;
+          font-size: 12px;
+          visibility: hidden;
+        `}
+        className="shortcut-hint"
+      >
+        {IS_MAC ? '退出：⌘+↩' : '退出：⌃+↩'}
+      </span>
     </div>
   );
 }
