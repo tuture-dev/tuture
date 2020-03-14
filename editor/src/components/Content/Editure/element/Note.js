@@ -56,7 +56,7 @@ function NoteElement(props) {
         position: relative;
 
         &:hover .shortcut-hint {
-          visibility: visible;
+          opacity: 1;
         }
       `}
     >
@@ -94,7 +94,7 @@ function NoteElement(props) {
       <div
         css={css`
           padding-left: 36px;
-          padding-bottom: 20px;
+          padding-bottom: 0px;
         `}
       >
         {children}
@@ -102,16 +102,20 @@ function NoteElement(props) {
       <span
         contentEditable={false}
         css={css`
-          color: rgb(157, 170, 182);
           position: absolute;
           right: 4px;
           bottom: 0px;
+          opacity: 0;
+          color: rgb(157, 170, 182);
           font-size: 12px;
-          visibility: hidden;
+          font-family: Roboto, sans-serif;
+          font-weight: 500;
+          line-height: 1.5;
+          transition: opacity 0.3s;
         `}
         className="shortcut-hint"
       >
-        {IS_MAC ? '退出：⌘+↩' : '退出：⌃+↩'}
+        {IS_MAC ? '按 ⌘+↩ 退出' : '按 ⌃+↩ 退出'}
       </span>
     </div>
   );
