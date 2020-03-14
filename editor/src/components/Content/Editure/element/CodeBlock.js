@@ -9,6 +9,7 @@ import { updateBlock } from 'editure';
 import { css, jsx } from '@emotion/core';
 
 import IconFont from 'components/IconFont';
+import { IS_MAC } from 'utils/getOS';
 
 const languages = [
   'Plain Text',
@@ -169,6 +170,11 @@ function CodeBlockElement(props) {
         margin: 1em 0;
         border-radius: 8px;
         background-color: rgb(30, 30, 30);
+        position: relative;
+
+        &:hover .shortcut-hint {
+          visibility: visible;
+        }
       `}
     >
       <div contentEditable={false}>
@@ -193,6 +199,7 @@ function CodeBlockElement(props) {
         css={css`
           padding: 10px 20px;
           overflow-x: auto;
+          padding-bottom: 40px;
         `}
       >
         <table
@@ -214,6 +221,20 @@ function CodeBlockElement(props) {
         >
           <tbody>{children}</tbody>
         </table>
+        <span
+          contentEditable={false}
+          css={css`
+            color: rgb(157, 170, 182);
+            position: absolute;
+            right: 4px;
+            bottom: 0px;
+            font-size: 12px;
+            visibility: hidden;
+          `}
+          className="shortcut-hint"
+        >
+          {IS_MAC ? '退出：⌘+↩' : '退出：⌃+↩'}
+        </span>
       </div>
     </div>
   );

@@ -1,6 +1,5 @@
 import React, { useMemo } from 'react';
 import { Checkbox, Tooltip } from 'antd';
-import { useDispatch } from 'react-redux';
 import { useTable } from 'react-table';
 
 /** @jsx jsx */
@@ -90,55 +89,6 @@ function getLineChecker({ lines, startingLineNumber, style, lineProps }) {
       </Tooltip>
     );
   });
-}
-
-function LineCheckers({
-  codeString,
-  checkerStyle = {},
-  allLines = [],
-  showLines = [],
-  commit = '',
-  file = '',
-  lineProps,
-}) {
-  const dispatch = useDispatch();
-
-  function onChange(hiddenLines) {
-    dispatch.collection.setDiffItemHiddenLines({
-      commit,
-      file,
-      hiddenLines,
-    });
-
-    dispatch.collection.saveCollection();
-  }
-
-  function getHiddenLines(checkedLines, allLines) {
-    const hiddenLines = allLines.filter((line) => !checkedLines.includes(line));
-
-    return hiddenLines;
-  }
-
-  return (
-    <Checkbox.Group
-      onChange={(checkedLines) => {
-        const hiddenLines = getHiddenLines(checkedLines, allLines);
-        onChange(hiddenLines);
-      }}
-      value={showLines}
-      css={css`
-        float: left;
-        width: 28px;
-        margin: 0.5em 0;
-      `}
-    >
-      {getLineChecker({
-        lines: codeString.replace(/\n$/, '').split('\n'),
-        style: checkerStyle,
-        lineProps,
-      })}
-    </Checkbox.Group>
-  );
 }
 
 function createLineElement({ children, className = [] }) {
@@ -294,10 +244,6 @@ export default function(defaultAstGenerator, defaultStyle) {
     startingLineNumber = 1,
     lineNumberStyle,
     wrapLines,
-    allLines,
-    showLines,
-    commit,
-    file,
     lineProps = {},
     renderer,
     PreTag = 'pre',
@@ -315,19 +261,12 @@ export default function(defaultAstGenerator, defaultStyle) {
         })
       : [];
 
-    const lineCheckers = showLineChecker ? (
-      <LineCheckers
-        codeString={code}
-        checkerStyle={lineNumberStyle}
-        allLines={allLines}
-        showLines={showLines}
-        commit={commit}
-        file={file}
-        lineProps={lineProps}
-      />
-    ) : (
-      [null]
-    );
+    const lineCheckers = showLineChecker
+      ? getLineChecker({
+          lines: code.replace(/\n$/, '').split('\n'),
+          lineProps,
+        })
+      : [null];
 
     const defaultPreStyle = style.hljs ||
       style['pre[class*="language-"]'] || {
@@ -369,6 +308,7 @@ export default function(defaultAstGenerator, defaultStyle) {
     const vanillaData = lineNumbers.map((lineNumber, index) => ({
       lineNumber,
       diffCodeRow: renderCodeRows[index],
+      lineChecker: lineCheckers[index],
     }));
 
     const columns = useMemo(
@@ -376,6 +316,10 @@ export default function(defaultAstGenerator, defaultStyle) {
         {
           Header: 'diffBlock',
           columns: [
+            {
+              Header: 'Diff 选中/可见',
+              accessor: 'lineChecker',
+            },
             {
               Header: '行号',
               accessor: 'lineNumber',
@@ -399,7 +343,6 @@ export default function(defaultAstGenerator, defaultStyle) {
 
     return (
       <div>
-        {lineCheckers}
         <div
           css={css`
             overflow-x: auto;
@@ -434,6 +377,12 @@ export default function(defaultAstGenerator, defaultStyle) {
                     ? lineProps(rowIndex)
                     : lineProps) || {};
 
+                const styleMap = [
+                  { width: '28px' },
+                  lineNumberCellStyle,
+                  diffCodeCellStyle(isHidden, isCodeAddition, isCodeDeletion),
+                ];
+
                 prepareRow(row);
                 return (
                   <tr
@@ -447,18 +396,7 @@ export default function(defaultAstGenerator, defaultStyle) {
                   >
                     {row.cells.map((cell, cellIndex) => {
                       return (
-                        <td
-                          {...cell.getCellProps()}
-                          css={
-                            cellIndex === 0
-                              ? lineNumberCellStyle
-                              : diffCodeCellStyle(
-                                  isHidden,
-                                  isCodeAddition,
-                                  isCodeDeletion,
-                                )
-                          }
-                        >
+                        <td {...cell.getCellProps()} css={styleMap[cellIndex]}>
                           {cell.render('Cell')}
                         </td>
                       );
