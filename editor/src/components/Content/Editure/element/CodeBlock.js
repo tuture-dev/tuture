@@ -9,6 +9,7 @@ import { updateBlock } from 'editure';
 import { css, jsx } from '@emotion/core';
 
 import IconFont from 'components/IconFont';
+import { IS_MAC } from 'utils/getOS';
 
 const languages = [
   'Plain Text',
@@ -150,7 +151,6 @@ function CodeBlockElement(props) {
   function handleChange(value) {
     setLang(value);
 
-    console.log('editor', value, editor.selection);
     dispatch.slate.setLang(value);
 
     updateBlock(editor, CODE_BLOCK, { lang: value });
@@ -170,6 +170,11 @@ function CodeBlockElement(props) {
         margin: 1em 0;
         border-radius: 8px;
         background-color: rgb(30, 30, 30);
+        position: relative;
+
+        &:hover .shortcut-hint {
+          opacity: 1;
+        }
       `}
     >
       <div contentEditable={false}>
@@ -194,6 +199,7 @@ function CodeBlockElement(props) {
         css={css`
           padding: 10px 20px;
           overflow-x: auto;
+          padding-bottom: 20px;
         `}
       >
         <table
@@ -215,6 +221,24 @@ function CodeBlockElement(props) {
         >
           <tbody>{children}</tbody>
         </table>
+        <span
+          contentEditable={false}
+          css={css`
+            position: absolute;
+            right: 4px;
+            bottom: 0px;
+            opacity: 0;
+            color: rgb(157, 170, 182);
+            font-size: 12px;
+            font-family: Roboto, sans-serif;
+            font-weight: 500;
+            line-height: 1.5;
+            transition: opacity 0.3s;
+          `}
+          className="shortcut-hint"
+        >
+          {IS_MAC ? '按 ⌘+↩ 退出' : '按 ⌃+↩ 退出'}
+        </span>
       </div>
     </div>
   );

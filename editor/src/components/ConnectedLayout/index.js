@@ -4,6 +4,7 @@ import { useSelector, useDispatch, useStore } from 'react-redux';
 import { Layout, Affix, BackTop } from 'antd';
 import { Slate } from 'tuture-slate-react';
 import { updateLastSelection } from 'editure';
+import { useHistory } from 'react-router-dom';
 
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
@@ -21,12 +22,16 @@ const { Header, Content } = Layout;
 function ConnectedLayout(props) {
   const { children } = props;
   const [timeoutState, setTimeoutState] = useState(null);
+  const history = useHistory();
 
   const store = useStore();
   const { name: pageTitle } = useSelector(
     store.select.collection.nowArticleMeta,
   );
   const value = useSelector(store.select.collection.nowArticleContent);
+  const outdatedNotificationClicked = useSelector(
+    (state) => state.collection.outdatedNotificationClicked,
+  );
 
   const dispatch = useDispatch();
 
@@ -40,6 +45,13 @@ function ConnectedLayout(props) {
       document.title = pageTitle;
     }
   }, [pageTitle]);
+
+  useEffect(() => {
+    if (outdatedNotificationClicked) {
+      dispatch.collection.setOutdatedNotificationClicked(false);
+      history.push('/toc');
+    }
+  }, [outdatedNotificationClicked]);
 
   function handleSaveCollection() {
     dispatch.collection.saveCollection();

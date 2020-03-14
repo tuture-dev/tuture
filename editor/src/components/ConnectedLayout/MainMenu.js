@@ -1,5 +1,6 @@
 import { Layout, Menu, Icon } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
@@ -15,8 +16,8 @@ const { Sider } = Layout;
 
 const mapKeyToDrawerType = {
   '1': COLLECTION_CATALOGUE,
-  '2': COLLECTION_SETTING,
-  '3': CONTACT_US,
+  '3': COLLECTION_SETTING,
+  '4': CONTACT_US,
 };
 
 function MainMenu() {
@@ -24,8 +25,17 @@ function MainMenu() {
   const { visible, drawerType, childrenVisible, selectedKeys } = useSelector(
     (state) => state.drawer,
   );
+  const history = useHistory();
 
   function onMenuClick({ key }) {
+    if (key === '2') {
+      dispatch({ type: 'drawer/setVisible', payload: false });
+      dispatch({ type: 'drawer/setSelectedKeys', payload: [key] });
+      history.push('/toc');
+
+      return;
+    }
+
     const toggleDrawerType = mapKeyToDrawerType[key];
 
     if (!visible) {
@@ -94,10 +104,13 @@ function MainMenu() {
         <Menu.Item key="1" title="文集目录" style={{ marginTop: '40px' }}>
           <Icon type="switcher" />
         </Menu.Item>
-        <Menu.Item key="2" title="文集设置" style={{ marginTop: '40px' }}>
+        <Menu.Item key="2" title="步骤编排" style={{ marginTop: '40px' }}>
+          <Icon type="profile" />
+        </Menu.Item>
+        <Menu.Item key="3" title="文集设置" style={{ marginTop: '40px' }}>
           <Icon type="setting" />
         </Menu.Item>
-        <Menu.Item key="3" title="联系我们" style={{ marginTop: '40px' }}>
+        <Menu.Item key="4" title="联系我们" style={{ marginTop: '40px' }}>
           <Icon type="contacts" />
         </Menu.Item>
       </Menu>

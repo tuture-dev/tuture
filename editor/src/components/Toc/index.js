@@ -1,5 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { Row, Col, Input, Icon, message, Modal } from 'antd';
+import {
+  Row,
+  Col,
+  Input,
+  Icon,
+  message,
+  Modal,
+  Tag,
+  Tooltip,
+  Popconfirm,
+} from 'antd';
 import classnames from 'classnames';
 import omit from 'lodash.omit';
 import { useDispatch, useSelector, useStore } from 'react-redux';
@@ -67,6 +77,9 @@ function Toc() {
   const defaultUnassignedStepList = useSelector(
     store.select.collection.getUnassignedStepList,
   );
+
+  console.log('defaultUnassignedStepList', defaultUnassignedStepList);
+
   const defaultArticleStepList = useSelector(
     store.select.collection.getArticleStepList,
   );
@@ -80,12 +93,25 @@ function Toc() {
   const [unassignedStepList, setUnassignedStepList] = useState(
     defaultUnassignedStepList,
   );
+  const [deleteOutdatedStepList, setDeleteOutdatedStepList] = useState([]);
 
   useEffect(() => {
     if (isSaving) {
-      dispatch.toc.save({ articleStepList, unassignedStepList });
+      dispatch.toc.save({
+        articleStepList,
+        unassignedStepList,
+        deleteOutdatedStepList,
+      });
     }
-  }, [articleStepList, dispatch.toc, isSaving, unassignedStepList]);
+  }, [isSaving]);
+
+  useEffect(() => {
+    setUnassignedStepList(defaultUnassignedStepList);
+  }, [defaultUnassignedStepList]);
+
+  useEffect(() => {
+    setArticleStepList(defaultArticleStepList);
+  }, [defaultArticleStepList]);
 
   const filteredArticleList = articleStepList.filter((articleStep) => {
     if (!articleStep?.articleId) {
@@ -193,15 +219,6 @@ function Toc() {
     e.stopPropagation();
 
     if (articleStepItem?.articleId) {
-      const articleStepsLen = articleStepList.filter(
-        (articleStep) => articleStep?.articleId === activeArticle,
-      ).length;
-
-      if (articleStepsLen === 1) {
-        message.error('一篇文章至少包含一个步骤');
-        return;
-      }
-
       const newArticleStepList = articleStepList.filter(
         (articleStep) => articleStep.id !== articleStepItem.id,
       );
@@ -326,9 +343,35 @@ function Toc() {
                       }
                     `}
                   >
+                    {item.outdated && (
+                      <Tooltip title="点击查看什么是过时步骤">
+                        <Tag
+                          css={css`
+                            color: #fa8c16;
+                            background: #fff7e6;
+                            border-color: #ffd591;
+
+                            &:hover {
+                              cursor: pointer;
+                            }
+                          `}
+                        >
+                          <a
+                            href="https://docs.tuture.co/reference/tuture-yml-spec.html#outdated"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            css={css`
+                              color: #fa8c16 !important;
+                            `}
+                          >
+                            过时
+                          </a>
+                        </Tag>
+                      </Tooltip>
+                    )}
                     <span
                       css={css`
-                        width: 170px;
+                        width: ${item.outdated ? '94px' : '134px'};
                         display: inline-block;
                         white-space: nowrap;
                         text-overflow: ellipsis;
@@ -337,6 +380,49 @@ function Toc() {
                     >
                       {item.name}
                     </span>
+                    <Popconfirm
+                      title={`确定删除此过时步骤 ${item.name} 吗？`}
+                      onConfirm={() => {
+                        setDeleteOutdatedStepList(
+                          deleteOutdatedStepList.concat(item.id),
+                        );
+
+                        const newUnassignedStepList = unassignedStepList.filter(
+                          (step) => step.id !== item.id,
+                        );
+                        setUnassignedStepList(newUnassignedStepList);
+                      }}
+                      okText="确认"
+                      cancelText="取消"
+                    >
+                      <span
+                        className="list-item-action"
+                        css={css`
+                          ${listItemActionStyle}
+
+                          visibility: hidden;
+                          margin-right: 12px;
+                        `}
+                      >
+                        <IconFont
+                          type="icon-delete1"
+                          css={css`
+                            color: #8c8c8c;
+
+                            &:hover {
+                              color: #595959;
+                              cursor: pointer;
+                            }
+
+                            & > svg {
+                              width: 12px;
+                              height: 12px;
+                            }
+                          `}
+                        />
+                      </span>
+                    </Popconfirm>
+
                     <span
                       className="list-item-action"
                       onClick={() => handleAddStep(item)}
@@ -471,7 +557,43 @@ function Toc() {
                         />
                       </span>
                     )}
-                    <span>{item.name}</span>
+                    {item.outdated && (
+                      <Tooltip title="点击查看什么是过时步骤">
+                        <Tag
+                          css={css`
+                            color: #fa8c16;
+                            background: #fff7e6;
+                            border-color: #ffd591;
+
+                            &:hover {
+                              cursor: pointer;
+                            }
+                          `}
+                        >
+                          <a
+                            href="https://docs.tuture.co/reference/tuture-yml-spec.html#outdated"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            css={css`
+                              color: #fa8c16 !important;
+                            `}
+                          >
+                            过时
+                          </a>
+                        </Tag>
+                      </Tooltip>
+                    )}
+                    <span
+                      css={css`
+                        width: ${item.outdated ? '390px' : '430px'};
+                        display: inline-block;
+                        white-space: nowrap;
+                        text-overflow: ellipsis;
+                        overflow: hidden;
+                      `}
+                    >
+                      {item.name}
+                    </span>
                     {item.articleId && (
                       <span
                         className="list-item-tail"
