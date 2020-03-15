@@ -390,24 +390,15 @@ const collection = {
         }
 
         const {
-          collection: { steps },
+          collection: { steps = [] },
           nowArticleId,
         } = collectionModel;
 
-        const stepOutdatedStatusArr = steps.map((step) => !!step?.outdated);
         let finalSteps = nowArticleId
           ? steps.filter((step) => step.articleId === nowArticleId)
           : steps;
 
-        const headings = getHeadings(finalSteps);
-        const headingWithOutdatedStatus = stepOutdatedStatusArr.map(
-          (stepOutdatedStatus, index) => ({
-            outdated: stepOutdatedStatus,
-            ...headings[index],
-          }),
-        );
-
-        return headingWithOutdatedStatus;
+        return getHeadings(finalSteps);
       });
     },
     collectionMeta() {
