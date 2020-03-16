@@ -3,10 +3,11 @@ import fs from 'fs-extra';
 import { flags } from '@oclif/command';
 
 import BaseCommand from '../base';
+import { checkInitStatus } from '../utils';
 import logger from '../utils/logger';
 import { git } from '../utils/git';
-import { initializeTutureBranch } from '../utils/collection';
-import { TUTURE_BRANCH, COLLECTION_PATH } from '../constants';
+import { initializeTutureBranch, collectionPath } from '../utils/collection';
+import { TUTURE_BRANCH } from '../constants';
 
 export default class Push extends BaseCommand {
   static description = 'Push the tuture branch to remote';
@@ -19,6 +20,13 @@ export default class Push extends BaseCommand {
     const { flags } = this.parse(Push);
     this.userConfig = Object.assign(this.userConfig, flags);
 
+    try {
+      await checkInitStatus();
+    } catch (err) {
+      logger.log('error', err.message);
+      this.exit(1);
+    }
+
     await initializeTutureBranch();
 
     const remotes = await git.getRemotes(false);
@@ -26,7 +34,7 @@ export default class Push extends BaseCommand {
     // Checkout tuture branch and add tuture.yml.
     await git.checkout(TUTURE_BRANCH);
 
-    if (!fs.existsSync(COLLECTION_PATH)) {
+    if (!fs.existsSync(collectionPath)) {
       logger.log(
         'error',
         `Cannot push empty tuture branch. Please commit your tutorial with ${chalk.bold(
