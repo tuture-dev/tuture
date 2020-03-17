@@ -168,10 +168,12 @@ export function mergeSteps(prevSteps: Step[], currentSteps: Step[]) {
 /**
  * Detect if tuture is initialized.
  */
-export async function checkInitStatus() {
+export async function checkInitStatus(nothrow = false) {
   const isRepo = await git.checkIsRepo();
 
   if (!isRepo) {
+    if (nothrow) return false;
+
     throw new Error(
       `Not in a git repository. Run ${chalk.bold('git init')} or ${chalk.bold(
         'tuture init',
@@ -181,6 +183,8 @@ export async function checkInitStatus() {
 
   const { current: currentBranch } = await git.branchLocal();
   if (!currentBranch) {
+    if (nothrow) return false;
+
     throw new Error('Current branch does not have any commits yet.');
   }
 
@@ -190,10 +194,14 @@ export async function checkInitStatus() {
     .includes(TUTURE_BRANCH);
 
   if (!workspaceExists && !branchExists) {
+    if (nothrow) return false;
+
     throw new Error(
       `Tuture is not initialized. Run ${chalk.bold(
         'tuture init',
       )} to initialize.`,
     );
   }
+
+  return true;
 }

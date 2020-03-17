@@ -29,15 +29,15 @@ export const assetsTableCheckpoint = path.join(
 
 const assetsTableLock = `${assetsTablePath}.lock`;
 
-function createAssetsLock() {
+export function createAssetsLock() {
   fs.writeFileSync(assetsTableLock, '');
 }
 
-function isAssetsLocked() {
+export function isAssetsLocked() {
   return fs.existsSync(assetsTableLock);
 }
 
-function removeAssetsLock() {
+export function removeAssetsLock() {
   if (isAssetsLocked()) {
     fs.removeSync(assetsTableLock);
   }

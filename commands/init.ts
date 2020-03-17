@@ -9,7 +9,12 @@ import BaseCommand from '../base';
 import { Collection, Meta } from '../types';
 import { makeSteps, removeTutureSuite } from '../utils';
 import { collectionPath, saveCollection } from '../utils/collection';
-import { git, inferGithubField, appendGitignore } from '../utils/git';
+import {
+  git,
+  inferGithubField,
+  appendGitHook,
+  appendGitignore,
+} from '../utils/git';
 
 type ConfirmResponse = {
   answer: boolean;
@@ -129,6 +134,7 @@ export default class Init extends BaseCommand {
 
       saveCollection(collection);
       appendGitignore(this.userConfig);
+      appendGitHook();
 
       logger.log('success', 'Tuture tutorial has been initialized!');
     } catch (err) {
