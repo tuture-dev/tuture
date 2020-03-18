@@ -46,8 +46,6 @@ const collection = {
       } else {
         state.nowSteps = flatten(steps);
       }
-
-      return state;
     },
     setNowArticle(state, payload) {
       state.nowArticleId = payload;
@@ -59,6 +57,10 @@ const collection = {
         )[0];
       }
 
+      if (!state.collection) {
+        return;
+      }
+
       const { steps } = state.collection;
 
       if (state.nowArticleId) {
@@ -68,8 +70,6 @@ const collection = {
       } else {
         state.nowSteps = flatten(steps);
       }
-
-      return state;
     },
     setArticleTitle(state, payload) {
       if (state.collection.articles.length !== 0) {
@@ -85,8 +85,6 @@ const collection = {
       } else {
         state.collection.name = payload;
       }
-
-      return state;
     },
     setArticleDescription(state, payload) {
       if (state.collection.articles.length !== 0) {
@@ -102,8 +100,6 @@ const collection = {
       } else {
         state.collection.description = payload;
       }
-
-      return state;
     },
     setDiffItemHiddenLines(state, payload) {
       const { file, commit, hiddenLines } = payload;
@@ -118,8 +114,6 @@ const collection = {
           break;
         }
       }
-
-      return state;
     },
     switchFile(state, payload) {
       const { removedIndex, addedIndex, commit } = payload;
@@ -143,8 +137,6 @@ const collection = {
       } else {
         state.nowSteps = flatten(steps);
       }
-
-      return state;
     },
     setNowSteps(state, payload) {
       const { fragment } = payload;
@@ -152,8 +144,6 @@ const collection = {
       if (!fragment) return state;
 
       state.nowSteps = fragment;
-
-      return state;
     },
     saveNowStepsToCollection(state) {
       state.collection.steps = state.collection.steps.map(
@@ -162,14 +152,11 @@ const collection = {
             isCommitEqual(node.commit, step.commit),
           )[0] || step,
       );
-
-      return state;
     },
     setNowStepCommit(state, payload) {
       if (payload.commit) {
         state.nowStepCommit = payload.commit;
       }
-      return state;
     },
     setFileShowStatus(state, payload) {
       state.collection.steps = state.collection.steps.map((step) => {
@@ -185,13 +172,9 @@ const collection = {
 
         return step;
       });
-
-      return state;
     },
     setEditArticleId(state, payload) {
       state.editArticleId = payload;
-
-      return state;
     },
     editArticle(state, payload) {
       const { editArticleId } = state;
@@ -199,15 +182,11 @@ const collection = {
       state.collection.articles = state.collection.articles.map((article) =>
         article.id === editArticleId ? { ...article, ...payload } : article,
       );
-
-      return state;
     },
     createArticle(state, payload) {
       const id = shortid.generate();
       const created = new Date();
       state.collection.articles.push({ id, created, ...payload });
-
-      return state;
     },
     setStepById(state, payload) {
       const { stepId, stepProps } = payload;
@@ -215,13 +194,9 @@ const collection = {
       state.collection.steps = state.collection.steps.map((step) =>
         step.id === stepId ? { ...step, ...stepProps } : step,
       );
-
-      return state;
     },
     editCollection(state, payload) {
       state.collection = { ...state.collection, ...payload };
-
-      return state;
     },
     deleteArticle(state, payload) {
       state.collection.articles = state.collection.articles.filter(
@@ -234,16 +209,12 @@ const collection = {
 
         return step;
       });
-
-      return state;
     },
     setLastSaved(state, payload) {
       state.lastSaved = payload;
-      return state;
     },
     setSaveFailed(state, payload) {
       state.saveFailed = payload;
-      return state;
     },
     updateSteps(state, payload) {
       state.collection.steps = payload;
@@ -258,8 +229,6 @@ const collection = {
       state.collection.steps = state.collection.steps.filter(
         (step) => step.id !== payload,
       );
-
-      return state;
     },
   },
   effects: (dispatch) => ({
