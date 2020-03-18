@@ -37,6 +37,7 @@ const diffRenderHints: { [mode: string]: { [diffType: string]: string } } = {
 };
 
 const noteLevels: { [level: string]: { name: string } } = {
+  primary: { name: '主要' },
   success: { name: '成功' },
   info: { name: '提示' },
   warning: { name: '注意' },
@@ -303,7 +304,7 @@ export default class Build extends BaseCommand {
     // If not uploaded, replace it with absolute local path.
     assets.forEach(({ localPath, hostingUri }) => {
       updated = updated.replace(
-        localPath,
+        new RegExp(localPath, 'g'),
         hostingUri || path.resolve(localPath),
       );
     });
