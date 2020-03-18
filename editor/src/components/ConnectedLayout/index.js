@@ -1,10 +1,11 @@
-import { useMemo, useEffect, useState } from 'react';
+import { useMemo, useEffect } from 'react';
 
 import { useSelector, useDispatch, useStore } from 'react-redux';
 import { Layout, Affix, BackTop } from 'antd';
 import { Slate } from 'tuture-slate-react';
 import { updateLastSelection } from 'editure';
 import { useHistory } from 'react-router-dom';
+import debounce from 'lodash.debounce';
 
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
@@ -21,14 +22,13 @@ const { Header, Content } = Layout;
 
 function ConnectedLayout(props) {
   const { children } = props;
-  const [timeoutState, setTimeoutState] = useState(null);
   const history = useHistory();
 
   const store = useStore();
   const { name: pageTitle } = useSelector(
     store.select.collection.nowArticleMeta,
   );
-  const value = useSelector(store.select.collection.nowArticleContent);
+  const value = useSelector((state) => state.collection.nowSteps);
   const outdatedNotificationClicked = useSelector(
     (state) => state.collection.outdatedNotificationClicked,
   );
@@ -53,25 +53,19 @@ function ConnectedLayout(props) {
     }
   }, [outdatedNotificationClicked]);
 
-  function handleSaveCollection() {
+  // This operation is quite expensive and is hence debounced.
+  const debouncedSave = debounce(() => {
+    dispatch.collection.saveNowStepsToCollection();
     dispatch.collection.saveCollection();
-  }
-
-  function resetTimeout(id, newId) {
-    clearTimeout(id);
-
-    return newId;
-  }
+  }, 3000);
 
   function onContentChange(val) {
     dispatch({
-      type: 'collection/setArticleContent',
+      type: 'collection/setNowSteps',
       payload: { fragment: val },
     });
 
-    setTimeoutState(
-      resetTimeout(timeoutState, setTimeout(handleSaveCollection, 1000)),
-    );
+    debouncedSave();
   }
 
   const editor = useMemo(initializeEditor, []);

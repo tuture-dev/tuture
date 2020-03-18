@@ -23,6 +23,7 @@ const collection = {
     collection: null,
     nowArticleId: null,
     nowStepCommit: null,
+    nowSteps: [{ type: F.PARAGRAPH, children: [{ text: '' }] }],
     lastSaved: null,
     saveFailed: false,
     editArticleId: '',
@@ -36,6 +37,16 @@ const collection = {
         state.nowArticleId = payload.articles[0].id;
       }
 
+      const { steps } = state.collection;
+
+      if (state.nowArticleId) {
+        state.nowSteps = flatten(
+          steps.filter((step) => step.articleId === state.nowArticleId),
+        );
+      } else {
+        state.nowSteps = flatten(steps);
+      }
+
       return state;
     },
     setNowArticle(state, payload) {
@@ -46,6 +57,16 @@ const collection = {
         state.nowStepCommit = state.collection.steps.filter(
           ({ articleId }) => articleId === payload,
         )[0];
+      }
+
+      const { steps } = state.collection;
+
+      if (state.nowArticleId) {
+        state.nowSteps = flatten(
+          steps.filter((step) => step.articleId === state.nowArticleId),
+        );
+      } else {
+        state.nowSteps = flatten(steps);
       }
 
       return state;
@@ -115,16 +136,19 @@ const collection = {
         return step;
       });
     },
-    setArticleContent(state, payload) {
+    setNowSteps(state, payload) {
       const { fragment } = payload;
 
       if (!fragment) return state;
 
-      const newSteps = unflatten(fragment);
+      state.nowSteps = fragment;
 
+      return state;
+    },
+    saveNowStepsToCollection(state) {
       state.collection.steps = state.collection.steps.map(
         (step) =>
-          newSteps.filter((node) =>
+          unflatten(state.nowSteps).filter((node) =>
             isCommitEqual(node.commit, step.commit),
           )[0] || step,
       );
@@ -361,26 +385,6 @@ const collection = {
         }
 
         return {};
-      });
-    },
-    nowArticleContent() {
-      return slice((collectionModel) => {
-        if (!collectionModel.collection) {
-          return [{ type: F.PARAGRAPH, children: [{ text: '' }] }];
-        }
-
-        const {
-          collection: { steps },
-          nowArticleId,
-        } = collectionModel;
-
-        if (nowArticleId) {
-          return flatten(
-            steps.filter((step) => step.articleId === nowArticleId),
-          );
-        }
-
-        return flatten(steps);
       });
     },
     nowArticleCatalogue() {
