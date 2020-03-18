@@ -1,6 +1,5 @@
 <p align="center"><a href="https://docs.tuture.co" target="_blank" rel="noopener noreferrer"><img src="https://tuture.co/images/logo.svg" alt="Tuture logo"></a></p>
 <p align="center">
-  <a href="https://github.com/tuture-dev/tuture/actions?query=workflow%3A%22Continuous+Integration%22"><img src="https://github.com/tuture-dev/tuture/workflows/Continuous%20Integration/badge.svg" alt="Build Status"></a>
   <a href="https://www.npmjs.com/package/tuture"><img src="https://img.shields.io/npm/v/tuture" alt="Version"></a>
   <a href="https://www.npmjs.com/package/tuture"><img src="https://img.shields.io/npm/l/tuture" alt="License"></a>
   <a href="https://www.npmjs.com/package/tuture"><img src="https://img.shields.io/node/v/tuture" alt="Node Version"></a>
@@ -57,14 +56,14 @@ yarn global add tuture
 
 3. Move the binary to your system path:
 
-  - For Linux/macOS users, open your terminal and navigate to where the tuture binary resides:
+- For Linux/macOS users, open your terminal and navigate to where the tuture binary resides:
 
-  ```bash
-  cd /path/to/tuture
-  sudo mv tuture /usr/local/bin
-  ```
+```bash
+cd /path/to/tuture
+sudo mv tuture /usr/local/bin
+```
 
-  - For Windows users, simply move the binary to `C:\Windows` folder as Administrator.
+- For Windows users, simply move the binary to `C:\Windows` folder as Administrator.
 
 4. Checkout whether `tuture` binary works by running `tuture --version`.
 

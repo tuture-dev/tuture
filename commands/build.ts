@@ -7,7 +7,7 @@ import { flags } from '@oclif/command';
 import { File as DiffFile, ChangeType } from 'parse-diff';
 
 import BaseCommand from '../base';
-import { isInitialized, isCommitEqual } from '../utils';
+import { isCommitEqual, checkInitStatus } from '../utils';
 import logger from '../utils/logger';
 import { loadCollection } from '../utils/collection';
 import { Asset, loadAssetsTable, checkAssets } from '../utils/assets';
@@ -378,13 +378,10 @@ export default class Build extends BaseCommand {
     const { flags } = this.parse(Build);
     this.userConfig = Object.assign(this.userConfig, flags);
 
-    if (!(await isInitialized())) {
-      logger.log(
-        'error',
-        `Tuture is not initialized. Run ${chalk.bold(
-          'tuture init',
-        )} to initialize.`,
-      );
+    try {
+      await checkInitStatus();
+    } catch (err) {
+      logger.log('error', err.message);
       this.exit(1);
     }
 

@@ -1,3 +1,4 @@
+import chalk from 'chalk';
 import fs from 'fs-extra';
 import mm from 'micromatch';
 import shortid from 'shortid';
@@ -167,14 +168,40 @@ export function mergeSteps(prevSteps: Step[], currentSteps: Step[]) {
 /**
  * Detect if tuture is initialized.
  */
-export async function isInitialized() {
-  if ((await git.checkIsRepo()) && (await git.branchLocal()).current) {
-    const workspaceExists = fs.existsSync(collectionPath);
-    const branchExists = (await git.branch({ '-a': true })).all
-      .map((branch) => branch.split('/').slice(-1)[0])
-      .includes(TUTURE_BRANCH);
-    return workspaceExists || branchExists;
+export async function checkInitStatus(nothrow = false) {
+  const isRepo = await git.checkIsRepo();
+
+  if (!isRepo) {
+    if (nothrow) return false;
+
+    throw new Error(
+      `Not in a git repository. Run ${chalk.bold('git init')} or ${chalk.bold(
+        'tuture init',
+      )} to initialize.`,
+    );
   }
 
-  return false;
+  const { current: currentBranch } = await git.branchLocal();
+  if (!currentBranch) {
+    if (nothrow) return false;
+
+    throw new Error('Current branch does not have any commits yet.');
+  }
+
+  const workspaceExists = fs.existsSync(collectionPath);
+  const branchExists = (await git.branch({ '-a': true })).all
+    .map((branch) => branch.split('/').slice(-1)[0])
+    .includes(TUTURE_BRANCH);
+
+  if (!workspaceExists && !branchExists) {
+    if (nothrow) return false;
+
+    throw new Error(
+      `Tuture is not initialized. Run ${chalk.bold(
+        'tuture init',
+      )} to initialize.`,
+    );
+  }
+
+  return true;
 }

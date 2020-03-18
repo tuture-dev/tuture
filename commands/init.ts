@@ -8,9 +8,13 @@ import logger from '../utils/logger';
 import BaseCommand from '../base';
 import { Collection, Meta } from '../types';
 import { makeSteps, removeTutureSuite } from '../utils';
-import { saveCollection } from '../utils/collection';
-import { git, inferGithubField, appendGitignore } from '../utils/git';
-import { COLLECTION_PATH } from '../constants';
+import { collectionPath, saveCollection } from '../utils/collection';
+import {
+  git,
+  inferGithubField,
+  appendGitHook,
+  appendGitignore,
+} from '../utils/git';
 
 type ConfirmResponse = {
   answer: boolean;
@@ -92,12 +96,12 @@ export default class Init extends BaseCommand {
   async run() {
     const { flags } = this.parse(Init);
 
-    if (fs.existsSync(COLLECTION_PATH)) {
+    if (fs.existsSync(collectionPath)) {
       logger.log('success', 'Tuture tutorial has already been initialized!');
       this.exit(0);
     }
 
-    if (!fs.existsSync('.git')) {
+    if (!(await git.checkIsRepo())) {
       await this.promptInitGit(flags.yes);
     }
 
@@ -130,6 +134,7 @@ export default class Init extends BaseCommand {
 
       saveCollection(collection);
       appendGitignore(this.userConfig);
+      appendGitHook();
 
       logger.log('success', 'Tuture tutorial has been initialized!');
     } catch (err) {
