@@ -1,11 +1,10 @@
-import { useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 
 import { useSelector, useDispatch, useStore } from 'react-redux';
 import { Layout, Affix, BackTop } from 'antd';
 import { Slate } from 'tuture-slate-react';
 import { updateLastSelection } from 'editure';
 import { useHistory } from 'react-router-dom';
-import debounce from 'lodash.debounce';
 
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
@@ -22,6 +21,7 @@ const { Header, Content } = Layout;
 
 function ConnectedLayout(props) {
   const { children } = props;
+  const [timeoutState, setTimeoutState] = useState(null);
   const history = useHistory();
 
   const store = useStore();
@@ -53,11 +53,11 @@ function ConnectedLayout(props) {
     }
   }, [outdatedNotificationClicked]);
 
-  // This operation is quite expensive and is hence debounced.
-  const debouncedSave = debounce(() => {
-    dispatch.collection.saveNowStepsToCollection();
-    dispatch.collection.saveCollection();
-  }, 3000);
+  function resetTimeout(id, newId) {
+    clearTimeout(id);
+
+    return newId;
+  }
 
   function onContentChange(val) {
     dispatch({
@@ -65,7 +65,15 @@ function ConnectedLayout(props) {
       payload: { fragment: val },
     });
 
-    debouncedSave();
+    setTimeoutState(
+      resetTimeout(
+        timeoutState,
+        setTimeout(() => {
+          dispatch.collection.saveNowStepsToCollection();
+          dispatch.collection.saveCollection();
+        }, 3000),
+      ),
+    );
   }
 
   const editor = useMemo(initializeEditor, []);

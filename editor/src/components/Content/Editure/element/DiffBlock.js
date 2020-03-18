@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import LazyLoad from 'react-lazy-load';
 import { useDispatch } from 'react-redux';
 import { Checkbox } from 'antd';
-import debounce from 'lodash.debounce';
 
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
@@ -108,6 +107,7 @@ function DiffBlockElement(props) {
   const { file, commit, hiddenLines = [] } = element;
 
   const [loading, setLoading] = useState(true);
+  const [timeoutState, setTimeoutState] = useState(null);
   const dispatch = useDispatch();
 
   const store = useStore();
@@ -115,10 +115,11 @@ function DiffBlockElement(props) {
     store.select.diff.getDiffItemByCommitAndFile({ file, commit }),
   );
 
-  const debouncedSave = debounce(() => {
-    dispatch.collection.saveNowStepsToCollection();
-    dispatch.collection.saveCollection();
-  }, 3000);
+  function resetTimeout(id, newId) {
+    clearTimeout(id);
+
+    return newId;
+  }
 
   function onChange(hiddenLines) {
     dispatch.collection.setDiffItemHiddenLines({
@@ -127,7 +128,15 @@ function DiffBlockElement(props) {
       hiddenLines,
     });
 
-    debouncedSave();
+    setTimeoutState(
+      resetTimeout(
+        timeoutState,
+        setTimeout(() => {
+          dispatch.collection.saveNowStepsToCollection();
+          dispatch.collection.saveCollection();
+        }, 3000),
+      ),
+    );
   }
 
   function getHiddenLines(checkedLines, allLines) {
