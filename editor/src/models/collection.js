@@ -8,7 +8,7 @@ import omit from 'lodash.omit';
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 
-import { FILE } from '../utils/constants';
+import { FILE, DIFF_BLOCK } from '../utils/constants';
 import {
   flatten,
   unflatten,
@@ -108,15 +108,13 @@ const collection = {
     setDiffItemHiddenLines(state, payload) {
       const { file, commit, hiddenLines } = payload;
 
-      for (const step of state.collection.steps) {
-        if (isCommitEqual(step.commit, commit)) {
-          for (const childNode of step.children) {
-            if (childNode.type === FILE && childNode.file === file) {
-              childNode.children[1].hiddenLines = hiddenLines;
-              break;
-            }
-          }
-
+      for (const node of state.nowSteps) {
+        if (
+          node.type === DIFF_BLOCK &&
+          node.file === file &&
+          isCommitEqual(node.commit, commit)
+        ) {
+          node.hiddenLines = hiddenLines;
           break;
         }
       }
@@ -135,6 +133,18 @@ const collection = {
 
         return step;
       });
+
+      const { steps } = state.collection;
+
+      if (state.nowArticleId) {
+        state.nowSteps = flatten(
+          steps.filter((step) => step.articleId === state.nowArticleId),
+        );
+      } else {
+        state.nowSteps = flatten(steps);
+      }
+
+      return state;
     },
     setNowSteps(state, payload) {
       const { fragment } = payload;

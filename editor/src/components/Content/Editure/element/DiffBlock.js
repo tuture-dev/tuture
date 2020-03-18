@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import LazyLoad from 'react-lazy-load';
 import { useDispatch } from 'react-redux';
 import { Checkbox } from 'antd';
+import debounce from 'lodash.debounce';
 
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
@@ -114,6 +115,11 @@ function DiffBlockElement(props) {
     store.select.diff.getDiffItemByCommitAndFile({ file, commit }),
   );
 
+  const debouncedSave = debounce(() => {
+    dispatch.collection.saveNowStepsToCollection();
+    dispatch.collection.saveCollection();
+  }, 3000);
+
   function onChange(hiddenLines) {
     dispatch.collection.setDiffItemHiddenLines({
       commit,
@@ -121,7 +127,7 @@ function DiffBlockElement(props) {
       hiddenLines,
     });
 
-    dispatch.collection.saveCollection();
+    debouncedSave();
   }
 
   function getHiddenLines(checkedLines, allLines) {
