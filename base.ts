@@ -38,6 +38,8 @@ export default abstract class BaseCommand extends Command {
   }
 
   async finally() {
+    removeAssetsLock();
+
     // Clean tuture root if it's empty, since it's created for no reason..
     if (
       fs.existsSync(TUTURE_ROOT) &&
