@@ -8,7 +8,7 @@ import BaseCommand from '../base';
 import logger from '../utils/logger';
 import reload from './reload';
 import makeServer from '../server';
-import { isInitialized } from '../utils';
+import { checkInitStatus } from '../utils';
 import { syncImages } from '../utils/assets';
 import { TUTURE_ROOT } from '../constants';
 import { loadCollection } from '../utils/collection';
@@ -43,13 +43,10 @@ export default class Up extends BaseCommand {
     const { flags } = this.parse(Up);
     this.userConfig = Object.assign(this.userConfig, flags);
 
-    if (!(await isInitialized())) {
-      logger.log(
-        'error',
-        `Tuture is not initialized. Run ${chalk.bold(
-          'tuture init',
-        )} to initialize.`,
-      );
+    try {
+      await checkInitStatus();
+    } catch (err) {
+      logger.log('error', err.message);
       this.exit(1);
     }
 

@@ -5,7 +5,7 @@ import { flags } from '@oclif/command';
 import BaseCommand from '../base';
 import logger from '../utils/logger';
 import { Step } from '../types';
-import { makeSteps, mergeSteps, isInitialized } from '../utils';
+import { makeSteps, mergeSteps, checkInitStatus } from '../utils';
 import { git } from '../utils/git';
 import {
   loadCollection,
@@ -43,13 +43,10 @@ export default class Reload extends BaseCommand {
   async run() {
     this.parse(Reload);
 
-    if (!(await isInitialized())) {
-      logger.log(
-        'error',
-        `Tuture is not initialized. Run ${chalk.bold(
-          'tuture init',
-        )} to initialize.`,
-      );
+    try {
+      await checkInitStatus();
+    } catch (err) {
+      logger.log('error', err.message);
       this.exit(1);
     }
 

@@ -7,7 +7,7 @@ import { flags } from '@oclif/command';
 import { File as DiffFile, ChangeType } from 'parse-diff';
 
 import BaseCommand from '../base';
-import { isInitialized, isCommitEqual } from '../utils';
+import { isCommitEqual, checkInitStatus } from '../utils';
 import logger from '../utils/logger';
 import { loadCollection } from '../utils/collection';
 import { Asset, loadAssetsTable, checkAssets } from '../utils/assets';
@@ -37,6 +37,7 @@ const diffRenderHints: { [mode: string]: { [diffType: string]: string } } = {
 };
 
 const noteLevels: { [level: string]: { name: string } } = {
+  primary: { name: '主要' },
   success: { name: '成功' },
   info: { name: '提示' },
   warning: { name: '注意' },
@@ -303,7 +304,7 @@ export default class Build extends BaseCommand {
     // If not uploaded, replace it with absolute local path.
     assets.forEach(({ localPath, hostingUri }) => {
       updated = updated.replace(
-        localPath,
+        new RegExp(localPath, 'g'),
         hostingUri || path.resolve(localPath),
       );
     });
@@ -378,13 +379,10 @@ export default class Build extends BaseCommand {
     const { flags } = this.parse(Build);
     this.userConfig = Object.assign(this.userConfig, flags);
 
-    if (!(await isInitialized())) {
-      logger.log(
-        'error',
-        `Tuture is not initialized. Run ${chalk.bold(
-          'tuture init',
-        )} to initialize.`,
-      );
+    try {
+      await checkInitStatus();
+    } catch (err) {
+      logger.log('error', err.message);
       this.exit(1);
     }
 

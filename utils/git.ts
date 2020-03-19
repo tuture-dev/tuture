@@ -68,7 +68,7 @@ export async function inferGithubField() {
     // Trying to infer github repo url from origin.
     const remote = await git.remote([]);
     if (remote) {
-      const origin = await git.remote(['get-url', remote]);
+      const origin = await git.remote(['get-url', remote.trim()]);
       if (origin) {
         github = origin.replace('.git', '').trim();
       }

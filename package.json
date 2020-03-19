@@ -16,7 +16,7 @@
     "node": ">=8.0.0"
   },
   "scripts": {
-    "lint:cli": "eslint . --ext .ts",
+    "lint": "eslint . --ext .ts",
     "lint:editor": "eslint editor",
     "test": "jest",
     "test:watch": "jest --watch",
