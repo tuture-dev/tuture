@@ -2,11 +2,11 @@ import path from 'path';
 
 export const COLLECTION_PATH = 'collection.json';
 
-export const COLLECTION_CHECKPOINT = 'collection.last-committed.json';
+export const COLLECTION_CHECKPOINT = 'collection.ckpt.json';
 
 export const ASSETS_JSON_PATH = 'tuture-assets.json';
 
-export const ASSETS_JSON_CHECKPOINT = 'tuture-assets.last-committed.json';
+export const ASSETS_JSON_CHECKPOINT = 'tuture-assets.ckpt.json';
 
 export const TUTURE_IGNORE_PATH = '.tutureignore';
 
