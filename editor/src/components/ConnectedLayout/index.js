@@ -1,4 +1,4 @@
-import { useMemo, useEffect, useState } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 
 import { useSelector, useDispatch, useStore } from 'react-redux';
 import { Layout, Affix, BackTop } from 'antd';
@@ -28,7 +28,7 @@ function ConnectedLayout(props) {
   const { name: pageTitle } = useSelector(
     store.select.collection.nowArticleMeta,
   );
-  const value = useSelector(store.select.collection.nowArticleContent);
+  const value = useSelector((state) => state.collection.nowSteps);
   const outdatedNotificationClicked = useSelector(
     (state) => state.collection.outdatedNotificationClicked,
   );
@@ -53,10 +53,6 @@ function ConnectedLayout(props) {
     }
   }, [outdatedNotificationClicked]);
 
-  function handleSaveCollection() {
-    dispatch.collection.saveCollection();
-  }
-
   function resetTimeout(id, newId) {
     clearTimeout(id);
 
@@ -64,13 +60,16 @@ function ConnectedLayout(props) {
   }
 
   function onContentChange(val) {
-    dispatch({
-      type: 'collection/setArticleContent',
-      payload: { fragment: val },
-    });
+    dispatch.collection.setNowSteps({ fragment: val });
 
     setTimeoutState(
-      resetTimeout(timeoutState, setTimeout(handleSaveCollection, 1000)),
+      resetTimeout(
+        timeoutState,
+        setTimeout(() => {
+          dispatch.collection.saveNowStepsToCollection();
+          dispatch.collection.saveCollection();
+        }, 3000),
+      ),
     );
   }
 
