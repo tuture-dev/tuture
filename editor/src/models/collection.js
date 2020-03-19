@@ -8,7 +8,7 @@ import omit from 'lodash.omit';
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 
-import { FILE } from '../utils/constants';
+import { FILE, DIFF_BLOCK } from '../utils/constants';
 import {
   flatten,
   unflatten,
@@ -23,6 +23,7 @@ const collection = {
     collection: null,
     nowArticleId: null,
     nowStepCommit: null,
+    nowSteps: [{ type: F.PARAGRAPH, children: [{ text: '' }] }],
     lastSaved: null,
     saveFailed: false,
     editArticleId: '',
@@ -36,7 +37,15 @@ const collection = {
         state.nowArticleId = payload.articles[0].id;
       }
 
-      return state;
+      const { steps } = state.collection;
+
+      if (state.nowArticleId) {
+        state.nowSteps = flatten(
+          steps.filter((step) => step.articleId === state.nowArticleId),
+        );
+      } else {
+        state.nowSteps = flatten(steps);
+      }
     },
     setNowArticle(state, payload) {
       state.nowArticleId = payload;
@@ -48,7 +57,19 @@ const collection = {
         )[0];
       }
 
-      return state;
+      if (!state.collection) {
+        return;
+      }
+
+      const { steps } = state.collection;
+
+      if (state.nowArticleId) {
+        state.nowSteps = flatten(
+          steps.filter((step) => step.articleId === state.nowArticleId),
+        );
+      } else {
+        state.nowSteps = flatten(steps);
+      }
     },
     setArticleTitle(state, payload) {
       if (state.collection.articles.length !== 0) {
@@ -64,8 +85,6 @@ const collection = {
       } else {
         state.collection.name = payload;
       }
-
-      return state;
     },
     setArticleDescription(state, payload) {
       if (state.collection.articles.length !== 0) {
@@ -81,26 +100,20 @@ const collection = {
       } else {
         state.collection.description = payload;
       }
-
-      return state;
     },
     setDiffItemHiddenLines(state, payload) {
       const { file, commit, hiddenLines } = payload;
 
-      for (const step of state.collection.steps) {
-        if (isCommitEqual(step.commit, commit)) {
-          for (const childNode of step.children) {
-            if (childNode.type === FILE && childNode.file === file) {
-              childNode.children[1].hiddenLines = hiddenLines;
-              break;
-            }
-          }
-
+      for (const node of state.nowSteps) {
+        if (
+          node.type === DIFF_BLOCK &&
+          node.file === file &&
+          isCommitEqual(node.commit, commit)
+        ) {
+          node.hiddenLines = hiddenLines;
           break;
         }
       }
-
-      return state;
     },
     switchFile(state, payload) {
       const { removedIndex, addedIndex, commit } = payload;
@@ -114,28 +127,36 @@ const collection = {
 
         return step;
       });
+
+      const { steps } = state.collection;
+
+      if (state.nowArticleId) {
+        state.nowSteps = flatten(
+          steps.filter((step) => step.articleId === state.nowArticleId),
+        );
+      } else {
+        state.nowSteps = flatten(steps);
+      }
     },
-    setArticleContent(state, payload) {
+    setNowSteps(state, payload) {
       const { fragment } = payload;
 
       if (!fragment) return state;
 
-      const newSteps = unflatten(fragment);
-
+      state.nowSteps = fragment;
+    },
+    saveNowStepsToCollection(state) {
       state.collection.steps = state.collection.steps.map(
         (step) =>
-          newSteps.filter((node) =>
+          unflatten(state.nowSteps).filter((node) =>
             isCommitEqual(node.commit, step.commit),
           )[0] || step,
       );
-
-      return state;
     },
     setNowStepCommit(state, payload) {
       if (payload.commit) {
         state.nowStepCommit = payload.commit;
       }
-      return state;
     },
     setFileShowStatus(state, payload) {
       state.collection.steps = state.collection.steps.map((step) => {
@@ -151,13 +172,9 @@ const collection = {
 
         return step;
       });
-
-      return state;
     },
     setEditArticleId(state, payload) {
       state.editArticleId = payload;
-
-      return state;
     },
     editArticle(state, payload) {
       const { editArticleId } = state;
@@ -165,15 +182,11 @@ const collection = {
       state.collection.articles = state.collection.articles.map((article) =>
         article.id === editArticleId ? { ...article, ...payload } : article,
       );
-
-      return state;
     },
     createArticle(state, payload) {
       const id = shortid.generate();
       const created = new Date();
       state.collection.articles.push({ id, created, ...payload });
-
-      return state;
     },
     setStepById(state, payload) {
       const { stepId, stepProps } = payload;
@@ -181,13 +194,9 @@ const collection = {
       state.collection.steps = state.collection.steps.map((step) =>
         step.id === stepId ? { ...step, ...stepProps } : step,
       );
-
-      return state;
     },
     editCollection(state, payload) {
       state.collection = { ...state.collection, ...payload };
-
-      return state;
     },
     deleteArticle(state, payload) {
       state.collection.articles = state.collection.articles.filter(
@@ -200,16 +209,12 @@ const collection = {
 
         return step;
       });
-
-      return state;
     },
     setLastSaved(state, payload) {
       state.lastSaved = payload;
-      return state;
     },
     setSaveFailed(state, payload) {
       state.saveFailed = payload;
-      return state;
     },
     updateSteps(state, payload) {
       state.collection.steps = payload;
@@ -224,8 +229,6 @@ const collection = {
       state.collection.steps = state.collection.steps.filter(
         (step) => step.id !== payload,
       );
-
-      return state;
     },
   },
   effects: (dispatch) => ({
@@ -361,26 +364,6 @@ const collection = {
         }
 
         return {};
-      });
-    },
-    nowArticleContent() {
-      return slice((collectionModel) => {
-        if (!collectionModel.collection) {
-          return [{ type: F.PARAGRAPH, children: [{ text: '' }] }];
-        }
-
-        const {
-          collection: { steps },
-          nowArticleId,
-        } = collectionModel;
-
-        if (nowArticleId) {
-          return flatten(
-            steps.filter((step) => step.articleId === nowArticleId),
-          );
-        }
-
-        return flatten(steps);
       });
     },
     nowArticleCatalogue() {

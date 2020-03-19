@@ -107,12 +107,19 @@ function DiffBlockElement(props) {
   const { file, commit, hiddenLines = [] } = element;
 
   const [loading, setLoading] = useState(true);
+  const [timeoutState, setTimeoutState] = useState(null);
   const dispatch = useDispatch();
 
   const store = useStore();
   const diffItem = useSelector(
     store.select.diff.getDiffItemByCommitAndFile({ file, commit }),
   );
+
+  function resetTimeout(id, newId) {
+    clearTimeout(id);
+
+    return newId;
+  }
 
   function onChange(hiddenLines) {
     dispatch.collection.setDiffItemHiddenLines({
@@ -121,7 +128,15 @@ function DiffBlockElement(props) {
       hiddenLines,
     });
 
-    dispatch.collection.saveCollection();
+    setTimeoutState(
+      resetTimeout(
+        timeoutState,
+        setTimeout(() => {
+          dispatch.collection.saveNowStepsToCollection();
+          dispatch.collection.saveCollection();
+        }, 3000),
+      ),
+    );
   }
 
   function getHiddenLines(checkedLines, allLines) {
