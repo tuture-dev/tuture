@@ -60,10 +60,7 @@ function ConnectedLayout(props) {
   }
 
   function onContentChange(val) {
-    dispatch({
-      type: 'collection/setNowSteps',
-      payload: { fragment: val },
-    });
+    dispatch.collection.setNowSteps({ fragment: val });
 
     setTimeoutState(
       resetTimeout(
