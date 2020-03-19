@@ -1,6 +1,5 @@
 import { flags } from '@oclif/command';
 
-import reload from './reload';
 import BaseCommand from '../base';
 import { checkInitStatus } from '../utils';
 import logger from '../utils/logger';
@@ -27,11 +26,19 @@ export default class Pull extends BaseCommand {
 
     const remotes = await git.getRemotes(false);
     await git.checkout(TUTURE_BRANCH);
-    await git.pull(remotes[0].name, TUTURE_BRANCH);
 
-    // Commit changes to tuture branch.
-    logger.log('success', 'Pulled to local.');
+    try {
+      const { files } = await git.pull(remotes[0].name, TUTURE_BRANCH);
 
-    await reload.run([]);
+      if (files.length > 0) {
+        // Commit changes to tuture branch.
+        logger.log('success', 'Pulled to local.');
+      } else {
+        logger.log('success', 'Already up-to-date.');
+      }
+    } catch (err) {
+      logger.log('error', err.message);
+      this.exit(1);
+    }
   }
 }

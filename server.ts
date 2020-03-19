@@ -53,9 +53,8 @@ const makeServer = (config: any) => {
     res.json(JSON.parse(fs.readFileSync(diffPath).toString()));
   });
 
-  app.get('/collection', async (_, res) => {
-    const collection = await loadCollection();
-    res.json(collection);
+  app.get('/collection', (_, res) => {
+    res.json(loadCollection());
   });
 
   app.post('/save', (req, res) => {

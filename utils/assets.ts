@@ -45,7 +45,7 @@ export function removeAssetsLock() {
 
 export function hasAssetsChangedSinceCheckpoint() {
   if (!fs.existsSync(assetsTableCheckpoint)) {
-    return false;
+    return true;
   }
   return !fs
     .readFileSync(assetsTablePath)

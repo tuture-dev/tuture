@@ -10,6 +10,7 @@ import { git } from '../utils/git';
 import { assetsTablePath, assetsTableCheckpoint } from '../utils/assets';
 import {
   collectionPath,
+  saveCheckpoint,
   collectionCheckpoint,
   initializeTutureBranch,
 } from '../utils/collection';
@@ -69,5 +70,8 @@ export default class Commit extends BaseCommand {
     // Commit changes to tuture branch.
     cp.execSync(`git commit --allow-empty -m "tuture: ${message}"`);
     logger.log('success', `Committed to branch ${TUTURE_BRANCH} (${message})`);
+
+    // Copy the last committed file.
+    await saveCheckpoint();
   }
 }

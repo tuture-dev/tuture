@@ -44,9 +44,11 @@ export default class Push extends BaseCommand {
       this.exit(1);
     }
 
-    await git.push(remotes[0].name, TUTURE_BRANCH);
-
-    // Commit changes to tuture branch.
-    logger.log('success', 'Pushed to remote.');
+    try {
+      await git.push(remotes[0].name, TUTURE_BRANCH);
+      logger.log('success', 'Pushed to remote.');
+    } catch (err) {
+      logger.log('error', err.message);
+    }
   }
 }
