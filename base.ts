@@ -15,7 +15,7 @@ export default abstract class BaseCommand extends Command {
   async init() {
     this.userConfig = rc('tuture', defaultConfig);
 
-    if (await checkInitStatus(true)) {
+    if (!(await checkInitStatus(true))) {
       appendGitHook();
       removeAssetsLock();
 
