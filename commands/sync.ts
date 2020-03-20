@@ -40,9 +40,15 @@ export default class Sync extends BaseCommand {
       description: 'do not push to remote',
       default: false,
     }),
+    continue: flags.boolean({
+      description: 'continue synchronization after resolving conflicts',
+      default: false,
+    }),
   };
 
-  copyFilesFromTutureBranch() {
+  async copyFilesFromTutureBranch() {
+    await git.checkout(TUTURE_BRANCH);
+
     fs.copySync(COLLECTION_PATH, collectionPath);
     if (fs.existsSync(ASSETS_JSON_PATH)) {
       fs.copySync(ASSETS_JSON_PATH, assetsTablePath);
@@ -62,6 +68,38 @@ export default class Sync extends BaseCommand {
       this.exit(1);
     }
 
+    if (flags.continue) {
+      const { conflicted, staged } = await git.status();
+      if (conflicted.length > 0) {
+        logger.log(
+          'error',
+          `You still have unresolved conflict file(s): ${conflicted}`,
+        );
+        this.exit(1);
+      }
+
+      if (staged.length === 0) {
+        logger.log('error', `You have not staged any file. Aborting.`);
+        this.exit(1);
+      }
+
+      await git.commit(`Resolve conflict during sync (${new Date()})`);
+      await this.copyFilesFromTutureBranch();
+
+      if (!flags.noPush) {
+        logger.log('info', 'Starting to push to remote.');
+        await push.run([]);
+      }
+
+      // Download assets from image hosting.
+      syncImages();
+
+      await git.checkout('master');
+
+      logger.log('success', 'Synchronization complete!');
+      this.exit(0);
+    }
+
     if (!fs.existsSync(collectionPath)) {
       await initializeTutureBranch();
       await git.checkout(TUTURE_BRANCH);
@@ -77,7 +115,7 @@ export default class Sync extends BaseCommand {
         this.exit(1);
       }
 
-      this.copyFilesFromTutureBranch();
+      await this.copyFilesFromTutureBranch();
 
       // Download assets from image hosting.
       syncImages();
@@ -105,8 +143,7 @@ export default class Sync extends BaseCommand {
         await push.run([]);
       }
 
-      await git.checkout(TUTURE_BRANCH);
-      this.copyFilesFromTutureBranch();
+      await this.copyFilesFromTutureBranch();
 
       // Download assets if necessary.
       syncImages();

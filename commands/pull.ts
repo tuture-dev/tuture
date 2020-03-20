@@ -1,3 +1,4 @@
+import chalk from 'chalk';
 import { flags } from '@oclif/command';
 
 import BaseCommand from '../base';
@@ -24,10 +25,10 @@ export default class Pull extends BaseCommand {
       this.exit(1);
     }
 
-    const remotes = await git.getRemotes(false);
-    await git.checkout(TUTURE_BRANCH);
-
     try {
+      const remotes = await git.getRemotes(false);
+      await git.checkout(TUTURE_BRANCH);
+
       const { files } = await git.pull(remotes[0].name, TUTURE_BRANCH);
 
       if (files.length > 0) {
@@ -37,7 +38,18 @@ export default class Pull extends BaseCommand {
         logger.log('success', 'Already up-to-date.');
       }
     } catch (err) {
-      logger.log('error', err.message);
+      const { conflicted } = await git.status();
+      if (conflicted.length > 0) {
+        logger.log(
+          'error',
+          `Please manually resolve the conflict and run ${chalk.bold(
+            'tuture sync --continue',
+          )} to move on.`,
+        );
+      } else {
+        logger.log('error', err.message);
+      }
+
       this.exit(1);
     }
   }
