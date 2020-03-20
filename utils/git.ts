@@ -10,6 +10,12 @@ import { TUTURE_ROOT } from '../constants';
 // https://github.com/steveukx/git-js
 export const git = simplegit().silent(true);
 
+export const diffPath = path.join(
+  process.env.TUTURE_PATH || process.cwd(),
+  TUTURE_ROOT,
+  'diff.json',
+);
+
 /**
  * Store diff of all commits.
  */
@@ -27,7 +33,7 @@ export async function storeDiff(commits: string[]) {
 
   const diffs = await Promise.all(diffPromises);
 
-  fs.writeFileSync(path.join(TUTURE_ROOT, 'diff.json'), JSON.stringify(diffs));
+  fs.writeFileSync(diffPath, JSON.stringify(diffs));
 
   return diffs;
 }

@@ -10,6 +10,7 @@ import reload from './reload';
 import BaseCommand from '../base';
 import { isCommitEqual, checkInitStatus } from '../utils';
 import logger from '../utils/logger';
+import { diffPath } from '../utils/git';
 import { loadCollection, collectionPath } from '../utils/collection';
 import { Asset, loadAssetsTable, checkAssets } from '../utils/assets';
 import { generateUserProfile } from '../utils/internals';
@@ -387,8 +388,8 @@ export default class Build extends BaseCommand {
       this.exit(1);
     }
 
-    // Run sync command if workspace is not created.
-    if (!fs.existsSync(collectionPath)) {
+    // Run sync command if workspace is not prepared.
+    if (!fs.existsSync(collectionPath) || !fs.existsSync(diffPath)) {
       await reload.run([]);
     }
 
