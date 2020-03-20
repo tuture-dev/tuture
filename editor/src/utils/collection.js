@@ -1,49 +1,113 @@
 import * as F from 'editure-constants';
 
-import { FILE, STEP, DIFF_BLOCK } from '../utils/constants';
+import { FILE, STEP, DIFF_BLOCK, EXPLAIN } from '../utils/constants';
 
 export function flatten(steps) {
-  return steps.flatMap(({ commit, id, articleId, children }) => [
-    { commit, id, articleId, type: STEP, children: [{ text: '' }] },
-    ...children.flatMap((node) => {
-      if (node.type === FILE && node.display) {
-        const { file, display } = node;
-        return [
-          { file, display, commit, type: FILE, children: [{ text: '' }] },
-          ...node.children,
-        ];
-      }
-      return node;
-    }),
-  ]);
+  return steps.flatMap(({ commit, id, articleId, children }) => {
+    let stepExplainNumber = 0;
+
+    return [
+      {
+        commit,
+        id,
+        articleId,
+        type: STEP,
+        children: [{ text: '' }],
+        flag: 'step_start',
+      },
+      ...children.flatMap((node) => {
+        if (node.type === EXPLAIN) {
+          stepExplainNumber = stepExplainNumber + 1;
+        }
+
+        if (node.type === FILE && node.display) {
+          const { file, display } = node;
+          const fileChildren = node.children.map((nodeItem, index) => {
+            if (index === node.children.length - 1) {
+              return { ...nodeItem, flag: 'file_end' };
+            }
+
+            return nodeItem;
+          });
+
+          return [
+            {
+              file,
+              display,
+              commit,
+              type: FILE,
+              children: [{ text: '' }],
+              flag: 'file_start',
+            },
+            ...fileChildren,
+          ];
+        }
+
+        if (stepExplainNumber === 2) {
+          return { ...node, flag: 'step_end' };
+        }
+
+        return node;
+      }),
+    ];
+  });
 }
 
 export function unflatten(fragment) {
-  const steps = [{ ...fragment[0], children: [] }];
+  const steps = [];
 
-  for (let i = 1; i < fragment.length; i++) {
+  let step = { children: [] };
+  let flag = '';
+  for (let i = 0; i < fragment.length; i++) {
     const node = fragment[i];
-    if (node.type === STEP) {
-      steps.push({ ...node, children: [] });
-    } else if (node.type === FILE && node.display) {
-      const children = fragment.slice(i + 1, i + 4);
 
-      // If the second child is not a diff block, restore it.
-      if (children[1].type !== DIFF_BLOCK) {
-        children.splice(1, 0, {
-          type: DIFF_BLOCK,
-          file: node.file,
-          commit: node.commit,
-          hiddenLines: [],
-        });
-        i += 2;
-      } else {
-        i += 3;
+    switch (node.type) {
+      case STEP: {
+        step = { ...node, children: [] };
+        flag = node.flag;
+        break;
       }
 
-      steps.slice(-1)[0].children.push({ ...node, children });
-    } else {
-      steps.slice(-1)[0].children.push(node);
+      case FILE: {
+        if (node.display) {
+          step.children.push({ ...node, children: [] });
+        } else {
+          step.children.push(node);
+        }
+
+        flag = node.flag;
+        break;
+      }
+
+      case DIFF_BLOCK: {
+        step.children.slice(-1)[0].children.push(node);
+
+        break;
+      }
+
+      case EXPLAIN: {
+        if (node.flag) {
+          flag = node.flag;
+        }
+
+        if (flag === 'step_start' || flag === 'step_end') {
+          step.children.push(node);
+        }
+
+        if (flag === 'file_start' || flag === 'file_end') {
+          step.children.slice(-1)[0].children.push(node);
+        }
+
+        if (flag === 'step_end') {
+          steps.push(step);
+        }
+
+        break;
+      }
+
+      default: {
+        step.children.push(node);
+      }
     }
   }
 

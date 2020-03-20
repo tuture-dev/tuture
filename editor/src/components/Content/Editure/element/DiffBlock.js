@@ -198,8 +198,6 @@ function DiffBlockElement(props) {
                   showLineNumbers
                   showLineChecker
                   wrapLines
-                  allLines={allLines}
-                  showLines={showLines}
                   commit={commit}
                   file={file}
                   lineProps={(lineNum) => {
