@@ -322,6 +322,9 @@ const collection = {
       }
     },
     async saveCollection(payload, rootState) {
+      // Ensure nowSteps are merged into collection data.
+      dispatch.collection.saveNowStepsToCollection();
+
       try {
         const response = await fetch('/save', {
           method: 'POST',

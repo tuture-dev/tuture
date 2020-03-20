@@ -132,7 +132,6 @@ function DiffBlockElement(props) {
       resetTimeout(
         timeoutState,
         setTimeout(() => {
-          dispatch.collection.saveNowStepsToCollection();
           dispatch.collection.saveCollection();
         }, 3000),
       ),
