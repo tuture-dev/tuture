@@ -60,3 +60,11 @@ export const STEP = 'step';
 export const FILE = 'file';
 export const EXPLAIN = 'explain';
 export const DIFF_BLOCK = 'diff-block';
+
+/**
+ * empty  bound types.
+ */
+export const STEP_START = 'step_start';
+export const STEP_END = 'step_end';
+export const FILE_START = 'file_start';
+export const FILE_END = 'file_end';

@@ -1,54 +1,59 @@
 import * as F from 'editure-constants';
 
-import { FILE, STEP, DIFF_BLOCK, EXPLAIN } from '../utils/constants';
+import {
+  FILE,
+  STEP,
+  DIFF_BLOCK,
+  EXPLAIN,
+  STEP_END,
+  STEP_START,
+  FILE_START,
+  FILE_END,
+} from '../utils/constants';
 
 export function flatten(steps) {
   return steps.flatMap(({ commit, id, articleId, children }) => {
-    let stepExplainNumber = 0;
-
     return [
+      {
+        type: STEP_START,
+        children: [{ text: '' }],
+      },
       {
         commit,
         id,
         articleId,
         type: STEP,
         children: [{ text: '' }],
-        flag: 'step_start',
       },
       ...children.flatMap((node) => {
-        if (node.type === EXPLAIN) {
-          stepExplainNumber = stepExplainNumber + 1;
-        }
-
         if (node.type === FILE && node.display) {
           const { file, display } = node;
-          const fileChildren = node.children.map((nodeItem, index) => {
-            if (index === node.children.length - 1) {
-              return { ...nodeItem, flag: 'file_end' };
-            }
-
-            return nodeItem;
-          });
 
           return [
+            {
+              type: FILE_START,
+              children: [{ text: '' }],
+            },
             {
               file,
               display,
               commit,
               type: FILE,
               children: [{ text: '' }],
-              flag: 'file_start',
             },
-            ...fileChildren,
+            ...node.children,
+            {
+              type: FILE_END,
+              children: [{ text: '' }],
+            },
           ];
         }
-
-        if (stepExplainNumber === 2) {
-          return { ...node, flag: 'step_end' };
-        }
-
         return node;
       }),
+      {
+        type: STEP_END,
+        children: [{ text: '' }],
+      },
     ];
   });
 }
@@ -64,7 +69,6 @@ export function unflatten(fragment) {
     switch (node.type) {
       case STEP: {
         step = { ...node, children: [] };
-        flag = node.flag;
         break;
       }
 
@@ -74,8 +78,6 @@ export function unflatten(fragment) {
         } else {
           step.children.push(node);
         }
-
-        flag = node.flag;
         break;
       }
 
@@ -86,22 +88,30 @@ export function unflatten(fragment) {
       }
 
       case EXPLAIN: {
-        if (node.flag) {
-          flag = node.flag;
-        }
-
-        if (flag === 'step_start' || flag === 'step_end') {
+        if (flag === 'step_start') {
           step.children.push(node);
         }
 
-        if (flag === 'file_start' || flag === 'file_end') {
+        if (flag === 'file_start') {
           step.children.slice(-1)[0].children.push(node);
         }
 
-        if (flag === 'step_end') {
-          steps.push(step);
-        }
+        break;
+      }
 
+      case STEP_START: {
+        flag = 'step_start';
+        break;
+      }
+
+      case STEP_END: {
+        steps.push(step);
+
+        break;
+      }
+
+      case FILE_START: {
+        flag = 'file_start';
         break;
       }
 
