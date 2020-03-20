@@ -67,7 +67,7 @@ function ConnectedLayout(props) {
         timeoutState,
         setTimeout(() => {
           dispatch.collection.saveCollection();
-        }, 3000),
+        }, 1000),
       ),
     );
   }
