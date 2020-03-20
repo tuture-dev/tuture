@@ -25,8 +25,14 @@ export default class Pull extends BaseCommand {
       this.exit(1);
     }
 
+    const remotes = await git.getRemotes(false);
+
+    if (remotes.length === 0) {
+      logger.log('error', 'Remote repository has not been configured.');
+      this.exit(1);
+    }
+
     try {
-      const remotes = await git.getRemotes(false);
       await git.checkout(TUTURE_BRANCH);
 
       const { files } = await git.pull(remotes[0].name, TUTURE_BRANCH);
