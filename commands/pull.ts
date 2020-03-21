@@ -1,6 +1,6 @@
+import chalk from 'chalk';
 import { flags } from '@oclif/command';
 
-import reload from './reload';
 import BaseCommand from '../base';
 import { checkInitStatus } from '../utils';
 import logger from '../utils/logger';
@@ -26,12 +26,37 @@ export default class Pull extends BaseCommand {
     }
 
     const remotes = await git.getRemotes(false);
-    await git.checkout(TUTURE_BRANCH);
-    await git.pull(remotes[0].name, TUTURE_BRANCH);
 
-    // Commit changes to tuture branch.
-    logger.log('success', 'Pulled to local.');
+    if (remotes.length === 0) {
+      logger.log('error', 'Remote repository has not been configured.');
+      this.exit(1);
+    }
 
-    await reload.run([]);
+    try {
+      await git.checkout(TUTURE_BRANCH);
+
+      const { files } = await git.pull(remotes[0].name, TUTURE_BRANCH);
+
+      if (files.length > 0) {
+        // Commit changes to tuture branch.
+        logger.log('success', 'Pulled to local.');
+      } else {
+        logger.log('success', 'Already up-to-date.');
+      }
+    } catch (err) {
+      const { conflicted } = await git.status();
+      if (conflicted.length > 0) {
+        logger.log(
+          'error',
+          `Please manually resolve the conflict and run ${chalk.bold(
+            'tuture sync --continue',
+          )} to move on.`,
+        );
+      } else {
+        logger.log('error', err.message);
+      }
+
+      this.exit(1);
+    }
   }
 }

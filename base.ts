@@ -38,6 +38,8 @@ export default abstract class BaseCommand extends Command {
   }
 
   async finally() {
+    removeAssetsLock();
+
     // Clean tuture root if it's empty, since it's created for no reason..
     if (
       fs.existsSync(TUTURE_ROOT) &&
@@ -50,8 +52,12 @@ export default abstract class BaseCommand extends Command {
     if (await git.checkIsRepo()) {
       const { all } = await git.branchLocal();
       if (all.includes('master')) {
-        // Ensure we are back to master branch.
-        await git.checkout(['-q', 'master']);
+        try {
+          // Ensure we are back to master branch.
+          await git.checkout(['-q', 'master']);
+        } catch {
+          // Just silently failed.
+        }
       }
     }
   }

@@ -4,14 +4,14 @@ import fs from 'fs-extra';
 import getPort from 'get-port';
 import { flags } from '@oclif/command';
 
+import reload from './reload';
 import BaseCommand from '../base';
 import logger from '../utils/logger';
-import reload from './reload';
 import makeServer from '../server';
 import { checkInitStatus } from '../utils';
+import { diffPath } from '../utils/git';
 import { syncImages } from '../utils/assets';
-import { TUTURE_ROOT } from '../constants';
-import { loadCollection } from '../utils/collection';
+import { loadCollection, collectionPath } from '../utils/collection';
 
 export default class Up extends BaseCommand {
   static description = 'Render and edit tutorial in browser';
@@ -50,13 +50,13 @@ export default class Up extends BaseCommand {
       this.exit(1);
     }
 
-    // Run reload command if .tuture directory is empty.
-    if (fs.readdirSync(TUTURE_ROOT).length === 0) {
+    // Run sync command if workspace is not prepared.
+    if (!fs.existsSync(collectionPath) || !fs.existsSync(diffPath)) {
       await reload.run([]);
     }
 
     // Trying to load tuture.yml for sanity check.
-    await loadCollection();
+    loadCollection();
 
     // Background interval to synchronize assets.
     syncImages();

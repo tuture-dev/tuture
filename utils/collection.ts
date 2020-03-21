@@ -1,4 +1,3 @@
-import chalk from 'chalk';
 import fs from 'fs-extra';
 import path from 'path';
 
@@ -9,7 +8,6 @@ import {
   TUTURE_ROOT,
   COLLECTION_PATH,
   TUTURE_BRANCH,
-  ASSETS_JSON_PATH,
   COLLECTION_CHECKPOINT,
 } from '../constants';
 import { assetsTablePath, assetsTableCheckpoint } from './assets';
@@ -28,7 +26,7 @@ export const collectionCheckpoint = path.join(
 
 export function hasTutureChangedSinceCheckpoint() {
   if (!fs.existsSync(collectionCheckpoint)) {
-    return false;
+    return true;
   }
   return !fs
     .readFileSync(collectionPath)
@@ -55,7 +53,6 @@ export async function hasRemoteTutureBranch() {
 
   const remoteBranch = `remotes/${remote.trim()}/${TUTURE_BRANCH}`;
   if (!(await git.branch({ '-a': true })).all.includes(remoteBranch)) {
-    logger.log('warning', 'No remote tuture branch.');
     return false;
   }
 
@@ -65,31 +62,7 @@ export async function hasRemoteTutureBranch() {
 /**
  * Load collection.
  */
-export async function loadCollection(fromBranch = false): Promise<Collection> {
-  if (!fs.existsSync(collectionPath)) {
-    await initializeTutureBranch();
-    await git.checkout(TUTURE_BRANCH);
-
-    if (!fs.existsSync(COLLECTION_PATH)) {
-      logger.log(
-        'error',
-        `Cannot load tuture. Please run ${chalk.bold(
-          'tuture init',
-        )} to initialize.`,
-      );
-      await git.checkout('master');
-      process.exit(1);
-    }
-
-    fs.copySync(COLLECTION_PATH, collectionPath);
-    if (fs.existsSync(ASSETS_JSON_PATH)) {
-      fs.copySync(ASSETS_JSON_PATH, assetsTablePath);
-    }
-  }
-
-  if (fromBranch && fs.existsSync(COLLECTION_PATH)) {
-    return JSON.parse(fs.readFileSync(COLLECTION_PATH).toString());
-  }
+export function loadCollection(): Collection {
   return JSON.parse(fs.readFileSync(collectionPath).toString());
 }
 
@@ -125,7 +98,7 @@ export async function initializeTutureBranch() {
   }
 }
 
-export async function saveCheckpoint() {
+export function saveCheckpoint() {
   // Copy the last committed file.
   fs.copySync(collectionPath, collectionCheckpoint, { overwrite: true });
 

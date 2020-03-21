@@ -6,10 +6,12 @@ import { toMarkdown } from 'editure';
 import { flags } from '@oclif/command';
 import { File as DiffFile, ChangeType } from 'parse-diff';
 
+import reload from './reload';
 import BaseCommand from '../base';
 import { isCommitEqual, checkInitStatus } from '../utils';
 import logger from '../utils/logger';
-import { loadCollection } from '../utils/collection';
+import { diffPath } from '../utils/git';
+import { loadCollection, collectionPath } from '../utils/collection';
 import { Asset, loadAssetsTable, checkAssets } from '../utils/assets';
 import { generateUserProfile } from '../utils/internals';
 import { DIFF_PATH } from '../constants';
@@ -386,7 +388,12 @@ export default class Build extends BaseCommand {
       this.exit(1);
     }
 
-    const collection = await loadCollection();
+    // Run sync command if workspace is not prepared.
+    if (!fs.existsSync(collectionPath) || !fs.existsSync(diffPath)) {
+      await reload.run([]);
+    }
+
+    const collection = loadCollection();
     const rawDiffs: RawDiff[] = JSON.parse(
       fs.readFileSync(DIFF_PATH).toString(),
     );

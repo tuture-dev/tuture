@@ -31,22 +31,29 @@ export default class Push extends BaseCommand {
 
     const remotes = await git.getRemotes(false);
 
-    // Checkout tuture branch and add tuture.yml.
-    await git.checkout(TUTURE_BRANCH);
-
-    if (!fs.existsSync(collectionPath)) {
-      logger.log(
-        'error',
-        `Cannot push empty tuture branch. Please commit your tutorial with ${chalk.bold(
-          'tuture commit',
-        )}.`,
-      );
+    if (remotes.length === 0) {
+      logger.log('error', 'Remote repository has not been configured.');
       this.exit(1);
     }
 
-    await git.push(remotes[0].name, TUTURE_BRANCH);
+    try {
+      // Checkout tuture branch and add tuture.yml.
+      await git.checkout(TUTURE_BRANCH);
 
-    // Commit changes to tuture branch.
-    logger.log('success', 'Pushed to remote.');
+      if (!fs.existsSync(collectionPath)) {
+        logger.log(
+          'error',
+          `Cannot push empty tuture branch. Please commit your tutorial with ${chalk.bold(
+            'tuture commit',
+          )}.`,
+        );
+        this.exit(1);
+      }
+
+      await git.push(remotes[0].name, TUTURE_BRANCH);
+      logger.log('success', 'Pushed to remote.');
+    } catch (err) {
+      logger.log('error', err.message);
+    }
   }
 }
