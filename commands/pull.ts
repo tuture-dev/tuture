@@ -53,7 +53,7 @@ export default class Pull extends BaseCommand {
           )} to move on.`,
         );
       } else {
-        logger.log('error', err.message);
+        logger.log('error', String(err.message).trim());
       }
 
       this.exit(1);
