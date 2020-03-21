@@ -3,7 +3,16 @@ import * as F from 'editure-constants';
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 
-import { STEP, FILE, EXPLAIN, DIFF_BLOCK } from 'utils/constants';
+import {
+  STEP,
+  FILE,
+  EXPLAIN,
+  DIFF_BLOCK,
+  STEP_END,
+  STEP_START,
+  FILE_START,
+  FILE_END,
+} from 'utils/constants';
 
 import ExplainElement from './Explain';
 import NoteElement from './Note';
@@ -101,8 +110,17 @@ export default (props) => {
       return <HrElement {...props} />;
     case STEP:
       return null;
+    case STEP_START:
+      return null;
+    case STEP_END:
+      return null;
+    case FILE_START:
+      return null;
+    case FILE_END:
+      return null;
     case FILE:
       return null;
+
     case EXPLAIN:
       return <ExplainElement {...props} />;
     case DIFF_BLOCK:

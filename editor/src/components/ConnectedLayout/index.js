@@ -33,6 +33,8 @@ function ConnectedLayout(props) {
     (state) => state.collection.outdatedNotificationClicked,
   );
 
+  console.log('value', value);
+
   const dispatch = useDispatch();
 
   useEffect(() => {

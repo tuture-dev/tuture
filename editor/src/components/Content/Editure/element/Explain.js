@@ -7,7 +7,7 @@ const emptyChildrenStyles = css`
   position: relative;
 
   &::before {
-    content: '写一点解释...';
+    content: '撰写一点解释';
     position: absolute;
     bottom: 4px;
     color: #bfbfbf;

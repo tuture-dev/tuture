@@ -48,6 +48,7 @@ export function flatten(steps) {
             },
           ];
         }
+
         return node;
       }),
       {
@@ -88,7 +89,8 @@ export function unflatten(fragment) {
       }
 
       case EXPLAIN: {
-        if (flag === 'step_start') {
+        // In step: step_start || file_end
+        if (flag === 'step_start' || flag === 'file_end') {
           step.children.push(node);
         }
 
@@ -105,6 +107,7 @@ export function unflatten(fragment) {
       }
 
       case STEP_END: {
+        flag = 'step_end';
         steps.push(step);
 
         break;
@@ -112,6 +115,11 @@ export function unflatten(fragment) {
 
       case FILE_START: {
         flag = 'file_start';
+        break;
+      }
+
+      case FILE_END: {
+        flag = 'file_end';
         break;
       }
 

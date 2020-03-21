@@ -165,37 +165,25 @@ const collection = {
       }
     },
     setFileShowStatus(state, payload) {
-      let flag = '';
+      let unflattenedNowSteps = unflatten(state.nowSteps);
 
-      state.nowSteps.forEach((node) => {
-        switch (node.type) {
-          case STEP: {
-            if (isCommitEqual(payload.commit, node.commit)) {
-              flag = NOW_STEP_START;
-            }
-
-            break;
-          }
-
-          case FILE: {
-            if (flag === NOW_STEP_START && node.file === payload.file) {
+      unflattenedNowSteps = unflattenedNowSteps.map((step) => {
+        if (isCommitEqual(step.commit, payload.commit)) {
+          step.children.map((node) => {
+            if (node.type === FILE && node?.file === payload.file) {
               node.display = payload.display;
             }
 
-            break;
-          }
-
-          case STEP_END: {
-            flag = '';
-
-            break;
-          }
-
-          default: {
-            break;
-          }
+            return node;
+          });
         }
+
+        return step;
       });
+
+      console.log(flatten(unflattenedNowSteps));
+
+      state.nowSteps = flatten(unflattenedNowSteps);
     },
     setEditArticleId(state, payload) {
       state.editArticleId = payload;
