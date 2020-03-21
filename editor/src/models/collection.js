@@ -179,8 +179,6 @@ const collection = {
         return step;
       });
 
-      console.log(flatten(unflattenedNowSteps));
-
       state.nowSteps = flatten(unflattenedNowSteps);
     },
     setEditArticleId(state, payload) {
@@ -335,6 +333,14 @@ const collection = {
       // Ensure nowSteps are merged into collection data.
       dispatch.collection.saveNowStepsToCollection();
 
+      let collectionData = rootState.collection.collection;
+      collectionData.steps = collectionData.steps.map(
+        (step) =>
+          unflatten(rootState.collection.nowSteps).filter((node) =>
+            isCommitEqual(node.commit, step.commit),
+          )[0] || step,
+      );
+
       try {
         const response = await fetch('/save', {
           method: 'POST',
@@ -342,7 +348,7 @@ const collection = {
             'Content-Type': 'application/json',
             Accept: 'application/json',
           },
-          body: JSON.stringify(rootState.collection.collection),
+          body: JSON.stringify(collectionData),
         });
 
         if (response.ok) {

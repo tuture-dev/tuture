@@ -48,7 +48,7 @@ function StepFileList() {
       resetTimeout(
         timeoutState,
         setTimeout(() => {
-          dispatch.collection.saveCollection();
+          dispatch.collection.saveCollection({ showMessage: true });
         }, 1000),
       ),
     );
