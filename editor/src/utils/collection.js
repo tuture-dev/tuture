@@ -13,6 +13,8 @@ import {
 
 export function flatten(steps) {
   return steps.flatMap(({ commit, id, articleId, children }) => {
+    let stepExplainNumber = 0;
+
     return [
       {
         type: STEP_START,
@@ -26,8 +28,33 @@ export function flatten(steps) {
         children: [{ text: '' }],
       },
       ...children.flatMap((node) => {
+        if (node.type === EXPLAIN) {
+          stepExplainNumber = stepExplainNumber + 1;
+
+          if (stepExplainNumber === 1) {
+            return { ...node, flag: STEP_START };
+          } else if (stepExplainNumber === 2) {
+            return { ...node, flag: STEP_END };
+          }
+        }
+
         if (node.type === FILE && node.display) {
           const { file, display } = node;
+
+          let fileExplainNumber = 0;
+          const explainChildrenWithFlag = node.children.map((nodeItem) => {
+            if (nodeItem.type === EXPLAIN) {
+              fileExplainNumber = fileExplainNumber + 1;
+
+              if (fileExplainNumber === 1) {
+                return { ...nodeItem, flag: FILE_START };
+              } else if (fileExplainNumber === 2) {
+                return { ...nodeItem, flag: FILE_END };
+              }
+            }
+
+            return nodeItem;
+          });
 
           return [
             {
@@ -41,7 +68,7 @@ export function flatten(steps) {
               type: FILE,
               children: [{ text: '' }],
             },
-            ...node.children,
+            ...explainChildrenWithFlag,
             {
               type: FILE_END,
               children: [{ text: '' }],
