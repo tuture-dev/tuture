@@ -1,28 +1,15 @@
 import React from 'react';
 import isHotkey from 'is-hotkey';
-import UAParser from 'ua-parser-js';
-import {
-  getBeforeText,
-  selectWithinBlock,
-  toggleMark,
-  toggleBlock,
-  isBlockActive,
-  detectBlockFormat,
-  deleteLine,
-  decreaseItemDepth,
-  increaseItemDepth,
-} from 'editure';
+import { getBeforeText, selectWithinBlock } from 'editure';
 import * as F from 'editure-constants';
 
 import { EXPLAIN } from '../utils/constants';
+import { IS_MAC } from './getOS';
 
 export function getHotkeyHint(hotkey) {
   const keys = hotkey.split('+');
-  const parser = new UAParser(navigator.userAgent);
-  const os = parser.getOS().name;
-  if (keys[0] === 'mod') {
-    keys[0] = os === 'Mac OS' ? '⌘' : 'Ctrl';
-  }
+
+  keys[0] = IS_MAC ? '⌘' : 'Ctrl';
 
   return keys.map((key) => key[0].toUpperCase() + key.slice(1)).join('+');
 }
@@ -35,15 +22,6 @@ export const MARK_HOTKEYS = {
   [F.LINK]: { hotkey: 'mod+k', title: '链接' },
   [F.STRIKETHROUGH]: { hotkey: 'mod+shift+`', title: '删除线' },
 };
-
-// const MARK_HOTKEYS = {
-//   'mod+b': F.BOLD,
-//   'mod+i': F.ITALIC,
-//   'mod+u': F.UNDERLINE,
-//   'ctrl+`': F.CODE,
-//   'mod+k': F.LINK,
-//   'mod+shift+`': F.STRIKETHROUGH,
-// };
 
 export const BLOCK_HOTKEYS = {
   [F.PARAGRAPH]: { hotkey: 'mod+alt+0', title: '正文' },
@@ -65,36 +43,22 @@ export const OP_HOTKEYS = {
   redo: { hotkey: 'mod+shift+z', title: '重做' },
 };
 
-// const BLOCK_HOTKEYS = {
-//   'mod+alt+0': F.PARAGRAPH,
-//   'mod+alt+1': F.H1,
-//   'mod+alt+2': F.H2,
-//   'mod+alt+3': F.H3,
-//   'mod+alt+4': F.H4,
-//   'mod+shift+c': F.CODE_BLOCK,
-//   'mod+shift+i': F.IMAGE,
-//   'mod+shift+u': F.BLOCK_QUOTE,
-//   'mod+alt+u': F.BULLETED_LIST,
-//   'mod+alt+o': F.NUMBERED_LIST,
-//   'mod+alt+-': F.HR,
-// };
-
 const containerBlocks = [F.BLOCK_QUOTE, F.CODE_BLOCK, F.NOTE, EXPLAIN];
 
 function handleTabKey(editor, event) {
   event.preventDefault();
 
   const { beforeText } = getBeforeText(editor);
-  const isInList = !!detectBlockFormat(editor, [
+  const isInList = !!editor.detectBlockFormat([
     F.BULLETED_LIST,
     F.NUMBERED_LIST,
   ]);
 
   if (!beforeText.length && isInList) {
-    increaseItemDepth(editor);
+    editor.increaseItemDepth();
   } else if (beforeText.length && isInList) {
     editor.insertText('\t');
-  } else if (isBlockActive(editor, F.CODE_BLOCK)) {
+  } else if (editor.isBlockActive(F.CODE_BLOCK)) {
     editor.insertText('  ');
   } else {
     editor.insertText('\t');
@@ -103,13 +67,13 @@ function handleTabKey(editor, event) {
 
 function handleShiftTabKey(editor, event) {
   event.preventDefault();
-  if (isBlockActive(editor, F.LIST_ITEM)) {
-    decreaseItemDepth(editor);
+  if (editor.isBlockActive(F.LIST_ITEM)) {
+    editor.decreaseItemDepth();
   }
 }
 
 function handleSelectAll(editor, event) {
-  const format = detectBlockFormat(editor, containerBlocks);
+  const format = editor.detectBlockFormat(containerBlocks);
 
   if (format) {
     event.preventDefault();
@@ -118,7 +82,7 @@ function handleSelectAll(editor, event) {
 }
 
 function handleSelectUpperLeftAll(editor, event) {
-  const format = detectBlockFormat(editor, containerBlocks);
+  const format = editor.detectBlockFormat(containerBlocks);
   if (format) {
     event.preventDefault();
     selectWithinBlock(editor, format, { how: 'upper-left' });
@@ -126,20 +90,15 @@ function handleSelectUpperLeftAll(editor, event) {
 }
 
 function handleSelectLowerRightAll(editor, event) {
-  const format = detectBlockFormat(editor, containerBlocks);
+  const format = editor.detectBlockFormat(containerBlocks);
   if (format) {
     event.preventDefault();
     selectWithinBlock(editor, format, { how: 'lower-right' });
   }
 }
 
-function handleDeleteLine(editor, event) {
-  event.preventDefault();
-  deleteLine(editor);
-}
-
 function handleExitBlock(editor, event) {
-  const format = detectBlockFormat(editor, [
+  const format = editor.detectBlockFormat([
     F.CODE_BLOCK,
     F.BLOCK_QUOTE,
     F.NOTE,
@@ -151,7 +110,7 @@ function handleExitBlock(editor, event) {
     selectWithinBlock(editor, format, { how: 'all', collapse: 'end' });
     editor.insertBreak();
 
-    toggleBlock(editor, format, {}, { exit: true });
+    editor.exitBlock(editor, format);
   }
 }
 
@@ -176,7 +135,7 @@ export const createHotKeysHandler = (editor) => {
         if (mark === F.LINK) {
           linkBtnRef.current.click();
         } else {
-          toggleMark(editor, mark);
+          editor.toggleMark(mark);
         }
         return;
       }
@@ -189,9 +148,8 @@ export const createHotKeysHandler = (editor) => {
         if (block === F.IMAGE) {
           imageBtnRef.current.click();
         } else {
-          toggleBlock(editor, block);
+          editor.toggleBlock(block);
         }
-
         return;
       }
     }
@@ -214,12 +172,6 @@ export const createHotKeysHandler = (editor) => {
 
     if (isHotkey('mod+shift+down', event)) {
       handleSelectLowerRightAll(editor, event);
-      return;
-    }
-
-    // Logic for deleting everything within the line before the cursor.
-    if (isHotkey('mod+backspace', event)) {
-      handleDeleteLine(editor, event);
       return;
     }
 

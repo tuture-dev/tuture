@@ -2,7 +2,7 @@ import { useState, useMemo, useEffect } from 'react';
 
 import { useSelector, useDispatch, useStore } from 'react-redux';
 import { Layout, Affix, BackTop } from 'antd';
-import { Slate } from 'tuture-slate-react';
+import { Editure } from 'editure-react';
 import { updateLastSelection } from 'editure';
 import { useHistory } from 'react-router-dom';
 
@@ -78,7 +78,7 @@ function ConnectedLayout(props) {
 
   return (
     <ButtonRefsContext.Provider value={buttonRefs}>
-      <Slate editor={editor} value={value} onChange={onContentChange}>
+      <Editure editor={editor} value={value} onChange={onContentChange}>
         <Affix>
           <DrawerComponent />
         </Affix>
@@ -118,7 +118,7 @@ function ConnectedLayout(props) {
             </Content>
           </Layout>
         </Layout>
-      </Slate>
+      </Editure>
     </ButtonRefsContext.Provider>
   );
 }

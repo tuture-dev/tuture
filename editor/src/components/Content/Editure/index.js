@@ -2,9 +2,9 @@ import { useCallback } from 'react';
 
 /** @jsx jsx */
 import { jsx } from '@emotion/core';
-import { Editable, useSlate } from 'tuture-slate-react';
+import { Node } from 'editure';
+import { Editable, useEditure } from 'editure-react';
 import { useSelector } from 'react-redux';
-import { Node } from 'tuture-slate';
 import refractor from 'refractor';
 
 import { createDropListener } from 'utils/image';
@@ -24,7 +24,7 @@ function createDecoration({ path, textStart, textEnd, className }) {
 }
 
 function Editure() {
-  const editor = useSlate();
+  const editor = useEditure();
   const lang = useSelector((state) => state.slate.lang);
 
   const renderElement = useCallback(Element, [lang]);

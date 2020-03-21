@@ -1,15 +1,15 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { Modal, Input } from 'antd';
-import { useSlate } from 'tuture-slate-react';
+import { useEditure } from 'editure-react';
 
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 
-import { isMarkActive, insertLink, updateLink, selectLastPoint } from 'editure';
+import { selectLastPoint } from 'editure';
 import { LINK } from 'editure-constants';
 
 const EditLink = () => {
-  const editor = useSlate();
+  const editor = useEditure();
   const dispatch = useDispatch();
   const { isEditing, text, url } = useSelector((state) => state.link);
 
@@ -18,10 +18,10 @@ const EditLink = () => {
     selectLastPoint(editor);
 
     if (text) {
-      if (!isMarkActive(editor, LINK)) {
-        insertLink(editor, text, url);
+      if (!editor.isMarkActive(LINK)) {
+        editor.insertLink(text, url);
       } else {
-        updateLink(editor, text, url);
+        editor.updateLink(text, url);
       }
     }
 

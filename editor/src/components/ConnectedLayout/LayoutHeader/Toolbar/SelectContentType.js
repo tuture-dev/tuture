@@ -1,6 +1,5 @@
 import { Select } from 'antd';
-import { useSlate } from 'tuture-slate-react';
-import { toggleBlock, detectBlockFormat } from 'editure';
+import { useEditure } from 'editure-react';
 import { H1, H2, H3, H4, H5, PARAGRAPH } from 'editure-constants';
 
 import IconFont from 'components/IconFont';
@@ -20,11 +19,11 @@ const types = {
 };
 
 const SelectContentType = () => {
-  const editor = useSlate();
-  const type = detectBlockFormat(editor, Object.keys(types)) || PARAGRAPH;
+  const editor = useEditure();
+  const type = editor.detectBlockFormat(Object.keys(types)) || PARAGRAPH;
 
   const handleChange = (value) => {
-    toggleBlock(editor, value);
+    editor.toggleBlock(value);
   };
 
   const suffixIcon = <IconFont type="icon-caret-down" />;
