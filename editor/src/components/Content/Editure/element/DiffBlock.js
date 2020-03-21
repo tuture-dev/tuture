@@ -132,9 +132,8 @@ function DiffBlockElement(props) {
       resetTimeout(
         timeoutState,
         setTimeout(() => {
-          dispatch.collection.saveNowStepsToCollection();
           dispatch.collection.saveCollection();
-        }, 3000),
+        }, 1000),
       ),
     );
   }
@@ -199,8 +198,6 @@ function DiffBlockElement(props) {
                   showLineNumbers
                   showLineChecker
                   wrapLines
-                  allLines={allLines}
-                  showLines={showLines}
                   commit={commit}
                   file={file}
                   lineProps={(lineNum) => {

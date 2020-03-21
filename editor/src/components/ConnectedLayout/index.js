@@ -33,6 +33,8 @@ function ConnectedLayout(props) {
     (state) => state.collection.outdatedNotificationClicked,
   );
 
+  console.log('value', value);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -66,9 +68,8 @@ function ConnectedLayout(props) {
       resetTimeout(
         timeoutState,
         setTimeout(() => {
-          dispatch.collection.saveNowStepsToCollection();
           dispatch.collection.saveCollection();
-        }, 3000),
+        }, 1000),
       ),
     );
   }
