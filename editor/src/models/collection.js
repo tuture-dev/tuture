@@ -8,7 +8,13 @@ import omit from 'lodash.omit';
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 
-import { FILE, DIFF_BLOCK } from '../utils/constants';
+import {
+  FILE,
+  DIFF_BLOCK,
+  STEP,
+  NOW_STEP_START,
+  STEP_END,
+} from '../utils/constants';
 import {
   flatten,
   unflatten,
@@ -159,18 +165,36 @@ const collection = {
       }
     },
     setFileShowStatus(state, payload) {
-      state.collection.steps = state.collection.steps.map((step) => {
-        if (isCommitEqual(step.commit, payload.commit)) {
-          step.children = step.children.map((file) => {
-            if (file.file === payload.file) {
-              file.display = payload.display;
+      let flag = '';
+
+      state.nowSteps.forEach((node) => {
+        switch (node.type) {
+          case STEP: {
+            if (isCommitEqual(payload.commit, node.commit)) {
+              flag = NOW_STEP_START;
             }
 
-            return file;
-          });
-        }
+            break;
+          }
 
-        return step;
+          case FILE: {
+            if (flag === NOW_STEP_START && node.file === payload.file) {
+              node.display = payload.display;
+            }
+
+            break;
+          }
+
+          case STEP_END: {
+            flag = '';
+
+            break;
+          }
+
+          default: {
+            break;
+          }
+        }
       });
     },
     setEditArticleId(state, payload) {
@@ -419,19 +443,49 @@ const collection = {
         }
 
         const { commit } = props;
-        const nowStep = collectionModel.collection.steps.filter((step) =>
-          isCommitEqual(step.commit, commit),
-        )[0];
 
-        if (nowStep) {
-          const fileList = nowStep.children
-            .filter(({ type }) => type === FILE)
-            .map(({ file, display = false }) => ({ file, display }));
-          const title = getStepTitle(nowStep);
-          return { fileList, title };
-        }
+        let flag = '';
+        let title = '';
+        let fileList = [];
+        collectionModel.nowSteps.forEach((node) => {
+          switch (node.type) {
+            case STEP: {
+              if (isCommitEqual(node.commit, commit)) {
+                flag = NOW_STEP_START;
+              }
 
-        return { fileList: [], title: '' };
+              break;
+            }
+
+            case FILE: {
+              if (flag === NOW_STEP_START) {
+                fileList.push({ file: node.file, display: node?.display });
+              }
+
+              break;
+            }
+
+            case F.H2: {
+              if (flag === NOW_STEP_START) {
+                title = node.children[0].text;
+              }
+
+              break;
+            }
+
+            case STEP_END: {
+              flag = '';
+
+              break;
+            }
+
+            default: {
+              break;
+            }
+          }
+        });
+
+        return { fileList, title };
       });
     }),
     getArticleStepList() {

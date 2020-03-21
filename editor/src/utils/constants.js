@@ -68,3 +68,4 @@ export const STEP_START = 'step_start';
 export const STEP_END = 'step_end';
 export const FILE_START = 'file_start';
 export const FILE_END = 'file_end';
+export const NOW_STEP_START = 'now_step_start';

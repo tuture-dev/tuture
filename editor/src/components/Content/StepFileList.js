@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Tooltip } from 'antd';
 
 /** @jsx jsx */
@@ -9,6 +10,7 @@ import IconFont from 'components/IconFont';
 
 function StepFileList() {
   const dispatch = useDispatch();
+  const [timeoutState, setTimeoutState] = useState(null);
   const store = useStore();
 
   const { nowStepCommit } = useSelector((state) => state.collection);
@@ -16,26 +18,40 @@ function StepFileList() {
     store.select.collection.getStepFileListAndTitle({ commit: nowStepCommit }),
   );
 
-  function onDrop(res) {
-    dispatch({
-      type: 'collection/switchFile',
-      payload: { ...res, commit: nowStepCommit },
-    });
+  function resetTimeout(id, newId) {
+    clearTimeout(id);
 
-    dispatch.collection.saveCollection();
+    return newId;
+  }
+
+  function onDrop(res) {
+    dispatch.collection.switchFile({ ...res, commit: nowStepCommit });
+
+    setTimeoutState(
+      resetTimeout(
+        timeoutState,
+        setTimeout(() => {
+          dispatch.collection.saveCollection();
+        }, 1000),
+      ),
+    );
   }
 
   function onToggleShowFile(file) {
-    dispatch({
-      type: 'collection/setFileShowStatus',
-      payload: {
-        commit: nowStepCommit,
-        ...file,
-        display: !file.display,
-      },
+    dispatch.collection.setFileShowStatus({
+      commit: nowStepCommit,
+      ...file,
+      display: !file.display,
     });
 
-    dispatch.collection.saveCollection();
+    setTimeoutState(
+      resetTimeout(
+        timeoutState,
+        setTimeout(() => {
+          dispatch.collection.saveCollection();
+        }, 1000),
+      ),
+    );
   }
 
   return (
