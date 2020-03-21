@@ -124,22 +124,20 @@ const collection = {
     switchFile(state, payload) {
       const { removedIndex, addedIndex, commit } = payload;
 
-      state.collection.steps = state.collection.steps.map((step) => {
+      const unflattenedNowSteps = unflatten(state.nowSteps);
+
+      unflattenedNowSteps.forEach((step) => {
         if (isCommitEqual(step.commit, commit)) {
           const oldFile = step.children[removedIndex + 2];
           step.children.splice(removedIndex + 2, 1);
           step.children.splice(addedIndex + 2, 0, oldFile);
         }
-
-        return step;
       });
 
       const { steps } = state.collection;
 
       if (state.nowArticleId) {
-        state.nowSteps = flatten(
-          steps.filter((step) => step.articleId === state.nowArticleId),
-        );
+        state.nowSteps = flatten(unflattenedNowSteps);
       } else {
         state.nowSteps = flatten(steps);
       }
