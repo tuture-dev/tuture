@@ -44,9 +44,19 @@ export function removeAssetsLock() {
 }
 
 export function hasAssetsChangedSinceCheckpoint() {
+  // If both are missing, then nothing has changed.
+  if (
+    !fs.existsSync(assetsTableCheckpoint) &&
+    !fs.existsSync(assetsTableCheckpoint)
+  ) {
+    return false;
+  }
+
+  // Assets table is newly created, so it has changed.
   if (!fs.existsSync(assetsTableCheckpoint)) {
     return true;
   }
+
   return !fs
     .readFileSync(assetsTablePath)
     .equals(fs.readFileSync(assetsTableCheckpoint));

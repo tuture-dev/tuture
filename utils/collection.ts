@@ -44,6 +44,7 @@ export async function hasLocalTutureBranch() {
  * Whether the remote tuture branch exists.
  */
 export async function hasRemoteTutureBranch() {
+  await git.remote(['update', '--prune']);
   const remote = await git.remote([]);
 
   if (!remote) {

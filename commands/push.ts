@@ -53,7 +53,7 @@ export default class Push extends BaseCommand {
       await git.push(remotes[0].name, TUTURE_BRANCH);
       logger.log('success', 'Pushed to remote.');
     } catch (err) {
-      logger.log('error', err.message);
+      logger.log('error', String(err.message).trim());
     }
   }
 }
