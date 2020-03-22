@@ -82,8 +82,9 @@ function ExplainElement(props) {
         margin: 4px;
         padding: 4px;
         width: 100%;
-        box-sizing: border-box;
         border-radius: 8px;
+        border: 1px solid transparent;
+        ${mapExplainTypeToBorder(element?.flag)}
 
         transition: border 0.3s;
 
