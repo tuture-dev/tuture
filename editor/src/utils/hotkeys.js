@@ -110,7 +110,7 @@ function handleExitBlock(editor, event) {
     selectWithinBlock(editor, format, { how: 'all', collapse: 'end' });
     editor.insertBreak();
 
-    editor.exitBlock(editor, format);
+    editor.exitBlock(format);
   }
 }
 

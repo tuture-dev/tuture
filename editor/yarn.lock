@@ -4039,20 +4039,25 @@ editure-constants@^0.1.0:
   resolved "https://registry.yarnpkg.com/editure-constants/-/editure-constants-0.1.0.tgz#bf08b39860fd7db39b668772a23c2dc2c3091978"
   integrity sha512-WuwMpMyvZI0KRf3fPjizDEI1uRCZxolodCys7JLIbRASpEYxzjMb52ZYz8tw1he7pAcNia6KiLUFSqTxSJMC6w==
 
-editure-react@^0.1.1:
-  version "0.1.1"
-  resolved "https://registry.npm.taobao.org/editure-react/download/editure-react-0.1.1.tgz#70490aa3aab0ceb1bcb264ecc89e95eb20afd355"
-  integrity sha1-cEkKo6qwzrG8smTsyJ6V6yCv01U=
+editure-constants@^0.1.2:
+  version "0.1.2"
+  resolved "https://registry.npm.taobao.org/editure-constants/download/editure-constants-0.1.2.tgz#4fe71f43d47af1c3dd672dd2c242aa627fab793f"
+  integrity sha1-T+cfQ9R68cPdZy3SwkKqYn+reT8=
+
+editure-react@^0.1.2:
+  version "0.1.2"
+  resolved "https://registry.npm.taobao.org/editure-react/download/editure-react-0.1.2.tgz#a9c02373d77971019abb78d0909d93da904a4ee0"
+  integrity sha1-qcAjc9d5cQGau3jQkJ2T2pBKTuA=
   dependencies:
-    editure "^0.1.1"
+    editure "^0.1.2"
     tuture-slate-react "^0.57.3"
 
-editure@^0.1.1:
-  version "0.1.1"
-  resolved "https://registry.npm.taobao.org/editure/download/editure-0.1.1.tgz#7e7f1db6556f6f730ebe06a77f7f3bb366655b1d"
-  integrity sha1-fn8dtlVvb3MOvganf387s2ZlWx0=
+editure@^0.1.2:
+  version "0.1.2"
+  resolved "https://registry.npm.taobao.org/editure/download/editure-0.1.2.tgz#f707b36ccc3ebe9c414ed522276e9765e29fe2fe"
+  integrity sha1-9wezbMw+vpxBTtUiJ26XZeKf4v4=
   dependencies:
-    editure-constants "^0.1.0"
+    editure-constants "^0.1.2"
     escape-html "^1.0.3"
     is-url "^1.2.4"
     jsdom "^16.1.0"
