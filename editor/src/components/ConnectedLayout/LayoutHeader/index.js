@@ -2,7 +2,7 @@ import React from 'react';
 
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
-import { Button, Row, Col, Breadcrumb, notification } from 'antd';
+import { Button, Row, Col, Breadcrumb } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouteMatch, Link } from 'react-router-dom';
 
@@ -14,12 +14,10 @@ function LayoutHeader() {
   const dispatch = useDispatch();
   const { name = '' } =
     useSelector((state) => state.collection.collection) || {};
+  const isSync = useSelector((state) => state.sync.isSync);
+  const github = useSelector((state) => state.collection?.collection?.github);
 
   const isToc = useRouteMatch('/toc');
-
-  function onCommitClick() {
-    dispatch.commit.startEdit();
-  }
 
   function handleSaveToc() {
     dispatch.toc.setSaveStatus(true);
@@ -54,27 +52,14 @@ function LayoutHeader() {
         ) : (
           <>
             <Button
+              loading={isSync}
               type="primary"
               css={css`
                 margin-left: 20px;
               `}
-              onClick={onCommitClick}
+              onClick={() => dispatch.sync.sync(github)}
             >
-              提交
-            </Button>
-            <Button
-              type="primary"
-              css={css`
-                margin-left: 20px;
-              `}
-              onClick={() =>
-                notification.info({
-                  message: '此功能正在研发中，敬请期待！',
-                  top: 72,
-                })
-              }
-            >
-              同步
+              {isSync ? '同步中...' : '同步'}
             </Button>
             <CommitModal />
           </>

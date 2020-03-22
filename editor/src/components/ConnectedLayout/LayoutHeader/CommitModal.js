@@ -1,55 +1,42 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Modal, Input } from 'antd';
 
-/** @jsx jsx */
-import { css, jsx } from '@emotion/core';
+import { NO_REMOTE_GITHUB } from '../../../utils/constants';
 
 const CommitModal = () => {
+  const [github, setGithub] = useState('');
+
   const dispatch = useDispatch();
-  const message = useSelector((state) => state.commit.message);
-  const isEditing = useSelector((state) => state.commit.isEditing);
-  const loading = useSelector((state) => state.loading.effects.commit.commit);
-  const placeholder = `提交于 ${new Date()}`;
+  const syncResult = useSelector((state) => state.sync.syncResult);
+  const loading = useSelector((state) => state.loading.effects.sync.sync);
 
   const handleChange = (e) => {
-    dispatch.commit.setMessage(e.target.value);
+    setGithub(e.target.value);
   };
 
   const handleOk = () => {
-    if (!message) {
-      dispatch.commit.setMessage(placeholder);
-    }
-
-    dispatch.commit.commit(message);
+    dispatch.sync.sync(github);
   };
 
   const handleCancel = (e) => {
     e.preventDefault();
-    dispatch.commit.reset();
+    dispatch.sync.setSyncResult('');
   };
 
   return (
     <Modal
-      title="提交"
-      visible={isEditing}
+      title="添加此项目的 Github 地址"
+      visible={syncResult === NO_REMOTE_GITHUB}
       confirmLoading={loading}
       onOk={handleOk}
       onCancel={handleCancel}
       zIndex={1080}
     >
-      <p
-        css={css`
-          margin-top: 8px;
-          margin-bottom: 8px;
-        `}
-      >
-        提交信息
-      </p>
       <Input
         autoFocus
-        value={message}
-        placeholder={placeholder}
+        value={github}
+        placeholder="输入此仓库的远程 Github 地址"
         onChange={handleChange}
       />
     </Modal>
