@@ -11,6 +11,7 @@ import socketio from 'socket.io';
 import { DIFF_PATH, EDITOR_STATIC_PATH, EDITOR_PATH } from './constants';
 import { uploadSingle } from './utils/assets';
 import { loadCollection, saveCollection } from './utils/collection';
+import { git } from './utils/git';
 
 const workspace = process.env.TUTURE_PATH || process.cwd();
 const diffPath = path.join(workspace, DIFF_PATH);
@@ -60,6 +61,21 @@ const makeServer = (config: any) => {
   app.post('/save', (req, res) => {
     saveCollection(req.body);
     res.sendStatus(200);
+  });
+
+  app.post('/sync', async (req, res) => {
+    const { github } = req.body;
+
+    saveCollection(req.body);
+
+    await git.addRemote('origin', github);
+    cp.execFile('tuture', ['sync'], {}, (err) => {
+      if (err) {
+        res.sendStatus(500);
+      } else {
+        res.sendStatus(200);
+      }
+    });
   });
 
   app.post('/upload', checkAssetsRoot, upload.single('file'), (req, res) => {

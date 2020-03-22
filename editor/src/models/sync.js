@@ -16,7 +16,7 @@ const sync = {
     },
   },
   effects: {
-    async sync(payload) {
+    async sync(payload, rootState) {
       this.setSyncStatus(true);
 
       if (!payload?.github) {
@@ -33,22 +33,27 @@ const sync = {
             'Content-Type': 'application/json',
             Accept: 'application/json',
           },
-          body: JSON.stringify({ github: payload?.github }),
+          body: JSON.stringify({
+            ...rootState.collection.collection,
+            github: payload?.github,
+          }),
         });
 
         if (response.ok) {
           if (payload?.showMessage) {
             message.success('同步内容成功！');
           }
-        } else {
-          this.setSyncStatus(false);
         }
+
+        this.setSyncStatus(false);
+        this.setSyncResult('');
       } catch (err) {
         if (payload?.showMessage) {
           message.success('同步内容失败');
         }
 
         this.setSyncStatus(false);
+        this.setSyncResult('');
       }
     },
   },

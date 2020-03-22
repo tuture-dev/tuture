@@ -16,7 +16,7 @@ const CommitModal = () => {
   };
 
   const handleOk = () => {
-    dispatch.sync.sync(github);
+    dispatch.sync.sync({ github, showMessage: true });
   };
 
   const handleCancel = (e) => {

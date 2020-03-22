@@ -30,6 +30,12 @@ app.post('/save', (req, res) => {
   res.sendStatus(200);
 });
 
+app.post('/sync', (req, res) => {
+  setTimeout(() => {
+    res.sendStatus(200);
+  }, 1000);
+});
+
 app.post('/upload', upload.single('file'), (req, res) => {
   console.log('detect upload', req.file);
   res.json({
