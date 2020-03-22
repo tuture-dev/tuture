@@ -12,19 +12,19 @@ import {
 const mapExplainTypeToContent = (explainType) => {
   switch (explainType) {
     case STEP_START: {
-      return '解释一下为什么提交这一步骤代码';
+      return '撰写此步骤的前置解释';
     }
 
     case STEP_END: {
-      return '总结一下为什么要提交这一步骤代码';
+      return '撰写此步骤的后置解释';
     }
 
     case FILE_START: {
-      return '解释一下为什么要编写如下代码';
+      return '撰写如下文件的前置解释';
     }
 
     case FILE_END: {
-      return '总结一下为什么要编写如上代码';
+      return '撰写如上文件的后置解释';
     }
 
     default: {
@@ -33,9 +33,36 @@ const mapExplainTypeToContent = (explainType) => {
   }
 };
 
+const mapExplainTypeToBorder = (explainType) => {
+  switch (explainType) {
+    case FILE_START: {
+      return css`
+        border-bottom: none;
+        border-bottom-right-radius: 0;
+        border-bottom-left-radius: 0;
+      `;
+    }
+
+    case FILE_END: {
+      return css`
+        border-top: none;
+        border-top-right-radius: 0;
+        border-top-left-radius: 0;
+      `;
+    }
+
+    default: {
+      return null;
+    }
+  }
+};
+
 const emptyChildrenStyles = (explainType) => css`
   border: 1px solid #ddd;
+  border-radius: 2px;
   position: relative;
+
+  ${mapExplainTypeToBorder(explainType)}
 
   &::before {
     content: '${mapExplainTypeToContent(explainType)}';
@@ -55,11 +82,6 @@ function ExplainElement(props) {
       css={css`
         margin: 3px;
         padding: 3px;
-        border: 1px solid white;
-
-        &:hover {
-          border: 1px solid #ddd;
-        }
 
         ${!explainStr && emptyChildrenStyles(element?.flag)}
       `}
