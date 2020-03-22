@@ -2,29 +2,24 @@
 import { css, jsx } from '@emotion/core';
 import { Node } from 'tuture-slate';
 
-import {
-  STEP_START,
-  STEP_END,
-  FILE_START,
-  FILE_END,
-} from '../../../../utils/constants';
+import { STEP_START, STEP_END, FILE_START, FILE_END } from 'utils/constants';
 
 const mapExplainTypeToContent = (explainType) => {
   switch (explainType) {
     case STEP_START: {
-      return '撰写此步骤的前置解释';
+      return '撰写此步骤的前置解释 ...';
     }
 
     case STEP_END: {
-      return '撰写此步骤的后置解释';
+      return '撰写此步骤的后置解释 ...';
     }
 
     case FILE_START: {
-      return '撰写如下文件的前置解释';
+      return '撰写如下文件的前置解释 ...';
     }
 
     case FILE_END: {
-      return '撰写如上文件的后置解释';
+      return '撰写如上文件的后置解释 ...';
     }
 
     default: {
@@ -80,7 +75,7 @@ function ExplainElement(props) {
       {...attributes}
       css={css`
         margin: 4px;
-        padding: 4px;
+        padding: 4px 12px;
         width: 100%;
         border-radius: 8px;
         border: 1px solid transparent;
