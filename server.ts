@@ -106,16 +106,6 @@ const makeServer = (config: any) => {
     res.json({ path: savePath });
   });
 
-  app.post('/commit', (req, res) => {
-    cp.execFile('tuture', ['commit', '-m', req.body.message], {}, (err) => {
-      if (err) {
-        res.sendStatus(500);
-      } else {
-        res.sendStatus(200);
-      }
-    });
-  });
-
   app.get('/reload', (_, res) => {
     io.emit('reload');
     res.sendStatus(200);

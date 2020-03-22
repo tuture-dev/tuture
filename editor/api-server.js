@@ -44,12 +44,6 @@ app.post('/upload', upload.single('file'), (req, res) => {
   });
 });
 
-app.post('/commit', (req, res) => {
-  setTimeout(() => {
-    res.sendStatus(200);
-  }, 1000);
-});
-
 app.listen(8000, () => {
   console.log('API server is running!');
 });
