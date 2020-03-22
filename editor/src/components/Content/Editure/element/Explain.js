@@ -59,7 +59,6 @@ const mapExplainTypeToBorder = (explainType) => {
 
 const emptyChildrenStyles = (explainType) => css`
   border: 1px solid #ddd;
-  border-radius: 2px;
   position: relative;
 
   ${mapExplainTypeToBorder(explainType)}
@@ -80,8 +79,18 @@ function ExplainElement(props) {
     <div
       {...attributes}
       css={css`
-        margin: 3px;
-        padding: 3px;
+        margin: 4px;
+        padding: 4px;
+        width: 100%;
+        box-sizing: border-box;
+        border-radius: 8px;
+
+        transition: border 0.3s;
+
+        &:hover {
+          border: 1px solid #ddd;
+          ${mapExplainTypeToBorder(element?.flag)}
+        }
 
         ${!explainStr && emptyChildrenStyles(element?.flag)}
       `}

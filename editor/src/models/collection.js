@@ -238,6 +238,9 @@ const collection = {
         (step) => step.id !== payload,
       );
     },
+    setCollectionGithub(state, payload) {
+      state.collection.github = payload;
+    },
   },
   effects: (dispatch) => ({
     async editArticle() {

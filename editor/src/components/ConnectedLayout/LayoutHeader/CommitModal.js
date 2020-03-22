@@ -6,6 +6,7 @@ import { NO_REMOTE_GITHUB } from '../../../utils/constants';
 
 const CommitModal = () => {
   const [github, setGithub] = useState('');
+  const [timeoutState, setTimeoutState] = useState(null);
 
   const dispatch = useDispatch();
   const syncResult = useSelector((state) => state.sync.syncResult);
@@ -15,8 +16,24 @@ const CommitModal = () => {
     setGithub(e.target.value);
   };
 
+  function resetTimeout(id, newId) {
+    clearTimeout(id);
+
+    return newId;
+  }
+
   const handleOk = () => {
+    dispatch.collection.setCollectionGithub(github);
     dispatch.sync.sync({ github, showMessage: true });
+
+    setTimeoutState(
+      resetTimeout(
+        timeoutState,
+        setTimeout(() => {
+          dispatch.collection.saveCollection();
+        }, 1000),
+      ),
+    );
   };
 
   const handleCancel = (e) => {
@@ -29,6 +46,7 @@ const CommitModal = () => {
       title="添加此项目的 Github 地址"
       visible={syncResult === NO_REMOTE_GITHUB}
       confirmLoading={loading}
+      destroyOnClose
       onOk={handleOk}
       onCancel={handleCancel}
       zIndex={1080}

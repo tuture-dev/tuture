@@ -57,7 +57,7 @@ function LayoutHeader() {
               css={css`
                 margin-left: 20px;
               `}
-              onClick={() => dispatch.sync.sync(github)}
+              onClick={() => dispatch.sync.sync({ github, showMessage: true })}
             >
               {isSync ? '同步中...' : '同步'}
             </Button>
