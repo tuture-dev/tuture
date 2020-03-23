@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Select } from 'antd';
-import { useSlate } from 'tuture-slate-react';
-import { updateBlock } from 'editure';
+import { useEditure } from 'editure-react';
 import { NOTE } from 'editure-constants';
 
 import { levels } from 'utils/note';
@@ -22,11 +21,11 @@ function NoteElement(props) {
     : 'default';
 
   const [level, setLevel] = useState(realLevel);
-  const editor = useSlate();
+  const editor = useEditure();
 
   function handleChange(value) {
     setLevel(value);
-    updateBlock(editor, NOTE, { level: value });
+    editor.updateBlock(NOTE, { level: value });
   }
 
   const baseStyle = css`

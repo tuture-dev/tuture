@@ -1,5 +1,4 @@
 import { message } from 'antd';
-import { insertVoid } from 'editure';
 import { IMAGE } from 'editure-constants';
 
 export const uploadImage = (file, callback) => {
@@ -29,7 +28,7 @@ export const createInsertImageCallback = (editor) => (err, url) => {
   if (err) {
     return message.error(String(err));
   }
-  insertVoid(editor, IMAGE, { url });
+  editor.insertVoid(IMAGE, { url });
 };
 
 export const createDropListener = (editor) => (e) => {

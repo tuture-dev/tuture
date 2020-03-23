@@ -1,9 +1,8 @@
 import { useState } from 'react';
 import { Select } from 'antd';
-import { useSlate } from 'tuture-slate-react';
+import { useEditure } from 'editure-react';
 import { CODE_BLOCK } from 'editure-constants';
 import { useDispatch } from 'react-redux';
-import { updateBlock } from 'editure';
 
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
@@ -146,14 +145,14 @@ function CodeBlockElement(props) {
   const dispatch = useDispatch();
 
   const [lang, setLang] = useState(defaultLang);
-  const editor = useSlate();
+  const editor = useEditure();
 
   function handleChange(value) {
     setLang(value);
 
     dispatch.slate.setLang(value);
 
-    updateBlock(editor, CODE_BLOCK, { lang: value });
+    editor.updateBlock(CODE_BLOCK, { lang: value });
   }
 
   const selectValue =

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useSlate } from 'tuture-slate-react';
+import { useEditure } from 'editure-react';
 
 import { OP_HOTKEYS, getHotkeyHint } from 'utils/hotkeys';
 
@@ -7,7 +7,7 @@ import Button from './Button';
 import ToolbarIcon from './ToolbarIcon';
 
 const HistoryButton = ({ action, icon }) => {
-  const editor = useSlate();
+  const editor = useEditure();
   const { hotkey, title } = OP_HOTKEYS[action];
 
   return (

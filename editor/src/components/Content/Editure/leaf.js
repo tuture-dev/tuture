@@ -1,7 +1,7 @@
 import { useDispatch } from 'react-redux';
-import { useSlate } from 'tuture-slate-react';
+import { selectLastPoint } from 'editure';
+import { useEditure } from 'editure-react';
 import { Popover, Popconfirm, Tooltip } from 'antd';
-import { getLinkData, removeLink, selectLastPoint } from 'editure';
 
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
@@ -21,7 +21,7 @@ function getStyleFromClassNameArr(classNameArr) {
 
 const Link = (props) => {
   const { attributes, children, leaf } = props;
-  const editor = useSlate();
+  const editor = useEditure();
   const dispatch = useDispatch();
 
   const iconStyle = css`
@@ -34,7 +34,7 @@ const Link = (props) => {
   `;
 
   const onClickEdit = () => {
-    const { text, url } = getLinkData(editor);
+    const { text, url } = editor.getLinkData();
     if (text) dispatch({ type: 'link/setText', payload: text });
     if (url) dispatch({ type: 'link/setUrl', payload: url });
 
@@ -43,7 +43,7 @@ const Link = (props) => {
 
   const handleDeleteLink = () => {
     selectLastPoint(editor);
-    removeLink(editor);
+    editor.removeLink();
   };
 
   const content = (
