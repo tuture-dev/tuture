@@ -44,7 +44,6 @@ export async function hasLocalTutureBranch() {
  * Whether the remote tuture branch exists.
  */
 export async function hasRemoteTutureBranch() {
-  await git.remote(['update', '--prune']);
   const remote = await git.remote([]);
 
   if (!remote) {
@@ -52,12 +51,17 @@ export async function hasRemoteTutureBranch() {
     return false;
   }
 
-  const remoteBranch = `remotes/${remote.trim()}/${TUTURE_BRANCH}`;
-  if (!(await git.branch({ '-a': true })).all.includes(remoteBranch)) {
-    return false;
-  }
+  const branchExists = async (branch: string) => {
+    const { all } = await git.branch({ '-a': true });
+    return all.includes(remoteBranch);
+  };
 
-  return true;
+  const remoteBranch = `remotes/${remote.trim()}/${TUTURE_BRANCH}`;
+
+  // Trying to update remote branches (time-consuming).
+  await git.remote(['update', '--prune']);
+
+  return await branchExists(remoteBranch);
 }
 
 /**
