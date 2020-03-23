@@ -9,15 +9,13 @@
     "@rematch/immer": "^1.2.0",
     "@rematch/loading": "^1.2.1",
     "@rematch/select": "^2.0.5",
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.3.2",
-    "@testing-library/user-event": "^7.1.2",
     "antd": "^3.26.9",
     "classnames": "^2.2.6",
     "customize-cra": "^0.9.1",
     "dayjs": "^1.8.20",
-    "editure": "^0.0.15",
-    "editure-constants": "^0.0.15",
+    "editure": "^0.1.2",
+    "editure-constants": "^0.1.0",
+    "editure-react": "^0.1.2",
     "emotion": "^10.0.27",
     "is-hotkey": "^0.1.6",
     "lodash.omit": "^4.5.0",
@@ -32,11 +30,7 @@
     "react-smooth-dnd": "^0.11.1",
     "react-table": "^7.0.0-rc.16",
     "refractor": "^2.10.1",
-    "shortid": "^2.2.15",
-    "tuture-slate": "^0.57.3",
-    "tuture-slate-history": "^0.57.3",
-    "tuture-slate-react": "^0.57.3",
-    "ua-parser-js": "^0.7.21"
+    "shortid": "^2.2.15"
   },
   "scripts": {
     "start": "concurrently \"node api-server.js\" \"react-app-rewired start\"",
@@ -62,6 +56,9 @@
     ]
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.3.2",
+    "@testing-library/user-event": "^7.1.2",
     "babel-eslint": "^10.0.3",
     "babel-plugin-emotion": "^10.0.27",
     "babel-plugin-import": "^1.13.0",

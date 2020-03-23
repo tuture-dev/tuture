@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { useSlate } from 'tuture-slate-react';
+import { useEditure } from 'editure-react';
 import { IMAGE } from 'editure-constants';
 
 /** @jsx jsx */
@@ -12,7 +12,7 @@ import Button from './Button';
 import ToolbarIcon from './ToolbarIcon';
 
 const ImageButton = () => {
-  const editor = useSlate();
+  const editor = useEditure();
   const { imageBtnRef: ref } = useContext(ButtonRefsContext);
   const { hotkey, title } = BLOCK_HOTKEYS[IMAGE];
 

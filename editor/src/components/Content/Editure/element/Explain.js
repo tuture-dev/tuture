@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
-import { Node } from 'tuture-slate';
+import { Node } from 'editure';
 
 import {
   STEP_START,

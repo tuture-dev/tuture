@@ -1,7 +1,6 @@
 import React from 'react';
 import { Dropdown, Menu } from 'antd';
-import { useSlate } from 'tuture-slate-react';
-import { toggleBlock } from 'editure';
+import { useEditure } from 'editure-react';
 import { NOTE } from 'editure-constants';
 
 import { levels } from 'utils/note';
@@ -11,10 +10,10 @@ import Button from './Button';
 import ToolbarIcon from './ToolbarIcon';
 
 const NoteButton = () => {
-  const editor = useSlate();
+  const editor = useEditure();
 
   const handleClick = (e) => {
-    toggleBlock(editor, NOTE, { level: e.key }, { unwrap: true });
+    editor.toggleBlock(NOTE, { level: e.key });
   };
 
   const menu = (
