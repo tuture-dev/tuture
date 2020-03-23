@@ -14,6 +14,7 @@ export default class Push extends BaseCommand {
 
   static flags = {
     help: flags.help({ char: 'h' }),
+    remote: flags.string({ char: 'r', description: 'name of remote to push' }),
   };
 
   async run() {
@@ -27,14 +28,20 @@ export default class Push extends BaseCommand {
       this.exit(1);
     }
 
-    await initializeTutureBranch();
+    let remoteToPush = flags.remote;
+    if (!remoteToPush) {
+      const remotes = await git.getRemotes(true);
 
-    const remotes = await git.getRemotes(false);
-
-    if (remotes.length === 0) {
-      logger.log('error', 'Remote repository has not been configured.');
-      this.exit(1);
+      if (remotes.length === 0) {
+        logger.log('error', 'Remote repository has not been configured.');
+        this.exit(1);
+      } else {
+        // Select the first remote by default.
+        remoteToPush = remotes[0].name;
+      }
     }
+
+    await initializeTutureBranch();
 
     try {
       // Checkout tuture branch and add tuture.yml.
@@ -50,8 +57,10 @@ export default class Push extends BaseCommand {
         this.exit(1);
       }
 
-      await git.push(remotes[0].name, TUTURE_BRANCH);
-      logger.log('success', 'Pushed to remote.');
+      logger.log('info', `Starting to push to ${remoteToPush}.`);
+
+      await git.push(remoteToPush, TUTURE_BRANCH);
+      logger.log('success', `Pushed to ${remoteToPush} successfully.`);
     } catch (err) {
       logger.log('error', String(err.message).trim());
     }

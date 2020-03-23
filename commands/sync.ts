@@ -6,12 +6,15 @@ import commit from './commit';
 import pull from './pull';
 import push from './push';
 import BaseCommand from '../base';
+import { Remote } from '../types';
 import { checkInitStatus } from '../utils';
-import { git } from '../utils/git';
+import { git, selectRemotes } from '../utils/git';
 import logger from '../utils/logger';
 import {
   collectionPath,
   saveCheckpoint,
+  loadCollection,
+  saveCollection,
   initializeTutureBranch,
   hasRemoteTutureBranch,
   hasTutureChangedSinceCheckpoint,
@@ -57,6 +60,28 @@ export default class Sync extends BaseCommand {
     saveCheckpoint();
   }
 
+  async pullFromRemotes(remotes: Remote[]) {
+    await Promise.all(
+      remotes.map(
+        ({ name }) =>
+          new Promise<void>((resolve) => {
+            pull.run(['-r', name.trim()]).then(() => resolve());
+          }),
+      ),
+    );
+  }
+
+  async pushToRemotes(remotes: Remote[]) {
+    await Promise.all(
+      remotes.map(
+        ({ name }) =>
+          new Promise<void>((resolve) => {
+            push.run(['-r', name.trim()]).then(() => resolve());
+          }),
+      ),
+    );
+  }
+
   async run() {
     const { flags } = this.parse(Sync);
     this.userConfig = Object.assign(this.userConfig, flags);
@@ -66,6 +91,20 @@ export default class Sync extends BaseCommand {
     } catch (err) {
       logger.log('error', err.message);
       this.exit(1);
+    }
+
+    const collection = loadCollection();
+
+    if (!collection.remotes || collection.remotes.length === 0) {
+      const remotes = await git.getRemotes(true);
+
+      if (remotes.length === 0) {
+        logger.log('error', 'Remote repository has not been configured.');
+        this.exit(1);
+      } else {
+        collection.remotes = await selectRemotes(remotes);
+        saveCollection(collection);
+      }
     }
 
     if (flags.continue) {
@@ -87,8 +126,7 @@ export default class Sync extends BaseCommand {
       await this.copyFilesFromTutureBranch();
 
       if (!flags.noPush) {
-        logger.log('info', 'Starting to push to remote.');
-        await push.run([]);
+        await this.pushToRemotes(collection.remotes!);
       }
 
       // Download assets from image hosting.
@@ -133,14 +171,12 @@ export default class Sync extends BaseCommand {
 
       // Step 2: run `pull` command
       if (!flags.noPull && (await hasRemoteTutureBranch())) {
-        logger.log('info', 'Starting to pull from remote.');
-        await pull.run([]);
+        await this.pullFromRemotes(collection.remotes!);
       }
 
       // Step 3: run `push` command
       if (!flags.noPush) {
-        logger.log('info', 'Starting to push to remote.');
-        await push.run([]);
+        await this.pushToRemotes(collection.remotes!);
       }
 
       await this.copyFilesFromTutureBranch();
