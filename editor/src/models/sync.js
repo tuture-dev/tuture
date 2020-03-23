@@ -1,31 +1,16 @@
 import { message } from 'antd';
 
-import { NO_REMOTE_GITHUB } from '../utils/constants';
-
 const sync = {
   state: {
-    isSync: false,
-    syncResult: '',
+    syncVisible: false,
   },
   reducers: {
-    setSyncStatus(state, payload) {
-      state.isSync = payload;
-    },
-    setSyncResult(state, payload) {
-      state.syncResult = payload;
+    setSyncVisible(state, payload) {
+      state.syncVisible = payload;
     },
   },
   effects: {
     async sync(payload, rootState) {
-      this.setSyncStatus(true);
-
-      if (!payload?.github) {
-        this.setSyncResult(NO_REMOTE_GITHUB);
-        this.setSyncStatus(false);
-
-        return;
-      }
-
       try {
         const response = await fetch('/sync', {
           method: 'POST',

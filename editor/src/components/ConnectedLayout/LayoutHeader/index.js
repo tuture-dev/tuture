@@ -14,8 +14,6 @@ function LayoutHeader() {
   const dispatch = useDispatch();
   const { name = '' } =
     useSelector((state) => state.collection.collection) || {};
-  const isSync = useSelector((state) => state.sync.isSync);
-  const github = useSelector((state) => state.collection?.collection?.github);
 
   const isToc = useRouteMatch('/toc');
 
@@ -52,14 +50,13 @@ function LayoutHeader() {
         ) : (
           <>
             <Button
-              loading={isSync}
               type="primary"
               css={css`
                 margin-left: 20px;
               `}
-              onClick={() => dispatch.sync.sync({ github, showMessage: true })}
+              onClick={() => dispatch.sync.setSyncVisible(true)}
             >
-              {isSync ? '同步中...' : '同步'}
+              同步
             </Button>
             <CommitModal />
           </>
