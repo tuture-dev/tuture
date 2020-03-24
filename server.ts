@@ -70,9 +70,7 @@ const makeServer = (config: any) => {
     res.sendStatus(200);
   });
 
-  app.post('/sync', async (req, res) => {
-    saveCollection(req.body);
-
+  app.get('/sync', async (req, res) => {
     cp.execFile('tuture', ['sync'], {}, (err) => {
       if (err) {
         res.sendStatus(500);

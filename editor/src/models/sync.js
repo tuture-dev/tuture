@@ -3,45 +3,38 @@ import { message } from 'antd';
 const sync = {
   state: {
     syncVisible: false,
+    remotes: null,
   },
   reducers: {
     setSyncVisible(state, payload) {
       state.syncVisible = payload;
     },
   },
-  effects: {
-    async sync(payload, rootState) {
+  effects: (dispatch) => ({
+    async sync(payload) {
+      await dispatch.collection.saveCollection();
+
       try {
-        const response = await fetch('/sync', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Accept: 'application/json',
-          },
-          body: JSON.stringify({
-            ...rootState.collection.collection,
-            github: payload?.github,
-          }),
-        });
+        const response = await fetch('/sync');
 
         if (response.ok) {
           if (payload?.showMessage) {
             message.success('同步内容成功！');
           }
         }
-
-        this.setSyncStatus(false);
-        this.setSyncResult('');
       } catch (err) {
         if (payload?.showMessage) {
-          message.success('同步内容失败');
+          message.error('同步内容失败');
         }
-
-        this.setSyncStatus(false);
-        this.setSyncResult('');
       }
     },
-  },
+    async fetchRemotes(payload, rootState) {
+      const response = await fetch('/remotes');
+      const body = await response.json();
+
+      rootState.sync.remotes = body;
+    },
+  }),
 };
 
 export default sync;

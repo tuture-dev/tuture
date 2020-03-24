@@ -7,13 +7,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useRouteMatch, Link } from 'react-router-dom';
 
 import ToolBar from './Toolbar';
-import CommitModal from './CommitModal';
+import SyncModal from './SyncModal';
 import LastSavedTimestamp from './LastSavedTimestamp';
 
 function LayoutHeader() {
   const dispatch = useDispatch();
   const { name = '' } =
     useSelector((state) => state.collection.collection) || {};
+  const isSyncing = useSelector((state) => state.loading.effects.sync.sync);
 
   const isToc = useRouteMatch('/toc');
 
@@ -55,10 +56,11 @@ function LayoutHeader() {
                 margin-left: 20px;
               `}
               onClick={() => dispatch.sync.setSyncVisible(true)}
+              loading={isSyncing}
             >
               同步
             </Button>
-            <CommitModal />
+            <SyncModal />
           </>
         )}
       </Col>
