@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
 import { useDispatch } from 'react-redux';
-import { useSlate } from 'tuture-slate-react';
+import { useEditure } from 'editure-react';
 import { LINK } from 'editure-constants';
-import { isMarkActive, removeLink, getSelectedString } from 'editure';
+import { getSelectedString } from 'editure';
 
 import { MARK_HOTKEYS, getHotkeyHint, ButtonRefsContext } from 'utils/hotkeys';
 
@@ -10,12 +10,12 @@ import Button from './Button';
 import ToolbarIcon from './ToolbarIcon';
 
 const LinkButton = () => {
-  const editor = useSlate();
+  const editor = useEditure();
   const dispatch = useDispatch();
   const { linkBtnRef: ref } = useContext(ButtonRefsContext);
   const { hotkey, title } = MARK_HOTKEYS[LINK];
 
-  const isActive = isMarkActive(editor, LINK);
+  const isActive = editor.isMarkActive(LINK);
 
   const onClick = () => {
     const { selection } = editor;
@@ -23,8 +23,8 @@ const LinkButton = () => {
       return;
     }
 
-    if (isMarkActive(editor, LINK)) {
-      return removeLink(editor);
+    if (editor.isMarkActive(LINK)) {
+      return editor.removeLink();
     }
 
     dispatch({ type: 'link/setText', payload: getSelectedString(editor) });

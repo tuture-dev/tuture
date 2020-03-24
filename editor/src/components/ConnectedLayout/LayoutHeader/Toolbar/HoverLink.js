@@ -2,9 +2,8 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import ReactDOM from 'react-dom';
 import { Icon } from 'antd';
-import { useSlate } from 'tuture-slate-react';
+import { useEditure } from 'editure-react';
 import { LINK } from 'editure-constants';
-import { isMarkActive, removeLink, getLinkData } from 'editure';
 
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
@@ -15,7 +14,7 @@ const HoverLink = () => {
   const [urlValue, setUrlValue] = useState('');
   const ref = useRef(null);
   const dispatch = useDispatch();
-  const editor = useSlate();
+  const editor = useEditure();
 
   // eslint-disable-next-line
   useEffect(() => {
@@ -25,12 +24,12 @@ const HoverLink = () => {
       return;
     }
 
-    if (!editor.selection || !isMarkActive(editor, LINK)) {
+    if (!editor.selection || !editor.isMarkActive(LINK)) {
       el.removeAttribute('style');
       return;
     }
 
-    setUrlValue(getLinkData(editor).url);
+    setUrlValue(editor.getLinkData().url);
 
     const domSelection = window.getSelection();
     const domRange = domSelection.getRangeAt(0);
@@ -53,14 +52,14 @@ const HoverLink = () => {
 
     dispatch({ type: 'link/startEdit' });
 
-    const { text, url } = getLinkData(editor);
+    const { text, url } = editor.getLinkData();
     if (text) dispatch({ type: 'link/setText', payload: text });
     if (url) dispatch({ type: 'link/setUrl', payload: url });
   };
 
   const onDeleteLink = (e) => {
     e.preventDefault();
-    removeLink(editor);
+    editor.removeLink();
   };
 
   return (
