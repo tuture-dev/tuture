@@ -150,7 +150,7 @@ export function removeGitHook() {
   }
 }
 
-export async function selectRemotes(remotes: Remote[]) {
+export async function selectRemotes(remotes: Remote[], selected?: Remote[]) {
   // All remotes are shown as:
   // <remote_name> (fetch: <fetch_ref>, push: <push_ref>)
   const remoteToChoice = (remote: Remote) => {
@@ -172,6 +172,7 @@ export async function selectRemotes(remotes: Remote[]) {
       type: 'checkbox',
       message: 'Select remote repositories you want to sync to:',
       choices: remotes.map((remote) => remoteToChoice(remote)),
+      default: (selected || []).map((remote) => remoteToChoice(remote)),
     },
   ]);
 

@@ -43,6 +43,10 @@ export default class Sync extends BaseCommand {
       description: 'do not push to remote',
       default: false,
     }),
+    configureRemotes: flags.boolean({
+      description: 'configure remotes before synchronization',
+      default: false,
+    }),
     continue: flags.boolean({
       description: 'continue synchronization after resolving conflicts',
       default: false,
@@ -93,16 +97,16 @@ export default class Sync extends BaseCommand {
       this.exit(1);
     }
 
-    if (flags.continue) {
-      const { conflicted, staged } = await git.status();
-      if (conflicted.length > 0) {
-        logger.log(
-          'error',
-          `You still have unresolved conflict file(s): ${conflicted}`,
-        );
-        this.exit(1);
-      }
+    const { conflicted, staged } = await git.status();
+    if (conflicted.length > 0) {
+      logger.log(
+        'error',
+        `You still have unresolved conflict file(s): ${conflicted}`,
+      );
+      this.exit(1);
+    }
 
+    if (flags.continue) {
       if (staged.length === 0) {
         logger.log('error', `You have not staged any file. Aborting.`);
         this.exit(1);
@@ -113,14 +117,18 @@ export default class Sync extends BaseCommand {
 
       const collection = loadCollection();
 
-      if (!collection.remotes || collection.remotes.length === 0) {
+      if (
+        flags.configureRemotes ||
+        !collection.remotes ||
+        collection.remotes.length === 0
+      ) {
         const remotes = await git.getRemotes(true);
 
         if (remotes.length === 0) {
           logger.log('error', 'Remote repository has not been configured.');
           this.exit(1);
         } else {
-          collection.remotes = await selectRemotes(remotes);
+          collection.remotes = await selectRemotes(remotes, collection.remotes);
           saveCollection(collection);
         }
       }
@@ -162,14 +170,18 @@ export default class Sync extends BaseCommand {
     } else {
       const collection = loadCollection();
 
-      if (!collection.remotes || collection.remotes.length === 0) {
+      if (
+        flags.configureRemotes ||
+        !collection.remotes ||
+        collection.remotes.length === 0
+      ) {
         const remotes = await git.getRemotes(true);
 
         if (remotes.length === 0) {
           logger.log('error', 'Remote repository has not been configured.');
           this.exit(1);
         } else {
-          collection.remotes = await selectRemotes(remotes);
+          collection.remotes = await selectRemotes(remotes, collection.remotes);
           saveCollection(collection);
         }
       }
