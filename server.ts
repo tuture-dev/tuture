@@ -11,6 +11,7 @@ import socketio from 'socket.io';
 import { DIFF_PATH, EDITOR_STATIC_PATH, EDITOR_PATH } from './constants';
 import { uploadSingle } from './utils/assets';
 import { loadCollection, saveCollection } from './utils/collection';
+import { git } from './utils/git';
 
 const workspace = process.env.TUTURE_PATH || process.cwd();
 const diffPath = path.join(workspace, DIFF_PATH);
@@ -57,9 +58,26 @@ const makeServer = (config: any) => {
     res.json(loadCollection());
   });
 
+  app.get('/remotes', (_, res) => {
+    git
+      .getRemotes(true)
+      .then((remotes) => res.json(remotes))
+      .catch((err) => res.status(500).json(err));
+  });
+
   app.post('/save', (req, res) => {
     saveCollection(req.body);
     res.sendStatus(200);
+  });
+
+  app.get('/sync', async (req, res) => {
+    cp.execFile('tuture', ['sync'], {}, (err) => {
+      if (err) {
+        res.sendStatus(500);
+      } else {
+        res.sendStatus(200);
+      }
+    });
   });
 
   app.post('/upload', checkAssetsRoot, upload.single('file'), (req, res) => {
@@ -88,16 +106,6 @@ const makeServer = (config: any) => {
     uploadSingle(savePath);
 
     res.json({ path: savePath });
-  });
-
-  app.post('/commit', (req, res) => {
-    cp.execFile('tuture', ['commit', '-m', req.body.message], {}, (err) => {
-      if (err) {
-        res.sendStatus(500);
-      } else {
-        res.sendStatus(200);
-      }
-    });
   });
 
   app.get('/reload', (_, res) => {

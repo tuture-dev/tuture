@@ -200,15 +200,20 @@ export async function checkInitStatus(nothrow = false) {
     throw new Error('Current branch does not have any commits yet.');
   }
 
-  // Update remote branches.
+  if (fs.existsSync(collectionPath)) {
+    return true;
+  }
+
+  const branchExists = async () => {
+    return (await git.branch({ '-a': true })).all
+      .map((branch) => branch.split('/').slice(-1)[0])
+      .includes(TUTURE_BRANCH);
+  };
+
+  // Trying to update remote branches (time-consuming).
   await git.remote(['update', '--prune']);
 
-  const workspaceExists = fs.existsSync(collectionPath);
-  const branchExists = (await git.branch({ '-a': true })).all
-    .map((branch) => branch.split('/').slice(-1)[0])
-    .includes(TUTURE_BRANCH);
-
-  if (!workspaceExists && !branchExists) {
+  if (!(await branchExists())) {
     if (nothrow) return false;
 
     throw new Error(

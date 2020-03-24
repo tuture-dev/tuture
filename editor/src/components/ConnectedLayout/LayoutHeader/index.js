@@ -2,24 +2,21 @@ import React from 'react';
 
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
-import { Button, Row, Col, Breadcrumb, notification } from 'antd';
+import { Button, Row, Col, Breadcrumb } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouteMatch, Link } from 'react-router-dom';
 
 import ToolBar from './Toolbar';
-import CommitModal from './CommitModal';
+import SyncModal from './SyncModal';
 import LastSavedTimestamp from './LastSavedTimestamp';
 
 function LayoutHeader() {
   const dispatch = useDispatch();
   const { name = '' } =
     useSelector((state) => state.collection.collection) || {};
+  const isSyncing = useSelector((state) => state.loading.effects.sync.sync);
 
   const isToc = useRouteMatch('/toc');
-
-  function onCommitClick() {
-    dispatch.commit.startEdit();
-  }
 
   function handleSaveToc() {
     dispatch.toc.setSaveStatus(true);
@@ -58,25 +55,12 @@ function LayoutHeader() {
               css={css`
                 margin-left: 20px;
               `}
-              onClick={onCommitClick}
-            >
-              提交
-            </Button>
-            <Button
-              type="primary"
-              css={css`
-                margin-left: 20px;
-              `}
-              onClick={() =>
-                notification.info({
-                  message: '此功能正在研发中，敬请期待！',
-                  top: 72,
-                })
-              }
+              onClick={() => dispatch.sync.setSyncVisible(true)}
+              loading={isSyncing}
             >
               同步
             </Button>
-            <CommitModal />
+            <SyncModal />
           </>
         )}
       </Col>

@@ -1,10 +1,13 @@
+import chalk from 'chalk';
 import fs from 'fs-extra';
 import path from 'path';
 import parseDiff from 'parse-diff';
+import { prompt } from 'inquirer';
 import simplegit from 'simple-git/promise';
 
 import logger from './logger';
 import { TUTURE_ROOT } from '../constants';
+import { Remote } from '../types';
 
 // Interface for running git commands.
 // https://github.com/steveukx/git-js
@@ -145,4 +148,33 @@ export function removeGitHook() {
     }
     logger.log('info', 'Git post-commit hook removed.');
   }
+}
+
+export async function selectRemotes(remotes: Remote[], selected?: Remote[]) {
+  // All remotes are shown as:
+  // <remote_name> (fetch: <fetch_ref>, push: <push_ref>)
+  const remoteToChoice = (remote: Remote) => {
+    const { name, refs } = remote;
+    const { fetch, push } = refs;
+    const { underline } = chalk;
+
+    return `${name} (fetch: ${underline(fetch)}, push: ${underline(push)})`;
+  };
+
+  const choiceToRemote = (choice: string) => {
+    const selectedRemote = choice.slice(0, choice.indexOf('(') - 1);
+    return remotes.filter((remote) => remote.name === selectedRemote)[0];
+  };
+
+  const response = await prompt<{ remotes: string[] }>([
+    {
+      name: 'remotes',
+      type: 'checkbox',
+      message: 'Select remote repositories you want to sync to:',
+      choices: remotes.map((remote) => remoteToChoice(remote)),
+      default: (selected || []).map((remote) => remoteToChoice(remote)),
+    },
+  ]);
+
+  return response.remotes.map((choice) => choiceToRemote(choice));
 }

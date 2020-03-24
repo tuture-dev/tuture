@@ -2,6 +2,8 @@
  * Common Status constants
  */
 export const NORMAL = 'NORMAL';
+export const SUCCESS = 'SUCCESS';
+export const ERROR = 'ERROR';
 
 /**
  * Get Data Status constants
@@ -69,3 +71,8 @@ export const STEP_END = 'step_end';
 export const FILE_START = 'file_start';
 export const FILE_END = 'file_end';
 export const NOW_STEP_START = 'now_step_start';
+
+/**
+ * sync constants
+ */
+export const NO_REMOTE_GITHUB = 'NO_REMOTE_GITHUB';

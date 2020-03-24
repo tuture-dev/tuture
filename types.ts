@@ -48,9 +48,18 @@ export interface Step extends Element {
   children: Array<StepTitle | Explain | File>;
 }
 
+export interface Remote {
+  name: string;
+  refs: {
+    fetch: string;
+    push: string;
+  };
+}
+
 export interface Collection extends Meta {
   version?: string;
   articles: Article[];
+  remotes?: Remote[];
   steps: Step[];
 }
 

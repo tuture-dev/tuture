@@ -181,6 +181,9 @@ const collection = {
 
       state.nowSteps = flatten(unflattenedNowSteps);
     },
+    setRemotes(state, payload) {
+      state.collection.remotes = payload;
+    },
     setEditArticleId(state, payload) {
       state.editArticleId = payload;
     },
@@ -237,6 +240,9 @@ const collection = {
       state.collection.steps = state.collection.steps.filter(
         (step) => step.id !== payload,
       );
+    },
+    setCollectionGithub(state, payload) {
+      state.collection.github = payload;
     },
   },
   effects: (dispatch) => ({
