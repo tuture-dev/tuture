@@ -93,20 +93,6 @@ export default class Sync extends BaseCommand {
       this.exit(1);
     }
 
-    const collection = loadCollection();
-
-    if (!collection.remotes || collection.remotes.length === 0) {
-      const remotes = await git.getRemotes(true);
-
-      if (remotes.length === 0) {
-        logger.log('error', 'Remote repository has not been configured.');
-        this.exit(1);
-      } else {
-        collection.remotes = await selectRemotes(remotes);
-        saveCollection(collection);
-      }
-    }
-
     if (flags.continue) {
       const { conflicted, staged } = await git.status();
       if (conflicted.length > 0) {
@@ -124,6 +110,20 @@ export default class Sync extends BaseCommand {
 
       await git.commit(`Resolve conflict during sync (${new Date()})`);
       await this.copyFilesFromTutureBranch();
+
+      const collection = loadCollection();
+
+      if (!collection.remotes || collection.remotes.length === 0) {
+        const remotes = await git.getRemotes(true);
+
+        if (remotes.length === 0) {
+          logger.log('error', 'Remote repository has not been configured.');
+          this.exit(1);
+        } else {
+          collection.remotes = await selectRemotes(remotes);
+          saveCollection(collection);
+        }
+      }
 
       if (!flags.noPush) {
         await this.pushToRemotes(collection.remotes!);
@@ -160,6 +160,20 @@ export default class Sync extends BaseCommand {
 
       logger.log('success', 'Workspace created from remote tuture branch!');
     } else {
+      const collection = loadCollection();
+
+      if (!collection.remotes || collection.remotes.length === 0) {
+        const remotes = await git.getRemotes(true);
+
+        if (remotes.length === 0) {
+          logger.log('error', 'Remote repository has not been configured.');
+          this.exit(1);
+        } else {
+          collection.remotes = await selectRemotes(remotes);
+          saveCollection(collection);
+        }
+      }
+
       // Step 1: run `commit` command if something has changed.
       if (
         hasTutureChangedSinceCheckpoint() ||
