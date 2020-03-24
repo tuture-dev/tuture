@@ -24,7 +24,7 @@ export const collectionCheckpoint = path.join(
   COLLECTION_CHECKPOINT,
 );
 
-export function hasTutureChangedSinceCheckpoint() {
+export function hasCollectionChangedSinceCheckpoint() {
   if (!fs.existsSync(collectionCheckpoint)) {
     return true;
   }

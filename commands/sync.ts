@@ -17,7 +17,7 @@ import {
   saveCollection,
   initializeTutureBranch,
   hasRemoteTutureBranch,
-  hasTutureChangedSinceCheckpoint,
+  hasCollectionChangedSinceCheckpoint,
 } from '../utils/collection';
 import { COLLECTION_PATH, TUTURE_BRANCH, ASSETS_JSON_PATH } from '../constants';
 import {
@@ -188,7 +188,7 @@ export default class Sync extends BaseCommand {
 
       // Step 1: run `commit` command if something has changed.
       if (
-        hasTutureChangedSinceCheckpoint() ||
+        hasCollectionChangedSinceCheckpoint() ||
         hasAssetsChangedSinceCheckpoint()
       ) {
         const message = flags.message || `Commit on ${new Date()}`;
