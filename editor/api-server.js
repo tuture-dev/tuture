@@ -58,8 +58,8 @@ app.post('/save', (req, res) => {
 
 app.get('/sync', (req, res) => {
   setTimeout(() => {
-    res.sendStatus(200);
-  }, 5000);
+    res.sendStatus(500);
+  }, 2000);
 });
 
 app.post('/upload', upload.single('file'), (req, res) => {
