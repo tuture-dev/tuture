@@ -7,6 +7,7 @@ import { Checkbox } from 'antd';
 import { css, jsx } from '@emotion/core';
 import { useSelector, useStore } from 'react-redux';
 import SyntaxHighlighter from '../../Highlight';
+import { flattenHiddenLines, unflattenHiddenLines } from 'utils/hiddenLines';
 
 const diffFileStyle = css`
   color: rgba(0, 0, 0, 0.84);
@@ -92,12 +93,6 @@ function concatCodeStr(diffItem) {
   return { codeStr, DIFF_ADD, DIFF_DEL, allLines };
 }
 
-function getShowLines(hiddenLines, allLines) {
-  const showLines = allLines.filter((line) => !hiddenLines.includes(line));
-
-  return showLines;
-}
-
 function Placeholder() {
   return <div></div>;
 }
@@ -115,35 +110,6 @@ function DiffBlockElement(props) {
     store.select.diff.getDiffItemByCommitAndFile({ file, commit }),
   );
 
-  function resetTimeout(id, newId) {
-    clearTimeout(id);
-
-    return newId;
-  }
-
-  function onChange(hiddenLines) {
-    dispatch.collection.setDiffItemHiddenLines({
-      commit,
-      file,
-      hiddenLines,
-    });
-
-    setTimeoutState(
-      resetTimeout(
-        timeoutState,
-        setTimeout(() => {
-          dispatch.collection.saveCollection();
-        }, 1000),
-      ),
-    );
-  }
-
-  function getHiddenLines(checkedLines, allLines) {
-    const hiddenLines = allLines.filter((line) => !checkedLines.includes(line));
-
-    return hiddenLines;
-  }
-
   const {
     codeStr = '',
     DIFF_ADD = [],
@@ -156,12 +122,42 @@ function DiffBlockElement(props) {
     .pop()
     .toLowerCase();
 
-  const isHidden = (i) => hiddenLines.includes(i);
+  if (hiddenLines.length > 0) {
+    console.log('hiddenLines', hiddenLines);
+  }
+
+  const flatHiddenLines = flattenHiddenLines(hiddenLines);
+  const showLines = allLines.filter((line) => !flatHiddenLines.includes(line));
+  const height = 22 * allLines.length + 100;
+
+  const isHidden = (i) => flatHiddenLines.includes(i);
   const isCodeAddition = (i) => !diffItem.new && DIFF_ADD.includes(i);
   const isCodeDeletion = (i) => !diffItem.new && DIFF_DEL.includes(i);
 
-  const showLines = getShowLines(hiddenLines, allLines);
-  const height = 22 * allLines.length + 100;
+  function resetTimeout(id, newId) {
+    clearTimeout(id);
+
+    return newId;
+  }
+
+  function onChange(checkedLines) {
+    const hiddenLines = allLines.filter((line) => !checkedLines.includes(line));
+
+    dispatch.collection.setDiffItemHiddenLines({
+      commit,
+      file,
+      hiddenLines: unflattenHiddenLines(hiddenLines),
+    });
+
+    setTimeoutState(
+      resetTimeout(
+        timeoutState,
+        setTimeout(() => {
+          dispatch.collection.saveCollection();
+        }, 1000),
+      ),
+    );
+  }
 
   return (
     <div {...attributes} contentEditable={false}>
@@ -182,10 +178,7 @@ function DiffBlockElement(props) {
             <div className="diff-file" css={diffFileStyle}>
               <header css={diffFileHeaderStyle}>{file}</header>
               <Checkbox.Group
-                onChange={(checkedLines) => {
-                  const hiddenLines = getHiddenLines(checkedLines, allLines);
-                  onChange(hiddenLines);
-                }}
+                onChange={onChange}
                 value={showLines}
                 css={css`
                   width: 100%;

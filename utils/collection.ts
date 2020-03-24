@@ -64,7 +64,46 @@ export async function hasRemoteTutureBranch() {
  * Load collection.
  */
 export function loadCollection(): Collection {
-  return JSON.parse(fs.readFileSync(collectionPath).toString());
+  const collection = JSON.parse(fs.readFileSync(collectionPath).toString());
+
+  // COMPAT: convert hiddenLines field
+  if (collection.version !== 'v1') {
+    const convertHiddenLines = (hiddenLines: number[]) => {
+      const rangeGroups = [];
+      let startNumber = null;
+
+      for (let i = 0; i < hiddenLines.length; i++) {
+        const prev = hiddenLines[i - 1];
+        const current = hiddenLines[i];
+        const next = hiddenLines[i + 1];
+
+        if (current !== prev + 1 && current !== next - 1) {
+          rangeGroups.push([current, current]);
+        } else if (current !== prev + 1) {
+          startNumber = hiddenLines[i];
+        } else if (current + 1 !== next) {
+          rangeGroups.push([startNumber, hiddenLines[i]]);
+        }
+      }
+
+      return rangeGroups;
+    };
+
+    for (const step of collection.steps) {
+      for (const node of step.children) {
+        if (node.type === 'file') {
+          const diffBlock = node.children[1];
+          if (diffBlock.hiddenLines) {
+            diffBlock.hiddenLines = convertHiddenLines(diffBlock.hiddenLines);
+          }
+        }
+      }
+    }
+
+    collection.version = 'v1';
+  }
+
+  return collection;
 }
 
 /**

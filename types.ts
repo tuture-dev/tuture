@@ -9,7 +9,7 @@ export interface DiffBlock extends Element {
   type: 'diff-block';
   file: string;
   commit: string;
-  hiddenLines?: Array<number>;
+  hiddenLines?: [number, number][];
 }
 
 export interface File extends Element {
@@ -49,6 +49,7 @@ export interface Step extends Element {
 }
 
 export interface Collection extends Meta {
+  version?: string;
   articles: Article[];
   steps: Step[];
 }

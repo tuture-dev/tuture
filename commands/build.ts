@@ -252,11 +252,15 @@ export default class Build extends BaseCommand {
     };
 
     const diffBlockConverter = (node: Element) => {
-      const { commit, file, hiddenLines } = node as DiffBlock;
+      const { commit, file, hiddenLines = [] } = node as DiffBlock;
       const diff = this.getDiffFile(rawDiffs, commit, file);
       const link = github ? `${github}/blob/${commit}/${file}` : undefined;
+      const flatHiddenLines = hiddenLines.flatMap((range) => {
+        const [start, end] = range;
+        return [...Array(end - start + 1).keys()].map((elem) => elem + start);
+      });
 
-      return diff ? this.diffBlockTmpl(diff, hiddenLines, link) : '';
+      return diff ? this.diffBlockTmpl(diff, flatHiddenLines, link) : '';
     };
 
     const noteBlockConverter = (node: Element) => {
