@@ -24,7 +24,9 @@ export async function removeTutureSuite() {
   await fs.remove(TUTURE_ROOT);
 }
 
-function getHiddenLines(diffItem: DiffFile): number[] {
+type Range = [number, number];
+
+function getHiddenLines(diffItem: DiffFile): Range[] {
   // Number of context normal lines to show for each diff.
   const context = 3;
 
@@ -61,9 +63,19 @@ function getHiddenLines(diffItem: DiffFile): number[] {
     }
   }
 
-  return shownArr
-    .map((elem, index) => (elem ? null : index))
-    .filter((elem) => elem !== null) as number[];
+  const hiddenLines: Range[] = [];
+  let startNumber = null;
+
+  for (let i = 0; i < shownArr.length; i++) {
+    if (!shownArr[i] && startNumber === null) {
+      startNumber = i;
+    } else if (i > 0 && !shownArr[i - 1] && shownArr[i]) {
+      hiddenLines.push([startNumber!, i - 1]);
+      startNumber = null;
+    }
+  }
+
+  return hiddenLines;
 }
 
 function convertFile(commit: string, file: DiffFile, display = false) {
