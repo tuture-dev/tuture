@@ -1,6 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Modal, Checkbox, Row, Col, Tag, List, Typography } from 'antd';
+import {
+  Modal,
+  Checkbox,
+  Row,
+  Col,
+  Tag,
+  List,
+  Typography,
+  message,
+} from 'antd';
 
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
@@ -98,7 +107,13 @@ const CommitModal = () => {
     dispatch.collection.setRemotes(
       allRemotes.filter(({ name }) => checkedRemotes.includes(name)),
     );
-    dispatch.sync.sync({ showMessage: true });
+
+    if (checkedRemotes.length === 0) {
+      message.warn('没有选择任何远程仓库！');
+    } else {
+      dispatch.sync.sync({ showMessage: true });
+    }
+
     dispatch.sync.setSyncVisible(false);
   };
 
