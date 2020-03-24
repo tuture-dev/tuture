@@ -21,8 +21,9 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "build:editor": "cd editor && yarn && yarn build",
-    "build:cli": "rimraf build && tsc",
+    "build:cli": "tsc",
     "build": "yarn build:editor && yarn build:cli && cp -r editor/build build/editor",
+    "clean": "rimraf build",
     "pkg": "./scripts/pack.sh",
     "prepack": "yarn build && rimraf build/**/*.map"
   },
