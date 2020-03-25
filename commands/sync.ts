@@ -150,7 +150,7 @@ export default class Sync extends BaseCommand {
       }
 
       // Download assets from image hosting.
-      syncImages();
+      await syncImages();
 
       await git.checkout('master');
 
@@ -180,7 +180,7 @@ export default class Sync extends BaseCommand {
       await this.copyFilesFromTutureBranch();
 
       // Download assets from image hosting.
-      syncImages();
+      await syncImages();
 
       logger.log('success', 'Workspace created from remote tuture branch!');
     } else {
@@ -224,7 +224,7 @@ export default class Sync extends BaseCommand {
       await this.copyFilesFromTutureBranch();
 
       // Download assets if necessary.
-      syncImages();
+      await syncImages();
 
       logger.log('success', 'Synchronization complete!');
     }

@@ -1,6 +1,7 @@
 import fs from 'fs-extra';
 import path from 'path';
 import request from 'request';
+import pLimit from 'p-limit';
 
 import logger from './logger';
 import {
@@ -149,7 +150,7 @@ export function uploadSingle(localPath: string) {
  * Synchronize all images, including uploading all local images
  * and download images from hosting sites.
  */
-export function syncImages() {
+export async function syncImages() {
   if (isAssetsLocked()) {
     logger.log(
       'warning',
@@ -161,62 +162,66 @@ export function syncImages() {
   createAssetsLock();
   const assets = loadAssetsTable();
 
+  const limit = pLimit(2);
+
   const syncTasks = assets
     .filter(
       ({ localPath, hostingUri }) => fs.existsSync(localPath) || hostingUri,
     )
-    .map(
-      ({ localPath, hostingUri }) =>
-        new Promise<Asset>((resolve) => {
-          // Missing on this machine, download from image hosting.
-          if (!fs.existsSync(localPath)) {
-            logger.log(
-              'info',
-              `Downloading from ${hostingUri} to ${localPath}.`,
-            );
+    .map(({ localPath, hostingUri }) =>
+      limit<void[], Asset>(
+        () =>
+          new Promise<Asset>((resolve) => {
+            // Missing on this machine, download from image hosting.
+            if (!fs.existsSync(localPath)) {
+              logger.log(
+                'info',
+                `Downloading from ${hostingUri} to ${localPath}.`,
+              );
 
-            if (!fs.existsSync(path.dirname(localPath))) {
-              fs.mkdirpSync(path.dirname(localPath));
+              if (!fs.existsSync(path.dirname(localPath))) {
+                fs.mkdirpSync(path.dirname(localPath));
+              }
+
+              return setTimeout(() => {
+                request
+                  .get(hostingUri as string)
+                  .pipe(fs.createWriteStream(localPath));
+
+                resolve({ localPath, hostingUri } as Asset);
+              }, Math.random() * 1000);
             }
 
-            return setTimeout(() => {
-              request
-                .get(hostingUri as string)
-                .pipe(fs.createWriteStream(localPath));
+            // Not uploaded yet, trying to upload.
+            if (!hostingUri) {
+              return upload(localPath, (err: Error, data: string) => {
+                if (err) {
+                  return resolve({ localPath } as Asset);
+                }
+                logger.log(
+                  'success',
+                  `Upload ${localPath} to ${data} successfully.`,
+                );
+                resolve({ localPath, hostingUri: data } as Asset);
+              });
+            }
 
-              resolve({ localPath, hostingUri } as Asset);
-            }, Math.random() * 1000);
-          }
-
-          // Not uploaded yet, trying to upload.
-          if (!hostingUri) {
-            return upload(localPath, (err: Error, data: string) => {
-              if (err) {
-                return resolve({ localPath } as Asset);
-              }
-              logger.log(
-                'success',
-                `Upload ${localPath} to ${data} successfully.`,
-              );
-              resolve({ localPath, hostingUri: data } as Asset);
-            });
-          }
-
-          resolve({ localPath, hostingUri } as Asset);
-        }),
+            resolve({ localPath, hostingUri } as Asset);
+          }),
+      ),
     );
 
-  Promise.all(syncTasks)
-    .then((syncedAssets) => {
-      // Save synced assets table if updated.
-      if (JSON.stringify(assets) !== JSON.stringify(syncedAssets)) {
-        saveAssetsTable(syncedAssets);
-        logger.log('success', 'Synchronized assets table.');
-      }
-      removeAssetsLock();
-    })
-    .catch((err) => {
-      logger.log('error', err.message);
-      removeAssetsLock();
-    });
+  try {
+    const syncedAssets = await Promise.all(syncTasks);
+
+    // Save synced assets table if updated.
+    if (JSON.stringify(assets) !== JSON.stringify(syncedAssets)) {
+      saveAssetsTable(syncedAssets);
+      logger.log('success', 'Synchronized assets table.');
+    }
+  } catch (err) {
+    logger.log('error', err.message);
+  } finally {
+    removeAssetsLock();
+  }
 }
