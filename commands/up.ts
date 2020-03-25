@@ -59,7 +59,6 @@ export default class Up extends BaseCommand {
     loadCollection();
 
     // Background interval to synchronize assets.
-    syncImages();
     setInterval(syncImages, this.userConfig.assetsSyncInterval);
 
     this.fireTutureServer();
