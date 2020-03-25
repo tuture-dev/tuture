@@ -9,6 +9,7 @@ import { getEmptyExplain, getEmptyChildren } from './nodes';
 import { collectionPath } from './collection';
 import { TUTURE_ROOT, TUTURE_BRANCH } from '../constants';
 import { git, storeDiff } from './git';
+import logger from './logger';
 
 /**
  * Compare if two commit hashes are equal.
@@ -210,7 +211,12 @@ export async function checkInitStatus(nothrow = false) {
       .includes(TUTURE_BRANCH);
   };
 
+  if (await branchExists()) {
+    return true;
+  }
+
   // Trying to update remote branches (time-consuming).
+  logger.log('info', 'Trying to update remote branches ...');
   await git.remote(['update', '--prune']);
 
   if (!(await branchExists())) {

@@ -7,14 +7,19 @@ import { prompt } from 'inquirer';
 import BaseCommand from '../base';
 import logger from '../utils/logger';
 import { git } from '../utils/git';
-import { assetsTablePath, assetsTableCheckpoint } from '../utils/assets';
+import {
+  assetsTablePath,
+  assetsTableVcsPath,
+  assetsTableCheckpoint,
+} from '../utils/assets';
 import {
   collectionPath,
+  collectionVcsPath,
   saveCheckpoint,
   collectionCheckpoint,
   initializeTutureBranch,
 } from '../utils/collection';
-import { TUTURE_BRANCH } from '../constants';
+import { TUTURE_BRANCH, COLLECTION_PATH, ASSETS_JSON_PATH } from '../constants';
 
 export default class Commit extends BaseCommand {
   static description = 'Commit your tutorial to VCS (Git)';
@@ -46,22 +51,22 @@ export default class Commit extends BaseCommand {
     // Checkout tuture branch and add tuture.yml.
     await git.checkout(TUTURE_BRANCH);
 
-    // Trying to copy and add tuture.yml to staging.
-    const targetTutureYML = path.join(
-      process.cwd(),
-      path.basename(collectionPath),
-    );
-    fs.copySync(collectionPath, targetTutureYML);
-    await git.add(targetTutureYML);
+    // Trying to copy and add collection data to staging.
+    fs.copySync(collectionPath, collectionVcsPath);
+    await git.add(collectionVcsPath);
 
     // Trying to copy and add tuture-assets.json to staging.
-    const targetAssetsTable = path.join(
-      process.cwd(),
-      path.basename(assetsTablePath),
-    );
     if (fs.existsSync(assetsTablePath)) {
-      fs.copySync(assetsTablePath, targetAssetsTable);
-      await git.add(targetAssetsTable);
+      fs.copySync(assetsTablePath, assetsTableVcsPath);
+      await git.add(assetsTableVcsPath);
+    }
+
+    // COMPAT: remove collection.json and tuture-assets.json from project root.
+    if (fs.existsSync(COLLECTION_PATH)) {
+      await git.rm(COLLECTION_PATH);
+    }
+    if (fs.existsSync(ASSETS_JSON_PATH)) {
+      await git.rm(ASSETS_JSON_PATH);
     }
 
     fs.removeSync(collectionCheckpoint);

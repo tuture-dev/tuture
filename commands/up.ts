@@ -53,13 +53,15 @@ export default class Up extends BaseCommand {
     // Run sync command if workspace is not prepared.
     if (!fs.existsSync(collectionPath) || !fs.existsSync(diffPath)) {
       await reload.run([]);
+    } else {
+      // Trying to sync images.
+      await syncImages();
     }
 
     // Trying to load tuture.yml for sanity check.
     loadCollection();
 
     // Background interval to synchronize assets.
-    syncImages();
     setInterval(syncImages, this.userConfig.assetsSyncInterval);
 
     this.fireTutureServer();
