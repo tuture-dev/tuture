@@ -1,6 +1,6 @@
 {
   "name": "tuture",
-  "version": "3.0.0-alpha5",
+  "version": "3.0.0-alpha6",
   "description": "Tuture magically turns your repositories into juicy tutorials.",
   "main": "index.ts",
   "preferGlobal": true,
