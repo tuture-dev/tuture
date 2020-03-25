@@ -1943,23 +1943,25 @@ ecc-jsbn@~0.1.1:
     jsbn "~0.1.0"
     safer-buffer "^2.1.0"
 
-editure-constants@^0.0.11:
-  version "0.0.11"
-  resolved "https://registry.yarnpkg.com/editure-constants/-/editure-constants-0.0.11.tgz#e8548199058812f6381054275b80b5cb9fe59c68"
-  integrity sha512-LDTnEw1iRCozRvOgFGPvYZ1ExIxhxq5ZZj/82eBhf4gy2Ry1vtOIHtfwCN/RKX/imMYdLxBMALQ0o9mHAh4KQA==
+editure-constants@^0.1.2:
+  version "0.1.2"
+  resolved "https://registry.npm.taobao.org/editure-constants/download/editure-constants-0.1.2.tgz#4fe71f43d47af1c3dd672dd2c242aa627fab793f"
+  integrity sha1-T+cfQ9R68cPdZy3SwkKqYn+reT8=
 
-editure@^0.0.11:
-  version "0.0.11"
-  resolved "https://registry.npm.taobao.org/editure/download/editure-0.0.11.tgz#913cc148fe5bb7cc6887208b61a0df20862e8711"
-  integrity sha1-kTzBSP5bt8xohyCLYaDfIIYuhxE=
+editure@^0.1.2:
+  version "0.1.2"
+  resolved "https://registry.npm.taobao.org/editure/download/editure-0.1.2.tgz#f707b36ccc3ebe9c414ed522276e9765e29fe2fe"
+  integrity sha1-9wezbMw+vpxBTtUiJ26XZeKf4v4=
   dependencies:
-    editure-constants "^0.0.11"
+    editure-constants "^0.1.2"
     escape-html "^1.0.3"
     is-url "^1.2.4"
     jsdom "^16.1.0"
     markdown-it "^10.0.0"
     shortid "^2.2.15"
-    slate-hyperscript "^0.57.1"
+    tuture-slate "^0.57.3"
+    tuture-slate-history "^0.57.3"
+    tuture-slate-hyperscript "^0.57.3"
 
 ee-first@1.1.1:
   version "1.1.1"
@@ -5761,13 +5763,6 @@ slash@^3.0.0:
   resolved "https://registry.npm.taobao.org/slash/download/slash-3.0.0.tgz#6539be870c165adbd5240220dbe361f1bc4d4634"
   integrity sha1-ZTm+hwwWWtvVJAIg2+Nh8bxNRjQ=
 
-slate-hyperscript@^0.57.1:
-  version "0.57.1"
-  resolved "https://registry.npm.taobao.org/slate-hyperscript/download/slate-hyperscript-0.57.1.tgz#d72fdedb527672302bd32d4e6d96c96eac91bbac"
-  integrity sha1-1y/e21J2cjAr0y1ObZbJbqyRu6w=
-  dependencies:
-    is-plain-object "^3.0.0"
-
 slate@^0.57.1:
   version "0.57.1"
   resolved "https://registry.npm.taobao.org/slate/download/slate-0.57.1.tgz#dc99d9a77840894c9e3d3bc1185b67ee36c17686"
@@ -6377,6 +6372,32 @@ tunnel-agent@^0.6.0:
   integrity sha1-J6XeoGs2sEoKmWZ3SykIaPD8QP0=
   dependencies:
     safe-buffer "^5.0.1"
+
+tuture-slate-history@^0.57.3:
+  version "0.57.3"
+  resolved "https://registry.npm.taobao.org/tuture-slate-history/download/tuture-slate-history-0.57.3.tgz#9815674a4519c912675db18bcdebc8e86dced74f"
+  integrity sha1-mBVnSkUZyRJnXbGLzevI6G3O108=
+  dependencies:
+    immer "^5.0.0"
+    is-plain-object "^3.0.0"
+
+tuture-slate-hyperscript@^0.57.3:
+  version "0.57.3"
+  resolved "https://registry.npm.taobao.org/tuture-slate-hyperscript/download/tuture-slate-hyperscript-0.57.3.tgz#2d574126d8c9c80ec5dcf288cd669abb2f83302d"
+  integrity sha1-LVdBJtjJyA7F3PKIzWaauy+DMC0=
+  dependencies:
+    is-plain-object "^3.0.0"
+
+tuture-slate@^0.57.3:
+  version "0.57.3"
+  resolved "https://registry.npm.taobao.org/tuture-slate/download/tuture-slate-0.57.3.tgz#5c513952ec066bcf376b30f89b9ded05ec228074"
+  integrity sha1-XFE5UuwGa883azD4m53tBewigHQ=
+  dependencies:
+    "@types/esrever" "^0.2.0"
+    esrever "^0.2.0"
+    immer "^5.0.0"
+    is-plain-object "^3.0.0"
+    tiny-warning "^1.0.3"
 
 tweetnacl@^0.14.3, tweetnacl@~0.14.0:
   version "0.14.5"
