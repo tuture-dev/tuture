@@ -6,6 +6,7 @@ import logger from './logger';
 import { git } from './git';
 import {
   TUTURE_ROOT,
+  TUTURE_VCS_ROOT,
   COLLECTION_PATH,
   TUTURE_BRANCH,
   COLLECTION_CHECKPOINT,
@@ -22,6 +23,12 @@ export const collectionCheckpoint = path.join(
   process.env.TUTURE_PATH || process.cwd(),
   TUTURE_ROOT,
   COLLECTION_CHECKPOINT,
+);
+
+export const collectionVcsPath = path.join(
+  process.env.TUTURE_PATH || process.cwd(),
+  TUTURE_VCS_ROOT,
+  COLLECTION_PATH,
 );
 
 export function hasCollectionChangedSinceCheckpoint() {

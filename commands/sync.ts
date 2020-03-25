@@ -12,6 +12,7 @@ import { git, selectRemotes } from '../utils/git';
 import logger from '../utils/logger';
 import {
   collectionPath,
+  collectionVcsPath,
   saveCheckpoint,
   loadCollection,
   saveCollection,
@@ -23,6 +24,7 @@ import { COLLECTION_PATH, TUTURE_BRANCH, ASSETS_JSON_PATH } from '../constants';
 import {
   syncImages,
   assetsTablePath,
+  assetsTableVcsPath,
   hasAssetsChangedSinceCheckpoint,
 } from '../utils/assets';
 
@@ -56,9 +58,19 @@ export default class Sync extends BaseCommand {
   async copyFilesFromTutureBranch() {
     await git.checkout(TUTURE_BRANCH);
 
-    fs.copySync(COLLECTION_PATH, collectionPath);
+    // COMPAT: copy files from project root for older alpha versions.
+    if (fs.existsSync(COLLECTION_PATH)) {
+      fs.copySync(COLLECTION_PATH, collectionPath);
+    }
     if (fs.existsSync(ASSETS_JSON_PATH)) {
       fs.copySync(ASSETS_JSON_PATH, assetsTablePath);
+    }
+
+    if (fs.existsSync(collectionVcsPath)) {
+      fs.copySync(collectionVcsPath, collectionPath);
+    }
+    if (fs.existsSync(assetsTableVcsPath)) {
+      fs.copySync(assetsTableVcsPath, assetsTablePath);
     }
 
     saveCheckpoint();
@@ -150,10 +162,14 @@ export default class Sync extends BaseCommand {
       await initializeTutureBranch();
       await git.checkout(TUTURE_BRANCH);
 
-      if (!fs.existsSync(COLLECTION_PATH)) {
+      // COMPAT: check both project root and vcs root.
+      if (
+        !fs.existsSync(COLLECTION_PATH) &&
+        !fs.existsSync(collectionVcsPath)
+      ) {
         logger.log(
           'error',
-          `Cannot load tuture. Please run ${chalk.bold(
+          `Cannot load collection data. Please run ${chalk.bold(
             'tuture init',
           )} to initialize.`,
         );

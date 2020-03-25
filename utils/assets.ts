@@ -5,6 +5,7 @@ import request from 'request';
 import logger from './logger';
 import {
   TUTURE_ROOT,
+  TUTURE_VCS_ROOT,
   IMAGE_HOSTING_URL,
   ASSETS_JSON_PATH,
   ASSETS_JSON_CHECKPOINT,
@@ -25,6 +26,12 @@ export const assetsTableCheckpoint = path.join(
   process.env.TUTURE_PATH || process.cwd(),
   TUTURE_ROOT,
   ASSETS_JSON_CHECKPOINT,
+);
+
+export const assetsTableVcsPath = path.join(
+  process.env.TUTURE_PATH || process.cwd(),
+  TUTURE_VCS_ROOT,
+  ASSETS_JSON_PATH,
 );
 
 const assetsTableLock = `${assetsTablePath}.lock`;
