@@ -12,10 +12,10 @@ import * as F from 'editure-constants';
 import { withImages } from './image';
 import { EXPLAIN, DIFF_BLOCK } from '../utils/constants';
 
-const withCommitHeaderLayout = (editor) => {
+const withCommitHeaderLayout = (editor: any) => {
   const { normalizeNode } = editor;
 
-  editor.normalizeNode = ([node, path]) => {
+  editor.normalizeNode = ([node, path]: [any, string]) => {
     if (path.length === 1 && node.fixed) {
       if (node.type === F.PARAGRAPH) {
         const title = { type: F.H2, children: [{ text: '' }] };
@@ -29,10 +29,10 @@ const withCommitHeaderLayout = (editor) => {
   return editor;
 };
 
-const withExplainLayout = (editor) => {
+const withExplainLayout = (editor: any) => {
   const { deleteBackward } = editor;
 
-  editor.deleteBackward = (...args) => {
+  editor.deleteBackward = (...args: any) => {
     const { selection } = editor;
 
     // If selection is start of EXPLAIN, forbid to deleteBackward
@@ -52,10 +52,10 @@ const withExplainLayout = (editor) => {
   return editor;
 };
 
-const withDiffBlockVoid = (editor) => {
+const withDiffBlockVoid = (editor: any) => {
   const { isVoid } = editor;
 
-  editor.isVoid = (element) => {
+  editor.isVoid = (element: any) => {
     return element.type === DIFF_BLOCK ? true : isVoid(element);
   };
 

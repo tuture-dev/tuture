@@ -1,16 +1,16 @@
-import { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 
 import { useSelector, useDispatch, useStore } from 'react-redux';
 import { Layout, Affix, BackTop } from 'antd';
-import { Editure } from 'editure-react';
+import { Editure, ReactEditor } from 'editure-react';
 import { updateLastSelection } from 'editure';
 import { useHistory } from 'react-router-dom';
 
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 
-import { initializeEditor } from 'utils/editor';
-import { buttonRefs, ButtonRefsContext } from 'utils/hotkeys';
+import { initializeEditor } from '../../utils/editor';
+import { buttonRefs, ButtonRefsContext } from '../../utils/hotkeys';
 
 import LayoutHeader from './LayoutHeader';
 import MainMenu from './MainMenu';
@@ -19,21 +19,21 @@ import ChildrenDrawerComponent from './ChildrenDrawerComponent';
 
 const { Header, Content } = Layout;
 
-function ConnectedLayout(props) {
+function ConnectedLayout(props: any) {
   const { children } = props;
   const [timeoutState, setTimeoutState] = useState(null);
   const history = useHistory();
 
-  const store = useStore();
+  const store: any = useStore();
   const { name: pageTitle } = useSelector(
     store.select.collection.nowArticleMeta,
   );
-  const value = useSelector((state) => state.collection.nowSteps);
+  const value = useSelector((state: any) => state.collection.nowSteps);
   const outdatedNotificationClicked = useSelector(
-    (state) => state.collection.outdatedNotificationClicked,
+    (state: any) => state.collection.outdatedNotificationClicked,
   );
 
-  const dispatch = useDispatch();
+  const dispatch: any = useDispatch();
 
   useEffect(() => {
     dispatch.diff.fetchDiff();
@@ -53,13 +53,13 @@ function ConnectedLayout(props) {
     }
   }, [outdatedNotificationClicked]);
 
-  function resetTimeout(id, newId) {
+  function resetTimeout(id: any, newId: any) {
     clearTimeout(id);
 
     return newId;
   }
 
-  function onContentChange(val) {
+  function onContentChange(val: any) {
     dispatch.collection.setNowSteps({ fragment: val });
 
     setTimeoutState(
@@ -72,7 +72,7 @@ function ConnectedLayout(props) {
     );
   }
 
-  const editor = useMemo(initializeEditor, []);
+  const editor = useMemo(initializeEditor, []) as ReactEditor;
   updateLastSelection(editor.selection);
 
   return (

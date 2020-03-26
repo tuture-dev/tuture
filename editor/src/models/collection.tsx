@@ -23,6 +23,7 @@ import {
   getNumFromStepId,
 } from '../utils/collection';
 import { isCommitEqual } from '../utils/commit';
+import { type } from 'os';
 
 const collection = {
   state: {
@@ -36,7 +37,7 @@ const collection = {
     outdatedNotificationClicked: false,
   },
   reducers: {
-    setCollectionData(state, payload) {
+    setCollectionData(state: any, payload: any) {
       state.collection = payload;
 
       if (payload.articles?.length > 0 && !state.nowArticleId) {
@@ -47,19 +48,19 @@ const collection = {
 
       if (state.nowArticleId) {
         state.nowSteps = flatten(
-          steps.filter((step) => step.articleId === state.nowArticleId),
+          steps.filter((step: any) => step.articleId === state.nowArticleId),
         );
       } else {
         state.nowSteps = flatten(steps);
       }
     },
-    setNowArticle(state, payload) {
+    setNowArticle(state: any, payload: any) {
       state.nowArticleId = payload;
 
       // May set nowArticleId to null
       if (payload && state.collection) {
         state.nowStepCommit = state.collection.steps.filter(
-          ({ articleId }) => articleId === payload,
+          ({ articleId }: any) => articleId === payload,
         )[0];
       }
 
@@ -71,43 +72,47 @@ const collection = {
 
       if (state.nowArticleId) {
         state.nowSteps = flatten(
-          steps.filter((step) => step.articleId === state.nowArticleId),
+          steps.filter((step: any) => step.articleId === state.nowArticleId),
         );
       } else {
         state.nowSteps = flatten(steps);
       }
     },
-    setArticleTitle(state, payload) {
+    setArticleTitle(state: any, payload: any) {
       if (state.collection.articles.length !== 0) {
-        state.collection.articles = state.collection.articles.map((article) => {
-          if (article.id === state.nowArticleId) {
-            article.name = payload;
+        state.collection.articles = state.collection.articles.map(
+          (article: any) => {
+            if (article.id === state.nowArticleId) {
+              article.name = payload;
+
+              return article;
+            }
 
             return article;
-          }
-
-          return article;
-        });
+          },
+        );
       } else {
         state.collection.name = payload;
       }
     },
-    setArticleDescription(state, payload) {
+    setArticleDescription(state: any, payload: any) {
       if (state.collection.articles.length !== 0) {
-        state.collection.articles = state.collection.articles.map((article) => {
-          if (article.id === state.nowArticleId) {
-            article.description = payload;
+        state.collection.articles = state.collection.articles.map(
+          (article: any) => {
+            if (article.id === state.nowArticleId) {
+              article.description = payload;
+
+              return article;
+            }
 
             return article;
-          }
-
-          return article;
-        });
+          },
+        );
       } else {
         state.collection.description = payload;
       }
     },
-    setDiffItemHiddenLines(state, payload) {
+    setDiffItemHiddenLines(state: any, payload: any) {
       const { file, commit, hiddenLines } = payload;
 
       for (const node of state.nowSteps) {
@@ -121,12 +126,12 @@ const collection = {
         }
       }
     },
-    switchFile(state, payload) {
+    switchFile(state: any, payload: any) {
       const { removedIndex, addedIndex, commit } = payload;
 
       const unflattenedNowSteps = unflatten(state.nowSteps);
 
-      unflattenedNowSteps.forEach((step) => {
+      unflattenedNowSteps.forEach((step: any) => {
         if (isCommitEqual(step.commit, commit)) {
           const oldFile = step.children[removedIndex + 2];
           step.children.splice(removedIndex + 2, 1);
@@ -142,32 +147,32 @@ const collection = {
         state.nowSteps = flatten(steps);
       }
     },
-    setNowSteps(state, payload) {
+    setNowSteps(state: any, payload: any) {
       const { fragment } = payload;
 
       if (!fragment) return state;
 
       state.nowSteps = fragment;
     },
-    saveNowStepsToCollection(state) {
+    saveNowStepsToCollection(state: any) {
       state.collection.steps = state.collection.steps.map(
-        (step) =>
-          unflatten(state.nowSteps).filter((node) =>
+        (step: any) =>
+          unflatten(state.nowSteps).filter((node: any) =>
             isCommitEqual(node.commit, step.commit),
           )[0] || step,
       );
     },
-    setNowStepCommit(state, payload) {
+    setNowStepCommit(state: any, payload: any) {
       if (payload.commit) {
         state.nowStepCommit = payload.commit;
       }
     },
-    setFileShowStatus(state, payload) {
+    setFileShowStatus(state: any, payload: any) {
       let unflattenedNowSteps = unflatten(state.nowSteps);
 
-      unflattenedNowSteps = unflattenedNowSteps.map((step) => {
+      unflattenedNowSteps = unflattenedNowSteps.map((step: any) => {
         if (isCommitEqual(step.commit, payload.commit)) {
-          step.children.map((node) => {
+          step.children.map((node: any) => {
             if (node.type === FILE && node?.file === payload.file) {
               node.display = payload.display;
             }
@@ -181,39 +186,40 @@ const collection = {
 
       state.nowSteps = flatten(unflattenedNowSteps);
     },
-    setRemotes(state, payload) {
+    setRemotes(state: any, payload: any) {
       state.collection.remotes = payload;
     },
-    setEditArticleId(state, payload) {
+    setEditArticleId(state: any, payload: any) {
       state.editArticleId = payload;
     },
-    editArticle(state, payload) {
+    editArticle(state: any, payload: any) {
       const { editArticleId } = state;
 
-      state.collection.articles = state.collection.articles.map((article) =>
-        article.id === editArticleId ? { ...article, ...payload } : article,
+      state.collection.articles = state.collection.articles.map(
+        (article: any) =>
+          article.id === editArticleId ? { ...article, ...payload } : article,
       );
     },
-    createArticle(state, payload) {
+    createArticle(state: any, payload: any) {
       const id = shortid.generate();
       const created = new Date();
       state.collection.articles.push({ id, created, ...payload });
     },
-    setStepById(state, payload) {
+    setStepById(state: any, payload: any) {
       const { stepId, stepProps } = payload;
 
-      state.collection.steps = state.collection.steps.map((step) =>
+      state.collection.steps = state.collection.steps.map((step: any) =>
         step.id === stepId ? { ...step, ...stepProps } : step,
       );
     },
-    editCollection(state, payload) {
+    editCollection(state: any, payload: any) {
       state.collection = { ...state.collection, ...payload };
     },
-    deleteArticle(state, payload) {
+    deleteArticle(state: any, payload: any) {
       state.collection.articles = state.collection.articles.filter(
-        (article) => article.id !== payload,
+        (article: any) => article.id !== payload,
       );
-      state.collection.steps = state.collection.steps.map((step) => {
+      state.collection.steps = state.collection.steps.map((step: any) => {
         if (step?.articleId === payload) {
           step = omit(step, ['articleId']);
         }
@@ -221,31 +227,31 @@ const collection = {
         return step;
       });
     },
-    setLastSaved(state, payload) {
+    setLastSaved(state: any, payload: any) {
       state.lastSaved = payload;
     },
-    setSaveFailed(state, payload) {
+    setSaveFailed(state: any, payload: any) {
       state.saveFailed = payload;
     },
-    updateSteps(state, payload) {
+    updateSteps(state: any, payload: any) {
       state.collection.steps = payload;
     },
-    updateArticles(state, payload) {
+    updateArticles(state: any, payload: any) {
       state.collection.articles = payload;
     },
-    setOutdatedNotificationClicked(state, payload) {
+    setOutdatedNotificationClicked(state: any, payload: any) {
       state.outdatedNotificationClicked = payload;
     },
-    deleteStep(state, payload) {
+    deleteStep(state: any, payload: any) {
       state.collection.steps = state.collection.steps.filter(
-        (step) => step.id !== payload,
+        (step: any) => step.id !== payload,
       );
     },
-    setCollectionGithub(state, payload) {
+    setCollectionGithub(state: any, payload: any) {
       state.collection.github = payload;
     },
   },
-  effects: (dispatch) => ({
+  effects: (dispatch: any) => ({
     async editArticle() {
       message.success('保存成功');
       dispatch.drawer.setChildrenVisible(false);
@@ -259,7 +265,7 @@ const collection = {
       dispatch.drawer.setVisible(false);
     },
     async openOutdatedNotification() {
-      const key = `open${Date.now()}`;
+      const key: string = `open${Date.now()}`;
       const btn = (
         <Button
           type="primary"
@@ -322,7 +328,7 @@ const collection = {
         let outdatedExisted = false;
 
         if (data?.steps && Array.isArray(data?.steps)) {
-          const len = data.steps.filter((step) => step.outdated).length;
+          const len = data.steps.filter((step: any) => step.outdated).length;
           outdatedExisted = !!len;
         }
 
@@ -335,14 +341,14 @@ const collection = {
         message.error('获取数据失败！');
       }
     },
-    async saveCollection(payload, rootState) {
+    async saveCollection(payload: any, rootState: any) {
       // Ensure nowSteps are merged into collection data.
       dispatch.collection.saveNowStepsToCollection();
 
       let collectionData = rootState.collection.collection;
       collectionData.steps = collectionData.steps.map(
-        (step) =>
-          unflatten(rootState.collection.nowSteps).filter((node) =>
+        (step: any) =>
+          unflatten(rootState.collection.nowSteps).filter((node: any) =>
             isCommitEqual(node.commit, step.commit),
           )[0] || step,
       );
@@ -370,9 +376,9 @@ const collection = {
       }
     },
   }),
-  selectors: (slice, createSelector, hasProps) => ({
+  selectors: (slice: Function, createSelector: any, hasProps: Function) => ({
     nowArticleMeta() {
-      return slice((collectionModel) => {
+      return slice((collectionModel: any) => {
         if (!collectionModel.collection) {
           return {};
         }
@@ -384,7 +390,7 @@ const collection = {
 
         if (nowArticleId) {
           return articles.filter(
-            (elem) => elem.id.toString() === nowArticleId.toString(),
+            (elem: any) => elem.id.toString() === nowArticleId.toString(),
           )[0];
         }
 
@@ -392,7 +398,7 @@ const collection = {
       });
     },
     nowArticleCatalogue() {
-      return slice((collectionModel) => {
+      return slice((collectionModel: any) => {
         if (!collectionModel.collection) {
           return [];
         }
@@ -403,22 +409,22 @@ const collection = {
         } = collectionModel;
 
         let finalSteps = nowArticleId
-          ? steps.filter((step) => step.articleId === nowArticleId)
+          ? steps.filter((step: any) => step.articleId === nowArticleId)
           : steps;
 
         return getHeadings(finalSteps);
       });
     },
     collectionMeta() {
-      return slice((collectionModel) => {
+      return slice((collectionModel: any) => {
         const { name, cover, description, topics } =
           collectionModel?.collection || {};
 
         return { name, cover, description, topics };
       });
     },
-    getArticleMetaById: hasProps((__, props) => {
-      return slice((collectionModel) => {
+    getArticleMetaById: hasProps((__: any, props: any) => {
+      return slice((collectionModel: any) => {
         const { id } = props;
         if (!collectionModel.collection) {
           return {};
@@ -428,14 +434,14 @@ const collection = {
           collectionModel?.collection || {};
 
         if (id) {
-          return articles.filter((elem) => elem.id === id)[0];
+          return articles.filter((elem: any) => elem.id === id)[0];
         }
 
         return { name, description, topics, cover };
       });
     }),
-    getStepFileListAndTitle: hasProps((__, props) => {
-      return slice((collectionModel) => {
+    getStepFileListAndTitle: hasProps((__: any, props: any) => {
+      return slice((collectionModel: any) => {
         if (!collectionModel.collection) {
           return { fileList: [], title: '' };
         }
@@ -444,8 +450,8 @@ const collection = {
 
         let flag = '';
         let title = '';
-        let fileList = [];
-        collectionModel.nowSteps.forEach((node) => {
+        let fileList: any[] = [];
+        collectionModel.nowSteps.forEach((node: any) => {
           switch (node.type) {
             case STEP: {
               if (isCommitEqual(node.commit, commit)) {
@@ -487,19 +493,19 @@ const collection = {
       });
     }),
     getArticleStepList() {
-      return slice((collectionModel) => {
+      return slice((collectionModel: any) => {
         const articles = collectionModel.collection?.articles || [];
         const steps = collectionModel.collection?.steps || [];
 
         const articleStepList = articles.reduce(
-          (initialArticleStepList, nowArticle) => {
+          (initialArticleStepList: any, nowArticle: any) => {
             const articleItem = {
               ...pick(nowArticle, ['id', 'name']),
               level: 0,
             };
             const stepList = steps
-              .filter((step) => step?.articleId === nowArticle.id)
-              .map((step) => ({
+              .filter((step: any) => step?.articleId === nowArticle.id)
+              .map((step: any) => ({
                 ...pick(step, ['id', 'articleId', 'outdated']),
                 level: 1,
                 number: getNumFromStepId(step.id, steps),
@@ -515,13 +521,13 @@ const collection = {
       });
     },
     getUnassignedStepList() {
-      return slice((collectionModel) => {
+      return slice((collectionModel: any) => {
         if (!collectionModel.collection?.steps) {
           return [];
         }
         const unassignedStepList = collectionModel.collection?.steps
-          .filter((step) => !step?.articleId)
-          .map((step) => ({
+          .filter((step: any) => !step?.articleId)
+          .map((step: any) => ({
             id: step.id,
             outdated: step?.outdated,
             level: 1,

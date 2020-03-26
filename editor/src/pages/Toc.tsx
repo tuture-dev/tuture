@@ -6,8 +6,8 @@ import { Spin } from 'antd';
 import { Toc as TocComponent } from '../components/';
 
 function Toc() {
-  const loading = useSelector(
-    ({ loading }) =>
+  const loading: any = useSelector(
+    ({ loading }: any) =>
       loading.effects.collection.fetchCollection || loading.models.diff,
   );
 

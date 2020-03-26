@@ -1,7 +1,7 @@
 import { message } from 'antd';
 import omit from 'lodash.omit';
 
-function getArticleIdFromId(stepList, stepId) {
+function getArticleIdFromId(stepList: [any], stepId: any) {
   const articleId = stepList.filter((step) => step.id === stepId)[0].articleId;
 
   return articleId;
@@ -12,14 +12,14 @@ const toc = {
     isSaving: false,
   },
   reducers: {
-    setSaveStatus(state, payload) {
+    setSaveStatus(state: any, payload: any): any {
       state.isSaving = payload;
 
       return state;
     },
   },
-  effects: (dispatch) => ({
-    async save(payload, rootState) {
+  effects: (dispatch: any) => ({
+    async save(payload: any, rootState: any) {
       const {
         articleStepList = [],
         unassignedStepList = [],
@@ -30,21 +30,21 @@ const toc = {
 
       // handle article deletion
       const nowArticleIdList = articleStepList
-        .filter((step) => !step?.articleId)
-        .map((step) => step.id);
-      articles = articles.filter((article) =>
+        .filter((step: any) => !step?.articleId)
+        .map((step: any) => step.id);
+      articles = articles.filter((article: any) =>
         nowArticleIdList.includes(article.id),
       );
 
       // handle step allocation
       const nowAllocationStepList = articleStepList.filter(
-        (step) => step?.articleId,
+        (step: any) => step?.articleId,
       );
       const nowAllocationStepIdList = nowAllocationStepList.map(
-        (step) => step.id,
+        (step: any) => step.id,
       );
 
-      steps = steps.map((step) => {
+      steps = steps.map((step: any) => {
         if (nowAllocationStepIdList.includes(step.id)) {
           const articleId = getArticleIdFromId(nowAllocationStepList, step.id);
 
@@ -54,8 +54,10 @@ const toc = {
         return step;
       });
 
-      const unassignedStepIdList = unassignedStepList.map((step) => step.id);
-      steps = steps.map((step) => {
+      const unassignedStepIdList = unassignedStepList.map(
+        (step: any) => step.id,
+      );
+      steps = steps.map((step: any) => {
         if (unassignedStepIdList.includes(step.id)) {
           step = omit(step, ['articleId']);
         }
@@ -64,7 +66,9 @@ const toc = {
       });
 
       // delete outdated deleted step
-      steps = steps.filter((step) => !deleteOutdatedStepList.includes(step.id));
+      steps = steps.filter(
+        (step: any) => !deleteOutdatedStepList.includes(step.id),
+      );
 
       dispatch.collection.updateArticles(articles);
       dispatch.collection.updateSteps(steps);
@@ -72,7 +76,7 @@ const toc = {
       dispatch.collection.saveCollection();
 
       message.success('目录保存成功');
-      this.setSaveStatus(false);
+      dispatch.toc.setSaveStatus(false);
     },
   }),
 };

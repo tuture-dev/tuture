@@ -7,12 +7,12 @@ const sync = {
     remotes: null,
   },
   reducers: {
-    setSyncVisible(state, payload) {
+    setSyncVisible(state: any, payload: any) {
       state.syncVisible = payload;
     },
   },
-  effects: (dispatch) => ({
-    async sync(payload) {
+  effects: (dispatch: any) => ({
+    async sync(payload: any) {
       await dispatch.collection.saveCollection();
 
       try {
@@ -46,7 +46,7 @@ const sync = {
         }
       }
     },
-    async fetchRemotes(payload, rootState) {
+    async fetchRemotes(payload: any, rootState: any) {
       const response = await fetch('/remotes');
       const body = await response.json();
 

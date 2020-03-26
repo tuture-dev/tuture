@@ -17,7 +17,7 @@ import { useDispatch, useSelector, useStore } from 'react-redux';
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 
-import IconFont from 'components/IconFont';
+import IconFont from '../../components/IconFont';
 
 const { Search } = Input;
 const { confirm } = Modal;
@@ -71,8 +71,8 @@ const activeListItemStyle = css`
 `;
 
 function Toc() {
-  const store = useStore();
-  const dispatch = useDispatch();
+  const store: any = useStore();
+  const dispatch: any = useDispatch();
 
   const defaultUnassignedStepList = useSelector(
     store.select.collection.getUnassignedStepList,
@@ -83,14 +83,14 @@ function Toc() {
   const defaultArticleStepList = useSelector(
     store.select.collection.getArticleStepList,
   );
-  const isSaving = useSelector((state) => state.toc.isSaving);
+  const isSaving = useSelector((state: any) => state.toc.isSaving);
 
   const [searchValue, setSearchValue] = useState('');
   const [activeArticle, setActiveArticle] = useState('');
-  const [articleStepList, setArticleStepList] = useState(
+  const [articleStepList, setArticleStepList]: [any, any] = useState(
     defaultArticleStepList,
   );
-  const [unassignedStepList, setUnassignedStepList] = useState(
+  const [unassignedStepList, setUnassignedStepList]: [any, any] = useState(
     defaultUnassignedStepList,
   );
   const [deleteOutdatedStepList, setDeleteOutdatedStepList] = useState([]);
@@ -113,7 +113,7 @@ function Toc() {
     setArticleStepList(defaultArticleStepList);
   }, [defaultArticleStepList]);
 
-  const filteredArticleList = articleStepList.filter((articleStep) => {
+  const filteredArticleList = articleStepList.filter((articleStep: any) => {
     if (!articleStep?.articleId) {
       return true;
     }
@@ -124,7 +124,7 @@ function Toc() {
 
     return false;
   });
-  const filteredUnassignedStepList = unassignedStepList.filter((step) => {
+  const filteredUnassignedStepList = unassignedStepList.filter((step: any) => {
     const isQualified = step.name.indexOf(searchValue);
     if (isQualified >= 0) {
       return true;
@@ -133,7 +133,7 @@ function Toc() {
     return false;
   });
 
-  function toggleActiveArticle(articleId) {
+  function toggleActiveArticle(articleId: any) {
     if (activeArticle === articleId) {
       setActiveArticle('');
     } else {
@@ -141,22 +141,22 @@ function Toc() {
     }
   }
 
-  function handleAddStep(stepItem) {
+  function handleAddStep(stepItem: any) {
     if (!activeArticle) {
       message.warning('请选中文章，再添加步骤');
     } else {
       const targetArticleStepIndex = articleStepList.findIndex(
-        (articleStep) =>
+        (articleStep: any) =>
           articleStep?.articleId === activeArticle &&
           articleStep?.number > stepItem.number,
       );
       const articleStepsLen = articleStepList.filter(
-        (articleStep) => articleStep?.articleId === activeArticle,
+        (articleStep: any) => articleStep?.articleId === activeArticle,
       ).length;
 
       if (targetArticleStepIndex < 0 && articleStepsLen === 0) {
         const articleIndex = articleStepList.findIndex(
-          (articleStep) => articleStep.id === activeArticle,
+          (articleStep: any) => articleStep.id === activeArticle,
         );
 
         const newArticleStepList = [
@@ -167,7 +167,7 @@ function Toc() {
         setArticleStepList(newArticleStepList);
       } else if (targetArticleStepIndex < 0 && articleStepsLen > 0) {
         const articleIndex = articleStepList.findIndex(
-          (articleStep) => articleStep.id === activeArticle,
+          (articleStep: any) => articleStep.id === activeArticle,
         );
 
         const newArticleStepList = [
@@ -186,7 +186,7 @@ function Toc() {
       }
 
       const newUnassignedStepList = unassignedStepList.filter(
-        (step) => step.id !== stepItem.id,
+        (step: any) => step.id !== stepItem.id,
       );
       setUnassignedStepList(newUnassignedStepList);
 
@@ -194,9 +194,9 @@ function Toc() {
     }
   }
 
-  function handleInsertStep(step, stepList) {
+  function handleInsertStep(step: any, stepList: [any]) {
     const insertIndex = stepList.findIndex(
-      (stepItem) => stepItem.number > step.number,
+      (stepItem: any) => stepItem.number > step.number,
     );
 
     if (insertIndex > -1) {
@@ -214,13 +214,13 @@ function Toc() {
     }
   }
 
-  function handleArticleStepClick(e, articleStepItem) {
+  function handleArticleStepClick(e: any, articleStepItem: any) {
     e.preventDefault();
     e.stopPropagation();
 
     if (articleStepItem?.articleId) {
       const newArticleStepList = articleStepList.filter(
-        (articleStep) => articleStep.id !== articleStepItem.id,
+        (articleStep: any) => articleStep.id !== articleStepItem.id,
       );
 
       setArticleStepList(newArticleStepList);
@@ -237,18 +237,18 @@ function Toc() {
     }
   }
 
-  function handleDeleteArticle(articleStepItem) {
+  function handleDeleteArticle(articleStepItem: any) {
     const stepList = articleStepList.filter(
-      (step) => step?.articleId === articleStepItem.id,
+      (step: any) => step?.articleId === articleStepItem.id,
     );
     const newUnassignedStepList = stepList.reduce(
-      (unassignedStepList, currentStep) =>
+      (unassignedStepList: any, currentStep: any) =>
         handleInsertStep(currentStep, unassignedStepList),
       unassignedStepList,
     );
     const newArticleStepList = articleStepList
-      .filter((step) => step?.articleId !== articleStepItem.id)
-      .filter((step) => step.id !== articleStepItem.id);
+      .filter((step: any) => step?.articleId !== articleStepItem.id)
+      .filter((step: any) => step.id !== articleStepItem.id);
 
     setUnassignedStepList(newUnassignedStepList);
     setArticleStepList(newArticleStepList);
@@ -257,7 +257,7 @@ function Toc() {
     message.success('删除文章成功');
   }
 
-  function showDeleteConfirm(articleStepItem) {
+  function showDeleteConfirm(articleStepItem: any) {
     confirm({
       title: `确定删除文章 ${articleStepItem.name}？`,
       okText: '删除',
@@ -327,7 +327,7 @@ function Toc() {
                   margin: 0;
                 `}
               >
-                {filteredUnassignedStepList.map((item) => (
+                {filteredUnassignedStepList.map((item: any) => (
                   <li
                     key={item.id}
                     css={css`
@@ -388,7 +388,7 @@ function Toc() {
                         );
 
                         const newUnassignedStepList = unassignedStepList.filter(
-                          (step) => step.id !== item.id,
+                          (step: any) => step.id !== item.id,
                         );
                         setUnassignedStepList(newUnassignedStepList);
                       }}
@@ -496,7 +496,7 @@ function Toc() {
                   margin-top: 16px;
                 `}
               >
-                {filteredArticleList.map((item) => (
+                {filteredArticleList.map((item: any) => (
                   <li
                     key={item.id}
                     onClick={() => {

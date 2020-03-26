@@ -3,15 +3,15 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
 
-import ConnectedLayout from './components/ConnectedLayout';
 import { globalStyles } from './shared/styles';
 import store from './store';
 import * as serviceWorker from './serviceWorker';
 import { ScrollToTop } from './components';
+import ConnectedLayout from './components/ConnectedLayout';
 
-import Home from './pages/Home';
-import Article from './pages/Article';
 import Toc from './pages/Toc';
+/* import Home from './pages/Home';
+import Article from './pages/Article'; */
 
 ReactDOM.render(
   <Provider store={store}>
@@ -23,12 +23,12 @@ ReactDOM.render(
           <Route path="/toc">
             <Toc />
           </Route>
-          <Route path="/articles/:id">
+          {/* <Route path="/articles/:id">
             <Article />
           </Route>
           <Route path="/" exact>
             <Home />
-          </Route>
+          </Route> */}
         </Switch>
       </ConnectedLayout>
     </Router>

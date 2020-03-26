@@ -9,26 +9,26 @@ const drawer = {
     selectedKeys: [],
   },
   reducers: {
-    setVisible(state, payload) {
+    setVisible(state: any, payload: any) {
       state.visible = payload;
 
       return state;
     },
-    setDrawerType(state, payload) {
+    setDrawerType(state: any, payload: any) {
       state.drawerType = payload;
 
       return state;
     },
-    setSelectedKeys(state, payload) {
+    setSelectedKeys(state: any, payload: any) {
       state.selectedKeys = payload;
 
       return state;
     },
-    setChildrenVisible(state, payload) {
+    setChildrenVisible(state: any, payload: any) {
       state.childrenVisible = payload;
       return state;
     },
-    setChildrenDrawerType(state, payload) {
+    setChildrenDrawerType(state: any, payload: any) {
       state.childrenDrawerType = payload;
 
       return state;

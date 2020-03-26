@@ -10,7 +10,7 @@ const versionControl = {
   }, // initial state
   reducers: {
     // handle state changes with pure functions
-    setCommitStatus(state, payload) {
+    setCommitStatus(state: any, payload: any) {
       state.commitStatus = payload;
 
       return state;

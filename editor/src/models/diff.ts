@@ -6,12 +6,12 @@ const diff = {
     diff: null,
   },
   reducers: {
-    setDiffData(state, payload) {
+    setDiffData(state: any, payload: any) {
       state.diff = payload;
       return state;
     },
   },
-  effects: (dispatch) => ({
+  effects: (dispatch: any) => ({
     async fetchDiff() {
       try {
         const response = await fetch('/diff');
@@ -22,15 +22,15 @@ const diff = {
       }
     },
   }),
-  selectors: (slice, createSelector, hasProps) => ({
-    getDiffItemByCommitAndFile: hasProps((__, props) => {
-      return slice((diffModel) => {
+  selectors: (slice: Function, createSelector: any, hasProps: Function) => ({
+    getDiffItemByCommitAndFile: hasProps((__: any, props: any) => {
+      return slice((diffModel: any) => {
         const emptyVal = { chunks: [] };
         if (!diffModel?.diff) {
           return emptyVal;
         }
 
-        const commit = diffModel.diff.filter((item) =>
+        const commit = diffModel.diff.filter((item: any) =>
           isCommitEqual(item.commit, props.commit),
         )[0];
 
@@ -39,7 +39,8 @@ const diff = {
         }
 
         return (
-          commit.diff.filter((item) => item.to === props.file)[0] || emptyVal
+          commit.diff.filter((item: any) => item.to === props.file)[0] ||
+          emptyVal
         );
       });
     }),

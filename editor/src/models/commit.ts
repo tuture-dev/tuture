@@ -7,25 +7,25 @@ const commit = {
     message: '',
   },
   reducers: {
-    startEdit(state) {
+    startEdit(state: any) {
       state.isEditing = true;
       return state;
     },
-    reset(state) {
+    reset(state: any) {
       state.isEditing = false;
       state.message = '';
 
       return state;
     },
-    setMessage(state, payload) {
+    setMessage(state: any, payload: any) {
       state.message = payload;
       return state;
     },
   },
-  effects: (dispatch) => ({
-    async commit(payload) {
+  effects: (dispatch: any) => ({
+    async commit(payload: any) {
       try {
-        const response = await timeout(
+        const response: any = await timeout(
           5000,
           fetch('/commit', {
             method: 'POST',

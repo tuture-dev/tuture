@@ -3,7 +3,7 @@ const slate = {
     lang: '',
   },
   reducers: {
-    setLang(state, payload) {
+    setLang(state: any, payload: any) {
       state.lang = payload;
 
       return state;
