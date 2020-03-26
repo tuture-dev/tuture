@@ -9,7 +9,7 @@ export default {
   assetsSyncInterval: 10000,
 
   // Path to build outputs.
-  buildPath: 'tuture-build',
+  buildPath: path.join(TUTURE_ROOT, 'build'),
 
   // Port to use for tuture-server.
   port: 3013,

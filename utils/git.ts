@@ -45,17 +45,10 @@ export async function storeDiff(commits: string[]) {
  * Append .tuture rule to gitignore.
  * If it's already ignored, do nothing.
  * If .gitignore doesn't exist, create one and add the rule.
- * @param config User config
  */
-export function appendGitignore(config: any) {
-  const ignoreRules = [
-    '# Tuture-related files\n',
-    TUTURE_ROOT,
-    config.buildPath,
-  ].join('\n');
-
+export function appendGitignore() {
   if (!fs.existsSync('.gitignore')) {
-    fs.writeFileSync('.gitignore', `${ignoreRules}\n`);
+    fs.writeFileSync('.gitignore', `${TUTURE_ROOT}\n`);
     logger.log('info', '.gitignore file created.');
   } else if (
     !fs
@@ -63,7 +56,7 @@ export function appendGitignore(config: any) {
       .toString()
       .includes(TUTURE_ROOT)
   ) {
-    fs.appendFileSync('.gitignore', `\n${ignoreRules}`);
+    fs.appendFileSync('.gitignore', `\n${TUTURE_ROOT}`);
     logger.log('info', '.gitignore rules appended.');
   }
 }
