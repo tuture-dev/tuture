@@ -3,6 +3,7 @@ import * as F from 'editure-constants';
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 
+import React from 'react';
 import Menu from './Menu';
 import EditLink from './EditLink';
 import SplitLine from './SplitLine';
@@ -16,7 +17,7 @@ import LinkButton from './LinkButton';
 import HistoryButton from './HistoryButton';
 import SelectContentType from './SelectContentType';
 
-const Toolbar = (props) => {
+const Toolbar = (props: any) => {
   return (
     <Menu
       {...props}

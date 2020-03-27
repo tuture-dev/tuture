@@ -1,6 +1,6 @@
+/** @jsx jsx */
 import React from 'react';
 
-/** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 import { Button, Row, Col, Breadcrumb } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
@@ -11,10 +11,12 @@ import SyncModal from './SyncModal';
 import LastSavedTimestamp from './LastSavedTimestamp';
 
 function LayoutHeader() {
-  const dispatch = useDispatch();
+  const dispatch: any = useDispatch();
   const { name = '' } =
-    useSelector((state) => state.collection.collection) || {};
-  const isSyncing = useSelector((state) => state.loading.effects.sync.sync);
+    useSelector((state: any) => state.collection.collection) || {};
+  const isSyncing = useSelector(
+    (state: any) => state.loading.effects.sync.sync,
+  );
 
   const isToc = useRouteMatch('/toc');
 
@@ -49,7 +51,7 @@ function LayoutHeader() {
             保存
           </Button>
         ) : (
-          <>
+          <div>
             <Button
               type="primary"
               css={css`
@@ -61,7 +63,7 @@ function LayoutHeader() {
               同步
             </Button>
             <SyncModal />
-          </>
+          </div>
         )}
       </Col>
     </Row>

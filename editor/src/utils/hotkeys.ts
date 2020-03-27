@@ -6,7 +6,7 @@ import * as F from 'editure-constants';
 import { EXPLAIN } from '../utils/constants';
 import { IS_MAC } from './getOS';
 
-export function getHotkeyHint(hotkey) {
+export function getHotkeyHint(hotkey: string) {
   const keys = hotkey.split('+');
 
   keys[0] = IS_MAC ? '⌘' : 'Ctrl';
@@ -45,7 +45,7 @@ export const OP_HOTKEYS = {
 
 const containerBlocks = [F.BLOCK_QUOTE, F.CODE_BLOCK, F.NOTE, EXPLAIN];
 
-function handleTabKey(editor, event) {
+function handleTabKey(editor: any, event: any) {
   event.preventDefault();
 
   const { beforeText } = getBeforeText(editor);
@@ -65,14 +65,14 @@ function handleTabKey(editor, event) {
   }
 }
 
-function handleShiftTabKey(editor, event) {
+function handleShiftTabKey(editor: any, event: any) {
   event.preventDefault();
   if (editor.isBlockActive(F.LIST_ITEM)) {
     editor.decreaseItemDepth();
   }
 }
 
-function handleSelectAll(editor, event) {
+function handleSelectAll(editor: any, event: any) {
   const format = editor.detectBlockFormat(containerBlocks);
 
   if (format) {
@@ -81,7 +81,7 @@ function handleSelectAll(editor, event) {
   }
 }
 
-function handleSelectUpperLeftAll(editor, event) {
+function handleSelectUpperLeftAll(editor: any, event: any) {
   const format = editor.detectBlockFormat(containerBlocks);
   if (format) {
     event.preventDefault();
@@ -89,7 +89,7 @@ function handleSelectUpperLeftAll(editor, event) {
   }
 }
 
-function handleSelectLowerRightAll(editor, event) {
+function handleSelectLowerRightAll(editor: any, event: any) {
   const format = editor.detectBlockFormat(containerBlocks);
   if (format) {
     event.preventDefault();
@@ -97,7 +97,7 @@ function handleSelectLowerRightAll(editor, event) {
   }
 }
 
-function handleExitBlock(editor, event) {
+function handleExitBlock(editor: any, event: any) {
   const format = editor.detectBlockFormat([
     F.CODE_BLOCK,
     F.BLOCK_QUOTE,
@@ -123,10 +123,10 @@ export const buttonRefs = {
 
 export const ButtonRefsContext = React.createContext(buttonRefs);
 
-export const createHotKeysHandler = (editor) => {
-  const { imageBtnRef, linkBtnRef, saveBtnRef } = buttonRefs;
+export const createHotKeysHandler = (editor: any) => {
+  const { imageBtnRef, linkBtnRef, saveBtnRef }: any = buttonRefs;
 
-  return (event) => {
+  return (event: any) => {
     /* eslint-disable no-restricted-syntax */
     for (const [mark, { hotkey }] of Object.entries(MARK_HOTKEYS)) {
       if (isHotkey(hotkey, event)) {
