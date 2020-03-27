@@ -12,6 +12,7 @@ export default class Pull extends BaseCommand {
 
   static flags = {
     help: flags.help({ char: 'h' }),
+    remote: flags.string({ char: 'r', description: 'name of remote to pull' }),
   };
 
   async run() {
@@ -25,23 +26,30 @@ export default class Pull extends BaseCommand {
       this.exit(1);
     }
 
-    const remotes = await git.getRemotes(false);
+    let remoteToPull = flags.remote;
+    if (!remoteToPull) {
+      const remotes = await git.getRemotes(true);
 
-    if (remotes.length === 0) {
-      logger.log('error', 'Remote repository has not been configured.');
-      this.exit(1);
+      if (remotes.length === 0) {
+        logger.log('error', 'Remote repository has not been configured.');
+        this.exit(1);
+      } else {
+        // Select the first remote by default.
+        remoteToPull = remotes[0].name;
+      }
     }
 
     try {
       await git.checkout(TUTURE_BRANCH);
 
-      const { files } = await git.pull(remotes[0].name, TUTURE_BRANCH);
+      logger.log('info', `Starting to pull from ${remoteToPull}.`);
+      const { files } = await git.pull(remoteToPull, TUTURE_BRANCH);
 
       if (files.length > 0) {
         // Commit changes to tuture branch.
-        logger.log('success', 'Pulled to local.');
+        logger.log('success', `Pulled from ${remoteToPull} successfully.`);
       } else {
-        logger.log('success', 'Already up-to-date.');
+        logger.log('success', `Already up-to-date with ${remoteToPull}.`);
       }
     } catch (err) {
       const { conflicted } = await git.status();
@@ -53,6 +61,7 @@ export default class Pull extends BaseCommand {
           )} to move on.`,
         );
       } else {
+        // No remote tuture branch.
         logger.log('error', String(err.message).trim());
       }
 

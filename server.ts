@@ -58,17 +58,19 @@ const makeServer = (config: any) => {
     res.json(loadCollection());
   });
 
+  app.get('/remotes', (_, res) => {
+    git
+      .getRemotes(true)
+      .then((remotes) => res.json(remotes))
+      .catch((err) => res.status(500).json(err));
+  });
+
   app.post('/save', (req, res) => {
     saveCollection(req.body);
     res.sendStatus(200);
   });
 
-  app.post('/sync', async (req, res) => {
-    const { github } = req.body;
-
-    saveCollection(req.body);
-
-    await git.addRemote('origin', github);
+  app.get('/sync', async (req, res) => {
     cp.execFile('tuture', ['sync'], {}, (err) => {
       if (err) {
         res.sendStatus(500);

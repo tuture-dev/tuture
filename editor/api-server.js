@@ -25,23 +25,46 @@ app.get('/collection', async (_, res) => {
   res.json(JSON.parse(fs.readFileSync(collectionPath)));
 });
 
+app.get('/remotes', (_, res) => {
+  res.json([
+    {
+      name: 'origin',
+      refs: {
+        fetch: 'https://github.com/tuture-dev/tuture.git',
+        push: 'https://github.com/tuture-dev/tuture.git',
+      },
+    },
+    {
+      name: 'gitlab',
+      refs: {
+        fetch: 'https://gitlab.com/tuture-dev/tuture.git',
+        push: 'https://gitlab.com/tuture-dev/tuture.git',
+      },
+    },
+    {
+      name: 'coding',
+      refs: {
+        fetch: 'https://e.coding.net/tuture-dev/tuture.git',
+        push: 'https://e.coding.net/tuture-dev/tuture.git',
+      },
+    },
+  ]);
+});
+
 app.post('/save', (req, res) => {
   fs.writeFileSync(collectionPath, JSON.stringify(req.body, null, 2));
   res.sendStatus(200);
 });
 
-app.post('/sync', (req, res) => {
+app.get('/sync', (req, res) => {
   setTimeout(() => {
-    res.sendStatus(200);
-  }, 1000);
+    res.sendStatus(500);
+  }, 2000);
 });
 
 app.post('/upload', upload.single('file'), (req, res) => {
   console.log('detect upload', req.file);
-  res.json({
-    path:
-      'https://imgkr.cn-bj.ufileos.com/c5db4935-7704-4773-b613-31d92482dfb4.jpg',
-  });
+  res.json({ path: 'https://source.unsplash.com/random/400x200' });
 });
 
 app.listen(8000, () => {

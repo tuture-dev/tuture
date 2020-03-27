@@ -6,6 +6,7 @@ import logger from './logger';
 import { git } from './git';
 import {
   TUTURE_ROOT,
+  TUTURE_VCS_ROOT,
   COLLECTION_PATH,
   TUTURE_BRANCH,
   COLLECTION_CHECKPOINT,
@@ -24,7 +25,13 @@ export const collectionCheckpoint = path.join(
   COLLECTION_CHECKPOINT,
 );
 
-export function hasTutureChangedSinceCheckpoint() {
+export const collectionVcsPath = path.join(
+  process.env.TUTURE_PATH || process.cwd(),
+  TUTURE_VCS_ROOT,
+  COLLECTION_PATH,
+);
+
+export function hasCollectionChangedSinceCheckpoint() {
   if (!fs.existsSync(collectionCheckpoint)) {
     return true;
   }
@@ -44,7 +51,6 @@ export async function hasLocalTutureBranch() {
  * Whether the remote tuture branch exists.
  */
 export async function hasRemoteTutureBranch() {
-  await git.remote(['update', '--prune']);
   const remote = await git.remote([]);
 
   if (!remote) {
@@ -52,19 +58,63 @@ export async function hasRemoteTutureBranch() {
     return false;
   }
 
-  const remoteBranch = `remotes/${remote.trim()}/${TUTURE_BRANCH}`;
-  if (!(await git.branch({ '-a': true })).all.includes(remoteBranch)) {
-    return false;
-  }
+  const branchExists = async (branch: string) => {
+    const { all } = await git.branch({ '-a': true });
+    return all.includes(remoteBranch);
+  };
 
-  return true;
+  const remoteBranch = `remotes/${remote.trim()}/${TUTURE_BRANCH}`;
+
+  // Trying to update remote branches (time-consuming).
+  await git.remote(['update', '--prune']);
+
+  return await branchExists(remoteBranch);
 }
 
 /**
  * Load collection.
  */
 export function loadCollection(): Collection {
-  return JSON.parse(fs.readFileSync(collectionPath).toString());
+  const collection = JSON.parse(fs.readFileSync(collectionPath).toString());
+
+  // COMPAT: convert hiddenLines field
+  if (collection.version !== 'v1') {
+    const convertHiddenLines = (hiddenLines: number[]) => {
+      const rangeGroups = [];
+      let startNumber = null;
+
+      for (let i = 0; i < hiddenLines.length; i++) {
+        const prev = hiddenLines[i - 1];
+        const current = hiddenLines[i];
+        const next = hiddenLines[i + 1];
+
+        if (current !== prev + 1 && current !== next - 1) {
+          rangeGroups.push([current, current]);
+        } else if (current !== prev + 1) {
+          startNumber = hiddenLines[i];
+        } else if (current + 1 !== next) {
+          rangeGroups.push([startNumber, hiddenLines[i]]);
+        }
+      }
+
+      return rangeGroups;
+    };
+
+    for (const step of collection.steps) {
+      for (const node of step.children) {
+        if (node.type === 'file') {
+          const diffBlock = node.children[1];
+          if (diffBlock.hiddenLines) {
+            diffBlock.hiddenLines = convertHiddenLines(diffBlock.hiddenLines);
+          }
+        }
+      }
+    }
+
+    collection.version = 'v1';
+  }
+
+  return collection;
 }
 
 /**

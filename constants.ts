@@ -10,8 +10,11 @@ export const ASSETS_JSON_CHECKPOINT = 'tuture-assets.ckpt.json';
 
 export const TUTURE_IGNORE_PATH = '.tutureignore';
 
-// Directory which houses tuture internal files.
+// The workspace for storing tutorial-related data.
 export const TUTURE_ROOT = '.tuture';
+
+// Directory which houses tutorial data on VCS.
+export const TUTURE_VCS_ROOT = '.tuture-committed';
 
 export const DIFF_PATH = path.join(TUTURE_ROOT, 'diff.json');
 

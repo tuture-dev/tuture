@@ -181,6 +181,9 @@ const collection = {
 
       state.nowSteps = flatten(unflattenedNowSteps);
     },
+    setRemotes(state, payload) {
+      state.collection.remotes = payload;
+    },
     setEditArticleId(state, payload) {
       state.editArticleId = payload;
     },

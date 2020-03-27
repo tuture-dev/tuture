@@ -14,11 +14,8 @@ import {
   inferGithubField,
   appendGitHook,
   appendGitignore,
+  selectRemotes,
 } from '../utils/git';
-
-type ConfirmResponse = {
-  answer: boolean;
-};
 
 export default class Init extends BaseCommand {
   static description = 'Initialize a tuture tutorial';
@@ -34,7 +31,9 @@ export default class Init extends BaseCommand {
   async promptInitGit(yes: boolean) {
     const response = yes
       ? { answer: true }
-      : await prompt([
+      : await prompt<{
+          answer: boolean;
+        }>([
           {
             name: 'answer',
             type: 'confirm',
@@ -44,7 +43,7 @@ export default class Init extends BaseCommand {
           },
         ]);
 
-    if (!(response as ConfirmResponse).answer) {
+    if (!response.answer) {
       this.exit(0);
     } else {
       await git.init();
@@ -130,6 +129,16 @@ export default class Init extends BaseCommand {
           )}. Feel free to revise or delete it.`,
         );
         collection.github = github;
+      }
+
+      const remotes = await git.getRemotes(true);
+
+      if (remotes.length > 0) {
+        if (flags.yes) {
+          collection.remotes = [remotes[0]];
+        } else {
+          collection.remotes = await selectRemotes(remotes);
+        }
       }
 
       saveCollection(collection);

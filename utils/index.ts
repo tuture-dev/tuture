@@ -9,6 +9,7 @@ import { getEmptyExplain, getEmptyChildren } from './nodes';
 import { collectionPath } from './collection';
 import { TUTURE_ROOT, TUTURE_BRANCH } from '../constants';
 import { git, storeDiff } from './git';
+import logger from './logger';
 
 /**
  * Compare if two commit hashes are equal.
@@ -24,7 +25,9 @@ export async function removeTutureSuite() {
   await fs.remove(TUTURE_ROOT);
 }
 
-function getHiddenLines(diffItem: DiffFile): number[] {
+type Range = [number, number];
+
+function getHiddenLines(diffItem: DiffFile): Range[] {
   // Number of context normal lines to show for each diff.
   const context = 3;
 
@@ -61,9 +64,19 @@ function getHiddenLines(diffItem: DiffFile): number[] {
     }
   }
 
-  return shownArr
-    .map((elem, index) => (elem ? null : index))
-    .filter((elem) => elem !== null) as number[];
+  const hiddenLines: Range[] = [];
+  let startNumber = null;
+
+  for (let i = 0; i < shownArr.length; i++) {
+    if (!shownArr[i] && startNumber === null) {
+      startNumber = i;
+    } else if (i > 0 && !shownArr[i - 1] && shownArr[i]) {
+      hiddenLines.push([startNumber!, i - 1]);
+      startNumber = null;
+    }
+  }
+
+  return hiddenLines;
 }
 
 function convertFile(commit: string, file: DiffFile, display = false) {
@@ -188,15 +201,25 @@ export async function checkInitStatus(nothrow = false) {
     throw new Error('Current branch does not have any commits yet.');
   }
 
-  // Update remote branches.
+  if (fs.existsSync(collectionPath)) {
+    return true;
+  }
+
+  const branchExists = async () => {
+    return (await git.branch({ '-a': true })).all
+      .map((branch) => branch.split('/').slice(-1)[0])
+      .includes(TUTURE_BRANCH);
+  };
+
+  if (await branchExists()) {
+    return true;
+  }
+
+  // Trying to update remote branches (time-consuming).
+  logger.log('info', 'Trying to update remote branches ...');
   await git.remote(['update', '--prune']);
 
-  const workspaceExists = fs.existsSync(collectionPath);
-  const branchExists = (await git.branch({ '-a': true })).all
-    .map((branch) => branch.split('/').slice(-1)[0])
-    .includes(TUTURE_BRANCH);
-
-  if (!workspaceExists && !branchExists) {
+  if (!(await branchExists())) {
     if (nothrow) return false;
 
     throw new Error(
