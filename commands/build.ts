@@ -95,7 +95,7 @@ export default class Build extends BaseCommand {
     help: flags.help({ char: 'h' }),
     out: flags.string({
       char: 'o',
-      description: 'name of output file',
+      description: 'name of output directory',
     }),
     hexo: flags.boolean({
       description: 'hexo compatibility mode',
