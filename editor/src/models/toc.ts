@@ -1,25 +1,38 @@
 import { message } from 'antd';
 import omit from 'lodash.omit';
 
-function getArticleIdFromId(stepList: [any], stepId: any) {
-  const articleId = stepList.filter((step) => step.id === stepId)[0].articleId;
+import { Dispatch, RootState } from '../store';
+import { TocItem, TocStepItem } from '../types';
+import { Step } from '../../../types';
 
-  return articleId;
+function getArticleIdFromId(items: TocItem[], stepId: string) {
+  const item = items.filter((item) => item.id === stepId)[0];
+  return (item as TocStepItem).articleId;
 }
 
-const toc = {
+export type TocState = {
+  isSaving: boolean;
+};
+
+export const toc = {
   state: {
     isSaving: false,
   },
   reducers: {
-    setSaveStatus(state: any, payload: any): any {
-      state.isSaving = payload;
-
+    setSaveStatus(state: TocState, isSaving: boolean) {
+      state.isSaving = isSaving;
       return state;
     },
   },
-  effects: (dispatch: any) => ({
-    async save(payload: any, rootState: any) {
+  effects: (dispatch: Dispatch) => ({
+    async save(
+      payload: {
+        articleStepList?: TocItem[];
+        unassignedStepList?: TocStepItem[];
+        deleteOutdatedStepList?: TocStepItem[];
+      },
+      rootState: RootState,
+    ) {
       const {
         articleStepList = [],
         unassignedStepList = [],
@@ -30,38 +43,32 @@ const toc = {
 
       // handle article deletion
       const nowArticleIdList = articleStepList
-        .filter((step: any) => !step?.articleId)
-        .map((step: any) => step.id);
+        .filter((item) => !(item as TocStepItem).articleId)
+        .map((item) => item.id);
       articles = articles.filter((article: any) =>
         nowArticleIdList.includes(article.id),
       );
 
       // handle step allocation
       const nowAllocationStepList = articleStepList.filter(
-        (step: any) => step?.articleId,
+        (item) => (item as TocStepItem).articleId,
       );
       const nowAllocationStepIdList = nowAllocationStepList.map(
-        (step: any) => step.id,
+        (item) => item.id,
       );
 
-      steps = steps.map((step: any) => {
+      steps = steps.map((step) => {
         if (nowAllocationStepIdList.includes(step.id)) {
-          const articleId = getArticleIdFromId(nowAllocationStepList, step.id);
-
-          step.articleId = articleId;
+          step.articleId = getArticleIdFromId(nowAllocationStepList, step.id);
         }
-
         return step;
       });
 
-      const unassignedStepIdList = unassignedStepList.map(
-        (step: any) => step.id,
-      );
-      steps = steps.map((step: any) => {
+      const unassignedStepIdList = unassignedStepList.map((step) => step.id);
+      steps = steps.map((step) => {
         if (unassignedStepIdList.includes(step.id)) {
-          step = omit(step, ['articleId']);
+          step = omit(step, ['articleId']) as Step;
         }
-
         return step;
       });
 
@@ -80,5 +87,3 @@ const toc = {
     },
   }),
 };
-
-export default toc;

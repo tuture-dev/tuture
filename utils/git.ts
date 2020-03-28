@@ -7,7 +7,7 @@ import simplegit from 'simple-git/promise';
 
 import logger from './logger';
 import { TUTURE_ROOT } from '../constants';
-import { Remote } from '../types';
+import { Remote, RawDiff } from '../types';
 
 // Interface for running git commands.
 // https://github.com/steveukx/git-js
@@ -31,7 +31,7 @@ export async function storeDiff(commits: string[]) {
       .split('\n\n')
       .slice(-1)[0];
     const diff = parseDiff(diffText);
-    return { commit, diff };
+    return { commit, diff } as RawDiff;
   });
 
   const diffs = await Promise.all(diffPromises);

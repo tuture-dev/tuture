@@ -1,18 +1,31 @@
 import React from 'react';
 import { message, notification } from 'antd';
 
-const sync = {
-  state: {
-    syncVisible: false,
-    remotes: null,
-  },
+import { Dispatch } from '../store';
+import { Remote } from '../../../types';
+
+export type SyncState = {
+  syncVisible: boolean;
+  remotes: Remote[];
+};
+
+const initialState: SyncState = {
+  syncVisible: false,
+  remotes: [],
+};
+
+export const sync = {
+  state: initialState,
   reducers: {
-    setSyncVisible(state: any, payload: any) {
-      state.syncVisible = payload;
+    setSyncVisible(state: SyncState, visible: boolean) {
+      state.syncVisible = visible;
+    },
+    setRemotes(state: SyncState, remotes: Remote[]) {
+      state.remotes = remotes;
     },
   },
-  effects: (dispatch: any) => ({
-    async sync(payload: any) {
+  effects: (dispatch: Dispatch) => ({
+    async sync(payload: { showMessage: boolean }) {
       await dispatch.collection.saveCollection();
 
       try {
@@ -46,13 +59,11 @@ const sync = {
         }
       }
     },
-    async fetchRemotes(payload: any, rootState: any) {
+    async fetchRemotes() {
       const response = await fetch('/remotes');
       const body = await response.json();
 
-      rootState.sync.remotes = body;
+      dispatch.sync.setRemotes(body as Remote[]);
     },
   }),
 };
-
-export default sync;

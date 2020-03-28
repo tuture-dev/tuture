@@ -7,8 +7,8 @@ export function isCommitEqual(commit1: string, commit2: string) {
   );
 }
 
-export function timeout(ms: number, promise: Promise<any>) {
-  return new Promise(function(resolve, reject) {
+export function timeout<T>(ms: number, promise: Promise<T>) {
+  return new Promise<T>(function(resolve, reject) {
     setTimeout(function() {
       reject(new Error('timeout'));
     }, ms);

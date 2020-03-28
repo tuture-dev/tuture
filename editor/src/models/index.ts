@@ -1,9 +1,8 @@
-export { default as link } from './link';
-export { default as diff } from './diff';
-export { default as commit } from './commit';
-export { default as toc } from './toc';
-export { default as drawer } from './drawer';
-export { default as collection } from './collection';
-export { default as versionControl } from './versionControl';
-export { default as slate } from './slate';
-export { default as sync } from './sync';
+export * from './collection';
+export * from './diff';
+export * from './commit';
+export * from './toc';
+export * from './drawer';
+export * from './link';
+export * from './slate';
+export * from './sync';

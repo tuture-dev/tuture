@@ -1,4 +1,10 @@
 import { Element } from 'slate';
+import parseDiff from 'parse-diff';
+
+export type RawDiff = {
+  commit: string;
+  diff: parseDiff.File[];
+};
 
 export interface Explain extends Element {
   type: 'explain';
@@ -39,13 +45,15 @@ export interface StepTitle extends Element {
   fixed: true;
 }
 
+export type StepChild = StepTitle | Explain | File;
+
 export interface Step extends Element {
   type: 'step';
   id: string;
   articleId?: string | null;
   outdated?: boolean;
   commit: string;
-  children: Array<StepTitle | Explain | File>;
+  children: StepChild[];
 }
 
 export interface Remote {

@@ -123,7 +123,7 @@
     "pretty-quick": "^2.0.1",
     "rimraf": "^2.6.2",
     "ts-jest": "^24.1.0",
-    "typescript": "~3.6.4"
+    "typescript": "^3.8.3"
   },
   "types": "lib/index.d.ts",
   "oclif": {

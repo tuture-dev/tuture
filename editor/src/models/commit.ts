@@ -1,31 +1,40 @@
 import { message } from 'antd';
+
+import { Dispatch } from '../store';
 import { timeout } from '../utils/commit';
 
-const commit = {
-  state: {
-    isEditing: false,
-    message: '',
-  },
+export type CommitState = {
+  isEditing: boolean;
+  message: string;
+};
+
+const initialState: CommitState = {
+  isEditing: false,
+  message: '',
+};
+
+export const commit = {
+  state: initialState,
   reducers: {
-    startEdit(state: any) {
+    startEdit(state: CommitState) {
       state.isEditing = true;
       return state;
     },
-    reset(state: any) {
+    reset(state: CommitState) {
       state.isEditing = false;
       state.message = '';
 
       return state;
     },
-    setMessage(state: any, payload: any) {
-      state.message = payload;
+    setMessage(state: CommitState, message: string) {
+      state.message = message;
       return state;
     },
   },
-  effects: (dispatch: any) => ({
-    async commit(payload: any) {
+  effects: (dispatch: Dispatch) => ({
+    async commit(payload: string) {
       try {
-        const response: any = await timeout(
+        const response = await timeout<Response>(
           5000,
           fetch('/commit', {
             method: 'POST',
@@ -52,5 +61,3 @@ const commit = {
     },
   }),
 };
-
-export default commit;

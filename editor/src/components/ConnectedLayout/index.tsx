@@ -1,14 +1,15 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, ReactNode } from 'react';
 
 import { useSelector, useDispatch, useStore } from 'react-redux';
 import { Layout, Affix, BackTop } from 'antd';
 import { Editure, ReactEditor } from 'editure-react';
-import { updateLastSelection } from 'editure';
+import { Node, updateLastSelection } from 'editure';
 import { useHistory } from 'react-router-dom';
 
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 
+import { Store, Dispatch, RootState } from '../../store';
 import { initializeEditor } from '../../utils/editor';
 import { buttonRefs, ButtonRefsContext } from '../../utils/hotkeys';
 
@@ -19,21 +20,23 @@ import ChildrenDrawerComponent from './ChildrenDrawerComponent';
 
 const { Header, Content } = Layout;
 
-function ConnectedLayout(props: any) {
+function ConnectedLayout(props: { children: ReactNode[] }) {
   const { children } = props;
-  const [timeoutState, setTimeoutState] = useState(null);
+  const [timeoutState, setTimeoutState] = useState<number | null>(null);
   const history = useHistory();
 
-  const store: any = useStore();
+  const store = useStore() as Store;
   const { name: pageTitle } = useSelector(
     store.select.collection.nowArticleMeta,
   );
-  const value = useSelector((state: any) => state.collection.nowSteps);
-  const outdatedNotificationClicked = useSelector(
-    (state: any) => state.collection.outdatedNotificationClicked,
+  const value = useSelector<RootState, Node[]>(
+    (state) => state.collection.nowSteps,
+  );
+  const outdatedNotificationClicked = useSelector<RootState, boolean>(
+    (state) => state.collection.outdatedNotificationClicked,
   );
 
-  const dispatch: any = useDispatch();
+  const dispatch = useDispatch<Dispatch>();
 
   useEffect(() => {
     dispatch.diff.fetchDiff();
@@ -53,14 +56,17 @@ function ConnectedLayout(props: any) {
     }
   }, [outdatedNotificationClicked]);
 
-  function resetTimeout(id: any, newId: any) {
-    clearTimeout(id);
+  function resetTimeout(id: number | null, newId: any) {
+    if (id) {
+      clearTimeout(id);
+    }
 
     return newId;
   }
 
-  function onContentChange(val: any) {
-    dispatch.collection.setNowSteps({ fragment: val });
+  function onContentChange(val: Node[]) {
+    dispatch.collection.setNowSteps(val);
+    const timeout = setTimeout(() => {}, 1000);
 
     setTimeoutState(
       resetTimeout(

@@ -1222,12 +1222,12 @@
   resolved "https://registry.npm.taobao.org/@nodelib/fs.stat/download/@nodelib/fs.stat-1.1.3.tgz#2b5a3ab3f918cca48a8c754c08168e3f03eba61b"
   integrity sha1-K1o6s/kYzKSKjHVMCBaOPwPrphs=
 
-"@rematch/core@^1.3.0":
-  version "1.3.0"
-  resolved "https://registry.npm.taobao.org/@rematch/core/download/@rematch/core-1.3.0.tgz#bd1c1330e7ab899dc5844ff6d289d9ef1f04fd94"
-  integrity sha1-vRwTMOeriZ3FhE/20onZ7x8E/ZQ=
+"@rematch/core@^1.4.0":
+  version "1.4.0"
+  resolved "https://registry.npm.taobao.org/@rematch/core/download/@rematch/core-1.4.0.tgz#686ce814e1cf125029c5e9fba23ef3ab7c3eb2a7"
+  integrity sha1-aGzoFOHPElApxen7oj7zq3w+sqc=
   dependencies:
-    redux "^4.0.4"
+    redux "^4.0.5"
 
 "@rematch/immer@^1.2.0":
   version "1.2.0"
@@ -1438,6 +1438,11 @@
     "@types/connect" "*"
     "@types/node" "*"
 
+"@types/classnames@^2.2.10":
+  version "2.2.10"
+  resolved "https://registry.npm.taobao.org/@types/classnames/download/@types/classnames-2.2.10.tgz#cc658ca319b6355399efc1f5b9e818f1a24bf999"
+  integrity sha1-zGWMoxm2NVOZ78H1uegY8aJL+Zk=
+
 "@types/connect@*":
   version "3.4.33"
   resolved "https://registry.npm.taobao.org/@types/connect/download/@types/connect-3.4.33.tgz#31610c901eca573b8713c3330abc6e6b9f588546"
@@ -1529,7 +1534,21 @@
   resolved "https://registry.npm.taobao.org/@types/json-schema/download/@types/json-schema-7.0.4.tgz#38fd73ddfd9b55abb1e1b2ed578cb55bd7b7d339"
   integrity sha1-OP1z3f2bVaux4bLtV4y1W9e30zk=
 
-"@types/lodash@^4.14.149":
+"@types/lodash.omit@^4.5.6":
+  version "4.5.6"
+  resolved "https://registry.npm.taobao.org/@types/lodash.omit/download/@types/lodash.omit-4.5.6.tgz#f2a9518259e481a48ff7ec423420fa8fd58933e2"
+  integrity sha1-8qlRglnkgaSP9+xCNCD6j9WJM+I=
+  dependencies:
+    "@types/lodash" "*"
+
+"@types/lodash.pick@^4.4.6":
+  version "4.4.6"
+  resolved "https://registry.npm.taobao.org/@types/lodash.pick/download/@types/lodash.pick-4.4.6.tgz#ae4e8f109e982786313bb6aac4b1a73aefa6e9be"
+  integrity sha1-rk6PEJ6YJ4YxO7aqxLGnOu+m6b4=
+  dependencies:
+    "@types/lodash" "*"
+
+"@types/lodash@*", "@types/lodash@^4.14.149":
   version "4.14.149"
   resolved "https://registry.npmjs.org/@types/lodash/-/lodash-4.14.149.tgz#1342d63d948c6062838fbf961012f74d4e638440"
   integrity sha512-ijGqzZt/b7BfzcK9vTrS6MFljQRPn5BFWOx8oE0GYxribu6uV+aA9zZuXI1zc/etK9E8nrgdoF2+LgUw7+9tJQ==
@@ -1548,6 +1567,11 @@
   version "13.7.2"
   resolved "https://registry.npm.taobao.org/@types/node/download/@types/node-13.7.2.tgz#50375b95b5845a34efda2ffb3a087c7becbc46c6"
   integrity sha1-UDdblbWEWjTv2i/7Ogh8e+y8RsY=
+
+"@types/node@^12.12.31":
+  version "12.12.31"
+  resolved "https://registry.npm.taobao.org/@types/node/download/@types/node-12.12.31.tgz?cache=0&sync_timestamp=1585118009210&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40types%2Fnode%2Fdownload%2F%40types%2Fnode-12.12.31.tgz#d6b4f9645fee17f11319b508fb1001797425da51"
+  integrity sha1-1rT5ZF/uF/ETGbUI+xABeXQl2lE=
 
 "@types/parse-json@^4.0.0":
   version "4.0.0"
@@ -10149,7 +10173,7 @@ redent@^3.0.0:
     indent-string "^4.0.0"
     strip-indent "^3.0.0"
 
-redux@^4.0.0, redux@^4.0.4:
+redux@^4.0.0, redux@^4.0.5:
   version "4.0.5"
   resolved "https://registry.npm.taobao.org/redux/download/redux-4.0.5.tgz?cache=0&sync_timestamp=1577154206919&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fredux%2Fdownload%2Fredux-4.0.5.tgz#4db5de5816e17891de8a80c424232d06f051d93f"
   integrity sha1-TbXeWBbheJHeioDEJCMtBvBR2T8=
