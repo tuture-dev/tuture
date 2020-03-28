@@ -1,12 +1,14 @@
-export function flattenHiddenLines(rangeGroups) {
+type HiddenRange = [number, number];
+
+export function flattenHiddenLines(rangeGroups: HiddenRange[]) {
   return rangeGroups.flatMap((range) => {
     const [start, end] = range;
     return [...Array(end - start + 1).keys()].map((elem) => elem + start);
   });
 }
 
-export function unflattenHiddenLines(hiddenLines) {
-  const rangeGroups = [];
+export function unflattenHiddenLines(hiddenLines: number[]) {
+  const rangeGroups: HiddenRange[] = [];
   let startNumber = null;
 
   for (let i = 0; i < hiddenLines.length; i++) {
@@ -19,7 +21,7 @@ export function unflattenHiddenLines(hiddenLines) {
     } else if (current !== prev + 1) {
       startNumber = hiddenLines[i];
     } else if (current + 1 !== next) {
-      rangeGroups.push([startNumber, hiddenLines[i]]);
+      rangeGroups.push([startNumber!, hiddenLines[i]]);
     }
   }
 

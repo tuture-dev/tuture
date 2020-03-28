@@ -1,7 +1,12 @@
 import { message } from 'antd';
 import { IMAGE } from 'editure-constants';
+import { Editor } from 'editure';
+import { ReactEditor } from 'editure-react';
 
-export const uploadImage = (file, callback) => {
+export const uploadImage = (
+  file: File,
+  callback: (err?: Error | null, url?: string) => void,
+) => {
   const data = new FormData();
   data.append('file', file);
 
@@ -21,17 +26,20 @@ export const uploadImage = (file, callback) => {
       }
       callback(null, data.path);
     })
-    .catch((err) => callback(err));
+    .catch((err: Error) => callback(err));
 };
 
-export const createInsertImageCallback = (editor) => (err, url) => {
+export const createInsertImageCallback = (editor: Editor) => (
+  err?: Error | null,
+  url?: string,
+) => {
   if (err) {
     return message.error(String(err));
   }
   editor.insertVoid(IMAGE, { url });
 };
 
-export const createDropListener = (editor) => (e) => {
+export const createDropListener = (editor: Editor) => (e: React.DragEvent) => {
   e.preventDefault();
   e.persist();
 
@@ -45,7 +53,7 @@ export const createDropListener = (editor) => (e) => {
   uploadImage(files[0], createInsertImageCallback(editor));
 };
 
-export const withImages = (editor) => {
+export const withImages = (editor: Editor & ReactEditor) => {
   const { insertData, isVoid } = editor;
 
   editor.isVoid = (element) =>
