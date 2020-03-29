@@ -4,14 +4,16 @@ import { useEditure } from 'editure-react';
 import { LINK } from 'editure-constants';
 import { getSelectedString } from 'editure';
 
+import { IEditor } from 'utils/editor';
+import { Dispatch } from 'store';
 import { MARK_HOTKEYS, getHotkeyHint, ButtonRefsContext } from 'utils/hotkeys';
 
 import Button from './Button';
 import ToolbarIcon from './ToolbarIcon';
 
 const LinkButton = () => {
-  const editor = useEditure();
-  const dispatch = useDispatch();
+  const editor = useEditure() as IEditor;
+  const dispatch = useDispatch<Dispatch>();
   const { linkBtnRef: ref } = useContext(ButtonRefsContext);
   const { hotkey, title } = MARK_HOTKEYS[LINK];
 
@@ -27,8 +29,12 @@ const LinkButton = () => {
       return editor.removeLink();
     }
 
-    dispatch({ type: 'link/setText', payload: getSelectedString(editor) });
-    dispatch({ type: 'link/startEdit' });
+    const selected = getSelectedString(editor);
+
+    if (selected) {
+      dispatch.link.setText(selected);
+      dispatch.link.startEdit();
+    }
   };
 
   return (

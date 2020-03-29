@@ -1,10 +1,18 @@
 import React from 'react';
 import isHotkey from 'is-hotkey';
-import { getBeforeText, selectWithinBlock } from 'editure';
+import {
+  Editor,
+  getBeforeText,
+  selectWithinBlock,
+  EditorWithBlock,
+  EditorWithContainer,
+  EditorWithMark,
+} from 'editure';
 import * as F from 'editure-constants';
 
 import { EXPLAIN } from '../utils/constants';
 import { IS_MAC } from './getOS';
+import { IEditor } from './editor';
 
 export function getHotkeyHint(hotkey: string) {
   const keys = hotkey.split('+');
@@ -14,7 +22,12 @@ export function getHotkeyHint(hotkey: string) {
   return keys.map((key) => key[0].toUpperCase() + key.slice(1)).join('+');
 }
 
-export const MARK_HOTKEYS = {
+type Hotkey = {
+  hotkey: string;
+  title: string;
+};
+
+export const MARK_HOTKEYS: Record<string, Hotkey> = {
   [F.BOLD]: { hotkey: 'mod+b', title: '加粗' },
   [F.ITALIC]: { hotkey: 'mod+i', title: '斜体' },
   [F.UNDERLINE]: { hotkey: 'mod+u', title: '下划线' },
@@ -23,7 +36,7 @@ export const MARK_HOTKEYS = {
   [F.STRIKETHROUGH]: { hotkey: 'mod+shift+`', title: '删除线' },
 };
 
-export const BLOCK_HOTKEYS = {
+export const BLOCK_HOTKEYS: Record<string, Hotkey> = {
   [F.PARAGRAPH]: { hotkey: 'mod+alt+0', title: '正文' },
   [F.H1]: { hotkey: 'mod+alt+1', title: '一级标题' },
   [F.H2]: { hotkey: 'mod+alt+2', title: '二级标题' },
@@ -37,7 +50,7 @@ export const BLOCK_HOTKEYS = {
   [F.HR]: { hotkey: 'mod+alt+-', title: '分割线' },
 };
 
-export const OP_HOTKEYS = {
+export const OP_HOTKEYS: Record<string, Hotkey> = {
   save: { hotkey: 'mod+s', title: '保存' },
   undo: { hotkey: 'mod+z', title: '撤销' },
   redo: { hotkey: 'mod+shift+z', title: '重做' },
@@ -45,7 +58,7 @@ export const OP_HOTKEYS = {
 
 const containerBlocks = [F.BLOCK_QUOTE, F.CODE_BLOCK, F.NOTE, EXPLAIN];
 
-function handleTabKey(editor: any, event: any) {
+function handleTabKey(editor: Editor, event: KeyboardEvent) {
   event.preventDefault();
 
   const { beforeText } = getBeforeText(editor);
@@ -65,14 +78,14 @@ function handleTabKey(editor: any, event: any) {
   }
 }
 
-function handleShiftTabKey(editor: any, event: any) {
+function handleShiftTabKey(editor: Editor, event: KeyboardEvent) {
   event.preventDefault();
   if (editor.isBlockActive(F.LIST_ITEM)) {
     editor.decreaseItemDepth();
   }
 }
 
-function handleSelectAll(editor: any, event: any) {
+function handleSelectAll(editor: Editor, event: KeyboardEvent) {
   const format = editor.detectBlockFormat(containerBlocks);
 
   if (format) {
@@ -81,7 +94,10 @@ function handleSelectAll(editor: any, event: any) {
   }
 }
 
-function handleSelectUpperLeftAll(editor: any, event: any) {
+function handleSelectUpperLeftAll(
+  editor: EditorWithBlock,
+  event: KeyboardEvent,
+) {
   const format = editor.detectBlockFormat(containerBlocks);
   if (format) {
     event.preventDefault();
@@ -89,7 +105,10 @@ function handleSelectUpperLeftAll(editor: any, event: any) {
   }
 }
 
-function handleSelectLowerRightAll(editor: any, event: any) {
+function handleSelectLowerRightAll(
+  editor: EditorWithBlock,
+  event: KeyboardEvent,
+) {
   const format = editor.detectBlockFormat(containerBlocks);
   if (format) {
     event.preventDefault();
@@ -97,7 +116,7 @@ function handleSelectLowerRightAll(editor: any, event: any) {
   }
 }
 
-function handleExitBlock(editor: any, event: any) {
+function handleExitBlock(editor: EditorWithContainer, event: KeyboardEvent) {
   const format = editor.detectBlockFormat([
     F.CODE_BLOCK,
     F.BLOCK_QUOTE,
@@ -116,24 +135,24 @@ function handleExitBlock(editor: any, event: any) {
 
 // Refs for controlling buttons.
 export const buttonRefs = {
-  imageBtnRef: React.createRef(),
-  linkBtnRef: React.createRef(),
-  saveBtnRef: React.createRef(),
+  imageBtnRef: React.createRef<HTMLInputElement>(),
+  linkBtnRef: React.createRef<HTMLSpanElement>(),
+  saveBtnRef: React.createRef<HTMLSpanElement>(),
 };
 
 export const ButtonRefsContext = React.createContext(buttonRefs);
 
-export const createHotKeysHandler = (editor: any) => {
-  const { imageBtnRef, linkBtnRef, saveBtnRef }: any = buttonRefs;
+export const createHotKeysHandler = (editor: IEditor) => {
+  const { imageBtnRef, linkBtnRef, saveBtnRef } = buttonRefs;
 
-  return (event: any) => {
+  return (event: KeyboardEvent) => {
     /* eslint-disable no-restricted-syntax */
     for (const [mark, { hotkey }] of Object.entries(MARK_HOTKEYS)) {
       if (isHotkey(hotkey, event)) {
         event.preventDefault();
 
         if (mark === F.LINK) {
-          linkBtnRef.current.click();
+          linkBtnRef.current?.click();
         } else {
           editor.toggleMark(mark);
         }
@@ -146,7 +165,7 @@ export const createHotKeysHandler = (editor: any) => {
         event.preventDefault();
 
         if (block === F.IMAGE) {
-          imageBtnRef.current.click();
+          imageBtnRef.current?.click();
         } else {
           editor.toggleBlock(block);
         }
@@ -156,7 +175,7 @@ export const createHotKeysHandler = (editor: any) => {
 
     if (isHotkey('mod+s', event)) {
       event.preventDefault();
-      saveBtnRef.current.click();
+      saveBtnRef.current?.click();
     }
 
     // Logic for selecting all within the current container.

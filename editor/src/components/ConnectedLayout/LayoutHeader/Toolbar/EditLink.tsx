@@ -1,3 +1,4 @@
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Modal, Input } from 'antd';
 import { useEditure } from 'editure-react';
@@ -8,10 +9,16 @@ import { css, jsx } from '@emotion/core';
 import { selectLastPoint } from 'editure';
 import { LINK } from 'editure-constants';
 
+import { IEditor } from 'utils/editor';
+import { Dispatch, RootState } from 'store';
+import { LinkState } from 'models/link';
+
 const EditLink = () => {
-  const editor = useEditure();
-  const dispatch = useDispatch();
-  const { isEditing, text, url } = useSelector((state) => state.link);
+  const editor = useEditure() as IEditor;
+  const dispatch = useDispatch<Dispatch>();
+  const { isEditing, text, url } = useSelector<RootState, LinkState>(
+    (state) => state.link,
+  );
 
   const handleOk = () => {
     // Go back to last selected point.
@@ -25,15 +32,15 @@ const EditLink = () => {
       }
     }
 
-    dispatch({ type: 'link/reset' });
+    dispatch.link.reset();
   };
 
   const handleCancel = () => {
     selectLastPoint(editor);
-    dispatch({ type: 'link/reset' });
+    dispatch.link.reset();
   };
 
-  const onKeyDown = (e) => {
+  const onKeyDown = (e: React.KeyboardEvent) => {
     if (e.keyCode === 13) {
       // Enter key.
       e.preventDefault();
@@ -63,9 +70,7 @@ const EditLink = () => {
         autoFocus={!text}
         placeholder="添加描述"
         onKeyDown={onKeyDown}
-        onChange={(e) =>
-          dispatch({ type: 'link/setText', payload: e.target.value })
-        }
+        onChange={(e) => dispatch.link.setText(e.target.value)}
       />
       <p
         css={css`
@@ -80,9 +85,7 @@ const EditLink = () => {
         autoFocus={!!text}
         placeholder="链接地址"
         onKeyDown={onKeyDown}
-        onChange={(e) =>
-          dispatch({ type: 'link/setUrl', payload: e.target.value })
-        }
+        onChange={(e) => dispatch.link.setUrl(e.target.value)}
       />
     </Modal>
   );

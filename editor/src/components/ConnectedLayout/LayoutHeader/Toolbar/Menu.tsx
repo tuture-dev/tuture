@@ -1,7 +1,14 @@
+import React from 'react';
+
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 
-const Menu = ({ className, ...props }) => (
+type MenuProps = {
+  className?: string;
+  [prop: string]: any;
+};
+
+const Menu = ({ className, ...props }: MenuProps) => (
   <div
     {...props}
     className={className}

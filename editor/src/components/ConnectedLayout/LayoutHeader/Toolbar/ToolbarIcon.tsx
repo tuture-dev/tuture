@@ -1,3 +1,4 @@
+import React from 'react';
 import { Tooltip } from 'antd';
 
 /** @jsx jsx */
@@ -5,7 +6,13 @@ import { css, jsx } from '@emotion/core';
 
 import IconFont from 'components/IconFont';
 
-const ToolbarIcon = ({ isActive, icon, title }) => (
+type ToolbarIconProps = {
+  isActive?: boolean;
+  icon: string;
+  title: string;
+};
+
+const ToolbarIcon = ({ isActive = false, icon, title }: ToolbarIconProps) => (
   <Tooltip title={title} placement="bottom">
     <IconFont
       css={css`

@@ -5,17 +5,21 @@ import {
   Transforms,
   Range,
   Editor,
+  EditorWithBlock,
+  EditorWithMark,
+  EditorWithVoid,
+  EditorWithContainer,
 } from 'editure';
-import { withPaste, withReact } from 'editure-react';
+import { withPaste, withReact, ReactEditor } from 'editure-react';
 import * as F from 'editure-constants';
 
 import { withImages } from './image';
 import { EXPLAIN, DIFF_BLOCK } from '../utils/constants';
 
-const withCommitHeaderLayout = (editor: any) => {
+const withCommitHeaderLayout = (editor: Editor) => {
   const { normalizeNode } = editor;
 
-  editor.normalizeNode = ([node, path]: [any, string]) => {
+  editor.normalizeNode = ([node, path]) => {
     if (path.length === 1 && node.fixed) {
       if (node.type === F.PARAGRAPH) {
         const title = { type: F.H2, children: [{ text: '' }] };
@@ -29,10 +33,10 @@ const withCommitHeaderLayout = (editor: any) => {
   return editor;
 };
 
-const withExplainLayout = (editor: any) => {
+const withExplainLayout = (editor: Editor) => {
   const { deleteBackward } = editor;
 
-  editor.deleteBackward = (...args: any) => {
+  editor.deleteBackward = (unit) => {
     const { selection } = editor;
 
     // If selection is start of EXPLAIN, forbid to deleteBackward
@@ -46,23 +50,23 @@ const withExplainLayout = (editor: any) => {
       }
     }
 
-    deleteBackward(...args);
+    deleteBackward(unit);
   };
 
   return editor;
 };
 
-const withDiffBlockVoid = (editor: any) => {
+const withDiffBlockVoid = (editor: Editor) => {
   const { isVoid } = editor;
 
-  editor.isVoid = (element: any) => {
+  editor.isVoid = (element) => {
     return element.type === DIFF_BLOCK ? true : isVoid(element);
   };
 
   return editor;
 };
 
-const plugins = [
+const plugins: Function[] = [
   withReact,
   withImages,
   ...defaultPlugins,
@@ -73,8 +77,15 @@ const plugins = [
   withHistory,
 ];
 
+export type IEditor = Editor &
+  EditorWithVoid &
+  EditorWithBlock &
+  EditorWithMark &
+  EditorWithContainer &
+  ReactEditor;
+
 export const initializeEditor = () =>
   plugins.reduce(
     (augmentedEditor, plugin) => plugin(augmentedEditor),
-    createEditor(),
-  );
+    createEditor() as IEditor,
+  ) as IEditor;

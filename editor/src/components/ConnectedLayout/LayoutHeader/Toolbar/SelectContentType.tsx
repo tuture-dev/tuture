@@ -1,7 +1,9 @@
+import React from 'react';
 import { Select } from 'antd';
 import { useEditure } from 'editure-react';
 import { H1, H2, H3, H4, H5, PARAGRAPH } from 'editure-constants';
 
+import { IEditor } from 'utils/editor';
 import IconFont from 'components/IconFont';
 
 /** @jsx jsx */
@@ -9,7 +11,13 @@ import { css, jsx } from '@emotion/core';
 
 const { Option } = Select;
 
-const types = {
+type ContentType = {
+  name: string;
+  fontSize: string;
+  fontWeight: number;
+};
+
+const types: Record<string, ContentType> = {
   [H1]: { name: '标题 1', fontSize: '24px', fontWeight: 500 },
   [H2]: { name: '标题 2', fontSize: '22px', fontWeight: 500 },
   [H3]: { name: '标题 3', fontSize: '20px', fontWeight: 500 },
@@ -19,10 +27,10 @@ const types = {
 };
 
 const SelectContentType = () => {
-  const editor = useEditure();
+  const editor = useEditure() as IEditor;
   const type = editor.detectBlockFormat(Object.keys(types)) || PARAGRAPH;
 
-  const handleChange = (value) => {
+  const handleChange = (value: string) => {
     editor.toggleBlock(value);
   };
 

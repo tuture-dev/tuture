@@ -3,9 +3,15 @@ import React from 'react';
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 
-const Button = React.forwardRef(
+type ButtonProps = {
+  className: string;
+  handleMouseDown: React.MouseEventHandler;
+  handleClick: React.MouseEventHandler;
+  [prop: string]: any;
+};
+
+const Button = React.forwardRef<HTMLSpanElement, ButtonProps>(
   ({ className, handleMouseDown, handleClick, ...props }, ref) => (
-    /* eslint-disable no-nested-ternary */
     <span
       {...props}
       ref={ref}
@@ -16,7 +22,6 @@ const Button = React.forwardRef(
         cursor: pointer;
       `}
     />
-    /* eslint-enable no-nested-ternary */
   ),
 );
 

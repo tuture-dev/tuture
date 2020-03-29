@@ -2,12 +2,13 @@ import React, { useContext } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { ButtonRefsContext } from 'utils/hotkeys';
+import { Dispatch } from 'store';
 
 import Button from './Button';
 import ToolbarIcon from './ToolbarIcon';
 
 const SaveButton = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<Dispatch>();
   const { saveBtnRef: ref } = useContext(ButtonRefsContext);
 
   const onClick = () => {

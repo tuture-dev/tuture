@@ -1,19 +1,25 @@
 import React from 'react';
 import { useEditure } from 'editure-react';
 
+import { IEditor } from 'utils/editor';
 import { MARK_HOTKEYS, getHotkeyHint } from 'utils/hotkeys';
 
 import Button from './Button';
 import ToolbarIcon from './ToolbarIcon';
 
-const MarkButton = ({ format, icon }) => {
-  const editor = useEditure();
+type MarkButtonProps = {
+  format: string;
+  icon: string;
+};
+
+const MarkButton = ({ format, icon }: MarkButtonProps) => {
+  const editor = useEditure() as IEditor;
   const isActive = editor.isMarkActive(format);
   const { hotkey, title } = MARK_HOTKEYS[format];
 
   return (
     <Button
-      handleMouseDown={(event) => {
+      handleMouseDown={(event: React.SyntheticEvent) => {
         event.preventDefault();
         editor.toggleMark(format);
       }}

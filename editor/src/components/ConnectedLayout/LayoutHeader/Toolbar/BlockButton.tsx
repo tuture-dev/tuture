@@ -1,19 +1,25 @@
 import React from 'react';
 import { useEditure } from 'editure-react';
 
+import { IEditor } from 'utils/editor';
 import { BLOCK_HOTKEYS, getHotkeyHint } from 'utils/hotkeys';
 
 import Button from './Button';
 import ToolbarIcon from './ToolbarIcon';
 
-const BlockButton = ({ format, icon }) => {
-  const editor = useEditure();
+type BlockButtonProps = {
+  format: string;
+  icon: string;
+};
+
+const BlockButton = ({ format, icon }: BlockButtonProps) => {
+  const editor = useEditure() as IEditor;
   const isActive = editor.isBlockActive(format);
   const { hotkey, title } = BLOCK_HOTKEYS[format];
 
   return (
     <Button
-      handleMouseDown={(event) => {
+      handleMouseDown={(event: React.SyntheticEvent) => {
         event.preventDefault();
         editor.toggleBlock(format);
       }}

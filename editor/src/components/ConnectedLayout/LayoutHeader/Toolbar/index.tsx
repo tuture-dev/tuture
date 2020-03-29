@@ -17,7 +17,7 @@ import LinkButton from './LinkButton';
 import HistoryButton from './HistoryButton';
 import SelectContentType from './SelectContentType';
 
-const Toolbar = (props: any) => {
+const Toolbar = (props: { [prop: string]: any }) => {
   return (
     <Menu
       {...props}
