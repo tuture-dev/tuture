@@ -14,9 +14,13 @@ import {
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 
+import { RootState, Dispatch } from '../../../store';
+import { Remote } from '../../../../../types';
+import { EventEmitter } from 'events';
+
 const { Text } = Typography;
 
-const SyncItem = ({ name = '', refs = {} }) => {
+const SyncItem = ({ name = '', refs = {} }: any) => {
   return (
     <Row
       css={css`
@@ -77,15 +81,15 @@ const ListHeader = () => (
 );
 
 const CommitModal = () => {
-  const syncVisible = useSelector((state) => state.sync.syncVisible);
+  const syncVisible = useSelector<RootState, boolean>((state) => state.sync.syncVisible);
   const remotes =
-    useSelector((state) => state.collection?.collection?.remotes) || [];
-  const allRemotes = useSelector((state) => state.sync.remotes) || [];
+    useSelector<RootState, Remote[]>((state) => state.collection?.collection?.remotes) || [];
+  const allRemotes = useSelector<RootState, Remote[]>((state) => state.sync.remotes) || [];
 
   const remoteNames = remotes.map(({ name }) => name);
   const [checkedRemotes, setCheckedRemotes] = useState(remoteNames);
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<Dispatch>();
 
   useEffect(() => {
     if (syncVisible) {
@@ -99,7 +103,7 @@ const CommitModal = () => {
     }
   }, [remoteNames, checkedRemotes]);
 
-  const handleChange = (checkedValues) => {
+  const handleChange = (checkedValues: any) => {
     setCheckedRemotes(checkedValues);
   };
 
@@ -117,7 +121,7 @@ const CommitModal = () => {
     dispatch.sync.setSyncVisible(false);
   };
 
-  const handleCancel = (e) => {
+  const handleCancel = (e: React.MouseEvent) => {
     e.preventDefault();
     dispatch.sync.setSyncVisible(false);
   };

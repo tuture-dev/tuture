@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useRouteMatch } from 'react-router-dom';
 import { Spin } from 'antd';
@@ -8,14 +8,16 @@ import { App } from '../components/';
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 
+import { Dispatch, } from '../store';
+
 function Article() {
-  const dispatch = useDispatch();
-  const loading = useSelector(
-    ({ loading }) =>
+  const dispatch: Dispatch = useDispatch();
+  const loading: any = useSelector(
+    ({ loading }: any) =>
       loading.effects.collection.fetchCollection || loading.models.diff,
   );
   const match = useRouteMatch('/articles/:id');
-  const { id = '' } = match?.params;
+  const { id = '' }: any = match?.params;
 
   useEffect(() => {
     dispatch.collection.setNowArticle(id);

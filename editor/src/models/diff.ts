@@ -11,7 +11,7 @@ export type DiffState = {
 
 const initialState: DiffState = { diff: null };
 
-export const diff = {
+export const diff: any = {
   state: initialState,
   reducers: {
     setDiffData(state: DiffState, diff: RawDiff[]) {

@@ -14,7 +14,7 @@ const initialState: SyncState = {
   remotes: [],
 };
 
-export const sync = {
+export const sync: any = {
   state: initialState,
   reducers: {
     setSyncVisible(state: SyncState, visible: boolean) {
