@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Drawer } from 'antd';
 
@@ -6,19 +6,22 @@ import {
   COLLECTION_CATALOGUE,
   COLLECTION_SETTING,
   CONTACT_US,
-} from 'utils/constants';
+} from '../../../utils/constants';
 
 import CollectionCatalogue from './CollectionCatalogue';
 import CollectionSetting from './CollectionSetting';
 import ContactUs from './ContactUs';
 
-const mapTypeToTitle = {
+import { RootState } from '../../../store';
+import { DrawerState } from '../../../models';
+
+const mapTypeToTitle: { [key: string]: string } = {
   [COLLECTION_CATALOGUE]: '文集目录',
   [COLLECTION_SETTING]: '文集设置',
   [CONTACT_US]: '联系我们',
 };
 
-const mapTypeToComponent = {
+const mapTypeToComponent: { [key: string]: ReactNode } = {
   [COLLECTION_CATALOGUE]: <CollectionCatalogue />,
   [COLLECTION_SETTING]: <CollectionSetting />,
   [CONTACT_US]: <ContactUs />,
@@ -26,7 +29,9 @@ const mapTypeToComponent = {
 
 function DrawerComponent() {
   const dispatch = useDispatch();
-  const { drawerType, visible } = useSelector((state) => state.drawer);
+  const { drawerType, visible } = useSelector<RootState, DrawerState>(
+    (state) => state.drawer,
+  );
 
   const RenderComponent = mapTypeToComponent[drawerType];
 
@@ -37,7 +42,6 @@ function DrawerComponent() {
 
   return (
     <Drawer
-      id="drawer"
       title={mapTypeToTitle[drawerType]}
       placement="left"
       width={300}

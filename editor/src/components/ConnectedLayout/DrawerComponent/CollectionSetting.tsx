@@ -1,20 +1,23 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Form, Input, Icon, Button, Select, Upload } from 'antd';
+import { UploadFileStatus, UploadType } from 'antd/lib/upload/interface';
 import { useDispatch, useSelector, useStore } from 'react-redux';
 
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 
+import { Store, Dispatch } from '../../../store';
+
 const { Option } = Select;
 const { TextArea } = Input;
 
-function CollectionSetting(props) {
-  const store = useStore();
-  const dispatch = useDispatch();
+function CollectionSetting(props: any) {
+  const store = useStore() as Store;
+  const dispatch = useDispatch<Dispatch>();
 
   // submit status
-  const { editCollection: editCollectionLoading } = useSelector(
-    (state) => state.loading.effects.collection,
+  const { editCollection: editCollectionLoading }: any = useSelector(
+    (state: any) => state.loading.effects.collection,
   );
 
   // get nowArticle Meta
@@ -27,7 +30,9 @@ function CollectionSetting(props) {
           url: `/${collectionMeta?.cover}`,
           uid: '-1',
           name: collectionMeta?.cover.split('/').slice(-1)[0],
-          status: 'done',
+          status: 'done' as UploadFileStatus,
+          size: collectionMeta?.cover.split('/').length,
+          type: 'drag' as UploadType,
         },
       ]
     : [];
@@ -43,14 +48,19 @@ function CollectionSetting(props) {
 
   const { getFieldDecorator, setFieldsValue, getFieldValue } = props.form;
 
-  function handleSubmit(e) {
-    e.preventDefault();
+  function handleSubmit(event: React.FormEvent) {
+    event.preventDefault();
 
-    props.form.validateFields((err, values) => {
+    props.form.validateFields((err: Error, values: any) => {
       if (!err) {
-        const { cover, name, topics, description } = values;
+        const {
+          cover,
+          name,
+          topics,
+          description,
+        }: { [key: string]: any } = values;
 
-        let res = {
+        let res: { [key: string]: any } = {
           name,
         };
 
@@ -81,7 +91,7 @@ function CollectionSetting(props) {
     });
   }
 
-  function handleCoverChange({ fileList }) {
+  function handleCoverChange({ fileList }: any) {
     let resultFileList = [...fileList];
 
     // 1. Limit the number of uploaded files
@@ -103,7 +113,7 @@ function CollectionSetting(props) {
     });
   }
 
-  function handleTopicsChange(topics) {
+  function handleTopicsChange(topics: string) {
     setFieldsValue({
       topics,
     });
@@ -167,7 +177,7 @@ function CollectionSetting(props) {
               allowClear
               onChange={handleTopicsChange}
             >
-              {getFieldValue('topics').map((topic) => (
+              {getFieldValue('topics').map((topic: string) => (
                 <Option key={topic}>{topic}</Option>
               ))}
             </Select>,

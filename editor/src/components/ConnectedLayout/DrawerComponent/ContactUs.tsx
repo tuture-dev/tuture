@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 
-import IconFont from 'components/IconFont';
+import IconFont from '../../../components/IconFont';
 import logo from 'assets/images/logo.svg';
 
 const link = css`
@@ -105,7 +105,7 @@ const items = itemsData.map((item) => (
     rel="noopener noreferrer"
     css={link}
   >
-    <IconFont css={icon} type={item.icon} />
+    <IconFont css={icon} type={item.icon as string} />
     <span css={labelText}>{item.labelText}</span>
     <IconFont css={arrow} type="icon-arrowright" />
   </a>

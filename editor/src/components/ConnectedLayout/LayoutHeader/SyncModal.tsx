@@ -16,7 +16,6 @@ import { css, jsx } from '@emotion/core';
 
 import { RootState, Dispatch } from '../../../store';
 import { Remote } from '../../../../../types';
-import { EventEmitter } from 'events';
 
 const { Text } = Typography;
 
@@ -81,10 +80,15 @@ const ListHeader = () => (
 );
 
 const CommitModal = () => {
-  const syncVisible = useSelector<RootState, boolean>((state) => state.sync.syncVisible);
+  const syncVisible = useSelector<RootState, boolean>(
+    (state) => state.sync.syncVisible,
+  );
   const remotes =
-    useSelector<RootState, Remote[]>((state) => state.collection?.collection?.remotes) || [];
-  const allRemotes = useSelector<RootState, Remote[]>((state) => state.sync.remotes) || [];
+    useSelector<RootState, Remote[]>(
+      (state) => state.collection?.collection?.remotes,
+    ) || [];
+  const allRemotes =
+    useSelector<RootState, Remote[]>((state) => state.sync.remotes) || [];
 
   const remoteNames = remotes.map(({ name }) => name);
   const [checkedRemotes, setCheckedRemotes] = useState(remoteNames);

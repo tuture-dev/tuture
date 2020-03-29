@@ -19,13 +19,22 @@ import shortid from 'shortid';
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 
-import { EDIT_ARTICLE } from 'utils/constants';
-import { getHeadings, getArtcleMetaById } from 'utils/collection';
+import { EDIT_ARTICLE } from '../../../utils/constants';
+import { getHeadings, getArtcleMetaById } from '../../../utils/collection';
+
+import { Store, Dispatch } from '../../../store';
+import { Step } from '../../../../../types';
 
 const { Option } = Select;
 const { confirm } = Modal;
 
-function showDeleteConfirm(name, dispatch, articleId, nowArticleId, history) {
+function showDeleteConfirm(
+  name: string,
+  dispatch: any,
+  articleId: string,
+  nowArticleId: string,
+  history: any,
+) {
   confirm({
     title: `确定要删除 ${name}`,
     okText: '确定',
@@ -47,11 +56,11 @@ function showDeleteConfirm(name, dispatch, articleId, nowArticleId, history) {
   });
 }
 
-function CreateEditArticle(props) {
-  const store = useStore();
-  const dispatch = useDispatch();
-  const [selectedKeys, setSelectedKeys] = useState([]);
-  const [collectionStepsState, setCollectionStepsState] = useState([]);
+function CreateEditArticle(props: any) {
+  const store = useStore() as Store;
+  const dispatch = useDispatch<Dispatch>();
+  const [selectedKeys, setSelectedKeys]: any = useState([]);
+  const [collectionStepsState, setCollectionStepsState]: any = useState([]);
 
   // get router history && first article id for delete jump
   const history = useHistory();
@@ -60,23 +69,23 @@ function CreateEditArticle(props) {
   const {
     editArticle: editArticleLoading,
     createArticle: createArticleLoading,
-  } = useSelector((state) => state.loading.effects.collection);
+  } = useSelector((state: any) => state.loading.effects.collection);
 
   // get editArticle Commits
   const { editArticleId, nowArticleId, collection } = useSelector(
-    (state) => state.collection,
+    (state: any) => state.collection,
   );
 
-  const steps = collection?.steps || [];
+  const steps: Step[] = collection?.steps || [];
   const articles = collection?.articles || [];
 
   // get all steps
-  const collectionSteps = steps.map((step, index) => ({
+  const collectionSteps = steps.map((step, index: number) => ({
     key: index,
     id: step.id,
     articleId: step.articleId,
     title: getHeadings([step])[0].title,
-    ...getArtcleMetaById(step.articleId, articles),
+    ...getArtcleMetaById(step.articleId || '', articles),
   }));
 
   // prettier-ignore
@@ -93,13 +102,16 @@ function CreateEditArticle(props) {
           .map((step) => step.key)
       : [];
 
-  const [targetKeys, setTargetKeys] = useState(initialTargetKeys || []);
+  const [targetKeys, setTargetKeys]: [any, any] = useState(
+    initialTargetKeys || [],
+  );
 
   // get nowArticle Meta
   const meta = useSelector(
     store.select.collection.getArticleMetaById({ id: editArticleId }),
   );
-  const articleMeta = props.childrenDrawerType === EDIT_ARTICLE ? meta : {};
+  const articleMeta: any =
+    props.childrenDrawerType === EDIT_ARTICLE ? meta : {};
 
   const initialTopics = articleMeta?.topics || [];
   const initialCover = articleMeta?.cover
@@ -122,14 +134,14 @@ function CreateEditArticle(props) {
   const [fileList, setFileList] = useState(initialCover);
   const { getFieldDecorator, setFieldsValue, getFieldValue } = props.form;
 
-  function handleSubmit(e) {
+  function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
 
-    props.form.validateFields((err, values) => {
+    props.form.validateFields((err: Error, values: any) => {
       if (!err) {
-        const { cover, name, topics, steps } = values;
+        const { cover, name, topics, steps }: { [key: string]: any } = values;
 
-        const article = { name };
+        const article: { [key: string]: any } = { name };
 
         if (topics) {
           article.topics = topics;
@@ -196,8 +208,8 @@ function CreateEditArticle(props) {
     });
   }
 
-  function handleTargetChange(nextTargetKeys) {
-    const sortedNextTargetKeys = nextTargetKeys.sort((prev, post) => {
+  function handleTargetChange(nextTargetKeys: string[]) {
+    const sortedNextTargetKeys: string[] = nextTargetKeys.sort((prev, post) => {
       if (prev > post) {
         return 1;
       }
@@ -210,7 +222,7 @@ function CreateEditArticle(props) {
     });
 
     // check nowTargetKeys status
-    const newCollectionStepsState = collectionStepsState.map((step) => {
+    const newCollectionStepsState = collectionStepsState.map((step: any) => {
       if (targetKeys.includes(step.key) && !nextTargetKeys.includes(step.key)) {
         return { ...step, articleId: '', articleIndex: '', articleName: '' };
       }
@@ -223,15 +235,18 @@ function CreateEditArticle(props) {
     setTargetKeys(sortedNextTargetKeys);
   }
 
-  function handleSelectChange(sourceSelectedKeys, targetSelectedKeys) {
+  function handleSelectChange(
+    sourceSelectedKeys: string[],
+    targetSelectedKeys: string[],
+  ) {
     setSelectedKeys([...sourceSelectedKeys, ...targetSelectedKeys]);
   }
 
-  function filterOption(inputValue, option) {
+  function filterOption(inputValue: string, option: any) {
     return option.description.indexOf(inputValue) > -1;
   }
 
-  function handleCoverChange({ fileList }) {
+  function handleCoverChange({ fileList }: any) {
     let resultFileList = [...fileList];
 
     // 1. Limit the number of uploaded files
@@ -253,7 +268,7 @@ function CreateEditArticle(props) {
     });
   }
 
-  function handleTopicsChange(topics) {
+  function handleTopicsChange(topics: string) {
     setFieldsValue({ topics });
   }
 
@@ -314,7 +329,7 @@ function CreateEditArticle(props) {
               placeholder="输入文章标签"
               onChange={handleTopicsChange}
             >
-              {getFieldValue('topics').map((topic) => (
+              {getFieldValue('topics').map((topic: string) => (
                 <Option key={topic}>{topic}</Option>
               ))}
             </Select>,
@@ -339,7 +354,7 @@ function CreateEditArticle(props) {
               onSelectChange={handleSelectChange}
               showSearch
               filterOption={filterOption}
-              render={(item) => {
+              render={(item: any) => {
                 if (targetKeys.includes(item.key)) {
                   return item.title;
                 }
