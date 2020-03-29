@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 import { Checkbox, Tooltip } from 'antd';
 import { useTable } from 'react-table';
+import refractor, { RefractorNode, AST } from 'refractor';
 
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
@@ -29,7 +30,11 @@ const lineNumberCellStyle = css`
   text-align: right;
 `;
 
-const diffCodeCellStyle = (isHidden, isCodeAddition, isCodeDeletion) => css`
+const diffCodeCellStyle = (
+  isHidden: boolean,
+  isCodeAddition: boolean,
+  isCodeDeletion: boolean,
+) => css`
   white-space: pre;
   padding-right: 32px;
   width: auto;
@@ -41,26 +46,42 @@ const diffCodeCellStyle = (isHidden, isCodeAddition, isCodeDeletion) => css`
 `;
 
 const newLineRegex = /\n/g;
-function getNewLines(str) {
+function getNewLines(str: string) {
   return str.match(newLineRegex);
 }
 
-function getLineNumbers({ lines, startingLineNumber, style }) {
-  return lines.map((_, i) => {
-    const number = i + startingLineNumber;
-    return (
-      <span
-        key={`line-${i}`}
-        className="react-syntax-highlighter-line-number"
-        style={typeof style === 'function' ? style(number) : style}
-      >
-        {`${number}\n`}
-      </span>
-    );
-  });
+function getLineNumbers(props: {
+  code: string;
+  startingLineNumber: number;
+  style?: Function | { [attr: string]: any };
+}) {
+  const { code, startingLineNumber = 0, style = {} } = props;
+
+  return code
+    .replace(/\n$/, '')
+    .split('\n')
+    .map((_, i) => {
+      const number = i + startingLineNumber;
+      return (
+        <span
+          key={`line-${i}`}
+          className="react-syntax-highlighter-line-number"
+          style={typeof style === 'function' ? style(number) : style}
+        >
+          {`${number}\n`}
+        </span>
+      );
+    });
 }
 
-function getLineChecker({ lines, startingLineNumber, style, lineProps }) {
+function getLineChecker(props: {
+  lines: string[];
+  startingLineNumber?: number;
+  style?: Function | { [attr: string]: any };
+  lineProps?: LineProps;
+}) {
+  const { lines, startingLineNumber = 0, style = {}, lineProps = {} } = props;
+
   return lines.map((_, i) => {
     const number = i + startingLineNumber;
 
@@ -79,7 +100,6 @@ function getLineChecker({ lines, startingLineNumber, style, lineProps }) {
           `}
         >
           <Checkbox
-            label={i}
             value={i}
             css={css`
               padding-left: 12px;
@@ -91,11 +111,16 @@ function getLineChecker({ lines, startingLineNumber, style, lineProps }) {
   });
 }
 
-function createLineElement({ children, className = [] }) {
-  const properties = {};
+function createLineElement(props: {
+  children: RefractorNode[];
+  className?: string[];
+}): AST.Element {
+  const { children, className = [] } = props;
+  const properties: AST.Properties = {};
   properties.className = properties.className
     ? className.concat(properties.className)
     : className;
+
   return {
     type: 'element',
     tagName: 'span',
@@ -104,7 +129,11 @@ function createLineElement({ children, className = [] }) {
   };
 }
 
-function flattenCodeTree(tree, className = [], newTree = []) {
+function flattenCodeTree(
+  tree: RefractorNode[],
+  className: string[] = [],
+  newTree: RefractorNode[] = [],
+) {
   for (let i = 0; i < tree.length; i++) {
     const node = tree[i];
     if (node.type === 'text') {
@@ -115,27 +144,33 @@ function flattenCodeTree(tree, className = [], newTree = []) {
         }),
       );
     } else if (node.children) {
-      const classNames = className.concat(node.properties.className);
+      const classNames = className.concat(node.properties.className!);
       newTree = newTree.concat(flattenCodeTree(node.children, classNames));
     }
   }
   return newTree;
 }
 
-export function wrapLinesInSpan(codeTree, lineProps) {
-  const tree = flattenCodeTree(codeTree.value);
+export function wrapLinesInSpan(
+  codeTree: RefractorNode[],
+  lineProps?: LineProps,
+) {
+  const tree = flattenCodeTree(codeTree);
   const newTree = [];
   let lastLineBreakIndex = -1;
   let index = 0;
+
   while (index < tree.length) {
-    const node = tree[index];
-    const value = node.children[0].value;
+    const node = tree[index] as AST.Element;
+    const value = (node.children[0] as AST.Text).value;
     const newLines = getNewLines(value);
+
     if (newLines) {
       const splitValue = value.split('\n');
+
       splitValue.forEach((text, i) => {
-        const lineNumber = newTree.length + 1;
-        const newChild = { type: 'text', value: `${text}\n` };
+        const newChild: AST.Text = { type: 'text', value: `${text}\n` };
+
         if (i === 0) {
           const children = tree.slice(lastLineBreakIndex + 1, index).concat(
             createLineElement({
@@ -143,14 +178,15 @@ export function wrapLinesInSpan(codeTree, lineProps) {
               className: node.properties.className,
             }),
           );
-          newTree.push(createLineElement({ children, lineNumber, lineProps }));
+          newTree.push(createLineElement({ children }));
         } else if (i === splitValue.length - 1) {
-          const stringChild =
-            tree[index + 1] &&
-            tree[index + 1].children &&
-            tree[index + 1].children[0];
+          const stringChild = (tree[index + 1] as AST.Element)?.children[0];
+
           if (stringChild) {
-            const lastLineInPreviousSpan = { type: 'text', value: `${text}` };
+            const lastLineInPreviousSpan: AST.Text = {
+              type: 'text',
+              value: `${text}`,
+            };
             const newElem = createLineElement({
               children: [lastLineInPreviousSpan],
               className: node.properties.className,
@@ -160,8 +196,6 @@ export function wrapLinesInSpan(codeTree, lineProps) {
             newTree.push(
               createLineElement({
                 children: [newChild],
-                lineNumber,
-                lineProps,
                 className: node.properties.className,
               }),
             );
@@ -170,8 +204,6 @@ export function wrapLinesInSpan(codeTree, lineProps) {
           newTree.push(
             createLineElement({
               children: [newChild],
-              lineNumber,
-              lineProps,
               className: node.properties.className,
             }),
           );
@@ -181,22 +213,22 @@ export function wrapLinesInSpan(codeTree, lineProps) {
     }
     index++;
   }
+
   if (lastLineBreakIndex !== tree.length - 1) {
     const children = tree.slice(lastLineBreakIndex + 1, tree.length);
     if (children && children.length) {
-      newTree.push(
-        createLineElement({
-          children,
-          lineNumber: newTree.length + 1,
-          lineProps,
-        }),
-      );
+      newTree.push(createLineElement({ children }));
     }
   }
+
   return newTree;
 }
 
-function defaultRenderer({ rows, stylesheet, useInlineStyles }) {
+function defaultRenderer(
+  rows: RefractorNode[],
+  stylesheet: { [attr: string]: any },
+  useInlineStyles: boolean,
+) {
   return rows.map((node, i) =>
     createElement({
       node,
@@ -207,35 +239,46 @@ function defaultRenderer({ rows, stylesheet, useInlineStyles }) {
   );
 }
 
-export function getCodeTree({
-  astGenerator,
-  language,
-  code,
-  defaultCodeValue,
-}) {
-  if (astGenerator.getLanguage) {
-    const hasLanguage = language && astGenerator.getLanguage(language);
-    if (language === 'text') {
-      return { value: defaultCodeValue, language: 'text' };
-    } else if (hasLanguage) {
-      return astGenerator.highlight(language, code);
-    } else {
-      return astGenerator.highlightAuto(code);
-    }
-  }
+export function getCodeTree(code: string, language: string = 'text') {
+  const defaultCodeValue: AST.Text[] = [{ type: 'text', value: code }];
+
   try {
     return language && language !== 'text'
-      ? { value: astGenerator.highlight(code, language) }
-      : { value: defaultCodeValue };
+      ? refractor.highlight(code, language)
+      : defaultCodeValue;
   } catch (e) {
-    return { value: defaultCodeValue };
+    return defaultCodeValue;
   }
 }
 
-export default function(defaultAstGenerator, defaultStyle) {
+type LineTagPropsFunction = (lineNumber: number) => { [attr: string]: any };
+
+type LineProps = LineTagPropsFunction | { [attr: string]: any };
+
+export interface SyntaxHighlighterProps {
+  code: string;
+  language?: string;
+  style?: any;
+  astGenerator?: typeof refractor;
+  PreTag?: string;
+  customStyle?: any;
+  wrapLines: boolean;
+  lineProps?: LineProps;
+  useInlineStyles?: boolean;
+  showLineNumbers?: boolean;
+  startingLineNumber?: number;
+  lineNumberStyle?: any;
+  renderer?: any;
+  [rest: string]: any;
+}
+
+export default function(
+  defaultAstGenerator: typeof refractor,
+  defaultStyle: any,
+) {
   return function SyntaxHighlighter({
+    code,
     language,
-    children,
     style = defaultStyle,
     customStyle = {},
     useInlineStyles = true,
@@ -245,20 +288,13 @@ export default function(defaultAstGenerator, defaultStyle) {
     lineNumberStyle,
     wrapLines,
     lineProps = {},
-    renderer,
+    renderer = defaultRenderer,
     PreTag = 'pre',
-    code = Array.isArray(children) ? children[0] : children,
-    astGenerator,
+    astGenerator = defaultAstGenerator,
     ...rest
-  }) {
-    astGenerator = astGenerator || defaultAstGenerator;
-
+  }: SyntaxHighlighterProps) {
     const lineNumbers = showLineNumbers
-      ? getLineNumbers({
-          lines: code.replace(/\n$/, '').split('\n'),
-          style: lineNumberStyle,
-          startingLineNumber,
-        })
+      ? getLineNumbers({ code, startingLineNumber, style: lineNumberStyle })
       : [];
 
     const lineCheckers = showLineChecker
@@ -283,21 +319,8 @@ export default function(defaultAstGenerator, defaultStyle) {
      * if renderer is provided and wrapLines is undefined
      */
     wrapLines = renderer && wrapLines === undefined ? true : wrapLines;
-    renderer = renderer || defaultRenderer;
-    const defaultCodeValue = [{ type: 'text', value: code }];
-    const codeTree = getCodeTree({
-      astGenerator,
-      language,
-      code,
-      defaultCodeValue,
-    });
-    if (codeTree.language === null) {
-      codeTree.value = defaultCodeValue;
-    }
-
-    const tree = wrapLines
-      ? wrapLinesInSpan(codeTree, lineProps)
-      : codeTree.value;
+    const codeTree = getCodeTree(code, language);
+    const tree = wrapLines ? wrapLinesInSpan(codeTree, lineProps) : codeTree;
 
     const renderCodeRows = renderer({
       rows: tree,
@@ -349,6 +372,7 @@ export default function(defaultAstGenerator, defaultStyle) {
             padding-bottom: 16px;
           `}
         >
+          // @ts-ignore
           <PreTag
             {...preProps}
             {...getTableProps()}

@@ -1578,6 +1578,11 @@
   resolved "https://registry.npm.taobao.org/@types/parse-json/download/@types/parse-json-4.0.0.tgz?cache=0&sync_timestamp=1580843404116&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40types%2Fparse-json%2Fdownload%2F%40types%2Fparse-json-4.0.0.tgz#2f8bb441434d163b35fb8ffdccd7138927ffb8c0"
   integrity sha1-L4u0QUNNFjs1+4/9zNcTiSf/uMA=
 
+"@types/prismjs@*":
+  version "1.16.0"
+  resolved "https://registry.npm.taobao.org/@types/prismjs/download/@types/prismjs-1.16.0.tgz#4328c9f65698e59f4feade8f4e5d928c748fd643"
+  integrity sha1-QyjJ9laY5Z9P6t6PTl2SjHSP1kM=
+
 "@types/prop-types@*":
   version "15.7.3"
   resolved "https://registry.npm.taobao.org/@types/prop-types/download/@types/prop-types-15.7.3.tgz?cache=0&sync_timestamp=1580844922690&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40types%2Fprop-types%2Fdownload%2F%40types%2Fprop-types-15.7.3.tgz#2ab0d5da2e5815f94b0b9d4b95d1e5f243ab2ca7"
@@ -1634,6 +1639,13 @@
   dependencies:
     "@types/react" "*"
 
+"@types/react-table@^7.0.12":
+  version "7.0.12"
+  resolved "https://registry.npm.taobao.org/@types/react-table/download/@types/react-table-7.0.12.tgz#cb57c8dfb110f8c2d0f04b9d44a70f9235a13b27"
+  integrity sha1-y1fI37EQ+MLQ8EudRKcPkjWhOyc=
+  dependencies:
+    "@types/react" "*"
+
 "@types/react@*":
   version "16.9.20"
   resolved "https://registry.npm.taobao.org/@types/react/download/@types/react-16.9.20.tgz?cache=0&sync_timestamp=1581989121359&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40types%2Freact%2Fdownload%2F%40types%2Freact-16.9.20.tgz#e83285766340fb1a7fafe7e5c4708c53832e3641"
@@ -1649,6 +1661,13 @@
   dependencies:
     "@types/prop-types" "*"
     csstype "^2.2.0"
+
+"@types/refractor@^2.8.0":
+  version "2.8.0"
+  resolved "https://registry.npm.taobao.org/@types/refractor/download/@types/refractor-2.8.0.tgz#2e17b69f27e89c1ea076f49b599abe3567c54e01"
+  integrity sha1-Lhe2nyfonB6gdvSbWZq+NWfFTgE=
+  dependencies:
+    "@types/prismjs" "*"
 
 "@types/serve-static@*":
   version "1.13.3"

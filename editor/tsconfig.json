@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "baseUrl": "src",
     "lib": ["DOM", "ESNext"],
     "forceConsistentCasingInFileNames": true,
     "esModuleInterop": true,

@@ -1,4 +1,4 @@
-export default {
+const styles: { [className: string]: { [attr: string]: string } } = {
   'code[class*="language-"]': {
     color: '#c5c8c6',
     textShadow: '0 1px rgba(0, 0, 0, 0.3)',
@@ -153,3 +153,5 @@ export default {
     fontStyle: 'italic',
   },
 };
+
+export default styles;
