@@ -120,6 +120,7 @@ export function unflatten(fragment: Node[]) {
         }
 
         if (flag === 'file_start') {
+          console.log(node);
           step.children!.slice(-1)[0].children.push(node as Explain);
         }
 

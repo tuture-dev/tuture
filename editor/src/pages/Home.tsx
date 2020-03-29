@@ -1,3 +1,4 @@
+import React from 'react';
 import { useSelector } from 'react-redux';
 import { Spin } from 'antd';
 
@@ -7,8 +8,8 @@ import { css, jsx } from '@emotion/core';
 import { App } from '../components';
 
 function Home() {
-  const loading = useSelector(
-    ({ loading }) =>
+  const loading: any = useSelector(
+    ({ loading }: any) =>
       loading.effects.collection.fetchCollection || loading.models.diff,
   );
 
@@ -18,9 +19,10 @@ function Home() {
         width: 100%;
       `}
     >
-      <Spin tip="加载中..." spinning={loading}>
+      <Spin tip="加载中..." spinning={loading} >
         <div
-          css={css`
+          css={
+            css`
             height: calc(100vh - 64px);
             width: 100%;
           `}

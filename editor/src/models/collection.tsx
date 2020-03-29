@@ -51,7 +51,7 @@ const initialState: CollectionState = {
   outdatedNotificationClicked: false,
 };
 
-export const collection = {
+export const collection: any = {
   state: initialState,
   reducers: {
     setCollectionData(state: CollectionState, collection: Collection) {
@@ -421,7 +421,7 @@ export const collection = {
       if (!collectionData) return;
 
       collectionData.steps = collectionData.steps.map(
-        (step) =>
+        (step: any) =>
           unflatten(rootState.collection.nowSteps).filter((node: any) =>
             isCommitEqual(node.commit, step.commit),
           )[0] || step,

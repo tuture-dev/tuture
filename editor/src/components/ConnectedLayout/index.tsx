@@ -20,7 +20,7 @@ import ChildrenDrawerComponent from './ChildrenDrawerComponent';
 
 const { Header, Content } = Layout;
 
-function ConnectedLayout(props: { children: ReactNode[] }) {
+function ConnectedLayout(props: { children: ReactNode | ReactNode[] }) {
   const { children } = props;
   const [timeoutState, setTimeoutState] = useState<number | null>(null);
   const history = useHistory();

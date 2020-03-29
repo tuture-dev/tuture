@@ -14,7 +14,7 @@ export type TocState = {
   isSaving: boolean;
 };
 
-export const toc = {
+export const toc: any = {
   state: {
     isSaving: false,
   },
@@ -57,7 +57,7 @@ export const toc = {
         (item) => item.id,
       );
 
-      steps = steps.map((step) => {
+      steps = steps.map((step: any) => {
         if (nowAllocationStepIdList.includes(step.id)) {
           step.articleId = getArticleIdFromId(nowAllocationStepList, step.id);
         }
@@ -65,7 +65,7 @@ export const toc = {
       });
 
       const unassignedStepIdList = unassignedStepList.map((step) => step.id);
-      steps = steps.map((step) => {
+      steps = steps.map((step: any) => {
         if (unassignedStepIdList.includes(step.id)) {
           step = omit(step, ['articleId']) as Step;
         }
