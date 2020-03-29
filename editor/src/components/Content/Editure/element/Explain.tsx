@@ -1,10 +1,13 @@
+import React from 'react';
+
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 import { Node } from 'editure';
 
 import { STEP_START, STEP_END, FILE_START, FILE_END } from 'utils/constants';
+import { ElementProps } from './index';
 
-const mapExplainTypeToContent = (explainType) => {
+const mapExplainTypeToContent = (explainType: string) => {
   switch (explainType) {
     case STEP_START: {
       return '撰写此步骤的前置解释 ...';
@@ -23,12 +26,12 @@ const mapExplainTypeToContent = (explainType) => {
     }
 
     default: {
-      return '撰写一点解释';
+      return '撰写一点解释 ...';
     }
   }
 };
 
-const mapExplainTypeToBorder = (explainType) => {
+const mapExplainTypeToBorder = (explainType: string) => {
   switch (explainType) {
     case FILE_START: {
       return css`
@@ -52,7 +55,7 @@ const mapExplainTypeToBorder = (explainType) => {
   }
 };
 
-const emptyChildrenStyles = (explainType) => css`
+const emptyChildrenStyles = (explainType: string) => css`
   border: 1px solid #ddd;
   position: relative;
 
@@ -66,7 +69,7 @@ const emptyChildrenStyles = (explainType) => css`
   }
 `;
 
-function ExplainElement(props) {
+function ExplainElement(props: ElementProps) {
   const { attributes, children, element } = props;
   const explainStr = Node.string(element);
 

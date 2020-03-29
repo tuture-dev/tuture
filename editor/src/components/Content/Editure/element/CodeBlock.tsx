@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Select } from 'antd';
 import { useEditure } from 'editure-react';
 import { CODE_BLOCK } from 'editure-constants';
@@ -9,6 +9,9 @@ import { css, jsx } from '@emotion/core';
 
 import IconFont from 'components/IconFont';
 import { IS_MAC } from 'utils/getOS';
+import { Dispatch } from 'store';
+
+import { ElementProps } from './index';
 
 const languages = [
   'Plain Text',
@@ -67,7 +70,12 @@ const languages = [
   'Lua',
 ];
 
-const prismLangArr = [
+type PrismLangRecord = {
+  key: string;
+  value: string[];
+};
+
+const prismLangArr: PrismLangRecord[] = [
   { key: 'text', value: ['text'] },
   { key: 'bash', value: ['bash', 'shell'] },
   { key: 'basic', value: ['basic'] },
@@ -124,9 +132,12 @@ const prismLangArr = [
   { key: 'lua', value: ['lua'] },
 ];
 
-const enumPrismLangToLanguage = {};
+const enumPrismLangToLanguage: Record<string, string> = {};
 
-const bimapPrismLangandLanguage = (prismLangObj, index) => {
+const bimapPrismLangandLanguage = (
+  prismLangObj: PrismLangRecord,
+  index: number,
+) => {
   const language = languages[index];
 
   enumPrismLangToLanguage[language] = prismLangObj.key;
@@ -139,17 +150,16 @@ prismLangArr.forEach(bimapPrismLangandLanguage);
 
 const { Option } = Select;
 
-function CodeBlockElement(props) {
+function CodeBlockElement(props: ElementProps) {
   const { element, attributes, children } = props;
   const { lang: defaultLang = 'Plain Text' } = element;
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<Dispatch>();
 
   const [lang, setLang] = useState(defaultLang);
   const editor = useEditure();
 
-  function handleChange(value) {
+  function handleChange(value: string) {
     setLang(value);
-
     dispatch.slate.setLang(value);
 
     editor.updateBlock(CODE_BLOCK, { lang: value });

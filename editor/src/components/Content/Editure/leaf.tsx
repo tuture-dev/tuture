@@ -1,5 +1,6 @@
+import React from 'react';
 import { useDispatch } from 'react-redux';
-import { selectLastPoint } from 'editure';
+import { selectLastPoint, Node } from 'editure';
 import { useEditure } from 'editure-react';
 import { Popover, Popconfirm, Tooltip } from 'antd';
 
@@ -9,8 +10,8 @@ import { css, jsx } from '@emotion/core';
 import IconFont from 'components/IconFont';
 import styles from '../Highlight/styles/atom-dark';
 
-function getStyleFromClassNameArr(classNameArr) {
-  let style = {};
+function getStyleFromClassNameArr(classNameArr: string[]) {
+  let style: Record<string, string> = {};
 
   classNameArr.forEach((className) => {
     style = { ...style, ...styles[className] };
@@ -19,7 +20,13 @@ function getStyleFromClassNameArr(classNameArr) {
   return style;
 }
 
-const Link = (props) => {
+type LeafProps = {
+  attributes: Record<string, any>;
+  children: React.ReactNode;
+  leaf: Node;
+};
+
+const Link = (props: LeafProps) => {
   const { attributes, children, leaf } = props;
   const editor = useEditure();
   const dispatch = useDispatch();
@@ -81,7 +88,7 @@ const Link = (props) => {
   );
 };
 
-export default (props) => {
+export default (props: LeafProps) => {
   const { attributes, leaf } = props;
   let { children } = props;
 
@@ -111,7 +118,7 @@ export default (props) => {
     children = <Link {...props}>{children}</Link>;
   }
 
-  let highlightProperty = {};
+  let highlightProperty: any = {};
 
   if (leaf.codeHighlight) {
     highlightProperty.style = getStyleFromClassNameArr(leaf.className);

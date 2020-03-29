@@ -1,13 +1,20 @@
 import React, { useState } from 'react';
+
+// @ts-ignore
 import LazyLoad from 'react-lazy-load';
 import { useDispatch } from 'react-redux';
 import { Checkbox } from 'antd';
+import { CheckboxValueType } from 'antd/lib/checkbox/Group';
+import parseDiff from 'parse-diff';
 
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 import { useSelector, useStore } from 'react-redux';
-import SyntaxHighlighter from '../../Highlight';
 import { flattenHiddenLines, unflattenHiddenLines } from 'utils/hiddenLines';
+import { Dispatch, Store, RootState } from 'store';
+
+import SyntaxHighlighter from '../../Highlight';
+import { ElementProps } from './index';
 
 const diffFileStyle = css`
   color: rgba(0, 0, 0, 0.84);
@@ -53,11 +60,11 @@ const loadingAnimation = css`
   }
 `;
 
-function concatCodeStr(diffItem) {
+function concatCodeStr(diffItem: parseDiff.File) {
   let codeStr = '';
-  const DIFF_ADD = [];
-  const DIFF_DEL = [];
-  let allLines = [];
+  const DIFF_ADD: number[] = [];
+  const DIFF_DEL: number[] = [];
+  let allLines: number[] = [];
 
   diffItem.chunks.forEach((chunk, chunkIndex) => {
     chunk.changes.forEach((change, index) => {
@@ -97,16 +104,16 @@ function Placeholder() {
   return <div></div>;
 }
 
-function DiffBlockElement(props) {
+function DiffBlockElement(props: ElementProps) {
   const { attributes, element, children } = props;
   const { file, commit, hiddenLines = [] } = element;
 
   const [loading, setLoading] = useState(true);
-  const [timeoutState, setTimeoutState] = useState(null);
-  const dispatch = useDispatch();
+  const [timeoutState, setTimeoutState] = useState<number | null>(null);
+  const dispatch = useDispatch<Dispatch>();
 
-  const store = useStore();
-  const diffItem = useSelector(
+  const store = useStore() as Store;
+  const diffItem = useSelector<RootState, parseDiff.File>(
     store.select.diff.getDiffItemByCommitAndFile({ file, commit }),
   );
 
@@ -122,25 +129,23 @@ function DiffBlockElement(props) {
     .pop()
     .toLowerCase();
 
-  if (hiddenLines.length > 0) {
-    console.log('hiddenLines', hiddenLines);
-  }
-
   const flatHiddenLines = flattenHiddenLines(hiddenLines);
   const showLines = allLines.filter((line) => !flatHiddenLines.includes(line));
   const height = 22 * allLines.length + 100;
 
-  const isHidden = (i) => flatHiddenLines.includes(i);
-  const isCodeAddition = (i) => !diffItem.new && DIFF_ADD.includes(i);
-  const isCodeDeletion = (i) => !diffItem.new && DIFF_DEL.includes(i);
+  const isHidden = (i: number) => flatHiddenLines.includes(i);
+  const isCodeAddition = (i: number) => !diffItem.new && DIFF_ADD.includes(i);
+  const isCodeDeletion = (i: number) => !diffItem.new && DIFF_DEL.includes(i);
 
-  function resetTimeout(id, newId) {
-    clearTimeout(id);
+  function resetTimeout(id: number | null, newId: any) {
+    if (id) {
+      clearTimeout(id);
+    }
 
     return newId;
   }
 
-  function onChange(checkedLines) {
+  function onChange(checkedLines: CheckboxValueType[]) {
     const hiddenLines = allLines.filter((line) => !checkedLines.includes(line));
 
     dispatch.collection.setDiffItemHiddenLines({
@@ -185,6 +190,7 @@ function DiffBlockElement(props) {
                 `}
               >
                 <SyntaxHighlighter
+                  code={codeStr}
                   language={lang === 'vue' ? 'html' : lang}
                   PreTag="table"
                   CodeTag="tr"
@@ -193,16 +199,14 @@ function DiffBlockElement(props) {
                   wrapLines
                   commit={commit}
                   file={file}
-                  lineProps={(lineNum) => {
+                  lineProps={(lineNum: number) => {
                     return {
                       isCodeAddition: isCodeAddition(lineNum),
                       isHidden: isHidden(lineNum),
                       isCodeDeletion: isCodeDeletion(lineNum),
                     };
                   }}
-                >
-                  {codeStr}
-                </SyntaxHighlighter>
+                />
               </Checkbox.Group>
             </div>
           </LazyLoad>

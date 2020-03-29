@@ -1,18 +1,20 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Select } from 'antd';
 import { useEditure } from 'editure-react';
 import { NOTE } from 'editure-constants';
+
+/** @jsx jsx */
+import { css, jsx } from '@emotion/core';
 
 import { levels } from 'utils/note';
 import IconFont from 'components/IconFont';
 import { IS_MAC } from 'utils/getOS';
 
-/** @jsx jsx */
-import { css, jsx } from '@emotion/core';
+import { ElementProps } from './index';
 
 const { Option } = Select;
 
-function NoteElement(props) {
+function NoteElement(props: ElementProps) {
   const { attributes, children, element } = props;
   const { level: defaultLevel = 'default' } = element;
 
@@ -23,7 +25,7 @@ function NoteElement(props) {
   const [level, setLevel] = useState(realLevel);
   const editor = useEditure();
 
-  function handleChange(value) {
+  function handleChange(value: string) {
     setLevel(value);
     editor.updateBlock(NOTE, { level: value });
   }

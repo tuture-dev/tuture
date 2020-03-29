@@ -1,11 +1,13 @@
+import React from 'react';
 import { BULLETED_LIST } from 'editure-constants';
 
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
+import { ElementProps } from './index';
 
 const bulletedListStyleType = ['disc', 'circle', 'square'];
 
-function ListItemElement(props) {
+function ListItemElement(props: ElementProps) {
   const { attributes, children, element } = props;
   const { parent, level, number } = element;
 

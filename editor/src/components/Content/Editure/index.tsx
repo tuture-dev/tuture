@@ -1,12 +1,13 @@
-import { useCallback } from 'react';
+import React, { useCallback } from 'react';
 
 /** @jsx jsx */
 import { jsx } from '@emotion/core';
-import { Node } from 'editure';
+import { Node, Path, Point } from 'editure';
 import { Editable, useEditure } from 'editure-react';
 import { useSelector } from 'react-redux';
-import refractor from 'refractor';
+import { AST } from 'refractor';
 
+import { RootState } from 'store';
 import { createDropListener } from 'utils/image';
 import { createHotKeysHandler } from 'utils/hotkeys';
 
@@ -14,7 +15,21 @@ import Element from './element';
 import Leaf from './leaf';
 import { getCodeTree, wrapLinesInSpan } from '../Highlight/highlight';
 
-function createDecoration({ path, textStart, textEnd, className }) {
+interface Decoration {
+  anchor: Point;
+  focus: Point;
+  className: string[];
+  codeHighlight: boolean;
+}
+
+function createDecoration(props: {
+  path: Path;
+  textStart: number;
+  textEnd: number;
+  className: string[];
+}): Decoration {
+  const { path, textStart, textEnd, className } = props;
+
   return {
     anchor: { path, offset: textStart },
     focus: { path, offset: textEnd },
@@ -25,7 +40,7 @@ function createDecoration({ path, textStart, textEnd, className }) {
 
 function Editure() {
   const editor = useEditure();
-  const lang = useSelector((state) => state.slate.lang);
+  const lang = useSelector<RootState, string>((state) => state.slate.lang);
 
   const renderElement = useCallback(Element, [lang]);
   const renderLeaf = useCallback(Leaf, [lang]);
@@ -35,29 +50,21 @@ function Editure() {
 
   const decorate = useCallback(
     ([node, path]) => {
-      const ranges = [];
+      const ranges: Decoration[] = [];
 
-      const grammarName = node.lang;
-      if (!grammarName) {
+      const lang = node.lang;
+      if (!lang) {
         return ranges;
       }
 
-      let codeStr = '';
+      let code = '';
 
-      const textIter = Node.texts(node);
-      for (let textNode of textIter) {
+      for (let textNode of Node.texts(node)) {
         const { text } = textNode[0];
-        codeStr += `${text}\n`;
+        code += `${text}\n`;
       }
 
-      const defaultCodeValue = [{ type: 'text', value: codeStr }];
-      const codeTree = getCodeTree({
-        astGenerator: refractor,
-        language: grammarName,
-        code: codeStr,
-        defaultCodeValue,
-      });
-
+      const codeTree = getCodeTree(code, lang);
       const tree = wrapLinesInSpan(codeTree).slice(0, -1);
 
       tree.forEach((codeStrLine, lineIndex) => {
@@ -65,16 +72,16 @@ function Editure() {
         let textEnd = 0;
 
         codeStrLine.children.forEach((codeStrToken) => {
-          const { type } = codeStrToken;
           let text = '';
 
-          if (type === 'text') {
-            text = codeStrToken?.value || '';
+          if (codeStrToken.type === 'text') {
+            text = codeStrToken.value || '';
           } else {
-            text = codeStrToken?.children[0]?.value || '';
+            text = (codeStrToken.children[0] as AST.Text)?.value || '';
           }
 
-          const className = codeStrToken?.properties?.className || [];
+          const className =
+            (codeStrToken as AST.Element)?.properties?.className || [];
 
           textEnd = textStart + text.length;
 
@@ -104,7 +111,10 @@ function Editure() {
       onKeyDown={hotKeyHandler}
       onDrop={dropListener}
       onCopy={(e) => {
-        e.clipboardData.setData('application/x-editure-fragment', true);
+        e.clipboardData.setData(
+          'application/x-editure-fragment',
+          JSON.stringify(true),
+        );
       }}
     />
   );

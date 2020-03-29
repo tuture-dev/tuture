@@ -1,9 +1,11 @@
+import React from 'react';
 import { useFocused, useSelected } from 'editure-react';
 
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
+import { ElementProps } from './index';
 
-function ImageElement(props) {
+function ImageElement(props: ElementProps) {
   const { attributes, children, element } = props;
   const { url } = element;
   const selected = useSelected();

@@ -1,4 +1,6 @@
+import React from 'react';
 import * as F from 'editure-constants';
+import { Element } from 'editure';
 
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
@@ -22,7 +24,13 @@ import CodeBlockElement from './CodeBlock';
 import DiffBlockElement from './DiffBlock';
 import ListItemElement from './ListItem';
 
-export default (props) => {
+export type ElementProps = {
+  attributes: Record<string, any>;
+  children: React.ReactNode;
+  element: Element;
+};
+
+export default (props: ElementProps) => {
   const { attributes, children, element } = props;
 
   switch (element.type) {
@@ -108,23 +116,19 @@ export default (props) => {
       return <ImageElement {...props} />;
     case F.HR:
       return <HrElement {...props} />;
-    case STEP:
-      return null;
-    case STEP_START:
-      return null;
-    case STEP_END:
-      return null;
-    case FILE_START:
-      return null;
-    case FILE_END:
-      return null;
-    case FILE:
-      return null;
-
     case EXPLAIN:
       return <ExplainElement {...props} />;
     case DIFF_BLOCK:
       return <DiffBlockElement {...props} />;
+
+    case STEP:
+    case STEP_START:
+    case STEP_END:
+    case FILE_START:
+    case FILE_END:
+    case FILE:
+      return <></>;
+
     default:
       return <p {...attributes}>{children}</p>;
   }
