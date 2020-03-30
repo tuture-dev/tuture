@@ -1,9 +1,13 @@
-import { useState, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 import { Input } from 'antd';
 import { useDispatch, useSelector, useStore } from 'react-redux';
+
+import { Dispatch, Store, RootState } from 'store';
+import { CollectionState } from 'models/collection';
+import { Article } from '../../../../types';
 
 const noBorderAndShadow = css`
   border: none;
@@ -27,18 +31,25 @@ const noBorderAndShadow = css`
 const { TextArea } = Input;
 
 function PageHeader() {
-  const store = useStore();
-  const { nowArticleId } = useSelector((state) => state.collection);
-  const { name = '', description = '' } = useSelector(
+  const store = useStore() as Store;
+  const { nowArticleId } = useSelector<RootState, CollectionState>(
+    (state) => state.collection,
+  );
+  const { name = '', description = '' } = useSelector<RootState, Article>(
     store.select.collection.getArticleMetaById({ id: nowArticleId }),
   );
-  const dispatch = useDispatch();
-  const [timeoutHeaderState, setTimeoutHeaderState] = useState(null);
-  const [timeoutDescriptionState, setTimeoutDescriptionState] = useState(null);
-  const descriptionEl = useRef(null);
+  const dispatch = useDispatch<Dispatch>();
+  const [timeoutHeaderState, setTimeoutHeaderState] = useState<number | null>(
+    null,
+  );
+  const [timeoutDescriptionState, setTimeoutDescriptionState] = useState<
+    number | null
+  >(null);
 
-  function resetTimeout(id, newId) {
-    clearTimeout(id);
+  function resetTimeout(id: number | null, newId: any) {
+    if (id) {
+      clearTimeout(id);
+    }
 
     return newId;
   }
@@ -47,7 +58,7 @@ function PageHeader() {
     dispatch.collection.saveCollection();
   }
 
-  function handleHeaderChange(e) {
+  function handleHeaderChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
     dispatch.collection.setArticleTitle(e.target.value);
 
     setTimeoutHeaderState(
@@ -55,11 +66,8 @@ function PageHeader() {
     );
   }
 
-  function handleDescriptionChange(e) {
-    dispatch({
-      type: 'collection/setArticleDescription',
-      payload: e.target.value,
-    });
+  function handleDescriptionChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
+    dispatch.collection.setArticleDescription(e.target.value);
 
     setTimeoutDescriptionState(
       resetTimeout(
@@ -89,10 +97,6 @@ function PageHeader() {
           autoSize
           maxLength={128}
           rows={1}
-          onPressEnter={(e) => {
-            e.preventDefault();
-            descriptionEl.current.focus();
-          }}
           css={css`
             font-size: 30px;
             font-family: PingFangSC-Medium, PingFang SC;
@@ -106,7 +110,6 @@ function PageHeader() {
         />
       </div>
       <TextArea
-        ref={descriptionEl}
         placeholder="无描述"
         value={description}
         autoSize

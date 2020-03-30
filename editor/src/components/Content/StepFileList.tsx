@@ -1,57 +1,76 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Tooltip } from 'antd';
 
 /** @jsx jsx */
 import { css, jsx, Global } from '@emotion/core';
 import { useSelector, useStore, useDispatch } from 'react-redux';
-import { Container, Draggable } from 'react-smooth-dnd';
+import { Container, Draggable, DropResult } from 'react-smooth-dnd';
 
 import IconFont from 'components/IconFont';
+import { Dispatch, RootState, Store } from 'store';
+import { CollectionState } from 'models/collection';
+
+type StepFile = { file: string; display: boolean };
 
 function StepFileList() {
-  const dispatch = useDispatch();
-  const [timeoutState, setTimeoutState] = useState(null);
-  const store = useStore();
+  const dispatch = useDispatch<Dispatch>();
+  const [timeoutState, setTimeoutState] = useState<number | null>(null);
+  const store = useStore() as Store;
 
-  const { nowStepCommit } = useSelector((state) => state.collection);
-  const { fileList, title } = useSelector(
-    store.select.collection.getStepFileListAndTitle({ commit: nowStepCommit }),
+  const { nowStepCommit } = useSelector<RootState, CollectionState>(
+    (state) => state.collection,
   );
+  const { fileList, title } = useSelector<
+    RootState,
+    { fileList: StepFile[]; title: string }
+  >(store.select.collection.getStepFileListAndTitle({ commit: nowStepCommit }));
 
-  function resetTimeout(id, newId) {
-    clearTimeout(id);
+  function resetTimeout(id: number | null, newId: any) {
+    if (id) {
+      clearTimeout(id);
+    }
 
     return newId;
   }
 
-  function onDrop(res) {
-    dispatch.collection.switchFile({ ...res, commit: nowStepCommit });
+  function onDrop(res: DropResult) {
+    const { removedIndex, addedIndex } = res;
 
-    setTimeoutState(
-      resetTimeout(
-        timeoutState,
-        setTimeout(() => {
-          dispatch.collection.saveCollection();
-        }, 1000),
-      ),
-    );
+    if (removedIndex && addedIndex && nowStepCommit) {
+      dispatch.collection.switchFile({
+        removedIndex,
+        addedIndex,
+        commit: nowStepCommit,
+      });
+
+      setTimeoutState(
+        resetTimeout(
+          timeoutState,
+          setTimeout(() => {
+            dispatch.collection.saveCollection();
+          }, 1000),
+        ),
+      );
+    }
   }
 
-  function onToggleShowFile(file) {
-    dispatch.collection.setFileShowStatus({
-      commit: nowStepCommit,
-      ...file,
-      display: !file.display,
-    });
+  function onToggleShowFile(file: StepFile) {
+    if (nowStepCommit) {
+      dispatch.collection.setFileShowStatus({
+        commit: nowStepCommit,
+        ...file,
+        display: !file.display,
+      });
 
-    setTimeoutState(
-      resetTimeout(
-        timeoutState,
-        setTimeout(() => {
-          dispatch.collection.saveCollection({ showMessage: true });
-        }, 1000),
-      ),
-    );
+      setTimeoutState(
+        resetTimeout(
+          timeoutState,
+          setTimeout(() => {
+            dispatch.collection.saveCollection({ showMessage: true });
+          }, 1000),
+        ),
+      );
+    }
   }
 
   return (
@@ -104,7 +123,6 @@ function StepFileList() {
             showOnTop: true,
             className: 'drop-preview',
           }}
-          dropPlaceholderAnimationDuration={200}
         >
           {fileList.map((file) => (
             <Draggable key={file.file}>
