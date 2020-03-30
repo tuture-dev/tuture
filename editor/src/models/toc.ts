@@ -14,7 +14,7 @@ export type TocState = {
   isSaving: boolean;
 };
 
-export const toc: any = {
+export const toc = {
   state: {
     isSaving: false,
   },

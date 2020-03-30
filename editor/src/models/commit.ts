@@ -13,7 +13,7 @@ const initialState: CommitState = {
   message: '',
 };
 
-export const commit: any = {
+export const commit = {
   state: initialState,
   reducers: {
     startEdit(state: CommitState) {

@@ -51,7 +51,7 @@ const initialState: CollectionState = {
   outdatedNotificationClicked: false,
 };
 
-export const collection: any = {
+export const collection = {
   state: initialState,
   reducers: {
     setCollectionData(state: CollectionState, collection: Collection) {
