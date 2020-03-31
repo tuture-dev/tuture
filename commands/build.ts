@@ -15,12 +15,7 @@ import { loadCollection, collectionPath } from '../utils/collection';
 import { Asset, loadAssetsTable, checkAssets } from '../utils/assets';
 import { generateUserProfile } from '../utils/internals';
 import { DIFF_PATH } from '../constants';
-import { DiffBlock, Step, Collection, Meta } from '../types';
-
-type RawDiff = {
-  commit: string;
-  diff: DiffFile[];
-};
+import { RawDiff, DiffBlock, Step, Collection, Meta } from '../types';
 
 // Internal hints for rendering code lines.
 const diffRenderHints: { [mode: string]: { [diffType: string]: string } } = {
