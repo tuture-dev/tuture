@@ -104,7 +104,11 @@ export function unflatten(fragment: Node[]) {
       }
 
       case FILE: {
-        step.children!.push(node as File);
+        if (node.display) {
+          step.children!.push({ ...node, children: [] } as any);
+        } else {
+          step.children!.push(node as File);
+        }
         break;
       }
 
@@ -150,7 +154,7 @@ export function unflatten(fragment: Node[]) {
       }
 
       default: {
-        // step.children!.push(node);
+        step.children!.push(node as any);
       }
     }
   }

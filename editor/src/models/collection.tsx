@@ -420,13 +420,6 @@ export const collection = {
       const collectionData = rootState.collection.collection;
       if (!collectionData) return;
 
-      collectionData.steps = collectionData.steps.map(
-        (step) =>
-          unflatten(rootState.collection.nowSteps).filter((node) =>
-            isCommitEqual(node.commit, step.commit),
-          )[0] || step,
-      );
-
       try {
         const response = await fetch('/save', {
           method: 'POST',
