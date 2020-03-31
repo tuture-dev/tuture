@@ -1,6 +1,10 @@
 module.exports = {
   extends: ['react-app', 'plugin:prettier/recommended'],
   parser: 'babel-eslint',
+  parserOptions: {
+    jsx: true,
+    useJSXTextNode: true,
+  },
   env: {
     browser: true,
   },
