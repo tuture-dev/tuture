@@ -4,10 +4,12 @@ import { useDispatch, useSelector, useStore } from 'react-redux';
 
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
+import { Dispatch, Store, RootState } from 'store';
+import { HeadingItem } from 'types';
 
 const { Link } = Anchor;
 
-function getCommit(linkId, catalogue) {
+function getCommit(linkId: string, catalogue: HeadingItem[]) {
   const index = catalogue.map(({ id }) => id).indexOf(linkId);
 
   for (let i = index; i >= 0; i--) {
@@ -19,7 +21,7 @@ function getCommit(linkId, catalogue) {
   return null;
 }
 
-function getHeadingDepth(type) {
+function getHeadingDepth(type: string) {
   switch (type) {
     case 'heading-two':
       return 1;
@@ -37,16 +39,18 @@ function getHeadingDepth(type) {
 }
 
 function PageCatalogue() {
-  const dispatch = useDispatch();
-  const store = useStore();
+  const dispatch = useDispatch<Dispatch>();
+  const store = useStore() as Store;
   const nowArticleCatalogue =
-    useSelector(store.select.collection.nowArticleCatalogue) || [];
+    useSelector<RootState, HeadingItem[]>(
+      store.select.collection.nowArticleCatalogue,
+    ) || [];
 
-  function onChange(link) {
+  function onChange(link: string) {
     const commit = getCommit(link.slice(1), nowArticleCatalogue);
 
     if (link && commit) {
-      dispatch({ type: 'collection/setNowStepCommit', payload: { commit } });
+      dispatch.collection.setNowStepCommit(commit);
     }
   }
 
@@ -117,7 +121,7 @@ function PageCatalogue() {
           targetOffset={64}
           onChange={onChange}
           affix={false}
-          getContainer={() => document.getElementById('scroll-container')}
+          getContainer={() => document.getElementById('scroll-container')!}
         >
           {nowArticleCatalogue.map((item) => (
             <Link

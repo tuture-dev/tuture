@@ -8,7 +8,6 @@ import { Container, Draggable, DropResult } from 'react-smooth-dnd';
 
 import IconFont from 'components/IconFont';
 import { Dispatch, RootState, Store } from 'store';
-import { CollectionState } from 'models/collection';
 
 type StepFile = { file: string; display: boolean };
 
@@ -17,9 +16,7 @@ function StepFileList() {
   const [timeoutState, setTimeoutState] = useState<number | null>(null);
   const store = useStore() as Store;
 
-  const { nowStepCommit } = useSelector<RootState, CollectionState>(
-    (state) => state.collection,
-  );
+  const { nowStepCommit } = useSelector((state: RootState) => state.collection);
   const { fileList, title } = useSelector<
     RootState,
     { fileList: StepFile[]; title: string }

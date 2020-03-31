@@ -11,13 +11,12 @@ import { LINK } from 'editure-constants';
 
 import { IEditor } from 'utils/editor';
 import { Dispatch, RootState } from 'store';
-import { LinkState } from 'models/link';
 
 const EditLink = () => {
   const editor = useEditure() as IEditor;
   const dispatch = useDispatch<Dispatch>();
-  const { isEditing, text, url } = useSelector<RootState, LinkState>(
-    (state) => state.link,
+  const { isEditing, text, url } = useSelector(
+    (state: RootState) => state.link,
   );
 
   const handleOk = () => {

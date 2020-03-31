@@ -1,4 +1,10 @@
-import { init, RematchDispatch, RematchRootState } from '@rematch/core';
+import {
+  init,
+  Models,
+  RematchDispatch,
+  RematchRootState,
+  ExtractRematchDispatchersFromEffects,
+} from '@rematch/core';
 import immerPlugin from '@rematch/immer';
 import selectPlugin from '@rematch/select';
 import createLoadingPlugin from '@rematch/loading';
@@ -20,6 +26,21 @@ export const store = init({
   },
 });
 
+export interface LoadingState<M extends Models> {
+  loading: {
+    global: boolean;
+    models: { [modelName in keyof M]: boolean };
+    effects: {
+      [modelName in keyof M]: {
+        [effectName in keyof ExtractRematchDispatchersFromEffects<
+          M[modelName]['effects']
+        >]: boolean;
+      };
+    };
+  };
+}
+
 export type Store = typeof store;
 export type Dispatch = RematchDispatch<typeof models>;
-export type RootState = RematchRootState<typeof models>;
+export type RootState = RematchRootState<typeof models> &
+  LoadingState<typeof models>;

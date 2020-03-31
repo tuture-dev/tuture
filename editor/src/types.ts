@@ -11,3 +11,10 @@ export interface TocStepItem extends TocArticleItem {
 }
 
 export type TocItem = TocArticleItem | TocStepItem;
+
+export type HeadingItem = {
+  id: string;
+  title: string;
+  type: string;
+  commit?: string;
+};

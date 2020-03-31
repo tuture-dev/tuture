@@ -6,7 +6,6 @@ import {
   selectWithinBlock,
   EditorWithBlock,
   EditorWithContainer,
-  EditorWithMark,
 } from 'editure';
 import * as F from 'editure-constants';
 

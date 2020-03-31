@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
@@ -6,7 +6,6 @@ import { Input } from 'antd';
 import { useDispatch, useSelector, useStore } from 'react-redux';
 
 import { Dispatch, Store, RootState } from 'store';
-import { CollectionState } from 'models/collection';
 import { Article } from '../../../../types';
 
 const noBorderAndShadow = css`
@@ -32,9 +31,7 @@ const { TextArea } = Input;
 
 function PageHeader() {
   const store = useStore() as Store;
-  const { nowArticleId } = useSelector<RootState, CollectionState>(
-    (state) => state.collection,
-  );
+  const { nowArticleId } = useSelector((state: RootState) => state.collection);
   const { name = '', description = '' } = useSelector<RootState, Article>(
     store.select.collection.getArticleMetaById({ id: nowArticleId }),
   );

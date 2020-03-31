@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux';
 import { AST } from 'refractor';
 
 import { RootState } from 'store';
+import { IEditor } from 'utils/editor';
 import { createDropListener } from 'utils/image';
 import { createHotKeysHandler } from 'utils/hotkeys';
 
@@ -39,8 +40,8 @@ function createDecoration(props: {
 }
 
 function Editure() {
-  const editor = useEditure();
-  const lang = useSelector<RootState, string>((state) => state.slate.lang);
+  const editor = useEditure() as IEditor;
+  const lang = useSelector((state: RootState) => state.slate.lang);
 
   const renderElement = useCallback(Element, [lang]);
   const renderLeaf = useCallback(Leaf, [lang]);
@@ -108,7 +109,7 @@ function Editure() {
       decorate={decorate}
       renderElement={renderElement}
       renderLeaf={renderLeaf}
-      onKeyDown={hotKeyHandler}
+      onKeyDown={(e) => hotKeyHandler(e as any)}
       onDrop={dropListener}
       onCopy={(e) => {
         e.clipboardData.setData(

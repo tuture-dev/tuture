@@ -13,10 +13,8 @@ import {
   COLLECTION_CATALOGUE,
   COLLECTION_SETTING,
   CONTACT_US,
-} from '../../utils/constants';
-
-import { RootState } from '../../store';
-import { DrawerState } from '../../models';
+} from 'utils/constants';
+import { Dispatch, RootState } from 'store';
 
 const { Sider } = Layout;
 
@@ -27,17 +25,16 @@ const mapKeyToDrawerType: { [key: string]: string } = {
 };
 
 function MainMenu() {
-  const dispatch = useDispatch();
-  const { visible, drawerType, childrenVisible, selectedKeys } = useSelector<
-    RootState,
-    DrawerState
-  >((state) => state.drawer);
+  const dispatch = useDispatch<Dispatch>();
+  const { visible, drawerType, childrenVisible, selectedKeys } = useSelector(
+    (state: RootState) => state.drawer,
+  );
   const history = useHistory();
 
   function onMenuClick({ key }: ClickParam) {
     if (key === '2') {
-      dispatch({ type: 'drawer/setVisible', payload: false });
-      dispatch({ type: 'drawer/setSelectedKeys', payload: [key] });
+      dispatch.drawer.setVisible(false);
+      dispatch.drawer.setSelectedKeys([key]);
       history.push('/toc');
 
       return;
@@ -46,24 +43,21 @@ function MainMenu() {
     const toggleDrawerType = mapKeyToDrawerType[key];
 
     if (!visible) {
-      dispatch({ type: 'drawer/setVisible', payload: true });
-      dispatch({ type: 'drawer/setDrawerType', payload: toggleDrawerType });
-
-      dispatch({ type: 'drawer/setSelectedKeys', payload: [key] });
+      dispatch.drawer.setVisible(true);
+      dispatch.drawer.setDrawerType(toggleDrawerType);
+      dispatch.drawer.setSelectedKeys([key]);
     } else {
       if (drawerType === toggleDrawerType) {
-        dispatch({ type: 'drawer/setVisible', payload: false });
-
-        dispatch({ type: 'drawer/setSelectedKeys', payload: [] });
+        dispatch.drawer.setVisible(false);
+        dispatch.drawer.setSelectedKeys([]);
       } else {
-        dispatch({ type: 'drawer/setDrawerType', payload: toggleDrawerType });
-
-        dispatch({ type: 'drawer/setSelectedKeys', payload: [key] });
+        dispatch.drawer.setDrawerType(toggleDrawerType);
+        dispatch.drawer.setSelectedKeys([key]);
       }
     }
 
     if (childrenVisible) {
-      dispatch({ type: 'drawer/setChildrenVisible', payload: false });
+      dispatch.drawer.setChildrenVisible(false);
     }
   }
 

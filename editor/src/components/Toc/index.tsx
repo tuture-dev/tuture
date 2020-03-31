@@ -18,6 +18,7 @@ import { useDispatch, useSelector, useStore } from 'react-redux';
 import { css, jsx } from '@emotion/core';
 
 import IconFont from '../../components/IconFont';
+import { Dispatch, RootState } from 'store';
 
 const { Search } = Input;
 const { confirm } = Modal;
@@ -77,13 +78,10 @@ function Toc() {
   const defaultUnassignedStepList = useSelector(
     store.select.collection.getUnassignedStepList,
   );
-
-  console.log('defaultUnassignedStepList', defaultUnassignedStepList);
-
   const defaultArticleStepList = useSelector(
     store.select.collection.getArticleStepList,
   );
-  const isSaving = useSelector((state: any) => state.toc.isSaving);
+  const isSaving = useSelector((state: RootState) => state.toc.isSaving);
 
   const [searchValue, setSearchValue] = useState('');
   const [activeArticle, setActiveArticle] = useState('');
@@ -133,7 +131,7 @@ function Toc() {
     return false;
   });
 
-  function toggleActiveArticle(articleId: any) {
+  function toggleActiveArticle(articleId: string) {
     if (activeArticle === articleId) {
       setActiveArticle('');
     } else {

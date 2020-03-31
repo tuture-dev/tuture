@@ -127,7 +127,7 @@ export default (props: ElementProps) => {
     case FILE_START:
     case FILE_END:
     case FILE:
-      return <></>;
+      return <div style={{ display: 'none' }}></div>;
 
     default:
       return <p {...attributes}>{children}</p>;

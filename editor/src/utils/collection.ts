@@ -11,6 +11,7 @@ import {
   FILE_START,
   FILE_END,
 } from './constants';
+import { HeadingItem } from '../types';
 import { Article, Step, File, DiffBlock, Explain } from '../../../types';
 
 export function flatten(steps: Step[]): Node[] {
@@ -164,13 +165,6 @@ function isHeading(node: Node) {
 function getHeadingText(node: Element) {
   return node.children.map((child) => child.text).join('');
 }
-
-type HeadingItem = {
-  id: string;
-  title: string;
-  type: string;
-  commit?: string;
-};
 
 export function getHeadings(nodes: Node[]): HeadingItem[] {
   return nodes.flatMap((node) => {

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Divider } from 'antd';
 import { Link } from 'react-router-dom';
@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import { css, jsx, Global } from '@emotion/core';
 
 import IconFont from 'components/IconFont';
+import { Dispatch, RootState } from 'store';
 import { EDIT_ARTICLE, CREATE_ARTICLE } from 'utils/constants';
 
 const listStyle = css`
@@ -42,40 +43,39 @@ const itemTitleStyle = css`
 
 function CollectionCatalogue() {
   const { childrenVisible, childrenDrawerType } = useSelector(
-    (state) => state.drawer,
+    (state: RootState) => state.drawer,
   );
   const [selectItem, setSelectItem] = useState('');
 
-  const dispatch = useDispatch();
-  const { articles } = useSelector((state) => state.collection.collection);
+  const dispatch = useDispatch<Dispatch>();
+  const { collection } = useSelector((state: RootState) => state.collection);
+  const articles = collection ? collection.articles : [];
 
-  function onToggleChildrenDrawer(e, toggleChildrenDrawerType, articleId) {
+  function onToggleChildrenDrawer(
+    e: React.MouseEvent,
+    toggleChildrenDrawerType: string,
+    articleId?: string,
+  ) {
     e.stopPropagation();
     if (childrenDrawerType === toggleChildrenDrawerType) {
-      dispatch({
-        type: 'drawer/setChildrenVisible',
-        payload: !childrenVisible,
-      });
+      dispatch.drawer.setChildrenVisible(!childrenVisible);
     }
 
     if (!childrenVisible) {
-      dispatch({ type: 'drawer/setChildrenVisible', payload: true });
+      dispatch.drawer.setChildrenVisible(true);
     }
 
-    if (toggleChildrenDrawerType === EDIT_ARTICLE) {
+    if (toggleChildrenDrawerType === EDIT_ARTICLE && articleId) {
       dispatch.collection.setEditArticleId(articleId);
     }
 
-    dispatch({
-      type: 'drawer/setChildrenDrawerType',
-      payload: toggleChildrenDrawerType,
-    });
+    dispatch.drawer.setChildrenDrawerType(toggleChildrenDrawerType);
   }
 
-  function onCatalogueItemClick(articleId) {
-    dispatch({ type: 'drawer/setVisible', payload: false });
+  function onCatalogueItemClick(articleId: string) {
+    dispatch.drawer.setVisible(false);
     setSelectItem(articleId);
-    dispatch({ type: 'collection/setNowArticle', payload: articleId });
+    dispatch.collection.setNowArticle(articleId);
   }
 
   return (

@@ -224,11 +224,16 @@ export function wrapLinesInSpan(
   return newTree;
 }
 
-function defaultRenderer(
-  rows: RefractorNode[],
-  stylesheet: { [attr: string]: any },
-  useInlineStyles: boolean,
-) {
+type RendererProps = {
+  rows: RefractorNode[];
+  stylesheet: { [attr: string]: any };
+  useInlineStyles: boolean;
+};
+
+function defaultRenderer(props: RendererProps) {
+  const { rows, stylesheet, useInlineStyles } = props;
+
+  console.log('rows', rows);
   return rows.map((node, i) =>
     createElement({
       node,
@@ -268,7 +273,7 @@ export interface SyntaxHighlighterProps {
   showLineNumbers?: boolean;
   startingLineNumber?: number;
   lineNumberStyle?: any;
-  renderer?: any;
+  renderer?: (props: RendererProps) => (string | JSX.Element)[];
   [rest: string]: any;
 }
 

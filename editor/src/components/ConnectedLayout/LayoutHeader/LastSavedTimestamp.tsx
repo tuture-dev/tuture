@@ -5,8 +5,13 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../../store';
 
 function LastSavedTimestamp() {
-  const saveFailed = useSelector<RootState, boolean>((state) => state.collection.saveFailed);
-  const lastSaved = useSelector<RootState, Date | null>((state) => state.collection.lastSaved);
+  const saveFailed = useSelector(
+    (state: RootState) => state.collection.saveFailed,
+  );
+  const lastSaved = useSelector(
+    (state: RootState) => state.collection.lastSaved,
+  );
+
   if (saveFailed) {
     return <div style={{ color: '#ff4d4f' }}>保存失败，请检查服务器连接！</div>;
   }

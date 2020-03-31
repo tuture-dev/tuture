@@ -29,8 +29,8 @@ const mapTypeToComponent: { [key: string]: ReactNode } = {
 
 function DrawerComponent() {
   const dispatch = useDispatch();
-  const { drawerType, visible } = useSelector<RootState, DrawerState>(
-    (state) => state.drawer,
+  const { drawerType, visible } = useSelector(
+    (state: RootState) => state.drawer,
   );
 
   const RenderComponent = mapTypeToComponent[drawerType];

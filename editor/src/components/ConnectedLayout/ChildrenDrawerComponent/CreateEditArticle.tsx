@@ -12,28 +12,31 @@ import {
   Tag,
   Tooltip,
 } from 'antd';
+import { UploadProps } from 'antd/lib/upload/interface';
 import { useDispatch, useSelector, useStore } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import { History } from 'history';
 import shortid from 'shortid';
 
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 
-import { EDIT_ARTICLE } from '../../../utils/constants';
-import { getHeadings, getArtcleMetaById } from '../../../utils/collection';
+import { EDIT_ARTICLE } from 'utils/constants';
+import { getHeadings, getArtcleMetaById } from 'utils/collection';
 
-import { Store, Dispatch } from '../../../store';
-import { Step } from '../../../../../types';
+import { RootState, Store, Dispatch } from 'store';
+import { Step, Meta } from '../../../../../types';
+import { FormComponentProps } from 'antd/lib/form';
 
 const { Option } = Select;
 const { confirm } = Modal;
 
 function showDeleteConfirm(
   name: string,
-  dispatch: any,
+  dispatch: Dispatch,
   articleId: string,
   nowArticleId: string,
-  history: any,
+  history: History,
 ) {
   confirm({
     title: `确定要删除 ${name}`,
@@ -56,11 +59,26 @@ function showDeleteConfirm(
   });
 }
 
-function CreateEditArticle(props: any) {
+type CollectionStep = {
+  key: string;
+  id: string;
+  title: string;
+  articleId?: string | null;
+  articleIndex: number;
+  articleName: string;
+};
+
+interface CreateEditArticleProps extends FormComponentProps {
+  childrenDrawerType: string;
+}
+
+function CreateEditArticle(props: CreateEditArticleProps) {
   const store = useStore() as Store;
   const dispatch = useDispatch<Dispatch>();
-  const [selectedKeys, setSelectedKeys]: any = useState([]);
-  const [collectionStepsState, setCollectionStepsState]: any = useState([]);
+  const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
+  const [collectionStepsState, setCollectionStepsState] = useState<
+    CollectionStep[]
+  >([]);
 
   // get router history && first article id for delete jump
   const history = useHistory();
@@ -69,24 +87,26 @@ function CreateEditArticle(props: any) {
   const {
     editArticle: editArticleLoading,
     createArticle: createArticleLoading,
-  } = useSelector((state: any) => state.loading.effects.collection);
+  } = useSelector((state: RootState) => state.loading.effects.collection);
 
   // get editArticle Commits
   const { editArticleId, nowArticleId, collection } = useSelector(
-    (state: any) => state.collection,
+    (state: RootState) => state.collection,
   );
 
   const steps: Step[] = collection?.steps || [];
   const articles = collection?.articles || [];
 
   // get all steps
-  const collectionSteps = steps.map((step, index: number) => ({
-    key: index,
-    id: step.id,
-    articleId: step.articleId,
-    title: getHeadings([step])[0].title,
-    ...getArtcleMetaById(step.articleId || '', articles),
-  }));
+  const collectionSteps: CollectionStep[] = steps.map(
+    (step, index: number) => ({
+      key: String(index),
+      id: step.id,
+      articleId: step.articleId,
+      title: getHeadings([step])[0].title,
+      ...getArtcleMetaById(step.articleId || '', articles),
+    }),
+  );
 
   // prettier-ignore
   useEffect(() => {
@@ -102,15 +122,15 @@ function CreateEditArticle(props: any) {
           .map((step) => step.key)
       : [];
 
-  const [targetKeys, setTargetKeys]: [any, any] = useState(
+  const [targetKeys, setTargetKeys] = useState<string[]>(
     initialTargetKeys || [],
   );
 
   // get nowArticle Meta
-  const meta = useSelector(
+  const meta: Meta = useSelector(
     store.select.collection.getArticleMetaById({ id: editArticleId }),
   );
-  const articleMeta: any =
+  const articleMeta: Partial<Meta> =
     props.childrenDrawerType === EDIT_ARTICLE ? meta : {};
 
   const initialTopics = articleMeta?.topics || [];
@@ -125,7 +145,7 @@ function CreateEditArticle(props: any) {
       ]
     : [];
   const initialName = articleMeta?.name || '';
-  const coverProps = {
+  const coverProps: Partial<UploadProps> = {
     action: '/upload',
     listType: 'picture',
     defaultFileList: [],
@@ -222,9 +242,9 @@ function CreateEditArticle(props: any) {
     });
 
     // check nowTargetKeys status
-    const newCollectionStepsState = collectionStepsState.map((step: any) => {
+    const newCollectionStepsState = collectionStepsState.map((step) => {
       if (targetKeys.includes(step.key) && !nextTargetKeys.includes(step.key)) {
-        return { ...step, articleId: '', articleIndex: '', articleName: '' };
+        return { ...step, articleId: '', articleIndex: 0, articleName: '' };
       }
 
       return step;
@@ -263,9 +283,7 @@ function CreateEditArticle(props: any) {
     });
 
     setFileList(resultFileList);
-    setFieldsValue({
-      cover: resultFileList,
-    });
+    setFieldsValue({ cover: resultFileList });
   }
 
   function handleTopicsChange(topics: string) {
@@ -294,7 +312,7 @@ function CreateEditArticle(props: any) {
             initialValue: initialCover,
           })(
             <Upload
-              fileList={fileList}
+              fileList={fileList as any[]}
               onChange={handleCoverChange}
               {...coverProps}
             >
@@ -354,9 +372,9 @@ function CreateEditArticle(props: any) {
               onSelectChange={handleSelectChange}
               showSearch
               filterOption={filterOption}
-              render={(item: any) => {
+              render={(item) => {
                 if (targetKeys.includes(item.key)) {
-                  return item.title;
+                  return item.title!;
                 }
 
                 return (
@@ -417,10 +435,10 @@ function CreateEditArticle(props: any) {
           <div
             onClick={() =>
               showDeleteConfirm(
-                articleMeta.name,
+                articleMeta.name!,
                 dispatch,
-                editArticleId,
-                nowArticleId,
+                editArticleId!,
+                nowArticleId!,
                 history,
               )
             }
@@ -454,4 +472,6 @@ function CreateEditArticle(props: any) {
   );
 }
 
-export default Form.create({ name: 'CreateEditArticle' })(CreateEditArticle);
+export default Form.create<CreateEditArticleProps>({
+  name: 'CreateEditArticle',
+})(CreateEditArticle);

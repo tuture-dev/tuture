@@ -1,27 +1,37 @@
 import React, { useState } from 'react';
 import { Form, Input, Icon, Button, Select, Upload } from 'antd';
-import { UploadFileStatus, UploadType } from 'antd/lib/upload/interface';
+import { FormComponentProps } from 'antd/lib/form';
+import {
+  UploadFileStatus,
+  UploadType,
+  UploadProps,
+} from 'antd/lib/upload/interface';
 import { useDispatch, useSelector, useStore } from 'react-redux';
 
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 
-import { Store, Dispatch } from '../../../store';
+import { Store, Dispatch, RootState } from 'store';
+import { Meta } from '../../../../../types';
 
 const { Option } = Select;
 const { TextArea } = Input;
 
-function CollectionSetting(props: any) {
+interface CollectionSettingProps extends FormComponentProps {}
+
+function CollectionSetting(props: CollectionSettingProps) {
   const store = useStore() as Store;
   const dispatch = useDispatch<Dispatch>();
 
   // submit status
-  const { editCollection: editCollectionLoading }: any = useSelector(
-    (state: any) => state.loading.effects.collection,
+  const editCollectionLoading = useSelector(
+    (state: RootState) => state.loading.effects.collection.editCollection,
   );
 
   // get nowArticle Meta
-  const collectionMeta = useSelector(store.select.collection.collectionMeta);
+  const collectionMeta = useSelector<RootState, Meta>(
+    store.select.collection.collectionMeta,
+  );
 
   const initialTopics = collectionMeta?.topics || [];
   const initialCover = collectionMeta?.cover
@@ -38,10 +48,10 @@ function CollectionSetting(props: any) {
     : [];
   const initialName = collectionMeta?.name || '';
   const initialDescription = collectionMeta?.description || '';
-  const coverProps = {
+  const coverProps: Partial<UploadProps> = {
     action: '/upload',
     listType: 'picture',
-    defaultFileList: [initialCover],
+    defaultFileList: initialCover,
   };
 
   const [fileList, setFileList] = useState(initialCover);
@@ -141,7 +151,7 @@ function CollectionSetting(props: any) {
             initialValue: initialCover,
           })(
             <Upload
-              fileList={fileList}
+              fileList={fileList as any[]}
               onChange={handleCoverChange}
               {...coverProps}
             >
@@ -221,4 +231,6 @@ function CollectionSetting(props: any) {
   );
 }
 
-export default Form.create({ name: 'CollectionSetting' })(CollectionSetting);
+export default Form.create<CollectionSettingProps>({
+  name: 'CollectionSetting',
+})(CollectionSetting);

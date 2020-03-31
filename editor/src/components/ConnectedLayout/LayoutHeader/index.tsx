@@ -10,15 +10,15 @@ import ToolBar from './Toolbar';
 import SyncModal from './SyncModal';
 import LastSavedTimestamp from './LastSavedTimestamp';
 
-import { RootState } from '../../../store';
-import { Collection } from '../../../../../types';
+import { Dispatch, RootState } from 'store';
 
 function LayoutHeader() {
-  const dispatch: any = useDispatch();
-  const { name = '' } =
-    useSelector<RootState, Collection>((state) => state.collection.collection) || {};
+  const dispatch = useDispatch<Dispatch>();
+  const { collection } = useSelector((state: RootState) => state.collection);
+  const { name = '' } = collection || {};
+
   const isSyncing = useSelector(
-    (state: any) => state.loading.effects.sync.sync,
+    (state: RootState) => state.loading.effects.sync.sync,
   );
 
   const isToc = useRouteMatch('/toc');
@@ -42,8 +42,8 @@ function LayoutHeader() {
             <Breadcrumb.Item>文集目录</Breadcrumb.Item>
           </Breadcrumb>
         ) : (
-            <LastSavedTimestamp />
-          )}
+          <LastSavedTimestamp />
+        )}
       </Col>
       <Col span={isToc ? 9 : 15} push={2}>
         {!isToc && <ToolBar />}
@@ -54,20 +54,20 @@ function LayoutHeader() {
             保存
           </Button>
         ) : (
-            <div>
-              <Button
-                type="primary"
-                css={css`
+          <div>
+            <Button
+              type="primary"
+              css={css`
                 margin-left: 20px;
               `}
-                onClick={() => dispatch.sync.setSyncVisible(true)}
-                loading={isSyncing}
-              >
-                同步
+              onClick={() => dispatch.sync.setSyncVisible(true)}
+              loading={isSyncing}
+            >
+              同步
             </Button>
-              <SyncModal />
-            </div>
-          )}
+            <SyncModal />
+          </div>
+        )}
       </Col>
     </Row>
   );

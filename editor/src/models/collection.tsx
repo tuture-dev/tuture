@@ -421,8 +421,8 @@ export const collection = {
       if (!collectionData) return;
 
       collectionData.steps = collectionData.steps.map(
-        (step: any) =>
-          unflatten(rootState.collection.nowSteps).filter((node: any) =>
+        (step) =>
+          unflatten(rootState.collection.nowSteps).filter((node) =>
             isCommitEqual(node.commit, step.commit),
           )[0] || step,
       );
@@ -487,7 +487,7 @@ export const collection = {
         } = collectionState;
 
         let finalSteps = nowArticleId
-          ? steps.filter((step: any) => step.articleId === nowArticleId)
+          ? steps.filter((step) => step.articleId === nowArticleId)
           : steps;
 
         return getHeadings(finalSteps);

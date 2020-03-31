@@ -18,6 +18,8 @@ import MainMenu from './MainMenu';
 import DrawerComponent from './DrawerComponent';
 import ChildrenDrawerComponent from './ChildrenDrawerComponent';
 
+import { Meta } from '../../../../types';
+
 const { Header, Content } = Layout;
 
 function ConnectedLayout(props: { children: ReactNode }) {
@@ -26,14 +28,12 @@ function ConnectedLayout(props: { children: ReactNode }) {
   const history = useHistory();
 
   const store = useStore() as Store;
-  const { name: pageTitle } = useSelector(
+  const { name: pageTitle } = useSelector<RootState, Meta>(
     store.select.collection.nowArticleMeta,
   );
-  const value = useSelector<RootState, Node[]>(
-    (state) => state.collection.nowSteps,
-  );
-  const outdatedNotificationClicked = useSelector<RootState, boolean>(
-    (state) => state.collection.outdatedNotificationClicked,
+  const value = useSelector((state: RootState) => state.collection.nowSteps);
+  const outdatedNotificationClicked = useSelector(
+    (state: RootState) => state.collection.outdatedNotificationClicked,
   );
 
   const dispatch = useDispatch<Dispatch>();
