@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { useDispatch } from 'react-redux';
 import { useEditure } from 'editure-react';
 import { LINK } from 'editure-constants';
-import { getSelectedString } from 'editure';
+import { getSelectedString, selectLastPoint } from 'editure';
 
 import { IEditor } from 'utils/editor';
 import { Dispatch } from 'store';
@@ -20,10 +20,11 @@ const LinkButton = () => {
   const isActive = editor.isMarkActive(LINK);
 
   const onClick = () => {
+    selectLastPoint(editor);
+
     const { selection } = editor;
-    if (!selection) {
-      return;
-    }
+    console.log('selection', selection);
+    if (!selection) return;
 
     if (editor.isMarkActive(LINK)) {
       return editor.removeLink();
@@ -33,8 +34,9 @@ const LinkButton = () => {
 
     if (selected) {
       dispatch.link.setText(selected);
-      dispatch.link.startEdit();
     }
+
+    dispatch.link.startEdit();
   };
 
   return (

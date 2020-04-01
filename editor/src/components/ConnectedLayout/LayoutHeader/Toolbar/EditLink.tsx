@@ -25,9 +25,9 @@ const EditLink = () => {
 
     if (text) {
       if (!editor.isMarkActive(LINK)) {
-        editor.insertLink(text, url);
+        editor.insertLink({ text, url });
       } else {
-        editor.updateLink(text, url);
+        editor.updateLink({ text, url });
       }
     }
 
