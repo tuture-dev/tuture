@@ -8,3 +8,4 @@ node_modules
 tmp
 yarn.lock
 package.json
+test
