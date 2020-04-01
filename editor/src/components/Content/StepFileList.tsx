@@ -33,7 +33,7 @@ function StepFileList() {
   function onDrop(res: DropResult) {
     const { removedIndex, addedIndex } = res;
 
-    if (removedIndex && addedIndex && nowStepCommit) {
+    if (removedIndex !== null && addedIndex !== null && nowStepCommit) {
       dispatch.collection.switchFile({
         removedIndex,
         addedIndex,
