@@ -25,7 +25,7 @@ import { EDIT_ARTICLE } from 'utils/constants';
 import { getHeadings, getArtcleMetaById } from 'utils/collection';
 
 import { RootState, Store, Dispatch } from 'store';
-import { Step, Meta } from '../../../../../types';
+import { Article, Step, Meta } from '../../../../../types';
 import { FormComponentProps } from 'antd/lib/form';
 
 const { Option } = Select;
@@ -68,7 +68,15 @@ type CollectionStep = {
   articleName: string;
 };
 
-interface CreateEditArticleProps extends FormComponentProps {
+type CreateEditArticleValueType = {
+  cover: UploadProps;
+  name: string;
+  topics: string[];
+  steps: string[];
+};
+
+interface CreateEditArticleProps
+  extends FormComponentProps<CreateEditArticleValueType> {
   childrenDrawerType: string;
 }
 
@@ -98,22 +106,20 @@ function CreateEditArticle(props: CreateEditArticleProps) {
   const articles = collection?.articles || [];
 
   // get all steps
-  const collectionSteps: CollectionStep[] = steps.map(
-    (step, index: number) => ({
-      key: String(index),
-      id: step.id,
-      articleId: step.articleId,
-      title: getHeadings([step])[0].title,
-      ...getArtcleMetaById(step.articleId || '', articles),
-    }),
-  );
+  const collectionSteps: CollectionStep[] = steps.map((step, index) => ({
+    key: String(index),
+    id: step.id,
+    articleId: step.articleId,
+    title: getHeadings([step])[0].title,
+    ...getArtcleMetaById(step.articleId || '', articles),
+  }));
 
   // prettier-ignore
   useEffect(() => {
     if (collectionSteps) {
       setCollectionStepsState(collectionSteps);
     }
-  }, [collection]);
+  }, [collection, collectionSteps]);
 
   const initialTargetKeys =
     props.childrenDrawerType === EDIT_ARTICLE
@@ -157,11 +163,11 @@ function CreateEditArticle(props: CreateEditArticleProps) {
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
 
-    props.form.validateFields((err: Error, values: any) => {
+    props.form.validateFields((err, values) => {
       if (!err) {
-        const { cover, name, topics, steps }: { [key: string]: any } = values;
+        const { cover, name, topics, steps } = values;
 
-        const article: { [key: string]: any } = { name };
+        const article: Partial<Article> = { name };
 
         if (topics) {
           article.topics = topics;
@@ -181,12 +187,12 @@ function CreateEditArticle(props: CreateEditArticleProps) {
         }
 
         if (props.childrenDrawerType === EDIT_ARTICLE) {
-          dispatch.collection.editArticle(article);
+          dispatch.collection.editArticle(article as Article);
           dispatch.drawer.setVisible(false);
 
           collectionSteps.forEach((step, index) => {
             if (step.articleId === editArticleId) {
-              if (!steps.includes(index)) {
+              if (!steps.includes(String(index))) {
                 // Remove this step from currently edited article.
                 dispatch.collection.setStepById({
                   stepId: step.id,
@@ -194,7 +200,7 @@ function CreateEditArticle(props: CreateEditArticleProps) {
                 });
               }
             } else {
-              if (steps.includes(index)) {
+              if (steps.includes(String(index))) {
                 // Add this step to the currently edited article.
                 dispatch.collection.setStepById({
                   stepId: step.id,
@@ -210,7 +216,7 @@ function CreateEditArticle(props: CreateEditArticleProps) {
 
           // Update articleId field for selected steps.
           collectionSteps.forEach((step, index) => {
-            if (steps.includes(index)) {
+            if (steps.includes(String(index))) {
               dispatch.collection.setStepById({
                 stepId: step.id,
                 stepProps: { articleId: article.id },
@@ -430,7 +436,7 @@ function CreateEditArticle(props: CreateEditArticleProps) {
         </Form.Item>
       </Form>
       {props.childrenDrawerType === EDIT_ARTICLE && (
-        <>
+        <React.Fragment>
           <Divider />
           <div
             onClick={() =>
@@ -465,9 +471,8 @@ function CreateEditArticle(props: CreateEditArticleProps) {
               删除此文章
             </span>
           </div>
-        </>
+        </React.Fragment>
       )}
-      <Modal />
     </div>
   );
 }
