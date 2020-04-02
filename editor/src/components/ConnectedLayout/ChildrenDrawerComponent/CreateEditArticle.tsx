@@ -114,12 +114,11 @@ function CreateEditArticle(props: CreateEditArticleProps) {
     ...getArtcleMetaById(step.articleId || '', articles),
   }));
 
-  // prettier-ignore
   useEffect(() => {
     if (collectionSteps) {
       setCollectionStepsState(collectionSteps);
     }
-  }, [collection, collectionSteps]);
+  }, [collection]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const initialTargetKeys =
     props.childrenDrawerType === EDIT_ARTICLE
