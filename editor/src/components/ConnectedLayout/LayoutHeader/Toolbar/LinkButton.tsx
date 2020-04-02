@@ -23,7 +23,6 @@ const LinkButton = () => {
     selectLastPoint(editor);
 
     const { selection } = editor;
-    console.log('selection', selection);
     if (!selection) return;
 
     if (editor.isMarkActive(LINK)) {

@@ -233,7 +233,6 @@ type RendererProps = {
 function defaultRenderer(props: RendererProps) {
   const { rows, stylesheet, useInlineStyles } = props;
 
-  console.log('rows', rows);
   return rows.map((node, i) =>
     createElement({
       node,
@@ -362,7 +361,7 @@ export default function(
       [],
     );
 
-    const data = useMemo(() => vanillaData, []);
+    const data = useMemo(() => vanillaData, [vanillaData]);
 
     const { getTableProps, getTableBodyProps, rows, prepareRow } = useTable({
       columns,
