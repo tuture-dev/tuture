@@ -13,6 +13,7 @@ import {
 import { withPaste, withReact, ReactEditor } from 'editure-react';
 import * as F from 'editure-constants';
 
+import { IS_FIREFOX } from './environment';
 import { withImages } from './image';
 import { EXPLAIN, DIFF_BLOCK } from '../utils/constants';
 
@@ -89,3 +90,29 @@ export const initializeEditor = () =>
     (augmentedEditor, plugin) => plugin(augmentedEditor),
     createEditor() as IEditor,
   ) as IEditor;
+
+export const syncDOMSelection = (editor: IEditor) => {
+  const { selection } = editor;
+  const domSelection = window.getSelection();
+
+  if (!domSelection) {
+    return;
+  }
+
+  const newDomRange = selection && ReactEditor.toDOMRange(editor, selection);
+
+  const el = ReactEditor.toDOMNode(editor, editor);
+  domSelection.removeAllRanges();
+
+  if (newDomRange) {
+    domSelection.addRange(newDomRange!);
+  }
+
+  setTimeout(() => {
+    // COMPAT: In Firefox, it's not enough to create a range, you also need
+    // to focus the contenteditable element too. (2016/11/16)
+    if (newDomRange && IS_FIREFOX) {
+      el.focus();
+    }
+  });
+};

@@ -3,7 +3,7 @@ import { Select } from 'antd';
 import { useEditure } from 'editure-react';
 import { H1, H2, H3, H4, H5, PARAGRAPH } from 'editure-constants';
 
-import { IEditor } from 'utils/editor';
+import { IEditor, syncDOMSelection } from 'utils/editor';
 import IconFont from 'components/IconFont';
 
 /** @jsx jsx */
@@ -32,6 +32,7 @@ const SelectContentType = () => {
 
   const handleChange = (value: string) => {
     editor.toggleBlock(value);
+    syncDOMSelection(editor);
   };
 
   const suffixIcon = <IconFont type="icon-caret-down" />;

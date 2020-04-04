@@ -8,7 +8,7 @@ import { css, jsx } from '@emotion/core';
 
 import { levels } from 'utils/note';
 import IconFont from 'components/IconFont';
-import { IS_MAC } from 'utils/getOS';
+import { IS_MAC } from 'utils/environment';
 
 import { ElementProps } from './index';
 

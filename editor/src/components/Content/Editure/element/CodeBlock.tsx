@@ -8,7 +8,7 @@ import { useDispatch } from 'react-redux';
 import { css, jsx } from '@emotion/core';
 
 import IconFont from 'components/IconFont';
-import { IS_MAC } from 'utils/getOS';
+import { IS_MAC } from 'utils/environment';
 import { Dispatch } from 'store';
 
 import { ElementProps } from './index';
