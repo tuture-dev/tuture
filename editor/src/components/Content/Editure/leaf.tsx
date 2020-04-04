@@ -46,7 +46,7 @@ const Link = (props: LeafProps) => {
 
     const { text, url } = editor.getLinkData();
     if (text) dispatch.link.setText(text);
-    if (url) dispatch(url);
+    if (url) dispatch.link.setUrl(url);
 
     dispatch.link.startEdit();
   };
