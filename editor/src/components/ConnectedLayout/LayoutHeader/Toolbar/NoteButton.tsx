@@ -2,9 +2,10 @@ import React from 'react';
 import { Dropdown, Menu } from 'antd';
 import { ClickParam } from 'antd/lib/menu';
 import { useEditure } from 'editure-react';
+import { selectLastPoint } from 'editure';
 import { NOTE } from 'editure-constants';
 
-import { IEditor } from 'utils/editor';
+import { IEditor, syncDOMSelection } from 'utils/editor';
 import { levels } from 'utils/note';
 import IconFont from 'components/IconFont';
 
@@ -15,7 +16,10 @@ const NoteButton = () => {
   const editor = useEditure() as IEditor;
 
   const handleClick = (e: ClickParam) => {
+    selectLastPoint(editor);
     editor.toggleBlock(NOTE, { level: e.key });
+
+    syncDOMSelection(editor);
   };
 
   const menu = (

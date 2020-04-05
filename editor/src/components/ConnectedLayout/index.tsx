@@ -36,6 +36,7 @@ function ConnectedLayout(props: { children: ReactNode }) {
     (state: RootState) => state.collection.outdatedNotificationClicked,
   );
 
+  const editor = useMemo(initializeEditor, []) as ReactEditor;
   const dispatch = useDispatch<Dispatch>();
 
   useEffect(() => {
@@ -54,7 +55,7 @@ function ConnectedLayout(props: { children: ReactNode }) {
       dispatch.collection.setOutdatedNotificationClicked(false);
       history.push('/toc');
     }
-  }, [outdatedNotificationClicked]);
+  }, [dispatch, history, outdatedNotificationClicked]);
 
   function resetTimeout(id: number | null, newId: any) {
     if (id) {
@@ -65,8 +66,11 @@ function ConnectedLayout(props: { children: ReactNode }) {
   }
 
   function onContentChange(val: Node[]) {
+    if (editor.selection) {
+      updateLastSelection(editor.selection);
+    }
+
     dispatch.collection.setNowSteps(val);
-    const timeout = setTimeout(() => {}, 1000);
 
     setTimeoutState(
       resetTimeout(
@@ -77,9 +81,6 @@ function ConnectedLayout(props: { children: ReactNode }) {
       ),
     );
   }
-
-  const editor = useMemo(initializeEditor, []) as ReactEditor;
-  updateLastSelection(editor.selection);
 
   return (
     <ButtonRefsContext.Provider value={buttonRefs}>

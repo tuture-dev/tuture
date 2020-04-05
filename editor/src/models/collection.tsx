@@ -51,6 +51,20 @@ const initialState: CollectionState = {
   outdatedNotificationClicked: false,
 };
 
+function updateNowSteps(state: CollectionState) {
+  if (!state.collection) return state;
+
+  const { steps } = state.collection;
+
+  if (state.nowArticleId) {
+    state.nowSteps = flatten(
+      steps.filter((step) => step.articleId === state.nowArticleId),
+    );
+  } else {
+    state.nowSteps = flatten(steps);
+  }
+}
+
 export const collection = {
   state: initialState,
   reducers: {
@@ -61,15 +75,7 @@ export const collection = {
         state.nowArticleId = collection.articles[0].id;
       }
 
-      const { steps } = state.collection;
-
-      if (state.nowArticleId) {
-        state.nowSteps = flatten(
-          steps.filter((step) => step.articleId === state.nowArticleId),
-        );
-      } else {
-        state.nowSteps = flatten(steps);
-      }
+      updateNowSteps(state);
 
       return state;
     },
@@ -86,15 +92,7 @@ export const collection = {
         return state;
       }
 
-      const { steps } = state.collection;
-
-      if (state.nowArticleId) {
-        state.nowSteps = flatten(
-          steps.filter((step) => step.articleId === state.nowArticleId),
-        );
-      } else {
-        state.nowSteps = flatten(steps);
-      }
+      updateNowSteps(state);
 
       return state;
     },
@@ -172,13 +170,7 @@ export const collection = {
         }
       });
 
-      const { steps } = state.collection;
-
-      if (state.nowArticleId) {
-        state.nowSteps = flatten(unflattenedNowSteps);
-      } else {
-        state.nowSteps = flatten(steps);
-      }
+      updateNowSteps(state);
 
       return state;
     },
@@ -265,6 +257,8 @@ export const collection = {
       state.collection.steps = state.collection.steps.map((step) =>
         step.id === stepId ? { ...step, ...stepProps } : step,
       );
+
+      updateNowSteps(state);
 
       return state;
     },

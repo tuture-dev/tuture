@@ -6,14 +6,13 @@ import {
   COLLECTION_CATALOGUE,
   COLLECTION_SETTING,
   CONTACT_US,
-} from '../../../utils/constants';
+} from 'utils/constants';
 
 import CollectionCatalogue from './CollectionCatalogue';
 import CollectionSetting from './CollectionSetting';
 import ContactUs from './ContactUs';
 
-import { RootState } from '../../../store';
-import { DrawerState } from '../../../models';
+import { RootState } from 'store';
 
 const mapTypeToTitle: { [key: string]: string } = {
   [COLLECTION_CATALOGUE]: '文集目录',

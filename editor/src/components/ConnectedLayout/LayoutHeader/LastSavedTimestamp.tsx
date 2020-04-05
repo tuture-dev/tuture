@@ -2,7 +2,7 @@ import React from 'react';
 import dayjs from 'dayjs';
 import { useSelector } from 'react-redux';
 
-import { RootState } from '../../../store';
+import { RootState } from 'store';
 
 function LastSavedTimestamp() {
   const saveFailed = useSelector(
