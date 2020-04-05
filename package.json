@@ -16,8 +16,7 @@
     "node": ">=8.0.0"
   },
   "scripts": {
-    "lint": "eslint .",
-    "lint:editor": "eslint editor",
+    "lint": "eslint \"**/*.{js,jsx,ts,tsx}\" --fix",
     "test": "jest",
     "test:watch": "jest --watch",
     "build:editor": "cd editor && yarn && yarn build",

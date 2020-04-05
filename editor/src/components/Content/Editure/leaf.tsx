@@ -7,6 +7,7 @@ import { Popover, Popconfirm, Tooltip } from 'antd';
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 
+import { Dispatch } from 'store';
 import IconFont from 'components/IconFont';
 import styles from '../Highlight/styles/atom-dark';
 
@@ -29,7 +30,7 @@ type LeafProps = {
 const Link = (props: LeafProps) => {
   const { attributes, children, leaf } = props;
   const editor = useEditure();
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<Dispatch>();
 
   const iconStyle = css`
     margin: 0 2px;
@@ -41,11 +42,13 @@ const Link = (props: LeafProps) => {
   `;
 
   const onClickEdit = () => {
-    const { text, url } = editor.getLinkData();
-    if (text) dispatch({ type: 'link/setText', payload: text });
-    if (url) dispatch({ type: 'link/setUrl', payload: url });
+    selectLastPoint(editor);
 
-    dispatch({ type: 'link/startEdit' });
+    const { text, url } = editor.getLinkData();
+    if (text) dispatch.link.setText(text);
+    if (url) dispatch.link.setUrl(url);
+
+    dispatch.link.startEdit();
   };
 
   const handleDeleteLink = () => {

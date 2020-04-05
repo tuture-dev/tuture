@@ -142,7 +142,7 @@ export default class Init extends BaseCommand {
       }
 
       saveCollection(collection);
-      appendGitignore(this.userConfig);
+      appendGitignore();
       appendGitHook();
 
       logger.log('success', 'Tuture tutorial has been initialized!');

@@ -1,5 +1,6 @@
 import * as F from 'editure-constants';
 import { Node, Element } from 'editure';
+import omit from 'lodash.omit';
 
 import {
   FILE,
@@ -121,11 +122,13 @@ export function unflatten(fragment: Node[]) {
       case EXPLAIN: {
         // In step: step_start || file_end
         if (flag === 'step_start' || flag === 'file_end') {
-          step.children!.push(node as Explain);
+          step.children!.push(omit(node, 'flag') as Explain);
         }
 
         if (flag === 'file_start') {
-          step.children!.slice(-1)[0].children.push(node as Explain);
+          step
+            .children!.slice(-1)[0]
+            .children.push(omit(node, 'flag') as Explain);
         }
 
         break;
