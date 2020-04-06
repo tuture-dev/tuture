@@ -9,6 +9,7 @@ import {
   EditorWithMark,
   EditorWithVoid,
   EditorWithContainer,
+  getBeforeText,
 } from 'editure';
 import { withPaste, withReact, ReactEditor } from 'editure-react';
 import * as F from 'editure-constants';
@@ -34,7 +35,7 @@ const withCommitHeaderLayout = (editor: Editor) => {
   return editor;
 };
 
-const withExplainLayout = (editor: Editor) => {
+const withExplainLayout = (editor: IEditor) => {
   const { deleteBackward } = editor;
 
   editor.deleteBackward = (unit) => {
@@ -42,18 +43,19 @@ const withExplainLayout = (editor: Editor) => {
 
     // If selection is start of EXPLAIN, forbid to deleteBackward
     if (selection && Range.isCollapsed(selection)) {
-      const [match] = Editor.nodes(editor, {
-        match: (n) => n.type === EXPLAIN,
-      });
       const block = Editor.above(editor);
 
-      if (
-        match &&
-        Editor.isStart(editor, selection.anchor, match[1]) &&
-        block &&
-        block[0].type === EXPLAIN
-      ) {
-        return;
+      if (block) {
+        const [, path] = block;
+        const outerBlock = Editor.above(editor, { at: path });
+
+        if (
+          outerBlock &&
+          outerBlock[0].type === EXPLAIN &&
+          !getBeforeText(editor).beforeText
+        ) {
+          return;
+        }
       }
     }
 
