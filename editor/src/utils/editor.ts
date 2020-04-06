@@ -41,21 +41,16 @@ const withExplainLayout = (editor: IEditor) => {
     const { selection } = editor;
 
     if (selection && Range.isCollapsed(selection)) {
-      const explainBlock = Editor.above(editor, {
-        match: (n) => n.type === EXPLAIN,
-      });
+      const parent = Editor.parent(editor, selection);
+      const grandparent = Editor.parent(editor, parent[1]);
 
-      if (explainBlock) {
-        const [block, path] = explainBlock;
-
-        // If current explain is empty, forbid to deleteBackward
-        if (
-          block.children.length === 1 &&
-          block.children[0].type === F.PARAGRAPH &&
-          !Editor.string(editor, path)
-        ) {
-          return;
-        }
+      // If selection is start of EXPLAIN, forbid to deleteBackward
+      if (
+        grandparent[0].type === EXPLAIN &&
+        Editor.isStart(editor, selection.anchor, parent[1]) &&
+        Editor.isStart(editor, selection.anchor, grandparent[1])
+      ) {
+        return;
       }
     }
 
