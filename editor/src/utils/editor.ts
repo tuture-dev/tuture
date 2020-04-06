@@ -9,7 +9,6 @@ import {
   EditorWithMark,
   EditorWithVoid,
   EditorWithContainer,
-  getBeforeText,
 } from 'editure';
 import { withPaste, withReact, ReactEditor } from 'editure-react';
 import * as F from 'editure-constants';
@@ -41,18 +40,19 @@ const withExplainLayout = (editor: IEditor) => {
   editor.deleteBackward = (unit) => {
     const { selection } = editor;
 
-    // If selection is start of EXPLAIN, forbid to deleteBackward
     if (selection && Range.isCollapsed(selection)) {
-      const block = Editor.above(editor);
+      const explainBlock = Editor.above(editor, {
+        match: (n) => n.type === EXPLAIN,
+      });
 
-      if (block) {
-        const [, path] = block;
-        const outerBlock = Editor.above(editor, { at: path });
+      if (explainBlock) {
+        const [block, path] = explainBlock;
 
+        // If current explain is empty, forbid to deleteBackward
         if (
-          outerBlock &&
-          outerBlock[0].type === EXPLAIN &&
-          !getBeforeText(editor).beforeText
+          block.children.length === 1 &&
+          block.children[0].type === F.PARAGRAPH &&
+          !Editor.string(editor, path)
         ) {
           return;
         }
