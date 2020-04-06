@@ -45,8 +45,14 @@ const withExplainLayout = (editor: Editor) => {
       const [match] = Editor.nodes(editor, {
         match: (n) => n.type === EXPLAIN,
       });
+      const block = Editor.above(editor);
 
-      if (match && Editor.isStart(editor, selection.anchor, match[1])) {
+      if (
+        match &&
+        Editor.isStart(editor, selection.anchor, match[1]) &&
+        block &&
+        block[0].type === EXPLAIN
+      ) {
         return;
       }
     }
