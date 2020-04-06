@@ -29,3 +29,10 @@ export const IMAGE_HOSTING_URL = 'https://imgkr.com/api/files/upload';
 
 // Branch for commiting tutorial content.
 export const TUTURE_BRANCH = 'tuture';
+
+export enum EXIT_CODE {
+  NOT_INIT = 1,
+  NO_STAGE,
+  NO_REMOTE,
+  CONFLICT,
+}

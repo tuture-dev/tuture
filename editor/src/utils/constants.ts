@@ -76,3 +76,21 @@ export const NOW_STEP_START = 'now_step_start';
  * sync constants
  */
 export const NO_REMOTE_GITHUB = 'NO_REMOTE_GITHUB';
+
+/**
+ * sync exit code
+ */
+export enum EXIT_CODE {
+  NOT_INIT = 1,
+  NO_STAGE,
+  NO_REMOTE,
+  CONFLICT,
+}
+
+export const mapExitCodeToMessage = {
+  [EXIT_CODE.NOT_INIT]: '你的 GIT 仓库还没有初始化成 Tuture 教程',
+  [EXIT_CODE.NO_STAGE]: '你的 GIT 仓库还没有任何提交',
+  [EXIT_CODE.NO_REMOTE]: '你的 GIT 仓库还没有设置远程仓库，无法进行同步',
+  [EXIT_CODE.CONFLICT]:
+    '你的 GIT 仓库在与远程仓库同步时存在冲突，请手动解决冲突',
+};

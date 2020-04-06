@@ -73,7 +73,7 @@ const makeServer = (config: any) => {
   app.get('/sync', async (req, res) => {
     cp.execFile('tuture', ['sync'], {}, (err) => {
       if (err) {
-        res.sendStatus(500);
+        res.status(500).json({ exitCode: err.code });
       } else {
         res.sendStatus(200);
       }
