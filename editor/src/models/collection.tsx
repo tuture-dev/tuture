@@ -170,7 +170,13 @@ export const collection = {
         }
       });
 
-      updateNowSteps(state);
+      const { steps } = state.collection;
+
+      if (state.nowArticleId) {
+        state.nowSteps = flatten(unflattenedNowSteps);
+      } else {
+        state.nowSteps = flatten(steps);
+      }
 
       return state;
     },
