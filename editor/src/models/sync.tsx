@@ -1,8 +1,10 @@
 import React from 'react';
 import { message, notification } from 'antd';
+import axios, { AxiosResponse } from 'axios';
 
 import { Dispatch } from '../store';
 import { Remote } from '../../../types';
+import { EXIT_CODE, mapExitCodeToMessage } from 'utils/constants';
 
 export type SyncState = {
   syncVisible: boolean;
@@ -29,13 +31,15 @@ export const sync = {
       await dispatch.collection.saveCollection();
 
       try {
-        const response = await fetch('/sync');
+        const response = await axios.get('/sync');
 
-        if (response.ok) {
+        if (response.status === 200) {
           if (payload?.showMessage) {
             message.success('同步内容成功！');
           }
-        } else {
+        }
+      } catch (err) {
+        if (payload?.showMessage) {
           if (payload?.showMessage) {
             notification.error({
               message: '内容同步可能发生了文件冲突',
@@ -52,10 +56,6 @@ export const sync = {
               duration: null,
             });
           }
-        }
-      } catch (err) {
-        if (payload?.showMessage) {
-          message.error('同步内容失败');
         }
       }
     },

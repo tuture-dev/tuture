@@ -20,7 +20,12 @@ import {
   hasRemoteTutureBranch,
   hasCollectionChangedSinceCheckpoint,
 } from '../utils/collection';
-import { COLLECTION_PATH, TUTURE_BRANCH, ASSETS_JSON_PATH } from '../constants';
+import {
+  COLLECTION_PATH,
+  TUTURE_BRANCH,
+  ASSETS_JSON_PATH,
+  EXIT_CODE,
+} from '../constants';
 import {
   syncImages,
   assetsTablePath,
@@ -106,7 +111,7 @@ export default class Sync extends BaseCommand {
       await checkInitStatus();
     } catch (err) {
       logger.log('error', err.message);
-      this.exit(1);
+      this.exit(EXIT_CODE.NOT_INIT);
     }
 
     const { conflicted, staged } = await git.status();
@@ -115,13 +120,13 @@ export default class Sync extends BaseCommand {
         'error',
         `You still have unresolved conflict file(s): ${conflicted}`,
       );
-      this.exit(1);
+      this.exit(EXIT_CODE.CONFLICT);
     }
 
     if (flags.continue) {
       if (staged.length === 0) {
         logger.log('error', `You have not staged any file. Aborting.`);
-        this.exit(1);
+        this.exit(EXIT_CODE.NO_STAGE);
       }
 
       await git.commit(`Resolve conflict during sync (${new Date()})`);
@@ -138,7 +143,7 @@ export default class Sync extends BaseCommand {
 
         if (remotes.length === 0) {
           logger.log('error', 'Remote repository has not been configured.');
-          this.exit(1);
+          this.exit(EXIT_CODE.NO_REMOTE);
         } else {
           collection.remotes = await selectRemotes(remotes, collection.remotes);
           saveCollection(collection);
@@ -174,7 +179,7 @@ export default class Sync extends BaseCommand {
           )} to initialize.`,
         );
 
-        this.exit(1);
+        this.exit(EXIT_CODE.NOT_INIT);
       }
 
       await this.copyFilesFromTutureBranch();
@@ -195,7 +200,7 @@ export default class Sync extends BaseCommand {
 
         if (remotes.length === 0) {
           logger.log('error', 'Remote repository has not been configured.');
-          this.exit(1);
+          this.exit(EXIT_CODE.NO_REMOTE);
         } else {
           collection.remotes = await selectRemotes(remotes, collection.remotes);
           saveCollection(collection);

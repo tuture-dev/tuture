@@ -58,7 +58,7 @@ app.post('/save', (req, res) => {
 
 app.get('/sync', (req, res) => {
   setTimeout(() => {
-    res.sendStatus(500);
+    res.status(500);
   }, 2000);
 });
 
