@@ -65,7 +65,9 @@ export const sync = {
             default: {
               if (payload?.showMessage) {
                 notification.error({
-                  message: mapExitCodeToMessage[exitCode as EXIT_CODE],
+                  message:
+                    mapExitCodeToMessage[exitCode as EXIT_CODE] ||
+                    '同步存在问题，请继续尝试',
                 });
               }
             }
