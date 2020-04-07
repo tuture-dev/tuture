@@ -5,6 +5,8 @@ import {
   Transforms,
   Range,
   Editor,
+  EditorWithLink,
+  EditorWithList,
   EditorWithBlock,
   EditorWithMark,
   EditorWithVoid,
@@ -82,6 +84,8 @@ const plugins: Function[] = [
 ];
 
 export type IEditor = Editor &
+  EditorWithList &
+  EditorWithLink &
   EditorWithVoid &
   EditorWithBlock &
   EditorWithMark &
