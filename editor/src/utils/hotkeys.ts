@@ -1,12 +1,6 @@
 import React from 'react';
 import isHotkey from 'is-hotkey';
-import {
-  Editor,
-  getBeforeText,
-  selectWithinBlock,
-  EditorWithBlock,
-  EditorWithContainer,
-} from 'editure';
+import { getBeforeText, selectWithinBlock } from 'editure';
 import * as F from 'editure-constants';
 
 import { EXPLAIN } from '../utils/constants';
@@ -57,7 +51,7 @@ export const OP_HOTKEYS: Record<string, Hotkey> = {
 
 const containerBlocks = [F.BLOCK_QUOTE, F.CODE_BLOCK, F.NOTE, EXPLAIN];
 
-function handleTabKey(editor: Editor, event: KeyboardEvent) {
+function handleTabKey(editor: IEditor, event: KeyboardEvent) {
   event.preventDefault();
 
   const { beforeText } = getBeforeText(editor);
@@ -77,15 +71,16 @@ function handleTabKey(editor: Editor, event: KeyboardEvent) {
   }
 }
 
-function handleShiftTabKey(editor: Editor, event: KeyboardEvent) {
+function handleShiftTabKey(editor: IEditor, event: KeyboardEvent) {
   event.preventDefault();
   if (editor.isBlockActive(F.LIST_ITEM)) {
     editor.decreaseItemDepth();
   }
 }
 
-function handleSelectAll(editor: Editor, event: KeyboardEvent) {
+function handleSelectAll(editor: IEditor, event: KeyboardEvent) {
   const format = editor.detectBlockFormat(containerBlocks);
+  console.log('handleSelectAll detect format', format);
 
   if (format) {
     event.preventDefault();
@@ -93,10 +88,7 @@ function handleSelectAll(editor: Editor, event: KeyboardEvent) {
   }
 }
 
-function handleSelectUpperLeftAll(
-  editor: EditorWithBlock,
-  event: KeyboardEvent,
-) {
+function handleSelectUpperLeftAll(editor: IEditor, event: KeyboardEvent) {
   const format = editor.detectBlockFormat(containerBlocks);
   if (format) {
     event.preventDefault();
@@ -104,10 +96,7 @@ function handleSelectUpperLeftAll(
   }
 }
 
-function handleSelectLowerRightAll(
-  editor: EditorWithBlock,
-  event: KeyboardEvent,
-) {
+function handleSelectLowerRightAll(editor: IEditor, event: KeyboardEvent) {
   const format = editor.detectBlockFormat(containerBlocks);
   if (format) {
     event.preventDefault();
@@ -115,7 +104,7 @@ function handleSelectLowerRightAll(
   }
 }
 
-function handleExitBlock(editor: EditorWithContainer, event: KeyboardEvent) {
+function handleExitBlock(editor: IEditor, event: KeyboardEvent) {
   const format = editor.detectBlockFormat([
     F.CODE_BLOCK,
     F.BLOCK_QUOTE,
