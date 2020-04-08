@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "baseUrl": "src",
-    "lib": ["DOM", "ESNext"],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "forceConsistentCasingInFileNames": true,
     "esModuleInterop": true,
     "importHelpers": true,
@@ -15,6 +15,7 @@
     "allowSyntheticDefaultImports": true,
     "moduleResolution": "node",
     "resolveJsonModule": true,
+    "downlevelIteration": true,
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react"
