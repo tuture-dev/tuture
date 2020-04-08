@@ -1,6 +1,6 @@
 # 总览
 
-![logo.svg](https://user-gold-cdn.xitu.io/2020/4/8/171577bb979987bd?w=330&h=400&f=svg&s=3342)
+<p align="center"><img src="https://user-gold-cdn.xitu.io/2020/4/8/171577bb979987bd?w=330&h=400&f=svg&s=3342"/></p>
 
 <p align="center" style="font-size: 24px;">Git + Tuture = Tutorial（教程），专为实战教程创作而生</p>
 
@@ -8,9 +8,9 @@
 
 <br />
 
-<br />
+<br /><br />
 
-![](/Users/pftom/Desktop/1586258204792-9ea1b906-d779-4b34-8a9c-fa42c4051949.svg)<br />
+![编组 2](https://tva1.sinaimg.cn/large/00831rSTgy1gdm6uwl8cij31qt0u0try.jpg)
 
 <a name="9hhWt"></a>
 
@@ -39,7 +39,10 @@
 
 <br />
 <br />这个时候你应该可以看到如下的界面：<br />
-<br />![image.png](https://tva1.sinaimg.cn/large/00831rSTgy1gdm5loil8pj31580u0tib.jpg)<br />
+
+![00831rSTgy1gdm5loil8pj31580u0tib](https://tva1.sinaimg.cn/large/00831rSTgy1gdm6wsd2hfj31580u0tc1.jpg)
+
+<br />
 
 <a name="DXOfd"></a>
 
@@ -107,9 +110,9 @@
 <br />请确保你在提交 Pull Request 之前先阅读了 [贡献指南](https://www.yuque.com/tuture/mtnpg1/xxxx) ！<br />
 <br />感谢所有已经给 Tuture 提交贡献的人！<br />
 
-| <img style="width: 200px" src="https://tva1.sinaimg.cn/large/00831rSTgy1gdm63gepncj30cs0csgp9.jpg"/> | <img style="width: 200px" src="https://tva1.sinaimg.cn/large/00831rSTgy1gdm647but2j30cs0csdgd.jpg"/> | <img style="width: 200px" src="https://tva1.sinaimg.cn/large/00831rSTgy1gdm64aligsj303l03lgln.jpg"/> | <img style="width: 200px" src="https://tva1.sinaimg.cn/large/00831rSTgy1gdm64dfewnj304g04gt8o.jpg"/> |
-| ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
-| [mRcfps](https://github.com/mRcfps)<br />Tuture & Editure <br />Tuture 共同创始人                    | [pftom](https://github.com/pftom)<br />Tuture & Editure<br />Tuture 共同创始人                       | [studytoohard](https://github.com/studytoohard)<br />Tuture<br />Tuture 核心贡献者                   | [HolyHeart](https://github.com/HolyHeart)<br />Tuture<br />Tuture 核心贡献者                         |
+| <img style="width: 200px;" src="https://tva1.sinaimg.cn/large/00831rSTgy1gdm6rv9wx5j308o08odhc.jpg" /> | <img style="width: 200px;"  src="https://tva1.sinaimg.cn/large/00831rSTgy1gdm6scg251j308o08oq58.jpg"/> | <img style="width: 200px;" src="https://tva1.sinaimg.cn/large/00831rSTgy1gdm6soy5jhj308o08omyb.jpg"/> | <img style="width: 200px" src="https://tva1.sinaimg.cn/large/00831rSTgy1gdm6tje8qtj308o08o781.jpg" /> |
+| ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| [mRcfps](https://github.com/mRcfps)<br />Tuture & Editure <br />Tuture 共同创始人                      | [pftom](https://github.com/pftom)<br />Tuture & Editure<br />Tuture 共同创始人                         | [studytoohard](https://github.com/studytoohard)<br />Tuture<br />Tuture 核心贡献者                    | [HolyHeart](https://github.com/HolyHeart)<br />Tuture<br />Tuture 核心贡献者                          |
 
 <a name="gu9wh"></a>
 
