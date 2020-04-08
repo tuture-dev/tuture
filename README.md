@@ -39,8 +39,7 @@
 
 <br />
 <br />这个时候你应该可以看到如下的界面：<br />
-
-![00831rSTgy1gdm5loil8pj31580u0tib](https://tva1.sinaimg.cn/large/00831rSTgy1gdm6wsd2hfj31580u0tc1.jpg)
+<br />![00831rSTgy1gdm5loil8pj31580u0tib](https://tva1.sinaimg.cn/large/00831rSTgy1gdm6wsd2hfj31580u0tc1.jpg)
 
 <br />
 
@@ -72,9 +71,9 @@
 
 | 名称                                                       | 封面                                                                                                 | 仓库地址                                                                                                                                                                                                   |
 | ---------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 从零到部署：用 Vue 和 Express 实现迷你全栈电商应用（系列） | <img src="https://tva1.sinaimg.cn/large/00831rSTgy1gdm5ms1mw3j31dk0m2n32.jpg" style="width: 200px"/> | - [仓库地址](https://github.com/tuture-dev/vue-online-shop-frontend)<br />- [图雀社区](https://tuture.co/2019/10/17/0b662ce/)<br />- [微信公众号](https://mp.weixin.qq.com/s/1YdC9mY3JTqxSuJ9G4l1Qw)<br /> |
-| Taro 小程序开发大型实战（系列）                            | <img src="https://tva1.sinaimg.cn/large/00831rSTgy1gdm5n8aj2pj31dg0laad2.jpg" style="width: 200px"/> | - [仓库地址](https://github.com/tuture-dev/ultra-club)<br />- [图雀社区](https://tuture.co/2019/12/26/34a473b/)<br />- [微信公众号](https://mp.weixin.qq.com/s/KtnhfEx-cq1V-TDV67V-Qg) <br />              |
-| Docker 筑梦师系列                                          | <img src="https://tva1.sinaimg.cn/large/00831rSTgy1gdm5n18oomj31dm0m6gs3.jpg" style="width: 200px"/> | - [仓库地址](https://github.com/tuture-dev/docker-dream)<br />- [图雀社区](https://tuture.co/2020/01/01/442cc8d/)<br />- [微信公众号](https://mp.weixin.qq.com/s/GmkMFd0frqBNZN0u4sy8Ow)<br />             |
+| 从零到部署：用 Vue 和 Express 实现迷你全栈电商应用（系列） | <img width="200" src="https://tva1.sinaimg.cn/large/00831rSTgy1gdmdz6q1hjj309g048t9r.jpg"/>          | - [仓库地址](https://github.com/tuture-dev/vue-online-shop-frontend)<br />- [图雀社区](https://tuture.co/2019/10/17/0b662ce/)<br />- [微信公众号](https://mp.weixin.qq.com/s/1YdC9mY3JTqxSuJ9G4l1Qw)<br /> |
+| Taro 小程序开发大型实战（系列）                            | <img width="200" src="https://tva1.sinaimg.cn/large/00831rSTgy1gdme080rr4j30ao04mmyg.jpg"/>          | - [仓库地址](https://github.com/tuture-dev/ultra-club)<br />- [图雀社区](https://tuture.co/2019/12/26/34a473b/)<br />- [微信公众号](https://mp.weixin.qq.com/s/KtnhfEx-cq1V-TDV67V-Qg) <br />              |
+| Docker 筑梦师系列                                          | <img width="200" src="https://tva1.sinaimg.cn/large/00831rSTgy1gdme151sflj30as04uta5.jpg"/>          | - [仓库地址](https://github.com/tuture-dev/docker-dream)<br />- [图雀社区](https://tuture.co/2020/01/01/442cc8d/)<br />- [微信公众号](https://mp.weixin.qq.com/s/GmkMFd0frqBNZN0u4sy8Ow)<br />             |
 | 类型即定义：TypeScript 从入门到实践系列                    | <img src="https://tva1.sinaimg.cn/large/00831rSTgy1gdm5q16jrgj30ma09xdoe.jpg" style="width: 200px"/> | - [仓库地址](https://github.com/tuture-dev/typescript-tea)<br />- [图雀社区](https://tuture.co/2020/04/06/C_ao1Yv/) <br />- [微信公众号](https://mp.weixin.qq.com/s/u230EnsNh-WMSC07FSi2wg)<br />          |
 
 <br />
