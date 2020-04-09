@@ -3,7 +3,7 @@ import { useDispatch, useSelector, useStore } from 'react-redux';
 
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
-import { Tag, Tooltip, Popconfirm, Input, message } from 'antd';
+import { Popconfirm, Input, message } from 'antd';
 import { Dispatch, RootState, Store } from 'store';
 
 import {
@@ -13,6 +13,7 @@ import {
   listItemStyle,
   headerStyle,
 } from './styles';
+import OutdatedTag from './OutdatedTag';
 import IconFont from '../../components/IconFont';
 import { TocStepItem } from 'types';
 
@@ -157,32 +158,7 @@ function ReleasedStepList() {
                 }
               `}
             >
-              {item.outdated && (
-                <Tooltip title="点击查看什么是过时步骤">
-                  <Tag
-                    css={css`
-                      color: #fa8c16;
-                      background: #fff7e6;
-                      border-color: #ffd591;
-
-                      &:hover {
-                        cursor: pointer;
-                      }
-                    `}
-                  >
-                    <a
-                      href="https://docs.tuture.co/reference/tuture-yml-spec.html#outdated"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      css={css`
-                        color: #fa8c16 !important;
-                      `}
-                    >
-                      过时
-                    </a>
-                  </Tag>
-                </Tooltip>
-              )}
+              {item.outdated && <OutdatedTag />}
               <span
                 css={css`
                   width: ${item.outdated ? '94px' : '134px'};

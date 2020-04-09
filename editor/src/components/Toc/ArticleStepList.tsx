@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector, useStore } from 'react-redux';
-import { message, Tooltip, Tag, Modal, Icon } from 'antd';
+import { message, Modal, Icon } from 'antd';
 import classnames from 'classnames';
 import omit from 'lodash.omit';
 
@@ -16,6 +16,7 @@ import {
   listItemStyle,
   activeListItemStyle,
 } from './styles';
+import OutdatedTag from './OutdatedTag';
 import IconFont from '../../components/IconFont';
 import { TocArticleItem, TocStepItem } from 'types';
 
@@ -220,32 +221,7 @@ function ArticleStepList() {
                   />
                 </span>
               )}
-              {item.outdated && (
-                <Tooltip title="点击查看什么是过时步骤">
-                  <Tag
-                    css={css`
-                      color: #fa8c16;
-                      background: #fff7e6;
-                      border-color: #ffd591;
-
-                      &:hover {
-                        cursor: pointer;
-                      }
-                    `}
-                  >
-                    <a
-                      href="https://docs.tuture.co/reference/tuture-yml-spec.html#outdated"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      css={css`
-                        color: #fa8c16 !important;
-                      `}
-                    >
-                      过时
-                    </a>
-                  </Tag>
-                </Tooltip>
-              )}
+              {item.outdated && <OutdatedTag />}
               <span
                 css={css`
                   width: ${item.outdated ? '390px' : '430px'};
