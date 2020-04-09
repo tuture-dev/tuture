@@ -9,27 +9,27 @@
     {
       "name": "Django + Nuxt 实现美食分享网站（一）",
       "description": "Django 作为 Python 社区最受欢迎的 Web 框架之一，凭借其高度抽象的组件和强大方便的脚手架，将快速且流畅的开发体验演绎到了极致。而 Nuxt 作为从 Vue.js 进化而来的前端框架，能够轻松胜任复杂的 SPA（单页应用）开发。两者相遇，能够擦出怎样的火花？这篇教程将用 Django + Nuxt 实现带有完整的增删改查（CRUD）功能的全栈应用。最后郑重警告：不要在深夜阅读此教程！！！",
-      "cover": "tuture-assets/cover-1.jpg",
+      "cover": "https://imgkr.cn-bj.ufileos.com/fbc20222-8273-4e5f-88a1-861e91418b6d.jpg",
       "id": "0818be0"
     },
     {
       "name": "Django + Nuxt 实现美食分享网站（二）",
       "description": "在本教程的上一部分中，我们分别用 Django 和 Nuxt 实现了后端和前端的雏形。在这一部分，我们将实现前后端之间的通信，使得前端可以从后端获取数据，并且将进一步丰富网站的功能。",
-      "cover": "tuture-assets/cover-2.jpg",
+      "cover": "https://imgkr.cn-bj.ufileos.com/f5ae8b83-5c13-4960-bfcc-253a499a3bc1.jpg",
       "id": "425a3a9"
     }
   ],
   "steps": [
     {
       "commit": "c64b3b6",
-      "id": "Zm7Zw1mi",
+      "id": "ls5qic7Y",
       "articleId": "0818be0",
       "type": "step",
       "children": [
         {
           "type": "heading-two",
           "commit": "c64b3b6",
-          "id": "HvEkzVltU",
+          "id": "ubr3gz3eo",
           "fixed": true,
           "children": [
             {
@@ -47,33 +47,14 @@
                 {
                   "text": "在这一系列教程中，我们将会实现一个全栈美食分享网站，后端用 Django 实现，前端则是 Nuxt 框架，下面是最终完成后的项目效果："
                 }
-              ],
-              "id": "Jn9Fj0Wn"
-            },
-            {
-              "type": "paragraph",
-              "children": [
-                {
-                  "text": "ababababababassww"
-                }
-              ],
-              "id": "Jn9Fj0Wn"
-            },
-            {
-              "type": "paragraph",
-              "children": [
-                {
-                  "text": "abababa"
-                }
-              ],
-              "id": "Jn9Fj0Wn"
+              ]
             },
             {
               "type": "paragraph",
               "children": [
                 {
                   "type": "image",
-                  "url": ".tuture/assets/demo.gif",
+                  "url": "https://imgkr.cn-bj.ufileos.com/4dd9ef8f-ec25-4473-8a78-b52d09ae77fa.gif",
                   "children": [
                     {
                       "text": ""
@@ -89,7 +70,7 @@
                   "text": "预备知识"
                 }
               ],
-              "id": "BIIUjd2W3"
+              "id": "jFLDCefLy"
             },
             {
               "type": "paragraph",
@@ -164,7 +145,7 @@
                   "text": "学习目标"
                 }
               ],
-              "id": "WpqP42oD3"
+              "id": "YiS76NKM4"
             },
             {
               "type": "paragraph",
@@ -216,7 +197,7 @@
                   "text": "用 pipenv 初始化 Python 环境"
                 }
               ],
-              "id": "JLEge4B96"
+              "id": "QYCrkCMwJ"
             },
             {
               "type": "paragraph",
@@ -375,6 +356,7 @@
         {
           "file": "Pipfile",
           "display": true,
+          "commit": "c64b3b6",
           "type": "file",
           "children": [
             {
@@ -395,6 +377,7 @@
               "type": "diff-block",
               "file": "Pipfile",
               "commit": "c64b3b6",
+              "hiddenLines": [],
               "children": [
                 {
                   "type": "paragraph",
@@ -426,7 +409,7 @@
           "type": "file",
           "file": "api/api/__init__.py",
           "display": false,
-          "id": "Rp1O6L3Tn",
+          "id": "RRUP275-b",
           "children": [
             {
               "type": "explain",
@@ -446,6 +429,7 @@
               "type": "diff-block",
               "file": "api/api/__init__.py",
               "commit": "c64b3b6",
+              "hiddenLines": [],
               "children": [
                 {
                   "type": "paragraph",
@@ -477,7 +461,7 @@
           "type": "file",
           "file": "api/api/settings.py",
           "display": false,
-          "id": "2IUY7QYxh",
+          "id": "2oxaxAfUU",
           "children": [
             {
               "type": "explain",
@@ -497,6 +481,7 @@
               "type": "diff-block",
               "file": "api/api/settings.py",
               "commit": "c64b3b6",
+              "hiddenLines": [],
               "children": [
                 {
                   "type": "paragraph",
@@ -528,7 +513,7 @@
           "type": "file",
           "file": "api/api/urls.py",
           "display": false,
-          "id": "WK5fLx92m",
+          "id": "vrpyQ2OL4",
           "children": [
             {
               "type": "explain",
@@ -548,6 +533,7 @@
               "type": "diff-block",
               "file": "api/api/urls.py",
               "commit": "c64b3b6",
+              "hiddenLines": [],
               "children": [
                 {
                   "type": "paragraph",
@@ -579,7 +565,7 @@
           "type": "file",
           "file": "api/api/wsgi.py",
           "display": false,
-          "id": "UmD4yUAMo",
+          "id": "YUOkBXXOn",
           "children": [
             {
               "type": "explain",
@@ -599,6 +585,7 @@
               "type": "diff-block",
               "file": "api/api/wsgi.py",
               "commit": "c64b3b6",
+              "hiddenLines": [],
               "children": [
                 {
                   "type": "paragraph",
@@ -630,7 +617,7 @@
           "type": "file",
           "file": "api/core/__init__.py",
           "display": false,
-          "id": "mDj3yXixN",
+          "id": "J1bZQp8Ds",
           "children": [
             {
               "type": "explain",
@@ -650,6 +637,7 @@
               "type": "diff-block",
               "file": "api/core/__init__.py",
               "commit": "c64b3b6",
+              "hiddenLines": [],
               "children": [
                 {
                   "type": "paragraph",
@@ -681,7 +669,7 @@
           "type": "file",
           "file": "api/core/admin.py",
           "display": false,
-          "id": "Pvd5Oz05X",
+          "id": "owJkCjHDQ",
           "children": [
             {
               "type": "explain",
@@ -701,6 +689,7 @@
               "type": "diff-block",
               "file": "api/core/admin.py",
               "commit": "c64b3b6",
+              "hiddenLines": [],
               "children": [
                 {
                   "type": "paragraph",
@@ -732,7 +721,7 @@
           "type": "file",
           "file": "api/core/apps.py",
           "display": false,
-          "id": "95dqMAuOR",
+          "id": "Z-YzUrvfG",
           "children": [
             {
               "type": "explain",
@@ -752,6 +741,7 @@
               "type": "diff-block",
               "file": "api/core/apps.py",
               "commit": "c64b3b6",
+              "hiddenLines": [],
               "children": [
                 {
                   "type": "paragraph",
@@ -783,7 +773,7 @@
           "type": "file",
           "file": "api/core/migrations/__init__.py",
           "display": false,
-          "id": "rPBYtHqdJ",
+          "id": "YZ58_mzCV",
           "children": [
             {
               "type": "explain",
@@ -803,6 +793,7 @@
               "type": "diff-block",
               "file": "api/core/migrations/__init__.py",
               "commit": "c64b3b6",
+              "hiddenLines": [],
               "children": [
                 {
                   "type": "paragraph",
@@ -834,7 +825,7 @@
           "type": "file",
           "file": "api/core/models.py",
           "display": false,
-          "id": "DYR1X6Vo4",
+          "id": "aqdvOgN7F",
           "children": [
             {
               "type": "explain",
@@ -854,6 +845,7 @@
               "type": "diff-block",
               "file": "api/core/models.py",
               "commit": "c64b3b6",
+              "hiddenLines": [],
               "children": [
                 {
                   "type": "paragraph",
@@ -885,7 +877,7 @@
           "type": "file",
           "file": "api/core/tests.py",
           "display": false,
-          "id": "hPqapp0ze",
+          "id": "QJh4EMwNG",
           "children": [
             {
               "type": "explain",
@@ -905,6 +897,7 @@
               "type": "diff-block",
               "file": "api/core/tests.py",
               "commit": "c64b3b6",
+              "hiddenLines": [],
               "children": [
                 {
                   "type": "paragraph",
@@ -936,7 +929,7 @@
           "type": "file",
           "file": "api/core/views.py",
           "display": false,
-          "id": "LXRTARqUpK",
+          "id": "tAz6q8AXPi",
           "children": [
             {
               "type": "explain",
@@ -956,6 +949,7 @@
               "type": "diff-block",
               "file": "api/core/views.py",
               "commit": "c64b3b6",
+              "hiddenLines": [],
               "children": [
                 {
                   "type": "paragraph",
@@ -987,7 +981,7 @@
           "type": "file",
           "file": "api/manage.py",
           "display": false,
-          "id": "HojtIXAxDK",
+          "id": "BoT0rPuXwA",
           "children": [
             {
               "type": "explain",
@@ -1007,6 +1001,7 @@
               "type": "diff-block",
               "file": "api/manage.py",
               "commit": "c64b3b6",
+              "hiddenLines": [],
               "children": [
                 {
                   "type": "paragraph",
@@ -1170,7 +1165,7 @@
               "children": [
                 {
                   "type": "image",
-                  "url": ".tuture/assets/django-admin.png",
+                  "url": "https://imgkr.cn-bj.ufileos.com/6c29bd5b-e69f-4a68-9d1f-370b6b1411b0.png",
                   "children": [
                     {
                       "text": ""
@@ -1193,14 +1188,14 @@
     },
     {
       "commit": "d4d056f",
-      "id": "UZx-OwJ1gw",
+      "id": "a53j6F4Fmy",
       "articleId": "0818be0",
       "type": "step",
       "children": [
         {
           "type": "heading-two",
           "commit": "d4d056f",
-          "id": "f2wO7JCkvx",
+          "id": "s2PV9vz2lm",
           "fixed": true,
           "children": [
             {
@@ -1247,7 +1242,7 @@
           "type": "file",
           "file": ".editorconfig",
           "display": false,
-          "id": "U822L44lNr",
+          "id": "kkOWaxrX1u",
           "children": [
             {
               "type": "explain",
@@ -1267,6 +1262,7 @@
               "type": "diff-block",
               "file": ".editorconfig",
               "commit": "d4d056f",
+              "hiddenLines": [],
               "children": [
                 {
                   "type": "paragraph",
@@ -1297,7 +1293,7 @@
         {
           "type": "file",
           "file": ".gitignore",
-          "id": "HSB6IsuUok",
+          "id": "ECr2a5_muw",
           "children": [
             {
               "type": "explain",
@@ -1317,6 +1313,7 @@
               "type": "diff-block",
               "file": ".gitignore",
               "commit": "d4d056f",
+              "hiddenLines": [],
               "children": [
                 {
                   "type": "paragraph",
@@ -1347,6 +1344,7 @@
         {
           "file": "api/api/settings.py",
           "display": true,
+          "commit": "d4d056f",
           "type": "file",
           "children": [
             {
@@ -1360,21 +1358,13 @@
                       "text": "全局配置"
                     }
                   ],
-                  "id": "D2hPUzXYfG"
+                  "id": "UiuszT5NzQ"
                 },
                 {
                   "type": "paragraph",
                   "children": [
                     {
-                      "text": "首先，在全局配置文件 "
-                    },
-                    {
-                      "link": true,
-                      "url": "http://settings.py",
-                      "text": "settings.py"
-                    },
-                    {
-                      "text": " 中做如下改动："
+                      "text": "首先，在全局配置文件 settings.py 中做如下改动："
                     }
                   ]
                 },
@@ -1543,6 +1533,12 @@
               "type": "diff-block",
               "file": "api/api/settings.py",
               "commit": "d4d056f",
+              "hiddenLines": [
+                [0, 35],
+                [49, 51],
+                [62, 109],
+                [118, 125]
+              ],
               "children": [
                 {
                   "type": "paragraph",
@@ -1552,8 +1548,7 @@
                     }
                   ]
                 }
-              ],
-              "hiddenLines": [[5, 14]]
+              ]
             },
             {
               "type": "explain",
@@ -1574,6 +1569,7 @@
         {
           "file": "api/core/models.py",
           "display": true,
+          "commit": "d4d056f",
           "type": "file",
           "children": [
             {
@@ -1587,7 +1583,7 @@
                       "text": "实现 core 应用"
                     }
                   ],
-                  "id": "jmLTdvTKFs"
+                  "id": "JxcNlcIzUt"
                 },
                 {
                   "type": "paragraph",
@@ -1611,15 +1607,7 @@
                       "type": "list-item",
                       "children": [
                         {
-                          "text": "定义数据模型（"
-                        },
-                        {
-                          "link": true,
-                          "url": "http://models.py",
-                          "text": "models.py"
-                        },
-                        {
-                          "text": "），用于实现和数据库之间的绑定；"
+                          "text": "定义数据模型（models.py），用于实现和数据库之间的绑定；"
                         }
                       ],
                       "parent": "numbered-list",
@@ -1630,15 +1618,7 @@
                       "type": "list-item",
                       "children": [
                         {
-                          "text": "定义后台管理配置（"
-                        },
-                        {
-                          "link": true,
-                          "url": "http://admin.py",
-                          "text": "admin.py"
-                        },
-                        {
-                          "text": "），用于在后台管理系统中进行操作；"
+                          "text": "定义后台管理配置（admin.py），用于在后台管理系统中进行操作；"
                         }
                       ],
                       "parent": "numbered-list",
@@ -1649,15 +1629,7 @@
                       "type": "list-item",
                       "children": [
                         {
-                          "text": "定义序列化器（"
-                        },
-                        {
-                          "link": true,
-                          "url": "http://serializers.py",
-                          "text": "serializers.py"
-                        },
-                        {
-                          "text": "），"
+                          "text": "定义序列化器（serializers.py），"
                         },
                         {
                           "italic": true,
@@ -1675,15 +1647,7 @@
                       "type": "list-item",
                       "children": [
                         {
-                          "text": "定义视图（"
-                        },
-                        {
-                          "link": true,
-                          "url": "http://views.py",
-                          "text": "views.py"
-                        },
-                        {
-                          "text": "），用于实现具体的业务逻辑；"
+                          "text": "定义视图（views.py），用于实现具体的业务逻辑；"
                         }
                       ],
                       "parent": "numbered-list",
@@ -1694,15 +1658,7 @@
                       "type": "list-item",
                       "children": [
                         {
-                          "text": "定义路由（"
-                        },
-                        {
-                          "link": true,
-                          "url": "http://urls.py",
-                          "text": "urls.py"
-                        },
-                        {
-                          "text": "），用于定义路由规则，将其映射到相应的视图；"
+                          "text": "定义路由（urls.py），用于定义路由规则，将其映射到相应的视图；"
                         }
                       ],
                       "parent": "numbered-list",
@@ -1743,6 +1699,7 @@
               "type": "diff-block",
               "file": "api/core/models.py",
               "commit": "d4d056f",
+              "hiddenLines": [],
               "children": [
                 {
                   "type": "paragraph",
@@ -1802,6 +1759,7 @@
         {
           "file": "api/core/admin.py",
           "display": true,
+          "commit": "d4d056f",
           "type": "file",
           "children": [
             {
@@ -1836,6 +1794,7 @@
               "type": "diff-block",
               "file": "api/core/admin.py",
               "commit": "d4d056f",
+              "hiddenLines": [],
               "children": [
                 {
                   "type": "paragraph",
@@ -1855,6 +1814,23 @@
                   "type": "paragraph",
                   "children": [
                     {
+                      "text": "效果如下图所示："
+                    }
+                  ]
+                },
+                {
+                  "type": "image",
+                  "url": "https://imgkr.cn-bj.ufileos.com/cf232626-f27f-4691-b169-3df0c6bc7133.png",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
                       "text": ""
                     }
                   ]
@@ -1866,6 +1842,7 @@
         {
           "file": "api/core/serializers.py",
           "display": true,
+          "commit": "d4d056f",
           "type": "file",
           "children": [
             {
@@ -1876,15 +1853,7 @@
                   "type": "paragraph",
                   "children": [
                     {
-                      "text": "第三步，定义序列化器 "
-                    },
-                    {
-                      "link": true,
-                      "url": "http://serializers.py",
-                      "text": "serializers.py"
-                    },
-                    {
-                      "text": "（脚手架并不会自动创建，需要手动创建）。序列化器是 Django Rest Framework 提供的功能，能够非常方便地将 Django 数据模型序列化成相应的 JSON 数据格式。在这里，我们定义一个 "
+                      "text": "第三步，定义序列化器 serializers.py（脚手架并不会自动创建，需要手动创建）。序列化器是 Django Rest Framework 提供的功能，能够非常方便地将 Django 数据模型序列化成相应的 JSON 数据格式。在这里，我们定义一个 "
                     },
                     {
                       "code": true,
@@ -1915,6 +1884,7 @@
               "type": "diff-block",
               "file": "api/core/serializers.py",
               "commit": "d4d056f",
+              "hiddenLines": [],
               "children": [
                 {
                   "type": "paragraph",
@@ -1945,6 +1915,7 @@
         {
           "file": "api/core/views.py",
           "display": true,
+          "commit": "d4d056f",
           "type": "file",
           "children": [
             {
@@ -1972,6 +1943,7 @@
               "type": "diff-block",
               "file": "api/core/views.py",
               "commit": "d4d056f",
+              "hiddenLines": [],
               "children": [
                 {
                   "type": "paragraph",
@@ -2016,6 +1988,7 @@
         {
           "file": "api/core/urls.py",
           "display": true,
+          "commit": "d4d056f",
           "type": "file",
           "children": [
             {
@@ -2050,6 +2023,7 @@
               "type": "diff-block",
               "file": "api/core/urls.py",
               "commit": "d4d056f",
+              "hiddenLines": [],
               "children": [
                 {
                   "type": "paragraph",
@@ -2118,15 +2092,6 @@
                       "type": "paragraph",
                       "children": [
                         {
-                          "bold": true,
-                          "text": "注意"
-                        }
-                      ]
-                    },
-                    {
-                      "type": "paragraph",
-                      "children": [
-                        {
                           "text": "在 Django 路由定义中不包括 HTTP 方法，具体的 HTTP 方法可以在视图中读取并判断。"
                         }
                       ]
@@ -2140,6 +2105,7 @@
         {
           "file": "api/api/urls.py",
           "display": true,
+          "commit": "d4d056f",
           "type": "file",
           "children": [
             {
@@ -2167,6 +2133,7 @@
               "type": "diff-block",
               "file": "api/api/urls.py",
               "commit": "d4d056f",
+              "hiddenLines": [[0, 12]],
               "children": [
                 {
                   "type": "paragraph",
@@ -2198,7 +2165,7 @@
           "type": "file",
           "file": "api/core/migrations/0001_initial.py",
           "display": false,
-          "id": "0G1W8Oz3n1",
+          "id": "0Ga2Q4oiLu",
           "children": [
             {
               "type": "explain",
@@ -2218,6 +2185,7 @@
               "type": "diff-block",
               "file": "api/core/migrations/0001_initial.py",
               "commit": "d4d056f",
+              "hiddenLines": [],
               "children": [
                 {
                   "type": "paragraph",
@@ -2248,7 +2216,7 @@
         {
           "type": "file",
           "file": "tuture.yml",
-          "id": "j4CadRqbzI",
+          "id": "a0vQMt_3GN",
           "children": [
             {
               "type": "explain",
@@ -2268,6 +2236,7 @@
               "type": "diff-block",
               "file": "tuture.yml",
               "commit": "d4d056f",
+              "hiddenLines": [],
               "children": [
                 {
                   "type": "paragraph",
@@ -2342,7 +2311,7 @@
               "children": [
                 {
                   "type": "image",
-                  "url": ".tuture/assets/image.png",
+                  "url": "https://imgkr.cn-bj.ufileos.com/a0af7fa1-89f7-4fc2-a6c2-e59c271ce2a4.png",
                   "children": [
                     {
                       "text": ""
@@ -2364,7 +2333,7 @@
               "children": [
                 {
                   "type": "image",
-                  "url": ".tuture/assets/image-f3d22507493bf44a.png",
+                  "url": "https://imgkr.cn-bj.ufileos.com/11191bd7-3e76-48cf-913b-5b3f01153c53.png",
                   "children": [
                     {
                       "text": ""
@@ -2395,14 +2364,14 @@
     },
     {
       "commit": "596203d",
-      "id": "hKMa1YeYLH",
+      "id": "AJziwEM6Mk",
       "articleId": "0818be0",
       "type": "step",
       "children": [
         {
           "type": "heading-two",
           "commit": "596203d",
-          "id": "kT7cnWk88I",
+          "id": "oNjJN3Paz6",
           "fixed": true,
           "children": [
             {
@@ -2436,7 +2405,7 @@
                   "text": "用脚手架初始化 Nuxt 项目"
                 }
               ],
-              "id": "bHYYjv-pZh"
+              "id": "oHnEK73CzO"
             },
             {
               "type": "paragraph",
@@ -2473,7 +2442,7 @@
               "children": [
                 {
                   "type": "image",
-                  "url": ".tuture/assets/create-nuxt-app.jpg",
+                  "url": "https://imgkr.cn-bj.ufileos.com/15ae6fd9-ad36-4f9e-918a-eba5f4d4d721.jpg",
                   "children": [
                     {
                       "text": ""
@@ -2611,7 +2580,7 @@
           "type": "file",
           "file": "client/.editorconfig",
           "display": false,
-          "id": "-4DigdPAxL",
+          "id": "LXetk31Q9k",
           "children": [
             {
               "type": "explain",
@@ -2631,6 +2600,7 @@
               "type": "diff-block",
               "file": "client/.editorconfig",
               "commit": "596203d",
+              "hiddenLines": [],
               "children": [
                 {
                   "type": "paragraph",
@@ -2662,7 +2632,7 @@
           "type": "file",
           "file": "client/.gitignore",
           "display": false,
-          "id": "NDg1Eodpwd",
+          "id": "LqNJopBeU3",
           "children": [
             {
               "type": "explain",
@@ -2682,6 +2652,7 @@
               "type": "diff-block",
               "file": "client/.gitignore",
               "commit": "596203d",
+              "hiddenLines": [],
               "children": [
                 {
                   "type": "paragraph",
@@ -2713,7 +2684,7 @@
           "type": "file",
           "file": "client/README.md",
           "display": false,
-          "id": "s5ZdmGn-6K",
+          "id": "5IWFAPSSHI",
           "children": [
             {
               "type": "explain",
@@ -2733,6 +2704,7 @@
               "type": "diff-block",
               "file": "client/README.md",
               "commit": "596203d",
+              "hiddenLines": [],
               "children": [
                 {
                   "type": "paragraph",
@@ -2764,7 +2736,7 @@
           "type": "file",
           "file": "client/assets/README.md",
           "display": false,
-          "id": "Atv6MfwW8H",
+          "id": "2zmArhXsNO",
           "children": [
             {
               "type": "explain",
@@ -2784,6 +2756,7 @@
               "type": "diff-block",
               "file": "client/assets/README.md",
               "commit": "596203d",
+              "hiddenLines": [],
               "children": [
                 {
                   "type": "paragraph",
@@ -2815,7 +2788,7 @@
           "type": "file",
           "file": "client/components/Logo.vue",
           "display": false,
-          "id": "mvj41Y4Y2q",
+          "id": "Oved_Skkmp",
           "children": [
             {
               "type": "explain",
@@ -2835,6 +2808,7 @@
               "type": "diff-block",
               "file": "client/components/Logo.vue",
               "commit": "596203d",
+              "hiddenLines": [],
               "children": [
                 {
                   "type": "paragraph",
@@ -2866,7 +2840,7 @@
           "type": "file",
           "file": "client/components/README.md",
           "display": false,
-          "id": "pEi2074PUY",
+          "id": "XrQaf3lwcU",
           "children": [
             {
               "type": "explain",
@@ -2886,6 +2860,7 @@
               "type": "diff-block",
               "file": "client/components/README.md",
               "commit": "596203d",
+              "hiddenLines": [],
               "children": [
                 {
                   "type": "paragraph",
@@ -2917,7 +2892,7 @@
           "type": "file",
           "file": "client/layouts/README.md",
           "display": false,
-          "id": "Wqz1uTY8NY",
+          "id": "ttSUCFKKGH",
           "children": [
             {
               "type": "explain",
@@ -2937,6 +2912,7 @@
               "type": "diff-block",
               "file": "client/layouts/README.md",
               "commit": "596203d",
+              "hiddenLines": [],
               "children": [
                 {
                   "type": "paragraph",
@@ -2968,7 +2944,7 @@
           "type": "file",
           "file": "client/layouts/default.vue",
           "display": false,
-          "id": "0XEVhG8Msc",
+          "id": "dmLIN6_l1x",
           "children": [
             {
               "type": "explain",
@@ -2988,6 +2964,7 @@
               "type": "diff-block",
               "file": "client/layouts/default.vue",
               "commit": "596203d",
+              "hiddenLines": [],
               "children": [
                 {
                   "type": "paragraph",
@@ -3019,7 +2996,7 @@
           "type": "file",
           "file": "client/middleware/README.md",
           "display": false,
-          "id": "MeYojeHqew",
+          "id": "-vUBM5d8k9",
           "children": [
             {
               "type": "explain",
@@ -3039,6 +3016,7 @@
               "type": "diff-block",
               "file": "client/middleware/README.md",
               "commit": "596203d",
+              "hiddenLines": [],
               "children": [
                 {
                   "type": "paragraph",
@@ -3070,7 +3048,7 @@
           "type": "file",
           "file": "client/nuxt.config.js",
           "display": false,
-          "id": "yY-FgqGGUv",
+          "id": "CJ3d301-cg",
           "children": [
             {
               "type": "explain",
@@ -3090,6 +3068,7 @@
               "type": "diff-block",
               "file": "client/nuxt.config.js",
               "commit": "596203d",
+              "hiddenLines": [],
               "children": [
                 {
                   "type": "paragraph",
@@ -3121,7 +3100,7 @@
           "type": "file",
           "file": "client/package.json",
           "display": false,
-          "id": "XaetgF4WC9",
+          "id": "BsexAivNUu",
           "children": [
             {
               "type": "explain",
@@ -3141,6 +3120,7 @@
               "type": "diff-block",
               "file": "client/package.json",
               "commit": "596203d",
+              "hiddenLines": [],
               "children": [
                 {
                   "type": "paragraph",
@@ -3172,7 +3152,7 @@
           "type": "file",
           "file": "client/pages/README.md",
           "display": false,
-          "id": "lZIcIqQSO4",
+          "id": "lD8N2FIHA2",
           "children": [
             {
               "type": "explain",
@@ -3192,6 +3172,7 @@
               "type": "diff-block",
               "file": "client/pages/README.md",
               "commit": "596203d",
+              "hiddenLines": [],
               "children": [
                 {
                   "type": "paragraph",
@@ -3222,6 +3203,7 @@
         {
           "file": "client/pages/index.vue",
           "display": true,
+          "commit": "596203d",
           "type": "file",
           "children": [
             {
@@ -3235,7 +3217,7 @@
                       "text": "编写前端首页"
                     }
                   ],
-                  "id": "arZZ9qXL-L"
+                  "id": "9RNmTKsTqq"
                 },
                 {
                   "type": "paragraph",
@@ -3251,6 +3233,7 @@
               "type": "diff-block",
               "file": "client/pages/index.vue",
               "commit": "596203d",
+              "hiddenLines": [],
               "children": [
                 {
                   "type": "paragraph",
@@ -3282,7 +3265,7 @@
           "type": "file",
           "file": "client/pages/recipes/_id/edit.vue",
           "display": false,
-          "id": "Ji9yxqVnNV",
+          "id": "RrR8emeARX",
           "children": [
             {
               "type": "explain",
@@ -3302,6 +3285,7 @@
               "type": "diff-block",
               "file": "client/pages/recipes/_id/edit.vue",
               "commit": "596203d",
+              "hiddenLines": [],
               "children": [
                 {
                   "type": "paragraph",
@@ -3333,7 +3317,7 @@
           "type": "file",
           "file": "client/pages/recipes/_id/index.vue",
           "display": false,
-          "id": "KtU7VMa_U5",
+          "id": "KKSS-A_P0C",
           "children": [
             {
               "type": "explain",
@@ -3353,6 +3337,7 @@
               "type": "diff-block",
               "file": "client/pages/recipes/_id/index.vue",
               "commit": "596203d",
+              "hiddenLines": [],
               "children": [
                 {
                   "type": "paragraph",
@@ -3384,7 +3369,7 @@
           "type": "file",
           "file": "client/pages/recipes/add.vue",
           "display": false,
-          "id": "tRnEe3mV-j",
+          "id": "q2HfhUV7Je",
           "children": [
             {
               "type": "explain",
@@ -3404,6 +3389,7 @@
               "type": "diff-block",
               "file": "client/pages/recipes/add.vue",
               "commit": "596203d",
+              "hiddenLines": [],
               "children": [
                 {
                   "type": "paragraph",
@@ -3435,7 +3421,7 @@
           "type": "file",
           "file": "client/pages/recipes/index.vue",
           "display": false,
-          "id": "TeZtkyplXZ",
+          "id": "j_RmP75gnR",
           "children": [
             {
               "type": "explain",
@@ -3455,6 +3441,7 @@
               "type": "diff-block",
               "file": "client/pages/recipes/index.vue",
               "commit": "596203d",
+              "hiddenLines": [],
               "children": [
                 {
                   "type": "paragraph",
@@ -3486,7 +3473,7 @@
           "type": "file",
           "file": "client/plugins/README.md",
           "display": false,
-          "id": "wtw82gDme2",
+          "id": "_SIqjs8ghh",
           "children": [
             {
               "type": "explain",
@@ -3506,6 +3493,7 @@
               "type": "diff-block",
               "file": "client/plugins/README.md",
               "commit": "596203d",
+              "hiddenLines": [],
               "children": [
                 {
                   "type": "paragraph",
@@ -3537,7 +3525,7 @@
           "type": "file",
           "file": "client/static/README.md",
           "display": false,
-          "id": "0AV_Dkg6gu",
+          "id": "91kkCo7L9W",
           "children": [
             {
               "type": "explain",
@@ -3557,6 +3545,7 @@
               "type": "diff-block",
               "file": "client/static/README.md",
               "commit": "596203d",
+              "hiddenLines": [],
               "children": [
                 {
                   "type": "paragraph",
@@ -3588,7 +3577,7 @@
           "type": "file",
           "file": "client/static/favicon.ico",
           "display": false,
-          "id": "ik2JXyBSua",
+          "id": "Lh7cai1le9",
           "children": [
             {
               "type": "explain",
@@ -3608,6 +3597,7 @@
               "type": "diff-block",
               "file": "client/static/favicon.ico",
               "commit": "596203d",
+              "hiddenLines": [],
               "children": [
                 {
                   "type": "paragraph",
@@ -3639,7 +3629,7 @@
           "type": "file",
           "file": "client/static/icon.png",
           "display": false,
-          "id": "LXNCcixlPZ",
+          "id": "MKBJYqzKtc",
           "children": [
             {
               "type": "explain",
@@ -3659,6 +3649,7 @@
               "type": "diff-block",
               "file": "client/static/icon.png",
               "commit": "596203d",
+              "hiddenLines": [],
               "children": [
                 {
                   "type": "paragraph",
@@ -3690,7 +3681,7 @@
           "type": "file",
           "file": "client/static/images/banner.jpg",
           "display": false,
-          "id": "KJk_bv3VS6",
+          "id": "d2QuvJycEV",
           "children": [
             {
               "type": "explain",
@@ -3710,6 +3701,7 @@
               "type": "diff-block",
               "file": "client/static/images/banner.jpg",
               "commit": "596203d",
+              "hiddenLines": [],
               "children": [
                 {
                   "type": "paragraph",
@@ -3741,7 +3733,7 @@
           "type": "file",
           "file": "client/store/README.md",
           "display": false,
-          "id": "NF4NMiI4nw",
+          "id": "0HKP18k42w",
           "children": [
             {
               "type": "explain",
@@ -3761,6 +3753,7 @@
               "type": "diff-block",
               "file": "client/store/README.md",
               "commit": "596203d",
+              "hiddenLines": [],
               "children": [
                 {
                   "type": "paragraph",
@@ -3792,7 +3785,7 @@
           "type": "file",
           "file": "client/yarn.lock",
           "display": false,
-          "id": "qm0KlWOcs8",
+          "id": "eB4UR8RsN4",
           "children": [
             {
               "type": "explain",
@@ -3812,6 +3805,7 @@
               "type": "diff-block",
               "file": "client/yarn.lock",
               "commit": "596203d",
+              "hiddenLines": [],
               "children": [
                 {
                   "type": "paragraph",
@@ -3842,7 +3836,7 @@
         {
           "type": "file",
           "file": "tuture.yml",
-          "id": "wTVLUcDP-g",
+          "id": "byQ5BUNrTB",
           "children": [
             {
               "type": "explain",
@@ -3862,6 +3856,7 @@
               "type": "diff-block",
               "file": "tuture.yml",
               "commit": "596203d",
+              "hiddenLines": [[0, 5]],
               "children": [
                 {
                   "type": "paragraph",
@@ -3928,7 +3923,7 @@
               "children": [
                 {
                   "type": "image",
-                  "url": ".tuture/assets/index-page.jpg",
+                  "url": "https://imgkr.cn-bj.ufileos.com/3fefed5b-2de6-447e-87c4-15d5b2c03339.jpg",
                   "children": [
                     {
                       "text": ""
@@ -3951,14 +3946,14 @@
     },
     {
       "commit": "63f7ab0",
-      "id": "CwysGfV9pP",
+      "id": "ZYUYQTbmJz",
       "articleId": "0818be0",
       "type": "step",
       "children": [
         {
           "type": "heading-two",
           "commit": "63f7ab0",
-          "id": "AImitSAP9I",
+          "id": "py74SMsOx0",
           "fixed": true,
           "children": [
             {
@@ -3983,6 +3978,7 @@
         {
           "file": "client/components/RecipeCard.vue",
           "display": true,
+          "commit": "63f7ab0",
           "type": "file",
           "children": [
             {
@@ -3996,7 +3992,7 @@
                       "text": "实现 RecipeCard 组件"
                     }
                   ],
-                  "id": "x9SYj0YeCi"
+                  "id": "wjF4hqcTJS"
                 },
                 {
                   "type": "paragraph",
@@ -4019,6 +4015,7 @@
               "type": "diff-block",
               "file": "client/components/RecipeCard.vue",
               "commit": "63f7ab0",
+              "hiddenLines": [],
               "children": [
                 {
                   "type": "paragraph",
@@ -4070,6 +4067,7 @@
         {
           "file": "client/pages/recipes/index.vue",
           "display": true,
+          "commit": "63f7ab0",
           "type": "file",
           "children": [
             {
@@ -4083,7 +4081,7 @@
                       "text": "了解 Nuxt 的路由功能"
                     }
                   ],
-                  "id": "imgSWCAHA0"
+                  "id": "B103kV9wnP"
                 },
                 {
                   "type": "paragraph",
@@ -4451,15 +4449,6 @@
                       "type": "paragraph",
                       "children": [
                         {
-                          "bold": true,
-                          "text": "提示"
-                        }
-                      ]
-                    },
-                    {
-                      "type": "paragraph",
-                      "children": [
-                        {
                           "text": "如果想要更深入地了解 Nuxt 的路由功能，请参考"
                         },
                         {
@@ -4481,7 +4470,7 @@
                       "text": "实现食谱列表页面"
                     }
                   ],
-                  "id": "yTw140gmkg"
+                  "id": "I1YgERmt8W"
                 },
                 {
                   "type": "paragraph",
@@ -4497,6 +4486,7 @@
               "type": "diff-block",
               "file": "client/pages/recipes/index.vue",
               "commit": "63f7ab0",
+              "hiddenLines": [],
               "children": [
                 {
                   "type": "paragraph",
@@ -4528,7 +4518,7 @@
           "type": "file",
           "file": "client/static/images/food-1.jpeg",
           "display": false,
-          "id": "C4krMF2uTi",
+          "id": "JdCIwnO3EC",
           "children": [
             {
               "type": "explain",
@@ -4548,6 +4538,7 @@
               "type": "diff-block",
               "file": "client/static/images/food-1.jpeg",
               "commit": "63f7ab0",
+              "hiddenLines": [],
               "children": [
                 {
                   "type": "paragraph",
@@ -4579,7 +4570,7 @@
           "type": "file",
           "file": "client/static/images/food-2.jpeg",
           "display": false,
-          "id": "wJoqNV8VVP",
+          "id": "XhR2WQpljK",
           "children": [
             {
               "type": "explain",
@@ -4599,6 +4590,7 @@
               "type": "diff-block",
               "file": "client/static/images/food-2.jpeg",
               "commit": "63f7ab0",
+              "hiddenLines": [],
               "children": [
                 {
                   "type": "paragraph",
@@ -4629,7 +4621,7 @@
         {
           "type": "file",
           "file": "tuture.yml",
-          "id": "wpXXcTDzpZ",
+          "id": "M89VXH0F7L",
           "children": [
             {
               "type": "explain",
@@ -4649,6 +4641,7 @@
               "type": "diff-block",
               "file": "tuture.yml",
               "commit": "63f7ab0",
+              "hiddenLines": [[0, 74]],
               "children": [
                 {
                   "type": "paragraph",
@@ -4693,7 +4686,7 @@
               "children": [
                 {
                   "type": "image",
-                  "url": ".tuture/assets/recipe-list-fake.jpg",
+                  "url": "https://imgkr.cn-bj.ufileos.com/ff166f67-a866-4bf7-b77d-9aae27e6f956.jpg",
                   "children": [
                     {
                       "text": ""
@@ -4717,13 +4710,13 @@
     {
       "type": "step",
       "commit": "60a60d7",
-      "id": "KxEKwc1Cts",
+      "id": "TS_VxEGaGC",
       "articleId": "425a3a9",
       "children": [
         {
           "type": "heading-two",
           "commit": "60a60d7",
-          "id": "aRsq3Bp-rB",
+          "id": "CIshvzAXf5",
           "fixed": true,
           "children": [
             {
@@ -4749,7 +4742,7 @@
           "type": "file",
           "file": "api/api/urls.py",
           "display": true,
-          "id": "Aju5DcII3L",
+          "id": "vDYjQJQTqK",
           "children": [
             {
               "type": "explain",
@@ -4762,7 +4755,7 @@
                       "text": "配置 Django 的静态文件服务"
                     }
                   ],
-                  "id": "CI6O8_jzPc"
+                  "id": "e3bl1WKI8U"
                 },
                 {
                   "type": "paragraph",
@@ -4778,6 +4771,7 @@
               "type": "diff-block",
               "file": "api/api/urls.py",
               "commit": "60a60d7",
+              "hiddenLines": [[0, 13]],
               "children": [
                 {
                   "type": "paragraph",
@@ -4801,15 +4795,6 @@
                       "type": "paragraph",
                       "children": [
                         {
-                          "bold": true,
-                          "text": "注意"
-                        }
-                      ]
-                    },
-                    {
-                      "type": "paragraph",
-                      "children": [
-                        {
                           "text": "这样配置静态文件路由的方式仅应当在"
                         },
                         {
@@ -4817,15 +4802,7 @@
                           "text": "开发环境"
                         },
                         {
-                          "text": "下使用。在生产环境下（"
-                        },
-                        {
-                          "link": true,
-                          "url": "http://settings.py",
-                          "text": "settings.py"
-                        },
-                        {
-                          "text": " 中的 "
+                          "text": "下使用。在生产环境下（settings.py 中的 "
                         },
                         {
                           "code": true,
@@ -4853,7 +4830,7 @@
           "type": "file",
           "file": "client/nuxt.config.js",
           "display": true,
-          "id": "QLWMjDIs-o",
+          "id": "BNt1lzTgL7",
           "children": [
             {
               "type": "explain",
@@ -4866,7 +4843,7 @@
                       "text": "实现前端的数据请求功能"
                     }
                   ],
-                  "id": "SZ8Z8qGS8a"
+                  "id": "yJ5m9WjTdY"
                 },
                 {
                   "type": "paragraph",
@@ -4897,6 +4874,10 @@
               "type": "diff-block",
               "file": "client/nuxt.config.js",
               "commit": "60a60d7",
+              "hiddenLines": [
+                [0, 47],
+                [55, 63]
+              ],
               "children": [
                 {
                   "type": "paragraph",
@@ -4928,7 +4909,7 @@
           "type": "file",
           "file": "client/pages/recipes/index.vue",
           "display": true,
-          "id": "JlyA58eA15",
+          "id": "dmR8Rjp0gr",
           "children": [
             {
               "type": "explain",
@@ -4976,6 +4957,12 @@
               "type": "diff-block",
               "file": "client/pages/recipes/index.vue",
               "commit": "60a60d7",
+              "hiddenLines": [
+                [0, 17],
+                [57, 59],
+                [78, 78],
+                [97, 100]
+              ],
               "children": [
                 {
                   "type": "paragraph",
@@ -5007,7 +4994,7 @@
           "type": "file",
           "file": "client/pages/recipes/_id/index.vue",
           "display": true,
-          "id": "oWWnI-3VBw",
+          "id": "z5qmdKM1fi",
           "children": [
             {
               "type": "explain",
@@ -5020,7 +5007,7 @@
                       "text": "实现食谱详情页面"
                     }
                   ],
-                  "id": "e7PykbgxYo"
+                  "id": "fmQEK28px0"
                 },
                 {
                   "type": "paragraph",
@@ -5036,6 +5023,7 @@
               "type": "diff-block",
               "file": "client/pages/recipes/_id/index.vue",
               "commit": "60a60d7",
+              "hiddenLines": [],
               "children": [
                 {
                   "type": "paragraph",
@@ -5095,7 +5083,7 @@
               "children": [
                 {
                   "type": "image",
-                  "url": ".tuture/assets/add-data-in-admin.jpg",
+                  "url": "https://imgkr.cn-bj.ufileos.com/e16bbd8f-3ffe-4831-8ace-cbd3c1a549b7.jpg",
                   "children": [
                     {
                       "text": ""
@@ -5117,7 +5105,7 @@
               "children": [
                 {
                   "type": "image",
-                  "url": ".tuture/assets/recipe-list.jpg",
+                  "url": "https://imgkr.cn-bj.ufileos.com/4e799b10-0f12-4d81-a58e-5a75afa0750c.jpg",
                   "children": [
                     {
                       "text": ""
@@ -5133,13 +5121,13 @@
     {
       "type": "step",
       "commit": "5f1edd9",
-      "id": "ihzZb7izEC",
+      "id": "UrPiWOoIpE",
       "articleId": "425a3a9",
       "children": [
         {
           "type": "heading-two",
           "commit": "5f1edd9",
-          "id": "HV2PzEnbDR",
+          "id": "VlByScyXVE",
           "fixed": true,
           "children": [
             {
@@ -5179,7 +5167,7 @@
           "type": "file",
           "file": "client/pages/recipes/_id/edit.vue",
           "display": true,
-          "id": "fJzU-mkZ8j",
+          "id": "2_cocQ4iDf",
           "children": [
             {
               "type": "explain",
@@ -5199,6 +5187,7 @@
               "type": "diff-block",
               "file": "client/pages/recipes/_id/edit.vue",
               "commit": "5f1edd9",
+              "hiddenLines": [],
               "children": [
                 {
                   "type": "paragraph",
@@ -5227,7 +5216,7 @@
                   "children": [
                     {
                       "type": "image",
-                      "url": ".tuture/assets/recipe-detail.jpg",
+                      "url": "https://imgkr.cn-bj.ufileos.com/fc7103da-864c-4e43-8a91-de0f450a63b8.jpg",
                       "children": [
                         {
                           "text": ""
@@ -5244,7 +5233,7 @@
           "type": "file",
           "file": "client/pages/recipes/add.vue",
           "display": true,
-          "id": "dUDoT9KeXb",
+          "id": "hzZsV0ukfo",
           "children": [
             {
               "type": "explain",
@@ -5264,6 +5253,7 @@
               "type": "diff-block",
               "file": "client/pages/recipes/add.vue",
               "commit": "5f1edd9",
+              "hiddenLines": [],
               "children": [
                 {
                   "type": "paragraph",
@@ -5292,7 +5282,7 @@
                   "children": [
                     {
                       "type": "image",
-                      "url": ".tuture/assets/add-recipe.jpg",
+                      "url": "https://imgkr.cn-bj.ufileos.com/10c4b3be-6aa1-445e-87b8-69741a12d250.jpg",
                       "children": [
                         {
                           "text": ""
@@ -5309,7 +5299,7 @@
           "type": "file",
           "file": "client/static/images/placeholder.png",
           "display": false,
-          "id": "jGp3pSxq00",
+          "id": "3KF4UY2ypL",
           "children": [
             {
               "type": "explain",
@@ -5329,6 +5319,7 @@
               "type": "diff-block",
               "file": "client/static/images/placeholder.png",
               "commit": "5f1edd9",
+              "hiddenLines": [],
               "children": [
                 {
                   "type": "paragraph",
@@ -5375,13 +5366,13 @@
     {
       "type": "step",
       "commit": "04edf4c",
-      "id": "5HnRPAm2xC",
+      "id": "CJ_LghWO99",
       "articleId": "425a3a9",
       "children": [
         {
           "type": "heading-two",
           "commit": "04edf4c",
-          "id": "fcceWPYmlC",
+          "id": "ago7w_BExy",
           "fixed": true,
           "children": [
             {
@@ -5407,7 +5398,7 @@
           "type": "file",
           "file": "client/assets/css/transition.css",
           "display": true,
-          "id": "JvCgZ9xtoT",
+          "id": "pn-dzKR5_c",
           "children": [
             {
               "type": "explain",
@@ -5427,6 +5418,7 @@
               "type": "diff-block",
               "file": "client/assets/css/transition.css",
               "commit": "04edf4c",
+              "hiddenLines": [],
               "children": [
                 {
                   "type": "paragraph",
@@ -5458,7 +5450,7 @@
           "type": "file",
           "file": "client/nuxt.config.js",
           "display": true,
-          "id": "UNB4eFnVEP",
+          "id": "ovATRPQUWe",
           "children": [
             {
               "type": "explain",
@@ -5478,6 +5470,10 @@
               "type": "diff-block",
               "file": "client/nuxt.config.js",
               "commit": "04edf4c",
+              "hiddenLines": [
+                [0, 21],
+                [29, 64]
+              ],
               "children": [
                 {
                   "type": "paragraph",
@@ -5508,7 +5504,7 @@
         {
           "type": "file",
           "file": "tuture.yml",
-          "id": "JNg1xAuZWo",
+          "id": "2gPyxbTFao",
           "children": [
             {
               "type": "explain",
@@ -5528,6 +5524,7 @@
               "type": "diff-block",
               "file": "tuture.yml",
               "commit": "04edf4c",
+              "hiddenLines": [[0, 126]],
               "children": [
                 {
                   "type": "paragraph",
@@ -5571,5 +5568,6 @@
         }
       ]
     }
-  ]
+  ],
+  "version": "v1"
 }
