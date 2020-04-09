@@ -84,7 +84,7 @@ export const collection = {
 
       if (articleId && state.collection) {
         state.nowStepCommit = state.collection.steps.filter(
-          ({ articleId }) => articleId === articleId,
+          (step) => step.articleId === articleId,
         )[0].commit;
       }
 
