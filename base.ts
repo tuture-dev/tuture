@@ -4,7 +4,6 @@ import rc from 'rc';
 
 import { checkInitStatus } from './utils';
 import { git, appendGitHook, removeGitHook } from './utils/git';
-import { removeAssetsLock } from './utils/assets';
 import defaultConfig from './config';
 import { TUTURE_ROOT, TUTURE_IGNORE_PATH } from './constants';
 
@@ -18,7 +17,6 @@ export default abstract class BaseCommand extends Command {
     // If not initialize with tuture, then do initialize operation
     if (!(await checkInitStatus(true))) {
       appendGitHook();
-      removeAssetsLock();
 
       if (!fs.existsSync(TUTURE_ROOT)) {
         fs.mkdirSync(TUTURE_ROOT);
@@ -38,8 +36,6 @@ export default abstract class BaseCommand extends Command {
   }
 
   async finally() {
-    removeAssetsLock();
-
     // Clean tuture root if it's empty, since it's created for no reason..
     if (
       fs.existsSync(TUTURE_ROOT) &&

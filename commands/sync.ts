@@ -26,12 +26,7 @@ import {
   ASSETS_JSON_PATH,
   EXIT_CODE,
 } from '../constants';
-import {
-  syncImages,
-  assetsTablePath,
-  assetsTableVcsPath,
-  hasAssetsChangedSinceCheckpoint,
-} from '../utils/assets';
+import { assetsTablePath } from '../utils/assets';
 
 export default class Sync extends BaseCommand {
   static description = 'Synchronize workspace with local/remote branch';
@@ -73,9 +68,6 @@ export default class Sync extends BaseCommand {
 
     if (fs.existsSync(collectionVcsPath)) {
       fs.copySync(collectionVcsPath, collectionPath);
-    }
-    if (fs.existsSync(assetsTableVcsPath)) {
-      fs.copySync(assetsTableVcsPath, assetsTablePath);
     }
 
     saveCheckpoint();
@@ -154,9 +146,6 @@ export default class Sync extends BaseCommand {
         await this.pushToRemotes(collection.remotes!);
       }
 
-      // Download assets from image hosting.
-      await syncImages();
-
       await git.checkout('master');
 
       logger.log('success', 'Synchronization complete!');
@@ -184,9 +173,6 @@ export default class Sync extends BaseCommand {
 
       await this.copyFilesFromTutureBranch();
 
-      // Download assets from image hosting.
-      await syncImages();
-
       logger.log('success', 'Workspace created from remote tuture branch!');
     } else {
       const collection = loadCollection();
@@ -208,10 +194,7 @@ export default class Sync extends BaseCommand {
       }
 
       // Step 1: run `commit` command if something has changed.
-      if (
-        hasCollectionChangedSinceCheckpoint() ||
-        hasAssetsChangedSinceCheckpoint()
-      ) {
+      if (hasCollectionChangedSinceCheckpoint()) {
         const message = flags.message || `Commit on ${new Date()}`;
         await commit.run(['-m', message]);
       }
@@ -227,9 +210,6 @@ export default class Sync extends BaseCommand {
       }
 
       await this.copyFilesFromTutureBranch();
-
-      // Download assets if necessary.
-      await syncImages();
 
       logger.log('success', 'Synchronization complete!');
     }

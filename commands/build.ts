@@ -12,7 +12,6 @@ import { isCommitEqual, checkInitStatus } from '../utils';
 import logger from '../utils/logger';
 import { diffPath } from '../utils/git';
 import { loadCollection, collectionPath } from '../utils/collection';
-import { Asset, loadAssetsTable, checkAssets } from '../utils/assets';
 import { generateUserProfile } from '../utils/internals';
 import { DIFF_PATH } from '../constants';
 import { RawDiff, DiffBlock, Step, Collection, Meta } from '../types';
@@ -298,21 +297,6 @@ export default class Build extends BaseCommand {
       .replace(/\n{3,}/g, '\n\n');
   }
 
-  replaceAssetPaths(tutorial: string, assets: Asset[]) {
-    let updated = tutorial;
-
-    // Replace all local paths.
-    // If not uploaded, replace it with absolute local path.
-    assets.forEach(({ localPath, hostingUri }) => {
-      updated = updated.replace(
-        new RegExp(localPath, 'g'),
-        hostingUri || path.resolve(localPath),
-      );
-    });
-
-    return updated;
-  }
-
   generateTutorials(collection: Collection, rawDiffs: RawDiff[]) {
     const {
       name,
@@ -341,7 +325,7 @@ export default class Build extends BaseCommand {
     );
 
     // Iterate over each split of tutorial.
-    const tutorials = articles.map((article, index) => {
+    const tutorials = articles.map((article) => {
       const articleSteps = steps.filter(
         (step) => step.articleId === article.id,
       );
@@ -355,7 +339,7 @@ export default class Build extends BaseCommand {
     return [tutorials, titles];
   }
 
-  saveTutorials(tutorials: string[], titles: string[], assets: Asset[]) {
+  saveTutorials(tutorials: string[], titles: string[]) {
     const { buildPath } = this.userConfig;
     if (!this.userConfig.out && !fs.existsSync(buildPath)) {
       fs.mkdirSync(buildPath);
@@ -365,9 +349,6 @@ export default class Build extends BaseCommand {
       // Path to target tutorial.
       const dest =
         this.userConfig.out || path.join(buildPath, `${titles[index]}.md`);
-
-      // Replace local asset paths.
-      fs.writeFileSync(dest, this.replaceAssetPaths(tutorial, assets));
 
       logger.log(
         'success',
@@ -397,9 +378,6 @@ export default class Build extends BaseCommand {
       fs.readFileSync(DIFF_PATH).toString(),
     );
 
-    const assets = loadAssetsTable();
-    checkAssets(assets);
-
     if (rawDiffs.length === 0) {
       logger.log(
         'warning',
@@ -412,6 +390,6 @@ export default class Build extends BaseCommand {
     }
 
     const [tutorials, titles] = this.generateTutorials(collection, rawDiffs);
-    this.saveTutorials(tutorials, titles, assets);
+    this.saveTutorials(tutorials, titles);
   }
 }
