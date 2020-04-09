@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector, useStore } from 'react-redux';
 import { message, Tooltip, Tag, Modal, Icon } from 'antd';
 import classnames from 'classnames';
@@ -6,7 +6,7 @@ import omit from 'lodash.omit';
 
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
-import { Dispatch, RootState } from 'store';
+import { Dispatch, RootState, Store } from 'store';
 
 import {
   headerStyle,
@@ -17,47 +17,31 @@ import {
   activeListItemStyle,
 } from './styles';
 import IconFont from '../../components/IconFont';
-import { Step } from '../../../../types';
-import { TocItem, TocStepItem, TocArticleItem } from 'types';
+import { TocArticleItem, TocStepItem } from 'types';
 
 const { confirm } = Modal;
 
 function ArticleStepList() {
-  const store: any = useStore();
+  const store = useStore() as Store;
   const dispatch: Dispatch = useDispatch();
 
   const defaultArticleStepList: TocArticleItem[] = useSelector(
     store.select.collection.getArticleStepList,
   );
-  const unassignedStepList: TocStepItem[] = useSelector(
-    (state: RootState) => state.toc.unassignedStepList,
-  );
-  const articleStepList = useSelector(
-    (state: RootState) => state.toc.articleStepList,
-  );
-  const activeArticle = useSelector(
-    (state: RootState) => state.toc.activeArticle,
+
+  const { unassignedStepList, articleStepList, activeArticle } = useSelector(
+    (state: RootState) => state.toc,
   );
 
   useEffect(() => {
     if (defaultArticleStepList && !articleStepList.length) {
       dispatch.toc.setArticleStepList(defaultArticleStepList);
     }
-  }, [articleStepList.length, defaultArticleStepList, dispatch.toc]);
+  }, [articleStepList, defaultArticleStepList, dispatch]);
 
-  const filteredArticleList = (articleStepList as TocArticleItem[]).filter(
-    (articleStep: any) => {
-      if (!articleStep?.articleId) {
-        return true;
-      }
-
-      if (activeArticle === articleStep.articleId) {
-        return true;
-      }
-
-      return false;
-    },
-  );
+  const filteredArticleList = articleStepList.filter((articleStep) => {
+    return !articleStep?.articleId || activeArticle === articleStep.articleId;
+  });
 
   function toggleActiveArticle(articleId: string) {
     if (activeArticle === articleId) {
@@ -67,7 +51,7 @@ function ArticleStepList() {
     }
   }
 
-  function showDeleteConfirm(articleStepItem: any) {
+  function showDeleteConfirm(articleStepItem: TocStepItem) {
     confirm({
       title: `确定删除文章 ${articleStepItem.name}？`,
       okText: '删除',
@@ -79,9 +63,9 @@ function ArticleStepList() {
     });
   }
 
-  function handleInsertStep(step: Step, stepList: TocItem[]) {
+  function handleInsertStep(step: TocStepItem, stepList: TocStepItem[]) {
     const insertIndex = stepList.findIndex(
-      (stepItem: any) => stepItem.number > step.number,
+      (stepItem) => stepItem.number > step.number,
     );
 
     if (insertIndex > -1) {
@@ -93,19 +77,24 @@ function ArticleStepList() {
 
       return newStepList;
     } else {
-      const newStepList = stepList.concat(omit(step, ['articleId']) as TocItem);
+      const newStepList = stepList.concat(
+        omit(step, ['articleId']) as TocStepItem,
+      );
 
       return newStepList;
     }
   }
 
-  function handleArticleStepClick(e: any, articleStepItem: any) {
+  function handleArticleStepClick(
+    e: React.MouseEvent,
+    articleStepItem: TocStepItem,
+  ) {
     e.preventDefault();
     e.stopPropagation();
 
     if (articleStepItem?.articleId) {
       const newArticleStepList = articleStepList.filter(
-        (articleStep: any) => articleStep.id !== articleStepItem.id,
+        (articleStep) => articleStep.id !== articleStepItem.id,
       );
 
       dispatch.toc.setArticleStepList(newArticleStepList);
@@ -123,18 +112,18 @@ function ArticleStepList() {
     }
   }
 
-  function handleDeleteArticle(articleStepItem: any) {
+  function handleDeleteArticle(articleStepItem: TocStepItem) {
     const stepList = articleStepList.filter(
-      (step: any) => step?.articleId === articleStepItem.id,
+      (step) => step?.articleId === articleStepItem.id,
     );
     const newUnassignedStepList = stepList.reduce(
-      (unassignedStepList: any, currentStep: any) =>
+      (unassignedStepList, currentStep) =>
         handleInsertStep(currentStep, unassignedStepList),
       unassignedStepList,
     );
     const newArticleStepList = articleStepList
-      .filter((step: any) => step?.articleId !== articleStepItem.id)
-      .filter((step: any) => step.id !== articleStepItem.id);
+      .filter((step) => step?.articleId !== articleStepItem.id)
+      .filter((step) => step.id !== articleStepItem.id);
 
     dispatch.toc.setUnassignedStepList(newUnassignedStepList);
     dispatch.toc.setArticleStepList(newArticleStepList);
@@ -172,7 +161,7 @@ function ArticleStepList() {
             margin-top: 16px;
           `}
         >
-          {filteredArticleList.map((item: any) => (
+          {filteredArticleList.map((item) => (
             <li
               key={item.id}
               onClick={() => {

@@ -4,7 +4,7 @@ import { useDispatch, useSelector, useStore } from 'react-redux';
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 import { Tag, Tooltip, Popconfirm, Input, message } from 'antd';
-import { Dispatch, RootState } from 'store';
+import { Dispatch, RootState, Store } from 'store';
 
 import {
   assistInfoStyle,
@@ -14,61 +14,49 @@ import {
   headerStyle,
 } from './styles';
 import IconFont from '../../components/IconFont';
-import { Step } from '../../../../types';
+import { TocStepItem } from 'types';
 
 const { Search } = Input;
 
 function ReleasedStepList() {
-  const store: any = useStore();
+  const store = useStore() as Store;
   const dispatch: Dispatch = useDispatch();
 
   const [searchValue, setSearchValue] = useState('');
   const defaultUnassignedStepList = useSelector(
     store.select.collection.getUnassignedStepList,
   );
-  const articleStepList: Step[] = useSelector(
-    (state: RootState) => state.toc.articleStepList,
-  );
-  const unassignedStepList = useSelector(
-    (state: RootState) => state.toc.unassignedStepList,
-  );
-  const activeArticle = useSelector(
-    (state: RootState) => state.toc.activeArticle,
+
+  const { articleStepList, unassignedStepList, activeArticle } = useSelector(
+    (state: RootState) => state.toc,
   );
 
-  const filteredUnassignedStepList = (unassignedStepList as Step[]).filter(
-    (step: any) => {
-      const isQualified = step.name.indexOf(searchValue);
-      if (isQualified >= 0) {
-        return true;
-      }
-
-      return false;
-    },
+  const filteredUnassignedStepList = unassignedStepList.filter(
+    (step) => step.name.indexOf(searchValue) >= 0,
   );
 
   useEffect(() => {
     if (defaultUnassignedStepList && !unassignedStepList.length) {
       dispatch.toc.setUnassignedStepList(defaultUnassignedStepList);
     }
-  }, [defaultUnassignedStepList, dispatch.toc, unassignedStepList.length]);
+  }, [defaultUnassignedStepList, dispatch, unassignedStepList]);
 
-  function handleAddStep(stepItem: any) {
+  function handleAddStep(stepItem: TocStepItem) {
     if (!activeArticle) {
       message.warning('请选中文章，再添加步骤');
     } else {
       const targetArticleStepIndex = articleStepList.findIndex(
-        (articleStep: any) =>
+        (articleStep) =>
           articleStep?.articleId === activeArticle &&
           articleStep?.number > stepItem.number,
       );
       const articleStepsLen = articleStepList.filter(
-        (articleStep: any) => articleStep?.articleId === activeArticle,
+        (articleStep) => articleStep?.articleId === activeArticle,
       ).length;
 
       if (targetArticleStepIndex < 0 && articleStepsLen === 0) {
         const articleIndex = articleStepList.findIndex(
-          (articleStep: any) => articleStep.id === activeArticle,
+          (articleStep) => articleStep.id === activeArticle,
         );
 
         const newArticleStepList = [
@@ -80,7 +68,7 @@ function ReleasedStepList() {
         dispatch.toc.setArticleStepList(newArticleStepList);
       } else if (targetArticleStepIndex < 0 && articleStepsLen > 0) {
         const articleIndex = articleStepList.findIndex(
-          (articleStep: any) => articleStep.id === activeArticle,
+          (articleStep) => articleStep.id === activeArticle,
         );
 
         const newArticleStepList = [
@@ -101,7 +89,7 @@ function ReleasedStepList() {
       }
 
       const newUnassignedStepList = unassignedStepList.filter(
-        (step: any) => step.id !== stepItem.id,
+        (step) => step.id !== stepItem.id,
       );
 
       dispatch.toc.setUnassignedStepList(newUnassignedStepList);
@@ -153,7 +141,7 @@ function ReleasedStepList() {
             margin: 0;
           `}
         >
-          {filteredUnassignedStepList.map((item: any) => (
+          {filteredUnassignedStepList.map((item) => (
             <li
               key={item.id}
               css={css`
