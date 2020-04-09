@@ -12,45 +12,73 @@ function getArticleIdFromId(items: TocItem[], stepId: string) {
 
 export type TocState = {
   isSaving: boolean;
+  activeArticle: string;
+  needDeleteOutdatedStepList: string[];
+  articleStepList: TocStepItem[];
+  unassignedStepList: TocStepItem[];
+  deleteOutdatedStepList: TocStepItem[];
 };
 
 export const toc = {
   state: {
     isSaving: false,
+    activeArticle: '',
+    needDeleteOutdatedStepList: [],
+    articleStepList: [],
+    unassignedStepList: [],
   },
   reducers: {
     setSaveStatus(state: TocState, isSaving: boolean) {
       state.isSaving = isSaving;
       return state;
     },
+    setArticleStepList(state: TocState, payload: TocStepItem[]) {
+      state.articleStepList = payload;
+    },
+    setActiveArticle(state: TocState, payload: string) {
+      state.activeArticle = payload;
+    },
+    setUnassignedStepList(state: TocState, payload: TocStepItem[]) {
+      state.unassignedStepList = payload;
+    },
+    deleteOutdatedStepList(state: TocState, stepId: string) {
+      state.needDeleteOutdatedStepList = state.needDeleteOutdatedStepList.concat(
+        stepId,
+      );
+
+      const newUnassignedStepList = state.unassignedStepList.filter(
+        (step: any) => step.id !== stepId,
+      );
+      state.unassignedStepList = newUnassignedStepList;
+    },
+    reset(state: TocState) {
+      state.activeArticle = '';
+      state.needDeleteOutdatedStepList = [];
+      state.articleStepList = [];
+      state.unassignedStepList = [];
+      state.isSaving = false;
+    },
   },
   effects: (dispatch: Dispatch) => ({
-    async save(
-      payload: {
-        articleStepList?: TocItem[];
-        unassignedStepList?: TocStepItem[];
-        deleteOutdatedStepList?: TocStepItem[];
-      },
-      rootState: RootState,
-    ) {
+    async save(_: any, rootState: RootState) {
       const {
         articleStepList = [],
         unassignedStepList = [],
-        deleteOutdatedStepList = [],
-      } = payload;
+        needDeleteOutdatedStepList = [],
+      } = rootState.toc;
       let { steps = [] } = rootState.collection.collection || {};
       let { articles = [] } = rootState.collection.collection || {};
 
       // handle article deletion
-      const nowArticleIdList = articleStepList
-        .filter((item) => !(item as TocStepItem).articleId)
+      const nowArticleIdList = (articleStepList as TocStepItem[])
+        .filter((item) => !item.articleId)
         .map((item) => item.id);
       articles = articles.filter((article: any) =>
         nowArticleIdList.includes(article.id),
       );
 
       // handle step allocation
-      const nowAllocationStepList = articleStepList.filter(
+      const nowAllocationStepList = (articleStepList as TocStepItem[]).filter(
         (item) => (item as TocStepItem).articleId,
       );
       const nowAllocationStepIdList = nowAllocationStepList.map(
@@ -64,7 +92,9 @@ export const toc = {
         return step;
       });
 
-      const unassignedStepIdList = unassignedStepList.map((step) => step.id);
+      const unassignedStepIdList = (unassignedStepList as TocStepItem[]).map(
+        (step) => step.id,
+      );
       steps = steps.map((step: any) => {
         if (unassignedStepIdList.includes(step.id)) {
           step = omit(step, ['articleId']) as Step;
@@ -74,7 +104,8 @@ export const toc = {
 
       // delete outdated deleted step
       steps = steps.filter(
-        (step: any) => !deleteOutdatedStepList.includes(step.id),
+        (step: any) =>
+          !(needDeleteOutdatedStepList as TocStepItem[]).includes(step.id),
       );
 
       dispatch.collection.updateArticles(articles);
@@ -83,7 +114,6 @@ export const toc = {
       dispatch.collection.saveCollection();
 
       message.success('目录保存成功');
-      dispatch.toc.setSaveStatus(false);
     },
   }),
 };

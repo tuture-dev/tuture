@@ -24,7 +24,7 @@ function LayoutHeader() {
   const isToc = useRouteMatch('/toc');
 
   function handleSaveToc() {
-    dispatch.toc.setSaveStatus(true);
+    dispatch.toc.save(true);
   }
 
   return (
