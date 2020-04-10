@@ -192,8 +192,6 @@ function DiffBlockElement(props: ElementProps) {
                 <SyntaxHighlighter
                   code={codeStr}
                   language={lang === 'vue' ? 'html' : lang}
-                  PreTag="table"
-                  CodeTag="tr"
                   showLineNumbers
                   showLineChecker
                   wrapLines

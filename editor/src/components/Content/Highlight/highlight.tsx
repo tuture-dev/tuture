@@ -264,7 +264,6 @@ export interface SyntaxHighlighterProps {
   language?: string;
   style?: any;
   astGenerator?: typeof refractor;
-  PreTag?: string;
   customStyle?: any;
   wrapLines: boolean;
   lineProps?: LineProps;
@@ -293,7 +292,6 @@ export default function(
     wrapLines,
     lineProps = {},
     renderer = defaultRenderer,
-    PreTag = 'pre',
     astGenerator = defaultAstGenerator,
     ...rest
   }: SyntaxHighlighterProps) {
@@ -376,8 +374,7 @@ export default function(
             padding-bottom: 16px;
           `}
         >
-          // @ts-ignore
-          <PreTag
+          <table
             {...preProps}
             {...getTableProps()}
             css={css`
@@ -433,7 +430,7 @@ export default function(
                 );
               })}
             </tbody>
-          </PreTag>
+          </table>
         </div>
       </div>
     );
