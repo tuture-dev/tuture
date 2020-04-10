@@ -47,26 +47,20 @@ function ReleasedStepListItem(props: {
       >
         {item.name}
       </span>
-      <Popconfirm
-        title={`确定删除此过时步骤 ${item.name} 吗？`}
-        onConfirm={() => {
-          dispatch.toc.deleteOutdatedStepList(item.id);
-        }}
-        okText="确认"
-        cancelText="取消"
-      >
-        <DeleteButton />
-      </Popconfirm>
+      {item.outdated && (
+        <Popconfirm
+          title={`确定删除此过时步骤 ${item.name} 吗？`}
+          onConfirm={() => {
+            dispatch.toc.deleteOutdatedStepList(item.id);
+          }}
+          okText="确认"
+          cancelText="取消"
+        >
+          <DeleteButton />
+        </Popconfirm>
+      )}
 
-      <AddButton
-        onClick={onClickAdd}
-        css={css`
-          ${listItemActionStyle}
-          display: flex;
-          align-items: center;
-          visibility: hidden;
-        `}
-      />
+      <AddButton onClick={onClickAdd} />
     </li>
   );
 }

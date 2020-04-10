@@ -15,7 +15,7 @@ export type TocState = {
   isSaving: boolean;
   activeArticle: string;
   needDeleteOutdatedStepList: string[];
-  articleStepList: TocStepItem[];
+  articleStepList?: TocStepItem[];
   unassignedStepList?: TocStepItem[];
   deleteOutdatedStepList?: TocStepItem[];
 };
@@ -24,7 +24,6 @@ const initialState: TocState = {
   isSaving: false,
   activeArticle: '',
   needDeleteOutdatedStepList: [],
-  articleStepList: [],
 };
 
 export const toc = {
@@ -70,7 +69,7 @@ export const toc = {
         unassignedStepList = [],
         needDeleteOutdatedStepList = [],
       } = rootState.toc;
-      const { nowArticleId } = rootState.collection;
+      const { nowArticleId = '' } = rootState.collection;
       let { steps = [] } = rootState.collection.collection || {};
       let { articles = [] } = rootState.collection.collection || {};
 
@@ -81,6 +80,10 @@ export const toc = {
       articles = articles.filter((article) =>
         nowArticleIdList.includes(article.id),
       );
+
+      if (!nowArticleIdList.includes(nowArticleId as string)) {
+        dispatch.collection.setNowArticle('');
+      }
 
       // handle step allocation
       const nowAllocationStepList = articleStepList.filter(
