@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector, useStore } from 'react-redux';
-import { message, Modal, Icon } from 'antd';
+import { message, Modal } from 'antd';
 import classnames from 'classnames';
 import omit from 'lodash.omit';
 
@@ -16,11 +16,98 @@ import {
   listItemStyle,
   activeListItemStyle,
 } from './styles';
-import OutdatedTag from './OutdatedTag';
-import IconFont from '../../components/IconFont';
+import Caret from './widgets/Caret';
+import OutdatedTag from './widgets/OutdatedTag';
+import DeleteButton from './widgets/DeleteButton';
 import { TocArticleItem, TocStepItem } from 'types';
 
 const { confirm } = Modal;
+
+function ArticleStepListItem(props: {
+  item: TocStepItem;
+  onDelete: React.MouseEventHandler;
+}) {
+  const { item, onDelete } = props;
+  const dispatch: Dispatch = useDispatch();
+  const { activeArticle } = useSelector((state: RootState) => state.toc);
+
+  function toggleActiveArticle(articleId: string) {
+    if (activeArticle === articleId) {
+      dispatch.toc.setActiveArticle('');
+    } else {
+      dispatch.toc.setActiveArticle(articleId);
+    }
+  }
+
+  return (
+    <li
+      key={item.id}
+      onClick={() => {
+        if (item.articleId) {
+          return;
+        }
+        toggleActiveArticle(item.id);
+      }}
+      className={classnames({
+        [`list-item-${item.articleId}`]: item.articleId,
+      })}
+      css={css`
+        ${listItemStyle}
+        height: 40px;
+        padding-left: 32px;
+        margin-left: ${item.level * 24}px;
+
+        &:hover .list-item-tail {
+          display: none;
+        }
+
+        &:hover .list-item-action {
+          display: inline-block;
+        }
+
+        ${activeArticle === item.id && activeListItemStyle}
+      `}
+    >
+      {!item.articleId && (
+        <Caret
+          type={activeArticle === item.id ? 'caret-down' : 'caret-right'}
+        />
+      )}
+      {item.outdated && <OutdatedTag />}
+      <span
+        css={css`
+          width: ${item.outdated ? '390px' : '430px'};
+          display: inline-block;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          overflow: hidden;
+        `}
+      >
+        {item.name}
+      </span>
+      {item.articleId && (
+        <span
+          className="list-item-tail"
+          css={css`
+            ${listItemActionStyle}
+          `}
+        >
+          步骤
+        </span>
+      )}
+
+      <span
+        className="list-item-action"
+        css={css`
+          ${listItemActionStyle}
+          display: none;
+        `}
+      >
+        <DeleteButton onClick={onDelete} />
+      </span>
+    </li>
+  );
+}
 
 function ArticleStepList() {
   const store = useStore() as Store;
@@ -46,26 +133,6 @@ function ArticleStepList() {
     return !articleStep?.articleId || activeArticle === articleStep.articleId;
   });
 
-  function toggleActiveArticle(articleId: string) {
-    if (activeArticle === articleId) {
-      dispatch.toc.setActiveArticle('');
-    } else {
-      dispatch.toc.setActiveArticle(articleId);
-    }
-  }
-
-  function showDeleteConfirm(articleStepItem: TocStepItem) {
-    confirm({
-      title: `确定删除文章 ${articleStepItem.name}？`,
-      okText: '删除',
-      okType: 'danger',
-      cancelText: '取消',
-      onOk() {
-        handleDeleteArticle(articleStepItem);
-      },
-    });
-  }
-
   function handleInsertStep(step: TocStepItem, stepList: TocStepItem[]) {
     const insertIndex = stepList.findIndex(
       (stepItem) => stepItem.number > step.number,
@@ -88,7 +155,7 @@ function ArticleStepList() {
     }
   }
 
-  function handleArticleStepClick(
+  function handleArticleStepItemDelete(
     e: React.MouseEvent,
     articleStepItem: TocStepItem,
   ) {
@@ -115,7 +182,19 @@ function ArticleStepList() {
     }
   }
 
-  function handleDeleteArticle(articleStepItem: TocStepItem) {
+  function showDeleteConfirm(articleStepItem: TocStepItem) {
+    confirm({
+      title: `确定删除文章 ${articleStepItem.name}？`,
+      okText: '删除',
+      okType: 'danger',
+      cancelText: '取消',
+      onOk() {
+        deleteArticle(articleStepItem);
+      },
+    });
+  }
+
+  function deleteArticle(articleStepItem: TocStepItem) {
     const stepList = articleStepList.filter(
       (step) => step?.articleId === articleStepItem.id,
     );
@@ -165,114 +244,10 @@ function ArticleStepList() {
           `}
         >
           {filteredArticleList.map((item) => (
-            <li
-              key={item.id}
-              onClick={() => {
-                if (item.articleId) {
-                  return;
-                }
-                toggleActiveArticle(item.id);
-              }}
-              className={classnames({
-                [`list-item-${item.articleId}`]: item.articleId,
-              })}
-              css={css`
-                ${listItemStyle}
-                height: 40px;
-                padding-left: 32px;
-
-                &:hover .list-item-action {
-                  visibility: visible;
-                }
-
-                margin-left: ${item.level * 24}px;
-
-                &:hover {
-                  cursor: pointer;
-                }
-
-                &:hover .list-item-tail {
-                  display: none;
-                }
-
-                &:hover .list-item-action {
-                  display: inline-block;
-                }
-
-                ${activeArticle === item.id && activeListItemStyle}
-              `}
-            >
-              {!item.articleId && (
-                <span
-                  css={css`
-                    position: absolute;
-                    margin-left: -20px;
-                    margin-top: -2px;
-                  `}
-                >
-                  <Icon
-                    type={
-                      activeArticle === item.id ? 'caret-down' : 'caret-right'
-                    }
-                    css={css`
-                      & > svg {
-                        width: 10px;
-                        height: 10px;
-                      }
-                    `}
-                  />
-                </span>
-              )}
-              {item.outdated && <OutdatedTag />}
-              <span
-                css={css`
-                  width: ${item.outdated ? '390px' : '430px'};
-                  display: inline-block;
-                  white-space: nowrap;
-                  text-overflow: ellipsis;
-                  overflow: hidden;
-                `}
-              >
-                {item.name}
-              </span>
-              {item.articleId && (
-                <span
-                  className="list-item-tail"
-                  css={css`
-                    ${listItemActionStyle}
-                  `}
-                >
-                  步骤
-                </span>
-              )}
-
-              <span
-                className="list-item-action"
-                css={css`
-                  ${listItemActionStyle}
-
-                  display: none;
-                `}
-              >
-                <IconFont
-                  type="icon-delete1"
-                  onClick={(e) => handleArticleStepClick(e, item)}
-                  css={css`
-                    color: #8c8c8c;
-
-                    &:hover {
-                      color: #595959;
-                      cursor: pointer;
-                    }
-
-                    & > svg {
-                      width: 12px;
-                      height: 12px;
-                    }
-                  `}
-                />
-              </span>
-            </li>
+            <ArticleStepListItem
+              item={item}
+              onDelete={(e) => handleArticleStepItemDelete(e, item)}
+            />
           ))}
         </ul>
       </div>

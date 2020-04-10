@@ -43,6 +43,14 @@ export const listItemStyle = css`
   padding-left: 16px;
   padding-right: 24px;
   margin-bottom: 16px;
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  &:hover .list-item-action {
+    visibility: visible;
+  }
 `;
 
 export const activeListItemStyle = css`

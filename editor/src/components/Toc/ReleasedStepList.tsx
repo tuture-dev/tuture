@@ -13,11 +13,63 @@ import {
   listItemStyle,
   headerStyle,
 } from './styles';
-import OutdatedTag from './OutdatedTag';
-import IconFont from '../../components/IconFont';
+import OutdatedTag from './widgets/OutdatedTag';
+import AddButton from './widgets/AddButton';
+import DeleteButton from './widgets/DeleteButton';
 import { TocStepItem } from 'types';
 
 const { Search } = Input;
+
+function ReleasedStepListItem(props: {
+  item: TocStepItem;
+  onClickAdd: React.MouseEventHandler;
+}) {
+  const { item, onClickAdd } = props;
+  const dispatch: Dispatch = useDispatch();
+
+  return (
+    <li
+      key={item.id}
+      css={css`
+        ${listItemStyle}
+        height: 52px;
+      `}
+    >
+      {item.outdated && <OutdatedTag />}
+      <span
+        css={css`
+          width: ${item.outdated ? '94px' : '134px'};
+          display: inline-block;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          overflow: hidden;
+        `}
+      >
+        {item.name}
+      </span>
+      <Popconfirm
+        title={`确定删除此过时步骤 ${item.name} 吗？`}
+        onConfirm={() => {
+          dispatch.toc.deleteOutdatedStepList(item.id);
+        }}
+        okText="确认"
+        cancelText="取消"
+      >
+        <DeleteButton />
+      </Popconfirm>
+
+      <AddButton
+        onClick={onClickAdd}
+        css={css`
+          ${listItemActionStyle}
+          display: flex;
+          align-items: center;
+          visibility: hidden;
+        `}
+      />
+    </li>
+  );
+}
 
 function ReleasedStepList() {
   const store = useStore() as Store;
@@ -108,7 +160,6 @@ function ReleasedStepList() {
         >
           待分配步骤
         </h5>
-
         <p css={assistInfoStyle}>把步骤分配给目录中对应的文章</p>
       </div>
       <div className="menu-body">
@@ -135,98 +186,13 @@ function ReleasedStepList() {
           `}
         >
           {filteredUnassignedStepList.map((item) => (
-            <li
-              key={item.id}
-              css={css`
-                ${listItemStyle}
-                height: 52px;
-
-                &:hover .list-item-action {
-                  visibility: visible;
-                }
-
-                &:hover {
-                  cursor: pointer;
-                }
-              `}
-            >
-              {item.outdated && <OutdatedTag />}
-              <span
-                css={css`
-                  width: ${item.outdated ? '94px' : '134px'};
-                  display: inline-block;
-                  white-space: nowrap;
-                  text-overflow: ellipsis;
-                  overflow: hidden;
-                `}
-              >
-                {item.name}
-              </span>
-              <Popconfirm
-                title={`确定删除此过时步骤 ${item.name} 吗？`}
-                onConfirm={() => {
-                  dispatch.toc.deleteOutdatedStepList(item.id);
-                }}
-                okText="确认"
-                cancelText="取消"
-              >
-                <span
-                  className="list-item-action"
-                  css={css`
-                    ${listItemActionStyle}
-
-                    visibility: hidden;
-                    margin-right: 12px;
-                  `}
-                >
-                  <IconFont
-                    type="icon-delete1"
-                    css={css`
-                      color: #8c8c8c;
-
-                      &:hover {
-                        color: #595959;
-                        cursor: pointer;
-                      }
-
-                      & > svg {
-                        width: 12px;
-                        height: 12px;
-                      }
-                    `}
-                  />
-                </span>
-              </Popconfirm>
-
-              <span
-                className="list-item-action"
-                onClick={() => handleAddStep(item)}
-                css={css`
-                  ${listItemActionStyle}
-
-                  display: flex;
-                  align-items: center;
-                  visibility: hidden;
-                `}
-              >
-                <span
-                  css={css`
-                    margin-right: 8px;
-                  `}
-                >
-                  添加
-                </span>
-                <IconFont
-                  type="icon-doubleright"
-                  css={css`
-                    & > svg {
-                      width: 8px;
-                      height: 8px;
-                    }
-                  `}
-                />
-              </span>
-            </li>
+            <ReleasedStepListItem
+              item={item}
+              onClickAdd={() => {
+                console.log('onClickAdd called', item);
+                handleAddStep(item);
+              }}
+            />
           ))}
         </ul>
       </div>
