@@ -1,4 +1,3 @@
-import chalk from 'chalk';
 import open from 'open';
 import fs from 'fs-extra';
 import getPort from 'get-port';
@@ -10,7 +9,6 @@ import logger from '../utils/logger';
 import makeServer from '../server';
 import { checkInitStatus } from '../utils';
 import { diffPath } from '../utils/git';
-import { syncImages } from '../utils/assets';
 import { loadCollection, collectionPath } from '../utils/collection';
 
 export default class Up extends BaseCommand {
@@ -53,16 +51,10 @@ export default class Up extends BaseCommand {
     // Run sync command if workspace is not prepared.
     if (!fs.existsSync(collectionPath) || !fs.existsSync(diffPath)) {
       await reload.run([]);
-    } else {
-      // Trying to sync images.
-      await syncImages();
     }
 
-    // Trying to load tuture.yml for sanity check.
+    // Trying to load collection for sanity check.
     loadCollection();
-
-    // Background interval to synchronize assets.
-    setInterval(syncImages, this.userConfig.assetsSyncInterval);
 
     this.fireTutureServer();
   }

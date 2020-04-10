@@ -1,7 +1,28 @@
-import { message } from 'antd';
-import { IMAGE } from 'editure-constants';
-import { Editor } from 'editure';
-import { ReactEditor } from 'editure-react';
+import { IMAGE, PARAGRAPH } from 'editure-constants';
+import { Editor, Transforms, getBeforeText } from 'editure';
+
+import { IEditor } from './editor';
+
+const IMAGE_HOSTING_URL = 'https://imgkr.com/api/files/upload';
+
+export const insertImage = (editor: IEditor, files: FileList) => {
+  for (const file of files) {
+    const reader = new FileReader();
+    const [mime] = file.type.split('/');
+
+    if (mime === 'image') {
+      reader.addEventListener('load', () => {
+        const url = reader.result;
+
+        if (url) {
+          editor.insertVoid(IMAGE, { url: url.toString(), file });
+        }
+      });
+
+      reader.readAsDataURL(file);
+    }
+  }
+};
 
 export const uploadImage = (
   file: File,
@@ -10,7 +31,7 @@ export const uploadImage = (
   const data = new FormData();
   data.append('file', file);
 
-  fetch('/upload', {
+  fetch(IMAGE_HOSTING_URL, {
     method: 'POST',
     body: data,
   })
@@ -21,25 +42,15 @@ export const uploadImage = (
       return res.json();
     })
     .then((data) => {
-      if (!data.path) {
-        throw new Error('服务器返回的路径无效');
+      if (!data.success) {
+        throw new Error('上传失败，请重试！');
       }
-      callback(null, data.path);
+      callback(null, data.data);
     })
     .catch((err: Error) => callback(err));
 };
 
-export const createInsertImageCallback = (editor: Editor) => (
-  err?: Error | null,
-  url?: string,
-) => {
-  if (err) {
-    return message.error(String(err));
-  }
-  editor.insertVoid(IMAGE, { url });
-};
-
-export const createDropListener = (editor: Editor) => (e: React.DragEvent) => {
+export const createDropListener = (editor: IEditor) => (e: React.DragEvent) => {
   e.preventDefault();
   e.persist();
 
@@ -50,11 +61,11 @@ export const createDropListener = (editor: Editor) => (e: React.DragEvent) => {
     return;
   }
 
-  uploadImage(files[0], createInsertImageCallback(editor));
+  insertImage(editor, files);
 };
 
-export const withImages = (editor: Editor & ReactEditor) => {
-  const { insertData, isVoid } = editor;
+export const withImages = (editor: IEditor) => {
+  const { insertData, deleteBackward, isVoid } = editor;
 
   editor.isVoid = (element) =>
     element.type === IMAGE ? true : isVoid(element);
@@ -63,10 +74,32 @@ export const withImages = (editor: Editor & ReactEditor) => {
     const { files } = data;
 
     if (files && files.length > 0) {
-      uploadImage(files[0], createInsertImageCallback(editor));
+      insertImage(editor, files);
     } else {
       insertData(data);
     }
+  };
+
+  editor.deleteBackward = (unit) => {
+    const [node] = Editor.nodes(editor, { match: (n) => n.type === IMAGE });
+
+    // Transform into a empty paragraph when trying to delete an image.
+    if (node) {
+      Transforms.setNodes(editor, { type: PARAGRAPH });
+      Transforms.unsetNodes(editor, ['url']);
+      return;
+    }
+
+    const { beforeText } = getBeforeText(editor);
+    const previous = Editor.previous(editor);
+
+    // When the previous element is an image, select it rather than delete it.
+    if (previous && previous[0].type === IMAGE && !beforeText) {
+      Transforms.deselect(editor);
+      return Transforms.select(editor, previous[1]);
+    }
+
+    deleteBackward(unit);
   };
 
   return editor;

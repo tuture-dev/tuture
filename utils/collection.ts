@@ -11,7 +11,7 @@ import {
   TUTURE_BRANCH,
   COLLECTION_CHECKPOINT,
 } from '../constants';
-import { assetsTablePath, assetsTableCheckpoint } from './assets';
+import { loadAssetsTable } from './assets';
 
 export const collectionPath = path.join(
   process.env.TUTURE_PATH || process.cwd(),
@@ -75,7 +75,20 @@ export async function hasRemoteTutureBranch() {
  * Load collection.
  */
 export function loadCollection(): Collection {
-  const collection = JSON.parse(fs.readFileSync(collectionPath).toString());
+  let rawCollection = fs.readFileSync(collectionPath).toString();
+  const assetsTable = loadAssetsTable();
+
+  // COMPAT: convert all asset paths
+  assetsTable.forEach((asset) => {
+    const { localPath, hostingUri } = asset;
+    if (hostingUri) {
+      rawCollection = rawCollection.replace(
+        new RegExp(localPath, 'g'),
+        hostingUri,
+      );
+    }
+  });
+  const collection = JSON.parse(rawCollection);
 
   // COMPAT: convert hiddenLines field
   if (collection.version !== 'v1') {
@@ -152,10 +165,4 @@ export async function initializeTutureBranch() {
 export function saveCheckpoint() {
   // Copy the last committed file.
   fs.copySync(collectionPath, collectionCheckpoint, { overwrite: true });
-
-  if (fs.existsSync(assetsTablePath)) {
-    fs.copySync(assetsTablePath, assetsTableCheckpoint, {
-      overwrite: true,
-    });
-  }
 }

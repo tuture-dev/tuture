@@ -7,7 +7,7 @@ import { css, jsx } from '@emotion/core';
 
 import { IEditor } from 'utils/editor';
 import { BLOCK_HOTKEYS, getHotkeyHint, ButtonRefsContext } from 'utils/hotkeys';
-import { uploadImage, createInsertImageCallback } from 'utils/image';
+import { insertImage } from 'utils/image';
 
 import Button from './Button';
 import ToolbarIcon from './ToolbarIcon';
@@ -21,7 +21,7 @@ const ImageButton = () => {
     e.persist();
 
     if (e.target.files) {
-      uploadImage(e.target.files[0], createInsertImageCallback(editor));
+      insertImage(editor, e.target.files);
     }
   };
 

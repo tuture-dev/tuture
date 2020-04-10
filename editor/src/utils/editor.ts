@@ -74,8 +74,8 @@ const withDiffBlockVoid = (editor: Editor) => {
 
 const plugins: Function[] = [
   withReact,
-  withImages,
   ...defaultPlugins,
+  withImages,
   withExplainLayout,
   withCommitHeaderLayout,
   withDiffBlockVoid,

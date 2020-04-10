@@ -1,17 +1,11 @@
 import cp from 'child_process';
 import fs from 'fs-extra';
-import path from 'path';
 import { flags } from '@oclif/command';
 import { prompt } from 'inquirer';
 
 import BaseCommand from '../base';
 import logger from '../utils/logger';
 import { git } from '../utils/git';
-import {
-  assetsTablePath,
-  assetsTableVcsPath,
-  assetsTableCheckpoint,
-} from '../utils/assets';
 import {
   collectionPath,
   collectionVcsPath,
@@ -55,12 +49,6 @@ export default class Commit extends BaseCommand {
     fs.copySync(collectionPath, collectionVcsPath);
     await git.add(collectionVcsPath);
 
-    // Trying to copy and add tuture-assets.json to staging.
-    if (fs.existsSync(assetsTablePath)) {
-      fs.copySync(assetsTablePath, assetsTableVcsPath);
-      await git.add(assetsTableVcsPath);
-    }
-
     // COMPAT: remove collection.json and tuture-assets.json from project root.
     if (fs.existsSync(COLLECTION_PATH)) {
       await git.rm(COLLECTION_PATH);
@@ -70,7 +58,6 @@ export default class Commit extends BaseCommand {
     }
 
     fs.removeSync(collectionCheckpoint);
-    fs.removeSync(assetsTableCheckpoint);
 
     // Commit changes to tuture branch.
     cp.execSync(`git commit --allow-empty -m "tuture: ${message}"`);

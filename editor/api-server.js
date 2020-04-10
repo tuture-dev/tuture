@@ -2,16 +2,11 @@ const express = require('express');
 const fs = require('fs-extra');
 const path = require('path');
 const morgan = require('morgan');
-const multer = require('multer');
-const tmp = require('tmp');
 
 const app = express();
 const mockRoot = path.join('src', 'utils', 'data');
 const collectionPath = path.join(mockRoot, 'collection.json');
 const diffPath = path.join(mockRoot, 'diff.json');
-
-const tmpDir = tmp.dirSync();
-const upload = multer({ dest: tmpDir.name });
 
 app.use(morgan('dev'));
 app.use(express.json({ limit: '50mb' }));
@@ -62,16 +57,6 @@ app.get('/sync', (req, res) => {
   }, 2000);
 });
 
-app.post('/upload', upload.single('file'), (req, res) => {
-  console.log('detect upload', req.file);
-  res.json({ path: 'https://source.unsplash.com/random/400x200' });
-});
-
 app.listen(8000, () => {
   console.log('API server is running!');
-});
-
-process.on('exit', () => {
-  console.log('Removing temporary directory ...');
-  tmpDir.removeCallback();
 });

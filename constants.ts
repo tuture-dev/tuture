@@ -6,8 +6,6 @@ export const COLLECTION_CHECKPOINT = 'collection.ckpt.json';
 
 export const ASSETS_JSON_PATH = 'tuture-assets.json';
 
-export const ASSETS_JSON_CHECKPOINT = 'tuture-assets.ckpt.json';
-
 export const TUTURE_IGNORE_PATH = '.tutureignore';
 
 // The workspace for storing tutorial-related data.
@@ -24,8 +22,6 @@ export const EDITOR_PATH = path.join(__dirname, 'editor');
 export const EDITOR_STATIC_PATH = path.join(EDITOR_PATH, 'static');
 
 export const TUTURE_COMMIT_PREFIX = 'tuture:';
-
-export const IMAGE_HOSTING_URL = 'https://imgkr.com/api/files/upload';
 
 // Branch for commiting tutorial content.
 export const TUTURE_BRANCH = 'tuture';
