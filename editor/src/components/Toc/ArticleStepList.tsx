@@ -30,9 +30,11 @@ function ArticleStepList() {
     store.select.collection.getArticleStepList,
   );
 
-  const { unassignedStepList, articleStepList, activeArticle } = useSelector(
-    (state: RootState) => state.toc,
-  );
+  const {
+    unassignedStepList = [],
+    articleStepList,
+    activeArticle,
+  } = useSelector((state: RootState) => state.toc);
 
   useEffect(() => {
     if (defaultArticleStepList && !articleStepList.length) {

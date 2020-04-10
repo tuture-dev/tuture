@@ -16,7 +16,7 @@ export type TocState = {
   activeArticle: string;
   needDeleteOutdatedStepList: string[];
   articleStepList: TocStepItem[];
-  unassignedStepList: TocStepItem[];
+  unassignedStepList?: TocStepItem[];
   deleteOutdatedStepList?: TocStepItem[];
 };
 
@@ -25,7 +25,6 @@ const initialState: TocState = {
   activeArticle: '',
   needDeleteOutdatedStepList: [],
   articleStepList: [],
-  unassignedStepList: [],
 };
 
 export const toc = {
@@ -49,10 +48,12 @@ export const toc = {
         stepId,
       );
 
-      const newUnassignedStepList = state.unassignedStepList.filter(
-        (step) => step.id !== stepId,
-      );
-      state.unassignedStepList = newUnassignedStepList;
+      if (state.unassignedStepList) {
+        const newUnassignedStepList = state.unassignedStepList.filter(
+          (step) => step.id !== stepId,
+        );
+        state.unassignedStepList = newUnassignedStepList;
+      }
     },
     reset(state: TocState) {
       state.activeArticle = '';

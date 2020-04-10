@@ -592,9 +592,9 @@ export const collection = {
       });
     },
     getUnassignedStepList() {
-      return slice((collectionState: CollectionState): TocStepItem[] => {
+      return slice((collectionState: CollectionState) => {
         if (!collectionState.collection?.steps) {
-          return [];
+          return undefined;
         }
 
         const { steps } = collectionState.collection;

@@ -24,79 +24,71 @@ function ReleasedStepList() {
   const dispatch: Dispatch = useDispatch();
 
   const [searchValue, setSearchValue] = useState('');
-  const defaultUnassignedStepList = useSelector(
+  const defaultUnassignedStepList: TocStepItem[] = useSelector(
     store.select.collection.getUnassignedStepList,
   );
 
-  const { articleStepList, unassignedStepList, activeArticle } = useSelector(
-    (state: RootState) => state.toc,
-  );
+  const {
+    articleStepList = [],
+    unassignedStepList,
+    activeArticle,
+  } = useSelector((state: RootState) => state.toc);
 
-  const filteredUnassignedStepList = unassignedStepList.filter(
-    (step) => step.name.indexOf(searchValue) >= 0,
-  );
+  const filteredUnassignedStepList =
+    unassignedStepList?.filter((step) => step.name.indexOf(searchValue) >= 0) ||
+    [];
 
   useEffect(() => {
-    if (defaultUnassignedStepList && !unassignedStepList.length) {
+    if (defaultUnassignedStepList && !unassignedStepList) {
       dispatch.toc.setUnassignedStepList(defaultUnassignedStepList);
     }
   }, [defaultUnassignedStepList, dispatch, unassignedStepList]);
 
   function handleAddStep(stepItem: TocStepItem) {
+    if (!unassignedStepList) return;
+
     if (!activeArticle) {
-      message.warning('请选中文章，再添加步骤');
-    } else {
-      const targetArticleStepIndex = articleStepList.findIndex(
-        (articleStep) =>
-          articleStep?.articleId === activeArticle &&
-          articleStep?.number > stepItem.number,
+      return message.warning('请选中文章，再添加步骤');
+    }
+
+    const targetArticleStepIndex = articleStepList.findIndex(
+      (articleStep) =>
+        articleStep?.articleId === activeArticle &&
+        articleStep?.number > stepItem.number,
+    );
+
+    // The index to insert this item.
+    let insertIndex;
+
+    if (targetArticleStepIndex < 0) {
+      const articleIndex = articleStepList.findIndex(
+        (articleStep) => articleStep.id === activeArticle,
       );
       const articleStepsLen = articleStepList.filter(
         (articleStep) => articleStep?.articleId === activeArticle,
       ).length;
 
-      if (targetArticleStepIndex < 0 && articleStepsLen === 0) {
-        const articleIndex = articleStepList.findIndex(
-          (articleStep) => articleStep.id === activeArticle,
-        );
-
-        const newArticleStepList = [
-          ...articleStepList.slice(0, articleIndex + 1),
-          { ...stepItem, articleId: activeArticle },
-          ...articleStepList.slice(articleIndex + 1),
-        ];
-
-        dispatch.toc.setArticleStepList(newArticleStepList);
-      } else if (targetArticleStepIndex < 0 && articleStepsLen > 0) {
-        const articleIndex = articleStepList.findIndex(
-          (articleStep) => articleStep.id === activeArticle,
-        );
-
-        const newArticleStepList = [
-          ...articleStepList.slice(0, articleIndex + articleStepsLen + 1),
-          { ...stepItem, articleId: activeArticle },
-          ...articleStepList.slice(articleIndex + articleStepsLen + 1),
-        ];
-
-        dispatch.toc.setArticleStepList(newArticleStepList);
+      if (articleStepsLen > 0) {
+        insertIndex = articleIndex + articleStepsLen + 1;
       } else {
-        const newArticleStepList = [
-          ...articleStepList.slice(0, targetArticleStepIndex),
-          { ...stepItem, articleId: activeArticle },
-          ...articleStepList.slice(targetArticleStepIndex),
-        ];
-
-        dispatch.toc.setArticleStepList(newArticleStepList);
+        insertIndex = articleIndex + 1;
       }
-
-      const newUnassignedStepList = unassignedStepList.filter(
-        (step) => step.id !== stepItem.id,
-      );
-
-      dispatch.toc.setUnassignedStepList(newUnassignedStepList);
-
-      message.success('添加步骤成功');
+    } else {
+      insertIndex = targetArticleStepIndex;
     }
+
+    articleStepList.splice(insertIndex, 0, {
+      ...stepItem,
+      articleId: activeArticle,
+    });
+    dispatch.toc.setArticleStepList(articleStepList);
+
+    const newUnassignedStepList = unassignedStepList.filter(
+      (step) => step.id !== stepItem.id,
+    );
+    dispatch.toc.setUnassignedStepList(newUnassignedStepList);
+
+    message.success('添加步骤成功');
   }
 
   return (
