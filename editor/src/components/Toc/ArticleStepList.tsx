@@ -110,24 +110,17 @@ function ArticleStepListItem(props: {
 }
 
 function ArticleStepList() {
-  const store = useStore() as Store;
   const dispatch: Dispatch = useDispatch();
-
-  const defaultArticleStepList: TocArticleItem[] = useSelector(
-    store.select.collection.getArticleStepList,
-  );
 
   const {
     unassignedStepList = [],
-    articleStepList,
+    articleStepList = [],
     activeArticle,
   } = useSelector((state: RootState) => state.toc);
 
   useEffect(() => {
-    if (defaultArticleStepList.length > 0 && !articleStepList) {
-      dispatch.toc.setArticleStepList(defaultArticleStepList);
-    }
-  }, [articleStepList, defaultArticleStepList, dispatch]);
+    dispatch.collection.getArticleStepList();
+  }, [dispatch.collection]);
 
   const filteredArticleList =
     (articleStepList || []).filter((articleStep) => {

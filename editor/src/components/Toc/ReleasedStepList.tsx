@@ -66,13 +66,9 @@ function ReleasedStepListItem(props: {
 }
 
 function ReleasedStepList() {
-  const store = useStore() as Store;
   const dispatch: Dispatch = useDispatch();
 
   const [searchValue, setSearchValue] = useState('');
-  const defaultUnassignedStepList: TocStepItem[] = useSelector(
-    store.select.collection.getUnassignedStepList,
-  );
 
   const {
     articleStepList = [],
@@ -85,10 +81,8 @@ function ReleasedStepList() {
     [];
 
   useEffect(() => {
-    if (defaultUnassignedStepList && !unassignedStepList) {
-      dispatch.toc.setUnassignedStepList(defaultUnassignedStepList);
-    }
-  }, [defaultUnassignedStepList, dispatch, unassignedStepList]);
+    dispatch.collection.getUnassignedStepList();
+  }, [dispatch.collection]);
 
   function handleAddStep(stepItem: TocStepItem) {
     if (!unassignedStepList) return;

@@ -406,6 +406,10 @@ export const collection = {
         }
 
         dispatch.collection.setCollectionData(data);
+
+        // update toc data
+        dispatch.collection.getArticleStepList();
+        dispatch.collection.getUnassignedStepList();
       } catch {
         message.error('获取数据失败！');
       }
@@ -441,6 +445,56 @@ export const collection = {
       } catch (err) {
         dispatch.collection.setSaveFailed(true);
       }
+    },
+    async getArticleStepList(_: any, rootState: RootState) {
+      const collectionState: CollectionState = rootState.collection;
+      const articles = collectionState.collection?.articles || [];
+      const steps = collectionState.collection?.steps || [];
+
+      const articleStepList: TocItem[] = articles.reduce(
+        (initialArticleStepList, nowArticle) => {
+          const articleItem = {
+            ...pick(nowArticle, ['id', 'name']),
+            level: 0,
+          };
+          const stepList = steps
+            .filter((step) => step?.articleId === nowArticle.id)
+            .map((step) => ({
+              ...pick(step, ['id', 'articleId', 'outdated']),
+              level: 1,
+              number: getNumFromStepId(step.id, steps),
+              name: getStepTitle(step),
+            }));
+
+          return initialArticleStepList.concat(articleItem, ...stepList);
+        },
+        [] as TocItem[],
+      );
+
+      dispatch.toc.setArticleStepList(articleStepList);
+    },
+    async getUnassignedStepList(_: any, rootState: RootState) {
+      const collectionState: CollectionState = rootState.collection;
+      let unassignedStepList: TocStepItem[] = [];
+      if (!collectionState.collection?.steps) {
+        unassignedStepList = [];
+        dispatch.toc.setUnassignedStepList(unassignedStepList);
+
+        return;
+      }
+
+      const { steps = [] } = collectionState.collection as Collection;
+      unassignedStepList = (collectionState.collection as Collection)?.steps
+        .filter((step) => !step?.articleId)
+        .map((step) => ({
+          id: step.id,
+          outdated: step?.outdated,
+          level: 1,
+          number: getNumFromStepId(step.id, steps),
+          name: getStepTitle(step),
+        }));
+
+      dispatch.toc.setUnassignedStepList(unassignedStepList);
     },
   }),
   selectors: (
@@ -563,53 +617,5 @@ export const collection = {
         return { fileList, title };
       });
     }),
-    getArticleStepList() {
-      return slice((collectionState: CollectionState) => {
-        const articles = collectionState.collection?.articles || [];
-        const steps = collectionState.collection?.steps || [];
-
-        const articleStepList: TocItem[] = articles.reduce(
-          (initialArticleStepList, nowArticle) => {
-            const articleItem = {
-              ...pick(nowArticle, ['id', 'name']),
-              level: 0,
-            };
-            const stepList = steps
-              .filter((step) => step?.articleId === nowArticle.id)
-              .map((step) => ({
-                ...pick(step, ['id', 'articleId', 'outdated']),
-                level: 1,
-                number: getNumFromStepId(step.id, steps),
-                name: getStepTitle(step),
-              }));
-
-            return initialArticleStepList.concat(articleItem, ...stepList);
-          },
-          [] as TocItem[],
-        );
-
-        return articleStepList;
-      });
-    },
-    getUnassignedStepList() {
-      return slice((collectionState: CollectionState) => {
-        if (!collectionState.collection?.steps) {
-          return undefined;
-        }
-
-        const { steps } = collectionState.collection;
-        const unassignedStepList = collectionState.collection?.steps
-          .filter((step) => !step?.articleId)
-          .map((step) => ({
-            id: step.id,
-            outdated: step?.outdated,
-            level: 1,
-            number: getNumFromStepId(step.id, steps),
-            name: getStepTitle(step),
-          }));
-
-        return unassignedStepList;
-      });
-    },
   }),
 };

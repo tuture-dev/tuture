@@ -1,5 +1,6 @@
 import { message } from 'antd';
 import omit from 'lodash.omit';
+import pick from 'lodash.pick';
 
 import { Dispatch, RootState } from '../store';
 import { TocItem, TocStepItem } from '../types';
@@ -24,6 +25,8 @@ const initialState: TocState = {
   isSaving: false,
   activeArticle: '',
   needDeleteOutdatedStepList: [],
+  articleStepList: [],
+  unassignedStepList: [],
 };
 
 export const toc = {
