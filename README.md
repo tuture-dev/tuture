@@ -1,4 +1,4 @@
-<p align="center"><img src="https://user-gold-cdn.xitu.io/2020/4/8/171577bb979987bd?w=330&h=400&f=svg&s=3342"/></p>
+<p align="center"><img style="width: 200px" src="https://user-gold-cdn.xitu.io/2020/4/8/171577bb979987bd?w=330&h=400&f=svg&s=3342"/></p>
 
 <p align="center" style="font-size: 24px;">Git + Tuture = Tutorial（教程），专为实战教程创作而生</p>
 
@@ -31,7 +31,7 @@
 ## 如何快速使用？
 
 <br />在一个已有提交的 Git 项目根目录下运行如下命令：<br />
-<br />1）安装 `npm install -g tuture`<br />2）克隆我们为你准备的代码： `git clone git@github.com:tuture-dev/our-tuture.git` <br />3) 进入项目根目录并使用 `tuture` 运行命令： `cd our-tuture && tuture up` <br />
+<br />1）安装 `npm install -g tuture`<br />2）克隆我们为你准备的代码： `git clone https://github.com/tuture-dev/our-tuture.git` <br />3) 进入项目根目录并使用 `tuture` 运行命令： `cd our-tuture && tuture up` <br />
 
 > 注意：这里的已有提交的 Git 项目只专为创作教程而生的项目，而不是那些动辄好几十上百个 Commits 的大型开发项目。
 
