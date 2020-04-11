@@ -26,7 +26,7 @@ import {
   ASSETS_JSON_PATH,
   EXIT_CODE,
 } from '../constants';
-import { assetsTablePath } from '../utils/assets';
+import { assetsTablePath, assetsTableVcsPath } from '../utils/assets';
 
 export default class Sync extends BaseCommand {
   static description = 'Synchronize workspace with local/remote branch';
@@ -62,12 +62,17 @@ export default class Sync extends BaseCommand {
     if (fs.existsSync(COLLECTION_PATH)) {
       fs.copySync(COLLECTION_PATH, collectionPath);
     }
-    if (fs.existsSync(ASSETS_JSON_PATH)) {
-      fs.copySync(ASSETS_JSON_PATH, assetsTablePath);
-    }
 
     if (fs.existsSync(collectionVcsPath)) {
       fs.copySync(collectionVcsPath, collectionPath);
+    }
+
+    // COMPAT: copy possible assets table from earlier versions.
+    if (fs.existsSync(ASSETS_JSON_PATH)) {
+      fs.copySync(ASSETS_JSON_PATH, assetsTablePath);
+    }
+    if (fs.existsSync(assetsTableVcsPath)) {
+      fs.copySync(assetsTableVcsPath, assetsTablePath);
     }
 
     saveCheckpoint();
