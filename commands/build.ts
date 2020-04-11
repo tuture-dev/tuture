@@ -12,6 +12,7 @@ import { isCommitEqual, checkInitStatus } from '../utils';
 import logger from '../utils/logger';
 import { diffPath } from '../utils/git';
 import { loadCollection, collectionPath } from '../utils/collection';
+import { Asset, loadAssetsTable } from '../utils/assets';
 import { generateUserProfile } from '../utils/internals';
 import { DIFF_PATH } from '../constants';
 import { RawDiff, DiffBlock, Step, Collection, Meta } from '../types';
@@ -297,6 +298,21 @@ export default class Build extends BaseCommand {
       .replace(/\n{3,}/g, '\n\n');
   }
 
+  replaceAssetPaths(tutorial: string, assets: Asset[]) {
+    let updated = tutorial;
+
+    // Replace all local paths.
+    // If not uploaded, replace it with absolute local path.
+    assets.forEach(({ localPath, hostingUri }) => {
+      updated = updated.replace(
+        new RegExp(localPath, 'g'),
+        hostingUri || path.resolve(localPath),
+      );
+    });
+
+    return updated;
+  }
+
   generateTutorials(collection: Collection, rawDiffs: RawDiff[]) {
     const {
       name,
@@ -339,7 +355,7 @@ export default class Build extends BaseCommand {
     return [tutorials, titles];
   }
 
-  saveTutorials(tutorials: string[], titles: string[]) {
+  saveTutorials(tutorials: string[], titles: string[], assets?: Asset[]) {
     const { buildPath } = this.userConfig;
     if (!this.userConfig.out && !fs.existsSync(buildPath)) {
       fs.mkdirSync(buildPath);
@@ -349,6 +365,13 @@ export default class Build extends BaseCommand {
       // Path to target tutorial.
       const dest =
         this.userConfig.out || path.join(buildPath, `${titles[index]}.md`);
+
+      // Replace local asset paths.
+      if (assets) {
+        fs.writeFileSync(dest, this.replaceAssetPaths(tutorial, assets));
+      } else {
+        fs.writeFileSync(dest, tutorial);
+      }
 
       logger.log(
         'success',
@@ -389,7 +412,10 @@ export default class Build extends BaseCommand {
       logger.log('warning', 'No github field provided.');
     }
 
+    // COMPAT: we have to replace image paths in earlier versions of tutorials.
+    const assets = loadAssetsTable();
+
     const [tutorials, titles] = this.generateTutorials(collection, rawDiffs);
-    this.saveTutorials(tutorials, titles);
+    this.saveTutorials(tutorials, titles, assets);
   }
 }

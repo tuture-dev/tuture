@@ -1,7 +1,7 @@
 import fs from 'fs-extra';
 import path from 'path';
 
-import { TUTURE_ROOT, ASSETS_JSON_PATH } from '../constants';
+import { TUTURE_ROOT, TUTURE_VCS_ROOT, ASSETS_JSON_PATH } from '../constants';
 
 export interface Asset {
   localPath: string;
@@ -11,6 +11,12 @@ export interface Asset {
 export const assetsTablePath = path.join(
   process.env.TUTURE_PATH || process.cwd(),
   TUTURE_ROOT,
+  ASSETS_JSON_PATH,
+);
+
+export const assetsTableVcsPath = path.join(
+  process.env.TUTURE_PATH || process.cwd(),
+  TUTURE_VCS_ROOT,
   ASSETS_JSON_PATH,
 );
 

@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react';
-import { useDispatch, useSelector, useStore } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { message, Modal } from 'antd';
 import classnames from 'classnames';
 import omit from 'lodash.omit';
 
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
-import { Dispatch, RootState, Store } from 'store';
+import { Dispatch, RootState } from 'store';
 
 import {
   headerStyle,
@@ -19,7 +19,7 @@ import {
 import Caret from './widgets/Caret';
 import OutdatedTag from './widgets/OutdatedTag';
 import DeleteButton from './widgets/DeleteButton';
-import { TocArticleItem, TocStepItem } from 'types';
+import { TocStepItem } from 'types';
 
 const { confirm } = Modal;
 

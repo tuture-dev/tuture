@@ -1,6 +1,5 @@
 import { message } from 'antd';
 import omit from 'lodash.omit';
-import pick from 'lodash.pick';
 
 import { Dispatch, RootState } from '../store';
 import { TocItem, TocStepItem } from '../types';
