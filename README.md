@@ -1,6 +1,6 @@
 <p align="center"><img style="width: 200px" src="https://user-gold-cdn.xitu.io/2020/4/8/171577bb979987bd?w=330&h=400&f=svg&s=3342"/></p>
 
-<p align="center" style="font-size: 24px;">Git + Tuture = Tutorial（教程），专为实战教程创作而生</p>
+<p align="center" style="font-size: 24px;">Git + Tuture = Tutorial（教程）</p>
 
 <p align="center" style="font-size: 16px;">”       基于 Git，为写作技术实战教程而生     “</p>
 
