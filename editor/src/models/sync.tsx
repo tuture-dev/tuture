@@ -1,10 +1,9 @@
 import React from 'react';
 import { message, notification } from 'antd';
-import axios, { AxiosResponse } from 'axios';
+import axios from 'axios';
 
 import { Dispatch } from '../store';
 import { Remote } from '../../../types';
-import { EXIT_CODE, mapExitCodeToMessage } from 'utils/constants';
 
 export type SyncState = {
   syncVisible: boolean;

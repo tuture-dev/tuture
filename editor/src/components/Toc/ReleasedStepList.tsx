@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector, useStore } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 import { Popconfirm, Input, message } from 'antd';
-import { Dispatch, RootState, Store } from 'store';
+import { Dispatch, RootState } from 'store';
 
 import {
   assistInfoStyle,
   containerStyle,
-  listItemActionStyle,
   listItemStyle,
   headerStyle,
 } from './styles';
