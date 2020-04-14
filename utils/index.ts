@@ -5,7 +5,7 @@ import shortid from 'shortid';
 import { File as DiffFile } from 'parse-diff';
 
 import { Step, File, DiffBlock } from '../types';
-import { getEmptyExplain, getEmptyChildren } from './nodes';
+import { getEmptyExplain } from './nodes';
 import { collectionPath } from './collection';
 import { TUTURE_ROOT, TUTURE_BRANCH } from '../constants';
 import { git, storeDiff } from './git';
@@ -85,7 +85,7 @@ function convertFile(commit: string, file: DiffFile, display = false) {
     file: file.to!,
     commit,
     hiddenLines: getHiddenLines(file),
-    children: getEmptyChildren(),
+    children: [{ text: '' }],
   };
   const fileObj: File = {
     type: 'file',
