@@ -13,6 +13,7 @@ import {
   Tooltip,
 } from 'antd';
 import { UploadProps } from 'antd/lib/upload/interface';
+import { FormComponentProps } from 'antd/lib/form';
 import { useDispatch, useSelector, useStore } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { History } from 'history';
@@ -23,10 +24,9 @@ import { css, jsx } from '@emotion/core';
 
 import { EDIT_ARTICLE } from 'utils/constants';
 import { getHeadings, getArtcleMetaById } from 'utils/collection';
-
+import { IMAGE_HOSTING_URL } from 'utils/image';
 import { RootState, Store, Dispatch } from 'store';
 import { Article, Step, Meta } from '../../../../../types';
-import { FormComponentProps } from 'antd/lib/form';
 
 const { Option } = Select;
 const { confirm } = Modal;
@@ -142,7 +142,7 @@ function CreateEditArticle(props: CreateEditArticleProps) {
   const initialCover = articleMeta?.cover
     ? [
         {
-          url: `/${articleMeta?.cover}`,
+          url: articleMeta?.cover,
           uid: '-1',
           name: articleMeta?.cover.split('/').slice(-1)[0],
           status: 'done',
@@ -151,7 +151,7 @@ function CreateEditArticle(props: CreateEditArticleProps) {
     : [];
   const initialName = articleMeta?.name || '';
   const coverProps: Partial<UploadProps> = {
-    action: '/upload',
+    action: IMAGE_HOSTING_URL,
     listType: 'picture',
     defaultFileList: [],
   };
@@ -164,6 +164,7 @@ function CreateEditArticle(props: CreateEditArticleProps) {
 
     props.form.validateFields((err, values) => {
       if (!err) {
+        console.log('values', values);
         const { cover, name, topics, steps } = values;
 
         const article: Partial<Article> = { name };
@@ -175,7 +176,7 @@ function CreateEditArticle(props: CreateEditArticleProps) {
         if (cover) {
           let url =
             Array.isArray(cover?.fileList) && cover?.fileList.length > 0
-              ? cover?.fileList[0].url || cover?.fileList[0].response.path
+              ? cover?.fileList[0].url || cover?.fileList[0].response.data
               : '';
 
           if (!url && Array.isArray(cover) && cover.length > 0) {

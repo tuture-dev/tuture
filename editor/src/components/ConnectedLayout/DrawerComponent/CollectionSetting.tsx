@@ -13,6 +13,7 @@ import { css, jsx } from '@emotion/core';
 
 import { Store, Dispatch, RootState } from 'store';
 import { Meta } from '../../../../../types';
+import { IMAGE_HOSTING_URL } from 'utils/image';
 
 const { Option } = Select;
 const { TextArea } = Input;
@@ -37,7 +38,7 @@ function CollectionSetting(props: CollectionSettingProps) {
   const initialCover = collectionMeta?.cover
     ? [
         {
-          url: `/${collectionMeta?.cover}`,
+          url: collectionMeta?.cover,
           uid: '-1',
           name: collectionMeta?.cover.split('/').slice(-1)[0],
           status: 'done' as UploadFileStatus,
@@ -49,7 +50,7 @@ function CollectionSetting(props: CollectionSettingProps) {
   const initialName = collectionMeta?.name || '';
   const initialDescription = collectionMeta?.description || '';
   const coverProps: Partial<UploadProps> = {
-    action: '/upload',
+    action: IMAGE_HOSTING_URL,
     listType: 'picture',
     defaultFileList: initialCover,
   };
@@ -85,7 +86,7 @@ function CollectionSetting(props: CollectionSettingProps) {
         if (cover) {
           let url =
             Array.isArray(cover?.fileList) && cover?.fileList.length > 0
-              ? cover?.fileList[0].url || cover?.fileList[0].response.path
+              ? cover?.fileList[0].url || cover?.fileList[0].response.data
               : '';
 
           if (!url && Array.isArray(cover) && cover.length > 0) {

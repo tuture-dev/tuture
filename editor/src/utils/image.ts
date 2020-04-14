@@ -3,7 +3,7 @@ import { Editor, Transforms, getBeforeText } from 'editure';
 
 import { IEditor } from './editor';
 
-const IMAGE_HOSTING_URL = 'https://imgkr.com/api/files/upload';
+export const IMAGE_HOSTING_URL = 'https://imgkr.com/api/files/upload';
 
 export const insertImage = (editor: IEditor, files: FileList) => {
   for (const file of files) {
