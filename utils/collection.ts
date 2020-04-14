@@ -127,6 +127,16 @@ export function loadCollection(): Collection {
     collection.version = 'v1';
   }
 
+  // COMPAT: normalize children of all diff blocks
+  for (const step of collection.steps) {
+    for (const node of step.children) {
+      if (node.type === 'file') {
+        const diffBlock = node.children[1];
+        diffBlock.children = [{ text: '' }];
+      }
+    }
+  }
+
   return collection;
 }
 
