@@ -4,6 +4,10 @@
 
 <p align="center" style="font-size: 16px;">”       基于 Git，为写作技术实战教程而生     “</p>
 
+<p align="center" style="font-size: 16px;">       <a href="https://www.yuque.com/tuture/product-manuals/nsaphr">你可能想了解我们为什么要创建图雀社区？</a>     </p>
+
+<p align="center" style="font-size: 16px;">       <a href="https://www.yuque.com/tuture/product-manuals/ckx8ry">以及关于图雀社区的常见问题解答</a>     </p>
+
 ![编组 2](https://tva1.sinaimg.cn/large/00831rSTgy1gdm6uwl8cij31qt0u0try.jpg)
 
 ## 介绍
