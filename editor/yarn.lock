@@ -4271,18 +4271,18 @@ editure-constants@^0.1.2:
   resolved "https://registry.npm.taobao.org/editure-constants/download/editure-constants-0.1.2.tgz#4fe71f43d47af1c3dd672dd2c242aa627fab793f"
   integrity sha1-T+cfQ9R68cPdZy3SwkKqYn+reT8=
 
-editure-react@^0.1.7:
-  version "0.1.7"
-  resolved "https://registry.npm.taobao.org/editure-react/download/editure-react-0.1.7.tgz#76684d2d5bc0c3e146fb22bb242bd2ae9849ee2c"
-  integrity sha1-dmhNLVvAw+FG+yK7JCvSrphJ7iw=
+editure-react@0.1.9:
+  version "0.1.9"
+  resolved "https://registry.npm.taobao.org/editure-react/download/editure-react-0.1.9.tgz#dc661702d18499517e7e5c8f15153f7f867057ee"
+  integrity sha1-3GYXAtGEmVF+flyPFRU/f4ZwV+4=
   dependencies:
-    editure "^0.1.7"
+    editure "^0.1.9"
     tuture-slate-react "^0.57.4"
 
-editure@^0.1.7:
-  version "0.1.7"
-  resolved "https://registry.npm.taobao.org/editure/download/editure-0.1.7.tgz#645e46b3447d5ef3305347f89b0341ba1179a877"
-  integrity sha1-ZF5Gs0R9XvMwU0f4mwNBuhF5qHc=
+editure@0.1.9, editure@^0.1.9:
+  version "0.1.9"
+  resolved "https://registry.npm.taobao.org/editure/download/editure-0.1.9.tgz#4378e10d8dbe820684b1722c5e47c0e1709c0620"
+  integrity sha1-Q3jhDY2+ggaEsXIsXkfA4XCcBiA=
   dependencies:
     editure-constants "^0.1.2"
     escape-html "^1.0.3"
