@@ -31,8 +31,7 @@
     "react-scripts": "3.4.0",
     "react-smooth-dnd": "^0.11.1",
     "react-table": "^7.0.0-rc.16",
-    "refractor": "^2.10.1",
-    "shortid": "^2.2.15"
+    "refractor": "^2.10.1"
   },
   "scripts": {
     "start-ts-convert": "concurrently \"yarn start view\" \"yarn start server\"",
