@@ -3,7 +3,6 @@ import { Slicer, SelectorCreator, Parameterizer } from '@rematch/select';
 import { message, notification, Button, Icon } from 'antd';
 import { Node } from 'editure';
 import * as F from 'editure-constants';
-import shortid from 'shortid';
 import pick from 'lodash.pick';
 import omit from 'lodash.omit';
 
@@ -25,6 +24,7 @@ import {
   getNumFromStepId,
 } from '../utils/collection';
 import { isCommitEqual } from '../utils/commit';
+import { randHex } from '../utils/hex';
 import { Dispatch, RootState } from '../store';
 import { TocItem, TocStepItem } from '../types';
 import { Collection, Remote, Step, Article } from '../../../types';
@@ -246,7 +246,7 @@ export const collection = {
     createArticle(state: CollectionState, props: Partial<Article>) {
       if (!state.collection) return state;
 
-      const id = shortid.generate();
+      const id = randHex(8);
       const created = new Date();
       state.collection.articles.push({ id, created, ...props } as Article);
 

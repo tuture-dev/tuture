@@ -1,16 +1,11 @@
-import crypto from 'crypto';
-import shortid from 'shortid';
 import faker from 'faker';
 import cloneDeep from 'lodash.clonedeep';
 import { PARAGRAPH } from 'editure-constants';
 
+import { randHex } from '../../utils';
 import { isCommitEqual, mergeSteps } from '../index';
 import { Step, StepTitle, File, DiffBlock, Explain } from '../../types';
 import { getEmptyExplain, getEmptyChildren } from '../nodes';
-
-function randomHex(digits = 32): string {
-  return crypto.randomBytes(digits).toString('hex');
-}
 
 function getFakeExplain(): Explain {
   const numOfParagraphs = faker.random.number({ min: 1, max: 5 });
@@ -32,7 +27,7 @@ function getFakeStepTitle(commit: string): StepTitle {
   return {
     type: 'heading-two',
     fixed: true,
-    id: shortid.generate(),
+    id: randHex(8),
     commit,
     children: [{ text: faker.lorem.sentence() }],
   };
@@ -71,11 +66,11 @@ function getFakeFiles(commit: string, num?: number) {
 }
 
 function getFakeStep(): Step {
-  const commit = randomHex();
+  const commit = randHex(32);
   return {
     type: 'step',
-    id: shortid.generate(),
-    articleId: shortid.generate(),
+    id: randHex(8),
+    articleId: randHex(8),
     commit,
     children: [
       getFakeStepTitle(commit),
@@ -114,8 +109,8 @@ function populateSteps(steps: Step[]) {
 
 describe('utils/index', () => {
   describe('isCommitEqual', () => {
-    const hashA = randomHex();
-    const hashB = randomHex();
+    const hashA = randHex();
+    const hashB = randHex();
 
     test('commits with exactly the same hash', () => {
       expect(isCommitEqual(hashA, hashA)).toBe(true);

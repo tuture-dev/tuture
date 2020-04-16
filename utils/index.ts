@@ -1,7 +1,6 @@
 import chalk from 'chalk';
 import fs from 'fs-extra';
 import mm from 'micromatch';
-import shortid from 'shortid';
 import { File as DiffFile } from 'parse-diff';
 
 import { Step, File, DiffBlock } from '../types';
@@ -23,6 +22,15 @@ export function isCommitEqual(hash1: string, hash2: string) {
  */
 export async function removeTutureSuite() {
   await fs.remove(TUTURE_ROOT);
+}
+
+/**
+ * Generate a random hex number.
+ */
+export function randHex(digits: number = 8) {
+  return Math.random()
+    .toString(16)
+    .slice(2, digits + 2);
 }
 
 type Range = [number, number];
@@ -121,14 +129,14 @@ export async function makeSteps(ignoredFiles?: string[]) {
     const files = diff.diff;
     return {
       type: 'step',
-      id: shortid.generate(),
+      id: randHex(8),
       articleId: null,
       commit: hash,
       children: [
         {
           type: 'heading-two',
           commit: hash,
-          id: shortid.generate(),
+          id: randHex(8),
           fixed: true,
           children: [{ text: message }],
         },
