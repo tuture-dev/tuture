@@ -22,8 +22,7 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "build": "rollup -c",
-    "clean": "rimraf build",
-    "prepack": "yarn build && rimraf build/**/*.map"
+    "postinstall": "yarn build"
   },
   "repository": {
     "type": "git",
