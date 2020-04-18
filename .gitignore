@@ -24,9 +24,6 @@ yarn-error.log*
 package-lock.json
 
 # dist files should not include to the SCM
-/dist
-
-# assets uploaded in example
-tuture-assets/
+dist
 
 tuture-error.log
