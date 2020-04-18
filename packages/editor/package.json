@@ -1,0 +1,87 @@
+{
+  "name": "@tuture/editor",
+  "version": "0.0.2",
+  "private": true,
+  "dependencies": {
+    "@emotion/core": "^10.0.27",
+    "@emotion/styled": "^10.0.27",
+    "@rematch/core": "^1.4.0",
+    "@rematch/immer": "^1.2.0",
+    "@rematch/loading": "^1.2.1",
+    "@rematch/select": "^2.0.5",
+    "@tuture/core": "*",
+    "@types/axios": "^0.14.0",
+    "antd": "^3.26.9",
+    "axios": "^0.19.2",
+    "classnames": "^2.2.6",
+    "customize-cra": "^0.9.1",
+    "dayjs": "^1.8.20",
+    "editure": "^0.1.9",
+    "editure-constants": "^0.1.0",
+    "editure-react": "^0.1.9",
+    "emotion": "^10.0.27",
+    "is-hotkey": "^0.1.6",
+    "lodash.omit": "^4.5.0",
+    "lodash.pick": "^4.4.0",
+    "prism-react-renderer": "^1.0.2",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "react-lazy-load": "^3.0.13",
+    "react-redux": "^7.1.3",
+    "react-router-dom": "^5.1.2",
+    "react-scripts": "3.4.0",
+    "react-smooth-dnd": "^0.11.1",
+    "react-table": "^7.0.0-rc.16",
+    "refractor": "^2.10.1"
+  },
+  "scripts": {
+    "start-ts-convert": "concurrently \"yarn start view\" \"yarn start server\"",
+    "start-view": "react-app-rewired start",
+    "start-server": "ts-node-dev --respawn --transpileOnly api-server.ts",
+    "start": "concurrently \"node api-server.js\" \"react-app-rewired start\"",
+    "build": "react-app-rewired build && rimraf build/**/*.map",
+    "test": "react-app-rewired test",
+    "eject": "react-scripts eject",
+    "lint": "../node_modules/.bin/eslint . --fix"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "proxy": "http://localhost:8000/",
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.3.2",
+    "@testing-library/user-event": "^7.1.2",
+    "@types/classnames": "^2.2.10",
+    "@types/express": "^4.16.0",
+    "@types/lodash.omit": "^4.5.6",
+    "@types/lodash.pick": "^4.4.6",
+    "@types/node": "^12.12.31",
+    "@types/react": "^16.9.25",
+    "@types/react-redux": "^7.1.7",
+    "@types/react-router-dom": "^5.1.3",
+    "@types/react-table": "^7.0.12",
+    "@types/refractor": "^2.8.0",
+    "babel-eslint": "^10.0.3",
+    "babel-plugin-emotion": "^10.0.27",
+    "babel-plugin-import": "^1.13.0",
+    "concurrently": "^5.1.0",
+    "less": "^3.11.1",
+    "less-loader": "^5.0.0",
+    "react-app-rewired": "^2.1.5",
+    "ts-node-dev": "^1.0.0-pre.44",
+    "typescript": "^3.8.3"
+  }
+}

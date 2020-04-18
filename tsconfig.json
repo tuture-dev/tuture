@@ -1,14 +1,18 @@
 {
   "compilerOptions": {
-    "lib": ["DOM", "ESNext"],
-    "forceConsistentCasingInFileNames": true,
+    "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
-    "importHelpers": true,
-    "module": "commonjs",
-    "outDir": "./build",
+    "jsx": "react",
+    "module": "esnext",
+    "lib": ["DOM", "ESNext", "ES2019"],
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
     "strict": true,
-    "target": "es2017",
-    "typeRoots": ["./node_modules/@types"]
+    "suppressImplicitAnyIndexErrors": true,
+    "target": "esnext"
   },
-  "exclude": ["node_modules", "test", "editor"]
+  "references": [
+    { "path": "./packages/core" },
+    { "path": "./packages/local-server" }
+  ]
 }
