@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 
-import IconFont from '../../../components/IconFont';
+import IconFont from 'components/IconFont';
 import logo from 'assets/images/logo.svg';
 
 const link = css`

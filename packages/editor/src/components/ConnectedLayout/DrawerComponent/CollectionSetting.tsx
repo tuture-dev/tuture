@@ -7,12 +7,12 @@ import {
   UploadProps,
 } from 'antd/lib/upload/interface';
 import { useDispatch, useSelector, useStore } from 'react-redux';
+import { Meta } from '@tuture/core';
 
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 
 import { Store, Dispatch, RootState } from 'store';
-import { Meta } from '../../../../../types';
 import { IMAGE_HOSTING_URL } from 'utils/image';
 
 const { Option } = Select;

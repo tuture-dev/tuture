@@ -17,6 +17,7 @@ import { FormComponentProps } from 'antd/lib/form';
 import { useDispatch, useSelector, useStore } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { History } from 'history';
+import { Article, Step, Meta, randHex } from '@tuture/core';
 
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
@@ -24,9 +25,7 @@ import { css, jsx } from '@emotion/core';
 import { EDIT_ARTICLE } from 'utils/constants';
 import { getHeadings, getArtcleMetaById } from 'utils/collection';
 import { IMAGE_HOSTING_URL } from 'utils/image';
-import { randHex } from 'utils/hex';
 import { RootState, Store, Dispatch } from 'store';
-import { Article, Step, Meta } from '../../../../../types';
 
 const { Option } = Select;
 const { confirm } = Modal;

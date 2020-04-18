@@ -1,9 +1,9 @@
 import React from 'react';
 import { message, notification } from 'antd';
 import axios from 'axios';
+import { Remote } from '@tuture/core';
 
 import { Dispatch } from '../store';
-import { Remote } from '../../../types';
 
 export type SyncState = {
   syncVisible: boolean;

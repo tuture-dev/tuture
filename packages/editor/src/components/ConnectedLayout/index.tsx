@@ -5,6 +5,7 @@ import { Layout, Affix, BackTop } from 'antd';
 import { Editure, ReactEditor } from 'editure-react';
 import { Node, updateLastSelection } from 'editure';
 import { useHistory } from 'react-router-dom';
+import { Meta } from '@tuture/core';
 
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
@@ -17,8 +18,6 @@ import LayoutHeader from './LayoutHeader';
 import MainMenu from './MainMenu';
 import DrawerComponent from './DrawerComponent';
 import ChildrenDrawerComponent from './ChildrenDrawerComponent';
-
-import { Meta } from '../../../../types';
 
 const { Header, Content } = Layout;
 

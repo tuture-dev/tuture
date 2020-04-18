@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Article } from '@tuture/core';
 
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
@@ -6,7 +7,6 @@ import { Input } from 'antd';
 import { useDispatch, useSelector, useStore } from 'react-redux';
 
 import { Dispatch, Store, RootState } from 'store';
-import { Article } from '../../../../types';
 
 const noBorderAndShadow = css`
   border: none;

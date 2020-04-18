@@ -1,6 +1,7 @@
 import * as F from 'editure-constants';
 import { Node, Element } from 'editure';
 import omit from 'lodash.omit';
+import { Article, Step, File, DiffBlock, Explain } from '@tuture/core';
 
 import {
   FILE,
@@ -13,7 +14,6 @@ import {
   FILE_END,
 } from './constants';
 import { HeadingItem } from '../types';
-import { Article, Step, File, DiffBlock, Explain } from '../../../types';
 
 export function flatten(steps: Step[]): Node[] {
   return steps.flatMap(({ commit, id, articleId, children }) => {

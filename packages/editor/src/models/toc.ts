@@ -1,10 +1,10 @@
 import { message } from 'antd';
 import omit from 'lodash.omit';
+import { Step } from '@tuture/core';
 
 import { Dispatch, RootState } from '../store';
 import { TocItem, TocStepItem } from '../types';
 import { flatten } from 'utils/collection';
-import { Step } from '../../../types';
 
 function getArticleIdFromId(items: TocItem[], stepId: string) {
   const item = items.filter((item) => item.id === stepId)[0];

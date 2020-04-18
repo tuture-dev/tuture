@@ -5,6 +5,7 @@ import { Node } from 'editure';
 import * as F from 'editure-constants';
 import pick from 'lodash.pick';
 import omit from 'lodash.omit';
+import { Collection, Remote, Step, Article, randHex } from '@tuture/core';
 
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
@@ -24,10 +25,8 @@ import {
   getNumFromStepId,
 } from '../utils/collection';
 import { isCommitEqual } from '../utils/commit';
-import { randHex } from '../utils/hex';
 import { Dispatch, RootState } from '../store';
 import { TocItem, TocStepItem } from '../types';
-import { Collection, Remote, Step, Article } from '../../../types';
 
 export type CollectionState = {
   collection: Collection | null;
