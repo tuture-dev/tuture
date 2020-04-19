@@ -5,7 +5,15 @@ import { Node } from 'editure';
 import * as F from 'editure-constants';
 import pick from 'lodash.pick';
 import omit from 'lodash.omit';
-import { Collection, Remote, Step, Article, randHex } from '@tuture/core';
+import {
+  Collection,
+  Remote,
+  Step,
+  Article,
+  randHex,
+  flattenSteps as flatten,
+  unflattenSteps as unflatten,
+} from '@tuture/core';
 
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
@@ -18,8 +26,6 @@ import {
   STEP_END,
 } from '../utils/constants';
 import {
-  flatten,
-  unflatten,
   getHeadings,
   getStepTitle,
   getNumFromStepId,

@@ -1,10 +1,9 @@
 import { message } from 'antd';
 import omit from 'lodash.omit';
-import { Step } from '@tuture/core';
+import { Step, flattenSteps } from '@tuture/core';
 
 import { Dispatch, RootState } from '../store';
 import { TocItem, TocStepItem } from '../types';
-import { flatten } from 'utils/collection';
 
 function getArticleIdFromId(items: TocItem[], stepId: string) {
   const item = items.filter((item) => item.id === stepId)[0];
@@ -121,11 +120,11 @@ export const toc = {
       let nowSteps;
 
       if (nowArticleId) {
-        nowSteps = flatten(
+        nowSteps = flattenSteps(
           steps.filter((step) => step.articleId === nowArticleId),
         );
       } else {
-        nowSteps = flatten(steps);
+        nowSteps = flattenSteps(steps);
       }
 
       dispatch.collection.setNowSteps(nowSteps);
