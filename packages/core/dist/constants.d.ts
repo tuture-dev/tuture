@@ -1,9 +1,0 @@
-export declare const COLLECTION_PATH = "collection.json";
-export declare const COLLECTION_CHECKPOINT = "collection.ckpt.json";
-export declare const ASSETS_JSON_PATH = "tuture-assets.json";
-export declare const TUTURE_IGNORE_PATH = ".tutureignore";
-export declare const TUTURE_ROOT = ".tuture";
-export declare const TUTURE_VCS_ROOT = ".tuture-committed";
-export declare const DIFF_PATH = "diff.json";
-export declare const TUTURE_COMMIT_PREFIX = "tuture:";
-export declare const TUTURE_BRANCH = "tuture";
