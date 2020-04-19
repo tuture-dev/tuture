@@ -14,6 +14,7 @@ import { Store, Dispatch, RootState } from '../../store';
 import { initializeEditor } from '../../utils/editor';
 import { buttonRefs, ButtonRefsContext } from '../../utils/hotkeys';
 
+import { openOutdatedNotification } from './OutdatedNotification';
 import LayoutHeader from './LayoutHeader';
 import MainMenu from './MainMenu';
 import DrawerComponent from './DrawerComponent';
@@ -25,18 +26,34 @@ function ConnectedLayout(props: { children: ReactNode }) {
   const { children } = props;
   const [timeoutState, setTimeoutState] = useState<number | null>(null);
   const history = useHistory();
+  const editor = useMemo(initializeEditor, []) as ReactEditor;
 
   const store = useStore() as Store;
+  const dispatch = useDispatch<Dispatch>();
   const { name: pageTitle } = useSelector<RootState, Meta>(
     store.select.collection.nowArticleMeta,
   );
-  const value = useSelector((state: RootState) => state.collection.nowSteps);
+  const { nowSteps: value, collection } = useSelector(
+    (state: RootState) => state.collection,
+  );
   const outdatedNotificationClicked = useSelector(
     (state: RootState) => state.collection.outdatedNotificationClicked,
   );
 
-  const editor = useMemo(initializeEditor, []) as ReactEditor;
-  const dispatch = useDispatch<Dispatch>();
+  let outdatedExisted = false;
+
+  if (collection?.steps && Array.isArray(collection.steps)) {
+    const len = collection.steps.filter((step) => step.outdated).length;
+    outdatedExisted = !!len;
+  }
+
+  useEffect(() => {
+    if (outdatedExisted) {
+      openOutdatedNotification(() => {
+        dispatch.collection.setOutdatedNotificationClicked(true);
+      });
+    }
+  }, [dispatch, outdatedExisted]);
 
   useEffect(() => {
     dispatch.diff.fetchDiff();
