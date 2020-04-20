@@ -3,12 +3,12 @@ import { css, jsx } from '@emotion/core';
 import { useSelector } from 'react-redux';
 import { Spin } from 'antd';
 
-import { Toc as TocComponent } from '../components/';
+import { RootState } from 'store';
+import { Toc as TocComponent } from '../components';
 
 function Toc() {
-  const loading: any = useSelector(
-    ({ loading }: any) =>
-      loading.effects.collection.fetchCollection || loading.models.diff,
+  const loading = useSelector(
+    (state: RootState) => state.loading.effects.toc.fetchToc,
   );
 
   return (

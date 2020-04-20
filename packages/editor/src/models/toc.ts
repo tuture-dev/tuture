@@ -1,14 +1,8 @@
 import { message } from 'antd';
-import omit from 'lodash.omit';
-import { Step, flattenSteps } from '@tuture/core';
 
 import { Dispatch, RootState } from '../store';
-import { TocItem, TocStepItem } from '../types';
-
-function getArticleIdFromId(items: TocItem[], stepId: string) {
-  const item = items.filter((item) => item.id === stepId)[0];
-  return (item as TocStepItem).articleId;
-}
+import { TocStepItem } from '../types';
+import { saveData } from '../utils/request';
 
 export type TocState = {
   isSaving: boolean;
@@ -32,7 +26,6 @@ export const toc = {
   reducers: {
     setSaveStatus(state: TocState, isSaving: boolean) {
       state.isSaving = isSaving;
-      return state;
     },
     setArticleStepList(state: TocState, payload: TocStepItem[]) {
       state.articleStepList = payload;
@@ -64,71 +57,53 @@ export const toc = {
     },
   },
   effects: (dispatch: Dispatch) => ({
+    async fetchToc() {
+      try {
+        const response = await fetch('/toc');
+        const data: {
+          articleStepList: TocStepItem[];
+          unassignedStepList: TocStepItem[];
+        } = await response.json();
+
+        dispatch.toc.setUnassignedStepList(data.unassignedStepList);
+        dispatch.toc.setArticleStepList(data.articleStepList);
+      } catch {
+        message.error('获取目录失败！');
+      }
+    },
     async save(_: any, rootState: RootState) {
       const {
         articleStepList = [],
         unassignedStepList = [],
         needDeleteOutdatedStepList = [],
       } = rootState.toc;
-      const { nowArticleId = '' } = rootState.collection;
-      let { steps = [] } = rootState.collection.collection || {};
-      let { articles = [] } = rootState.collection.collection || {};
 
-      // handle article deletion
+      const success = await saveData(
+        {
+          articleStepList,
+          unassignedStepList,
+          needDeleteOutdatedStepList,
+        },
+        '/toc',
+      );
+
+      if (!success) {
+        return message.error('目录保存失败！');
+      }
+
+      const { nowArticleId = '' } = rootState.collection;
+
       const nowArticleIdList = articleStepList
         .filter((item) => !item.articleId)
         .map((item) => item.id);
-      articles = articles.filter((article) =>
-        nowArticleIdList.includes(article.id),
-      );
 
-      if (!nowArticleIdList.includes(nowArticleId as string)) {
+      if (nowArticleId && !nowArticleIdList.includes(nowArticleId)) {
         dispatch.collection.setNowArticle('');
       }
 
-      // handle step allocation
-      const nowAllocationStepList = articleStepList.filter(
-        (item) => item.articleId,
-      );
-      const nowAllocationStepIdList = nowAllocationStepList.map(
-        (item) => item.id,
-      );
-
-      steps = steps.map((step) => {
-        if (nowAllocationStepIdList.includes(step.id)) {
-          step.articleId = getArticleIdFromId(nowAllocationStepList, step.id);
-        }
-        return step;
-      });
-
-      const unassignedStepIdList = unassignedStepList.map((step) => step.id);
-      steps = steps.map((step) => {
-        if (unassignedStepIdList.includes(step.id)) {
-          step = omit(step, ['articleId']) as Step;
-        }
-        return step;
-      });
-
-      // delete outdated deleted step
-      steps = steps.filter(
-        (step) => !needDeleteOutdatedStepList.includes(step.id),
-      );
-
-      dispatch.collection.updateArticles(articles);
-      dispatch.collection.updateSteps(steps);
-
-      let nowSteps;
-
-      if (nowArticleId) {
-        nowSteps = flattenSteps(
-          steps.filter((step) => step.articleId === nowArticleId),
-        );
-      } else {
-        nowSteps = flattenSteps(steps);
-      }
-
-      dispatch.collection.setNowSteps(nowSteps);
-      dispatch.collection.saveCollection();
+      // Update collection data.
+      await dispatch.collection.fetchArticles();
+      await dispatch.collection.fetchNowSteps();
 
       message.success('目录保存成功');
     },

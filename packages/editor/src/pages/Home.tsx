@@ -1,17 +1,23 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { Spin } from 'antd';
 
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 
+import { Dispatch, RootState } from 'store';
 import { App } from '../components';
 
 function Home() {
-  const loading: any = useSelector(
-    ({ loading }: any) =>
-      loading.effects.collection.fetchCollection || loading.models.diff,
+  const dispatch: Dispatch = useDispatch();
+  const { fetchMeta, fetchArticles, fetchNowSteps } = useSelector(
+    (state: RootState) => state.loading.effects.collection,
   );
+  const loading = fetchMeta || fetchArticles || fetchNowSteps;
+
+  useEffect(() => {
+    dispatch.collection.fetchNowSteps();
+  }, [dispatch]);
 
   return (
     <div
@@ -19,10 +25,9 @@ function Home() {
         width: 100%;
       `}
     >
-      <Spin tip="加载中..." spinning={loading} >
+      <Spin tip="加载中..." spinning={loading}>
         <div
-          css={
-            css`
+          css={css`
             height: calc(100vh - 64px);
             width: 100%;
           `}

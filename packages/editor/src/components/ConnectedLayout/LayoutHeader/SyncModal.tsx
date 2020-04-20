@@ -80,12 +80,10 @@ const ListHeader = () => (
 );
 
 const CommitModal = () => {
-  const syncVisible = useSelector((state: RootState) => state.sync.syncVisible);
-  const remotes =
-    useSelector((state: RootState) => state.collection.collection?.remotes) ||
-    [];
-  const allRemotes =
-    useSelector((state: RootState) => state.sync.remotes) || [];
+  const { syncVisible, remotes: allRemotes } = useSelector(
+    (state: RootState) => state.sync,
+  );
+  const { remotes } = useSelector((state: RootState) => state.collection);
 
   const remoteNames = remotes.map(({ name }) => name);
   const [checkedRemotes, setCheckedRemotes] = useState(remoteNames);
@@ -96,7 +94,7 @@ const CommitModal = () => {
     if (syncVisible) {
       dispatch.sync.fetchRemotes();
     }
-  }, [syncVisible]);
+  }, [dispatch.sync, syncVisible]);
 
   useEffect(() => {
     if (remoteNames.length > 0 && checkedRemotes.length === 0) {

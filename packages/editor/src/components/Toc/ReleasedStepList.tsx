@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 /** @jsx jsx */
@@ -78,10 +78,6 @@ function ReleasedStepList() {
   const filteredUnassignedStepList =
     unassignedStepList?.filter((step) => step.name.indexOf(searchValue) >= 0) ||
     [];
-
-  useEffect(() => {
-    dispatch.collection.getUnassignedStepList();
-  }, [dispatch.collection]);
 
   function handleAddStep(stepItem: TocStepItem) {
     if (!unassignedStepList) return;
@@ -174,6 +170,7 @@ function ReleasedStepList() {
         >
           {filteredUnassignedStepList.map((item) => (
             <ReleasedStepListItem
+              key={item.id}
               item={item}
               onClickAdd={() => {
                 console.log('onClickAdd called', item);

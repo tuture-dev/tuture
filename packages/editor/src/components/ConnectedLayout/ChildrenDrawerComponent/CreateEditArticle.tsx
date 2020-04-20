@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
+  message,
   Form,
   Input,
   Icon,
@@ -17,13 +18,13 @@ import { FormComponentProps } from 'antd/lib/form';
 import { useDispatch, useSelector, useStore } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { History } from 'history';
-import { Article, Step, Meta, randHex } from '@tuture/core';
+import { Article, Step, Meta, randHex, getHeadings } from '@tuture/core';
 
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 
 import { EDIT_ARTICLE } from 'utils/constants';
-import { getHeadings, getArtcleMetaById } from 'utils/collection';
+import { getArtcleMetaById } from 'utils/collection';
 import { IMAGE_HOSTING_URL } from 'utils/image';
 import { RootState, Store, Dispatch } from 'store';
 
@@ -53,7 +54,6 @@ function showDeleteConfirm(
         history.push('/');
       }
       dispatch.collection.deleteArticle(articleId);
-      dispatch.collection.saveCollection();
     },
   });
 }
@@ -83,41 +83,21 @@ function CreateEditArticle(props: CreateEditArticleProps) {
   const store = useStore() as Store;
   const dispatch = useDispatch<Dispatch>();
   const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
-  const [collectionStepsState, setCollectionStepsState] = useState<
-    CollectionStep[]
-  >([]);
+  const [collectionSteps, setCollectionSteps] = useState<CollectionStep[]>([]);
 
   // get router history && first article id for delete jump
   const history = useHistory();
 
-  // submit status
-  const {
-    editArticle: editArticleLoading,
-    createArticle: createArticleLoading,
-  } = useSelector((state: RootState) => state.loading.effects.collection);
-
   // get editArticle Commits
-  const { editArticleId, nowArticleId, collection } = useSelector(
+  const { editArticleId, nowArticleId } = useSelector(
     (state: RootState) => state.collection,
   );
 
-  const steps: Step[] = collection?.steps || [];
-  const articles = collection?.articles || [];
-
-  // get all steps
-  const collectionSteps: CollectionStep[] = steps.map((step, index) => ({
-    key: String(index),
-    id: step.id,
-    articleId: step.articleId,
-    title: getHeadings([step])[0].title,
-    ...getArtcleMetaById(step.articleId || '', articles),
-  }));
-
   useEffect(() => {
-    if (collectionSteps) {
-      setCollectionStepsState(collectionSteps);
-    }
-  }, [collection]); // eslint-disable-line react-hooks/exhaustive-deps
+    fetch('/collection-steps')
+      .then((res) => res.json())
+      .then((data) => setCollectionSteps(data));
+  }, []);
 
   const initialTargetKeys =
     props.childrenDrawerType === EDIT_ARTICLE
@@ -186,9 +166,6 @@ function CreateEditArticle(props: CreateEditArticleProps) {
         }
 
         if (props.childrenDrawerType === EDIT_ARTICLE) {
-          dispatch.collection.editArticle(article as Article);
-          dispatch.drawer.setVisible(false);
-
           collectionSteps.forEach((step, index) => {
             if (step.articleId === editArticleId) {
               if (!steps.includes(String(index))) {
@@ -208,10 +185,10 @@ function CreateEditArticle(props: CreateEditArticleProps) {
               }
             }
           });
+          message.success('保存成功');
         } else {
           // Create new article.
           article.id = randHex(8);
-          dispatch.collection.createArticle(article);
 
           // Update articleId field for selected steps.
           collectionSteps.forEach((step, index) => {
@@ -223,12 +200,12 @@ function CreateEditArticle(props: CreateEditArticleProps) {
             }
           });
 
-          dispatch.drawer.setVisible(false);
-          dispatch.drawer.setChildrenVisible(false);
           history.push(`/articles/${article.id}`);
         }
 
-        dispatch.collection.saveCollection();
+        dispatch.drawer.setChildrenVisible(false);
+        dispatch.drawer.setVisible(false);
+        dispatch.collection.save({ keys: ['articles', 'nowSteps'] });
       }
     });
   }
@@ -247,7 +224,7 @@ function CreateEditArticle(props: CreateEditArticleProps) {
     });
 
     // check nowTargetKeys status
-    const newCollectionStepsState = collectionStepsState.map((step) => {
+    const newcollectionSteps = collectionSteps.map((step) => {
       if (targetKeys.includes(step.key) && !nextTargetKeys.includes(step.key)) {
         return { ...step, articleId: '', articleIndex: 0, articleName: '' };
       }
@@ -255,7 +232,7 @@ function CreateEditArticle(props: CreateEditArticleProps) {
       return step;
     });
 
-    setCollectionStepsState(newCollectionStepsState);
+    setCollectionSteps(newcollectionSteps);
     setFieldsValue({ steps: sortedNextTargetKeys });
     setTargetKeys(sortedNextTargetKeys);
   }
@@ -364,7 +341,7 @@ function CreateEditArticle(props: CreateEditArticleProps) {
             initialValue: initialTargetKeys,
           })(
             <Transfer
-              dataSource={collectionStepsState}
+              dataSource={collectionSteps}
               titles={['所有步骤', '已选步骤']}
               targetKeys={targetKeys}
               operations={['选择', '释放']}
@@ -424,11 +401,7 @@ function CreateEditArticle(props: CreateEditArticleProps) {
             >
               取消
             </Button>
-            <Button
-              htmlType="submit"
-              type="primary"
-              loading={editArticleLoading || createArticleLoading}
-            >
+            <Button htmlType="submit" type="primary">
               确认
             </Button>
           </div>

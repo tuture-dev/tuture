@@ -48,8 +48,7 @@ function CollectionCatalogue() {
   const [selectItem, setSelectItem] = useState('');
 
   const dispatch = useDispatch<Dispatch>();
-  const { collection } = useSelector((state: RootState) => state.collection);
-  const articles = collection ? collection.articles : [];
+  const { articles } = useSelector((state: RootState) => state.collection);
 
   function onToggleChildrenDrawer(
     e: React.MouseEvent,
@@ -73,9 +72,11 @@ function CollectionCatalogue() {
   }
 
   function onCatalogueItemClick(articleId: string) {
-    dispatch.drawer.setVisible(false);
     setSelectItem(articleId);
     dispatch.collection.setNowArticle(articleId);
+    dispatch.collection
+      .fetchNowSteps()
+      .then(() => dispatch.drawer.setVisible(false));
   }
 
   return (

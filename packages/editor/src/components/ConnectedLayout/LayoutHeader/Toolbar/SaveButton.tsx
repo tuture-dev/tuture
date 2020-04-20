@@ -12,7 +12,7 @@ const SaveButton = () => {
   const { saveBtnRef: ref } = useContext(ButtonRefsContext);
 
   const onClick = () => {
-    dispatch.collection.saveCollection({ showMessage: true });
+    dispatch.collection.save({ showMessage: true });
   };
 
   return (

@@ -1,13 +1,21 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { Row, Col } from 'antd';
 
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 
+import { Dispatch } from 'store';
 import ReleasedStepList from './ReleasedStepList';
 import ArticleStepList from './ArticleStepList';
 
 function Toc() {
+  const dispatch: Dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch.toc.fetchToc();
+  }, [dispatch]);
+
   return (
     <div
       css={css`

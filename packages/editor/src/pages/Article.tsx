@@ -8,19 +8,21 @@ import { App } from '../components/';
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 
-import { Dispatch, } from '../store';
+import { Dispatch, RootState } from '../store';
 
 function Article() {
   const dispatch: Dispatch = useDispatch();
-  const loading: any = useSelector(
-    ({ loading }: any) =>
-      loading.effects.collection.fetchCollection || loading.models.diff,
+  const { fetchMeta, fetchArticles, fetchNowSteps } = useSelector(
+    (state: RootState) => state.loading.effects.collection,
   );
+  const loading = fetchMeta || fetchArticles || fetchNowSteps;
+
   const match = useRouteMatch('/articles/:id');
   const { id = '' }: any = match?.params;
 
   useEffect(() => {
     dispatch.collection.setNowArticle(id);
+    dispatch.collection.fetchNowSteps();
   }, [dispatch, id]);
 
   return (

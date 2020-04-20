@@ -32,9 +32,10 @@ const { TextArea } = Input;
 function PageHeader() {
   const store = useStore() as Store;
   const { nowArticleId } = useSelector((state: RootState) => state.collection);
-  const { name = '', description = '' } = useSelector<RootState, Article>(
-    store.select.collection.getArticleMetaById({ id: nowArticleId }),
-  );
+  const { name = '', description = '' } =
+    useSelector<RootState, Article | null>(
+      store.select.collection.getArticleMetaById({ id: nowArticleId }),
+    ) || {};
   const dispatch = useDispatch<Dispatch>();
   const [timeoutHeaderState, setTimeoutHeaderState] = useState<number | null>(
     null,
@@ -52,11 +53,13 @@ function PageHeader() {
   }
 
   function handleSaveCollection() {
-    dispatch.collection.saveCollection();
+    dispatch.collection.save();
   }
 
   function handleHeaderChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
-    dispatch.collection.setArticleTitle(e.target.value);
+    dispatch.collection.setArticleById({
+      props: { name: e.target.value },
+    });
 
     setTimeoutHeaderState(
       resetTimeout(timeoutHeaderState, setTimeout(handleSaveCollection, 1000)),
@@ -64,7 +67,9 @@ function PageHeader() {
   }
 
   function handleDescriptionChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
-    dispatch.collection.setArticleDescription(e.target.value);
+    dispatch.collection.setArticleById({
+      props: { description: e.target.value },
+    });
 
     setTimeoutDescriptionState(
       resetTimeout(

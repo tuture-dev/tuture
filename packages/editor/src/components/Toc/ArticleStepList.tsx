@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { message, Modal } from 'antd';
 import classnames from 'classnames';
@@ -118,10 +118,6 @@ function ArticleStepList() {
     activeArticle,
   } = useSelector((state: RootState) => state.toc);
 
-  useEffect(() => {
-    dispatch.collection.getArticleStepList();
-  }, [dispatch.collection]);
-
   const filteredArticleList =
     (articleStepList || []).filter((articleStep) => {
       return !articleStep?.articleId || activeArticle === articleStep.articleId;
@@ -239,6 +235,7 @@ function ArticleStepList() {
         >
           {filteredArticleList.map((item) => (
             <ArticleStepListItem
+              key={item.id}
               item={item}
               onDelete={(e) => handleArticleStepItemDelete(e, item)}
             />

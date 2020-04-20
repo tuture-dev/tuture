@@ -2,14 +2,14 @@ import { Slicer, SelectorCreator, Parameterizer } from '@rematch/select';
 import { message } from 'antd';
 import { Node } from 'editure';
 import * as F from 'editure-constants';
-import pick from 'lodash.pick';
-import omit from 'lodash.omit';
 import {
-  Collection,
   Remote,
+  Meta,
   Step,
   Article,
   randHex,
+  getHeadings,
+  isCommitEqual,
   flattenSteps as flatten,
   unflattenSteps as unflatten,
 } from '@tuture/core';
@@ -21,112 +21,75 @@ import {
   NOW_STEP_START,
   STEP_END,
 } from '../utils/constants';
-import {
-  getHeadings,
-  getStepTitle,
-  getNumFromStepId,
-} from '../utils/collection';
-import { isCommitEqual } from '../utils/commit';
+import { saveData } from '../utils/request';
 import { Dispatch, RootState } from '../store';
-import { TocItem, TocStepItem } from '../types';
 
 export type CollectionState = {
-  collection: Collection | null;
+  meta: Meta | null;
+  articles: Article[];
   nowArticleId: string | null;
   editArticleId: string | null;
   nowStepCommit: string | null;
   nowSteps: Node[];
+  remotes: Remote[];
   lastSaved: Date | null;
   saveFailed: boolean;
   outdatedNotificationClicked: boolean;
 };
 
 const initialState: CollectionState = {
-  collection: null,
+  meta: null,
+  articles: [],
   nowArticleId: null,
   editArticleId: '',
   nowStepCommit: null,
   nowSteps: [{ type: F.PARAGRAPH, children: [{ text: '' }] }],
+  remotes: [],
   lastSaved: null,
   saveFailed: false,
   outdatedNotificationClicked: false,
 };
 
-function updateNowSteps(state: CollectionState) {
-  if (!state.collection) return state;
-
-  const { steps } = state.collection;
-
-  if (state.nowArticleId) {
-    state.nowSteps = flatten(
-      steps.filter((step) => step.articleId === state.nowArticleId),
-    );
-  } else {
-    state.nowSteps = flatten(steps);
-  }
-}
-
 export const collection = {
   state: initialState,
   reducers: {
-    setCollectionData(state: CollectionState, collection: Collection) {
-      state.collection = collection;
-
-      if (collection.articles?.length > 0 && !state.nowArticleId) {
-        state.nowArticleId = collection.articles[0].id;
-      }
-
-      updateNowSteps(state);
-
+    setMeta(state: CollectionState, props: Partial<Meta>) {
+      state.meta = { ...state.meta, ...props } as Meta;
+      return state;
+    },
+    setArticles(state: CollectionState, articles: Article[]) {
+      state.articles = articles;
       return state;
     },
     setNowArticle(state: CollectionState, articleId: string) {
       state.nowArticleId = articleId;
 
-      if (articleId && state.collection) {
-        state.nowStepCommit = state.collection.steps.filter(
+      if (articleId) {
+        state.nowStepCommit = state.nowSteps.filter(
           (step) => step.articleId === articleId,
-        )[0].commit;
-      }
-
-      if (!state.collection) {
-        return state;
-      }
-
-      updateNowSteps(state);
-
-      return state;
-    },
-    setArticleTitle(state: CollectionState, title: string) {
-      if (!state.collection) return state;
-
-      if (state.collection.articles.length !== 0) {
-        state.collection.articles = state.collection.articles.map((article) => {
-          if (article.id === state.nowArticleId) {
-            article.name = title;
-            return article;
-          }
-          return article;
-        });
-      } else {
-        state.collection.name = title;
+        )[0]?.commit;
       }
 
       return state;
     },
-    setArticleDescription(state: CollectionState, description: string) {
-      if (!state.collection) return state;
+    setArticleById(
+      state: CollectionState,
+      payload: { articleId?: string; props: Partial<Article> },
+    ) {
+      const { articleId = state.nowArticleId, props } = payload;
 
-      if (state.collection.articles.length !== 0) {
-        state.collection.articles = state.collection.articles.map((article) => {
-          if (article.id === state.nowArticleId) {
-            article.description = description;
-            return article;
+      if (state.articles.length > 0) {
+        state.articles = state.articles.map((article) => {
+          if (article.id === articleId) {
+            return { ...article, ...props };
           }
           return article;
         });
-      } else {
-        state.collection.description = description;
+      }
+
+      // Set collection meta if this is the only article.
+      if (state.meta && state.articles.length === 1) {
+        state.meta = { ...state.meta, ...props };
       }
 
       return state;
@@ -158,8 +121,6 @@ export const collection = {
       state: CollectionState,
       payload: { removedIndex: number; addedIndex: number; commit: string },
     ) {
-      if (!state.collection) return state;
-
       const { removedIndex, addedIndex, commit } = payload;
       const unflattenedNowSteps = unflatten(state.nowSteps);
 
@@ -171,30 +132,12 @@ export const collection = {
         }
       });
 
-      const { steps } = state.collection;
-
-      if (state.nowArticleId) {
-        state.nowSteps = flatten(unflattenedNowSteps);
-      } else {
-        state.nowSteps = flatten(steps);
-      }
+      state.nowSteps = flatten(unflattenedNowSteps);
 
       return state;
     },
     setNowSteps(state: CollectionState, fragment: Node[]) {
       state.nowSteps = fragment;
-      return state;
-    },
-    saveNowStepsToCollection(state: CollectionState) {
-      if (!state.collection) return state;
-
-      state.collection.steps = state.collection.steps.map(
-        (step) =>
-          unflatten(state.nowSteps).filter((node) =>
-            isCommitEqual(node.commit, step.commit),
-          )[0] || step,
-      );
-
       return state;
     },
     setNowStepCommit(state: CollectionState, commit: string) {
@@ -225,8 +168,7 @@ export const collection = {
       return state;
     },
     setRemotes(state: CollectionState, remotes: Remote[]) {
-      if (!state.collection) return state;
-      state.collection.remotes = remotes;
+      state.remotes = remotes;
       return state;
     },
     setEditArticleId(state: CollectionState, articleId: string) {
@@ -234,22 +176,18 @@ export const collection = {
       return state;
     },
     editArticle(state: CollectionState, payload: Article) {
-      if (!state.collection) return state;
-
       const { editArticleId } = state;
 
-      state.collection.articles = state.collection.articles.map((article) =>
+      state.articles = state.articles.map((article) =>
         article.id === editArticleId ? { ...article, ...payload } : article,
       );
 
       return state;
     },
     createArticle(state: CollectionState, props: Partial<Article>) {
-      if (!state.collection) return state;
-
       const id = randHex(8);
       const created = new Date();
-      state.collection.articles.push({ id, created, ...props } as Article);
+      state.articles.push({ id, created, ...props } as Article);
 
       return state;
     },
@@ -257,35 +195,13 @@ export const collection = {
       state: CollectionState,
       payload: { stepId: string; stepProps: Partial<Step> },
     ) {
-      if (!state.collection) return state;
-
       const { stepId, stepProps } = payload;
 
-      state.collection.steps = state.collection.steps.map((step) =>
-        step.id === stepId ? { ...step, ...stepProps } : step,
+      state.nowSteps = state.nowSteps.map((node) =>
+        node.type === 'step' && node.id === stepId
+          ? { ...node, ...stepProps }
+          : node,
       );
-
-      updateNowSteps(state);
-
-      return state;
-    },
-    editCollection(state: CollectionState, props: Partial<Collection>) {
-      if (!state.collection) return state;
-      state.collection = { ...state.collection, ...props };
-      return state;
-    },
-    deleteArticle(state: CollectionState, articleId: string) {
-      if (!state.collection) return state;
-
-      state.collection.articles = state.collection.articles.filter(
-        (article) => article.id !== articleId,
-      );
-      state.collection.steps = state.collection.steps.map((step) => {
-        if (step?.articleId === articleId) {
-          step = omit(step, ['articleId']) as Step;
-        }
-        return step;
-      });
 
       return state;
     },
@@ -297,138 +213,96 @@ export const collection = {
       state.saveFailed = failed;
       return state;
     },
-    updateSteps(state: CollectionState, steps: Step[]) {
-      if (!state.collection) return state;
-      state.collection.steps = steps;
-      return state;
-    },
-    updateArticles(state: CollectionState, articles: Article[]) {
-      if (!state.collection) return state;
-      state.collection.articles = articles;
-      return state;
-    },
     setOutdatedNotificationClicked(state: CollectionState, payload: boolean) {
       state.outdatedNotificationClicked = payload;
       return state;
     },
     deleteStep(state: CollectionState, stepId: string) {
-      if (!state.collection) return state;
-
-      state.collection.steps = state.collection.steps.filter(
-        (step) => step.id !== stepId,
-      );
-
-      return state;
+      throw new Error('deleteStep not implemented');
     },
   },
   effects: (dispatch: Dispatch) => ({
-    async editArticle() {
-      message.success('保存成功');
-      dispatch.drawer.setChildrenVisible(false);
-    },
-    async createArticle() {
-      message.success('创建成功');
-      dispatch.drawer.setChildrenVisible(false);
-    },
-    async editCollection() {
-      message.success('保存成功');
-      dispatch.drawer.setVisible(false);
-    },
-    async fetchCollection() {
-      try {
-        const response = await fetch('/collection');
-        const data: Collection = await response.json();
+    async fetchMeta() {
+      const response = await fetch('/meta');
+      const data: Meta = await response.json();
 
-        dispatch.collection.setCollectionData(data);
+      dispatch.collection.setMeta(data);
+    },
+    async fetchArticles(_: null, rootState: RootState) {
+      const response = await fetch('/articles');
+      const data: Article[] = await response.json();
 
-        // update toc data
-        dispatch.collection.getArticleStepList();
-        dispatch.collection.getUnassignedStepList();
-      } catch {
-        message.error('获取数据失败！');
+      dispatch.collection.setArticles(data);
+
+      const { nowArticleId } = rootState.collection;
+      if (!nowArticleId) {
+        dispatch.collection.setNowArticle(data[0].id);
       }
     },
-    async saveCollection(
-      payload: { showMessage?: boolean },
+    async fetchNowSteps(_: null, rootState: RootState) {
+      const { nowArticleId } = rootState.collection;
+
+      let url = '/steps';
+      if (nowArticleId) {
+        url = url + `?articleId=${nowArticleId}`;
+      }
+
+      const response = await fetch(url);
+      const data: Node[] = await response.json();
+
+      dispatch.collection.setNowSteps(data);
+    },
+    async save(
+      payload: {
+        keys?: Array<'meta' | 'articles' | 'nowSteps'>;
+        showMessage?: boolean;
+      },
       rootState: RootState,
     ) {
-      // Ensure nowSteps are merged into collection data.
-      dispatch.collection.saveNowStepsToCollection();
+      const { keys = ['meta', 'articles', 'nowSteps'], showMessage } =
+        payload || {};
 
-      const collectionData = rootState.collection.collection;
-      if (!collectionData) return;
+      let success: boolean = false;
 
-      try {
-        const response = await fetch('/save', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Accept: 'application/json',
-          },
-          body: JSON.stringify(collectionData),
-        });
-
-        if (response.ok) {
-          dispatch.collection.setLastSaved(new Date());
-          if (payload?.showMessage) {
-            message.success('保存内容成功！');
-          }
-        } else {
-          dispatch.collection.setSaveFailed(true);
+      // NOTE: We intentionally save data sequentially to avoid race conditions.
+      if (keys.includes('meta')) {
+        const { meta } = rootState.collection;
+        if (meta) {
+          success = await saveData(meta, '/meta');
         }
-      } catch (err) {
-        dispatch.collection.setSaveFailed(true);
       }
-    },
-    async getArticleStepList(_: any, rootState: RootState) {
-      const collectionState: CollectionState = rootState.collection;
-      const articles = collectionState.collection?.articles || [];
-      const steps = collectionState.collection?.steps || [];
-
-      const articleStepList: TocItem[] = articles.reduce(
-        (initialArticleStepList, nowArticle) => {
-          const articleItem = {
-            ...pick(nowArticle, ['id', 'name']),
-            level: 0,
-          };
-          const stepList = steps
-            .filter((step) => step?.articleId === nowArticle.id)
-            .map((step) => ({
-              ...pick(step, ['id', 'articleId', 'outdated']),
-              level: 1,
-              number: getNumFromStepId(step.id, steps),
-              name: getStepTitle(step),
-            }));
-
-          return initialArticleStepList.concat(articleItem, ...stepList);
-        },
-        [] as TocItem[],
-      );
-
-      dispatch.toc.setArticleStepList(articleStepList);
-    },
-    async getUnassignedStepList(_: any, rootState: RootState) {
-      const collectionState: CollectionState = rootState.collection;
-      let unassignedStepList: TocStepItem[] = [];
-      if (!collectionState.collection?.steps) {
-        unassignedStepList = [];
-        dispatch.toc.setUnassignedStepList(unassignedStepList);
-
-        return;
+      if (keys.includes('articles')) {
+        const { articles } = rootState.collection;
+        if (articles) {
+          success = await saveData(articles, '/articles');
+        }
+      }
+      if (keys.includes('nowSteps')) {
+        const { nowSteps } = rootState.collection;
+        if (nowSteps) {
+          success = await saveData(nowSteps, '/steps');
+        }
       }
 
-      const { steps = [] } = collectionState.collection as Collection;
-      unassignedStepList = (collectionState.collection as Collection)?.steps
-        .filter((step) => !step?.articleId)
-        .map((step) => ({
-          id: step.id,
-          outdated: step?.outdated,
-          level: 1,
-          number: getNumFromStepId(step.id, steps),
-          name: getStepTitle(step),
-        }));
+      if (showMessage) {
+        success
+          ? message.success('保存内容成功！')
+          : message.error('保存内容失败！');
+      }
 
-      dispatch.toc.setUnassignedStepList(unassignedStepList);
+      dispatch.collection.setLastSaved(new Date());
+      dispatch.collection.setSaveFailed(!success);
+    },
+    async deleteArticle(articleId: string, rootState: RootState) {
+      const response = await fetch(`/articles/${articleId}`, {
+        method: 'DELETE',
+      });
+
+      if (response.ok) {
+        // Update collection data.
+        await dispatch.collection.fetchArticles();
+        await dispatch.collection.fetchNowSteps();
+      }
     },
   }),
   selectors: (
@@ -438,14 +312,7 @@ export const collection = {
   ) => ({
     nowArticleMeta() {
       return slice((collectionState: CollectionState): Article | {} => {
-        if (!collectionState.collection) {
-          return {};
-        }
-
-        const {
-          collection: { articles },
-          nowArticleId,
-        } = collectionState;
+        const { articles, nowArticleId } = collectionState;
 
         if (nowArticleId) {
           return articles.filter(
@@ -458,58 +325,25 @@ export const collection = {
     },
     nowArticleCatalogue() {
       return slice((collectionState: CollectionState) => {
-        if (!collectionState.collection) {
-          return [];
-        }
-
-        const {
-          collection: { steps = [] },
-          nowArticleId,
-        } = collectionState;
-
-        let finalSteps = nowArticleId
-          ? steps.filter((step) => step.articleId === nowArticleId)
-          : steps;
-
-        return getHeadings(finalSteps);
-      });
-    },
-    collectionMeta() {
-      return slice((collectionState: CollectionState) => {
-        const { name, cover, description, topics } =
-          collectionState?.collection || {};
-
-        return { name, cover, description, topics };
+        return getHeadings(collectionState.nowSteps);
       });
     },
     getArticleMetaById: hasProps((__: any, props: { id: string }) => {
       return slice((collectionState: CollectionState) => {
         const { id } = props;
-        if (!collectionState.collection) {
-          return {};
-        }
+        const { articles, meta } = collectionState || {};
 
-        const { articles, name, description, topics, cover } =
-          collectionState?.collection || {};
-
-        if (id) {
-          return articles.filter((elem) => elem.id === id)[0];
-        }
-
-        return { name, description, topics, cover };
+        return id ? articles.filter((elem) => elem.id === id)[0] : meta;
       });
     }),
     getStepFileListAndTitle: hasProps((__: any, props: { commit: string }) => {
       return slice((collectionState: CollectionState) => {
-        if (!collectionState.collection) {
-          return { fileList: [], title: '' };
-        }
-
         const { commit } = props;
 
         let flag = '';
         let title = '';
         let fileList: { file: string; display: boolean }[] = [];
+
         collectionState.nowSteps.forEach((node) => {
           switch (node.type) {
             case STEP: {

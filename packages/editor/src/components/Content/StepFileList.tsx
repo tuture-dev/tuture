@@ -44,7 +44,7 @@ function StepFileList() {
         resetTimeout(
           timeoutState,
           setTimeout(() => {
-            dispatch.collection.saveCollection();
+            dispatch.collection.save({ keys: ['nowSteps'] });
           }, 1000),
         ),
       );
@@ -63,7 +63,7 @@ function StepFileList() {
         resetTimeout(
           timeoutState,
           setTimeout(() => {
-            dispatch.collection.saveCollection({ showMessage: true });
+            dispatch.collection.save({ keys: ['nowSteps'], showMessage: true });
           }, 1000),
         ),
       );

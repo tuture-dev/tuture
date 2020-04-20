@@ -30,22 +30,16 @@ function ConnectedLayout(props: { children: ReactNode }) {
 
   const store = useStore() as Store;
   const dispatch = useDispatch<Dispatch>();
-  const { name: pageTitle } = useSelector<RootState, Meta>(
-    store.select.collection.nowArticleMeta,
-  );
-  const { nowSteps: value, collection } = useSelector(
+  const { name: pageTitle } =
+    useSelector<RootState, Meta>(store.select.collection.nowArticleMeta) || {};
+  const { nowSteps: value } = useSelector(
     (state: RootState) => state.collection,
   );
   const outdatedNotificationClicked = useSelector(
     (state: RootState) => state.collection.outdatedNotificationClicked,
   );
 
-  let outdatedExisted = false;
-
-  if (collection?.steps && Array.isArray(collection.steps)) {
-    const len = collection.steps.filter((step) => step.outdated).length;
-    outdatedExisted = !!len;
-  }
+  const outdatedExisted = !!value.filter((node) => node.outdated).length;
 
   useEffect(() => {
     if (outdatedExisted) {
@@ -57,7 +51,8 @@ function ConnectedLayout(props: { children: ReactNode }) {
 
   useEffect(() => {
     dispatch.diff.fetchDiff();
-    dispatch.collection.fetchCollection();
+    dispatch.collection.fetchMeta();
+    dispatch.collection.fetchArticles();
   }, [dispatch]);
 
   useEffect(() => {
@@ -92,7 +87,7 @@ function ConnectedLayout(props: { children: ReactNode }) {
       resetTimeout(
         timeoutState,
         setTimeout(() => {
-          dispatch.collection.saveCollection();
+          dispatch.collection.save({ keys: ['nowSteps'] });
         }, 1000),
       ),
     );

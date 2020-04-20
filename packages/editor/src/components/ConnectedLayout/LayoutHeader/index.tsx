@@ -1,6 +1,6 @@
-/** @jsx jsx */
 import React from 'react';
 
+/** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 import { Button, Row, Col, Breadcrumb } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
@@ -14,9 +14,12 @@ import { Dispatch, RootState } from 'store';
 
 function LayoutHeader() {
   const dispatch = useDispatch<Dispatch>();
-  const { collection } = useSelector((state: RootState) => state.collection);
-  const { name = '' } = collection || {};
+  const { meta } = useSelector((state: RootState) => state.collection);
+  const { name = '' } = meta || {};
 
+  const isSavingToc = useSelector(
+    (state: RootState) => state.loading.effects.toc.save,
+  );
   const isSyncing = useSelector(
     (state: RootState) => state.loading.effects.sync.sync,
   );
@@ -50,7 +53,7 @@ function LayoutHeader() {
       </Col>
       <Col span={5} push={isToc ? 3 : 1}>
         {isToc ? (
-          <Button type="primary" onClick={handleSaveToc}>
+          <Button type="primary" onClick={handleSaveToc} loading={isSavingToc}>
             保存
           </Button>
         ) : (

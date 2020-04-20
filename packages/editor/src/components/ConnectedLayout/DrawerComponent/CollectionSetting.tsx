@@ -1,18 +1,17 @@
 import React, { useState } from 'react';
-import { Form, Input, Icon, Button, Select, Upload } from 'antd';
+import { message, Form, Input, Icon, Button, Select, Upload } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import {
   UploadFileStatus,
   UploadType,
   UploadProps,
 } from 'antd/lib/upload/interface';
-import { useDispatch, useSelector, useStore } from 'react-redux';
-import { Meta } from '@tuture/core';
+import { useDispatch, useSelector } from 'react-redux';
 
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 
-import { Store, Dispatch, RootState } from 'store';
+import { Dispatch, RootState } from 'store';
 import { IMAGE_HOSTING_URL } from 'utils/image';
 
 const { Option } = Select;
@@ -21,17 +20,16 @@ const { TextArea } = Input;
 interface CollectionSettingProps extends FormComponentProps {}
 
 function CollectionSetting(props: CollectionSettingProps) {
-  const store = useStore() as Store;
   const dispatch = useDispatch<Dispatch>();
 
   // submit status
-  const editCollectionLoading = useSelector(
-    (state: RootState) => state.loading.effects.collection.editCollection,
+  const saving = useSelector(
+    (state: RootState) => state.loading.effects.collection.save,
   );
 
   // get nowArticle Meta
-  const collectionMeta = useSelector<RootState, Meta>(
-    store.select.collection.collectionMeta,
+  const collectionMeta = useSelector(
+    (state: RootState) => state.collection.meta,
   );
 
   const initialTopics = collectionMeta?.topics || [];
@@ -96,8 +94,11 @@ function CollectionSetting(props: CollectionSettingProps) {
           res = { ...res, cover: url };
         }
 
-        dispatch.collection.editCollection(res);
-        dispatch.collection.saveCollection();
+        dispatch.collection.setMeta(res);
+        dispatch.collection.save({ keys: ['meta'] });
+        dispatch.drawer.setVisible(false);
+
+        message.success('保存成功');
       }
     });
   }
@@ -218,11 +219,7 @@ function CollectionSetting(props: CollectionSettingProps) {
             >
               取消
             </Button>
-            <Button
-              htmlType="submit"
-              type="primary"
-              loading={editCollectionLoading}
-            >
+            <Button htmlType="submit" type="primary" loading={saving}>
               确认
             </Button>
           </div>
