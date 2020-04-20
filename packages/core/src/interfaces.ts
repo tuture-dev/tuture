@@ -1,4 +1,4 @@
-import { Element } from 'tuture-slate';
+import { Element } from 'editure';
 
 import { DiffFile } from './diff';
 

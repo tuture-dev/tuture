@@ -10,6 +10,6 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "tuture-slate": "0.57.4"
+    "editure": "^0.1.9"
   }
 }
