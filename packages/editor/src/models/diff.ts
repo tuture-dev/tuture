@@ -1,9 +1,8 @@
 import { message } from 'antd';
-import { RawDiff } from '@tuture/core';
+import { RawDiff, isCommitEqual } from '@tuture/core';
 import { Slicer, SelectorCreator, Parameterizer } from '@rematch/select';
 
 import { Dispatch } from '../store';
-import { isCommitEqual } from '../utils/commit';
 
 export type DiffState = {
   diff: RawDiff[] | null;

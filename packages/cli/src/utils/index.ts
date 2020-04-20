@@ -7,6 +7,7 @@ import {
   File,
   DiffBlock,
   randHex,
+  isCommitEqual,
   TUTURE_ROOT,
   TUTURE_BRANCH,
 } from '@tuture/core';
@@ -15,13 +16,6 @@ import { collectionPath } from '@tuture/local-server';
 import logger from './logger';
 import { git, storeDiff } from './git';
 import { getEmptyExplain } from './nodes';
-
-/**
- * Compare if two commit hashes are equal.
- */
-export function isCommitEqual(hash1: string, hash2: string) {
-  return hash1.startsWith(hash2) || hash2.startsWith(hash1);
-}
 
 /**
  * Remove all Tuture-related files.

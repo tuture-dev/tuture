@@ -4,7 +4,14 @@ import chalk from 'chalk';
 import { Element } from 'tuture-slate';
 import { toMarkdown } from 'editure';
 import { flags } from '@oclif/command';
-import { RawDiff, DiffBlock, Step, Collection, Meta } from '@tuture/core';
+import {
+  RawDiff,
+  DiffBlock,
+  Step,
+  Collection,
+  Meta,
+  isCommitEqual,
+} from '@tuture/core';
 import {
   loadCollection,
   collectionPath,
@@ -15,7 +22,7 @@ import { File as DiffFile, ChangeType } from 'parse-diff';
 
 import reload from './reload';
 import BaseCommand from '../base';
-import { isCommitEqual, checkInitStatus } from '../utils';
+import { checkInitStatus } from '../utils';
 import logger from '../utils/logger';
 import { diffPath } from '../utils/git';
 import { generateUserProfile } from '../utils/internals';
