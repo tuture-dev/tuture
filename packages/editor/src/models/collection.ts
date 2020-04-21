@@ -37,6 +37,8 @@ export type CollectionState = {
   outdatedNotificationClicked: boolean;
 };
 
+export type SaveKey = 'meta' | 'articles' | 'fragment' | 'remotes';
+
 const initialState: CollectionState = {
   meta: null,
   articles: [],
@@ -246,7 +248,7 @@ export const collection = {
     },
     async save(
       payload: {
-        keys?: Array<'meta' | 'articles' | 'fragment' | 'remotes'>;
+        keys?: SaveKey[];
         showMessage?: boolean;
       },
       rootState: RootState,
@@ -293,7 +295,7 @@ export const collection = {
       dispatch.collection.setLastSaved(new Date());
       dispatch.collection.setSaveFailed(!success);
     },
-    async deleteArticle(articleId: string, rootState: RootState) {
+    async deleteArticle(articleId: string) {
       const response = await fetch(`/articles/${articleId}`, {
         method: 'DELETE',
       });

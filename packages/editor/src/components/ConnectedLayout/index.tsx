@@ -1,5 +1,6 @@
-import React, { useState, useMemo, useEffect, ReactNode } from 'react';
+import React, { useMemo, useEffect, ReactNode } from 'react';
 
+import { useDebounce } from 'react-use';
 import { useSelector, useDispatch, useStore } from 'react-redux';
 import { Layout, Affix, BackTop } from 'antd';
 import { Editure, ReactEditor } from 'editure-react';
@@ -13,6 +14,7 @@ import { css, jsx } from '@emotion/core';
 import { Store, Dispatch, RootState } from 'store';
 import { initializeEditor } from 'utils/editor';
 import { buttonRefs, ButtonRefsContext } from 'utils/hotkeys';
+import { useDebouncedSave } from 'utils/hooks';
 
 import { openOutdatedNotification } from './OutdatedNotification';
 import LayoutHeader from './LayoutHeader';
@@ -24,7 +26,6 @@ const { Header, Content } = Layout;
 
 function ConnectedLayout(props: { children: ReactNode }) {
   const { children } = props;
-  const [timeoutState, setTimeoutState] = useState<number | null>(null);
   const history = useHistory();
   const editor = useMemo(initializeEditor, []) as ReactEditor;
 
@@ -32,14 +33,11 @@ function ConnectedLayout(props: { children: ReactNode }) {
   const dispatch = useDispatch<Dispatch>();
   const { name: pageTitle } =
     useSelector<RootState, Meta>(store.select.collection.nowArticleMeta) || {};
-  const { fragment: value } = useSelector(
+  const { fragment, outdatedNotificationClicked } = useSelector(
     (state: RootState) => state.collection,
   );
-  const outdatedNotificationClicked = useSelector(
-    (state: RootState) => state.collection.outdatedNotificationClicked,
-  );
 
-  const outdatedExisted = !!value.filter((node) => node.outdated).length;
+  const outdatedExisted = !!fragment.filter((node) => node.outdated).length;
 
   useEffect(() => {
     if (outdatedExisted) {
@@ -68,34 +66,19 @@ function ConnectedLayout(props: { children: ReactNode }) {
     }
   }, [dispatch, history, outdatedNotificationClicked]);
 
-  function resetTimeout(id: number | null, newId: any) {
-    if (id) {
-      clearTimeout(id);
-    }
-
-    return newId;
-  }
-
+  const setDirty = useDebouncedSave(['fragment'], 3000, [fragment]);
   function onContentChange(val: Node[]) {
     if (editor.selection) {
       updateLastSelection(editor.selection);
     }
 
     dispatch.collection.setFragment(val);
-
-    setTimeoutState(
-      resetTimeout(
-        timeoutState,
-        setTimeout(() => {
-          dispatch.collection.save({ keys: ['fragment'] });
-        }, 1000),
-      ),
-    );
+    setDirty(true);
   }
 
   return (
     <ButtonRefsContext.Provider value={buttonRefs}>
-      <Editure editor={editor} value={value} onChange={onContentChange}>
+      <Editure editor={editor} value={fragment} onChange={onContentChange}>
         <Affix>
           <DrawerComponent />
         </Affix>

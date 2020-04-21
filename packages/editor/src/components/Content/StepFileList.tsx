@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Tooltip } from 'antd';
 
 /** @jsx jsx */
@@ -8,12 +8,12 @@ import { Container, Draggable, DropResult } from 'react-smooth-dnd';
 
 import IconFont from 'components/IconFont';
 import { Dispatch, RootState, Store } from 'store';
+import { useDebouncedSave } from 'utils/hooks';
 
 type StepFile = { file: string; display: boolean };
 
 function StepFileList() {
   const dispatch = useDispatch<Dispatch>();
-  const [timeoutState, setTimeoutState] = useState<number | null>(null);
   const store = useStore() as Store;
 
   const { nowStepCommit } = useSelector((state: RootState) => state.collection);
@@ -22,13 +22,7 @@ function StepFileList() {
     { fileList: StepFile[]; title: string }
   >(store.select.collection.getStepFileListAndTitle({ commit: nowStepCommit }));
 
-  function resetTimeout(id: number | null, newId: any) {
-    if (id) {
-      clearTimeout(id);
-    }
-
-    return newId;
-  }
+  const setDirty = useDebouncedSave(['fragment'], 500, [fileList, title]);
 
   function onDrop(res: DropResult) {
     const { removedIndex, addedIndex } = res;
@@ -40,14 +34,7 @@ function StepFileList() {
         commit: nowStepCommit,
       });
 
-      setTimeoutState(
-        resetTimeout(
-          timeoutState,
-          setTimeout(() => {
-            dispatch.collection.save({ keys: ['fragment'] });
-          }, 1000),
-        ),
-      );
+      setDirty(true);
     }
   }
 
@@ -59,14 +46,7 @@ function StepFileList() {
         display: !file.display,
       });
 
-      setTimeoutState(
-        resetTimeout(
-          timeoutState,
-          setTimeout(() => {
-            dispatch.collection.save({ keys: ['fragment'], showMessage: true });
-          }, 1000),
-        ),
-      );
+      setDirty(true);
     }
   }
 

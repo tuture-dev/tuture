@@ -15,6 +15,7 @@ import { Dispatch, Store, RootState } from 'store';
 
 import SyntaxHighlighter from '../../Highlight';
 import { ElementProps } from './index';
+import { useDebouncedSave } from 'utils/hooks';
 
 const diffFileStyle = css`
   color: rgba(0, 0, 0, 0.84);
@@ -109,7 +110,6 @@ function DiffBlockElement(props: ElementProps) {
   const { file, commit, hiddenLines = [] } = element;
 
   const [loading, setLoading] = useState(true);
-  const [timeoutState, setTimeoutState] = useState<number | null>(null);
   const dispatch = useDispatch<Dispatch>();
 
   const store = useStore() as Store;
@@ -137,13 +137,7 @@ function DiffBlockElement(props: ElementProps) {
   const isCodeAddition = (i: number) => !diffItem.new && DIFF_ADD.includes(i);
   const isCodeDeletion = (i: number) => !diffItem.new && DIFF_DEL.includes(i);
 
-  function resetTimeout(id: number | null, newId: any) {
-    if (id) {
-      clearTimeout(id);
-    }
-
-    return newId;
-  }
+  const setDirty = useDebouncedSave(['fragment'], 3000, [hiddenLines]);
 
   function onChange(checkedLines: CheckboxValueType[]) {
     const hiddenLines = allLines.filter((line) => !checkedLines.includes(line));
@@ -154,14 +148,7 @@ function DiffBlockElement(props: ElementProps) {
       hiddenLines: unflattenHiddenLines(hiddenLines),
     });
 
-    setTimeoutState(
-      resetTimeout(
-        timeoutState,
-        setTimeout(() => {
-          dispatch.collection.save({ keys: ['fragment'] });
-        }, 1000),
-      ),
-    );
+    setDirty(true);
   }
 
   return (
