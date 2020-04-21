@@ -18,13 +18,12 @@ import { FormComponentProps } from 'antd/lib/form';
 import { useDispatch, useSelector, useStore } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { History } from 'history';
-import { Article, Step, Meta, randHex, getHeadings } from '@tuture/core';
+import { Article, Meta, randHex } from '@tuture/core';
 
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 
 import { EDIT_ARTICLE } from 'utils/constants';
-import { getArtcleMetaById } from 'utils/collection';
 import { IMAGE_HOSTING_URL } from 'utils/image';
 import { RootState, Store, Dispatch } from 'store';
 
@@ -205,7 +204,7 @@ function CreateEditArticle(props: CreateEditArticleProps) {
 
         dispatch.drawer.setChildrenVisible(false);
         dispatch.drawer.setVisible(false);
-        dispatch.collection.save({ keys: ['articles', 'nowSteps'] });
+        dispatch.collection.save({ keys: ['articles', 'fragment'] });
       }
     });
   }

@@ -10,9 +10,9 @@ import { Meta } from '@tuture/core';
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 
-import { Store, Dispatch, RootState } from '../../store';
-import { initializeEditor } from '../../utils/editor';
-import { buttonRefs, ButtonRefsContext } from '../../utils/hotkeys';
+import { Store, Dispatch, RootState } from 'store';
+import { initializeEditor } from 'utils/editor';
+import { buttonRefs, ButtonRefsContext } from 'utils/hotkeys';
 
 import { openOutdatedNotification } from './OutdatedNotification';
 import LayoutHeader from './LayoutHeader';
@@ -32,7 +32,7 @@ function ConnectedLayout(props: { children: ReactNode }) {
   const dispatch = useDispatch<Dispatch>();
   const { name: pageTitle } =
     useSelector<RootState, Meta>(store.select.collection.nowArticleMeta) || {};
-  const { nowSteps: value } = useSelector(
+  const { fragment: value } = useSelector(
     (state: RootState) => state.collection,
   );
   const outdatedNotificationClicked = useSelector(
@@ -81,13 +81,13 @@ function ConnectedLayout(props: { children: ReactNode }) {
       updateLastSelection(editor.selection);
     }
 
-    dispatch.collection.setNowSteps(val);
+    dispatch.collection.setFragment(val);
 
     setTimeoutState(
       resetTimeout(
         timeoutState,
         setTimeout(() => {
-          dispatch.collection.save({ keys: ['nowSteps'] });
+          dispatch.collection.save({ keys: ['fragment'] });
         }, 1000),
       ),
     );

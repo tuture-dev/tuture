@@ -158,7 +158,7 @@ function DiffBlockElement(props: ElementProps) {
       resetTimeout(
         timeoutState,
         setTimeout(() => {
-          dispatch.collection.save({ keys: ['nowSteps'] });
+          dispatch.collection.save({ keys: ['fragment'] });
         }, 1000),
       ),
     );

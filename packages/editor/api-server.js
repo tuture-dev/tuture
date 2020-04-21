@@ -99,29 +99,29 @@ app.delete('/articles/:articleId', (req, res) => {
   res.json({ success: true });
 });
 
-app.get('/steps', (req, res) => {
+app.get('/fragment', (req, res) => {
   const { articleId } = req.query;
 
-  let flattenedSteps;
+  let fragment;
 
   if (articleId) {
-    flattenedSteps = flattenSteps(
+    fragment = flattenSteps(
       collection.steps.filter((step) => step.articleId === articleId),
     );
   } else {
-    flattenedSteps = flattenSteps(collection.steps);
+    fragment = flattenSteps(collection.steps);
   }
 
-  res.json(flattenedSteps);
+  res.json(fragment);
 });
 
-app.put('/steps', (req, res) => {
-  const flattenedSteps = req.body;
-  const unflattenedSteps = unflattenSteps(flattenedSteps);
+app.put('/fragment', (req, res) => {
+  const fragment = req.body;
+  const updatedSteps = unflattenSteps(fragment);
 
   collection.steps = collection.steps.map(
     (step) =>
-      unflattenedSteps.filter((node) =>
+      updatedSteps.filter((node) =>
         isCommitEqual(node.commit, step.commit),
       )[0] || step,
   );
@@ -134,7 +134,7 @@ app.put('/steps', (req, res) => {
 app.get('/collection-steps', (_, res) => {
   const { steps, articles } = collection;
 
-  const getArtcleMetaById = (articleId = '', articles = []) => {
+  const getArticleIndexAndName = (articleId = '', articles = []) => {
     let targetArticleIndex = 0;
     const targetArticle = articles.filter((article, index) => {
       if (article.id === articleId) {
@@ -155,7 +155,7 @@ app.get('/collection-steps', (_, res) => {
     id: step.id,
     articleId: step.articleId,
     title: getHeadings([step])[0].title,
-    ...getArtcleMetaById(step.articleId || '', articles),
+    ...getArticleIndexAndName(step.articleId || '', articles),
   }));
 
   res.json(collectionSteps);
@@ -270,9 +270,11 @@ app.get('/remotes', (_, res) => {
   ]);
 });
 
-app.post('/save', (req, res) => {
-  fs.writeFileSync(collectionPath, JSON.stringify(req.body, null, 2));
-  res.sendStatus(200);
+app.put('/remotes', (req, res) => {
+  collection.remotes = req.body;
+  saveCollection();
+
+  res.json(collection.remotes);
 });
 
 app.get('/sync', (req, res) => {

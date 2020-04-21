@@ -30,7 +30,7 @@ export type CollectionState = {
   nowArticleId: string | null;
   editArticleId: string | null;
   nowStepCommit: string | null;
-  nowSteps: Node[];
+  fragment: Node[];
   remotes: Remote[];
   lastSaved: Date | null;
   saveFailed: boolean;
@@ -43,7 +43,7 @@ const initialState: CollectionState = {
   nowArticleId: null,
   editArticleId: '',
   nowStepCommit: null,
-  nowSteps: [{ type: F.PARAGRAPH, children: [{ text: '' }] }],
+  fragment: [{ type: F.PARAGRAPH, children: [{ text: '' }] }],
   remotes: [],
   lastSaved: null,
   saveFailed: false,
@@ -65,7 +65,7 @@ export const collection = {
       state.nowArticleId = articleId;
 
       if (articleId) {
-        state.nowStepCommit = state.nowSteps.filter(
+        state.nowStepCommit = state.fragment.filter(
           (step) => step.articleId === articleId,
         )[0]?.commit;
       }
@@ -87,11 +87,6 @@ export const collection = {
         });
       }
 
-      // Set collection meta if this is the only article.
-      if (state.meta && state.articles.length === 1) {
-        state.meta = { ...state.meta, ...props };
-      }
-
       return state;
     },
     setDiffItemHiddenLines(
@@ -104,7 +99,7 @@ export const collection = {
     ) {
       const { file, commit, hiddenLines } = payload;
 
-      for (const node of state.nowSteps) {
+      for (const node of state.fragment) {
         if (
           node.type === DIFF_BLOCK &&
           node.file === file &&
@@ -122,9 +117,9 @@ export const collection = {
       payload: { removedIndex: number; addedIndex: number; commit: string },
     ) {
       const { removedIndex, addedIndex, commit } = payload;
-      const unflattenedNowSteps = unflatten(state.nowSteps);
+      const steps = unflatten(state.fragment);
 
-      unflattenedNowSteps.forEach((step) => {
+      steps.forEach((step) => {
         if (isCommitEqual(step.commit, commit)) {
           const oldFile = step.children[removedIndex + 2];
           step.children.splice(removedIndex + 2, 1);
@@ -132,12 +127,12 @@ export const collection = {
         }
       });
 
-      state.nowSteps = flatten(unflattenedNowSteps);
+      state.fragment = flatten(steps);
 
       return state;
     },
-    setNowSteps(state: CollectionState, fragment: Node[]) {
-      state.nowSteps = fragment;
+    setFragment(state: CollectionState, fragment: Node[]) {
+      state.fragment = fragment;
       return state;
     },
     setNowStepCommit(state: CollectionState, commit: string) {
@@ -148,9 +143,9 @@ export const collection = {
       state: CollectionState,
       payload: { commit: string; file: string; display: boolean },
     ) {
-      let unflattenedNowSteps = unflatten(state.nowSteps);
+      let steps = unflatten(state.fragment);
 
-      unflattenedNowSteps = unflattenedNowSteps.map((step) => {
+      steps = steps.map((step) => {
         if (isCommitEqual(step.commit, payload.commit)) {
           step.children.map((node) => {
             if (node.type === FILE && node?.file === payload.file) {
@@ -163,7 +158,7 @@ export const collection = {
         return step;
       });
 
-      state.nowSteps = flatten(unflattenedNowSteps);
+      state.fragment = flatten(steps);
 
       return state;
     },
@@ -197,7 +192,7 @@ export const collection = {
     ) {
       const { stepId, stepProps } = payload;
 
-      state.nowSteps = state.nowSteps.map((node) =>
+      state.fragment = state.fragment.map((node) =>
         node.type === 'step' && node.id === stepId
           ? { ...node, ...stepProps }
           : node,
@@ -216,9 +211,6 @@ export const collection = {
     setOutdatedNotificationClicked(state: CollectionState, payload: boolean) {
       state.outdatedNotificationClicked = payload;
       return state;
-    },
-    deleteStep(state: CollectionState, stepId: string) {
-      throw new Error('deleteStep not implemented');
     },
   },
   effects: (dispatch: Dispatch) => ({
@@ -242,7 +234,7 @@ export const collection = {
     async fetchNowSteps(_: null, rootState: RootState) {
       const { nowArticleId } = rootState.collection;
 
-      let url = '/steps';
+      let url = '/fragment';
       if (nowArticleId) {
         url = url + `?articleId=${nowArticleId}`;
       }
@@ -250,17 +242,19 @@ export const collection = {
       const response = await fetch(url);
       const data: Node[] = await response.json();
 
-      dispatch.collection.setNowSteps(data);
+      dispatch.collection.setFragment(data);
     },
     async save(
       payload: {
-        keys?: Array<'meta' | 'articles' | 'nowSteps'>;
+        keys?: Array<'meta' | 'articles' | 'fragment' | 'remotes'>;
         showMessage?: boolean;
       },
       rootState: RootState,
     ) {
-      const { keys = ['meta', 'articles', 'nowSteps'], showMessage } =
-        payload || {};
+      const {
+        keys = ['meta', 'articles', 'fragment', 'remotes'],
+        showMessage,
+      } = payload || {};
 
       let success: boolean = false;
 
@@ -277,10 +271,16 @@ export const collection = {
           success = await saveData(articles, '/articles');
         }
       }
-      if (keys.includes('nowSteps')) {
-        const { nowSteps } = rootState.collection;
-        if (nowSteps) {
-          success = await saveData(nowSteps, '/steps');
+      if (keys.includes('fragment')) {
+        const { fragment } = rootState.collection;
+        if (fragment) {
+          success = await saveData(fragment, '/fragment');
+        }
+      }
+      if (keys.includes('remotes')) {
+        const { remotes } = rootState.collection;
+        if (remotes) {
+          success = await saveData(remotes, '/remotes');
         }
       }
 
@@ -325,7 +325,7 @@ export const collection = {
     },
     nowArticleCatalogue() {
       return slice((collectionState: CollectionState) => {
-        return getHeadings(collectionState.nowSteps);
+        return getHeadings(collectionState.fragment);
       });
     },
     getArticleMetaById: hasProps((__: any, props: { id: string }) => {
@@ -344,7 +344,7 @@ export const collection = {
         let title = '';
         let fileList: { file: string; display: boolean }[] = [];
 
-        collectionState.nowSteps.forEach((node) => {
+        collectionState.fragment.forEach((node) => {
           switch (node.type) {
             case STEP: {
               if (isCommitEqual(node.commit, commit)) {
