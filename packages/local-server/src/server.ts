@@ -2,22 +2,35 @@ import cp from 'child_process';
 import fs from 'fs-extra';
 import path from 'path';
 import logger from 'morgan';
-import express from 'express';
-import simplegit from 'simple-git/promise';
-import { DIFF_PATH, TUTURE_ROOT } from '@tuture/core';
+import express, { Express } from 'express';
 
-import { loadCollection, saveCollection } from './collection';
+import {
+  createArticlesRouter,
+  createCollectionStepsRouter,
+  createDiffRouter,
+  createFragmentRouter,
+  createMetaRouter,
+  createRemotesRouter,
+  createTocRouter,
+} from './routes';
+import TaskQueue from './utils/task-queue';
 
 // Editor path
 const EDITOR_PATH = path.join(__dirname, 'editor');
 const EDITOR_STATIC_PATH = path.join(EDITOR_PATH, 'static');
 
-const workspace = process.env.TUTURE_PATH || process.cwd();
-const diffPath = path.join(workspace, TUTURE_ROOT, DIFF_PATH);
+export interface ServerOptions {
+  mockRoutes?: (app: Express) => void;
+}
 
-export const makeServer = () => {
+export const makeServer = (options?: ServerOptions) => {
   const app = express();
-  const git = simplegit().silent(true);
+  const queue = new TaskQueue();
+
+  // Make sure the task queue is flushed
+  process.on('exit', () => queue.flush());
+
+  const { mockRoutes } = options || {};
 
   if (process.env.NODE_ENV === 'development') {
     app.use(logger('dev'));
@@ -27,25 +40,19 @@ export const makeServer = () => {
   app.use(express.urlencoded({ extended: false }));
   app.use('/static', express.static(EDITOR_STATIC_PATH));
 
-  app.get('/diff', (_, res) => {
-    res.json(JSON.parse(fs.readFileSync(diffPath).toString()));
-  });
+  // Register mocking routes. This will override real routes below.
+  // (For development purposes only.)
+  if (mockRoutes) {
+    mockRoutes(app);
+  }
 
-  app.get('/collection', (_, res) => {
-    res.json(loadCollection());
-  });
-
-  app.get('/remotes', (_, res) => {
-    git
-      .getRemotes(true)
-      .then((remotes) => res.json(remotes))
-      .catch((err) => res.status(500).json(err));
-  });
-
-  app.post('/save', (req, res) => {
-    saveCollection(req.body);
-    res.sendStatus(200);
-  });
+  app.use('/articles', createArticlesRouter(queue));
+  app.use('/collection-steps', createCollectionStepsRouter(queue));
+  app.use('/diff', createDiffRouter());
+  app.use('/fragment', createFragmentRouter(queue));
+  app.use('/meta', createMetaRouter(queue));
+  app.use('/remotes', createRemotesRouter(queue));
+  app.use('/toc', createTocRouter(queue));
 
   app.get('/sync', async (req, res) => {
     cp.execFile('tuture', ['sync'], {}, (err) => {
