@@ -1,11 +1,11 @@
 import React from 'react';
 import { Anchor, Divider } from 'antd';
 import { useDispatch, useSelector, useStore } from 'react-redux';
+import { HeadingItem } from '@tuture/core';
 
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 import { Dispatch, Store, RootState } from 'store';
-import { HeadingItem } from 'types';
 
 const { Link } = Anchor;
 

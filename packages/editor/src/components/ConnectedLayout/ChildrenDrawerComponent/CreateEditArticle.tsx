@@ -19,6 +19,7 @@ import { useDispatch, useSelector, useStore } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { History } from 'history';
 import { Article, Meta, randHex } from '@tuture/core';
+import { CollectionStep } from '@tuture/local-server';
 
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
@@ -56,15 +57,6 @@ function showDeleteConfirm(
     },
   });
 }
-
-type CollectionStep = {
-  key: string;
-  id: string;
-  title: string;
-  articleId?: string | null;
-  articleIndex: number;
-  articleName: string;
-};
 
 type CreateEditArticleValueType = {
   cover: UploadProps;

@@ -2,6 +2,7 @@ import { Router } from 'express';
 import { getHeadings, Article } from '@tuture/core';
 
 import TaskQueue from '../utils/task-queue';
+import { CollectionStep } from '../types';
 
 export function createCollectionStepsRouter(queue: TaskQueue) {
   const router = Router();
@@ -31,7 +32,7 @@ export function createCollectionStepsRouter(queue: TaskQueue) {
       articleId: step.articleId,
       title: getHeadings([step])[0].title,
       ...getArticleIndexAndName(step.articleId || '', articles),
-    }));
+    })) as CollectionStep[];
 
     res.json(collectionSteps);
   });

@@ -1,15 +1,15 @@
 import { message } from 'antd';
+import { TocItem, TocStepItem } from '@tuture/local-server';
 
 import { Dispatch, RootState } from '../store';
-import { TocStepItem } from '../types';
 import { saveData } from '../utils/request';
 
 export type TocState = {
   isSaving: boolean;
   activeArticle: string;
   needDeleteOutdatedStepList: string[];
-  articleStepList?: TocStepItem[];
-  unassignedStepList?: TocStepItem[];
+  articleStepList: TocItem[];
+  unassignedStepList: TocStepItem[];
   deleteOutdatedStepList?: TocStepItem[];
 };
 
@@ -94,7 +94,7 @@ export const toc = {
       const { nowArticleId = '' } = rootState.collection;
 
       const nowArticleIdList = articleStepList
-        .filter((item) => !item.articleId)
+        .filter((item) => item.type === 'article')
         .map((item) => item.id);
 
       if (nowArticleId && !nowArticleIdList.includes(nowArticleId)) {

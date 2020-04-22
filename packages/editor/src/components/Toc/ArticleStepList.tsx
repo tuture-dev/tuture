@@ -1,8 +1,8 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { message, Modal } from 'antd';
-import classnames from 'classnames';
 import omit from 'lodash.omit';
+import { TocItem, TocStepItem, TocArticleItem } from '@tuture/local-server';
 
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
@@ -19,15 +19,15 @@ import {
 import Caret from './widgets/Caret';
 import OutdatedTag from './widgets/OutdatedTag';
 import DeleteButton from './widgets/DeleteButton';
-import { TocStepItem } from 'types';
 
 const { confirm } = Modal;
 
 function ArticleStepListItem(props: {
-  item: TocStepItem;
+  item: TocItem;
   onDelete: React.MouseEventHandler;
 }) {
   const { item, onDelete } = props;
+  const isItemOutdated = item.type === 'step' && item.outdated;
   const dispatch: Dispatch = useDispatch();
   const { activeArticle } = useSelector((state: RootState) => state.toc);
 
@@ -43,14 +43,11 @@ function ArticleStepListItem(props: {
     <li
       key={item.id}
       onClick={() => {
-        if (item.articleId) {
+        if (item.type === 'step') {
           return;
         }
         toggleActiveArticle(item.id);
       }}
-      className={classnames({
-        [`list-item-${item.articleId}`]: item.articleId,
-      })}
       css={css`
         ${listItemStyle}
         height: 40px;
@@ -68,15 +65,15 @@ function ArticleStepListItem(props: {
         ${activeArticle === item.id && activeListItemStyle}
       `}
     >
-      {!item.articleId && (
+      {item.type === 'article' && (
         <Caret
           type={activeArticle === item.id ? 'caret-down' : 'caret-right'}
         />
       )}
-      {item.outdated && <OutdatedTag />}
+      {isItemOutdated && <OutdatedTag />}
       <span
         css={css`
-          width: ${item.outdated ? '390px' : '430px'};
+          width: ${isItemOutdated ? '390px' : '430px'};
           display: inline-block;
           white-space: nowrap;
           text-overflow: ellipsis;
@@ -85,7 +82,7 @@ function ArticleStepListItem(props: {
       >
         {item.name}
       </span>
-      {item.articleId && (
+      {item.type === 'step' && (
         <span
           className="list-item-tail"
           css={css`
@@ -118,8 +115,8 @@ function ArticleStepList() {
     activeArticle,
   } = useSelector((state: RootState) => state.toc);
 
-  const filteredArticleList = articleStepList.filter((articleStep) => {
-    return !articleStep?.articleId || activeArticle === articleStep.articleId;
+  const filteredArticleList = articleStepList.filter((item) => {
+    return item.type === 'article' || activeArticle === item.articleId;
   });
 
   function handleInsertStep(step: TocStepItem, stepList: TocStepItem[]) {
@@ -128,30 +125,24 @@ function ArticleStepList() {
     );
 
     if (insertIndex > -1) {
-      const newStepList = [
+      return [
         ...stepList.slice(0, insertIndex),
         omit(step, ['articleId']),
         ...stepList.slice(insertIndex),
       ];
-
-      return newStepList;
     } else {
-      const newStepList = stepList.concat(
-        omit(step, ['articleId']) as TocStepItem,
-      );
-
-      return newStepList;
+      return stepList.concat(omit(step, ['articleId']) as TocStepItem);
     }
   }
 
   function handleArticleStepItemDelete(
     e: React.MouseEvent,
-    articleStepItem: TocStepItem,
+    articleStepItem: TocItem,
   ) {
     e.preventDefault();
     e.stopPropagation();
 
-    if (articleStepItem?.articleId) {
+    if (articleStepItem.type === 'step') {
       const newArticleStepList = articleStepList.filter(
         (articleStep) => articleStep.id !== articleStepItem.id,
       );
@@ -171,7 +162,7 @@ function ArticleStepList() {
     }
   }
 
-  function showDeleteConfirm(articleStepItem: TocStepItem) {
+  function showDeleteConfirm(articleStepItem: TocArticleItem) {
     confirm({
       title: `确定删除文章 ${articleStepItem.name}？`,
       okText: '删除',
@@ -183,18 +174,18 @@ function ArticleStepList() {
     });
   }
 
-  function deleteArticle(articleStepItem: TocStepItem) {
+  function deleteArticle(item: TocArticleItem) {
     const stepList = articleStepList.filter(
-      (step) => step?.articleId === articleStepItem.id,
-    );
+      (item) => item.type === 'step' && item.articleId === item.id,
+    ) as TocStepItem[];
     const newUnassignedStepList = stepList.reduce(
       (unassignedStepList, currentStep) =>
         handleInsertStep(currentStep, unassignedStepList),
       unassignedStepList,
     );
     const newArticleStepList = articleStepList
-      .filter((step) => step.articleId !== articleStepItem.id)
-      .filter((step) => step.id !== articleStepItem.id);
+      .filter((step) => step.type === 'step' && step.articleId !== item.id)
+      .filter((step) => step.id !== item.id);
 
     dispatch.toc.setUnassignedStepList(newUnassignedStepList);
     dispatch.toc.setArticleStepList(newArticleStepList);

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { TocStepItem } from '@tuture/local-server';
 
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
@@ -15,7 +16,6 @@ import {
 import OutdatedTag from './widgets/OutdatedTag';
 import AddButton from './widgets/AddButton';
 import DeleteButton from './widgets/DeleteButton';
-import { TocStepItem } from 'types';
 
 const { Search } = Input;
 
@@ -87,9 +87,10 @@ function ReleasedStepList() {
     }
 
     const targetArticleStepIndex = articleStepList.findIndex(
-      (articleStep) =>
-        articleStep.articleId === activeArticle &&
-        articleStep.number > stepItem.number,
+      (item) =>
+        item.type === 'step' &&
+        item.articleId === activeArticle &&
+        item.number > stepItem.number,
     );
 
     // The index to insert this item.
@@ -97,10 +98,10 @@ function ReleasedStepList() {
 
     if (targetArticleStepIndex < 0) {
       const articleIndex = articleStepList.findIndex(
-        (articleStep) => articleStep.id === activeArticle,
+        (item) => item.id === activeArticle,
       );
       const articleStepsLen = articleStepList.filter(
-        (articleStep) => articleStep?.articleId === activeArticle,
+        (item) => item.type === 'step' && item.articleId === activeArticle,
       ).length;
 
       if (articleStepsLen > 0) {

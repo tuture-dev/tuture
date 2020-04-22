@@ -16,3 +16,12 @@ export interface TocStepItem {
 }
 
 export type TocItem = TocArticleItem | TocStepItem;
+
+export interface CollectionStep {
+  key: string;
+  id: string;
+  title: string;
+  articleId?: string | null;
+  articleIndex: number;
+  articleName: string;
+}
