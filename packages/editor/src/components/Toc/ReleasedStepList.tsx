@@ -88,8 +88,8 @@ function ReleasedStepList() {
 
     const targetArticleStepIndex = articleStepList.findIndex(
       (articleStep) =>
-        articleStep?.articleId === activeArticle &&
-        articleStep?.number > stepItem.number,
+        articleStep.articleId === activeArticle &&
+        articleStep.number > stepItem.number,
     );
 
     // The index to insert this item.

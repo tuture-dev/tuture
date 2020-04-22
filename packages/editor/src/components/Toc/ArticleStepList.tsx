@@ -118,10 +118,9 @@ function ArticleStepList() {
     activeArticle,
   } = useSelector((state: RootState) => state.toc);
 
-  const filteredArticleList =
-    (articleStepList || []).filter((articleStep) => {
-      return !articleStep?.articleId || activeArticle === articleStep.articleId;
-    }) || [];
+  const filteredArticleList = articleStepList.filter((articleStep) => {
+    return !articleStep?.articleId || activeArticle === articleStep.articleId;
+  });
 
   function handleInsertStep(step: TocStepItem, stepList: TocStepItem[]) {
     const insertIndex = stepList.findIndex(
@@ -153,7 +152,7 @@ function ArticleStepList() {
     e.stopPropagation();
 
     if (articleStepItem?.articleId) {
-      const newArticleStepList = (articleStepList || [])?.filter(
+      const newArticleStepList = articleStepList.filter(
         (articleStep) => articleStep.id !== articleStepItem.id,
       );
 
@@ -185,16 +184,16 @@ function ArticleStepList() {
   }
 
   function deleteArticle(articleStepItem: TocStepItem) {
-    const stepList = articleStepList?.filter(
+    const stepList = articleStepList.filter(
       (step) => step?.articleId === articleStepItem.id,
     );
-    const newUnassignedStepList = stepList?.reduce(
+    const newUnassignedStepList = stepList.reduce(
       (unassignedStepList, currentStep) =>
         handleInsertStep(currentStep, unassignedStepList),
       unassignedStepList,
     );
     const newArticleStepList = articleStepList
-      ?.filter((step) => step?.articleId !== articleStepItem.id)
+      .filter((step) => step.articleId !== articleStepItem.id)
       .filter((step) => step.id !== articleStepItem.id);
 
     dispatch.toc.setUnassignedStepList(newUnassignedStepList);

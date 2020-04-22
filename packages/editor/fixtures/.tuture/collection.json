@@ -3,8 +3,16 @@
   "description": "Django 作为 Python 社区最受欢迎的 Web 框架之一，凭借其高度抽象的组件和强大方便的脚手架，将快速且流畅的开发体验演绎到了极致。而 Nuxt 作为从 Vue.js 进化而来的前端框架，能够轻松胜任复杂的 SPA（单页应用）开发。两者相遇，能够擦出怎样的火花？这篇教程将用 Django + Nuxt 实现带有完整的增删改查（CRUD）功能的全栈应用。最后郑重警告：不要在深夜阅读此教程！！！",
   "id": "b9b4d831629e9a7df36131b1661569eb",
   "created": "2019-10-18T00:00:00.509Z",
-  "topics": ["Django", "Vue", "Nuxt"],
-  "categories": ["后端", "Python", "进阶"],
+  "topics": [
+    "Django",
+    "Vue",
+    "Nuxt"
+  ],
+  "categories": [
+    "后端",
+    "Python",
+    "进阶"
+  ],
   "articles": [
     {
       "name": "Django + Nuxt 实现美食分享网站（一）",
@@ -45,7 +53,7 @@
               "type": "paragraph",
               "children": [
                 {
-                  "text": "在这一系列教程中，我们将会实现一个全栈美食分享网站，后端用 Django 实现，前端则是 Nuxt 框架，下面是最终完成后的项目效果："
+                  "text": "在这一系列教程中，我们将会实现一个全栈美食分享网站，后端用 Django 实现，前端则是 Nuxt 框架，下面是最终完成后的项目效果：ohuo真的炫"
                 }
               ]
             },
@@ -1459,10 +1467,22 @@
               "file": "api/api/settings.py",
               "commit": "d4d056f",
               "hiddenLines": [
-                [0, 35],
-                [49, 51],
-                [62, 109],
-                [118, 125]
+                [
+                  0,
+                  35
+                ],
+                [
+                  49,
+                  51
+                ],
+                [
+                  62,
+                  109
+                ],
+                [
+                  118,
+                  125
+                ]
               ],
               "children": [
                 {
@@ -2028,7 +2048,12 @@
               "type": "diff-block",
               "file": "api/api/urls.py",
               "commit": "d4d056f",
-              "hiddenLines": [[0, 12]],
+              "hiddenLines": [
+                [
+                  0,
+                  12
+                ]
+              ],
               "children": [
                 {
                   "text": ""
@@ -3616,7 +3641,12 @@
               "type": "diff-block",
               "file": "tuture.yml",
               "commit": "596203d",
-              "hiddenLines": [[0, 5]],
+              "hiddenLines": [
+                [
+                  0,
+                  5
+                ]
+              ],
               "children": [
                 {
                   "text": ""
@@ -4376,7 +4406,12 @@
               "type": "diff-block",
               "file": "tuture.yml",
               "commit": "63f7ab0",
-              "hiddenLines": [[0, 74]],
+              "hiddenLines": [
+                [
+                  0,
+                  74
+                ]
+              ],
               "children": [
                 {
                   "text": ""
@@ -4438,10 +4473,10 @@
       ]
     },
     {
-      "type": "step",
       "commit": "60a60d7",
       "id": "TS_VxEGaGC",
-      "articleId": "425a3a9",
+      "articleId": null,
+      "type": "step",
       "children": [
         {
           "type": "heading-two",
@@ -4469,10 +4504,10 @@
           ]
         },
         {
-          "type": "file",
           "file": "api/api/urls.py",
           "display": true,
-          "id": "vDYjQJQTqK",
+          "commit": "60a60d7",
+          "type": "file",
           "children": [
             {
               "type": "explain",
@@ -4501,7 +4536,12 @@
               "type": "diff-block",
               "file": "api/api/urls.py",
               "commit": "60a60d7",
-              "hiddenLines": [[0, 13]],
+              "hiddenLines": [
+                [
+                  0,
+                  13
+                ]
+              ],
               "children": [
                 {
                   "text": ""
@@ -4552,10 +4592,10 @@
           ]
         },
         {
-          "type": "file",
           "file": "client/nuxt.config.js",
           "display": true,
-          "id": "BNt1lzTgL7",
+          "commit": "60a60d7",
+          "type": "file",
           "children": [
             {
               "type": "explain",
@@ -4600,8 +4640,14 @@
               "file": "client/nuxt.config.js",
               "commit": "60a60d7",
               "hiddenLines": [
-                [0, 47],
-                [55, 63]
+                [
+                  0,
+                  47
+                ],
+                [
+                  55,
+                  63
+                ]
               ],
               "children": [
                 {
@@ -4626,10 +4672,10 @@
           ]
         },
         {
-          "type": "file",
           "file": "client/pages/recipes/index.vue",
           "display": true,
-          "id": "dmR8Rjp0gr",
+          "commit": "60a60d7",
+          "type": "file",
           "children": [
             {
               "type": "explain",
@@ -4678,10 +4724,22 @@
               "file": "client/pages/recipes/index.vue",
               "commit": "60a60d7",
               "hiddenLines": [
-                [0, 17],
-                [57, 59],
-                [78, 78],
-                [97, 100]
+                [
+                  0,
+                  17
+                ],
+                [
+                  57,
+                  59
+                ],
+                [
+                  78,
+                  78
+                ],
+                [
+                  97,
+                  100
+                ]
               ],
               "children": [
                 {
@@ -4706,10 +4764,10 @@
           ]
         },
         {
-          "type": "file",
           "file": "client/pages/recipes/_id/index.vue",
           "display": true,
-          "id": "z5qmdKM1fi",
+          "commit": "60a60d7",
+          "type": "file",
           "children": [
             {
               "type": "explain",
@@ -4829,10 +4887,10 @@
       ]
     },
     {
-      "type": "step",
       "commit": "5f1edd9",
       "id": "UrPiWOoIpE",
       "articleId": "425a3a9",
+      "type": "step",
       "children": [
         {
           "type": "heading-two",
@@ -4874,10 +4932,10 @@
           ]
         },
         {
-          "type": "file",
           "file": "client/pages/recipes/_id/edit.vue",
           "display": true,
-          "id": "2_cocQ4iDf",
+          "commit": "5f1edd9",
+          "type": "file",
           "children": [
             {
               "type": "explain",
@@ -4935,10 +4993,10 @@
           ]
         },
         {
-          "type": "file",
           "file": "client/pages/recipes/add.vue",
           "display": true,
-          "id": "hzZsV0ukfo",
+          "commit": "5f1edd9",
+          "type": "file",
           "children": [
             {
               "type": "explain",
@@ -5059,10 +5117,10 @@
       ]
     },
     {
-      "type": "step",
       "commit": "04edf4c",
       "id": "CJ_LghWO99",
       "articleId": "425a3a9",
+      "type": "step",
       "children": [
         {
           "type": "heading-two",
@@ -5090,10 +5148,10 @@
           ]
         },
         {
-          "type": "file",
           "file": "client/assets/css/transition.css",
           "display": true,
-          "id": "pn-dzKR5_c",
+          "commit": "04edf4c",
+          "type": "file",
           "children": [
             {
               "type": "explain",
@@ -5137,10 +5195,10 @@
           ]
         },
         {
-          "type": "file",
           "file": "client/nuxt.config.js",
           "display": true,
-          "id": "ovATRPQUWe",
+          "commit": "04edf4c",
+          "type": "file",
           "children": [
             {
               "type": "explain",
@@ -5161,8 +5219,14 @@
               "file": "client/nuxt.config.js",
               "commit": "04edf4c",
               "hiddenLines": [
-                [0, 21],
-                [29, 64]
+                [
+                  0,
+                  21
+                ],
+                [
+                  29,
+                  64
+                ]
               ],
               "children": [
                 {
@@ -5209,7 +5273,12 @@
               "type": "diff-block",
               "file": "tuture.yml",
               "commit": "04edf4c",
-              "hiddenLines": [[0, 126]],
+              "hiddenLines": [
+                [
+                  0,
+                  126
+                ]
+              ],
               "children": [
                 {
                   "text": ""
@@ -5249,5 +5318,6 @@
       ]
     }
   ],
-  "version": "v1"
+  "version": "v1",
+  "remotes": []
 }
