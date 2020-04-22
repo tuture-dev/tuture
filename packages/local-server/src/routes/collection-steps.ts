@@ -22,7 +22,7 @@ export function createCollectionStepsRouter(queue: TaskQueue) {
 
       return {
         articleIndex: targetArticleIndex,
-        articleName: targetArticle.name || '',
+        articleName: targetArticle?.name || '',
       };
     };
 
