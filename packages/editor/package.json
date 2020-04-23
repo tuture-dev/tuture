@@ -36,7 +36,8 @@
     "refractor": "^2.10.1"
   },
   "scripts": {
-    "start": "cross-env TUTURE_PATH=fixtures concurrently \"node api-server.js\" \"react-app-rewired start\"",
+    "start:api": "cross-env TUTURE_PATH=fixtures NODE_ENV=development node api-server.js",
+    "start": "concurrently \"yarn start:api\" \"react-app-rewired start\"",
     "build": "react-app-rewired build",
     "analyze": "source-map-explorer 'build/static/js/*.js'",
     "test": "react-app-rewired test",

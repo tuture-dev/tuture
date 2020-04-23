@@ -2,7 +2,7 @@ import { Router } from 'express';
 import { getStepTitle } from '@tuture/core';
 import pick from 'lodash.pick';
 
-import { TocStepItem, TocItem, TocArticleItem } from '../types';
+import { TocStepItem, TocArticleItem, TocItem } from '../types';
 import TaskQueue from '../utils/task-queue';
 
 interface TocUpdateBody {
@@ -44,10 +44,11 @@ export function createTocRouter(queue: TaskQueue) {
       .map((step) => ({
         id: step.id,
         outdated: step.outdated,
+        type: 'step',
         level: 1,
         number: steps.findIndex(({ id }) => step.id === id),
         name: getStepTitle(step),
-      }));
+      })) as TocStepItem[];
 
     res.json({ articleStepList, unassignedStepList });
   });
@@ -70,8 +71,8 @@ export function createTocRouter(queue: TaskQueue) {
 
       // handle step allocation
       const nowAllocationStepList = articleStepList.filter(
-        (item) => item.type === 'step' && item.articleId,
-      );
+        (item) => item.type === 'step',
+      ) as TocStepItem[];
       const nowAllocationStepIdList = nowAllocationStepList.map(
         (item) => item.id,
       );
@@ -80,9 +81,9 @@ export function createTocRouter(queue: TaskQueue) {
       steps = steps
         .map((step) => {
           if (nowAllocationStepIdList.includes(step.id)) {
-            step.articleId = (nowAllocationStepList.filter(
+            step.articleId = nowAllocationStepList.filter(
               (item) => item.id === step.id,
-            )[0] as TocStepItem).articleId;
+            )[0].articleId;
           }
           if (unassignedStepIdList.includes(step.id)) {
             step.articleId = null;
