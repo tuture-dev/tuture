@@ -7,12 +7,12 @@ import { Dispatch } from '../store';
 
 export type SyncState = {
   syncVisible: boolean;
-  remotes: Remote[];
+  gitRemotes: Remote[];
 };
 
 const initialState: SyncState = {
   syncVisible: false,
-  remotes: [],
+  gitRemotes: [],
 };
 
 export const sync = {
@@ -21,8 +21,8 @@ export const sync = {
     setSyncVisible(state: SyncState, visible: boolean) {
       state.syncVisible = visible;
     },
-    setRemotes(state: SyncState, remotes: Remote[]) {
-      state.remotes = remotes;
+    setGitRemotes(state: SyncState, remotes: Remote[]) {
+      state.gitRemotes = remotes;
     },
   },
   effects: (dispatch: Dispatch) => ({
@@ -58,11 +58,11 @@ export const sync = {
         }
       }
     },
-    async fetchRemotes() {
-      const response = await fetch('/remotes');
+    async fetchGitRemotes() {
+      const response = await fetch('/remotes?fromGit=true');
       const body = await response.json();
 
-      dispatch.sync.setRemotes(body as Remote[]);
+      dispatch.sync.setGitRemotes(body as Remote[]);
     },
   }),
 };

@@ -1,38 +1,17 @@
 const { makeServer } = require('@tuture/local-server');
+const mockRemotes = require('./fixtures/mock-remotes.json');
 
 const PORT = 8000;
 
 const app = makeServer({
   mockRoutes: (app) => {
-    app.get('/remotes', (_, res) => {
-      res.json([
-        {
-          name: 'origin',
-          refs: {
-            fetch: 'https://github.com/tuture-dev/tuture.git',
-            push: 'https://github.com/tuture-dev/tuture.git',
-          },
-        },
-        {
-          name: 'gitlab',
-          refs: {
-            fetch: 'https://gitlab.com/tuture-dev/tuture.git',
-            push: 'https://gitlab.com/tuture-dev/tuture.git',
-          },
-        },
-        {
-          name: 'coding',
-          refs: {
-            fetch: 'https://e.coding.net/tuture-dev/tuture.git',
-            push: 'https://e.coding.net/tuture-dev/tuture.git',
-          },
-        },
-      ]);
+    app.get('/remotes', (req, res) => {
+      res.json(mockRemotes);
     });
 
     app.get('/sync', (req, res) => {
       setTimeout(() => {
-        res.sendStatus(500);
+        res.sendStatus(200);
       }, 2000);
     });
   },

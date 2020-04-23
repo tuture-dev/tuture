@@ -10,13 +10,13 @@ import { App } from '../components';
 
 function Home() {
   const dispatch: Dispatch = useDispatch();
-  const { fetchMeta, fetchArticles, fetchNowSteps } = useSelector(
+  const { fetchMeta, fetchArticles, fetchFragment } = useSelector(
     (state: RootState) => state.loading.effects.collection,
   );
-  const loading = fetchMeta || fetchArticles || fetchNowSteps;
+  const loading = fetchMeta || fetchArticles || fetchFragment;
 
   useEffect(() => {
-    dispatch.collection.fetchNowSteps();
+    dispatch.collection.fetchFragment();
   }, [dispatch]);
 
   return (

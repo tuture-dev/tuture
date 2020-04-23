@@ -80,7 +80,7 @@ const ListHeader = () => (
 );
 
 const CommitModal = () => {
-  const { syncVisible, remotes: allRemotes } = useSelector(
+  const { syncVisible, gitRemotes } = useSelector(
     (state: RootState) => state.sync,
   );
   const { remotes } = useSelector((state: RootState) => state.collection);
@@ -92,9 +92,10 @@ const CommitModal = () => {
 
   useEffect(() => {
     if (syncVisible) {
-      dispatch.sync.fetchRemotes();
+      dispatch.collection.fetchRemotes();
+      dispatch.sync.fetchGitRemotes();
     }
-  }, [dispatch.sync, syncVisible]);
+  }, [dispatch, syncVisible]);
 
   useEffect(() => {
     if (remoteNames.length > 0 && checkedRemotes.length === 0) {
@@ -108,7 +109,7 @@ const CommitModal = () => {
 
   const handleOk = () => {
     dispatch.collection.setRemotes(
-      allRemotes.filter(({ name }) => checkedRemotes.includes(name)),
+      gitRemotes.filter(({ name }) => checkedRemotes.includes(name)),
     );
 
     if (checkedRemotes.length === 0) {
@@ -144,7 +145,7 @@ const CommitModal = () => {
       >
         <List
           header={<ListHeader />}
-          dataSource={allRemotes}
+          dataSource={gitRemotes}
           renderItem={(item) => (
             <List.Item
               css={css`

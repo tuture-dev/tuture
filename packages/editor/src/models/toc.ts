@@ -103,7 +103,7 @@ export const toc = {
 
       // Update collection data.
       await dispatch.collection.fetchArticles();
-      await dispatch.collection.fetchNowSteps();
+      await dispatch.collection.fetchFragment();
 
       message.success('目录保存成功');
     },

@@ -233,7 +233,7 @@ export const collection = {
         dispatch.collection.setNowArticle(data[0].id);
       }
     },
-    async fetchNowSteps(_: null, rootState: RootState) {
+    async fetchFragment(_: null, rootState: RootState) {
       const { nowArticleId } = rootState.collection;
 
       let url = '/fragment';
@@ -245,6 +245,12 @@ export const collection = {
       const data: Node[] = await response.json();
 
       dispatch.collection.setFragment(data);
+    },
+    async fetchRemotes() {
+      const response = await fetch('/remotes');
+      const data: Remote[] = await response.json();
+
+      dispatch.collection.setRemotes(data);
     },
     async save(
       payload: {
@@ -303,7 +309,7 @@ export const collection = {
       if (response.ok) {
         // Update collection data.
         await dispatch.collection.fetchArticles();
-        await dispatch.collection.fetchNowSteps();
+        await dispatch.collection.fetchFragment();
       }
     },
   }),

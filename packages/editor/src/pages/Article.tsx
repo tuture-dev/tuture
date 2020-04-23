@@ -12,17 +12,17 @@ import { Dispatch, RootState } from '../store';
 
 function Article() {
   const dispatch: Dispatch = useDispatch();
-  const { fetchMeta, fetchArticles, fetchNowSteps } = useSelector(
+  const { fetchMeta, fetchArticles, fetchFragment } = useSelector(
     (state: RootState) => state.loading.effects.collection,
   );
-  const loading = fetchMeta || fetchArticles || fetchNowSteps;
+  const loading = fetchMeta || fetchArticles || fetchFragment;
 
   const match = useRouteMatch('/articles/:id');
   const { id = '' }: any = match?.params;
 
   useEffect(() => {
     dispatch.collection.setNowArticle(id);
-    dispatch.collection.fetchNowSteps();
+    dispatch.collection.fetchFragment();
   }, [dispatch, id]);
 
   return (

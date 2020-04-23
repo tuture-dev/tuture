@@ -75,7 +75,7 @@ function CollectionCatalogue() {
     setSelectItem(articleId);
     dispatch.collection.setNowArticle(articleId);
     dispatch.collection
-      .fetchNowSteps()
+      .fetchFragment()
       .then(() => dispatch.drawer.setVisible(false));
   }
 
