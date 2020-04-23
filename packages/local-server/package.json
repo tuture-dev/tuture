@@ -9,6 +9,9 @@
     "dist/"
   ],
   "license": "MIT",
+  "scripts": {
+    "prepack": "rimraf dist/editor && cp -r ../editor/build dist/editor"
+  },
   "dependencies": {
     "@tuture/core": "*",
     "express": "^4.16.3",
