@@ -6,18 +6,12 @@ export function createFragmentRouter(queue: TaskQueue) {
   const router = Router();
 
   router.get('/', (req, res) => {
-    const { articleId } = req.query;
-    const { steps } = queue.readCollection();
+    const { articles, steps } = queue.readCollection();
+    const { articleId = articles[0].id } = req.query;
 
-    let fragment;
-
-    if (articleId) {
-      fragment = flattenSteps(
-        steps.filter((step) => step.articleId === articleId),
-      );
-    } else {
-      fragment = flattenSteps(steps);
-    }
+    const fragment = flattenSteps(
+      steps.filter((step) => step.articleId === articleId),
+    );
 
     res.json(fragment);
   });
