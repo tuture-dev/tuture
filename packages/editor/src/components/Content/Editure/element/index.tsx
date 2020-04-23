@@ -130,6 +130,6 @@ export default (props: ElementProps) => {
       return <div style={{ display: 'none' }}></div>;
 
     default:
-      return <p {...attributes}>{children}</p>;
+      return <div {...attributes}>{children}</div>;
   }
 };
