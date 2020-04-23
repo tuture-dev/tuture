@@ -1,0 +1,5323 @@
+{
+  "name": "Django + Nuxt 实现美食分享网站",
+  "description": "Django 作为 Python 社区最受欢迎的 Web 框架之一，凭借其高度抽象的组件和强大方便的脚手架，将快速且流畅的开发体验演绎到了极致。而 Nuxt 作为从 Vue.js 进化而来的前端框架，能够轻松胜任复杂的 SPA（单页应用）开发。两者相遇，能够擦出怎样的火花？这篇教程将用 Django + Nuxt 实现带有完整的增删改查（CRUD）功能的全栈应用。最后郑重警告：不要在深夜阅读此教程！！！",
+  "id": "b9b4d831629e9a7df36131b1661569eb",
+  "created": "2019-10-18T00:00:00.509Z",
+  "topics": [
+    "Django",
+    "Vue",
+    "Nuxt"
+  ],
+  "categories": [
+    "后端",
+    "Python",
+    "进阶"
+  ],
+  "articles": [
+    {
+      "name": "Django + Nuxt 实现美食分享网站（一）",
+      "description": "Django 作为 Python 社区最受欢迎的 Web 框架之一，凭借其高度抽象的组件和强大方便的脚手架，将快速且流畅的开发体验演绎到了极致。而 Nuxt 作为从 Vue.js 进化而来的前端框架，能够轻松胜任复杂的 SPA（单页应用）开发。两者相遇，能够擦出怎样的火花？这篇教程将用 Django + Nuxt 实现带有完整的增删改查（CRUD）功能的全栈应用。最后郑重警告：不要在深夜阅读此教程！！！",
+      "cover": "https://imgkr.cn-bj.ufileos.com/fbc20222-8273-4e5f-88a1-861e91418b6d.jpg",
+      "id": "0818be0"
+    },
+    {
+      "name": "Django + Nuxt 实现美食分享网站（二）",
+      "description": "在本教程的上一部分中，我们分别用 Django 和 Nuxt 实现了后端和前端的雏形。在这一部分，我们将实现前后端之间的通信，使得前端可以从后端获取数据，并且将进一步丰富网站的功能。",
+      "cover": "https://imgkr.cn-bj.ufileos.com/f5ae8b83-5c13-4960-bfcc-253a499a3bc1.jpg",
+      "id": "425a3a9"
+    }
+  ],
+  "steps": [
+    {
+      "commit": "c64b3b6",
+      "id": "ls5qic7Y",
+      "articleId": "0818be0",
+      "type": "step",
+      "children": [
+        {
+          "type": "heading-two",
+          "commit": "c64b3b6",
+          "id": "ubr3gz3eo",
+          "fixed": true,
+          "children": [
+            {
+              "text": "项目初始化"
+            }
+          ]
+        },
+        {
+          "type": "explain",
+          "fixed": true,
+          "children": [
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "在这一系列教程中，我们将会实现一个全栈美食分享网站，后端用 Django 实现，前端则是 Nuxt 框架，下面是最终完成后的项目效果：ohuo真的炫"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "type": "image",
+                  "url": "https://imgkr.cn-bj.ufileos.com/4dd9ef8f-ec25-4473-8a78-b52d09ae77fa.gif",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "heading-three",
+              "children": [
+                {
+                  "text": "预备知识"
+                }
+              ],
+              "id": "jFLDCefLy"
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "本教程假定你已经知道了"
+                }
+              ]
+            },
+            {
+              "type": "bulleted-list",
+              "children": [
+                {
+                  "type": "list-item",
+                  "children": [
+                    {
+                      "text": "基本的 Python 3 语言知识，包括使用 pip 安装包"
+                    }
+                  ],
+                  "parent": "bulleted-list",
+                  "level": 0
+                },
+                {
+                  "type": "list-item",
+                  "children": [
+                    {
+                      "text": "Django 框架的基础概念（MTV 架构），可参考这篇"
+                    },
+                    {
+                      "link": true,
+                      "url": "https://tuture.co/2019/11/19/55d393c/",
+                      "text": "快速入门教程"
+                    },
+                    {
+                      "text": "进行学习"
+                    }
+                  ],
+                  "parent": "bulleted-list",
+                  "level": 0
+                },
+                {
+                  "type": "list-item",
+                  "children": [
+                    {
+                      "text": "Vue 的基础概念，以及用 npm 工具链的使用，可参考"
+                    },
+                    {
+                      "link": true,
+                      "url": "https://tuture.co/2019/10/17/0b662ce/",
+                      "text": "这篇教程"
+                    }
+                  ],
+                  "parent": "bulleted-list",
+                  "level": 0
+                },
+                {
+                  "type": "list-item",
+                  "children": [
+                    {
+                      "text": "前后端分离的基本概念，包括前端如何通过发起 HTTP(S) 请求从后端获取数据"
+                    }
+                  ],
+                  "parent": "bulleted-list",
+                  "level": 0
+                }
+              ]
+            },
+            {
+              "type": "heading-three",
+              "children": [
+                {
+                  "text": "学习目标"
+                }
+              ],
+              "id": "YiS76NKM4"
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "学完这篇教程后，你将："
+                }
+              ]
+            },
+            {
+              "type": "bulleted-list",
+              "children": [
+                {
+                  "type": "list-item",
+                  "children": [
+                    {
+                      "text": "了解用 pipenv 工具管理 Python 依赖"
+                    }
+                  ],
+                  "parent": "bulleted-list",
+                  "level": 0
+                },
+                {
+                  "type": "list-item",
+                  "children": [
+                    {
+                      "text": "学会用 Django REST Framework 快速开发 REST API"
+                    }
+                  ],
+                  "parent": "bulleted-list",
+                  "level": 0
+                },
+                {
+                  "type": "list-item",
+                  "children": [
+                    {
+                      "text": "学会用 Nuxt 框架快速开发 SPA（单页应用），能够从后端获取数据并渲染"
+                    }
+                  ],
+                  "parent": "bulleted-list",
+                  "level": 0
+                }
+              ]
+            },
+            {
+              "type": "heading-three",
+              "children": [
+                {
+                  "text": "用 pipenv 初始化 Python 环境"
+                }
+              ],
+              "id": "QYCrkCMwJ"
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "首先创建项目目录，并进入："
+                }
+              ]
+            },
+            {
+              "type": "code-block",
+              "lang": "bash",
+              "children": [
+                {
+                  "type": "code-line",
+                  "children": [
+                    {
+                      "text": "$ mkdir recipes_app && cd recipes_app"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "在这个项目中，我们用 "
+                },
+                {
+                  "link": true,
+                  "url": "https://pipenv.kennethreitz.org/",
+                  "text": "pipenv"
+                },
+                {
+                  "text": " 来管理 Python 项目的环境依赖。Pipenv 是 Python 社区偶像级大师 Kenneth Reitz 牵头开发的开发流程优化工具，立志集所有项目管理工具（Node 的 npm、Ruby 的 bundler、PHP 的 composer 等等）的优势为一体。我们通过下面的命令安装 pipenv，并创建项目的依赖环境："
+                }
+              ]
+            },
+            {
+              "type": "code-block",
+              "lang": "bash",
+              "children": [
+                {
+                  "type": "code-line",
+                  "children": [
+                    {
+                      "text": "$ pip install pipenv"
+                    }
+                  ]
+                },
+                {
+                  "type": "code-line",
+                  "children": [
+                    {
+                      "text": "$ pipenv shell"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "如果看到命令提示符前面出现 "
+                },
+                {
+                  "code": true,
+                  "text": "(recipes_app-nV3wuGJ1)"
+                },
+                {
+                  "text": " 的提示（后面那串随机字符串可能不一样），就表明我们已经成功地创建了项目独有的虚拟环境！我们接着安装 Django “三件套”："
+                }
+              ]
+            },
+            {
+              "type": "bulleted-list",
+              "children": [
+                {
+                  "type": "list-item",
+                  "children": [
+                    {
+                      "bold": true,
+                      "text": "Django"
+                    },
+                    {
+                      "text": ": Django 框架本身，提供了丰富且强大的服务器开发组件；"
+                    }
+                  ],
+                  "parent": "bulleted-list",
+                  "level": 0
+                },
+                {
+                  "type": "list-item",
+                  "children": [
+                    {
+                      "bold": true,
+                      "text": "DRF (Django Rest Framework)"
+                    },
+                    {
+                      "text": "：Django 框架的超级搭档，大大方便了 REST API 的开发；"
+                    }
+                  ],
+                  "parent": "bulleted-list",
+                  "level": 0
+                },
+                {
+                  "type": "list-item",
+                  "children": [
+                    {
+                      "bold": true,
+                      "text": "Django CORS Headers"
+                    },
+                    {
+                      "text": "：用于实现跨域资源请求（CORS）的 Django 中间件（如果你不了解 CORS，可以参考阮一峰的"
+                    },
+                    {
+                      "link": true,
+                      "url": "http://www.ruanyifeng.com/blog/2016/04/cors.html",
+                      "text": "日志"
+                    },
+                    {
+                      "text": "）。"
+                    }
+                  ],
+                  "parent": "bulleted-list",
+                  "level": 0
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "安装命令如下："
+                }
+              ]
+            },
+            {
+              "type": "code-block",
+              "lang": "bash",
+              "children": [
+                {
+                  "type": "code-line",
+                  "children": [
+                    {
+                      "text": "(recipes_app-nV3wuGJ1) $ pipenv install django django-rest-framework django-cors-headers"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "file": "Pipfile",
+          "display": true,
+          "commit": "c64b3b6",
+          "type": "file",
+          "children": [
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": "这时 pipenv 便产生了 Pipfile 文件，它的作用就类似 Node 项目中的 package.json 文件："
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "diff-block",
+              "file": "Pipfile",
+              "commit": "c64b3b6",
+              "hiddenLines": [],
+              "children": [
+                {
+                  "text": ""
+                }
+              ]
+            },
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "file",
+          "file": "api/api/__init__.py",
+          "display": false,
+          "id": "RRUP275-b",
+          "children": [
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "diff-block",
+              "file": "api/api/__init__.py",
+              "commit": "c64b3b6",
+              "hiddenLines": [],
+              "children": [
+                {
+                  "text": ""
+                }
+              ]
+            },
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "file",
+          "file": "api/api/settings.py",
+          "display": false,
+          "id": "2oxaxAfUU",
+          "children": [
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "diff-block",
+              "file": "api/api/settings.py",
+              "commit": "c64b3b6",
+              "hiddenLines": [],
+              "children": [
+                {
+                  "text": ""
+                }
+              ]
+            },
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "file",
+          "file": "api/api/urls.py",
+          "display": false,
+          "id": "vrpyQ2OL4",
+          "children": [
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "diff-block",
+              "file": "api/api/urls.py",
+              "commit": "c64b3b6",
+              "hiddenLines": [],
+              "children": [
+                {
+                  "text": ""
+                }
+              ]
+            },
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "file",
+          "file": "api/api/wsgi.py",
+          "display": false,
+          "id": "YUOkBXXOn",
+          "children": [
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "diff-block",
+              "file": "api/api/wsgi.py",
+              "commit": "c64b3b6",
+              "hiddenLines": [],
+              "children": [
+                {
+                  "text": ""
+                }
+              ]
+            },
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "file",
+          "file": "api/core/__init__.py",
+          "display": false,
+          "id": "J1bZQp8Ds",
+          "children": [
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "diff-block",
+              "file": "api/core/__init__.py",
+              "commit": "c64b3b6",
+              "hiddenLines": [],
+              "children": [
+                {
+                  "text": ""
+                }
+              ]
+            },
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "file",
+          "file": "api/core/admin.py",
+          "display": false,
+          "id": "owJkCjHDQ",
+          "children": [
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "diff-block",
+              "file": "api/core/admin.py",
+              "commit": "c64b3b6",
+              "hiddenLines": [],
+              "children": [
+                {
+                  "text": ""
+                }
+              ]
+            },
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "file",
+          "file": "api/core/apps.py",
+          "display": false,
+          "id": "Z-YzUrvfG",
+          "children": [
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "diff-block",
+              "file": "api/core/apps.py",
+              "commit": "c64b3b6",
+              "hiddenLines": [],
+              "children": [
+                {
+                  "text": ""
+                }
+              ]
+            },
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "file",
+          "file": "api/core/migrations/__init__.py",
+          "display": false,
+          "id": "YZ58_mzCV",
+          "children": [
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "diff-block",
+              "file": "api/core/migrations/__init__.py",
+              "commit": "c64b3b6",
+              "hiddenLines": [],
+              "children": [
+                {
+                  "text": ""
+                }
+              ]
+            },
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "file",
+          "file": "api/core/models.py",
+          "display": false,
+          "id": "aqdvOgN7F",
+          "children": [
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "diff-block",
+              "file": "api/core/models.py",
+              "commit": "c64b3b6",
+              "hiddenLines": [],
+              "children": [
+                {
+                  "text": ""
+                }
+              ]
+            },
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "file",
+          "file": "api/core/tests.py",
+          "display": false,
+          "id": "QJh4EMwNG",
+          "children": [
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "diff-block",
+              "file": "api/core/tests.py",
+              "commit": "c64b3b6",
+              "hiddenLines": [],
+              "children": [
+                {
+                  "text": ""
+                }
+              ]
+            },
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "file",
+          "file": "api/core/views.py",
+          "display": false,
+          "id": "tAz6q8AXPi",
+          "children": [
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "diff-block",
+              "file": "api/core/views.py",
+              "commit": "c64b3b6",
+              "hiddenLines": [],
+              "children": [
+                {
+                  "text": ""
+                }
+              ]
+            },
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "file",
+          "file": "api/manage.py",
+          "display": false,
+          "id": "BoT0rPuXwA",
+          "children": [
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "diff-block",
+              "file": "api/manage.py",
+              "commit": "c64b3b6",
+              "hiddenLines": [],
+              "children": [
+                {
+                  "text": ""
+                }
+              ]
+            },
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "explain",
+          "fixed": true,
+          "children": [
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "然后用 Django 脚手架创建服务器项目 "
+                },
+                {
+                  "code": true,
+                  "text": "api"
+                },
+                {
+                  "text": " 的基本结构，并进入到 "
+                },
+                {
+                  "code": true,
+                  "text": "api"
+                },
+                {
+                  "text": "创建一个子应用 "
+                },
+                {
+                  "code": true,
+                  "text": "core"
+                },
+                {
+                  "text": "："
+                }
+              ]
+            },
+            {
+              "type": "code-block",
+              "lang": "bash",
+              "children": [
+                {
+                  "type": "code-line",
+                  "children": [
+                    {
+                      "text": "(recipes_app-nV3wuGJ1) $ django-admin startproject api"
+                    }
+                  ]
+                },
+                {
+                  "type": "code-line",
+                  "children": [
+                    {
+                      "text": "(recipes_app-nV3wuGJ1) $ cd api"
+                    }
+                  ]
+                },
+                {
+                  "type": "code-line",
+                  "children": [
+                    {
+                      "text": "(recipes_app-nV3wuGJ1) $ python manage.py startapp core"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "接着进行数据库迁移，并创建用于登录后台管理的超级用户："
+                }
+              ]
+            },
+            {
+              "type": "code-block",
+              "lang": "bash",
+              "children": [
+                {
+                  "type": "code-line",
+                  "children": [
+                    {
+                      "text": "(recipes_app-nV3wuGJ1) $ python manage.py migrate"
+                    }
+                  ]
+                },
+                {
+                  "type": "code-line",
+                  "children": [
+                    {
+                      "text": "(recipes_app-nV3wuGJ1) $ python manage.py createsuperuser"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "按照问题输入信息即可。要记住用户名和密码哦！然后运行开发服务器："
+                }
+              ]
+            },
+            {
+              "type": "code-block",
+              "lang": "bash",
+              "children": [
+                {
+                  "type": "code-line",
+                  "children": [
+                    {
+                      "text": "(recipes_app-nV3wuGJ1) $ python manage.py runserver"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "访问 "
+                },
+                {
+                  "link": true,
+                  "url": "http://localhost:8000/admin",
+                  "text": "http://localhost:8000/admin"
+                },
+                {
+                  "text": "，可以看到后台管理的登录页面。输入刚才创建的超级用户的用户名和密码，就进入了后台管理系统，如下所示："
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "type": "image",
+                  "url": "https://imgkr.cn-bj.ufileos.com/6c29bd5b-e69f-4a68-9d1f-370b6b1411b0.png",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "熟悉的界面，但是——没什么东西，而且全是英文！别担心，后面我们会一个个搞定。"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "commit": "d4d056f",
+      "id": "a53j6F4Fmy",
+      "articleId": "0818be0",
+      "type": "step",
+      "children": [
+        {
+          "type": "heading-two",
+          "commit": "d4d056f",
+          "id": "s2PV9vz2lm",
+          "fixed": true,
+          "children": [
+            {
+              "text": "用 Django 实现 REST API"
+            }
+          ]
+        },
+        {
+          "type": "explain",
+          "fixed": true,
+          "children": [
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "接下来我们将实现本项目所需要用的所有 API。对，你没有听错，我们会在这一步实现所有后端接口，大概只 10 分钟左右可以敲完！这就是 Django 的宣言："
+                }
+              ]
+            },
+            {
+              "type": "block-quote",
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": "The web framework for perfectionists with deadlines."
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "“为赶时间的完美主义者而生！”"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "file",
+          "file": ".editorconfig",
+          "display": false,
+          "id": "kkOWaxrX1u",
+          "children": [
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "diff-block",
+              "file": ".editorconfig",
+              "commit": "d4d056f",
+              "hiddenLines": [],
+              "children": [
+                {
+                  "text": ""
+                }
+              ]
+            },
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "file",
+          "file": ".gitignore",
+          "id": "ECr2a5_muw",
+          "children": [
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "diff-block",
+              "file": ".gitignore",
+              "commit": "d4d056f",
+              "hiddenLines": [],
+              "children": [
+                {
+                  "text": ""
+                }
+              ]
+            },
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "file": "api/api/settings.py",
+          "display": true,
+          "commit": "d4d056f",
+          "type": "file",
+          "children": [
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "heading-three",
+                  "children": [
+                    {
+                      "text": "全局配置"
+                    }
+                  ],
+                  "id": "UiuszT5NzQ"
+                },
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": "首先，在全局配置文件 settings.py 中做如下改动："
+                    }
+                  ]
+                },
+                {
+                  "type": "numbered-list",
+                  "children": [
+                    {
+                      "type": "list-item",
+                      "children": [
+                        {
+                          "text": "在 "
+                        },
+                        {
+                          "code": true,
+                          "text": "INSTALLED_APPS"
+                        },
+                        {
+                          "text": " 中添加 "
+                        },
+                        {
+                          "code": true,
+                          "text": "rest_framework"
+                        },
+                        {
+                          "text": "、"
+                        },
+                        {
+                          "code": true,
+                          "text": "corsheaders"
+                        },
+                        {
+                          "text": " 和 "
+                        },
+                        {
+                          "code": true,
+                          "text": "core"
+                        },
+                        {
+                          "text": "，前两个分别是 Django Rest Framework 和 Django CORS Headers 的应用，最后一个是我们网站的应用；"
+                        }
+                      ],
+                      "parent": "numbered-list",
+                      "level": 0,
+                      "number": 1
+                    },
+                    {
+                      "type": "list-item",
+                      "children": [
+                        {
+                          "text": "在 "
+                        },
+                        {
+                          "code": true,
+                          "text": "MIDDLEWARE"
+                        },
+                        {
+                          "text": " 中添加 "
+                        },
+                        {
+                          "code": true,
+                          "text": "corsheaders.middleware.CorsMiddleware"
+                        },
+                        {
+                          "text": "，注册跨域请求中间件（"
+                        },
+                        {
+                          "bold": true,
+                          "text": "注意一定要放在最前面！"
+                        },
+                        {
+                          "text": "）;"
+                        }
+                      ],
+                      "parent": "numbered-list",
+                      "level": 0,
+                      "number": 2
+                    },
+                    {
+                      "type": "list-item",
+                      "children": [
+                        {
+                          "text": "设置 "
+                        },
+                        {
+                          "code": true,
+                          "text": "CORS_ORIGIN_WHITELIST"
+                        },
+                        {
+                          "text": "，添加跨域请求白名单，这里我们先写上 "
+                        },
+                        {
+                          "code": true,
+                          "text": "http://localhost:3000"
+                        },
+                        {
+                          "text": "，后面开发前端时将用到；"
+                        }
+                      ],
+                      "parent": "numbered-list",
+                      "level": 0,
+                      "number": 3
+                    },
+                    {
+                      "type": "list-item",
+                      "children": [
+                        {
+                          "text": "设置 "
+                        },
+                        {
+                          "code": true,
+                          "text": "LANGUAGE_CODE"
+                        },
+                        {
+                          "text": " 为 "
+                        },
+                        {
+                          "code": true,
+                          "text": "zh-hans"
+                        },
+                        {
+                          "text": "，可以将后台管理设置为中文，非常方便；"
+                        }
+                      ],
+                      "parent": "numbered-list",
+                      "level": 0,
+                      "number": 4
+                    },
+                    {
+                      "type": "list-item",
+                      "children": [
+                        {
+                          "text": "设置 "
+                        },
+                        {
+                          "code": true,
+                          "text": "MEDIA_URL"
+                        },
+                        {
+                          "text": " 和 "
+                        },
+                        {
+                          "code": true,
+                          "text": "MEDIA_ROOT"
+                        },
+                        {
+                          "text": "，用于在开发中提供图片资源文件的访问。"
+                        }
+                      ],
+                      "parent": "numbered-list",
+                      "level": 0,
+                      "number": 5
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": "具体代码如下："
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "diff-block",
+              "file": "api/api/settings.py",
+              "commit": "d4d056f",
+              "hiddenLines": [
+                [
+                  0,
+                  35
+                ],
+                [
+                  49,
+                  51
+                ],
+                [
+                  62,
+                  109
+                ],
+                [
+                  118,
+                  125
+                ]
+              ],
+              "children": [
+                {
+                  "text": ""
+                }
+              ]
+            },
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "file": "api/core/models.py",
+          "display": true,
+          "commit": "d4d056f",
+          "type": "file",
+          "children": [
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "heading-three",
+                  "children": [
+                    {
+                      "text": "实现 core 应用"
+                    }
+                  ],
+                  "id": "JxcNlcIzUt"
+                },
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": "接下来就是实现 "
+                    },
+                    {
+                      "code": true,
+                      "text": "core"
+                    },
+                    {
+                      "text": " 这个 Django 应用。实现一个 Django 应用大致都是按照这样的流程："
+                    }
+                  ]
+                },
+                {
+                  "type": "numbered-list",
+                  "children": [
+                    {
+                      "type": "list-item",
+                      "children": [
+                        {
+                          "text": "定义数据模型（models.py），用于实现和数据库之间的绑定；"
+                        }
+                      ],
+                      "parent": "numbered-list",
+                      "level": 0,
+                      "number": 1
+                    },
+                    {
+                      "type": "list-item",
+                      "children": [
+                        {
+                          "text": "定义后台管理配置（admin.py），用于在后台管理系统中进行操作；"
+                        }
+                      ],
+                      "parent": "numbered-list",
+                      "level": 0,
+                      "number": 2
+                    },
+                    {
+                      "type": "list-item",
+                      "children": [
+                        {
+                          "text": "定义序列化器（serializers.py），"
+                        },
+                        {
+                          "italic": true,
+                          "text": "仅当实现 REST API 时需要"
+                        },
+                        {
+                          "text": "，用于提供数据模型的 JSON 序列化（或其他数据交换格式）；"
+                        }
+                      ],
+                      "parent": "numbered-list",
+                      "level": 0,
+                      "number": 3
+                    },
+                    {
+                      "type": "list-item",
+                      "children": [
+                        {
+                          "text": "定义视图（views.py），用于实现具体的业务逻辑；"
+                        }
+                      ],
+                      "parent": "numbered-list",
+                      "level": 0,
+                      "number": 4
+                    },
+                    {
+                      "type": "list-item",
+                      "children": [
+                        {
+                          "text": "定义路由（urls.py），用于定义路由规则，将其映射到相应的视图；"
+                        }
+                      ],
+                      "parent": "numbered-list",
+                      "level": 0,
+                      "number": 5
+                    },
+                    {
+                      "type": "list-item",
+                      "children": [
+                        {
+                          "text": "将应用路由接入全局路由文件（api/urls.py）中。"
+                        }
+                      ],
+                      "parent": "numbered-list",
+                      "level": 0,
+                      "number": 6
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": "我们从第一步开始，完成菜谱 "
+                    },
+                    {
+                      "code": true,
+                      "text": "Recipe"
+                    },
+                    {
+                      "text": " 数据模型如下："
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "diff-block",
+              "file": "api/core/models.py",
+              "commit": "d4d056f",
+              "hiddenLines": [],
+              "children": [
+                {
+                  "text": ""
+                }
+              ]
+            },
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": "其中，"
+                    },
+                    {
+                      "code": true,
+                      "text": "class Meta"
+                    },
+                    {
+                      "text": " 定义了 "
+                    },
+                    {
+                      "code": true,
+                      "text": "Recipe"
+                    },
+                    {
+                      "text": " 的元数据；"
+                    },
+                    {
+                      "code": true,
+                      "text": "__str__"
+                    },
+                    {
+                      "text": " 方法定义了一个菜谱对象转换为字符串时应该怎样显示。这些设置的作用在打开后台管理系统之后就会很清晰了。想要了解更多关于 Django 数据模型的知识，请参考相关"
+                    },
+                    {
+                      "link": true,
+                      "url": "https://docs.djangoproject.com/zh-hans/2.2/topics/db/models/",
+                      "text": "中文文档"
+                    },
+                    {
+                      "text": "。"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "file": "api/core/admin.py",
+          "display": true,
+          "commit": "d4d056f",
+          "type": "file",
+          "children": [
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": "第二步，为 "
+                    },
+                    {
+                      "code": true,
+                      "text": "core"
+                    },
+                    {
+                      "text": " 子应用配置相应的后台管理功能。非常简单，只需注册定义好的 "
+                    },
+                    {
+                      "code": true,
+                      "text": "Recipe"
+                    },
+                    {
+                      "text": " 模型："
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "diff-block",
+              "file": "api/core/admin.py",
+              "commit": "d4d056f",
+              "hiddenLines": [],
+              "children": [
+                {
+                  "text": ""
+                }
+              ]
+            },
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": "效果如下图所示："
+                    }
+                  ]
+                },
+                {
+                  "type": "image",
+                  "url": "https://imgkr.cn-bj.ufileos.com/cf232626-f27f-4691-b169-3df0c6bc7133.png",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "file": "api/core/serializers.py",
+          "display": true,
+          "commit": "d4d056f",
+          "type": "file",
+          "children": [
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": "第三步，定义序列化器 serializers.py（脚手架并不会自动创建，需要手动创建）。序列化器是 Django Rest Framework 提供的功能，能够非常方便地将 Django 数据模型序列化成相应的 JSON 数据格式。在这里，我们定义一个 "
+                    },
+                    {
+                      "code": true,
+                      "text": "RecipeSerializer"
+                    },
+                    {
+                      "text": "，并在 "
+                    },
+                    {
+                      "code": true,
+                      "text": "class Meta"
+                    },
+                    {
+                      "text": " 中指定对应的数据模型为刚才创建的 "
+                    },
+                    {
+                      "code": true,
+                      "text": "Recipe"
+                    },
+                    {
+                      "text": "，并选择相应的字段展示："
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "diff-block",
+              "file": "api/core/serializers.py",
+              "commit": "d4d056f",
+              "hiddenLines": [],
+              "children": [
+                {
+                  "text": ""
+                }
+              ]
+            },
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "file": "api/core/views.py",
+          "display": true,
+          "commit": "d4d056f",
+          "type": "file",
+          "children": [
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": "第四步，实现视图。这里我们采用开挂模式，直接调用 Django Rest Framework 提供的模型视图集（"
+                    },
+                    {
+                      "code": true,
+                      "text": "ModelViewset"
+                    },
+                    {
+                      "text": "）直接搞定数据模型的增删改查逻辑："
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "diff-block",
+              "file": "api/core/views.py",
+              "commit": "d4d056f",
+              "hiddenLines": [],
+              "children": [
+                {
+                  "text": ""
+                }
+              ]
+            },
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": "只需指定 "
+                    },
+                    {
+                      "code": true,
+                      "text": "serializer_class"
+                    },
+                    {
+                      "text": "（序列器类）和 "
+                    },
+                    {
+                      "code": true,
+                      "text": "queryset"
+                    },
+                    {
+                      "text": "（模型查询集），就自动定义好了模型的添加、删除、查询和修改！虽然视图集非常强大，但是如果要实现更加灵活的业务逻辑，那么还是要为每个接口定义单独的视图类才行。"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "file": "api/core/urls.py",
+          "display": true,
+          "commit": "d4d056f",
+          "type": "file",
+          "children": [
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": "第五步，实现路由。由于我们上一步使用了视图集，因此只需先调用 "
+                    },
+                    {
+                      "code": true,
+                      "text": "DefaultRouter"
+                    },
+                    {
+                      "text": " 自动生成相关的路由，然后加入记录路由映射的列表 "
+                    },
+                    {
+                      "code": true,
+                      "text": "urlpatterns"
+                    },
+                    {
+                      "text": " 中："
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "diff-block",
+              "file": "api/core/urls.py",
+              "commit": "d4d056f",
+              "hiddenLines": [],
+              "children": [
+                {
+                  "text": ""
+                }
+              ]
+            },
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "code": true,
+                      "text": "router"
+                    },
+                    {
+                      "text": " 为我们自动生成以下路由："
+                    }
+                  ]
+                },
+                {
+                  "type": "bulleted-list",
+                  "children": [
+                    {
+                      "type": "list-item",
+                      "children": [
+                        {
+                          "code": true,
+                          "text": "/recipes/"
+                        },
+                        {
+                          "text": "：创建食谱（POST 方法）或读取食谱列表（GET方法）；"
+                        }
+                      ],
+                      "parent": "bulleted-list",
+                      "level": 0
+                    },
+                    {
+                      "type": "list-item",
+                      "children": [
+                        {
+                          "code": true,
+                          "text": "/recipes/{id}"
+                        },
+                        {
+                          "text": "：获取单个食谱（GET）、更新单个食谱（PUT）或删除食谱（DELETE）。"
+                        }
+                      ],
+                      "parent": "bulleted-list",
+                      "level": 0
+                    }
+                  ]
+                },
+                {
+                  "type": "note",
+                  "level": "warning",
+                  "children": [
+                    {
+                      "type": "paragraph",
+                      "children": [
+                        {
+                          "text": "在 Django 路由定义中不包括 HTTP 方法，具体的 HTTP 方法可以在视图中读取并判断。"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "file": "api/api/urls.py",
+          "display": true,
+          "commit": "d4d056f",
+          "type": "file",
+          "children": [
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": "最后一步，我们将 "
+                    },
+                    {
+                      "code": true,
+                      "text": "core"
+                    },
+                    {
+                      "text": " 子应用中的路由接入全局路由："
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "diff-block",
+              "file": "api/api/urls.py",
+              "commit": "d4d056f",
+              "hiddenLines": [
+                [
+                  0,
+                  12
+                ]
+              ],
+              "children": [
+                {
+                  "text": ""
+                }
+              ]
+            },
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "file",
+          "file": "api/core/migrations/0001_initial.py",
+          "display": false,
+          "id": "0Ga2Q4oiLu",
+          "children": [
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "diff-block",
+              "file": "api/core/migrations/0001_initial.py",
+              "commit": "d4d056f",
+              "hiddenLines": [],
+              "children": [
+                {
+                  "text": ""
+                }
+              ]
+            },
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "file",
+          "file": "tuture.yml",
+          "id": "a0vQMt_3GN",
+          "children": [
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "diff-block",
+              "file": "tuture.yml",
+              "commit": "d4d056f",
+              "hiddenLines": [],
+              "children": [
+                {
+                  "text": ""
+                }
+              ]
+            },
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "explain",
+          "fixed": true,
+          "children": [
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "没错，关于食谱的增删改查的 API 我们全都实现了！不信？先运行开发服务器："
+                }
+              ]
+            },
+            {
+              "type": "code-block",
+              "lang": "bash",
+              "children": [
+                {
+                  "type": "code-line",
+                  "children": [
+                    {
+                      "text": "(recipes_app-nV3wuGJ1) $ python manage.py runserver"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "由于 Django REST Framework 为我们提供了测试 API 的 Web 界面，因此这里就不用 Postman 等工具进行测试了。用浏览器访问 "
+                },
+                {
+                  "link": true,
+                  "url": "localhost:8000/api/recipes",
+                  "text": "localhost:8000/api/recipes"
+                },
+                {
+                  "text": "，就进入了如下所示的 API 测试页面："
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "type": "image",
+                  "url": "https://imgkr.cn-bj.ufileos.com/a0af7fa1-89f7-4fc2-a6c2-e59c271ce2a4.png",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "这个页面的下方还有添加数据（发起 POST 请求）的表单，我们填一些数据，然后点击 POST 按钮："
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "type": "image",
+                  "url": "https://imgkr.cn-bj.ufileos.com/11191bd7-3e76-48cf-913b-5b3f01153c53.png",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "然后再次访问食谱列表页面，就有我们刚刚添加的食谱了！此外，你还可以尝试访问单个食谱的详情页面（例如 "
+                },
+                {
+                  "link": true,
+                  "url": "localhost:8000/api/recipes/1",
+                  "text": "localhost:8000/api/recipes/1"
+                },
+                {
+                  "text": "），并且可以通过 Web 页面直接修改或删除哦！"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "commit": "596203d",
+      "id": "AJziwEM6Mk",
+      "articleId": "0818be0",
+      "type": "step",
+      "children": [
+        {
+          "type": "heading-two",
+          "commit": "596203d",
+          "id": "oNjJN3Paz6",
+          "fixed": true,
+          "children": [
+            {
+              "text": "用 Nuxt.js 实现网站首页"
+            }
+          ]
+        },
+        {
+          "type": "explain",
+          "fixed": true,
+          "children": [
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "Django 的 MTV 架构固然优秀，但是随着现在的业务逻辑越来越多地向前端倾斜（也就是现在流行的"
+                },
+                {
+                  "bold": true,
+                  "text": "富前端应用"
+                },
+                {
+                  "text": "），其中的 T（Template）需要更强大的武器来解决，这里就是我们的第二位主角 Nuxt。"
+                }
+              ]
+            },
+            {
+              "type": "heading-three",
+              "children": [
+                {
+                  "text": "用脚手架初始化 Nuxt 项目"
+                }
+              ],
+              "id": "oHnEK73CzO"
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "我们将把所有的前端代码放到 client 目录中，不过无需自己创建，我们调用 nuxt 的脚手架来创建前端应用："
+                }
+              ]
+            },
+            {
+              "type": "code-block",
+              "lang": "bash",
+              "children": [
+                {
+                  "type": "code-line",
+                  "children": [
+                    {
+                      "text": "$ npx create-nuxt-app client"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "之后脚手架应用会询问一系列问题，按下面的截图进行选择（当然作者名填自己）："
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "type": "image",
+                  "url": "https://imgkr.cn-bj.ufileos.com/15ae6fd9-ad36-4f9e-918a-eba5f4d4d721.jpg",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "我们对 Nuxt 脚手架生成的目录结构稍作讲解。可以看到 client 目录下有以下子目录："
+                }
+              ]
+            },
+            {
+              "type": "bulleted-list",
+              "children": [
+                {
+                  "type": "list-item",
+                  "children": [
+                    {
+                      "text": "assets：存放图片、CSS、JS 等原始资源文件"
+                    }
+                  ],
+                  "parent": "bulleted-list",
+                  "level": 0
+                },
+                {
+                  "type": "list-item",
+                  "children": [
+                    {
+                      "text": "components：存放 Vue 组件"
+                    }
+                  ],
+                  "parent": "bulleted-list",
+                  "level": 0
+                },
+                {
+                  "type": "list-item",
+                  "children": [
+                    {
+                      "text": "layouts：存放应用布局文件，布局可在多个页面中使用"
+                    }
+                  ],
+                  "parent": "bulleted-list",
+                  "level": 0
+                },
+                {
+                  "type": "list-item",
+                  "children": [
+                    {
+                      "text": "middleware：存放应用的中间件。Nuxt 中的中间件指页面渲染前执行的自定义函数（本教程中不需要）"
+                    }
+                  ],
+                  "parent": "bulleted-list",
+                  "level": 0
+                },
+                {
+                  "type": "list-item",
+                  "children": [
+                    {
+                      "text": "pages：应用的视图和路由。Nuxt 会根据此目录中的 "
+                    },
+                    {
+                      "code": true,
+                      "text": ".vue"
+                    },
+                    {
+                      "text": " 文件自动创建应用的路由"
+                    }
+                  ],
+                  "parent": "bulleted-list",
+                  "level": 0
+                },
+                {
+                  "type": "list-item",
+                  "children": [
+                    {
+                      "text": "plugins: 存放 JavaScript 插件，用于在应用启动前加载（本教程中不需要）"
+                    }
+                  ],
+                  "parent": "bulleted-list",
+                  "level": 0
+                },
+                {
+                  "type": "list-item",
+                  "children": [
+                    {
+                      "text": "static：存放通常不会改变的静态文件，并且将直接映射到路由（即可通过 "
+                    },
+                    {
+                      "code": true,
+                      "text": "/static/picture.png"
+                    },
+                    {
+                      "text": " 访问）"
+                    }
+                  ],
+                  "parent": "bulleted-list",
+                  "level": 0
+                },
+                {
+                  "type": "list-item",
+                  "children": [
+                    {
+                      "text": "store：存放 Vuex Store 文件（本教程中不需要）"
+                    }
+                  ],
+                  "parent": "bulleted-list",
+                  "level": 0
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "本项目所用到的图片资源请访问我的 "
+                },
+                {
+                  "link": true,
+                  "url": "https://github.com/mRcfps/recipes_app/tree/master/client/static/images",
+                  "text": "GitHub 仓库"
+                },
+                {
+                  "text": "，并下载到对应的目录中。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "file",
+          "file": "client/.editorconfig",
+          "display": false,
+          "id": "LXetk31Q9k",
+          "children": [
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "diff-block",
+              "file": "client/.editorconfig",
+              "commit": "596203d",
+              "hiddenLines": [],
+              "children": [
+                {
+                  "text": ""
+                }
+              ]
+            },
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "file",
+          "file": "client/.gitignore",
+          "display": false,
+          "id": "LqNJopBeU3",
+          "children": [
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "diff-block",
+              "file": "client/.gitignore",
+              "commit": "596203d",
+              "hiddenLines": [],
+              "children": [
+                {
+                  "text": ""
+                }
+              ]
+            },
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "file",
+          "file": "client/README.md",
+          "display": false,
+          "id": "5IWFAPSSHI",
+          "children": [
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "diff-block",
+              "file": "client/README.md",
+              "commit": "596203d",
+              "hiddenLines": [],
+              "children": [
+                {
+                  "text": ""
+                }
+              ]
+            },
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "file",
+          "file": "client/assets/README.md",
+          "display": false,
+          "id": "2zmArhXsNO",
+          "children": [
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "diff-block",
+              "file": "client/assets/README.md",
+              "commit": "596203d",
+              "hiddenLines": [],
+              "children": [
+                {
+                  "text": ""
+                }
+              ]
+            },
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "file",
+          "file": "client/components/Logo.vue",
+          "display": false,
+          "id": "Oved_Skkmp",
+          "children": [
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "diff-block",
+              "file": "client/components/Logo.vue",
+              "commit": "596203d",
+              "hiddenLines": [],
+              "children": [
+                {
+                  "text": ""
+                }
+              ]
+            },
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "file",
+          "file": "client/components/README.md",
+          "display": false,
+          "id": "XrQaf3lwcU",
+          "children": [
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "diff-block",
+              "file": "client/components/README.md",
+              "commit": "596203d",
+              "hiddenLines": [],
+              "children": [
+                {
+                  "text": ""
+                }
+              ]
+            },
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "file",
+          "file": "client/layouts/README.md",
+          "display": false,
+          "id": "ttSUCFKKGH",
+          "children": [
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "diff-block",
+              "file": "client/layouts/README.md",
+              "commit": "596203d",
+              "hiddenLines": [],
+              "children": [
+                {
+                  "text": ""
+                }
+              ]
+            },
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "file",
+          "file": "client/layouts/default.vue",
+          "display": false,
+          "id": "dmLIN6_l1x",
+          "children": [
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "diff-block",
+              "file": "client/layouts/default.vue",
+              "commit": "596203d",
+              "hiddenLines": [],
+              "children": [
+                {
+                  "text": ""
+                }
+              ]
+            },
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "file",
+          "file": "client/middleware/README.md",
+          "display": false,
+          "id": "-vUBM5d8k9",
+          "children": [
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "diff-block",
+              "file": "client/middleware/README.md",
+              "commit": "596203d",
+              "hiddenLines": [],
+              "children": [
+                {
+                  "text": ""
+                }
+              ]
+            },
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "file",
+          "file": "client/nuxt.config.js",
+          "display": false,
+          "id": "CJ3d301-cg",
+          "children": [
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "diff-block",
+              "file": "client/nuxt.config.js",
+              "commit": "596203d",
+              "hiddenLines": [],
+              "children": [
+                {
+                  "text": ""
+                }
+              ]
+            },
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "file",
+          "file": "client/package.json",
+          "display": false,
+          "id": "BsexAivNUu",
+          "children": [
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "diff-block",
+              "file": "client/package.json",
+              "commit": "596203d",
+              "hiddenLines": [],
+              "children": [
+                {
+                  "text": ""
+                }
+              ]
+            },
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "file",
+          "file": "client/pages/README.md",
+          "display": false,
+          "id": "lD8N2FIHA2",
+          "children": [
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "diff-block",
+              "file": "client/pages/README.md",
+              "commit": "596203d",
+              "hiddenLines": [],
+              "children": [
+                {
+                  "text": ""
+                }
+              ]
+            },
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "file": "client/pages/index.vue",
+          "display": true,
+          "commit": "596203d",
+          "type": "file",
+          "children": [
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "heading-three",
+                  "children": [
+                    {
+                      "text": "编写前端首页"
+                    }
+                  ],
+                  "id": "9RNmTKsTqq"
+                },
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": "我们在 client/pages 中创建 index.vue 文件，并在其中实现我们的前端首页："
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "diff-block",
+              "file": "client/pages/index.vue",
+              "commit": "596203d",
+              "hiddenLines": [],
+              "children": [
+                {
+                  "text": ""
+                }
+              ]
+            },
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": "模板（Template）+ 脚本（Script）+ 样式（Style），经典的 Vue.js 组件。"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "file",
+          "file": "client/pages/recipes/_id/edit.vue",
+          "display": false,
+          "id": "RrR8emeARX",
+          "children": [
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "diff-block",
+              "file": "client/pages/recipes/_id/edit.vue",
+              "commit": "596203d",
+              "hiddenLines": [],
+              "children": [
+                {
+                  "text": ""
+                }
+              ]
+            },
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "file",
+          "file": "client/pages/recipes/_id/index.vue",
+          "display": false,
+          "id": "KKSS-A_P0C",
+          "children": [
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "diff-block",
+              "file": "client/pages/recipes/_id/index.vue",
+              "commit": "596203d",
+              "hiddenLines": [],
+              "children": [
+                {
+                  "text": ""
+                }
+              ]
+            },
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "file",
+          "file": "client/pages/recipes/add.vue",
+          "display": false,
+          "id": "q2HfhUV7Je",
+          "children": [
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "diff-block",
+              "file": "client/pages/recipes/add.vue",
+              "commit": "596203d",
+              "hiddenLines": [],
+              "children": [
+                {
+                  "text": ""
+                }
+              ]
+            },
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "file",
+          "file": "client/pages/recipes/index.vue",
+          "display": false,
+          "id": "j_RmP75gnR",
+          "children": [
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "diff-block",
+              "file": "client/pages/recipes/index.vue",
+              "commit": "596203d",
+              "hiddenLines": [],
+              "children": [
+                {
+                  "text": ""
+                }
+              ]
+            },
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "file",
+          "file": "client/plugins/README.md",
+          "display": false,
+          "id": "_SIqjs8ghh",
+          "children": [
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "diff-block",
+              "file": "client/plugins/README.md",
+              "commit": "596203d",
+              "hiddenLines": [],
+              "children": [
+                {
+                  "text": ""
+                }
+              ]
+            },
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "file",
+          "file": "client/static/README.md",
+          "display": false,
+          "id": "91kkCo7L9W",
+          "children": [
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "diff-block",
+              "file": "client/static/README.md",
+              "commit": "596203d",
+              "hiddenLines": [],
+              "children": [
+                {
+                  "text": ""
+                }
+              ]
+            },
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "file",
+          "file": "client/static/favicon.ico",
+          "display": false,
+          "id": "Lh7cai1le9",
+          "children": [
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "diff-block",
+              "file": "client/static/favicon.ico",
+              "commit": "596203d",
+              "hiddenLines": [],
+              "children": [
+                {
+                  "text": ""
+                }
+              ]
+            },
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "file",
+          "file": "client/static/icon.png",
+          "display": false,
+          "id": "MKBJYqzKtc",
+          "children": [
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "diff-block",
+              "file": "client/static/icon.png",
+              "commit": "596203d",
+              "hiddenLines": [],
+              "children": [
+                {
+                  "text": ""
+                }
+              ]
+            },
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "file",
+          "file": "client/static/images/banner.jpg",
+          "display": false,
+          "id": "d2QuvJycEV",
+          "children": [
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "diff-block",
+              "file": "client/static/images/banner.jpg",
+              "commit": "596203d",
+              "hiddenLines": [],
+              "children": [
+                {
+                  "text": ""
+                }
+              ]
+            },
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "file",
+          "file": "client/store/README.md",
+          "display": false,
+          "id": "0HKP18k42w",
+          "children": [
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "diff-block",
+              "file": "client/store/README.md",
+              "commit": "596203d",
+              "hiddenLines": [],
+              "children": [
+                {
+                  "text": ""
+                }
+              ]
+            },
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "file",
+          "file": "client/yarn.lock",
+          "display": false,
+          "id": "eB4UR8RsN4",
+          "children": [
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "diff-block",
+              "file": "client/yarn.lock",
+              "commit": "596203d",
+              "hiddenLines": [],
+              "children": [
+                {
+                  "text": ""
+                }
+              ]
+            },
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "file",
+          "file": "tuture.yml",
+          "id": "byQ5BUNrTB",
+          "children": [
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "diff-block",
+              "file": "tuture.yml",
+              "commit": "596203d",
+              "hiddenLines": [
+                [
+                  0,
+                  5
+                ]
+              ],
+              "children": [
+                {
+                  "text": ""
+                }
+              ]
+            },
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "explain",
+          "fixed": true,
+          "children": [
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "我们刚刚创建了 pages 目录下的 index.vue 文件，这意味着当访问根路由 "
+                },
+                {
+                  "code": true,
+                  "text": "/"
+                },
+                {
+                  "text": " 时，这个文件将被访问到。通过 "
+                },
+                {
+                  "code": true,
+                  "text": "npm run dev"
+                },
+                {
+                  "text": "运行我们的前端页面（"
+                },
+                {
+                  "italic": true,
+                  "bold": true,
+                  "text": "记得在 client 子目录下运行！"
+                },
+                {
+                  "text": "），可以看到："
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "type": "image",
+                  "url": "https://imgkr.cn-bj.ufileos.com/3fefed5b-2de6-447e-87c4-15d5b2c03339.jpg",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "真是让人食欲大开！"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "commit": "63f7ab0",
+      "id": "ZYUYQTbmJz",
+      "articleId": "0818be0",
+      "type": "step",
+      "children": [
+        {
+          "type": "heading-two",
+          "commit": "63f7ab0",
+          "id": "py74SMsOx0",
+          "fixed": true,
+          "children": [
+            {
+              "text": "数据展示：实现食谱列表"
+            }
+          ]
+        },
+        {
+          "type": "explain",
+          "fixed": true,
+          "children": [
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "接下来我们将演示如何展示数据，并实现食谱列表页面。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "file": "client/components/RecipeCard.vue",
+          "display": true,
+          "commit": "63f7ab0",
+          "type": "file",
+          "children": [
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "heading-three",
+                  "children": [
+                    {
+                      "text": "实现 RecipeCard 组件"
+                    }
+                  ],
+                  "id": "wjF4hqcTJS"
+                },
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": "首先，实现将会在多个页面中反复使用的食谱卡片组件 "
+                    },
+                    {
+                      "code": true,
+                      "text": "RecipeCard"
+                    },
+                    {
+                      "text": " 如下："
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "diff-block",
+              "file": "client/components/RecipeCard.vue",
+              "commit": "63f7ab0",
+              "hiddenLines": [],
+              "children": [
+                {
+                  "text": ""
+                }
+              ]
+            },
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": "在这个组件中，我们定义了两个 "
+                    },
+                    {
+                      "code": true,
+                      "text": "props"
+                    },
+                    {
+                      "text": "，分别是 "
+                    },
+                    {
+                      "code": true,
+                      "text": "recipe"
+                    },
+                    {
+                      "text": "（代表食谱对象）和 "
+                    },
+                    {
+                      "code": true,
+                      "text": "onDelete"
+                    },
+                    {
+                      "text": "（删除时的回调函数），并在模板中使用这两个成员。"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "file": "client/pages/recipes/index.vue",
+          "display": true,
+          "commit": "63f7ab0",
+          "type": "file",
+          "children": [
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "heading-three",
+                  "children": [
+                    {
+                      "text": "了解 Nuxt 的路由功能"
+                    }
+                  ],
+                  "id": "B103kV9wnP"
+                },
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": "在实现第二个页面之前，我们有必要先了解一下 Nuxt 的路由功能——通过 pages 目录下的文档结构，就可以自动生成 vue-router 的路由器配置！"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": "例如我们这样安排 pages 下面的目录结构👇："
+                    }
+                  ]
+                },
+                {
+                  "type": "code-block",
+                  "lang": "text",
+                  "children": [
+                    {
+                      "type": "code-line",
+                      "children": [
+                        {
+                          "text": "pages"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "code-line",
+                      "children": [
+                        {
+                          "text": "├── README.md"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "code-line",
+                      "children": [
+                        {
+                          "text": "├── index.vue"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "code-line",
+                      "children": [
+                        {
+                          "text": "└── recipes"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "code-line",
+                      "children": [
+                        {
+                          "text": "    ├── _id"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "code-line",
+                      "children": [
+                        {
+                          "text": "    │   ├── edit.vue"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "code-line",
+                      "children": [
+                        {
+                          "text": "    │   └── index.vue"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "code-line",
+                      "children": [
+                        {
+                          "text": "    ├── add.vue"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "code-line",
+                      "children": [
+                        {
+                          "text": "    └── index.vue"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "code": true,
+                      "text": "_id"
+                    },
+                    {
+                      "text": " 目录（或者其他以单下划线开头的目录或 .vue 文件）被称作是"
+                    },
+                    {
+                      "bold": true,
+                      "text": "动态路由"
+                    },
+                    {
+                      "text": "（Dynamic Routing），可以接受参数作为 URL 的一部分。上面的 pages 目录自动生成下面的 "
+                    },
+                    {
+                      "code": true,
+                      "text": "router"
+                    },
+                    {
+                      "text": "："
+                    }
+                  ]
+                },
+                {
+                  "type": "code-block",
+                  "lang": "js",
+                  "children": [
+                    {
+                      "type": "code-line",
+                      "children": [
+                        {
+                          "text": "router: {"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "code-line",
+                      "children": [
+                        {
+                          "text": "  routes: ["
+                        }
+                      ]
+                    },
+                    {
+                      "type": "code-line",
+                      "children": [
+                        {
+                          "text": "    {"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "code-line",
+                      "children": [
+                        {
+                          "text": "      name: 'index',"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "code-line",
+                      "children": [
+                        {
+                          "text": "      path: '/',"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "code-line",
+                      "children": [
+                        {
+                          "text": "      component: 'pages/index.vue'"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "code-line",
+                      "children": [
+                        {
+                          "text": "    },"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "code-line",
+                      "children": [
+                        {
+                          "text": "    {"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "code-line",
+                      "children": [
+                        {
+                          "text": "      name: 'recipes',"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "code-line",
+                      "children": [
+                        {
+                          "text": "      path: '/recipes',"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "code-line",
+                      "children": [
+                        {
+                          "text": "      component: 'pages/recipes/index.vue'"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "code-line",
+                      "children": [
+                        {
+                          "text": "    },"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "code-line",
+                      "children": [
+                        {
+                          "text": "    {"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "code-line",
+                      "children": [
+                        {
+                          "text": "      name: 'recipes-add',"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "code-line",
+                      "children": [
+                        {
+                          "text": "      path: '/recipes/add',"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "code-line",
+                      "children": [
+                        {
+                          "text": "      component: 'pages/recipes/add.vue'"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "code-line",
+                      "children": [
+                        {
+                          "text": "    },"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "code-line",
+                      "children": [
+                        {
+                          "text": "    {"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "code-line",
+                      "children": [
+                        {
+                          "text": "      name: 'recipes-id',"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "code-line",
+                      "children": [
+                        {
+                          "text": "      path: '/recipes/:id?',"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "code-line",
+                      "children": [
+                        {
+                          "text": "      component: 'pages/recipes/_id/index.vue'"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "code-line",
+                      "children": [
+                        {
+                          "text": "    },"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "code-line",
+                      "children": [
+                        {
+                          "text": "    {"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "code-line",
+                      "children": [
+                        {
+                          "text": "      name: 'recipes-id-edit',"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "code-line",
+                      "children": [
+                        {
+                          "text": "      path: '/recipes/:id?/edit',"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "code-line",
+                      "children": [
+                        {
+                          "text": "      component: 'pages/recipes/_id/edit.vue'"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "code-line",
+                      "children": [
+                        {
+                          "text": "    }"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "code-line",
+                      "children": [
+                        {
+                          "text": "  ]"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "code-line",
+                      "children": [
+                        {
+                          "text": "}"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "note",
+                  "level": "info",
+                  "children": [
+                    {
+                      "type": "paragraph",
+                      "children": [
+                        {
+                          "text": "如果想要更深入地了解 Nuxt 的路由功能，请参考"
+                        },
+                        {
+                          "link": true,
+                          "url": "https://nuxtjs.org/guide/routing",
+                          "text": "官方文档"
+                        },
+                        {
+                          "text": "。"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "heading-three",
+                  "children": [
+                    {
+                      "text": "实现食谱列表页面"
+                    }
+                  ],
+                  "id": "I1YgERmt8W"
+                },
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": "创建食谱列表页面 pages/recipes/index.vue（先使用假数据填充），代码如下："
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "diff-block",
+              "file": "client/pages/recipes/index.vue",
+              "commit": "63f7ab0",
+              "hiddenLines": [],
+              "children": [
+                {
+                  "text": ""
+                }
+              ]
+            },
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "file",
+          "file": "client/static/images/food-1.jpeg",
+          "display": false,
+          "id": "JdCIwnO3EC",
+          "children": [
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "diff-block",
+              "file": "client/static/images/food-1.jpeg",
+              "commit": "63f7ab0",
+              "hiddenLines": [],
+              "children": [
+                {
+                  "text": ""
+                }
+              ]
+            },
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "file",
+          "file": "client/static/images/food-2.jpeg",
+          "display": false,
+          "id": "XhR2WQpljK",
+          "children": [
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "diff-block",
+              "file": "client/static/images/food-2.jpeg",
+              "commit": "63f7ab0",
+              "hiddenLines": [],
+              "children": [
+                {
+                  "text": ""
+                }
+              ]
+            },
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "file",
+          "file": "tuture.yml",
+          "id": "M89VXH0F7L",
+          "children": [
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "diff-block",
+              "file": "tuture.yml",
+              "commit": "63f7ab0",
+              "hiddenLines": [
+                [
+                  0,
+                  74
+                ]
+              ],
+              "children": [
+                {
+                  "text": ""
+                }
+              ]
+            },
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "explain",
+          "fixed": true,
+          "children": [
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "打开前端网站，可以看到我们刚才实现的食谱列表页面："
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "type": "image",
+                  "url": "https://imgkr.cn-bj.ufileos.com/ff166f67-a866-4bf7-b77d-9aae27e6f956.jpg",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "到这儿，我们分别实现了这个全栈食谱网站的前端和后端应用，这篇教程的第一部分也就结束了。在接下来的教程中，我们将实现前后端之间的通信，并进一步实现食谱的详情及添加页面，不见不散！"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "commit": "60a60d7",
+      "id": "TS_VxEGaGC",
+      "articleId": null,
+      "type": "step",
+      "children": [
+        {
+          "type": "heading-two",
+          "commit": "60a60d7",
+          "id": "CIshvzAXf5",
+          "fixed": true,
+          "children": [
+            {
+              "text": "从服务器获取数据"
+            }
+          ]
+        },
+        {
+          "type": "explain",
+          "fixed": true,
+          "children": [
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "在这一部分，我们将真正实现一个全栈应用——让前端能够向后端发起请求，从而获取想要的数据。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "file": "api/api/urls.py",
+          "display": true,
+          "commit": "60a60d7",
+          "type": "file",
+          "children": [
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "heading-three",
+                  "children": [
+                    {
+                      "text": "配置 Django 的静态文件服务"
+                    }
+                  ],
+                  "id": "e3bl1WKI8U"
+                },
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": "首先我们要配置一下 Django 服务器，使前端能够访问其静态文件。调整 api/api/urls.py 文件如下："
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "diff-block",
+              "file": "api/api/urls.py",
+              "commit": "60a60d7",
+              "hiddenLines": [
+                [
+                  0,
+                  13
+                ]
+              ],
+              "children": [
+                {
+                  "text": ""
+                }
+              ]
+            },
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "note",
+                  "level": "warning",
+                  "children": [
+                    {
+                      "type": "paragraph",
+                      "children": [
+                        {
+                          "text": "这样配置静态文件路由的方式仅应当在"
+                        },
+                        {
+                          "bold": true,
+                          "text": "开发环境"
+                        },
+                        {
+                          "text": "下使用。在生产环境下（settings.py 中的 "
+                        },
+                        {
+                          "code": true,
+                          "text": "DEBUG"
+                        },
+                        {
+                          "text": " 设为 "
+                        },
+                        {
+                          "code": true,
+                          "text": "False"
+                        },
+                        {
+                          "text": " 时），静态文件路由将自动失效（因为 Django 并不适合作为静态文件服务器，应该选用类似 Nginx 之类的服务器，在后续教程中我们将更深入地讨论）。"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "file": "client/nuxt.config.js",
+          "display": true,
+          "commit": "60a60d7",
+          "type": "file",
+          "children": [
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "heading-three",
+                  "children": [
+                    {
+                      "text": "实现前端的数据请求功能"
+                    }
+                  ],
+                  "id": "yJ5m9WjTdY"
+                },
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": "在客户端，我们先要对 Nuxt 进行全局配置。Nuxt 包括 "
+                    },
+                    {
+                      "link": true,
+                      "url": "https://github.com/axios/axios",
+                      "text": "axios"
+                    },
+                    {
+                      "text": " 包，这是一个非常出色的基于 Promise 的 HTTP 请求库。在 nuxt.config.js 中的 "
+                    },
+                    {
+                      "code": true,
+                      "text": "axios"
+                    },
+                    {
+                      "text": " 一项中添加 Django 服务器的 URL："
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "diff-block",
+              "file": "client/nuxt.config.js",
+              "commit": "60a60d7",
+              "hiddenLines": [
+                [
+                  0,
+                  47
+                ],
+                [
+                  55,
+                  63
+                ]
+              ],
+              "children": [
+                {
+                  "text": ""
+                }
+              ]
+            },
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "file": "client/pages/recipes/index.vue",
+          "display": true,
+          "commit": "60a60d7",
+          "type": "file",
+          "children": [
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": "将食谱列表页面中暂时填充的假数据删去，通过 "
+                    },
+                    {
+                      "code": true,
+                      "text": "asyncData"
+                    },
+                    {
+                      "text": " 方法获取数据。由于我们之前配置好了 axios，所以 "
+                    },
+                    {
+                      "code": true,
+                      "text": "asyncData"
+                    },
+                    {
+                      "text": " 函数可以获取到 "
+                    },
+                    {
+                      "code": true,
+                      "text": "$axios"
+                    },
+                    {
+                      "text": " 对象用于发起 HTTP 请求。我们实现页面加载的数据获取以及 "
+                    },
+                    {
+                      "code": true,
+                      "text": "deleteRecipe"
+                    },
+                    {
+                      "text": " 事件，代码如下："
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "diff-block",
+              "file": "client/pages/recipes/index.vue",
+              "commit": "60a60d7",
+              "hiddenLines": [
+                [
+                  0,
+                  17
+                ],
+                [
+                  57,
+                  59
+                ],
+                [
+                  78,
+                  78
+                ],
+                [
+                  97,
+                  100
+                ]
+              ],
+              "children": [
+                {
+                  "text": ""
+                }
+              ]
+            },
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "file": "client/pages/recipes/_id/index.vue",
+          "display": true,
+          "commit": "60a60d7",
+          "type": "file",
+          "children": [
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "heading-three",
+                  "children": [
+                    {
+                      "text": "实现食谱详情页面"
+                    }
+                  ],
+                  "id": "fmQEK28px0"
+                },
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": "我们进一步实现食谱详情页面。在 pages/recipes 目录中创建 _id 目录，在其中添加 index.vue 文件，代码如下："
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "diff-block",
+              "file": "client/pages/recipes/_id/index.vue",
+              "commit": "60a60d7",
+              "hiddenLines": [],
+              "children": [
+                {
+                  "text": ""
+                }
+              ]
+            },
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "explain",
+          "fixed": true,
+          "children": [
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "为了测试前端页面能否真正从后端获取数据，我们先要在后端数据库中添加一些数据，而这对 Django 来说就非常方便了。进入 api 目录，运行 "
+                },
+                {
+                  "code": true,
+                  "text": "python manage.py runserver"
+                },
+                {
+                  "text": " 打开服务器，然后进入后台管理页面（"
+                },
+                {
+                  "link": true,
+                  "url": "http://localhost:8000/admin",
+                  "text": "http://localhost:8000/admin"
+                },
+                {
+                  "text": "），添加一些数据："
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "type": "image",
+                  "url": "https://imgkr.cn-bj.ufileos.com/e16bbd8f-3ffe-4831-8ace-cbd3c1a549b7.jpg",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "再运行前端页面，可以看到我们刚刚在 Django 后台管理中添加的项目："
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "type": "image",
+                  "url": "https://imgkr.cn-bj.ufileos.com/4e799b10-0f12-4d81-a58e-5a75afa0750c.jpg",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "commit": "5f1edd9",
+      "id": "UrPiWOoIpE",
+      "articleId": "425a3a9",
+      "type": "step",
+      "children": [
+        {
+          "type": "heading-two",
+          "commit": "5f1edd9",
+          "id": "VlByScyXVE",
+          "fixed": true,
+          "children": [
+            {
+              "text": "实现食谱的编辑和创建页面"
+            }
+          ]
+        },
+        {
+          "type": "explain",
+          "fixed": true,
+          "children": [
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "有了前面的铺垫，实现食谱的添加和删除也基本上是按部就班了。我们在 pages/recipes/_id 中分别实现 "
+                },
+                {
+                  "code": true,
+                  "text": "edit.vue"
+                },
+                {
+                  "text": "（食谱编辑页面） 和 "
+                },
+                {
+                  "code": true,
+                  "text": "add.vue"
+                },
+                {
+                  "text": " （创建食谱页面）如下。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "file": "client/pages/recipes/_id/edit.vue",
+          "display": true,
+          "commit": "5f1edd9",
+          "type": "file",
+          "children": [
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "diff-block",
+              "file": "client/pages/recipes/_id/edit.vue",
+              "commit": "5f1edd9",
+              "hiddenLines": [],
+              "children": [
+                {
+                  "text": ""
+                }
+              ]
+            },
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": "实现之后的页面如下："
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "type": "image",
+                      "url": "https://imgkr.cn-bj.ufileos.com/fc7103da-864c-4e43-8a91-de0f450a63b8.jpg",
+                      "children": [
+                        {
+                          "text": ""
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "file": "client/pages/recipes/add.vue",
+          "display": true,
+          "commit": "5f1edd9",
+          "type": "file",
+          "children": [
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "diff-block",
+              "file": "client/pages/recipes/add.vue",
+              "commit": "5f1edd9",
+              "hiddenLines": [],
+              "children": [
+                {
+                  "text": ""
+                }
+              ]
+            },
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": "实现的页面如下："
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "type": "image",
+                      "url": "https://imgkr.cn-bj.ufileos.com/10c4b3be-6aa1-445e-87b8-69741a12d250.jpg",
+                      "children": [
+                        {
+                          "text": ""
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "file",
+          "file": "client/static/images/placeholder.png",
+          "display": false,
+          "id": "3KF4UY2ypL",
+          "children": [
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "diff-block",
+              "file": "client/static/images/placeholder.png",
+              "commit": "5f1edd9",
+              "hiddenLines": [],
+              "children": [
+                {
+                  "text": ""
+                }
+              ]
+            },
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "explain",
+          "fixed": true,
+          "children": [
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": ""
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "commit": "04edf4c",
+      "id": "CJ_LghWO99",
+      "articleId": "425a3a9",
+      "type": "step",
+      "children": [
+        {
+          "type": "heading-two",
+          "commit": "04edf4c",
+          "id": "ago7w_BExy",
+          "fixed": true,
+          "children": [
+            {
+              "text": "一点强迫症：全局页面跳转效果"
+            }
+          ]
+        },
+        {
+          "type": "explain",
+          "fixed": true,
+          "children": [
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "在这一节中，我们将演示如何在 Nuxt 中添加全局样式文件，来实现前端页面之间的跳转效果。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "file": "client/assets/css/transition.css",
+          "display": true,
+          "commit": "04edf4c",
+          "type": "file",
+          "children": [
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": "首先在 assets 目录中创建 css 目录，并在其中添加 transition.css 文件，代码如下："
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "diff-block",
+              "file": "client/assets/css/transition.css",
+              "commit": "04edf4c",
+              "hiddenLines": [],
+              "children": [
+                {
+                  "text": ""
+                }
+              ]
+            },
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "file": "client/nuxt.config.js",
+          "display": true,
+          "commit": "04edf4c",
+          "type": "file",
+          "children": [
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": "在 Nuxt 配置文件中将刚才写的 transition.css 中添加到全局 CSS 中："
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "diff-block",
+              "file": "client/nuxt.config.js",
+              "commit": "04edf4c",
+              "hiddenLines": [
+                [
+                  0,
+                  21
+                ],
+                [
+                  29,
+                  64
+                ]
+              ],
+              "children": [
+                {
+                  "text": ""
+                }
+              ]
+            },
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "file",
+          "file": "tuture.yml",
+          "id": "2gPyxbTFao",
+          "children": [
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "diff-block",
+              "file": "tuture.yml",
+              "commit": "04edf4c",
+              "hiddenLines": [
+                [
+                  0,
+                  126
+                ]
+              ],
+              "children": [
+                {
+                  "text": ""
+                }
+              ]
+            },
+            {
+              "type": "explain",
+              "fixed": true,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": ""
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "explain",
+          "fixed": true,
+          "children": [
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "欧耶，一个具有完整增删改查功能、实现了前后端分离的美食分享网站就完成了！"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "version": "v1",
+  "remotes": []
+}
