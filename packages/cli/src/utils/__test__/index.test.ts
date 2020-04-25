@@ -8,9 +8,10 @@ import {
   DiffBlock,
   Explain,
   randHex,
+  isCommitEqual
 } from '@tuture/core';
 
-import { isCommitEqual, mergeSteps } from '../index';
+import { mergeSteps } from '../index';
 import { getEmptyExplain, getEmptyChildren } from '../nodes';
 
 function getFakeExplain(): Explain {
