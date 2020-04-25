@@ -7,7 +7,7 @@
   },
   "bugs": "https://github.com/tuture-dev/tuture/issues",
   "scripts": {
-    "build": "tsc -b",
+    "build": "rimraf lib && tsc -b",
     "postpack": "rimraf oclif.manifest.json",
     "prepack": "rimraf lib && tsc -b && oclif-dev manifest && oclif-dev readme",
     "test": "echo NO TESTS"
@@ -36,6 +36,8 @@
   },
   "devDependencies": {
     "@oclif/dev-cli": "^1",
+    "@types/inquirer": "^6.5.0",
+    "@types/micromatch": "^4.0.1",
     "@types/node": "^10",
     "globby": "^10",
     "rimraf": "^2.6.2",
