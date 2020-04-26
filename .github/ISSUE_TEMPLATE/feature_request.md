@@ -1,20 +1,14 @@
 ---
-name: Feature request
-about: Suggest an idea for this project
+name: 功能/需求
+about: 想要什么样的新功能，或者觉得哪些地方可以改进？
 title: ''
-labels: ''
+labels: 'enhancement'
 assignees: ''
+---**Tuture 版本信息**
+例如 `@tuture/cli/0.0.2 darwin-x64 node-v12.10.0`，可通过 `tuture -v` 查看版本。
 
----
+**对目前工具的哪些地方不满意？**
+简要地描述一下让你不爽的问题（如果有截图就更好啦）。
 
-**Is your feature request related to a problem? Please describe.**
-A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
-
-**Describe the solution you'd like**
-A clear and concise description of what you want to happen.
-
-**Describe alternatives you've considered**
-A clear and concise description of any alternative solutions or features you've considered.
-
-**Additional context**
-Add any other context or screenshots about the feature request here.
+**描述一下你期望的功能**
+简要地描述一下你所期望的功能，或者更理想的解决方案。
