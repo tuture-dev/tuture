@@ -3,7 +3,7 @@ import chalk from 'chalk';
 import fs from 'fs-extra';
 import { flags } from '@oclif/command';
 import { prompt } from 'inquirer';
-import { Collection, Meta } from '@tuture/core';
+import { Collection, Meta, SCHEMA_VERSION } from '@tuture/core';
 import { collectionPath, saveCollection } from '@tuture/local-server';
 
 import logger from '../utils/logger';
@@ -140,6 +140,8 @@ export default class Init extends BaseCommand {
           collection.remotes = await selectRemotes(remotes);
         }
       }
+
+      collection.version = SCHEMA_VERSION;
 
       saveCollection(collection);
       appendGitignore();

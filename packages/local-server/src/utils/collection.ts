@@ -6,6 +6,7 @@ import {
   TUTURE_VCS_ROOT,
   COLLECTION_PATH,
   COLLECTION_CHECKPOINT,
+  SCHEMA_VERSION,
 } from '@tuture/core';
 
 import { loadAssetsTable } from './assets';
@@ -47,43 +48,6 @@ export function loadCollection(): Collection {
   });
   const collection = JSON.parse(rawCollection);
 
-  // COMPAT: convert hiddenLines field
-  if (collection.version !== 'v1') {
-    const convertHiddenLines = (hiddenLines: number[]) => {
-      const rangeGroups = [];
-      let startNumber = null;
-
-      for (let i = 0; i < hiddenLines.length; i++) {
-        const prev = hiddenLines[i - 1];
-        const current = hiddenLines[i];
-        const next = hiddenLines[i + 1];
-
-        if (current !== prev + 1 && current !== next - 1) {
-          rangeGroups.push([current, current]);
-        } else if (current !== prev + 1) {
-          startNumber = hiddenLines[i];
-        } else if (current + 1 !== next) {
-          rangeGroups.push([startNumber, hiddenLines[i]]);
-        }
-      }
-
-      return rangeGroups;
-    };
-
-    for (const step of collection.steps) {
-      for (const node of step.children) {
-        if (node.type === 'file') {
-          const diffBlock = node.children[1];
-          if (diffBlock.hiddenLines) {
-            diffBlock.hiddenLines = convertHiddenLines(diffBlock.hiddenLines);
-          }
-        }
-      }
-    }
-
-    collection.version = 'v1';
-  }
-
   // COMPAT: normalize children of all diff blocks
   for (const step of collection.steps) {
     for (const node of step.children) {
@@ -101,6 +65,7 @@ export function loadCollection(): Collection {
  * Save the entire collection back to workspace.
  */
 export function saveCollection(collection: Collection) {
+  collection.version = SCHEMA_VERSION;
   fs.writeFileSync(collectionPath, JSON.stringify(collection, null, 2));
 }
 
