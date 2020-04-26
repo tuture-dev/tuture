@@ -4,7 +4,9 @@ about: 想要什么样的新功能，或者觉得哪些地方可以改进？
 title: ''
 labels: 'enhancement'
 assignees: ''
----**Tuture 版本信息**
+---
+
+**Tuture 版本信息**
 例如 `@tuture/cli/0.0.2 darwin-x64 node-v12.10.0`，可通过 `tuture -v` 查看版本。
 
 **对目前工具的哪些地方不满意？**

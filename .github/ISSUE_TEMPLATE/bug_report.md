@@ -4,7 +4,9 @@ about: 创建一份 Bug 反馈报告，帮助我们改进
 title: ''
 labels: 'bug'
 assignees: ''
----**简要描述 Bug**
+---
+
+**简要描述 Bug**
 一句话描述一下 Bug 的情况。
 
 **Tuture 版本信息**
