@@ -1,38 +1,29 @@
 ---
-name: Bug report
-about: Create a report to help us improve
+name: Bug 反馈
+about: 创建一份 Bug 反馈报告，帮助我们改进
 title: ''
-labels: ''
+labels: 'bug'
 assignees: ''
-
 ---
 
-**Describe the bug**
-A clear and concise description of what the bug is.
+**简要描述 Bug**
+一句话描述一下 Bug 的情况。
 
-**To Reproduce**
-Steps to reproduce the behavior:
-1. Go to '...'
-2. Click on '....'
-3. Scroll down to '....'
-4. See error
+**Tuture 版本信息**
+例如 `@tuture/cli/0.0.2 darwin-x64 node-v12.10.0`，可通过 `tuture -v` 查看版本。
 
-**Expected behavior**
-A clear and concise description of what you expected to happen.
+**详细的报错调用栈信息**
+终端或者浏览器控制台的任何报错信息，请直接复制在这里。
 
-**Screenshots**
-If applicable, add screenshots to help explain your problem.
+**复现步骤**
+复现 Bug 的完整步骤：
 
-**Desktop (please complete the following information):**
- - OS: [e.g. iOS]
- - Browser [e.g. chrome, safari]
- - Version [e.g. 22]
+1. 打开 ...
+2. 点击 ...
+3. 发生错误
 
-**Smartphone (please complete the following information):**
- - Device: [e.g. iPhone6]
- - OS: [e.g. iOS8.1]
- - Browser [e.g. stock browser, safari]
- - Version [e.g. 22]
+**期望的行为逻辑**
+描述一下你本来期望发生的事情。
 
-**Additional context**
-Add any other context about the problem here.
+**屏幕截图**
+出错时的屏幕截图（有 GIF 的话就更棒啦！）
