@@ -63,6 +63,7 @@ type CreateEditArticleValueType = {
   name: string;
   topics: string[];
   steps: string[];
+  categories: string[];
 };
 
 interface CreateEditArticleProps
@@ -109,6 +110,7 @@ function CreateEditArticle(props: CreateEditArticleProps) {
     props.childrenDrawerType === EDIT_ARTICLE ? meta : {};
 
   const initialTopics = articleMeta?.topics || [];
+  const initialCategories = articleMeta?.categories || [];
   const initialCover = articleMeta?.cover
     ? [
         {
@@ -134,13 +136,16 @@ function CreateEditArticle(props: CreateEditArticleProps) {
 
     props.form.validateFields((err, values) => {
       if (!err) {
-        console.log('values', values);
-        const { cover, name, topics, steps } = values;
+        const { cover, name, topics, steps, categories } = values;
 
-        const article: Partial<Article> = { name };
+        const article = { name } as Article;
 
         if (topics) {
           article.topics = topics;
+        }
+
+        if (categories) {
+          article.categories = categories;
         }
 
         if (cover) {
@@ -157,6 +162,8 @@ function CreateEditArticle(props: CreateEditArticleProps) {
         }
 
         if (props.childrenDrawerType === EDIT_ARTICLE) {
+          dispatch.collection.editArticle(article);
+
           collectionSteps.forEach((step, index) => {
             if (step.articleId === editArticleId) {
               if (!steps.includes(String(index))) {
@@ -176,6 +183,7 @@ function CreateEditArticle(props: CreateEditArticleProps) {
               }
             }
           });
+
           message.success('保存成功');
         } else {
           // Create new article.
@@ -263,6 +271,10 @@ function CreateEditArticle(props: CreateEditArticleProps) {
     setFieldsValue({ topics });
   }
 
+  function handleCategoriesChange(categories: string) {
+    setFieldsValue({ categories });
+  }
+
   return (
     <div
       css={css`
@@ -305,6 +317,26 @@ function CreateEditArticle(props: CreateEditArticleProps) {
             rules: [{ required: true, message: '请输入文章标题' }],
             initialValue: initialName,
           })(<Input placeholder="标题" />)}
+        </Form.Item>
+        <Form.Item
+          label="分类"
+          css={css`
+            width: 100%;
+          `}
+        >
+          {getFieldDecorator('categories', {
+            initialValue: initialCategories,
+          })(
+            <Select
+              mode="tags"
+              placeholder="输入文章分类"
+              onChange={handleCategoriesChange}
+            >
+              {getFieldValue('categories').map((category: string) => (
+                <Option key={category}>{category}</Option>
+              ))}
+            </Select>,
+          )}
         </Form.Item>
         <Form.Item
           label="标签"

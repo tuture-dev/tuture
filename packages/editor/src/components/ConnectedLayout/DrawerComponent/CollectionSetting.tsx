@@ -33,6 +33,7 @@ function CollectionSetting(props: CollectionSettingProps) {
   );
 
   const initialTopics = collectionMeta?.topics || [];
+  const initialCategories = collectionMeta?.categories || [];
   const initialCover = collectionMeta?.cover
     ? [
         {
@@ -67,6 +68,7 @@ function CollectionSetting(props: CollectionSettingProps) {
           name,
           topics,
           description,
+          categories,
         }: { [key: string]: any } = values;
 
         let res: { [key: string]: any } = {
@@ -75,6 +77,10 @@ function CollectionSetting(props: CollectionSettingProps) {
 
         if (topics) {
           res = { ...res, topics };
+        }
+
+        if (categories) {
+          res = { ...res, categories };
         }
 
         if (description) {
@@ -131,6 +137,12 @@ function CollectionSetting(props: CollectionSettingProps) {
     });
   }
 
+  function handleCategoriesChange(categories: string) {
+    setFieldsValue({
+      categories,
+    });
+  }
+
   return (
     <div
       css={css`
@@ -173,6 +185,27 @@ function CollectionSetting(props: CollectionSettingProps) {
             rules: [{ required: true, message: '请输入文集标题' }],
             initialValue: initialName,
           })(<Input placeholder="标题" />)}
+        </Form.Item>
+        <Form.Item
+          label="分类"
+          css={css`
+            width: 100%;
+          `}
+        >
+          {getFieldDecorator('categories', {
+            initialValue: initialCategories,
+          })(
+            <Select
+              mode="tags"
+              placeholder="输入文集分类"
+              allowClear
+              onChange={handleCategoriesChange}
+            >
+              {getFieldValue('categories').map((category: string) => (
+                <Option key={category}>{category}</Option>
+              ))}
+            </Select>,
+          )}
         </Form.Item>
         <Form.Item
           label="标签"
