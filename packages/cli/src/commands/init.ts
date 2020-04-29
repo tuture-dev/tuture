@@ -22,20 +22,26 @@ export default class Init extends BaseCommand {
 
   static flags = {
     help: flags.help({ char: 'h' }),
+    yes: flags.boolean({
+      char: 'y',
+      description: 'do not ask for prompts',
+    }),
   };
 
-  async promptInitGit() {
-    const response = await prompt<{
-      answer: boolean;
-    }>([
-      {
-        name: 'answer',
-        type: 'confirm',
-        message:
-          'You are not in a Git repository, do you want to initialize one?',
-        default: false,
-      },
-    ]);
+  async promptInitGit(yes: boolean) {
+    const response = yes
+      ? { answer: true }
+      : await prompt<{
+          answer: boolean;
+        }>([
+          {
+            name: 'answer',
+            type: 'confirm',
+            message:
+              'You are not in a Git repository, do you want to initialize one?',
+            default: false,
+          },
+        ]);
 
     if (!response.answer) {
       this.exit(0);
@@ -45,20 +51,38 @@ export default class Init extends BaseCommand {
     }
   }
 
+  async promptMetaData(yes: boolean): Promise<Meta> {
+    const answer: any = yes
+      ? { name: 'My Awesome Tutorial' }
+      : await prompt([
+          {
+            name: 'name',
+            message: 'Tutorial Name',
+            default: 'My Awesome Tutorial',
+          },
+          {
+            name: 'description',
+            message: 'Description',
+          },
+        ]);
+    answer.id = crypto.randomBytes(16).toString('hex');
+
+    return answer as Meta;
+  }
+
   async run() {
+    const { flags } = this.parse(Init);
+
     if (fs.existsSync(collectionPath)) {
       logger.log('success', 'Tuture tutorial has already been initialized!');
       this.exit(0);
     }
 
     if (!(await git.checkIsRepo())) {
-      await this.promptInitGit();
+      await this.promptInitGit(flags.yes);
     }
 
-    const meta = {
-      name: 'My Awesome Tutorial',
-      id: crypto.randomBytes(16).toString('hex'),
-    };
+    const meta = await this.promptMetaData(flags.yes);
 
     try {
       const steps = await makeSteps(this.userConfig.ignoredFiles);
@@ -88,7 +112,11 @@ export default class Init extends BaseCommand {
       const remotes = await git.getRemotes(true);
 
       if (remotes.length > 0) {
-        collection.remotes = await selectRemotes(remotes);
+        if (flags.yes) {
+          collection.remotes = [remotes[0]];
+        } else {
+          collection.remotes = await selectRemotes(remotes);
+        }
       }
 
       collection.version = SCHEMA_VERSION;
