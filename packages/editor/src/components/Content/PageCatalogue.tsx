@@ -1,5 +1,5 @@
 import React from 'react';
-import { Anchor, Divider } from 'antd';
+import { Anchor, Divider, Tooltip } from 'antd';
 import { useDispatch, useSelector, useStore } from 'react-redux';
 import { HeadingItem } from '@tuture/core';
 
@@ -127,7 +127,11 @@ function PageCatalogue() {
             <Link
               key={item.id}
               href={`#${item.id}`}
-              title={item.title}
+              title={
+                <Tooltip placement="right" title={item.title}>
+                  <span>{item.title}</span>
+                </Tooltip>
+              }
               css={css`
                 padding-left: ${getHeadingDepth(item.type) * 16}px;
 
