@@ -9,7 +9,7 @@ import { Dispatch, RootState } from 'store';
 import { App } from '../components';
 
 function Home() {
-  const dispatch: Dispatch = useDispatch();
+  const dispatch = useDispatch<Dispatch>();
   const { fetchMeta, fetchArticles, fetchFragment } = useSelector(
     (state: RootState) => state.loading.effects.collection,
   );

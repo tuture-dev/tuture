@@ -222,19 +222,19 @@ export const collection = {
 
       dispatch.collection.setMeta(data);
     },
-    async fetchArticles(_: null, rootState: RootState) {
+    async fetchArticles(_?: any, rootState?: RootState) {
       const response = await fetch('/articles');
       const data: Article[] = await response.json();
 
       dispatch.collection.setArticles(data);
 
-      const { nowArticleId } = rootState.collection;
+      const { nowArticleId } = (rootState as RootState).collection;
       if (!nowArticleId) {
         dispatch.collection.setNowArticle(data[0].id);
       }
     },
-    async fetchFragment(_: null, rootState: RootState) {
-      const { nowArticleId } = rootState.collection;
+    async fetchFragment(_?: any, rootState?: RootState) {
+      const { nowArticleId } = (rootState as RootState).collection;
 
       let url = '/fragment';
       if (nowArticleId) {

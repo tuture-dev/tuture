@@ -189,6 +189,7 @@ function CreateEditArticle(props: CreateEditArticleProps) {
           // Create new article.
           article.id = randHex(8);
 
+          dispatch.collection.createArticle(article);
           // Update articleId field for selected steps.
           collectionSteps.forEach((step, index) => {
             if (steps.includes(String(index))) {
@@ -418,9 +419,7 @@ function CreateEditArticle(props: CreateEditArticleProps) {
               css={css`
                 margin-right: 16px;
               `}
-              onClick={() =>
-                dispatch({ type: 'drawer/setChildrenVisible', payload: false })
-              }
+              onClick={() => dispatch.drawer.setChildrenVisible(false)}
             >
               取消
             </Button>

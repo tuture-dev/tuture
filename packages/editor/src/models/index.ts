@@ -1,7 +1,7 @@
-export * from './collection';
-export * from './diff';
-export * from './toc';
-export * from './drawer';
-export * from './link';
-export * from './slate';
-export * from './sync';
+export { collection } from './collection';
+export { diff } from './diff';
+export { toc } from './toc';
+export { drawer } from './drawer';
+export { link } from './link';
+export { slate } from './slate';
+export { sync } from './sync';

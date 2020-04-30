@@ -27,7 +27,10 @@ export const sync = {
   },
   effects: (dispatch: Dispatch) => ({
     async sync(payload: { showMessage: boolean }) {
-      await dispatch.collection.save();
+      await dispatch.collection.save({
+        keys: ['meta', 'articles', 'fragment', 'remotes'],
+        showMessage: true,
+      });
 
       try {
         const response = await axios.get('/sync');

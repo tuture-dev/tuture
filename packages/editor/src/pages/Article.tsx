@@ -11,7 +11,7 @@ import { css, jsx } from '@emotion/core';
 import { Dispatch, RootState } from '../store';
 
 function Article() {
-  const dispatch: Dispatch = useDispatch();
+  const dispatch = useDispatch<Dispatch>();
   const { fetchMeta, fetchArticles, fetchFragment } = useSelector(
     (state: RootState) => state.loading.effects.collection,
   );

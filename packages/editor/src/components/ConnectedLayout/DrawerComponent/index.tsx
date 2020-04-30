@@ -12,7 +12,7 @@ import CollectionCatalogue from './CollectionCatalogue';
 import CollectionSetting from './CollectionSetting';
 import ContactUs from './ContactUs';
 
-import { RootState } from 'store';
+import { RootState, Dispatch } from 'store';
 
 const mapTypeToTitle: { [key: string]: string } = {
   [COLLECTION_CATALOGUE]: '文集目录',
@@ -27,7 +27,7 @@ const mapTypeToComponent: { [key: string]: ReactNode } = {
 };
 
 function DrawerComponent() {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<Dispatch>();
   const { drawerType, visible } = useSelector(
     (state: RootState) => state.drawer,
   );
@@ -35,8 +35,8 @@ function DrawerComponent() {
   const RenderComponent = mapTypeToComponent[drawerType];
 
   const handleClose = () => {
-    dispatch({ type: 'drawer/setVisible', payload: false });
-    dispatch({ type: 'drawer/setSelectedKeys', payload: [] });
+    dispatch.drawer.setVisible(false);
+    dispatch.drawer.setSelectedKeys([]);
   };
 
   return (
