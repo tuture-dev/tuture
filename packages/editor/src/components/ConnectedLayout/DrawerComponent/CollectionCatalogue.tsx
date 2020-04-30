@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Divider } from 'antd';
+import { Divider, Tooltip } from 'antd';
 import { Link } from 'react-router-dom';
 
 /** @jsx jsx */
@@ -102,17 +102,23 @@ function CollectionCatalogue() {
               `}
             >
               <Link to={`/articles/${article.id}`} css={itemTitleStyle}>
-                <span
-                  css={css`
-                    display: inline-block;
-                    max-width: 224px;
-                    white-space: nowrap;
-                    text-overflow: ellipsis;
-                    overflow: hidden;
-                  `}
+                <Tooltip
+                  title={article.name}
+                  placement="right"
+                  mouseEnterDelay={0.5}
                 >
-                  {article.name}
-                </span>
+                  <span
+                    css={css`
+                      display: inline-block;
+                      max-width: 224px;
+                      white-space: nowrap;
+                      text-overflow: ellipsis;
+                      overflow: hidden;
+                    `}
+                  >
+                    {article.name}
+                  </span>
+                </Tooltip>
               </Link>
               <span
                 css={css`
