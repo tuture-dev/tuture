@@ -84,7 +84,7 @@ export const toc = {
           unassignedStepList,
           needDeleteOutdatedStepList,
         },
-        '/toc',
+        '/api/toc',
       );
 
       if (!success) {
