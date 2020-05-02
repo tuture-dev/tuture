@@ -59,7 +59,7 @@ export const toc = {
   effects: (dispatch: Dispatch) => ({
     async fetchToc() {
       try {
-        const response = await fetch('/toc');
+        const response = await fetch('/api/toc');
         const data: {
           articleStepList: TocStepItem[];
           unassignedStepList: TocStepItem[];
@@ -84,7 +84,7 @@ export const toc = {
           unassignedStepList,
           needDeleteOutdatedStepList,
         },
-        '/toc',
+        '/api/toc',
       );
 
       if (!success) {

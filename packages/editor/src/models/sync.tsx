@@ -27,10 +27,13 @@ export const sync = {
   },
   effects: (dispatch: Dispatch) => ({
     async sync(payload: { showMessage: boolean }) {
-      await dispatch.collection.save();
+      await dispatch.collection.save({
+        keys: ['meta', 'articles', 'fragment', 'remotes'],
+        showMessage: true,
+      });
 
       try {
-        const response = await axios.get('/sync');
+        const response = await axios.get('/api/sync');
 
         if (response.status === 200) {
           if (payload?.showMessage) {
@@ -59,7 +62,7 @@ export const sync = {
       }
     },
     async fetchGitRemotes() {
-      const response = await fetch('/remotes?fromGit=true');
+      const response = await fetch('/api/remotes?fromGit=true');
       const body = await response.json();
 
       dispatch.sync.setGitRemotes(body as Remote[]);

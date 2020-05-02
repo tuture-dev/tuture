@@ -21,7 +21,7 @@ export const diff = {
   effects: (dispatch: Dispatch) => ({
     async fetchDiff() {
       try {
-        const response = await fetch('/diff');
+        const response = await fetch('/api/diff');
         const data = await response.json();
         dispatch.diff.setDiffData(data);
       } catch {

@@ -28,7 +28,7 @@ function ArticleStepListItem(props: {
 }) {
   const { item, onDelete } = props;
   const isItemOutdated = item.type === 'step' && item.outdated;
-  const dispatch: Dispatch = useDispatch();
+  const dispatch = useDispatch<Dispatch>();
   const { activeArticle } = useSelector((state: RootState) => state.toc);
 
   function toggleActiveArticle(articleId: string) {
@@ -107,7 +107,7 @@ function ArticleStepListItem(props: {
 }
 
 function ArticleStepList() {
-  const dispatch: Dispatch = useDispatch();
+  const dispatch = useDispatch<Dispatch>();
 
   const {
     unassignedStepList = [],
@@ -147,7 +147,7 @@ function ArticleStepList() {
         (articleStep) => articleStep.id !== articleStepItem.id,
       );
 
-      dispatch.toc.setArticleStepList(newArticleStepList);
+      dispatch.toc.setArticleStepList(newArticleStepList as TocStepItem[]);
 
       const newUnassignedStepList = handleInsertStep(
         articleStepItem,
@@ -188,7 +188,7 @@ function ArticleStepList() {
       .filter((step) => step.id !== item.id);
 
     dispatch.toc.setUnassignedStepList(newUnassignedStepList);
-    dispatch.toc.setArticleStepList(newArticleStepList);
+    dispatch.toc.setArticleStepList(newArticleStepList as TocStepItem[]);
     dispatch.toc.setActiveArticle('');
 
     message.success('删除文章成功');

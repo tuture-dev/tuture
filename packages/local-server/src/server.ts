@@ -1,18 +1,9 @@
-import cp from 'child_process';
 import fs from 'fs-extra';
 import path from 'path';
 import logger from 'morgan';
 import express, { Express } from 'express';
 
-import {
-  createArticlesRouter,
-  createCollectionStepsRouter,
-  createDiffRouter,
-  createFragmentRouter,
-  createMetaRouter,
-  createRemotesRouter,
-  createTocRouter,
-} from './routes';
+import { createBaseRouter } from './routes';
 import TaskQueue from './utils/task-queue';
 
 // Editor path
@@ -20,17 +11,19 @@ const EDITOR_PATH = path.join(__dirname, 'editor');
 const EDITOR_STATIC_PATH = path.join(EDITOR_PATH, 'static');
 
 export interface ServerOptions {
+  baseUrl?: string;
   mockRoutes?: (app: Express) => void;
 }
 
 export const makeServer = (options?: ServerOptions) => {
   const app = express();
   const queue = new TaskQueue();
+  const apiRouter = createBaseRouter(queue);
 
   // Make sure the task queue is flushed
   process.on('exit', () => queue.flush());
 
-  const { mockRoutes } = options || {};
+  const { mockRoutes, baseUrl = '/' } = options || {};
 
   if (process.env.NODE_ENV === 'development') {
     app.use(logger('dev'));
@@ -46,23 +39,7 @@ export const makeServer = (options?: ServerOptions) => {
     mockRoutes(app);
   }
 
-  app.use('/articles', createArticlesRouter(queue));
-  app.use('/collection-steps', createCollectionStepsRouter(queue));
-  app.use('/diff', createDiffRouter());
-  app.use('/fragment', createFragmentRouter(queue));
-  app.use('/meta', createMetaRouter(queue));
-  app.use('/remotes', createRemotesRouter(queue));
-  app.use('/toc', createTocRouter(queue));
-
-  app.get('/sync', async (req, res) => {
-    cp.execFile('tuture', ['sync'], {}, (err) => {
-      if (err) {
-        res.status(500).json({ exitCode: err.code });
-      } else {
-        res.sendStatus(200);
-      }
-    });
-  });
+  app.use(baseUrl, apiRouter);
 
   app.get('*', (_, res) => {
     const html = fs

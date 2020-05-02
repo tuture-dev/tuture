@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { getHeadings, Article } from '@tuture/core';
+import { getHeadings, Article, Collection, Step } from '@tuture/core';
 
 import TaskQueue from '../utils/task-queue';
 import { CollectionStep } from '../types';
@@ -35,6 +35,29 @@ export function createCollectionStepsRouter(queue: TaskQueue) {
     })) as CollectionStep[];
 
     res.json(collectionSteps);
+  });
+
+  router.put('/', (req, res) => {
+    const { updatedStepsId = [], articleId = '' } = req.body;
+
+    const task = function(collcetion: Collection) {
+      return {
+        ...collcetion,
+        steps: collcetion.steps.map((step) => {
+          if ((updatedStepsId as string[]).includes(step.id)) {
+            return { ...step, articleId };
+          }
+
+          return step;
+        }),
+      };
+    };
+    queue.addTask({
+      task,
+      callback: function() {
+        res.sendStatus(200);
+      },
+    });
   });
 
   return router;

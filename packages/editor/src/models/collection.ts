@@ -13,6 +13,8 @@ import {
   flattenSteps as flatten,
   unflattenSteps as unflatten,
 } from '@tuture/core';
+import axios from 'axios';
+import { History } from 'history';
 
 import {
   FILE,
@@ -193,12 +195,13 @@ export const collection = {
       payload: { stepId: string; stepProps: Partial<Step> },
     ) {
       const { stepId, stepProps } = payload;
+      let steps = unflatten(state.fragment);
 
-      state.fragment = state.fragment.map((node) =>
-        node.type === 'step' && node.id === stepId
-          ? { ...node, ...stepProps }
-          : node,
+      steps = steps.map((node) =>
+        node.id === stepId ? { ...node, ...stepProps } : node,
       );
+
+      state.fragment = flatten(steps);
 
       return state;
     },
@@ -217,26 +220,26 @@ export const collection = {
   },
   effects: (dispatch: Dispatch) => ({
     async fetchMeta() {
-      const response = await fetch('/meta');
+      const response = await fetch('/api/meta');
       const data: Meta = await response.json();
 
       dispatch.collection.setMeta(data);
     },
-    async fetchArticles(_: null, rootState: RootState) {
-      const response = await fetch('/articles');
+    async fetchArticles(_?: any, rootState?: RootState) {
+      const response = await fetch('/api/articles');
       const data: Article[] = await response.json();
 
       dispatch.collection.setArticles(data);
 
-      const { nowArticleId } = rootState.collection;
+      const { nowArticleId } = (rootState as RootState).collection;
       if (!nowArticleId) {
         dispatch.collection.setNowArticle(data[0].id);
       }
     },
-    async fetchFragment(_: null, rootState: RootState) {
-      const { nowArticleId } = rootState.collection;
+    async fetchFragment(_?: any, rootState?: RootState) {
+      const { nowArticleId } = (rootState as RootState).collection;
 
-      let url = '/fragment';
+      let url = '/api/fragment';
       if (nowArticleId) {
         url = url + `?articleId=${nowArticleId}`;
       }
@@ -247,10 +250,27 @@ export const collection = {
       dispatch.collection.setFragment(data);
     },
     async fetchRemotes() {
-      const response = await fetch('/remotes');
+      const response = await fetch('/api/remotes');
       const data: Remote[] = await response.json();
 
       dispatch.collection.setRemotes(data);
+    },
+    async updateSteps(payload: {
+      updatedStepsId: string[];
+      articleId: string;
+      history?: History;
+    }) {
+      const { updatedStepsId, articleId, history } = payload;
+      await axios.put('/api/collection-steps', {
+        updatedStepsId,
+        articleId,
+      });
+
+      if (history) {
+        history.push(`/articles/${articleId}`);
+      } else {
+        await dispatch.collection.fetchFragment();
+      }
     },
     async save(
       payload: {
@@ -270,25 +290,25 @@ export const collection = {
       if (keys.includes('meta')) {
         const { meta } = rootState.collection;
         if (meta) {
-          success = await saveData(meta, '/meta');
+          success = await saveData(meta, '/api/meta');
         }
       }
       if (keys.includes('articles')) {
         const { articles } = rootState.collection;
         if (articles) {
-          success = await saveData(articles, '/articles');
+          success = await saveData(articles, '/api/articles');
         }
       }
       if (keys.includes('fragment')) {
         const { fragment } = rootState.collection;
         if (fragment) {
-          success = await saveData(fragment, '/fragment');
+          success = await saveData(fragment, '/api/fragment');
         }
       }
       if (keys.includes('remotes')) {
         const { remotes } = rootState.collection;
         if (remotes) {
-          success = await saveData(remotes, '/remotes');
+          success = await saveData(remotes, '/api/remotes');
         }
       }
 

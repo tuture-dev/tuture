@@ -53,7 +53,10 @@ function PageHeader() {
   }
 
   function handleSaveCollection() {
-    dispatch.collection.save();
+    dispatch.collection.save({
+      keys: ['meta', 'articles', 'fragment', 'remotes'],
+      showMessage: true,
+    });
   }
 
   function handleHeaderChange(e: React.ChangeEvent<HTMLTextAreaElement>) {

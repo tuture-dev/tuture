@@ -24,7 +24,7 @@ function ReleasedStepListItem(props: {
   onClickAdd: React.MouseEventHandler;
 }) {
   const { item, onClickAdd } = props;
-  const dispatch: Dispatch = useDispatch();
+  const dispatch = useDispatch<Dispatch>();
 
   return (
     <li
@@ -65,7 +65,7 @@ function ReleasedStepListItem(props: {
 }
 
 function ReleasedStepList() {
-  const dispatch: Dispatch = useDispatch();
+  const dispatch = useDispatch<Dispatch>();
 
   const [searchValue, setSearchValue] = useState('');
 
@@ -117,7 +117,7 @@ function ReleasedStepList() {
       ...stepItem,
       articleId: activeArticle,
     });
-    dispatch.toc.setArticleStepList(articleStepList);
+    dispatch.toc.setArticleStepList(articleStepList as TocStepItem[]);
 
     const newUnassignedStepList = unassignedStepList.filter(
       (step) => step.id !== stepItem.id,
