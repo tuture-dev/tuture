@@ -33,7 +33,7 @@ export const sync = {
       });
 
       try {
-        const response = await axios.get('/sync');
+        const response = await axios.get('/api/sync');
 
         if (response.status === 200) {
           if (payload?.showMessage) {
@@ -62,7 +62,7 @@ export const sync = {
       }
     },
     async fetchGitRemotes() {
-      const response = await fetch('/remotes?fromGit=true');
+      const response = await fetch('/api/remotes?fromGit=true');
       const body = await response.json();
 
       dispatch.sync.setGitRemotes(body as Remote[]);

@@ -5,11 +5,11 @@ const PORT = 8000;
 
 const app = makeServer({
   mockRoutes: (app) => {
-    app.get('/remotes', (req, res) => {
+    app.get('/api/remotes', (req, res) => {
       res.json(mockRemotes);
     });
 
-    app.get('/sync', (req, res) => {
+    app.get('/api/sync', (req, res) => {
       setTimeout(() => {
         res.sendStatus(200);
       }, 2000);

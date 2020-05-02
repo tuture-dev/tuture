@@ -85,22 +85,27 @@ function CreateEditArticle(props: CreateEditArticleProps) {
     (state: RootState) => state.collection,
   );
 
+  const [initialTargetKeys, setInitialTargetKeys] = useState<string[]>([]);
+  const [targetKeys, setTargetKeys] = useState<string[]>([]);
+
   useEffect(() => {
-    fetch('/collection-steps')
+    fetch('/api/collection-steps')
       .then((res) => res.json())
-      .then((data) => setCollectionSteps(data));
-  }, []);
+      .then((data) => {
+        setCollectionSteps(data);
 
-  const initialTargetKeys =
-    props.childrenDrawerType === EDIT_ARTICLE
-      ? collectionSteps
-          .filter((step) => step.articleId === editArticleId)
-          .map((step) => step.key)
-      : [];
+        // set TargetKeys
+        const targetKeys =
+          props.childrenDrawerType === EDIT_ARTICLE
+            ? (data as CollectionStep[])
+                .filter((step) => step.articleId === editArticleId)
+                .map((step) => step.key)
+            : [];
 
-  const [targetKeys, setTargetKeys] = useState<string[]>(
-    initialTargetKeys || [],
-  );
+        setTargetKeys(targetKeys);
+        setInitialTargetKeys(targetKeys);
+      });
+  }, [editArticleId, props.childrenDrawerType]);
 
   // get nowArticle Meta
   const meta: Meta = useSelector(
@@ -164,48 +169,59 @@ function CreateEditArticle(props: CreateEditArticleProps) {
         if (props.childrenDrawerType === EDIT_ARTICLE) {
           dispatch.collection.editArticle(article);
 
+          let newlyAddedStepsId: string[] = [];
+
+          // If released, set articleId null
           collectionSteps.forEach((step, index) => {
-            if (step.articleId === editArticleId) {
-              if (!steps.includes(String(index))) {
-                // Remove this step from currently edited article.
-                dispatch.collection.setStepById({
-                  stepId: step.id,
-                  stepProps: { articleId: null },
-                });
-              }
-            } else {
-              if (steps.includes(String(index))) {
-                // Add this step to the currently edited article.
-                dispatch.collection.setStepById({
-                  stepId: step.id,
-                  stepProps: { articleId: editArticleId },
-                });
-              }
+            if (initialTargetKeys.includes(String(index)) && !step.articleId) {
+              // Remove this step from currently edited article.
+              dispatch.collection.setStepById({
+                stepId: step.id,
+                stepProps: { articleId: null },
+              });
+            }
+
+            if (
+              steps.includes(String(index)) &&
+              !initialTargetKeys.includes(String(index))
+            ) {
+              // if newly steps
+              newlyAddedStepsId.push(step.id);
             }
           });
+
+          dispatch.collection.save({ keys: ['articles', 'fragment'] }); // If exists newly addSteps, then update collection
+
+          if (newlyAddedStepsId.length > 0) {
+            dispatch.collection.updateSteps({
+              articleId: editArticleId as string,
+              updatedStepsId: newlyAddedStepsId,
+            });
+          }
 
           message.success('保存成功');
         } else {
           // Create new article.
           article.id = randHex(8);
 
-          dispatch.collection.createArticle(article);
           // Update articleId field for selected steps.
+          const updatedStepsId: string[] = [];
           collectionSteps.forEach((step, index) => {
             if (steps.includes(String(index))) {
-              dispatch.collection.setStepById({
-                stepId: step.id,
-                stepProps: { articleId: article.id },
-              });
+              updatedStepsId.push(step.id);
             }
           });
-
-          history.push(`/articles/${article.id}`);
+          dispatch.collection.createArticle(article);
+          dispatch.collection.save({ keys: ['articles'] });
+          dispatch.collection.updateSteps({
+            articleId: article.id,
+            updatedStepsId,
+            history,
+          });
         }
 
         dispatch.drawer.setChildrenVisible(false);
         dispatch.drawer.setVisible(false);
-        dispatch.collection.save({ keys: ['articles', 'fragment'] });
       }
     });
   }
@@ -224,7 +240,7 @@ function CreateEditArticle(props: CreateEditArticleProps) {
     });
 
     // check nowTargetKeys status
-    const newcollectionSteps = collectionSteps.map((step) => {
+    const newCollectionSteps = collectionSteps.map((step) => {
       if (targetKeys.includes(step.key) && !nextTargetKeys.includes(step.key)) {
         return { ...step, articleId: '', articleIndex: 0, articleName: '' };
       }
@@ -232,8 +248,7 @@ function CreateEditArticle(props: CreateEditArticleProps) {
       return step;
     });
 
-    setCollectionSteps(newcollectionSteps);
-    setFieldsValue({ steps: sortedNextTargetKeys });
+    setCollectionSteps(newCollectionSteps);
     setTargetKeys(sortedNextTargetKeys);
   }
 
