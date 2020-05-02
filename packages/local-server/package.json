@@ -1,6 +1,6 @@
 {
   "name": "@tuture/local-server",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Local server for Tuture",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
@@ -10,7 +10,7 @@
   ],
   "license": "MIT",
   "scripts": {
-    "prepack": "rimraf dist/editor && cp -r ../editor/build dist/editor"
+    "collect-editor": "rimraf dist/editor && cp -r ../editor/build dist/editor"
   },
   "dependencies": {
     "@tuture/core": "*",
