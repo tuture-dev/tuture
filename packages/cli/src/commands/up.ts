@@ -27,7 +27,7 @@ export default class Up extends BaseCommand {
 
   async fireTutureServer() {
     const port = await getPort({ port: this.userConfig.port });
-    const server = makeServer();
+    const server = makeServer({ baseUrl: '/api' });
 
     server.listen(port, () => {
       const url = `http://localhost:${port}`;
