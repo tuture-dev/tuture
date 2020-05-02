@@ -46,13 +46,13 @@ export const makeServer = (options?: ServerOptions) => {
     mockRoutes(app);
   }
 
-  app.use('/articles', createArticlesRouter(queue));
-  app.use('/collection-steps', createCollectionStepsRouter(queue));
-  app.use('/diff', createDiffRouter());
-  app.use('/fragment', createFragmentRouter(queue));
-  app.use('/meta', createMetaRouter(queue));
-  app.use('/remotes', createRemotesRouter(queue));
-  app.use('/toc', createTocRouter(queue));
+  app.use('/api/articles', createArticlesRouter(queue));
+  app.use('/api/collection-steps', createCollectionStepsRouter(queue));
+  app.use('/api/diff', createDiffRouter());
+  app.use('/api/fragment', createFragmentRouter(queue));
+  app.use('/api/meta', createMetaRouter(queue));
+  app.use('/api/remotes', createRemotesRouter(queue));
+  app.use('/api/toc', createTocRouter(queue));
 
   app.get('/sync', async (req, res) => {
     cp.execFile('tuture', ['sync'], {}, (err) => {
