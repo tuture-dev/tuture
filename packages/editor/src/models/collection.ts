@@ -37,7 +37,6 @@ export type CollectionState = {
   lastSaved: Date | null;
   saveFailed: boolean;
   outdatedNotificationClicked: boolean;
-  updateArticleSteps: boolean;
 };
 
 export type SaveKey = 'meta' | 'articles' | 'fragment' | 'remotes';
@@ -53,7 +52,6 @@ const initialState: CollectionState = {
   lastSaved: null,
   saveFailed: false,
   outdatedNotificationClicked: false,
-  updateArticleSteps: false,
 };
 
 export const collection = {
@@ -219,11 +217,6 @@ export const collection = {
       state.outdatedNotificationClicked = payload;
       return state;
     },
-    setUpdateArticleSteps(state: CollectionState, payload: boolean) {
-      state.updateArticleSteps = payload;
-
-      return state;
-    },
   },
   effects: (dispatch: Dispatch) => ({
     async fetchMeta() {
@@ -267,8 +260,6 @@ export const collection = {
       articleId: string;
       history?: History;
     }) {
-      dispatch.collection.setUpdateArticleSteps(false);
-
       const { updatedStepsId, articleId, history } = payload;
       await axios.put('/api/collection-steps', {
         updatedStepsId,
