@@ -4,6 +4,7 @@ const mockRemotes = require('./fixtures/mock-remotes.json');
 const PORT = 8000;
 
 const app = makeServer({
+  baseUrl: '/api',
   mockRoutes: (app) => {
     app.get('/api/remotes', (req, res) => {
       res.json(mockRemotes);
