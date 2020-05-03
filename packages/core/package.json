@@ -1,7 +1,7 @@
 {
   "name": "@tuture/core",
   "description": "Core logics and data interfaces for Tuture",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
   "types": "dist/index.d.ts",
@@ -10,6 +10,8 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "editure": "^0.1.9"
+    "editure": "^0.1.9",
+    "lodash.omit": "^4.5.0",
+    "tuture-slate": "^0.57.4"
   }
 }
