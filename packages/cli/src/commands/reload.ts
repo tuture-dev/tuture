@@ -1,6 +1,6 @@
 import fs from 'fs-extra';
 import { flags } from '@oclif/command';
-import { Step } from '@tuture/core';
+import { Step, getStepTitle } from '@tuture/core';
 import {
   loadCollection,
   collectionPath,
@@ -44,13 +44,27 @@ export default class Reload extends BaseCommand {
     const lastArticleId = collection.articles.slice(-1)[0].id;
 
     currentSteps.forEach((step) => {
-      // For newly added steps, assign it to the last article.
-      if (!collection.steps.map((step) => step.id).includes(step.id)) {
+      if (!collection.steps.map((step) => step.commit).includes(step.commit)) {
+        logger.log(
+          'success',
+          `New step: ${getStepTitle(step)} (${step.commit})`,
+        );
+
+        // For newly added steps, assign it to the last article.
         step.articleId = lastArticleId;
       }
     });
 
     collection.steps = mergeSteps(collection.steps, currentSteps);
+
+    collection.steps.forEach((step) => {
+      if (step.outdated) {
+        logger.log(
+          'warning',
+          `Outdated step: ${getStepTitle(step)} (${step.commit})`,
+        );
+      }
+    });
 
     saveCollection(collection);
 
