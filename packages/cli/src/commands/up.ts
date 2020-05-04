@@ -12,7 +12,7 @@ import reload from './reload';
 import BaseCommand from '../base';
 import logger from '../utils/logger';
 import { checkInitStatus } from '../utils';
-import { diffPath } from '../utils/git';
+import { diffPath, shouldReloadSteps } from '../utils/git';
 
 export default class Up extends BaseCommand {
   static description = 'Render and edit tutorial in browser';
@@ -52,7 +52,11 @@ export default class Up extends BaseCommand {
     }
 
     // Run sync command if workspace is not prepared.
-    if (!fs.existsSync(collectionPath) || !fs.existsSync(diffPath)) {
+    if (
+      !fs.existsSync(collectionPath) ||
+      !fs.existsSync(diffPath) ||
+      (await shouldReloadSteps())
+    ) {
       await reload.run([]);
     }
 

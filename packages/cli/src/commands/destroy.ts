@@ -4,7 +4,7 @@ import { TUTURE_BRANCH } from '@tuture/core';
 
 import BaseCommand from '../base';
 import logger from '../utils/logger';
-import { git, removeGitHook } from '../utils/git';
+import { git } from '../utils/git';
 import { removeTutureSuite } from '../utils';
 
 type ConfirmResponse = {
@@ -44,7 +44,6 @@ export default class Destroy extends BaseCommand {
     }
 
     await removeTutureSuite();
-    removeGitHook();
 
     // Remove local tuture branch if exists.
     const { all: allBranches } = await git.branchLocal();
