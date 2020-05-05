@@ -36,7 +36,7 @@ Tuture 为教程内容创作而生，因此 Git 仓库通常是**专门用于教
 
 ## 如何快速使用？
 
-在一个已有提交的 Git 项目根目录下运行如下命令：
+在终端运行如下命令：
 
 1. 安装 Tuture 写作工具
 
@@ -44,19 +44,19 @@ Tuture 为教程内容创作而生，因此 Git 仓库通常是**专门用于教
 npm install -g @tuture/cli
 ```
 
-2. 克隆我们为你准备的代码：
+2. 准备一个 Git 仓库：1）在本地创建 2）克隆远程已经创建好的。如果你没有准备，可以克隆如下仓库（**注意：**此仓库仅用于演示，实际使用 tuture 写作需要你自己新开一个 Git 仓库）：
 
 ```bash
 git clone https://github.com/tuture-dev/our-tuture.git
 ```
 
-3. 进入项目根目录并使用 `tuture` 运行命令：
+3. 进入你的项目根目录并使用 `tuture` 运行命令。如果你使用我们为你准备的项目，可以运行如下命令：
 
 ```bash
 cd our-tuture && tuture up
 ```
 
-这个时候你应该可以看到如下的界面：
+这个时候你应该可以看到类似下面的界面：
 
 ![00831rSTgy1gdm5loil8pj31580u0tib](https://tva1.sinaimg.cn/large/00831rSTgy1gdm6wsd2hfj31580u0tc1.jpg)
 
