@@ -22,7 +22,6 @@ import { File as DiffFile, ChangeType } from 'parse-diff';
 
 import reload from './reload';
 import BaseCommand from '../base';
-import { checkInitStatus } from '../utils';
 import logger from '../utils/logger';
 import { diffPath } from '../utils/git';
 import { generateUserProfile } from '../utils/internals';
@@ -393,13 +392,6 @@ export default class Build extends BaseCommand {
   async run() {
     const { flags } = this.parse(Build);
     this.userConfig = Object.assign(this.userConfig, flags);
-
-    try {
-      await checkInitStatus();
-    } catch (err) {
-      logger.log('error', err.message);
-      this.exit(1);
-    }
 
     // Run sync command if workspace is not prepared.
     if (!fs.existsSync(collectionPath) || !fs.existsSync(diffPath)) {

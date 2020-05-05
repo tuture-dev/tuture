@@ -11,7 +11,6 @@ import {
 import reload from './reload';
 import BaseCommand from '../base';
 import logger from '../utils/logger';
-import { checkInitStatus } from '../utils';
 import { diffPath, shouldReloadSteps } from '../utils/git';
 
 export default class Up extends BaseCommand {
@@ -48,13 +47,6 @@ export default class Up extends BaseCommand {
   async run() {
     const { flags } = this.parse(Up);
     this.userConfig = Object.assign(this.userConfig, flags);
-
-    try {
-      await checkInitStatus();
-    } catch (err) {
-      logger.log('error', err.message);
-      this.exit(1);
-    }
 
     // Run sync command if workspace is not prepared.
     if (
