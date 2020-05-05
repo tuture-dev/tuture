@@ -1,15 +1,13 @@
-import crypto from 'crypto';
 import chalk from 'chalk';
 import fs from 'fs-extra';
 import { flags } from '@oclif/command';
 import { prompt } from 'inquirer';
-import { Collection, Meta, SCHEMA_VERSION } from '@tuture/core';
+import { Collection, SCHEMA_VERSION, randHex } from '@tuture/core';
 import { collectionPath, saveCollection } from '@tuture/local-server';
 
 import logger from '../utils/logger';
 import BaseCommand from '../base';
-import { makeSteps, removeTutureSuite } from '../utils';
-import { selectRemotes } from '../utils/prompt';
+import { makeSteps, removeTutureSuite, selectRemotes } from '../utils';
 import { git, inferGithubField, appendGitignore } from '../utils/git';
 
 export default class Init extends BaseCommand {
@@ -46,13 +44,13 @@ export default class Init extends BaseCommand {
     }
   }
 
-  async promptMetaData(yes: boolean): Promise<Meta> {
-    const answer: any = yes
+  async promptMetaData(yes: boolean) {
+    const answer = yes
       ? { name: 'My Awesome Tutorial' }
-      : await prompt([
+      : await prompt<{ name: string; description: string }>([
           {
             name: 'name',
-            message: 'Tutorial Name',
+            message: 'Collection Name',
             default: 'My Awesome Tutorial',
           },
           {
@@ -60,9 +58,8 @@ export default class Init extends BaseCommand {
             message: 'Description',
           },
         ]);
-    answer.id = crypto.randomBytes(16).toString('hex');
 
-    return answer as Meta;
+    return answer;
   }
 
   async run() {
@@ -81,15 +78,27 @@ export default class Init extends BaseCommand {
 
     try {
       const steps = await makeSteps(this.userConfig.ignoredFiles);
+      const defaultArticleId = randHex(8);
 
       steps.forEach((step) => {
-        step.articleId = meta.id;
+        step.articleId = defaultArticleId;
       });
 
       const collection: Collection = {
         ...meta,
+        id: randHex(32),
         created: new Date(),
-        articles: [meta],
+        articles: [
+          {
+            id: defaultArticleId,
+            name: meta.name,
+            description: '',
+            topics: [],
+            categories: [],
+            created: new Date(),
+            cover: '',
+          },
+        ],
         steps,
       };
 

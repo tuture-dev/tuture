@@ -23,7 +23,7 @@ import pull from './pull';
 import push from './push';
 import BaseCommand from '../base';
 import { EXIT_CODE } from '../constants';
-import { selectRemotes } from '../utils/prompt';
+import { selectRemotes } from '../utils';
 import { git } from '../utils/git';
 import logger from '../utils/logger';
 import {
