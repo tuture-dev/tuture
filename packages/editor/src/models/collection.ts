@@ -255,20 +255,22 @@ export const collection = {
 
       dispatch.collection.setRemotes(data);
     },
-    async updateSteps(payload: {
-      updatedStepsId: string[];
-      articleId: string;
-      history?: History;
-    }) {
-      const { updatedStepsId, articleId, history } = payload;
+    async updateSteps(
+      payload: {
+        updatedStepsId: string[];
+        articleId: string;
+      },
+      rootState: RootState,
+    ) {
+      const { updatedStepsId, articleId } = payload;
       await axios.put('/api/collection-steps', {
         updatedStepsId,
         articleId,
       });
 
-      if (history) {
-        history.push(`/articles/${articleId}`);
-      } else {
+      const { nowArticleId } = rootState.collection;
+
+      if (articleId === nowArticleId) {
         await dispatch.collection.fetchFragment();
       }
     },
