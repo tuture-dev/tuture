@@ -216,8 +216,9 @@ function CreateEditArticle(props: CreateEditArticleProps) {
           dispatch.collection.updateSteps({
             articleId: article.id,
             updatedStepsId,
-            history,
           });
+
+          history.push(`/articles/${article.id}`);
         }
 
         dispatch.drawer.setChildrenVisible(false);

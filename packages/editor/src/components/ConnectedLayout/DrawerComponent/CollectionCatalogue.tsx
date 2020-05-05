@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Divider, Tooltip } from 'antd';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 /** @jsx jsx */
 import { css, jsx, Global } from '@emotion/core';
@@ -46,6 +46,7 @@ function CollectionCatalogue() {
     (state: RootState) => state.drawer,
   );
   const [selectItem, setSelectItem] = useState('');
+  const history = useHistory();
 
   const dispatch = useDispatch<Dispatch>();
   const { articles } = useSelector((state: RootState) => state.collection);
@@ -72,11 +73,10 @@ function CollectionCatalogue() {
   }
 
   function onCatalogueItemClick(articleId: string) {
+    dispatch.drawer.setVisible(false);
     setSelectItem(articleId);
-    dispatch.collection.setNowArticle(articleId);
-    dispatch.collection
-      .fetchFragment()
-      .then(() => dispatch.drawer.setVisible(false));
+
+    history.push(`/articles/${articleId}`);
   }
 
   return (
@@ -101,7 +101,7 @@ function CollectionCatalogue() {
                 }
               `}
             >
-              <Link to={`/articles/${article.id}`} css={itemTitleStyle}>
+              <span css={itemTitleStyle}>
                 <Tooltip
                   title={article.name}
                   placement="right"
@@ -119,16 +119,18 @@ function CollectionCatalogue() {
                     {article.name}
                   </span>
                 </Tooltip>
-              </Link>
+              </span>
               <span
                 css={css`
                   &:hover {
                     color: #02b875;
                   }
                 `}
-                onClick={(e) =>
-                  onToggleChildrenDrawer(e, EDIT_ARTICLE, article.id)
-                }
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  onToggleChildrenDrawer(e, EDIT_ARTICLE, article.id);
+                }}
               >
                 <IconFont type="icon-moreread" />
               </span>
