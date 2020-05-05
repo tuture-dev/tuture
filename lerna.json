@@ -2,7 +2,7 @@
   "packages": ["packages/core", "packages/local-server", "packages/cli"],
   "npmClient": "yarn",
   "useWorkspaces": true,
-  "version": "0.0.3",
+  "version": "0.0.4",
   "command": {
     "publish": {
       "ignoreChanges": ["*.md"]

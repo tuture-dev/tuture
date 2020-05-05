@@ -1,6 +1,6 @@
 {
   "name": "@tuture/editor",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "private": true,
   "dependencies": {
     "@emotion/core": "^10.0.27",
@@ -9,8 +9,8 @@
     "@rematch/immer": "^1.2.0",
     "@rematch/loading": "^1.2.1",
     "@rematch/select": "^2.0.5",
-    "@tuture/core": "*",
-    "@tuture/local-server": "*",
+    "@tuture/core": "^0.0.4",
+    "@tuture/local-server": "^0.0.4",
     "@types/axios": "^0.14.0",
     "antd": "^3.26.9",
     "axios": "^0.19.2",
