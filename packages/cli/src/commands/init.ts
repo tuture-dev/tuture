@@ -50,7 +50,7 @@ export default class Init extends BaseCommand {
       : await prompt<{ name: string; description: string }>([
           {
             name: 'name',
-            message: 'Tutorial Name',
+            message: 'Collection Name',
             default: 'My Awesome Tutorial',
           },
           {
@@ -92,6 +92,7 @@ export default class Init extends BaseCommand {
           {
             id: defaultArticleId,
             name: meta.name,
+            description: '',
             topics: [],
             categories: [],
             created: new Date(),
