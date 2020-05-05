@@ -24,6 +24,8 @@ function Toc() {
             width: 100%;
             background: #f7f7fa;
             padding-top: 24px;
+            overflow-y: auto;
+            padding-bottom: 200px;
           `}
         >
           <TocComponent />

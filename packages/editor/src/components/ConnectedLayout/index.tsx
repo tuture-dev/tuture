@@ -104,7 +104,7 @@ function ConnectedLayout(props: { children: ReactNode }) {
                 background: #fff;
                 position: relative;
                 height: calc(100vh - 64px);
-                overflow: auto;
+                overflow-y: auto;
               `}
               id="scroll-container"
             >
