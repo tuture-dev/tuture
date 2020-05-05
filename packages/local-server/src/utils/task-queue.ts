@@ -8,12 +8,10 @@ export type TaskWithCallback = {
 };
 
 export default class TaskQueue {
-  collection: Collection;
   tasks: (Task | TaskWithCallback)[];
   flushTimeout: NodeJS.Timeout | null;
 
   constructor() {
-    this.collection = loadCollection();
     this.tasks = [];
     this.flushTimeout = null;
   }
@@ -27,7 +25,7 @@ export default class TaskQueue {
   }
 
   readCollection() {
-    return this.collection;
+    return loadCollection();
   }
 
   isEmpty() {
@@ -40,18 +38,23 @@ export default class TaskQueue {
   }
 
   flush() {
+    let collection = loadCollection();
+
     while (!this.isEmpty()) {
       const task = this.tasks.shift();
-      if (task && typeof task === 'function') {
-        this.collection = task(this.collection);
-      } else if (task && typeof task === 'object') {
-        this.collection = task.task(this.collection);
+
+      if (!task) break;
+
+      if (typeof task === 'function') {
+        collection = task(collection);
+      } else if (typeof task === 'object') {
+        collection = task.task(collection);
       }
 
-      saveCollection(this.collection);
+      saveCollection(collection);
 
-      if (task && typeof task === 'object') {
-        task.callback(this.collection);
+      if (typeof task === 'object') {
+        task.callback(collection);
       }
     }
   }

@@ -10,12 +10,7 @@ import logger from '../utils/logger';
 import BaseCommand from '../base';
 import { makeSteps, removeTutureSuite } from '../utils';
 import { selectRemotes } from '../utils/prompt';
-import {
-  git,
-  inferGithubField,
-  appendGitHook,
-  appendGitignore,
-} from '../utils/git';
+import { git, inferGithubField, appendGitignore } from '../utils/git';
 
 export default class Init extends BaseCommand {
   static description = 'Initialize a tuture tutorial';
@@ -123,7 +118,6 @@ export default class Init extends BaseCommand {
 
       saveCollection(collection);
       appendGitignore();
-      appendGitHook();
 
       logger.log('success', 'Tuture tutorial has been initialized!');
     } catch (err) {

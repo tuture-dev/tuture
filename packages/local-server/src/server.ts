@@ -13,6 +13,7 @@ const EDITOR_STATIC_PATH = path.join(EDITOR_PATH, 'static');
 export interface ServerOptions {
   baseUrl?: string;
   mockRoutes?: (app: Express) => void;
+  onGitHistoryChange?: (curr: fs.Stats, prev: fs.Stats) => void;
 }
 
 export const makeServer = (options?: ServerOptions) => {
@@ -23,7 +24,16 @@ export const makeServer = (options?: ServerOptions) => {
   // Make sure the task queue is flushed
   process.on('exit', () => queue.flush());
 
-  const { mockRoutes, baseUrl = '/' } = options || {};
+  const { mockRoutes, baseUrl = '/', onGitHistoryChange } = options || {};
+
+  // Watch for changes of git master ref if listener is provided.
+  if (onGitHistoryChange) {
+    fs.watchFile(
+      '.git/refs/heads/master',
+      { interval: 1000 },
+      onGitHistoryChange,
+    );
+  }
 
   if (process.env.NODE_ENV === 'development') {
     app.use(logger('dev'));

@@ -5,7 +5,7 @@ import { TUTURE_ROOT, TUTURE_IGNORE_PATH } from '@tuture/core';
 
 import defaultConfig from './config';
 import { checkInitStatus } from './utils';
-import { git, appendGitHook, removeGitHook } from './utils/git';
+import { git } from './utils/git';
 
 export default abstract class BaseCommand extends Command {
   // User configurations.
@@ -16,8 +16,6 @@ export default abstract class BaseCommand extends Command {
 
     // If not initialize with tuture, then do initialize operation
     if (!(await checkInitStatus(true))) {
-      appendGitHook();
-
       if (!fs.existsSync(TUTURE_ROOT)) {
         fs.mkdirSync(TUTURE_ROOT);
       }
@@ -42,7 +40,6 @@ export default abstract class BaseCommand extends Command {
       fs.readdirSync(TUTURE_ROOT).length === 0
     ) {
       fs.removeSync(TUTURE_ROOT);
-      removeGitHook();
     }
 
     if (await git.checkIsRepo()) {
