@@ -61,14 +61,18 @@ export default class Destroy extends BaseCommand {
       );
 
       if (confirmed) {
-        // Delete all remote branches.
-        await Promise.all(
-          remoteBranches.map(async (branch) => {
-            const [_, remote, ref] = branch.split('/');
-            await git.push(remote, ref, { '-d': true });
-            logger.log('success', `${branch} has been deleted.`);
-          }),
-        );
+        try {
+          // Delete all remote branches.
+          await Promise.all(
+            remoteBranches.map(async (branch) => {
+              const [_, remote, ref] = branch.split('/');
+              await git.push(remote, ref, { '-d': true });
+              logger.log('success', `${branch} has been deleted.`);
+            }),
+          );
+        } catch (err) {
+          logger.log('error', err.message);
+        }
       }
     }
 
