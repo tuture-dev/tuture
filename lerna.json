@@ -1,0 +1,17 @@
+{
+  "packages": ["packages/core", "packages/local-server", "packages/cli"],
+  "npmClient": "yarn",
+  "useWorkspaces": true,
+  "version": "0.0.3",
+  "command": {
+    "publish": {
+      "ignoreChanges": ["*.md"]
+    },
+    "bootstrap": {
+      "npmClientArgs": ["--no-lockfile"]
+    }
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

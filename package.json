@@ -23,7 +23,13 @@
     "test:watch": "jest --watch",
     "build": "rollup -c",
     "build:watch": "rollup -c -w",
-    "postinstall": "yarn build"
+    "build:cli": "cd packages/cli && yarn && yarn build",
+    "build:editor": "cd packages/editor && yarn && yarn build",
+    "collect-editor": "cd packages/local-server && yarn collect-editor",
+    "clean": "rimraf packages/**/dist && rimraf packages/cli/lib && rimraf packages/editor/build",
+    "postinstall": "yarn build",
+    "prerelease": "yarn clean && yarn build && yarn build:cli && yarn build:editor && yarn collect-editor",
+    "release": "lerna publish"
   },
   "repository": {
     "type": "git",
@@ -70,6 +76,7 @@
     "faker": "^4.1.0",
     "husky": "^4.2.3",
     "jest": "^24.9.0",
+    "lerna": "^3.20.2",
     "lint-staged": "^10.0.7",
     "lodash.clonedeep": "^4.5.0",
     "prettier": "^1.19.1",
