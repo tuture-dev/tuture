@@ -13,6 +13,9 @@ export default abstract class BaseCommand extends Command {
   // User configurations.
   userConfig: any = defaultConfig;
 
+  // The branch which the user is working upon.
+  currentBranch: string = 'master';
+
   async init() {
     this.userConfig = rc('tuture', defaultConfig);
 
@@ -40,6 +43,12 @@ export default abstract class BaseCommand extends Command {
       );
       this.userConfig.ignoredFiles = patterns;
     }
+
+    if (await git.checkIsRepo()) {
+      // Record the current branch.
+      const status = await git.status();
+      this.currentBranch = status.current;
+    }
   }
 
   async finally() {
@@ -52,14 +61,11 @@ export default abstract class BaseCommand extends Command {
     }
 
     if (await git.checkIsRepo()) {
-      const { all } = await git.branchLocal();
-      if (all.includes('master')) {
-        try {
-          // Ensure we are back to master branch.
-          await git.checkout(['-q', 'master']);
-        } catch {
-          // Just silently failed.
-        }
+      try {
+        // Ensure we are back to original branch.
+        await git.checkout(['-q', this.currentBranch]);
+      } catch {
+        // Just silently failed.
       }
     }
   }
