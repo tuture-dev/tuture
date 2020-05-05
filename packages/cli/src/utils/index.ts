@@ -1,11 +1,13 @@
 import chalk from 'chalk';
 import fs from 'fs-extra';
 import mm from 'micromatch';
-import { File as DiffFile } from 'parse-diff';
+import { prompt } from 'inquirer';
 import {
   Step,
   File,
+  Remote,
   DiffBlock,
+  DiffFile,
   randHex,
   isCommitEqual,
   TUTURE_ROOT,
@@ -229,4 +231,36 @@ export async function checkInitStatus(nothrow = false) {
   }
 
   return true;
+}
+
+export async function selectRemotes(
+  remotes: Remote[],
+  selected: Remote[] = [],
+) {
+  // All remotes are shown as:
+  // <remote_name> (fetch: <fetch_ref>, push: <push_ref>)
+  const remoteToChoice = (remote: Remote) => {
+    const { name, refs } = remote;
+    const { fetch, push } = refs;
+    const { underline } = chalk;
+
+    return `${name} (fetch: ${underline(fetch)}, push: ${underline(push)})`;
+  };
+
+  const choiceToRemote = (choice: string) => {
+    const selectedRemote = choice.slice(0, choice.indexOf('(') - 1);
+    return remotes.filter((remote) => remote.name === selectedRemote)[0];
+  };
+
+  const response = await prompt<{ remotes: string[] }>([
+    {
+      name: 'remotes',
+      type: 'checkbox',
+      message: 'Select remote repositories you want to sync to:',
+      choices: remotes.map((remote) => remoteToChoice(remote)),
+      default: selected.map((remote) => remoteToChoice(remote)),
+    },
+  ]);
+
+  return response.remotes.map((choice) => choiceToRemote(choice));
 }
