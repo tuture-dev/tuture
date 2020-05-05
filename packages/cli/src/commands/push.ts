@@ -5,7 +5,6 @@ import { TUTURE_BRANCH } from '@tuture/core';
 import { collectionPath } from '@tuture/local-server';
 
 import BaseCommand from '../base';
-import { checkInitStatus } from '../utils';
 import logger from '../utils/logger';
 import { git } from '../utils/git';
 import { initializeTutureBranch } from '../utils/collection';
@@ -21,13 +20,6 @@ export default class Push extends BaseCommand {
   async run() {
     const { flags } = this.parse(Push);
     this.userConfig = Object.assign(this.userConfig, flags);
-
-    try {
-      await checkInitStatus();
-    } catch (err) {
-      logger.log('error', err.message);
-      this.exit(1);
-    }
 
     let remoteToPush = flags.remote;
     if (!remoteToPush) {

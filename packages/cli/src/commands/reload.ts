@@ -11,7 +11,7 @@ import sync from './sync';
 import BaseCommand from '../base';
 import { git } from '../utils/git';
 import logger from '../utils/logger';
-import { makeSteps, mergeSteps, checkInitStatus } from '../utils';
+import { makeSteps, mergeSteps } from '../utils';
 
 export default class Reload extends BaseCommand {
   static description = 'Update workspace with latest commit history';
@@ -22,13 +22,6 @@ export default class Reload extends BaseCommand {
 
   async run() {
     this.parse(Reload);
-
-    try {
-      await checkInitStatus();
-    } catch (err) {
-      logger.log('error', err.message);
-      this.exit(1);
-    }
 
     // Run sync command if workspace is not created.
     if (!fs.existsSync(collectionPath)) {

@@ -189,9 +189,7 @@ export async function checkInitStatus(nothrow = false) {
     if (nothrow) return false;
 
     throw new Error(
-      `Not in a git repository. Run ${chalk.bold('git init')} or ${chalk.bold(
-        'tuture init',
-      )} to initialize.`,
+      `Not in a git repository. Run \`git init\` or \`tuture init\` to initialize.`,
     );
   }
 

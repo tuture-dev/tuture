@@ -32,13 +32,15 @@ export default class Commit extends BaseCommand {
 
     const message =
       flags.message ||
-      ((await prompt([
-        {
-          name: 'message',
-          type: 'input',
-          default: `Commit on ${new Date()}`,
-        },
-      ])) as any).message;
+      (
+        await prompt<{ message: string }>([
+          {
+            name: 'message',
+            type: 'input',
+            default: `Commit on ${new Date()}`,
+          },
+        ])
+      ).message;
 
     await initializeTutureBranch();
 

@@ -23,7 +23,7 @@ import pull from './pull';
 import push from './push';
 import BaseCommand from '../base';
 import { EXIT_CODE } from '../constants';
-import { checkInitStatus, selectRemotes } from '../utils';
+import { selectRemotes } from '../utils';
 import { git } from '../utils/git';
 import logger from '../utils/logger';
 import {
@@ -106,13 +106,6 @@ export default class Sync extends BaseCommand {
   async run() {
     const { flags } = this.parse(Sync);
     this.userConfig = Object.assign(this.userConfig, flags);
-
-    try {
-      await checkInitStatus();
-    } catch (err) {
-      logger.log('error', err.message);
-      this.exit(EXIT_CODE.NOT_INIT);
-    }
 
     const { conflicted, staged } = await git.status();
     if (conflicted.length > 0) {
