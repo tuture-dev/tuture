@@ -54,8 +54,8 @@ function PageHeader() {
 
   function handleSaveCollection() {
     dispatch.collection.save({
-      keys: ['meta', 'articles', 'fragment', 'remotes'],
-      showMessage: true,
+      keys: ['meta', 'articles'],
+      showMessage: false,
     });
   }
 
