@@ -1,14 +1,9 @@
-<p align="center"><img style="width: 200px" src="https://user-gold-cdn.xitu.io/2020/4/8/171577bb979987bd?w=330&h=400&f=svg&s=3342"/></p>
-
+<p align="center"><img style="width: 200px" src="https://tuture.co/images/logo.svg"/></p>
 <p align="center" style="font-size: 24px;">Git + Tuture = Tutorial（教程）</p>
-
 <p align="center" style="font-size: 16px;">”       基于 Git，为写作技术实战教程而生     “</p>
-
 <p align="center" style="font-size: 16px;">       <a href="https://www.yuque.com/tuture/product-manuals/nsaphr">你可能想了解我们为什么要创建图雀社区？</a>     </p>
-
 <p align="center" style="font-size: 16px;">       <a href="https://www.yuque.com/tuture/product-manuals/ckx8ry">以及关于图雀社区的常见问题解答</a>     </p>
-
-![编组 2](https://tva1.sinaimg.cn/large/00831rSTgy1gdm6uwl8cij31qt0u0try.jpg)
+![](https://tuture.co/images/tuture-screenshots.jpg)
 
 ## 介绍
 
@@ -36,7 +31,7 @@ Tuture 为教程内容创作而生，因此 Git 仓库通常是**专门用于教
 
 ## 如何快速使用？
 
-在一个已有提交的 Git 项目根目录下运行如下命令：
+在终端运行如下命令：
 
 1. 安装 Tuture 写作工具
 
@@ -44,23 +39,27 @@ Tuture 为教程内容创作而生，因此 Git 仓库通常是**专门用于教
 npm install -g @tuture/cli
 ```
 
-2. 克隆我们为你准备的代码：
+2. 进入一个 Git 仓库并进行初始化（如果你手头没有的话，可以克隆我们提供的演示项目）：
 
 ```bash
+cd /path/to/repo && tuture init
+
+# 或者使用我们的演示项目（无需初始化）
 git clone https://github.com/tuture-dev/our-tuture.git
+cd our-tuture
 ```
 
-3. 进入项目根目录并使用 `tuture` 运行命令：
+3. 打开编辑器进行写作：
 
 ```bash
-cd our-tuture && tuture up
+tuture up
 ```
 
-这个时候你应该可以看到如下的界面：
+这个时候你应该可以看到类似下面的界面：
 
-![00831rSTgy1gdm5loil8pj31580u0tib](https://tva1.sinaimg.cn/large/00831rSTgy1gdm6wsd2hfj31580u0tc1.jpg)
+![](https://tuture.co/images/our-tuture.jpg)
 
-## 快速开始
+## 场景化的快速上手教程
 
 如果你想自己从零开始体会如何基于一个 Git 项目撰写实战技术教程，那么我们我们为你撰写了一篇 [”场景化“ 的快速上手教程](https://www.yuque.com/tuture/product-manuals)，无论你对 Git 有没有了解，你都能很好的学会使用 Tuture 写作工具。
 
@@ -74,7 +73,7 @@ cd our-tuture && tuture up
 
 ## 作品
 
-| 名称                                                       | 封面                                                                                        | 仓库地址                                                                                                                                                                                                   |
+| 名称                                                       | 封面                                                                                        | 相关链接                                                                                                                                                                                                   |
 | ---------------------------------------------------------- | ------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | 从零到部署：用 Vue 和 Express 实现迷你全栈电商应用（系列） | <img width="200" src="https://tva1.sinaimg.cn/large/00831rSTgy1gdmdz6q1hjj309g048t9r.jpg"/> | - [仓库地址](https://github.com/tuture-dev/vue-online-shop-frontend)<br />- [图雀社区](https://tuture.co/2019/10/17/0b662ce/)<br />- [微信公众号](https://mp.weixin.qq.com/s/1YdC9mY3JTqxSuJ9G4l1Qw)<br /> |
 | Taro 小程序开发大型实战（系列）                            | <img width="200" src="https://tva1.sinaimg.cn/large/00831rSTgy1gdme080rr4j30ao04mmyg.jpg"/> | - [仓库地址](https://github.com/tuture-dev/ultra-club)<br />- [图雀社区](https://tuture.co/2019/12/26/34a473b/)<br />- [微信公众号](https://mp.weixin.qq.com/s/KtnhfEx-cq1V-TDV67V-Qg) <br />              |
@@ -82,7 +81,6 @@ cd our-tuture && tuture up
 | 类型即定义：TypeScript 从入门到实践系列                    | <img width="200" src="https://tva1.sinaimg.cn/large/00831rSTgy1gdme83j3apj30aq04qabx.jpg"/> | - [仓库地址](https://github.com/tuture-dev/typescript-tea)<br />- [图雀社区](https://tuture.co/2020/04/06/C_ao1Yv/) <br />- [微信公众号](https://mp.weixin.qq.com/s/u230EnsNh-WMSC07FSi2wg)<br />          |
 
 <p align="center"><a href="https://tuture.co/">查看更多 （30+篇）使用 Tuture 写作工具写作的教程 →</a></p>
-
 ## 作者
 
 感谢所有图雀社区的作者们，写出了这些精彩的技术文章，让我们的技术世界更加美好！✌️
@@ -95,9 +93,11 @@ cd our-tuture && tuture up
 
 ## 提问、联系或加入我们
 
-如果你对 Tuture 写作工具有任何疑问、改进意见，都可以关注我们的公众号进图雀社区官方反馈学习交流群：
+如果你对 Tuture 写作工具有任何疑问、改进意见，可以关注我们公众号（回复“交流”后加客服），或者加入 QQ / 钉钉群：
 
-![](https://user-gold-cdn.xitu.io/2020/4/8/171577bc36f04df9?w=900&h=500&f=png&s=138401)
+![](https://tuture.co/images/qrcode-squashed.png)
+
+也可以发送邮件至我们的邮箱：feedback@mail.tuture.co。
 
 ## 贡献
 
