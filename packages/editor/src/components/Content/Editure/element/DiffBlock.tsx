@@ -154,7 +154,32 @@ function DiffBlockElement(props: ElementProps) {
   return (
     <div {...attributes} contentEditable={false}>
       {allLines.length === 0 ? (
-        <Placeholder />
+        <div
+          css={css`
+            height: 100px;
+            ${loading && loadingAnimation}
+          `}
+        >
+          <div className="diff-file" css={diffFileStyle}>
+            <header css={diffFileHeaderStyle}>{file}</header>
+            <SyntaxHighlighter
+              code={''}
+              language={lang === 'vue' ? 'html' : lang}
+              showLineNumbers
+              showLineChecker
+              wrapLines
+              commit={commit}
+              file={file}
+              lineProps={(lineNum: number) => {
+                return {
+                  isCodeAddition: isCodeAddition(lineNum),
+                  isHidden: isHidden(lineNum),
+                  isCodeDeletion: isCodeDeletion(lineNum),
+                };
+              }}
+            />
+          </div>
+        </div>
       ) : (
         <div
           css={css`
