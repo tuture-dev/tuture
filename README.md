@@ -3,7 +3,7 @@
 <p align="center" style="font-size: 16px;">”       基于 Git，为写作技术实战教程而生     “</p>
 <p align="center" style="font-size: 16px;">       <a href="https://www.yuque.com/tuture/product-manuals/nsaphr">你可能想了解我们为什么要创建图雀社区？</a>     </p>
 <p align="center" style="font-size: 16px;">       <a href="https://www.yuque.com/tuture/product-manuals/ckx8ry">以及关于图雀社区的常见问题解答</a>     </p>
-![](https://tuture.co/images/tuture-screenshots.jpg)
+![](https://tva1.sinaimg.cn/large/007S8ZIlgy1gej3m8dfz9j31qt0u0dmj.jpg)
 
 ## 介绍
 
@@ -57,7 +57,7 @@ tuture up
 
 这个时候你应该可以看到类似下面的界面：
 
-![](https://tuture.co/images/our-tuture.jpg)
+![](https://tva1.sinaimg.cn/large/007S8ZIlgy1gej3m665puj31540pcaeo.jpg)
 
 ## 场景化的快速上手教程
 
@@ -95,7 +95,7 @@ tuture up
 
 如果你对 Tuture 写作工具有任何疑问、改进意见，可以关注我们公众号（回复“交流”后加客服），或者加入 QQ / 钉钉群：
 
-![](https://tuture.co/images/qrcode-squashed.png)
+![](https://tva1.sinaimg.cn/large/007S8ZIlgy1gej3kf8fkkj315i0gxq7q.jpg)
 
 也可以发送邮件至我们的邮箱：feedback@mail.tuture.co。
 
