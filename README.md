@@ -3,7 +3,7 @@
 <p align="center" style="font-size: 16px;">”       基于 Git，为写作技术实战教程而生     “</p>
 <p align="center" style="font-size: 16px;">       <a href="https://www.yuque.com/tuture/product-manuals/nsaphr">你可能想了解我们为什么要创建图雀社区？</a>     </p>
 <p align="center" style="font-size: 16px;">       <a href="https://www.yuque.com/tuture/product-manuals/ckx8ry">以及关于图雀社区的常见问题解答</a>     </p>
-![](https://tva1.sinaimg.cn/large/007S8ZIlgy1gej3m8dfz9j31qt0u0dmj.jpg)
+<img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gej3m8dfz9j31qt0u0dmj.jpg" />
 
 ## 介绍
 
@@ -57,7 +57,7 @@ tuture up
 
 这个时候你应该可以看到类似下面的界面：
 
-![](https://tva1.sinaimg.cn/large/007S8ZIlgy1gej3m665puj31540pcaeo.jpg)
+<img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gej3m665puj31540pcaeo.jpg"/>
 
 ## 场景化的快速上手教程
 
@@ -85,17 +85,17 @@ tuture up
 
 感谢所有图雀社区的作者们，写出了这些精彩的技术文章，让我们的技术世界更加美好！✌️
 
-|           ![4.svg](https://user-gold-cdn.xitu.io/2020/4/8/171577bbb918aa78?w=60&h=60&f=svg&s=492835)           | ![3.svg](https://user-gold-cdn.xitu.io/2020/4/8/171577bbdff59747?w=60&h=60&f=svg&s=534459) | ![2.svg](https://user-gold-cdn.xitu.io/2020/4/8/171577bbe1b9897e?w=60&h=60&f=svg&s=1104039) | ![1.svg](https://user-gold-cdn.xitu.io/2020/4/8/171577bbe7b239e0?w=60&h=60&f=svg&s=371524) | ![6.svg](https://user-gold-cdn.xitu.io/2020/4/8/171577bbfa9b7eb6?w=60&h=60&f=svg&s=365355) |
-| :------------------------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------: |
-|                                      [mRcfps](https://github.com/mRcfps)                                       |                             [pftom](https://github.com/pftom)                              |                          [HolyHeart](https://github.com/HolyHeart)                          |                              [crxk](https://github.com/crxk)                               |              [晨曦时梦见兮](https://juejin.im/user/5b13f11d5188257da1245183)               |
-|           ![8.svg](https://user-gold-cdn.xitu.io/2020/4/8/171577bbf9d5493a?w=60&h=60&f=svg&s=513047)           | ![7.svg](https://user-gold-cdn.xitu.io/2020/4/8/171577bc1aa37cf9?w=60&h=60&f=svg&s=453059) | ![10.svg](https://user-gold-cdn.xitu.io/2020/4/8/171577bc247bb547?w=60&h=60&f=svg&s=774349) | ![9.svg](https://user-gold-cdn.xitu.io/2020/4/8/171577bc260df131?w=60&h=60&f=svg&s=394291) | ![5.svg](https://user-gold-cdn.xitu.io/2020/4/8/171577bc27105173?w=60&h=60&f=svg&s=443283) |
-| [慢一拍](https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzIzNjYyNjMxNg==&scene=124#wechat_redirect) |               [JowayYoung](https://juejin.im/user/584ec3a661ff4b006cd6383e)                |                        [布拉德特皮](https://github.com/SephirothKid)                        |                               [Horace\_](http://ihorace.cn/)                               |                                [婧婧](https://jinghao.xyz/)                                |
+|         <img src="https://user-gold-cdn.xitu.io/2020/4/8/171577bbb918aa78?w=60&h=60&f=svg&s=492835" />         | <img src="https://user-gold-cdn.xitu.io/2020/4/8/171577bbdff59747?w=60&h=60&f=svg&s=534459" /> | <img src="https://user-gold-cdn.xitu.io/2020/4/8/171577bbe1b9897e?w=60&h=60&f=svg&s=1104039" /> | <img src="https://user-gold-cdn.xitu.io/2020/4/8/171577bbe7b239e0?w=60&h=60&f=svg&s=371524" /> | <img src="https://user-gold-cdn.xitu.io/2020/4/8/171577bbfa9b7eb6?w=60&h=60&f=svg&s=365355" /> |
+| :------------------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------: |
+|                                      [mRcfps](https://github.com/mRcfps)                                       |                               [pftom](https://github.com/pftom)                                |                            [HolyHeart](https://github.com/HolyHeart)                            |                                [crxk](https://github.com/crxk)                                 |                [晨曦时梦见兮](https://juejin.im/user/5b13f11d5188257da1245183)                 |
+|         <img src="https://user-gold-cdn.xitu.io/2020/4/8/171577bbf9d5493a?w=60&h=60&f=svg&s=513047" />         | <img src="https://user-gold-cdn.xitu.io/2020/4/8/171577bc1aa37cf9?w=60&h=60&f=svg&s=453059" /> | <img src="https://user-gold-cdn.xitu.io/2020/4/8/171577bc247bb547?w=60&h=60&f=svg&s=774349" />  | <img src="https://user-gold-cdn.xitu.io/2020/4/8/171577bc260df131?w=60&h=60&f=svg&s=394291" /> | <img src="https://user-gold-cdn.xitu.io/2020/4/8/171577bc27105173?w=60&h=60&f=svg&s=443283" /> |
+| [慢一拍](https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzIzNjYyNjMxNg==&scene=124#wechat_redirect) |                 [JowayYoung](https://juejin.im/user/584ec3a661ff4b006cd6383e)                  |                          [布拉德特皮](https://github.com/SephirothKid)                          |                                 [Horace\_](http://ihorace.cn/)                                 |                                  [婧婧](https://jinghao.xyz/)                                  |
 
 ## 提问、联系或加入我们
 
 如果你对 Tuture 写作工具有任何疑问、改进意见，可以关注我们公众号（回复“交流”后加客服），或者加入 QQ / 钉钉群：
 
-![](https://tva1.sinaimg.cn/large/007S8ZIlgy1gej3kf8fkkj315i0gxq7q.jpg)
+<img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gej3kf8fkkj315i0gxq7q.jpg" />
 
 也可以发送邮件至我们的邮箱：feedback@mail.tuture.co。
 
