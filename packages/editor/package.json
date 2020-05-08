@@ -33,7 +33,8 @@
     "react-smooth-dnd": "^0.11.1",
     "react-table": "^7.0.0-rc.16",
     "react-use": "^14.1.1",
-    "refractor": "^2.10.1"
+    "refractor": "^2.10.1",
+    "yutang": "^0.0.4"
   },
   "scripts": {
     "start:api": "cross-env TUTURE_PATH=fixtures NODE_ENV=development node api-server.js",
