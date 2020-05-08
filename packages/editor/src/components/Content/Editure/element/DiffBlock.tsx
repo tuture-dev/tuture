@@ -6,6 +6,7 @@ import { useDispatch } from 'react-redux';
 import { Checkbox } from 'antd';
 import { CheckboxValueType } from 'antd/lib/checkbox/Group';
 import parseDiff from 'parse-diff';
+import { getIdFromFilename, getHighlightFromId } from 'yutang';
 
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
@@ -101,10 +102,6 @@ function concatCodeStr(diffItem: parseDiff.File) {
   return { codeStr, DIFF_ADD, DIFF_DEL, allLines };
 }
 
-function Placeholder() {
-  return <div></div>;
-}
-
 function DiffBlockElement(props: ElementProps) {
   const { attributes, element, children } = props;
   const { file, commit, hiddenLines = [] } = element;
@@ -124,10 +121,7 @@ function DiffBlockElement(props: ElementProps) {
     allLines = [],
   } = concatCodeStr(diffItem);
 
-  const lang = file
-    .split('.')
-    .pop()
-    .toLowerCase();
+  const langId = getIdFromFilename(file);
 
   const flatHiddenLines = flattenHiddenLines(hiddenLines);
   const showLines = allLines.filter((line) => !flatHiddenLines.includes(line));
@@ -164,7 +158,7 @@ function DiffBlockElement(props: ElementProps) {
             <header css={diffFileHeaderStyle}>{file}</header>
             <SyntaxHighlighter
               code={''}
-              language={lang === 'vue' ? 'html' : lang}
+              language={getHighlightFromId(langId)}
               showLineNumbers
               showLineChecker
               wrapLines
@@ -203,7 +197,7 @@ function DiffBlockElement(props: ElementProps) {
               >
                 <SyntaxHighlighter
                   code={codeStr}
-                  language={lang === 'vue' ? 'html' : lang}
+                  language={getHighlightFromId(langId)}
                   showLineNumbers
                   showLineChecker
                   wrapLines

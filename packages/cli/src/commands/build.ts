@@ -4,8 +4,11 @@ import chalk from 'chalk';
 import { Element } from 'tuture-slate';
 import { toMarkdown } from 'editure';
 import { flags } from '@oclif/command';
+import { comment, getIdFromFilename, getHighlightFromId } from 'yutang';
 import {
   RawDiff,
+  DiffFile,
+  ChangeType,
   DiffBlock,
   Step,
   Collection,
@@ -18,7 +21,6 @@ import {
   Asset,
   loadAssetsTable,
 } from '@tuture/local-server';
-import { File as DiffFile, ChangeType } from 'parse-diff';
 
 import reload from './reload';
 import BaseCommand from '../base';
@@ -170,11 +172,12 @@ export default class Build extends BaseCommand {
   // Template for code blocks.
   diffBlockTmpl(diff: DiffFile, hiddenLines?: number[], link?: string) {
     const filename = path.basename(diff.to || '');
-    const lang = filename ? filename.split('.').slice(-1)[0] : '';
+    const langId = getIdFromFilename(filename);
+    const highlight = getHighlightFromId(langId);
     const mode = this.userConfig.hexo ? 'hexo' : 'plain';
 
     const { codeStr, DIFF_ADD, DIFF_DEL } = concatCodeStr(diff);
-    const code = codeStr
+    let code = codeStr
       .split('\n')
       .map((line, index) => {
         if (hiddenLines && hiddenLines.includes(index)) {
@@ -183,7 +186,7 @@ export default class Build extends BaseCommand {
             return null;
           }
           const spaces = line.length - line.trimLeft().length;
-          return `${' '.repeat(spaces)}// ...`;
+          return `${' '.repeat(spaces)}${comment('...', highlight)}`;
         } else if (DIFF_ADD.includes(index)) {
           return this.changeTmpl(line, 'add', diff.new);
         } else if (DIFF_DEL.includes(index)) {
@@ -196,7 +199,7 @@ export default class Build extends BaseCommand {
       .map((line) => (line && line.match(/^\s+$/) ? '' : line))
       .join('\n');
 
-    const head = [lang];
+    const head = [langId];
 
     if (mode === 'hexo') {
       if (diff.to) {
@@ -206,6 +209,9 @@ export default class Build extends BaseCommand {
           head.push('查看完整代码');
         }
       }
+    } else if (diff.to && highlight !== 'text') {
+      // Add commented filename to the front.
+      code = comment(diff.to, highlight) + '\n' + code;
     }
 
     return `\`\`\`${head.join(' ')}\n${code}\n\`\`\``;
