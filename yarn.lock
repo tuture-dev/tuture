@@ -16939,3 +16939,8 @@ yn@3.1.1:
   version "3.1.1"
   resolved "https://registry.npm.taobao.org/yn/download/yn-3.1.1.tgz#1e87401a09d767c1d5eab26a6e4c185182d2eb50"
   integrity sha1-HodAGgnXZ8HV6rJqbkwYUYLS61A=
+
+yutang@^0.0.4:
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/yutang/-/yutang-0.0.4.tgz#99c168fdfcf710320091e9aa34cb083f4fcf0a4c"
+  integrity sha512-3bnZYfvqdsvPxdHfM4PjbIMY95rrTNht7BctpIk1symX946JeATSxjuCIUCDfh1RucDvIATwQFCuWHvQeKAxZQ==
