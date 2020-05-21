@@ -1,7 +1,7 @@
 {
   "name": "@tuture/cli",
   "description": "Command line interface for Tuture",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "bin": {
     "tuture": "./bin/run"
   },
@@ -16,8 +16,8 @@
     "@oclif/command": "^1",
     "@oclif/config": "^1",
     "@oclif/plugin-help": "^2",
-    "@tuture/core": "^0.0.5",
-    "@tuture/local-server": "^0.0.5",
+    "@tuture/core": "^0.0.6",
+    "@tuture/local-server": "^0.0.6",
     "chalk": "^2.4.2",
     "editure": "^0.1.2",
     "editure-constants": "^0.1.2",
