@@ -163,7 +163,7 @@ export function mergeSteps(prevSteps: Step[], currentSteps: Step[]) {
 
     // If previous step with the same commit exists, copy it.
     // Or just return the new step.
-    return prevStep || currentStep;
+    return prevStep ? { ...prevStep, ...currentStep } : currentStep;
   });
 
   // Outdated steps are those not included in current git history.

@@ -1,6 +1,6 @@
 import fs from 'fs-extra';
 import { flags } from '@oclif/command';
-import { Step, getStepTitle } from '@tuture/core';
+import { Step, getStepTitle, TUTURE_IGNORE_PATH } from '@tuture/core';
 import {
   loadCollection,
   collectionPath,
@@ -12,6 +12,7 @@ import BaseCommand from '../base';
 import { git } from '../utils/git';
 import logger from '../utils/logger';
 import { makeSteps, mergeSteps } from '../utils';
+import defaultConfig from '../config';
 
 export default class Reload extends BaseCommand {
   static description = 'Update workspace with latest commit history';
@@ -26,6 +27,18 @@ export default class Reload extends BaseCommand {
     // Run sync command if workspace is not created.
     if (!fs.existsSync(collectionPath)) {
       await sync.run([]);
+    }
+
+    // reload .tutureignore
+    if (fs.existsSync(TUTURE_IGNORE_PATH)) {
+      const patterns = defaultConfig.ignoredFiles.concat(
+        fs
+          .readFileSync(TUTURE_IGNORE_PATH)
+          .toString()
+          .split('\n')
+          .filter((pattern) => !pattern.match(/#/) && pattern.match(/\b/)),
+      );
+      this.userConfig.ignoredFiles = patterns;
     }
 
     const collection = loadCollection();
