@@ -1,4 +1,5 @@
 import fs from 'fs-extra';
+import mm from 'micromatch';
 import { flags } from '@oclif/command';
 import { Step, getStepTitle } from '@tuture/core';
 import {
@@ -33,7 +34,8 @@ export default class Reload extends BaseCommand {
     // Checkout master branch and add tuture.yml.
     await git.checkout('master');
 
-    const currentSteps: Step[] = await makeSteps(this.userConfig.ignoredFiles);
+    const ignoredFiles: string[] = this.userConfig.ignoredFiles;
+    const currentSteps: Step[] = await makeSteps(ignoredFiles);
     const lastArticleId = collection.articles.slice(-1)[0].id;
 
     currentSteps.forEach((step) => {
@@ -57,6 +59,16 @@ export default class Reload extends BaseCommand {
           `Outdated step: ${getStepTitle(step)} (${step.commit})`,
         );
       }
+
+      // Set display to false for ignored files.
+      step.children.forEach((child) => {
+        if (child.type === 'file') {
+          const diff = child.children[1];
+          if (ignoredFiles.some((pattern) => mm.isMatch(diff.file, pattern))) {
+            child.display = false;
+          }
+        }
+      });
     });
 
     saveCollection(collection);
