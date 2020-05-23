@@ -1,6 +1,7 @@
 import fs from 'fs-extra';
+import mm from 'micromatch';
 import { flags } from '@oclif/command';
-import { Step, getStepTitle, TUTURE_IGNORE_PATH } from '@tuture/core';
+import { Step, getStepTitle } from '@tuture/core';
 import {
   loadCollection,
   collectionPath,
@@ -12,7 +13,6 @@ import BaseCommand from '../base';
 import { git } from '../utils/git';
 import logger from '../utils/logger';
 import { makeSteps, mergeSteps } from '../utils';
-import defaultConfig from '../config';
 
 export default class Reload extends BaseCommand {
   static description = 'Update workspace with latest commit history';
@@ -29,24 +29,13 @@ export default class Reload extends BaseCommand {
       await sync.run([]);
     }
 
-    // reload .tutureignore
-    if (fs.existsSync(TUTURE_IGNORE_PATH)) {
-      const patterns = defaultConfig.ignoredFiles.concat(
-        fs
-          .readFileSync(TUTURE_IGNORE_PATH)
-          .toString()
-          .split('\n')
-          .filter((pattern) => !pattern.match(/#/) && pattern.match(/\b/)),
-      );
-      this.userConfig.ignoredFiles = patterns;
-    }
-
     const collection = loadCollection();
 
     // Checkout master branch and add tuture.yml.
     await git.checkout('master');
 
-    const currentSteps: Step[] = await makeSteps(this.userConfig.ignoredFiles);
+    const ignoredFiles: string[] = this.userConfig.ignoredFiles;
+    const currentSteps: Step[] = await makeSteps(ignoredFiles);
     const lastArticleId = collection.articles.slice(-1)[0].id;
 
     currentSteps.forEach((step) => {
@@ -70,6 +59,16 @@ export default class Reload extends BaseCommand {
           `Outdated step: ${getStepTitle(step)} (${step.commit})`,
         );
       }
+
+      // Set display to false for ignored files.
+      step.children.forEach((child) => {
+        if (child.type === 'file') {
+          const diff = child.children[1];
+          if (ignoredFiles.some((pattern) => mm.isMatch(diff.file, pattern))) {
+            child.display = false;
+          }
+        }
+      });
     });
 
     saveCollection(collection);
