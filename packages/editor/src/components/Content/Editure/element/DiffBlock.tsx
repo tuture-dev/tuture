@@ -107,10 +107,9 @@ function concatCodeStr(diffItem: parseDiff.File, hideDiff: boolean) {
 
 function DiffBlockElement(props: ElementProps) {
   const { attributes, element, children } = props;
-  const { file, commit, hiddenLines = [] } = element;
+  const { file, commit, hiddenLines = [], hideDiff } = element;
 
   const [loading, setLoading] = useState(true);
-  const [hideDiff, setHideDiff] = useState(false);
   const dispatch = useDispatch<Dispatch>();
 
   const store = useStore() as Store;
@@ -147,6 +146,19 @@ function DiffBlockElement(props: ElementProps) {
     });
 
     setDirty(true);
+  }
+
+  const setHideDiff = useDebouncedSave(['fragment'], 3000, [hideDiff]);
+
+  function hideDiffChange(diff: boolean) {
+    const hideDiff = diff;
+    dispatch.collection.setHideDiffFlag({
+      commit,
+      file,
+      hideDiff: hideDiff,
+    });
+
+    setHideDiff(true);
   }
 
   return (
@@ -199,11 +211,11 @@ function DiffBlockElement(props: ElementProps) {
                     color: white;
                     margin-right: 10px;
                   `}
-                  checkedChildren="显示 Diff"
-                  unCheckedChildren="隐藏 Diff"
-                  defaultChecked
-                  onChange={(checked) => {
-                    setHideDiff(!checked);
+                  checkedChildren={'显示 Diff'}
+                  unCheckedChildren={'隐藏 Diff'}
+                  defaultChecked={hideDiff}
+                  onChange={(checked: boolean) => {
+                    hideDiffChange(checked);
                   }}
                 />
               </header>
