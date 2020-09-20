@@ -154,7 +154,12 @@ export default class Build extends BaseCommand {
   }
 
   // Template for single line of change.
-  changeTmpl(content: string, type: ChangeType, newFile = false) {
+  changeTmpl(
+    content: string,
+    type: ChangeType,
+    newFile = false,
+    hideDiff: boolean,
+  ) {
     let prefix = '';
     const mode = this.userConfig.hexo ? 'hexo' : 'plain';
 
@@ -163,14 +168,23 @@ export default class Build extends BaseCommand {
     }
 
     if (!newFile) {
-      prefix = diffRenderHints[mode][type];
+      if (hideDiff && type === 'add') {
+        type = 'normal';
+      } else {
+        prefix = diffRenderHints[mode][type];
+      }
     }
 
     return prefix + content;
   }
 
   // Template for code blocks.
-  diffBlockTmpl(diff: DiffFile, hiddenLines?: number[], link?: string) {
+  diffBlockTmpl(
+    diff: DiffFile,
+    hideDiff: boolean,
+    hiddenLines?: number[],
+    link?: string,
+  ) {
     const filename = path.basename(diff.to || '');
     const langId = getIdFromFilename(filename);
     const highlight = getHighlightFromId(langId);
@@ -188,9 +202,11 @@ export default class Build extends BaseCommand {
           const spaces = line.length - line.trimLeft().length;
           return `${' '.repeat(spaces)}${comment('...', highlight)}`;
         } else if (DIFF_ADD.includes(index)) {
-          return this.changeTmpl(line, 'add', diff.new);
-        } else if (DIFF_DEL.includes(index)) {
-          return this.changeTmpl(line, 'del', diff.new);
+          return this.changeTmpl(line, 'add', diff.new, hideDiff);
+        } else if (DIFF_DEL.includes(index) && !hideDiff) {
+          return this.changeTmpl(line, 'del', diff.new, hideDiff);
+        } else if (DIFF_DEL.includes(index) && hideDiff) {
+          return null;
         } else {
           return line;
         }
@@ -262,7 +278,7 @@ export default class Build extends BaseCommand {
     };
 
     const diffBlockConverter = (node: Element) => {
-      const { commit, file, hiddenLines = [] } = node as DiffBlock;
+      const { commit, file, hiddenLines = [], hideDiff } = node as DiffBlock;
       const diff = this.getDiffFile(rawDiffs, commit, file);
       const link = github ? `${github}/blob/${commit}/${file}` : undefined;
       const flatHiddenLines = hiddenLines.flatMap((range) => {
@@ -270,7 +286,9 @@ export default class Build extends BaseCommand {
         return [...Array(end - start + 1).keys()].map((elem) => elem + start);
       });
 
-      return diff ? this.diffBlockTmpl(diff, flatHiddenLines, link) : '';
+      return diff
+        ? this.diffBlockTmpl(diff, hideDiff, flatHiddenLines, link)
+        : '';
     };
 
     const noteBlockConverter = (node: Element) => {
