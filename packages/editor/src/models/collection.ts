@@ -116,6 +116,28 @@ export const collection = {
 
       return state;
     },
+    setHideDiffFlag(
+      state: CollectionState,
+      payload: {
+        file: string;
+        commit: string;
+        hideDiff: boolean;
+      },
+    ) {
+      const { file, commit, hideDiff } = payload;
+      for (const node of state.fragment) {
+        if (
+          node.type === DIFF_BLOCK &&
+          node.file === file &&
+          isCommitEqual(node.commit, commit)
+        ) {
+          node.hideDiff = hideDiff;
+          break;
+        }
+      }
+
+      return state;
+    },
     switchFile(
       state: CollectionState,
       payload: { removedIndex: number; addedIndex: number; commit: string },

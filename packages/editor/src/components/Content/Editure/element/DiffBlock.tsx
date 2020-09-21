@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 // @ts-ignore
 import LazyLoad from 'react-lazy-load';
 import { useDispatch } from 'react-redux';
-import { Checkbox } from 'antd';
+import { Checkbox, Switch } from 'antd';
 import { CheckboxValueType } from 'antd/lib/checkbox/Group';
 import parseDiff from 'parse-diff';
 import { getIdFromFilename, getHighlightFromId } from 'yutang';
@@ -62,7 +62,7 @@ const loadingAnimation = css`
   }
 `;
 
-function concatCodeStr(diffItem: parseDiff.File) {
+function concatCodeStr(diffItem: parseDiff.File, hideDiff: boolean) {
   let codeStr = '';
   const DIFF_ADD: number[] = [];
   const DIFF_DEL: number[] = [];
@@ -73,9 +73,12 @@ function concatCodeStr(diffItem: parseDiff.File) {
       const { type, content } = change;
       allLines = allLines.concat(index);
 
-      if (type === 'add') {
+      if (type === 'add' && !hideDiff) {
         DIFF_ADD.push(index);
       } else if (type === 'del') {
+        if (hideDiff) {
+          return;
+        }
         DIFF_DEL.push(index);
       }
 
@@ -104,7 +107,7 @@ function concatCodeStr(diffItem: parseDiff.File) {
 
 function DiffBlockElement(props: ElementProps) {
   const { attributes, element, children } = props;
-  const { file, commit, hiddenLines = [] } = element;
+  const { file, commit, hiddenLines = [], hideDiff } = element;
 
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch<Dispatch>();
@@ -119,7 +122,7 @@ function DiffBlockElement(props: ElementProps) {
     DIFF_ADD = [],
     DIFF_DEL = [],
     allLines = [],
-  } = concatCodeStr(diffItem);
+  } = concatCodeStr(diffItem, hideDiff);
 
   const langId = getIdFromFilename(file);
 
@@ -143,6 +146,19 @@ function DiffBlockElement(props: ElementProps) {
     });
 
     setDirty(true);
+  }
+
+  const setHideDiff = useDebouncedSave(['fragment'], 3000, [hideDiff]);
+
+  function hideDiffChange(diff: boolean) {
+    const hideDiff = diff;
+    dispatch.collection.setHideDiffFlag({
+      commit,
+      file,
+      hideDiff: hideDiff,
+    });
+
+    setHideDiff(true);
   }
 
   return (
@@ -187,7 +203,22 @@ function DiffBlockElement(props: ElementProps) {
             onContentVisible={() => setLoading(false)}
           >
             <div className="diff-file" css={diffFileStyle}>
-              <header css={diffFileHeaderStyle}>{file}</header>
+              <header css={diffFileHeaderStyle}>
+                {file}
+                <Switch
+                  css={css`
+                    float: right;
+                    color: white;
+                    margin-right: 10px;
+                  `}
+                  checkedChildren={'显示 Diff'}
+                  unCheckedChildren={'隐藏 Diff'}
+                  defaultChecked={hideDiff}
+                  onChange={(checked: boolean) => {
+                    hideDiffChange(checked);
+                  }}
+                />
+              </header>
               <Checkbox.Group
                 onChange={onChange}
                 value={showLines}
