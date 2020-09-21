@@ -203,10 +203,10 @@ export default class Build extends BaseCommand {
           return `${' '.repeat(spaces)}${comment('...', highlight)}`;
         } else if (DIFF_ADD.includes(index)) {
           return this.changeTmpl(line, 'add', diff.new, hideDiff);
-        } else if (DIFF_DEL.includes(index) && !hideDiff) {
-          return this.changeTmpl(line, 'del', diff.new, hideDiff);
-        } else if (DIFF_DEL.includes(index) && hideDiff) {
-          return null;
+        } else if (DIFF_DEL.includes(index)) {
+          return hideDiff
+            ? null
+            : this.changeTmpl(line, 'del', diff.new, hideDiff);
         } else {
           return line;
         }
