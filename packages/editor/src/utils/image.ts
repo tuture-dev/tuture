@@ -1,5 +1,5 @@
 import { IMAGE, PARAGRAPH } from 'editure-constants';
-import { Editor, Transforms, getBeforeText } from 'editure';
+import { Editor, Element, Transforms, getBeforeText } from 'editure';
 
 import { IEditor } from './editor';
 
@@ -67,7 +67,7 @@ export const createDropListener = (editor: IEditor) => (e: React.DragEvent) => {
 export const withImages = (editor: IEditor) => {
   const { insertData, deleteBackward, isVoid } = editor;
 
-  editor.isVoid = (element) =>
+  editor.isVoid = (element: Element) =>
     element.type === IMAGE ? true : isVoid(element);
 
   editor.insertData = (data) => {

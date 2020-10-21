@@ -9,6 +9,7 @@ import { css, jsx } from '@emotion/core';
 
 import { Dispatch } from 'store';
 import IconFont from 'components/IconFont';
+import { IEditor } from 'utils/editor';
 import styles from '../Highlight/styles/atom-dark';
 
 function getStyleFromClassNameArr(classNameArr: string[]) {
@@ -29,7 +30,7 @@ type LeafProps = {
 
 const Link = (props: LeafProps) => {
   const { attributes, children, leaf } = props;
-  const editor = useEditure();
+  const editor = useEditure() as IEditor;
   const dispatch = useDispatch<Dispatch>();
 
   const iconStyle = css`
