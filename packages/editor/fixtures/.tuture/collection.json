@@ -45,7 +45,7 @@
               "type": "paragraph",
               "children": [
                 {
-                  "text": "在这一系列教程中，我们将会实现一个全栈美食分享网站，后端用 Django 实现，前端则是 Nuxt 框架，下面是最终完成后的项目效果：你好qwdqwdqw"
+                  "text": "在这一系列教程中，我们将会实现一个全栈美食分享网站，后端用 Django 实现，前端则是 Nuxt 框架，下面是最终完成后的项目效果：ohuo真的炫"
                 }
               ]
             },
@@ -3837,7 +3837,15 @@
                   "type": "paragraph",
                   "children": [
                     {
-                      "text": "在实现第二个页面之前，我们有必要先了解一下 Nuxt 的路由功能——通过 pages 目录下的文档结构，就可以自动生成 vue-router 的路由愚蠢们这样安排 pages 下面的目录结构👇："
+                      "text": "在实现第二个页面之前，我们有必要先了解一下 Nuxt 的路由功能——通过 pages 目录下的文档结构，就可以自动生成 vue-router 的路由器配置！"
+                    }
+                  ]
+                },
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "text": "例如我们这样安排 pages 下面的目录结构👇："
                     }
                   ]
                 },
