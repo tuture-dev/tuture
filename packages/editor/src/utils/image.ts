@@ -3,7 +3,7 @@ import { Editor, Element, Transforms, getBeforeText } from 'editure';
 
 import { IEditor } from './editor';
 
-export const IMAGE_HOSTING_URL = 'https://imgkr.com/api/files/upload';
+export const IMAGE_HOSTING_URL = 'https://fc.tuture.co/upload';
 
 export const insertImage = (editor: IEditor, files: FileList) => {
   for (const file of files) {
@@ -42,10 +42,7 @@ export const uploadImage = (
       return res.json();
     })
     .then((data) => {
-      if (!data.success) {
-        throw new Error('上传失败，请重试！');
-      }
-      callback(null, data.data);
+      callback(null, data.url);
     })
     .catch((err: Error) => callback(err));
 };
