@@ -3,16 +3,8 @@
   "description": "Django 作为 Python 社区最受欢迎的 Web 框架之一，凭借其高度抽象的组件和强大方便的脚手架，将快速且流畅的开发体验演绎到了极致。而 Nuxt 作为从 Vue.js 进化而来的前端框架，能够轻松胜任复杂的 SPA（单页应用）开发。两者相遇，能够擦出怎样的火花？这篇教程将用 Django + Nuxt 实现带有完整的增删改查（CRUD）功能的全栈应用。最后郑重警告：不要在深夜阅读此教程！！！",
   "id": "b9b4d831629e9a7df36131b1661569eb",
   "created": "2019-10-18T00:00:00.509Z",
-  "topics": [
-    "Django",
-    "Vue",
-    "Nuxt"
-  ],
-  "categories": [
-    "后端",
-    "Python",
-    "进阶"
-  ],
+  "topics": ["Django", "Vue", "Nuxt"],
+  "categories": ["后端", "Python", "进阶"],
   "articles": [
     {
       "name": "Django + Nuxt 实现美食分享网站（一）",
@@ -1467,22 +1459,10 @@
               "file": "api/api/settings.py",
               "commit": "d4d056f",
               "hiddenLines": [
-                [
-                  0,
-                  35
-                ],
-                [
-                  49,
-                  51
-                ],
-                [
-                  62,
-                  109
-                ],
-                [
-                  118,
-                  125
-                ]
+                [0, 35],
+                [49, 51],
+                [62, 109],
+                [118, 125]
               ],
               "children": [
                 {
@@ -2048,12 +2028,7 @@
               "type": "diff-block",
               "file": "api/api/urls.py",
               "commit": "d4d056f",
-              "hiddenLines": [
-                [
-                  0,
-                  12
-                ]
-              ],
+              "hiddenLines": [[0, 12]],
               "children": [
                 {
                   "text": ""
@@ -3641,12 +3616,7 @@
               "type": "diff-block",
               "file": "tuture.yml",
               "commit": "596203d",
-              "hiddenLines": [
-                [
-                  0,
-                  5
-                ]
-              ],
+              "hiddenLines": [[0, 5]],
               "children": [
                 {
                   "text": ""
@@ -4406,12 +4376,7 @@
               "type": "diff-block",
               "file": "tuture.yml",
               "commit": "63f7ab0",
-              "hiddenLines": [
-                [
-                  0,
-                  74
-                ]
-              ],
+              "hiddenLines": [[0, 74]],
               "children": [
                 {
                   "text": ""
@@ -4536,12 +4501,7 @@
               "type": "diff-block",
               "file": "api/api/urls.py",
               "commit": "60a60d7",
-              "hiddenLines": [
-                [
-                  0,
-                  13
-                ]
-              ],
+              "hiddenLines": [[0, 13]],
               "children": [
                 {
                   "text": ""
@@ -4640,14 +4600,8 @@
               "file": "client/nuxt.config.js",
               "commit": "60a60d7",
               "hiddenLines": [
-                [
-                  0,
-                  47
-                ],
-                [
-                  55,
-                  63
-                ]
+                [0, 47],
+                [55, 63]
               ],
               "children": [
                 {
@@ -4724,22 +4678,10 @@
               "file": "client/pages/recipes/index.vue",
               "commit": "60a60d7",
               "hiddenLines": [
-                [
-                  0,
-                  17
-                ],
-                [
-                  57,
-                  59
-                ],
-                [
-                  78,
-                  78
-                ],
-                [
-                  97,
-                  100
-                ]
+                [0, 17],
+                [57, 59],
+                [78, 78],
+                [97, 100]
               ],
               "children": [
                 {
@@ -5219,14 +5161,8 @@
               "file": "client/nuxt.config.js",
               "commit": "04edf4c",
               "hiddenLines": [
-                [
-                  0,
-                  21
-                ],
-                [
-                  29,
-                  64
-                ]
+                [0, 21],
+                [29, 64]
               ],
               "children": [
                 {
@@ -5273,12 +5209,7 @@
               "type": "diff-block",
               "file": "tuture.yml",
               "commit": "04edf4c",
-              "hiddenLines": [
-                [
-                  0,
-                  126
-                ]
-              ],
+              "hiddenLines": [[0, 126]],
               "children": [
                 {
                   "text": ""
