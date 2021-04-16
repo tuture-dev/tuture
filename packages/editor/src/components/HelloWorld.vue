@@ -1,98 +1,37 @@
 <template>
   <div class="hello world">
-    <a-button type="primary">Hail Tuture!</a-button>
-    <p>
-      For a guide and recipes on how to configure / customize this project,<br />
-      check out the
-      <a href="https://cli.vuejs.org" target="_blank" rel="noopener"
-        >vue-cli documentation</a
-      >.
-    </p>
-    <h3>Installed CLI Plugins</h3>
-    <ul>
-      <li>
-        <a
-          href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-babel"
-          target="_blank"
-          rel="noopener"
-          >babel</a
-        >
-      </li>
-      <li>
-        <a
-          href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-eslint"
-          target="_blank"
-          rel="noopener"
-          >eslint</a
-        >
-      </li>
-    </ul>
-    <h3>Essential Links</h3>
-    <ul>
-      <li>
-        <a href="https://vuejs.org" target="_blank" rel="noopener">Core Docs</a>
-      </li>
-      <li>
-        <a href="https://forum.vuejs.org" target="_blank" rel="noopener"
-          >Forum</a
-        >
-      </li>
-      <li>
-        <a href="https://chat.vuejs.org" target="_blank" rel="noopener"
-          >Community Chat</a
-        >
-      </li>
-      <li>
-        <a href="https://twitter.com/vuejs" target="_blank" rel="noopener"
-          >Twitter</a
-        >
-      </li>
-      <li>
-        <a href="https://news.vuejs.org" target="_blank" rel="noopener">News</a>
-      </li>
-    </ul>
-    <h3>Ecosystem</h3>
-    <ul>
-      <li>
-        <a href="https://router.vuejs.org" target="_blank" rel="noopener"
-          >vue-router</a
-        >
-      </li>
-      <li>
-        <a href="https://vuex.vuejs.org" target="_blank" rel="noopener">vuex</a>
-      </li>
-      <li>
-        <a
-          href="https://github.com/vuejs/vue-devtools#vue-devtools"
-          target="_blank"
-          rel="noopener"
-          >vue-devtools</a
-        >
-      </li>
-      <li>
-        <a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener"
-          >vue-loader</a
-        >
-      </li>
-      <li>
-        <a
-          href="https://github.com/vuejs/awesome-vue"
-          target="_blank"
-          rel="noopener"
-          >awesome-vue</a
-        >
-      </li>
-    </ul>
+    <a-button type="primary" @click="switchColor">Hail Tuture!</a-button>
+    <span>{{ x }}</span> 和 <span>{{ y }}</span>
+    <div ref="el" style="--color: #7fa998; color: var(--color)">
+      Sample text, {{ color }}
+    </div>
   </div>
 </template>
 
-<script>
-export default {
+<script setup>
+import { defineComponent, ref } from 'vue-demi';
+import { useMouse, useCssVar } from '@vueuse/core';
+
+export default defineComponent({
   name: 'HelloWorld',
   props: {
     msg: String,
   },
-};
+  setup(props) {
+    const el = ref(null);
+    const { x, y } = useMouse();
+    const color = useCssVar('--color', el);
+
+    console.log('props', props);
+
+    const switchColor = () => {
+      if (color.value === '#df8543') color.value = '#7fa998';
+      else color.value = '#df8543';
+    };
+
+    return { x, y, switchColor, color };
+  },
+});
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
