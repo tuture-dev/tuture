@@ -5,32 +5,34 @@
   "scripts": {
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "start:cli": "vue-cli-service serve",
+    "preview": "serve ./dist/",
     "start": "node ./bin/vite",
-    "preview": "serve ./dist/"
+    "start:cli": "vue-cli-service serve"
   },
   "dependencies": {
     "core-js": "^3.6.5",
-    "vue": "^2.6.11"
+    "vue": "^2.6.11",
+    "vue-router": "^3.2.0"
   },
   "devDependencies": {
+    "@commitlint/cli": "^7.2.1",
     "@vue/cli-plugin-babel": "~4.5.0",
     "@vue/cli-plugin-eslint": "~4.5.0",
+    "@vue/cli-plugin-router": "~4.5.0",
     "@vue/cli-service": "~4.5.0",
     "babel-eslint": "^10.1.0",
-    "eslint": "^6.7.2",
-    "eslint-plugin-vue": "^6.2.2",
-    "serve": "^11.3.2",
-    "vue-cli-plugin-vite": "~1.0.0-rc.3",
-    "vue-template-compiler": "^2.6.11",
-    "@commitlint/cli": "^7.2.1",
     "commitizen": "^3.0.5",
     "conventional-changelog": "^3.0.5",
     "cz-conventional-changelog": "^2.1.0",
+    "eslint": "^6.7.2",
     "eslint-plugin-prettier": "^3.0.1",
+    "eslint-plugin-vue": "^6.2.2",
     "lint-staged": "^7.2.2",
     "prettier": "^1.16.3",
-    "standard-version": "^4.4.0"
+    "serve": "^11.3.2",
+    "standard-version": "^4.4.0",
+    "vue-cli-plugin-vite": "~1.0.0-rc.3",
+    "vue-template-compiler": "^2.6.11"
   },
   "eslintConfig": {
     "root": true,
@@ -51,6 +53,11 @@
     "last 2 versions",
     "not dead"
   ],
+  "config": {
+    "commitizen": {
+      "path": "node_modules/cz-conventional-changelog"
+    }
+  },
   "lint-staged": {
     "*.js": [
       "vue-cli-service lint",
@@ -60,10 +67,5 @@
       "vue-cli-service lint",
       "git add"
     ]
-  },
-  "config": {
-    "commitizen": {
-      "path": "node_modules/cz-conventional-changelog"
-    }
   }
 }
