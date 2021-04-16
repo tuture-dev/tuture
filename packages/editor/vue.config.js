@@ -1,32 +1,28 @@
 module.exports = {
-  // ...
-  pluginOptions: {
-    vite: {
-      ///**
-      // * deprecated since v0.2.2. we can auto-resolve alias from vue.config.js
-      // * @ is setted by the plugin, you can set others used in your projects, like @components
-      // * Record<string, string>
-      // * @default {}
-      // */
-      // alias: {
-      //   '@components': path.resolve(__dirname, './src/components'),
-      // },
-      /**
-       * Plugin[]
-       * @default []
-       */
-      plugins: [], // other vite plugins list, will be merge into this plugin\'s underlying vite.config.ts
-      /**
-       * you can enable jsx support by setting { jsx: true }
-       * @see https://github.com/underfin/vite-plugin-vue2#options
-       * @default {}
-       */
-      vitePluginVue2Options: {},
-      /**
-       * Vite UserConfig.optimizeDeps options
-       * @default {}
-       */
-      optimizeDeps: {},
+  // VUE Cli 相关的配置
+  configureWebpack: {
+    module: {
+      rules: [
+        {
+          enforce: 'pre',
+          test: /\.(js|vue)$/,
+          loader: 'eslint-loader',
+          exclude: /node_modules/,
+        },
+      ],
+    },
+  },
+  css: {
+    loaderOptions: {
+      less: {
+        // If you are using less-loader@5 please spread the lessOptions to options directly
+        modifyVars: {
+          'primary-color': '#02b875',
+          'text-selection-bg': '#d8d8dc',
+          'text-color-inverse': 'inherit',
+        },
+        javascriptEnabled: true,
+      },
     },
   },
 };
