@@ -5,6 +5,7 @@
     <div ref="el" style="--color: #7fa998; color: var(--color)">
       Sample text, {{ color }}
     </div>
+    <Icon type="icon-js"></Icon>
   </div>
 </template>
 
@@ -12,10 +13,15 @@
 import { defineComponent, ref } from 'vue-demi';
 import { useMouse, useCssVar } from '@vueuse/core';
 
+import Icon from '@/components/common/Icon.vue';
+
 export default defineComponent({
   name: 'HelloWorld',
   props: {
     msg: String,
+  },
+  components: {
+    Icon,
   },
   setup(props) {
     const el = ref(null);

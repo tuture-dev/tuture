@@ -1,6 +1,20 @@
+const path = require('path');
+
+function resolve(dir) {
+  return path.join(__dirname, '.', dir);
+}
+
 module.exports = {
   // VUE Cli 相关的配置
   configureWebpack: {
+    devtool: 'source-map',
+    resolve: {
+      extensions: ['.js', '.vue', '.json', '.ts'],
+      alias: {
+        vue$: 'vue/dist/vue.esm.js',
+        '@': resolve('src'),
+      },
+    },
     module: {
       rules: [
         {
