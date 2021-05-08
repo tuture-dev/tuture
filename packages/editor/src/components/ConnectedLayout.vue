@@ -3,6 +3,9 @@
     <a-affix>
       <Drawer></Drawer>
     </a-affix>
+    <a-affix>
+      <ChildDrawer></ChildDrawer>
+    </a-affix>
     <a-affix :style="{ zIndex: 13 }">
       <MainMenu></MainMenu>
     </a-affix>
@@ -19,31 +22,17 @@
 import { defineComponent } from 'vue-demi';
 
 import Drawer from './drawer/Drawer.vue';
+import ChildDrawer from './drawer/ChildDrawer.vue';
 import MainMenu from './MainMenu.vue';
 
 export default defineComponent({
   name: 'ConnectedLayout',
   components: {
     Drawer,
+    ChildDrawer,
     MainMenu,
   },
 });
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-h3 {
-  margin: 40px 0 0;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
-}
-</style>
+<style scoped></style>

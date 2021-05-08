@@ -1,23 +1,30 @@
 <template>
   <div>
-    <a-layout-sider width="100" collapsed>
-      <div>logo</div>
+    <a-layout-sider class="h-screen bg-gray-50 shadow-lg" width="100" collapsed>
+      <div class="w-full text-center pt-5">
+        <img
+          class="inline w-6 h-6 m-0 p-0"
+          alt="Tuture Logo"
+          src="../assets/logo.svg"
+        />
+      </div>
       <a-menu
+        class="bg-gray-50 border-none m-auto"
         theme="light"
         mode="inline"
         :selectedKeys="selectedKeys"
         @click="onMenuClick"
       >
-        <a-menu-item key="1" title="文集目录">
+        <a-menu-item style="margin-top: 2.5rem" key="1" title="文集目录">
           <Icon type="icon-switcher"></Icon>
         </a-menu-item>
-        <a-menu-item key="2" title="步骤编排">
+        <a-menu-item style="margin-top: 2.5rem" key="2" title="步骤编排">
           <Icon type="icon-profile"></Icon>
         </a-menu-item>
-        <a-menu-item key="3" title="文集设置">
+        <a-menu-item style="margin-top: 2.5rem" key="3" title="文集设置">
           <Icon type="icon-setting"></Icon>
         </a-menu-item>
-        <a-menu-item key="4" title="联系我们">
+        <a-menu-item style="margin-top: 2.5rem" key="4" title="联系我们">
           <Icon type="icon-contacts"></Icon>
         </a-menu-item>
       </a-menu>
