@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="p-10 text-center">
     这里是联系我们
   </div>
 </template>

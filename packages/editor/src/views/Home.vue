@@ -1,6 +1,7 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.svg" />
+  <div class="p-10 text-center">
+    <h1>这里是主页</h1>
+    <img class="inline" alt="Tuture logo" src="../assets/logo.svg" />
     <HelloWorld msg="Welcome to Your Vue.js App" />
   </div>
 </template>

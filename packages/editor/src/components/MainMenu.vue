@@ -3,9 +3,10 @@
     <a-layout-sider class="h-screen bg-gray-50 shadow-lg" width="100" collapsed>
       <div class="w-full text-center pt-5">
         <img
-          class="inline w-6 h-6 m-0 p-0"
+          class="inline w-6 h-6 m-0 p-0 hover:cursor-pointer"
           alt="Tuture Logo"
           src="../assets/logo.svg"
+          @click="onLogoClick"
         />
       </div>
       <a-menu
@@ -64,6 +65,11 @@ export default defineComponent({
       'setDrawerType',
       'setSelectedKeys',
     ]),
+    onLogoClick() {
+      this.setVisible(false);
+      this.setChildVisible(false);
+      this.$router.push({ name: 'Home' });
+    },
     onMenuClick({ key }) {
       if (key === '2') {
         this.setVisible(false);

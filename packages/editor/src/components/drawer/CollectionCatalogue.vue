@@ -1,7 +1,12 @@
 <template>
   <div>
     <ul>
-      <li v-for="article in articles" :key="article.id" :id="article.id">
+      <li
+        v-for="article in articles"
+        :key="article.id"
+        :id="article.id"
+        @click="onClickCatalogueItem(article.id)"
+      >
         <span>
           <a-tooltip
             placement="right"
@@ -11,7 +16,7 @@
             <span>{{ article.name }}</span>
           </a-tooltip>
         </span>
-        <span @click="onToggleChildDrawer('edit', article.id)">
+        <span @click.stop="onToggleChildDrawer('edit', article.id)">
           <Icon type="icon-moreread"></Icon>
         </span>
       </li>
@@ -45,7 +50,15 @@ export default defineComponent({
   },
   methods: {
     ...mapMutations('collection', ['setEditArticleId']),
-    ...mapMutations('drawer', ['setChildVisible', 'setChildDrawerType']),
+    ...mapMutations('drawer', [
+      'setVisible',
+      'setChildVisible',
+      'setChildDrawerType',
+    ]),
+    onClickCatalogueItem(articleId) {
+      this.setVisible(false);
+      this.$router.push({ name: 'Article', params: { id: articleId } });
+    },
     onToggleChildDrawer(drawerType, articleId) {
       if (drawerType === this.drawerType && this.childVisible) {
         this.setChildVisible(false);

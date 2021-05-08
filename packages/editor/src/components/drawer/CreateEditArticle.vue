@@ -1,5 +1,5 @@
 <template>
-  <div class="p-4">
+  <div class="p-10 text-center">
     CreateEditArticle
   </div>
 </template>
