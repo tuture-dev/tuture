@@ -1,6 +1,5 @@
 <template>
   <a-drawer
-    class="ml-20"
     placement="left"
     :zIndex="11"
     :width="300"
@@ -16,14 +15,13 @@
 import { defineComponent } from 'vue-demi';
 import { mapMutations, mapState } from 'vuex';
 
-import CollectionCatalogue from './CollectionCatalogue.vue';
-import CollectionSetting from './CollectionSetting.vue';
-import ContactUs from './ContactUs.vue';
+import CollectionCatalogue from '@/components/CollectionCatalogue.vue';
+import CollectionSetting from '@/components/CollectionSetting.vue';
+import Toc from '@/components/Toc.vue';
 
 const mapTypeToTitle = {
-  CollectionCatalogue: '文集目录',
   CollectionSetting: '文集设置',
-  ContactUs: '联系我们',
+  Toc: '步骤编排',
 };
 
 export default defineComponent({
@@ -31,7 +29,7 @@ export default defineComponent({
   components: {
     CollectionCatalogue,
     CollectionSetting,
-    ContactUs,
+    Toc,
   },
   computed: {
     title() {

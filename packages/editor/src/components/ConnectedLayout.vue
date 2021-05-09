@@ -6,14 +6,8 @@
     <a-affix>
       <ChildDrawer></ChildDrawer>
     </a-affix>
-    <a-affix :style="{ zIndex: 13 }">
-      <MainMenu></MainMenu>
-    </a-affix>
     <a-layout>
-      <a-layout-header>this is header</a-layout-header>
-      <a-layout-content>
-        <slot></slot>
-      </a-layout-content>
+      <slot></slot>
     </a-layout>
   </a-layout>
 </template>

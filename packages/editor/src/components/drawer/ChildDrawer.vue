@@ -1,6 +1,5 @@
 <template>
   <a-drawer
-    class="ml-20"
     placement="left"
     :destroyOnClose="true"
     :zIndex="12"
@@ -17,7 +16,7 @@
 import { defineComponent } from 'vue-demi';
 import { mapMutations, mapState } from 'vuex';
 
-import CreateEditArticle from './CreateEditArticle.vue';
+import CreateEditArticle from '../CreateEditArticle.vue';
 
 const mapTypeToTitle = {
   create: '新建文章',

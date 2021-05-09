@@ -1,25 +1,33 @@
 <template>
-  <div class="p-10 text-center">
-    <h1>这里是文章详情页</h1>
-    <p>标题: {{ article.name }}</p>
-    <p>ID: {{ article.id }}</p>
-  </div>
+  <a-row class="h-full">
+    <a-col :span="5">
+      <a-affix>
+        <CollectionCatalogue></CollectionCatalogue>
+      </a-affix>
+    </a-col>
+    <a-col class="bg-white h-full" :span="14">
+      <ArticleBody></ArticleBody>
+    </a-col>
+    <a-col :span="5">
+      <a-affix>
+        <ArticleCatalogue></ArticleCatalogue>
+      </a-affix>
+    </a-col>
+  </a-row>
 </template>
 
 <script>
 import { defineComponent } from 'vue-demi';
-import { mapState } from 'vuex';
+
+import ArticleBody from '@/components/ArticleBody.vue';
+import ArticleCatalogue from '@/components/ArticleCatalogue.vue';
+import CollectionCatalogue from '@/components/CollectionCatalogue.vue';
 
 export default defineComponent({
-  computed: {
-    ...mapState('collection', ['articles']),
-    article() {
-      return (
-        this.articles.filter(
-          (article) => article.id === this.$route.params.id,
-        )[0] || {}
-      );
-    },
+  components: {
+    ArticleBody,
+    ArticleCatalogue,
+    CollectionCatalogue,
   },
 });
 </script>

@@ -1,5 +1,6 @@
 <template>
-  <div>
+  <div class="bg-gray-50 h-screen">
+    <h1 class="py-6 text-xl text-center">文集标题</h1>
     <ul>
       <li
         v-for="article in articles"
@@ -28,6 +29,18 @@
             <Icon type="icon-plus"></Icon>
           </span>
         </li>
+        <li @click="onToggleDrawer('CollectionSetting')">
+          <span>文集设置</span>
+          <span>
+            <Icon type="icon-setting"></Icon>
+          </span>
+        </li>
+        <li @click="onToggleDrawer('Toc')">
+          <span>步骤编排</span>
+          <span>
+            <Icon type="icon-profile"></Icon>
+          </span>
+        </li>
       </ul>
     </ul>
   </div>
@@ -53,11 +66,16 @@ export default defineComponent({
     ...mapMutations('drawer', [
       'setVisible',
       'setChildVisible',
+      'setDrawerType',
       'setChildDrawerType',
     ]),
     onClickCatalogueItem(articleId) {
       this.setVisible(false);
       this.$router.push({ name: 'Article', params: { id: articleId } });
+    },
+    onToggleDrawer(drawerType) {
+      this.setVisible(!this.visible);
+      this.setDrawerType(drawerType);
     },
     onToggleChildDrawer(drawerType, articleId) {
       if (drawerType === this.drawerType && this.childVisible) {
@@ -82,6 +100,6 @@ ul {
 }
 
 li {
-  @apply h-9 leading-9 flex flex-row justify-between pl-6 pr-6 mb-2 hover:bg-gray-50 hover:cursor-pointer;
+  @apply h-9 leading-9 flex flex-row justify-between pl-6 pr-6 mb-2 hover:bg-white hover:cursor-pointer;
 }
 </style>
