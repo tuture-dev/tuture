@@ -1,6 +1,6 @@
 <template>
-  <div class="p-10 bg-gray-50 h-screen">
-    <a-anchor wrapperClass="bg-gray-50">
+  <div class="p-10 bg-gray-100 h-screen">
+    <a-anchor wrapperClass="bg-gray-100">
       <a-anchor-link href="#components-anchor-demo-basic" title="Basic demo" />
       <a-anchor-link
         href="#components-anchor-demo-static"

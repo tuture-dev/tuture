@@ -1,6 +1,10 @@
 <template>
   <div>
-    <a-layout-sider class="h-screen bg-gray-50 shadow-lg" width="100" collapsed>
+    <a-layout-sider
+      class="h-screen bg-gray-100 shadow-lg"
+      width="100"
+      collapsed
+    >
       <div class="w-full text-center pt-5">
         <img
           class="inline w-6 h-6 m-0 p-0 hover:cursor-pointer"
@@ -10,7 +14,7 @@
         />
       </div>
       <a-menu
-        class="bg-gray-50 border-none m-auto"
+        class="bg-gray-100 border-none m-auto"
         theme="light"
         mode="inline"
         :selectedKeys="selectedKeys"

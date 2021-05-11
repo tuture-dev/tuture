@@ -1,9 +1,10 @@
 <template>
-  <div class="bg-gray-50 h-screen">
+  <div class="bg-gray-100 h-screen">
     <h1 class="py-6 text-xl text-center">文集标题</h1>
     <ul>
       <li
         v-for="article in articles"
+        :class="{ 'bg-white': article.id === nowArticleId }"
         :key="article.id"
         :id="article.id"
         @click="onClickCatalogueItem(article.id)"
@@ -60,6 +61,9 @@ export default defineComponent({
   computed: {
     ...mapState('collection', ['articles']),
     ...mapState('drawer', ['childVisible', 'childDrawerType']),
+    nowArticleId() {
+      return Number(this.$route.params.id);
+    },
   },
   methods: {
     ...mapMutations('collection', ['setEditArticleId']),
@@ -71,7 +75,9 @@ export default defineComponent({
     ]),
     onClickCatalogueItem(articleId) {
       this.setVisible(false);
-      this.$router.push({ name: 'Article', params: { id: articleId } });
+      this.$router
+        .push({ name: 'Article', params: { id: articleId } })
+        .catch(() => {});
     },
     onToggleDrawer(drawerType) {
       this.setVisible(!this.visible);

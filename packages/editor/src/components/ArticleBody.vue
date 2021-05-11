@@ -182,7 +182,7 @@ export default defineComponent({
     article() {
       return (
         this.articles.filter(
-          (article) => article.id === this.$route.params.id,
+          (article) => article.id === Number(this.$route.params.id),
         )[0] || {}
       );
     },

@@ -6,7 +6,6 @@ export const state = () => ({
     { id: 1, name: 'Hail Tuture' },
     { id: 2, name: 'Tuture is Back!!' },
   ],
-  nowArticleId: null,
   editArticleId: '',
   nowStepCommit: null,
   remotes: [],
@@ -18,5 +17,14 @@ export const state = () => ({
 export const mutations = {
   setEditArticleId(state, articleId) {
     state.editArticleId = articleId;
+  },
+};
+
+export const getters = {
+  getArticleById(state, articleId) {
+    return (
+      state.articles.filter((article) => article.id === Number(articleId))[0] ||
+      {}
+    );
   },
 };
