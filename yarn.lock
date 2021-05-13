@@ -2961,6 +2961,13 @@
     semver "^6.3.0"
     tsutils "^3.17.1"
 
+"@u3u/vue-hooks@^2.0.1":
+  version "2.0.1"
+  resolved "https://registry.npm.taobao.org/@u3u/vue-hooks/download/@u3u/vue-hooks-2.0.1.tgz#d7e3d22a08bd612ca08f78f9b0def0ad54e3d667"
+  integrity sha1-1+PSKgi9YSygj3j5sN7wrVTj1mc=
+  dependencies:
+    dayjs "^1.8.15"
+
 "@vue/babel-helper-vue-jsx-merge-props@^1.2.1":
   version "1.2.1"
   resolved "https://registry.npm.taobao.org/@vue/babel-helper-vue-jsx-merge-props/download/@vue/babel-helper-vue-jsx-merge-props-1.2.1.tgz#31624a7a505fb14da1d58023725a4c5f270e6a81"
@@ -3222,12 +3229,12 @@
   optionalDependencies:
     prettier "^1.18.2"
 
-"@vue/composition-api@^1.0.0-rc.6":
-  version "1.0.0-rc.6"
-  resolved "https://registry.npm.taobao.org/@vue/composition-api/download/@vue/composition-api-1.0.0-rc.6.tgz?cache=0&sync_timestamp=1617030768012&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40vue%2Fcomposition-api%2Fdownload%2F%40vue%2Fcomposition-api-1.0.0-rc.6.tgz#21ce2c169dd4ff17a5bf60c6e98863dff1a36540"
-  integrity sha1-Ic4sFp3U/xelv2DG6Yhj3/GjZUA=
+"@vue/composition-api@^1.0.0-rc.8":
+  version "1.0.0-rc.8"
+  resolved "https://registry.nlark.com/@vue/composition-api/download/@vue/composition-api-1.0.0-rc.8.tgz#ace0f1c8cc7d5b193825fabdc7c4b919bb182a9e"
+  integrity sha1-rODxyMx9Wxk4Jfq9x8S5GbsYKp4=
   dependencies:
-    tslib "^2.1.0"
+    tslib "^2.2.0"
 
 "@vue/preload-webpack-plugin@^1.1.0":
   version "1.1.2"
@@ -6826,6 +6833,11 @@ dateformat@^3.0.0:
   version "3.0.3"
   resolved "https://registry.npm.taobao.org/dateformat/download/dateformat-3.0.3.tgz#a6e37499a4d9a9cf85ef5872044d62901c9889ae"
   integrity sha1-puN0maTZqc+F71hyBE1ikByYia4=
+
+dayjs@^1.8.15:
+  version "1.10.4"
+  resolved "https://registry.nlark.com/dayjs/download/dayjs-1.10.4.tgz#8e544a9b8683f61783f570980a8a80eaf54ab1e2"
+  integrity sha1-jlRKm4aD9heD9XCYCoqA6vVKseI=
 
 de-indent@^1.0.2:
   version "1.0.2"
@@ -16491,9 +16503,9 @@ tslib@^1, tslib@^1.8.1, tslib@^1.9.0, tslib@^1.9.3:
   resolved "https://registry.npm.taobao.org/tslib/download/tslib-1.11.1.tgz#eb15d128827fbee2841549e171f45ed338ac7e35"
   integrity sha1-6xXRKIJ/vuKEFUnhcfRe0zisfjU=
 
-tslib@^2.1.0:
+tslib@^2.2.0:
   version "2.2.0"
-  resolved "https://registry.npm.taobao.org/tslib/download/tslib-2.2.0.tgz#fb2c475977e35e241311ede2693cee1ec6698f5c"
+  resolved "https://registry.nlark.com/tslib/download/tslib-2.2.0.tgz?cache=0&sync_timestamp=1618847132149&other_urls=https%3A%2F%2Fregistry.nlark.com%2Ftslib%2Fdownload%2Ftslib-2.2.0.tgz#fb2c475977e35e241311ede2693cee1ec6698f5c"
   integrity sha1-+yxHWXfjXiQTEe3iaTzuHsZpj1w=
 
 tsutils@^3.17.1:

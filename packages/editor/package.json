@@ -9,7 +9,8 @@
     "start": "vue-cli-service serve"
   },
   "dependencies": {
-    "@vue/composition-api": "^1.0.0-rc.6",
+    "@u3u/vue-hooks": "^2.0.1",
+    "@vue/composition-api": "^1.0.0-rc.8",
     "@vueuse/core": "^4.8.1",
     "ant-design-vue": "^1.7.4",
     "core-js": "^3.6.5",

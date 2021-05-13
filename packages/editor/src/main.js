@@ -1,5 +1,7 @@
 import Vue from 'vue';
 import { createApp, h } from 'vue-demi';
+import VueCompositionAPI from '@vue/composition-api';
+import hooks from '@u3u/vue-hooks';
 import {
   Affix,
   Anchor,
@@ -19,6 +21,9 @@ import store from './store';
 import './index.css';
 
 Vue.config.productionTip = false;
+
+Vue.use(hooks);
+Vue.use(VueCompositionAPI);
 
 Vue.use(Affix);
 Vue.use(Anchor);
