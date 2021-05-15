@@ -173,19 +173,22 @@
 
 <script setup>
 import { defineComponent } from 'vue-demi';
-import { mapState } from 'vuex';
+import { mapGetters, mapState } from 'vuex';
+
+import useNowArticleId from '@/use/useNowArticleId';
 
 export default defineComponent({
   name: 'ArticleBody',
   computed: {
     ...mapState('collection', ['articles']),
+    ...mapGetters('collection', ['getArticleById']),
     article() {
-      return (
-        this.articles.filter(
-          (article) => article.id === this.$route.params.id,
-        )[0] || {}
-      );
+      return this.getArticleById(this.nowArticleId) || {};
     },
+  },
+  setup() {
+    const { nowArticleId } = useNowArticleId();
+    return { nowArticleId };
   },
 });
 </script>

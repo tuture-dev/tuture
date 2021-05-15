@@ -1,19 +1,21 @@
 <template>
-  <div class="p-10 text-center">
-    <h1>这里是主页</h1>
-    <img class="inline" alt="Tuture logo" src="../assets/logo.svg" />
-    <HelloWorld msg="Welcome to Your Vue.js App" />
-  </div>
+  <div class="bg-gray-100"></div>
 </template>
 
-<script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue';
+<script setup>
+import useNowArticleId from '@/use/useNowArticleId';
 
 export default {
   name: 'Home',
-  components: {
-    HelloWorld,
+  mounted() {
+    this.$router.push({
+      name: 'Article',
+      params: { id: this.nowArticleId },
+    });
+  },
+  setup() {
+    const { nowArticleId } = useNowArticleId();
+    return { nowArticleId };
   },
 };
 </script>

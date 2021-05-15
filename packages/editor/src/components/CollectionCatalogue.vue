@@ -1,9 +1,10 @@
 <template>
-  <div class="bg-gray-50 h-screen">
+  <div class="bg-gray-100 h-screen">
     <h1 class="py-6 text-xl text-center">文集标题</h1>
     <ul>
       <li
         v-for="article in articles"
+        :class="{ 'bg-white': article.id === nowArticleId }"
         :key="article.id"
         :id="article.id"
         @click="onClickCatalogueItem(article.id)"
@@ -50,6 +51,7 @@
 import { defineComponent } from 'vue-demi';
 import { mapState, mapMutations } from 'vuex';
 
+import useNowArticleId from '@/use/useNowArticleId';
 import Icon from '@/components/common/Icon.vue';
 
 export default defineComponent({
@@ -70,8 +72,10 @@ export default defineComponent({
       'setChildDrawerType',
     ]),
     onClickCatalogueItem(articleId) {
-      this.setVisible(false);
-      this.$router.push({ name: 'Article', params: { id: articleId } });
+      this.nowArticleId = articleId;
+      this.$router
+        .push({ name: 'Article', params: { id: articleId } })
+        .catch(() => {});
     },
     onToggleDrawer(drawerType) {
       this.setVisible(!this.visible);
@@ -90,6 +94,10 @@ export default defineComponent({
 
       this.setChildDrawerType(drawerType);
     },
+  },
+  setup() {
+    const { nowArticleId } = useNowArticleId();
+    return { nowArticleId };
   },
 });
 </script>
