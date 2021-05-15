@@ -14,6 +14,10 @@ import {
   Row,
   Col,
   Spin,
+  FormModel,
+  Input,
+  Icon,
+  Transfer,
 } from 'ant-design-vue';
 
 import App from './App.vue';
@@ -37,6 +41,10 @@ Vue.use(Tooltip);
 Vue.use(Row);
 Vue.use(Col);
 Vue.use(Spin);
+Vue.use(FormModel);
+Vue.use(Input);
+Vue.use(Icon);
+Vue.use(Transfer);
 
 // 捕获 monaco 的 unhandledrejection
 window.addEventListener('unhandledrejection', function(event) {
