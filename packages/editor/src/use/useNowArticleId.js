@@ -1,12 +1,19 @@
+import { watch } from 'vue-demi';
 import { useStorage } from '@vueuse/core';
-import { useStore } from '@u3u/vue-hooks';
+import { useGetters, useRouter } from '@u3u/vue-hooks';
 
 export default function useNowArticleId() {
-  const store = useStore();
-  const firstArticle = store.value.state.collection.articles[0];
+  const { route } = useRouter();
+  const firstArticle = useGetters('collection', ['getFirstArticle'])
+    .getFirstArticle;
   const nowArticleId = useStorage(
     'now-article-id',
-    firstArticle ? firstArticle.id : 0,
+    route.value.params.id || firstArticle ? firstArticle.id : '',
   );
+
+  watch(route, (updated) => {
+    nowArticleId.value = updated.params.id;
+  });
+
   return { nowArticleId };
 }

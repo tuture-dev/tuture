@@ -3,8 +3,8 @@ export const namespaced = true;
 export const state = () => ({
   meta: null,
   articles: [
-    { id: 1, name: 'Hail Tuture' },
-    { id: 2, name: 'Tuture is Back!!' },
+    { id: '1', name: 'Hail Tuture' },
+    { id: '2', name: 'Tuture is Back!!' },
   ],
   editArticleId: '',
   nowStepCommit: null,
@@ -21,10 +21,7 @@ export const mutations = {
 };
 
 export const getters = {
-  getArticleById(state, articleId) {
-    return (
-      state.articles.filter((article) => article.id === Number(articleId))[0] ||
-      {}
-    );
-  },
+  getFirstArticle: (state) => state.articles[0],
+  getArticleById: (state) => (articleId) =>
+    state.articles.filter((article) => article.id === articleId)[0],
 };
