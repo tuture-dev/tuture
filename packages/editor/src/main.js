@@ -18,6 +18,7 @@ import {
   Input,
   Icon,
   Transfer,
+  Tag,
 } from 'ant-design-vue';
 
 import App from './App.vue';
@@ -45,6 +46,7 @@ Vue.use(FormModel);
 Vue.use(Input);
 Vue.use(Icon);
 Vue.use(Transfer);
+Vue.use(Tag);
 
 // 捕获 monaco 的 unhandledrejection
 window.addEventListener('unhandledrejection', function(event) {

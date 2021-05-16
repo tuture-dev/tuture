@@ -11,10 +11,60 @@
         <a-input v-model="form.title" placeholder="标题" />
       </a-form-model-item>
       <a-form-model-item label="分类" class="mb-2" prop="category">
-        <a-input v-model="form.category" placeholder="输入文章分类" />
+        <a-tag
+          v-for="(item, index) in form.category"
+          :key="item"
+          :color="color[index % 7]"
+          closable
+          @close="handleCloseTag('category', item)"
+        >
+          {{ item }}
+        </a-tag>
+        <a-input
+          v-if="inputVisible.category"
+          ref="category"
+          type="text"
+          size="small"
+          :style="{ width: '78px' }"
+          :value="inputValue.category"
+          @change="(e) => handleInputChange('category', e)"
+          @keyup.enter="handleInputConfirm('category')"
+        />
+        <a-tag
+          v-else
+          style="background: #fff; borderStyle: dashed;"
+          @click="showInput('category')"
+        >
+          <a-icon type="plus" /> 请输入分类
+        </a-tag>
       </a-form-model-item>
       <a-form-model-item label="标签" class="mb-2" prop="tag">
-        <a-input v-model="form.tag" placeholder="输入文章标签" />
+        <a-tag
+          v-for="(item, index) in form.tag"
+          :key="item"
+          :color="color[index % 7]"
+          closable
+          @close="() => handleCloseTag('tag', item)"
+        >
+          {{ item }}
+        </a-tag>
+        <a-input
+          v-if="inputVisible.tag"
+          ref="tag"
+          type="text"
+          size="small"
+          :style="{ width: '78px' }"
+          :value="inputValue.tag"
+          @change="(e) => handleInputChange('tag', e)"
+          @keyup.enter="handleInputConfirm('tag')"
+        />
+        <a-tag
+          v-else
+          style="background: #fff; borderStyle: dashed;"
+          @click="showInput('tag')"
+        >
+          <a-icon type="plus" /> 请输入标签
+        </a-tag>
       </a-form-model-item>
       <a-form-model-item label="选择步骤" class="mb-2" prop="steps">
         <a-transfer
@@ -52,11 +102,19 @@ export default defineComponent({
   name: 'CreateEditArticle',
   data() {
     return {
+      inputVisible: {
+        category: false,
+        tag: false,
+      },
+      inputValue: {
+        category: '',
+        tag: '',
+      },
       form: {
         cover: '',
         title: '',
-        category: '',
-        tag: '',
+        category: ['前端', 'React', '进阶'],
+        tag: ['Jest', 'React', 'Enzyme'],
         steps: {},
       },
       rules: {
@@ -84,6 +142,7 @@ export default defineComponent({
         },
       ],
       selectedSteps: [],
+      color: ['pink', 'red', 'orange', 'green', 'cyan', 'blue', 'purple'],
     };
   },
   methods: {
@@ -93,6 +152,28 @@ export default defineComponent({
     },
     handleSearch(dir, value) {
       console.log('search:', dir, value);
+    },
+    handleCloseTag(tag, removedTag) {
+      console.log(removedTag);
+      this.form[tag] = this.form[tag].filter((tag) => tag !== removedTag);
+      console.log(this.form[tag]);
+    },
+    handleInputChange(tag, e) {
+      this.inputValue[tag] = e.target.value;
+    },
+    showInput(tag) {
+      this.inputVisible[tag] = true;
+      this.$nextTick(function() {
+        this.$refs[tag].focus();
+      });
+    },
+    handleInputConfirm(tag) {
+      const inputValue = this.inputValue[tag];
+      if (inputValue && this.form[tag].indexOf(inputValue) === -1) {
+        this.form[tag] = [...this.form[tag], inputValue];
+      }
+      this.inputValue[tag] = '';
+      this.inputVisible[tag] = false;
     },
     onSubmit() {
       this.$refs.form.validate((valid) => {
