@@ -1,6 +1,6 @@
 <template>
   <div class="bg-gray-100 h-screen">
-    <h1 class="py-6 text-xl text-center">文集标题</h1>
+    <p class="py-6 text-xl text-center">文集标题</p>
     <ul>
       <li
         v-for="article in articles"
