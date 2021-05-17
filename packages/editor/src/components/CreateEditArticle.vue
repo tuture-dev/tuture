@@ -83,7 +83,7 @@
         />
       </a-form-model-item>
       <a-form-model-item class="mb-2">
-        <a-button class="mr-4">取消</a-button>
+        <a-button class="mr-4" @click="onCancel">取消</a-button>
         <a-button
           class="bg-green-500 border-green-500 text-white"
           type="primary"
@@ -97,6 +97,7 @@
 
 <script setup>
 import { defineComponent } from 'vue-demi';
+import { mapMutations } from 'vuex';
 
 export default defineComponent({
   name: 'CreateEditArticle',
@@ -146,6 +147,7 @@ export default defineComponent({
     };
   },
   methods: {
+    ...mapMutations('drawer', ['setChildVisible']),
     handleChange(targetKeys, direction, moveKeys) {
       console.log(targetKeys, direction, moveKeys);
       this.selectedSteps = targetKeys;
@@ -175,10 +177,14 @@ export default defineComponent({
       this.inputValue[tag] = '';
       this.inputVisible[tag] = false;
     },
+    onCancel() {
+      this.setChildVisible(false);
+    },
     onSubmit() {
       this.$refs.form.validate((valid) => {
         if (valid) {
           alert('submit!');
+          this.setChildVisible(false);
         } else {
           console.log('error submit!!');
           return false;
