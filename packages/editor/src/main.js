@@ -13,6 +13,7 @@ import {
   Tooltip,
   Row,
   Col,
+  Spin,
 } from 'ant-design-vue';
 
 import App from './App.vue';
@@ -35,6 +36,7 @@ Vue.use(Menu);
 Vue.use(Tooltip);
 Vue.use(Row);
 Vue.use(Col);
+Vue.use(Spin);
 
 // 捕获 monaco 的 unhandledrejection
 window.addEventListener('unhandledrejection', function(event) {

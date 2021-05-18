@@ -15,5 +15,10 @@ export default function useNowArticleId() {
     nowArticleId.value = updated.params.id;
   });
 
+  watch(firstArticle, (updated) => {
+    console.log('updated', updated);
+    nowArticleId.value = updated.id;
+  });
+
   return { nowArticleId };
 }

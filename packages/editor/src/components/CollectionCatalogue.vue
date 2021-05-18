@@ -1,6 +1,6 @@
 <template>
   <div class="bg-gray-100 h-screen">
-    <p class="py-6 text-xl text-center">文集标题</p>
+    <p class="py-6 text-xl text-center">{{ meta.name }}</p>
     <ul>
       <li
         v-for="article in articles"
@@ -60,7 +60,7 @@ export default defineComponent({
     Icon,
   },
   computed: {
-    ...mapState('collection', ['articles']),
+    ...mapState('collection', ['meta', 'articles']),
     ...mapState('drawer', ['childVisible', 'childDrawerType']),
   },
   methods: {

@@ -6,7 +6,8 @@
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "preview": "serve ./dist/",
-    "start": "vue-cli-service serve"
+    "start": "concurrently \"yarn start:api\" \"vue-cli-service serve\"",
+    "start:api": "cross-env TUTURE_PATH=fixtures NODE_ENV=development node api-server.js"
   },
   "dependencies": {
     "@juggle/resize-observer": "^3.3.1",
@@ -41,7 +42,9 @@
     "babel-eslint": "^10.1.0",
     "babel-plugin-import": "^1.13.3",
     "commitizen": "^3.0.5",
+    "concurrently": "^6.1.0",
     "conventional-changelog": "^3.0.5",
+    "cross-env": "^7.0.3",
     "css-loader": "^5.2.1",
     "cz-conventional-changelog": "^2.1.0",
     "eslint": "^6.7.2",

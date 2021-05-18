@@ -3,19 +3,34 @@
 </template>
 
 <script setup>
+import { watch } from 'vue-demi';
+import { useRouter } from '@u3u/vue-hooks';
+
 import useNowArticleId from '@/use/useNowArticleId';
 
 export default {
   name: 'Home',
-  mounted() {
-    this.$router.push({
-      name: 'Article',
-      params: { id: this.nowArticleId },
-    });
-  },
   setup() {
     const { nowArticleId } = useNowArticleId();
-    return { nowArticleId };
+    const { router } = useRouter();
+
+    watch(
+      nowArticleId,
+      () => {
+        console.log('nowArticleId', nowArticleId);
+        if (nowArticleId.value) {
+          router.push({
+            name: 'Article',
+            params: { id: nowArticleId.value },
+          });
+        }
+      },
+      { immediate: true },
+    );
+
+    return {
+      nowArticleId,
+    };
   },
 };
 </script>

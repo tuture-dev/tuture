@@ -22,7 +22,7 @@
   </a-row>
 </template>
 
-<script>
+<script setup>
 import { defineComponent } from 'vue-demi';
 
 import Drawer from '@/components/drawer/Drawer.vue';

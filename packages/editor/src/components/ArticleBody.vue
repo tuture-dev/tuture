@@ -262,7 +262,6 @@ export default defineComponent({
   },
   mounted() {
     const doc = localStorage.getItem('editure-doc');
-    console.log('doc', doc);
     if (doc) {
       this.editor.setContent(JSON.parse(doc));
     }
