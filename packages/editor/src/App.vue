@@ -1,22 +1,33 @@
 <template>
-  <div id="app">
-    <ConnectedLayout>
+  <a-spin :spinning="isFetching">
+    <div id="app">
       <router-view />
-    </ConnectedLayout>
-  </div>
+    </div>
+  </a-spin>
 </template>
 
-<script>
-import ConnectedLayout from './components/ConnectedLayout';
+<script setup>
+import useFetchMeta from '@/use/useFetchMeta';
+import useFetchArticles from '@/use/useFetchArticles';
 
 export default {
-  components: {
-    ConnectedLayout,
+  name: 'App',
+  setup() {
+    const { isFetching: metaFetching, error: metaError } = useFetchMeta();
+    const {
+      isFetching: articlesFetching,
+      error: articlesError,
+    } = useFetchArticles();
+
+    return {
+      isFetching: metaFetching && articlesFetching,
+      error: metaError + articlesError,
+    };
   },
 };
 </script>
 
-<style>
+<style lang="scss">
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -24,16 +35,7 @@ export default {
   color: #2c3e50;
 }
 
-#nav {
-  padding: 30px;
-}
-
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
+.ProseMirror {
+  outline: none;
 }
 </style>

@@ -1,11 +1,15 @@
 export const namespaced = true;
 
 export const state = () => ({
-  meta: null,
-  articles: [
-    { id: '1', name: 'Hail Tuture' },
-    { id: '2', name: 'Tuture is Back!!' },
-  ],
+  meta: {
+    name: '',
+    description: '',
+    id: '',
+    created: '',
+    topics: [],
+    categories: [],
+  },
+  articles: [],
   editArticleId: '',
   nowStepCommit: null,
   remotes: [],
@@ -15,6 +19,12 @@ export const state = () => ({
 });
 
 export const mutations = {
+  setMeta(state, meta) {
+    state.meta = meta;
+  },
+  setArticles(state, articles) {
+    state.articles = articles;
+  },
   setEditArticleId(state, articleId) {
     state.editArticleId = articleId;
   },

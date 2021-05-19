@@ -13,12 +13,13 @@ import {
   Tooltip,
   Row,
   Col,
+  Spin,
 } from 'ant-design-vue';
 
 import App from './App.vue';
 import router from './router';
 import store from './store';
-import './index.css';
+import './index.scss';
 
 Vue.config.productionTip = false;
 
@@ -35,6 +36,15 @@ Vue.use(Menu);
 Vue.use(Tooltip);
 Vue.use(Row);
 Vue.use(Col);
+Vue.use(Spin);
+
+// 捕获 monaco 的 unhandledrejection
+window.addEventListener('unhandledrejection', function(event) {
+  if (event.reason && event.reason.name === 'Canceled') {
+    // monaco editor promise cancelation
+    event.preventDefault();
+  }
+});
 
 const app = createApp({
   router,

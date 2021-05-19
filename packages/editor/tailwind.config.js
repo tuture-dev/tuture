@@ -9,5 +9,8 @@ module.exports = {
       cursor: ['hover'],
     },
   },
+  corePlugins: {
+    preflight: false,
+  },
   plugins: [],
 };

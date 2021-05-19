@@ -1,0 +1,23 @@
+[
+  {
+    "name": "origin",
+    "refs": {
+      "fetch": "https://github.com/tuture-dev/tuture.git",
+      "push": "https://github.com/tuture-dev/tuture.git"
+    }
+  },
+  {
+    "name": "gitlab",
+    "refs": {
+      "fetch": "https://gitlab.com/tuture-dev/tuture.git",
+      "push": "https://gitlab.com/tuture-dev/tuture.git"
+    }
+  },
+  {
+    "name": "coding",
+    "refs": {
+      "fetch": "https://e.coding.net/tuture-dev/tuture.git",
+      "push": "https://e.coding.net/tuture-dev/tuture.git"
+    }
+  }
+]
