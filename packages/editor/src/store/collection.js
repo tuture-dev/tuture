@@ -3,6 +3,7 @@ export const namespaced = true;
 export const state = () => ({
   meta: {
     name: '',
+    cover: '',
     description: '',
     id: '',
     created: '',
@@ -16,6 +17,22 @@ export const state = () => ({
   lastSaved: null,
   saveFailed: false,
   outdatedNotificationClicked: false,
+  articles: [
+    {
+      id: '1',
+      name: 'Hail Tuture',
+      created: '',
+      topics: ['vue', 'vuex'],
+      categories: ['前端'],
+    },
+    {
+      id: '2',
+      name: 'Tuture is Back!!',
+      created: '',
+      topics: ['vue', 'vuex'],
+      categories: ['前端'],
+    },
+  ],
 });
 
 export const mutations = {
@@ -24,6 +41,9 @@ export const mutations = {
   },
   setArticles(state, articles) {
     state.articles = articles;
+  },
+  addArticles(state, article) {
+    state.articles.push(article);
   },
   setEditArticleId(state, articleId) {
     state.editArticleId = articleId;
