@@ -42,7 +42,7 @@ import {
   TodoItem,
   Image,
   Notice,
-  // CodeBlock,
+  CodeBlock,
   // DiffBlock,
   Table,
   TableHeaderCell,
@@ -74,7 +74,7 @@ export default defineComponent({
             onShowToast: this.onShowToast,
           }),
           new Blockquote(),
-          // new CodeBlock(),
+          new CodeBlock(),
           // new DiffBlock(),
           new Notice({
             dictionary: this.dictionary,

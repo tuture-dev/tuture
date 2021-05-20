@@ -13,6 +13,7 @@ import {
   Tooltip,
   Row,
   Col,
+  Select,
   Spin,
   FormModel,
   Input,
@@ -42,6 +43,7 @@ Vue.use(Menu);
 Vue.use(Tooltip);
 Vue.use(Row);
 Vue.use(Col);
+Vue.use(Select);
 Vue.use(Spin);
 Vue.use(FormModel);
 Vue.use(Input);
