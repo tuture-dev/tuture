@@ -13,6 +13,7 @@
       <a-form-model-item label="分类" class="mb-2" prop="categorie">
         <a-select
           mode="tags"
+          :default-value="form.categories"
           placeholder="请输入分类"
           @change="handleCategoryChange"
         >
@@ -24,6 +25,7 @@
       <a-form-model-item label="标签" class="mb-2" prop="topics">
         <a-select
           mode="tags"
+          :default-value="form.topics"
           placeholder="请输入标签"
           @change="handleTopicChange"
         >
@@ -63,12 +65,28 @@
 
 <script setup>
 import { defineComponent } from 'vue-demi';
-import { mapMutations } from 'vuex';
+import { mapState, mapMutations, mapGetters } from 'vuex';
 
 export default defineComponent({
   name: 'CreateEditArticle',
+  computed: {
+    ...mapState('collection', ['articles']),
+    ...mapState('collection', ['editArticleId']),
+    ...mapGetters('collection', ['getArticleById']),
+    article() {
+      return this.getArticleById(this.nowArticleId) || {};
+    },
+  },
+  created() {
+    this.childDrawerType = this.$store.state.drawer.childDrawerType;
+    this.form =
+      this.childDrawerType === 'edit'
+        ? this.getArticleById(this.editArticleId)
+        : this.form;
+  },
   data() {
     return {
+      childDrawerType: '',
       form: {
         id: '',
         cover: '',
@@ -105,7 +123,7 @@ export default defineComponent({
   },
   methods: {
     ...mapMutations('drawer', ['setChildVisible']),
-    ...mapMutations('collection', ['addArticles']),
+    ...mapMutations('collection', ['addArticle', 'modifyArticle']),
     handleChange(targetKeys, direction, moveKeys) {
       console.log(targetKeys, direction, moveKeys);
       this.selectedSteps = targetKeys;
@@ -126,7 +144,9 @@ export default defineComponent({
       this.$refs.form.validate((valid) => {
         if (valid) {
           alert('submit!');
-          this.addArticles(this.form);
+          this.childDrawerType === 'edit'
+            ? this.modifyArticle(this.form)
+            : this.addArticle(this.form);
           this.setChildVisible(false);
         } else {
           console.log('error submit!!');

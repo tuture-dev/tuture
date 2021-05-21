@@ -22,15 +22,15 @@ export const state = () => ({
       id: '1',
       name: 'Hail Tuture',
       created: '',
-      topics: ['vue', 'vuex'],
-      categories: ['前端'],
+      topics: ['vue_1', 'vuex_1'],
+      categories: ['前端_1'],
     },
     {
       id: '2',
       name: 'Tuture is Back!!',
       created: '',
-      topics: ['vue', 'vuex'],
-      categories: ['前端'],
+      topics: ['vue_2', 'vuex_2'],
+      categories: ['前端_2'],
     },
   ],
 });
@@ -42,8 +42,15 @@ export const mutations = {
   setArticles(state, articles) {
     state.articles = articles;
   },
-  addArticles(state, article) {
+  addArticle(state, article) {
     state.articles.push(article);
+  },
+  modifyArticle(state, article) {
+    state.articles.forEach((item) => {
+      if (item.id === state.editArticleId) {
+        item = article;
+      }
+    });
   },
   setEditArticleId(state, articleId) {
     state.editArticleId = articleId;
