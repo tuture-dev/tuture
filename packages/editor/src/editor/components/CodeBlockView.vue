@@ -1,31 +1,30 @@
 <template>
   <div :class="codeBlockViewClass">
     <div>
-      <el-select v-model="lang" filterable>
-        <el-option
+      <a-select
+        class="w-32"
+        :showSearch="true"
+        v-model="lang"
+        :options="options"
+      >
+        <a-select-option
           v-for="item in options"
           :key="item.value"
           :label="item.label"
           :value="item.value"
         >
-        </el-option>
-      </el-select>
+        </a-select-option>
+      </a-select>
     </div>
-    <pre><code ref="content"></code></pre>
+    <pre spellcheck="false"><code ref="content"></code></pre>
   </div>
 </template>
 
 <script>
-import { Select, Option } from "element-ui";
-
-import { languages } from "../utils/languages";
+import { languages } from '../utils/languages';
 
 export default {
-  props: ["node", "updateAttrs", "view", "editor"],
-  components: {
-    [Select.name]: Select,
-    [Option.name]: Option,
-  },
+  props: ['node', 'updateAttrs', 'view', 'editor'],
   data() {
     return {
       lang: this.node.attrs.language,
@@ -39,7 +38,7 @@ export default {
       }));
     },
     codeBlockViewClass() {
-      return ["code-block-view"];
+      return ['code-block-view'];
     },
   },
   watch: {
