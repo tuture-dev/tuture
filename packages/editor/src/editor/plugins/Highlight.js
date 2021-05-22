@@ -1,12 +1,12 @@
-import { Plugin, PluginKey } from "tiptap";
-import { Decoration, DecorationSet } from "prosemirror-view";
-import { findBlockNodes } from "tiptap-utils";
-import low from "lowlight/lib/core";
+import { Plugin, PluginKey } from 'tiptap';
+import { Decoration, DecorationSet } from 'prosemirror-view';
+import { findBlockNodes } from 'tiptap-utils';
+import low from 'lowlight/lib/core';
 
 function getDecorations({ doc, name }) {
   const decorations = [];
   const blocks = findBlockNodes(doc).filter(
-    (item) => item.node.type.name === name
+    (item) => item.node.type.name === name,
   );
   const flatten = (list) =>
     list.reduce((a, b) => a.concat(Array.isArray(b) ? flatten(b) : b), []);
@@ -33,7 +33,7 @@ function getDecorations({ doc, name }) {
     let startPos = block.pos + 1;
     const lang = block.node.attrs.language;
     const nodes =
-      lang && lang !== "auto"
+      lang && lang !== 'Auto'
         ? low.highlight(lang, block.node.textContent).value
         : low.highlightAuto(block.node.textContent).value;
 
@@ -52,7 +52,7 @@ function getDecorations({ doc, name }) {
       })
       .forEach((node) => {
         const decoration = Decoration.inline(node.from, node.to, {
-          class: node.classes.join(" "),
+          class: node.classes.join(' '),
         });
         decorations.push(decoration);
       });
@@ -63,7 +63,7 @@ function getDecorations({ doc, name }) {
 
 export default function HighlightPlugin({ name }) {
   return new Plugin({
-    name: new PluginKey("highlight"),
+    name: new PluginKey('highlight'),
     state: {
       init: (_, { doc }) => getDecorations({ doc, name }),
       apply: (transaction, decorationSet, oldState, newState) => {
@@ -72,10 +72,10 @@ export default function HighlightPlugin({ name }) {
         const oldNodeName = oldState.selection.$head.parent.type.name;
         const newNodeName = newState.selection.$head.parent.type.name;
         const oldNodes = findBlockNodes(oldState.doc).filter(
-          (item) => item.node.type.name === name
+          (item) => item.node.type.name === name,
         );
         const newNodes = findBlockNodes(newState.doc).filter(
-          (item) => item.node.type.name === name
+          (item) => item.node.type.name === name,
         );
         // Apply decorations if selection includes named node, or transaction changes named node.
         if (
