@@ -86,7 +86,7 @@ import {
   TableCell,
 } from '@/editor/nodes';
 import { Link } from '@/editor/marks';
-import { Title, Doc, BlockMenuTrigger } from './extensions';
+import { Title, Doc, BlockMenuTrigger } from '@/editor/extensions';
 import { dictionary } from '@/editor/utils';
 import getDataTransferFiles from '@/editor/lib/getDataTransferFiles';
 import SelectionToolbar from '@/editor/components/SelectionToolbar';

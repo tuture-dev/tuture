@@ -4,17 +4,18 @@
       v-if="active"
       :from="view.state.selection.from"
       :to="view.state.selection.to"
-      :on-create-link="onCreateLink"
-      :on-select-link="onSelectLink"
-      :on-remove-link="onClose"
+      :view="view"
+      :onCreateLink="onCreateLink"
+      :onSelectLink="handleOnSelectLink"
+      :onRemoveLink="onClose"
     ></link-editor>
   </floating-toolbar>
 </template>
 
 <script>
-import LinkEditor from "@/components/LinkEditor.vue";
-import FloatingToolbar from "@/components/FloatingToolbar.vue";
-import createAndInsertLink from "../commands/createAndInsertLink";
+import LinkEditor from '@/editor/components/LinkEditor.vue';
+import FloatingToolbar from '@/editor/components/FloatingToolbar.vue';
+import createAndInsertLink from '../commands/createAndInsertLink';
 
 function isActive(props) {
   const { view } = props;
@@ -35,6 +36,9 @@ export default {
     tooltip: Object,
     dictionary: Object,
     onCreateLink: Function,
+    onSearchLink: Function,
+    onClickLink: Function,
+    onShowToast: Function,
     onClose: Function,
   },
   components: {
@@ -51,6 +55,7 @@ export default {
     active() {
       return isActive({
         view: this.view,
+        isActive: this.isActive,
       });
     },
   },
@@ -85,8 +90,8 @@ export default {
           .addMark(
             from,
             to + title.length,
-            state.schema.marks.link.create({ href })
-          )
+            state.schema.marks.link.create({ href }),
+          ),
       );
 
       createAndInsertLink(this.view, title, href, {
@@ -108,16 +113,16 @@ export default {
           .addMark(
             from,
             to + title.length,
-            state.schema.marks.link.create({ href })
-          )
+            state.schema.marks.link.create({ href }),
+          ),
       );
     },
   },
   mounted() {
-    window.addEventListener("mousedown", this.handleClickOutSide);
+    window.addEventListener('mousedown', this.handleClickOutSide);
   },
   beforeDestroy() {
-    window.removeEventListener("mousedown", this.handleClickOutSide);
+    window.removeEventListener('mousedown', this.handleClickOutSide);
   },
 };
 </script>

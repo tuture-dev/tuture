@@ -24,16 +24,16 @@
 </template>
 
 <script>
-import ToolbarButton from "@/components/ToolbarButton";
-import ToolbarSeparator from "@/components/ToolbarSeparator";
-import CustomTooltip from "./Tooltip";
+import ToolbarButton from '@/editor/components/ToolbarButton';
+import ToolbarSeparator from '@/editor/components/ToolbarSeparator';
+import CustomTooltip from './Tooltip';
 
 export default {
   components: { ToolbarButton, ToolbarSeparator, CustomTooltip },
-  props: ["view", "items", "commands"],
+  props: ['view', 'items', 'commands'],
   methods: {
     handleClick(item) {
-      console.log("item", item, this.commands);
+      console.log('item', item, this.commands);
       return item.name && this.commands[item.name](item.attrs);
     },
   },
