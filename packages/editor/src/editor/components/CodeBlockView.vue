@@ -26,7 +26,6 @@ import { languages } from '../utils/languages';
 export default {
   props: ['node', 'updateAttrs', 'view', 'editor'],
   data() {
-    console.log('this.node.attrs', this.node.attrs.language);
     return {
       lang: this.node.attrs.language,
     };

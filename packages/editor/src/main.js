@@ -20,7 +20,7 @@ import {
   Icon,
   Transfer,
   Tag,
-  Select,
+  Switch,
 } from 'ant-design-vue';
 
 import App from './App.vue';
@@ -51,6 +51,7 @@ Vue.use(Icon);
 Vue.use(Transfer);
 Vue.use(Tag);
 Vue.use(Select);
+Vue.use(Switch);
 
 // 捕获 monaco 的 unhandledrejection
 window.addEventListener('unhandledrejection', function(event) {

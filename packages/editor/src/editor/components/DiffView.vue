@@ -1,17 +1,17 @@
 <template>
   <div>
-    <div class="diff-header">
+    <div class="flex justify-between mb-2">
       <b class="diff-filename">{{ filename }}</b>
-      <el-switch
+      <a-switch
         class="diff-mode-switch"
         v-model="splitDiff"
-        active-text="Split"
-        inactive-text="Inline"
+        checked-children="Split"
+        un-checked-children="Inline"
       >
-      </el-switch>
+      </a-switch>
     </div>
     <MonacoEditor
-      class="monaco-editor"
+      class="w-full h-48"
       ref="editor"
       :diffEditor="diffEditor"
       :options="monacoDiffOptions"
@@ -23,21 +23,20 @@
 </template>
 
 <script>
-import MonacoEditor from "./MonacoEditor.vue";
-import { Switch } from "element-ui";
+import MonacoEditor from './MonacoEditor.vue';
 
 export default {
+  props: ['node', 'updateAttrs', 'view', 'editor'],
   components: {
     MonacoEditor,
-    [Switch.name]: Switch,
   },
   data() {
     return {
       diffEditor: true,
       splitDiff: false,
-      filename: "hello.js",
-      language: "javascript",
-      link: "",
+      filename: 'hello.js',
+      language: 'javascript',
+      link: '',
       code: "console.log('hello world');",
       originalCode: "console.log('hello');",
     };
@@ -57,15 +56,4 @@ export default {
 };
 </script>
 
-<style>
-.monaco-editor {
-  width: 100%;
-  height: 200px;
-}
-
-.diff-header {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 0.5rem;
-}
-</style>
+<style scoped></style>
