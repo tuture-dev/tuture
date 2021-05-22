@@ -10,6 +10,9 @@
     "start:api": "cross-env TUTURE_PATH=fixtures NODE_ENV=development node api-server.js"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.35",
+    "@fortawesome/free-solid-svg-icons": "^5.15.3",
+    "@fortawesome/vue-fontawesome": "^2.0.2",
     "@juggle/resize-observer": "^3.3.1",
     "@u3u/vue-hooks": "^2.0.1",
     "@vue/composition-api": "^1.0.0-rc.8",
@@ -84,7 +87,9 @@
     "parserOptions": {
       "parser": "babel-eslint"
     },
-    "rules": {}
+    "rules": {
+      "no-unused-vars": "off"
+    }
   },
   "browserslist": [
     "> 1%",

@@ -10,7 +10,6 @@ export const state = () => ({
     topics: [],
     categories: [],
   },
-  articles: [],
   editArticleId: '',
   nowStepCommit: null,
   remotes: [],

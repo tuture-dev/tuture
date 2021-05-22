@@ -21,11 +21,68 @@ import {
   Tag,
   Select,
 } from 'ant-design-vue';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import {
+  faBold,
+  faItalic,
+  faStrikethrough,
+  faCode,
+  faLink,
+  faUnderline,
+  faChevronLeft,
+  faChevronRight,
+  faTrashAlt,
+  faChevronDown,
+  faChevronUp,
+  faAlignCenter,
+  faAlignRight,
+  faAlignLeft,
+  faHeading,
+  faListOl,
+  faListUl,
+  faCheck,
+  faTable,
+  faQuoteLeft,
+  faFileCode,
+  faGripHorizontal,
+  faImage,
+  faTint,
+} from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
 import App from './App.vue';
 import router from './router';
 import store from './store';
 import './index.scss';
+
+library.add(
+  faBold,
+  faItalic,
+  faStrikethrough,
+  faUnderline,
+  faCode,
+  faLink,
+  faChevronLeft,
+  faChevronRight,
+  faTrashAlt,
+  faChevronDown,
+  faChevronUp,
+  faAlignCenter,
+  faAlignRight,
+  faAlignLeft,
+  faListOl,
+  faListUl,
+  faHeading,
+  faCheck,
+  faTable,
+  faQuoteLeft,
+  faFileCode,
+  faGripHorizontal,
+  faImage,
+  faTint,
+);
+
+Vue.component('font-awesome-icon', FontAwesomeIcon);
 
 Vue.config.productionTip = false;
 
