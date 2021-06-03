@@ -1,7 +1,6 @@
 <template>
   <div class="p-8">
     <h1 class="text-xl">{{ article.name }}</h1>
-    <button @click="addDiffBlock">Add Diff</button>
     <a-divider />
     <div class="editure">
       <editor-content :editor="editor" />
@@ -317,9 +316,6 @@ export default defineComponent({
       if (!this.blockMenuOpen) return;
       this.blockMenuOpen = false;
     },
-    addDiffBlock() {
-      this.editor.commands.insertDiff();
-    },
   },
   beforeDestroy() {
     this.editor.destroy();
@@ -433,5 +429,10 @@ li[data-done='false'] {
     transform: scale(1.2);
     color: #181a1b;
   }
+}
+
+a {
+  color: inherit;
+  text-decoration: underline;
 }
 </style>

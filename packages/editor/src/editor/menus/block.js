@@ -100,6 +100,7 @@ export default function blockMenuItems(dictionary) {
       title: dictionary.diffBlock,
       icon: 'tint',
       keywords: 'container_notice card information',
+      attrs: { style: 'default', filename: 'helloworld.json', commit: '123' },
     },
     {
       name: 'notice',
