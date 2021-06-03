@@ -10,6 +10,7 @@ export const state = () => ({
     topics: [],
     categories: [],
   },
+  articles: [],
   editArticleId: '',
   nowStepCommit: null,
   remotes: [],
@@ -23,7 +24,7 @@ export const mutations = {
     state.meta = meta;
   },
   setArticles(state, articles) {
-    state.articles = articles;
+    state.articles = articles || [];
   },
   addArticle(state, article) {
     state.articles.push(article);
@@ -41,7 +42,7 @@ export const mutations = {
 };
 
 export const getters = {
-  getFirstArticle: (state) => state.articles[0],
+  getFirstArticle: (state) => state.articles[0] || {},
   getArticleById: (state) => (articleId) =>
-    state.articles.filter((article) => article.id === articleId)[0],
+    state.articles.filter((article) => article.id === articleId)[0] || {},
 };

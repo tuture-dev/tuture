@@ -344,7 +344,7 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .editure p.is-editor-empty:first-child::before {
   content: attr(data-empty-text);
   float: left;
@@ -410,5 +410,28 @@ li[data-done='true'] {
 }
 li[data-done='false'] {
   text-decoration: none;
+}
+
+.block-menu-trigger {
+  display: inline;
+  width: 24px;
+  height: 24px;
+  color: #4e5c6e;
+  background: none;
+  position: absolute;
+  transition: color 150ms cubic-bezier(0.175, 0.885, 0.32, 1.275),
+    transform 150ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  outline: none;
+  border: 0;
+  padding: 0;
+  margin-top: 1px;
+  margin-left: -24px;
+
+  &:hover,
+  &:focus {
+    cursor: pointer;
+    transform: scale(1.2);
+    color: #181a1b;
+  }
 }
 </style>
