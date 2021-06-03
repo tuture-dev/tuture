@@ -1,10 +1,46 @@
 <template>
   <div class="p-8">
     <h1 class="text-xl">{{ article.name }}</h1>
-    <button @click="addDiffBlock">Add Diff</button>
     <a-divider />
     <div class="editure">
       <editor-content :editor="editor" />
+      <selection-toolbar
+        v-if="editor"
+        :view="editor.view"
+        :commands="editor.commands"
+        :isActive="linkMenuIsActive"
+        :dictionary="dictionary"
+        :onOpen="handleOpenSelectionMenu"
+        :onClose="handleCloseSelectionMenu"
+        :onSearchLink="onSearchLink"
+        :onClickLink="onClickLink"
+        :onCreateLink="onCreateLink"
+      ></selection-toolbar>
+      <link-toolbar
+        v-if="editor"
+        :view="editor.view"
+        :dictionary="dictionary"
+        :isActive="linkMenuOpen"
+        :onCreateLink="onCreateLink"
+        :onSearchLink="onSearchLink"
+        :onClickLink="onClickLink"
+        :onShowToast="onShowToast"
+        :onClose="handleCloseLinkMenu"
+      ></link-toolbar>
+      <block-menu
+        :view="editor.view"
+        :commands="editor.commands"
+        :dictionary="dictionary"
+        :isActive="blockMenuOpen"
+        :search="blockMenuSearch"
+        :onClose="handleCloseBlockMenu"
+        :uploadImage="uploadImage"
+        :onLinkToolbarOpen="handleOpenLinkMenu"
+        :onImageUploadStart="onImageUploadStart"
+        :onImageUploadStop="onImageUploadStop"
+        :onShowToast="onShowToast"
+        :embeds="embeds"
+      ></block-menu>
     </div>
   </div>
 </template>
@@ -12,8 +48,7 @@
 <script setup>
 import { defineComponent } from 'vue-demi';
 import { mapGetters, mapState } from 'vuex';
-import { EditorContent } from 'tiptap';
-import { Editor } from 'tiptap';
+import { Editor, EditorContent } from 'tiptap';
 import {
   Bold,
   Italic,
@@ -51,13 +86,25 @@ import {
   TableCell,
 } from '@/editor/nodes';
 import { Link } from '@/editor/marks';
+import { Title, Doc, BlockMenuTrigger } from '@/editor/extensions';
 import { dictionary } from '@/editor/utils';
 import getDataTransferFiles from '@/editor/lib/getDataTransferFiles';
+import SelectionToolbar from '@/editor/components/SelectionToolbar';
+import LinkToolbar from '@/editor/components/LinkToolbar.vue';
 import insertFiles from '@/editor/commands/insertFiles';
+import BlockMenu from '@/editor/components/BlockMenu.vue';
+
 import useNowArticleId from '@/use/useNowArticleId';
 
 export default defineComponent({
   name: 'ArticleBody',
+  props: ['onCreateLink', 'onSearchLink', 'onShowToast', 'onClose'],
+  components: {
+    EditorContent,
+    SelectionToolbar,
+    LinkToolbar,
+    BlockMenu,
+  },
   data() {
     return {
       editor: new Editor({
@@ -78,7 +125,7 @@ export default defineComponent({
           new CodeBlock(),
           new DiffBlock(),
           new Notice({
-            dictionary: this.dictionary,
+            dictionary,
           }),
           new ListItem(),
           new OrderedList(),
@@ -112,6 +159,13 @@ export default defineComponent({
           }),
           new TableRow(),
           new Code(),
+          new Doc(),
+          new Title(),
+          new BlockMenuTrigger({
+            dictionary,
+            onOpen: this.handleOpenBlockMenu,
+            onClose: this.handleCloseBlockMenu,
+          }),
           new Placeholder({
             showOnlyCurrent: false,
             emptyNodeText: (node) => {
@@ -127,12 +181,14 @@ export default defineComponent({
       }),
       linkUrl: null,
       linkMenuIsActive: false,
-      selectionMenuOpen: false,
       dictionary: dictionary,
+      blockMenuOpen: false,
+      linkMenuOpen: false,
+      blockMenuSearch: '',
+      selectionMenuOpen: false,
+      isEditorFocused: false,
+      embeds: [],
     };
-  },
-  components: {
-    EditorContent,
   },
   methods: {
     handleToggleLink() {
@@ -156,7 +212,9 @@ export default defineComponent({
       this.handleOpenLinkMenu();
     },
     handleOpenLinkMenu() {
-      this.showLinkMenu(this.editor.getMarkAttrs('link'));
+      // this.showLinkMenu(this.editor.getMarkAttrs("link"));
+      this.blockMenuOpen = false;
+      this.linkMenuOpen = true;
     },
     showLinkMenu(attrs) {
       this.linkUrl = attrs.href;
@@ -225,8 +283,8 @@ export default defineComponent({
       // 后续引入类似 gitbook 那样子的菜单栏才使用这里
       // this.handleCloseBlockMenu();
     },
-    onImageUploadStart() {},
-    onImageUploadStop() {},
+    onImageUploadStart(e) {},
+    onImageUploadStop(e) {},
     handleSelectRow(index, state) {
       this.editor.view.dispatch(selectRow(index)(state.tr));
     },
@@ -250,8 +308,13 @@ export default defineComponent({
     onClickLink(href) {
       window.open(href, '_blank');
     },
-    addDiffBlock() {
-      this.editor.commands.insertDiff();
+    handleOpenBlockMenu(search) {
+      this.blockMenuOpen = true;
+      this.blockMenuSearch = search;
+    },
+    handleCloseBlockMenu() {
+      if (!this.blockMenuOpen) return;
+      this.blockMenuOpen = false;
     },
   },
   beforeDestroy() {
@@ -277,7 +340,7 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .editure p.is-editor-empty:first-child::before {
   content: attr(data-empty-text);
   float: left;
@@ -343,5 +406,33 @@ li[data-done='true'] {
 }
 li[data-done='false'] {
   text-decoration: none;
+}
+
+.block-menu-trigger {
+  display: inline;
+  width: 24px;
+  height: 24px;
+  color: #4e5c6e;
+  background: none;
+  position: absolute;
+  transition: color 150ms cubic-bezier(0.175, 0.885, 0.32, 1.275),
+    transform 150ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  outline: none;
+  border: 0;
+  padding: 0;
+  margin-top: 1px;
+  margin-left: -24px;
+
+  &:hover,
+  &:focus {
+    cursor: pointer;
+    transform: scale(1.2);
+    color: #181a1b;
+  }
+}
+
+a {
+  color: inherit;
+  text-decoration: underline;
 }
 </style>

@@ -21,21 +21,21 @@ import {
   getRowIndex,
   isMarkActive,
   isNodeActive,
-} from "../queries";
-import getTableMenuItems from "../menus/table";
-import getTableColMenuItems from "../menus/tableCol";
-import getTableRowMenuItems from "../menus/tableRow";
-import getFormattingMenuItems from "../menus/formatting";
-import getImageMenuItems from "../menus/image";
-import { dictionary } from "../utils";
+} from '../queries';
+import getTableMenuItems from '../menus/table';
+import getTableColMenuItems from '../menus/tableCol';
+import getTableRowMenuItems from '../menus/tableRow';
+import getFormattingMenuItems from '../menus/formatting';
+import getImageMenuItems from '../menus/image';
+import { dictionary } from '../utils';
 
 // 组件
-import FloatingToolbar from "./FloatingToolbar";
-import LinkEditor from "@/components/LinkEditor.vue";
-import createAndInsertLink from "../commands/createAndInsertLink";
-import Menu from "./Menu";
+import FloatingToolbar from './FloatingToolbar';
+import LinkEditor from '@/editor/components/LinkEditor.vue';
+import createAndInsertLink from '../commands/createAndInsertLink';
+import Menu from './Menu';
 
-import some from "lodash.some";
+import some from 'lodash.some';
 
 function isVisible(props) {
   const { view } = props;
@@ -43,7 +43,7 @@ function isVisible(props) {
 
   if (!selection) return false;
   if (selection.empty) return false;
-  if (selection.node && selection.node.type.name === "image") {
+  if (selection.node && selection.node.type.name === 'image') {
     return true;
   }
   if (selection.node) return false;
@@ -57,12 +57,12 @@ function isVisible(props) {
 
 export default {
   props: [
-    "view",
-    "commands",
-    "onClose",
-    "onOpen",
-    "onCreateLink",
-    "onClickLink",
+    'view',
+    'commands',
+    'onClose',
+    'onOpen',
+    'onCreateLink',
+    'onClickLink',
   ],
   data() {
     return {
@@ -80,7 +80,7 @@ export default {
       const { selection } = state;
 
       const isCodeSelection = isNodeActive(state.schema.nodes.code_block)(
-        state
+        state,
       );
 
       // toolbar
@@ -93,7 +93,7 @@ export default {
 
       const isTableSelection = colIndex !== undefined && rowIndex !== undefined;
       const isImageSelection =
-        selection.node && selection.node.type.name === "image";
+        selection.node && selection.node.type.name === 'image';
 
       let items = [];
       // TODO: formatting/link/image 相关的选中弹窗
@@ -154,7 +154,7 @@ export default {
       dispatch(
         view.state.tr
           .removeMark(from, to, markType)
-          .addMark(from, to, markType.create({ href }))
+          .addMark(from, to, markType.create({ href })),
       );
 
       createAndInsertLink(view, title, href, {
@@ -173,7 +173,7 @@ export default {
       dispatch(
         state.tr
           .removeMark(from, to, markType)
-          .addMark(from, to, markType.create({ href }))
+          .addMark(from, to, markType.create({ href })),
       );
     },
   },

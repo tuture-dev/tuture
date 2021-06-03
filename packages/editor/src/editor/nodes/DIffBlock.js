@@ -12,15 +12,17 @@ export default class DiffBlock extends Node {
   }
 
   get schema() {
+    // filename: {
+    //   type: string,
+    //   default: '',
+    // },
+    // commit: '',
+    // language: '',
+    // code: '',
+    // originalCode: '',
+    // splitDiff: false,
     return {
-      attrs: {
-        filename: '',
-        commit: '',
-        language: '',
-        code: '',
-        originalCode: '',
-        splitDiff: false,
-      },
+      attrs: {},
       content: 'text*',
       marks: '',
       group: 'block',
@@ -32,16 +34,16 @@ export default class DiffBlock extends Node {
   }
 
   commands({ type }) {
-    return {
-      insertDiff: (attrs) => (state, dispatch) => {
-        const { selection } = state;
-        const position = selection.$cursor
-          ? selection.$cursor.pos
-          : selection.$to.pos;
-        const node = type.create(attrs);
-        const transaction = state.tr.insert(position, node);
-        dispatch(transaction);
-      },
+    return (attrs) => (state, dispatch) => {
+      const { selection } = state;
+      const position = selection.$cursor
+        ? selection.$cursor.pos
+        : selection.$to.pos;
+
+      console.log('type', type);
+      const node = type.create(attrs);
+      const transaction = state.tr.insert(position, node);
+      dispatch(transaction);
     };
   }
 }

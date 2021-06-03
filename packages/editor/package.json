@@ -6,16 +6,22 @@
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "preview": "serve ./dist/",
-    "start": "concurrently \"yarn start:api\" \"vue-cli-service serve\"",
+    "start": "concurrently -r \"yarn start:api\" \"vue-cli-service serve\"",
     "start:api": "cross-env TUTURE_PATH=fixtures NODE_ENV=development node api-server.js"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.35",
+    "@fortawesome/free-solid-svg-icons": "^5.15.3",
+    "@fortawesome/vue-fontawesome": "^2.0.2",
     "@juggle/resize-observer": "^3.3.1",
+    "@linusborg/vue-simple-portal": "^0.1.5",
     "@u3u/vue-hooks": "^2.0.1",
     "@vue/composition-api": "^1.0.0-rc.8",
     "@vueuse/core": "^4.8.1",
     "ant-design-vue": "^1.7.4",
     "core-js": "^3.6.5",
+    "lodash": "^4.17.21",
+    "lodash.some": "^4.6.0",
     "medium-zoom": "^1.0.6",
     "monaco-editor": "^0.24.0",
     "nano-assign": "^1.0.1",
@@ -26,6 +32,7 @@
     "prosemirror-tables": "^1.1.1",
     "prosemirror-utils": "0.9.6",
     "prosemirror-view": "^1.18.0",
+    "smooth-scroll-into-view-if-needed": "^1.1.32",
     "tiptap": "^1.32.1",
     "tiptap-extensions": "^1.35.1",
     "vue": "^2.6.11",
@@ -86,7 +93,10 @@
     "parserOptions": {
       "parser": "babel-eslint"
     },
-    "rules": {}
+    "rules": {
+      "no-unused-vars": "off",
+      "no-fallthrough": "off"
+    }
   },
   "browserslist": [
     "> 1%",

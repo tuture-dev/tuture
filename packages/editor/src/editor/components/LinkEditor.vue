@@ -18,7 +18,7 @@
 
     <toolbar-button @click.native="handleRemoveLink">
       <custom-tooltip :tooltip="dictionary.removeLink" placement="top">
-        {{ initialValue ? "删除" : "关闭" }}
+        {{ initialValue ? '删除' : '关闭' }}
       </custom-tooltip>
     </toolbar-button>
 
@@ -29,23 +29,24 @@
 </template>
 
 <script>
-import isUrl from "@/utils/isUrl";
-import ToolbarButton from "@/components/ToolbarButton.vue";
-import CustomTooltip from "./Tooltip.vue";
-import dictionary from "@/utils/dictionary";
-import { setTextSelection } from "prosemirror-utils";
+import isUrl from '@/editor/utils/isUrl';
+import ToolbarButton from '@/editor/components/ToolbarButton.vue';
+import CustomTooltip from './Tooltip.vue';
+import dictionary from '@/editor/utils/dictionary';
+import { setTextSelection } from 'prosemirror-utils';
 
 export default {
   props: [
-    "from",
-    "to",
-    "view",
-    "mark",
-    "onSelectLink",
-    "onCreateLink",
-    "onSearchLink",
-    "onClickLink",
-    "onRemoveLink",
+    'from',
+    'to',
+    'view',
+    'mark',
+    'onSelectLink',
+    'onCreateLink',
+    'onSearchLink',
+    'onClickLink',
+    'onRemoveLink',
+    'onShowToast',
   ],
   components: {
     CustomTooltip,
@@ -54,10 +55,10 @@ export default {
   data() {
     return {
       selectedIndex: -1,
-      previousValue: "",
+      previousValue: '',
       results: {},
-      value: this.mark ? this.mark.attrs.href : "",
-      initialValue: this.mark ? this.mark.attrs.href : "",
+      value: this.mark ? this.mark.attrs.href : '',
+      initialValue: this.mark ? this.mark.attrs.href : '',
       initialSelectionLength: this.to - this.from,
       discardInputValue: false,
       dictionary,
@@ -68,7 +69,7 @@ export default {
       const { state } = this.view;
       const selectionText = state.doc.cut(
         state.selection.from,
-        state.selection.to
+        state.selection.to,
       ).textContent;
 
       return this.value.trim() || selectionText.trim();
@@ -80,8 +81,6 @@ export default {
     },
     showCreateLink() {
       const value = this.value;
-      const results =
-        this.results[value.trim()] || this.results[this.previousValue] || [];
 
       const looksLikeUrl = value.match(/^https?:\/\//i);
 
@@ -107,7 +106,7 @@ export default {
       return showResults;
     },
     href() {
-      return this.$props?.mark ? this.$props?.mark.attrs.href : "";
+      return this.$props?.mark ? this.$props?.mark.attrs.href : '';
     },
   },
   beforeDestroy() {
@@ -122,7 +121,7 @@ export default {
     }
 
     // If the link is totally empty or only spaces then remove the mark
-    const href = (this.value || "").trim();
+    const href = (this.value || '').trim();
     if (!href) {
       return this.handleRemoveLink();
     }
@@ -140,7 +139,7 @@ export default {
 
       // If the input doesn't start with a protocol or relative slash, make sure
       // a protocol is added to the beginning
-      if (!isUrl(href) && !href.startsWith("/")) {
+      if (!isUrl(href) && !href.startsWith('/')) {
         href = `https://${href}`;
       }
 
@@ -148,7 +147,7 @@ export default {
     },
     handleKeyDown(event) {
       switch (event.key) {
-        case "Enter": {
+        case 'Enter': {
           event.preventDefault();
           const selectedIndex = this.selectedIndex;
           const value = this.value;
@@ -173,7 +172,7 @@ export default {
           return;
         }
 
-        case "Escape": {
+        case 'Escape': {
           event.preventDefault();
 
           if (this.initialValue) {
@@ -186,7 +185,7 @@ export default {
           return;
         }
 
-        case "ArrowUp": {
+        case 'ArrowUp': {
           if (event.shiftKey) return;
           event.preventDefault();
           event.stopPropagation();
@@ -196,9 +195,9 @@ export default {
           return;
         }
 
-        case "ArrowDown":
+        case 'ArrowDown':
           if (event.shiftKey) return;
-        case "Tab": {
+        case 'Tab': {
           event.preventDefault();
           event.stopPropagation();
           const selectedIndex = this.selectedIndex;
@@ -257,7 +256,7 @@ export default {
 
       const { state, dispatch } = this.view;
 
-      console.log("remove", this.mark);
+      console.log('remove', this.mark);
       if (this.mark) {
         dispatch(state.tr.removeMark(this.from, this.to, this.mark));
       }

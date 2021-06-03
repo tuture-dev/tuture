@@ -1,4 +1,4 @@
-import { Node } from "tiptap";
+import { Node } from 'tiptap';
 import {
   tableEditing,
   columnResizing,
@@ -16,19 +16,19 @@ import {
   toggleHeaderCell,
   setCellAttr,
   fixTables,
-} from "prosemirror-tables";
+} from 'prosemirror-tables';
 import {
   addRowAt,
   createTable,
   getCellsInColumn,
   moveRow,
-} from "prosemirror-utils";
-import { TextSelection, Plugin } from "prosemirror-state";
-import { Decoration, DecorationSet } from "prosemirror-view";
+} from 'prosemirror-utils';
+import { TextSelection, Plugin } from 'prosemirror-state';
+import { Decoration, DecorationSet } from 'prosemirror-view';
 
 export default class Table extends Node {
   get name() {
-    return "table";
+    return 'table';
   }
 
   get defaultOptions() {
@@ -39,19 +39,19 @@ export default class Table extends Node {
 
   get schema() {
     return {
-      content: "tr+",
-      tableRole: "table",
+      content: 'tr+',
+      tableRole: 'table',
       isolating: true,
-      group: "block",
-      parseDOM: [{ tag: "table" }],
+      group: 'block',
+      parseDOM: [{ tag: 'table' }],
       toDOM() {
         return [
-          "div",
-          { class: "scrollable-wrapper" },
+          'div',
+          { class: 'scrollable-wrapper' },
           [
-            "div",
-            { class: "scrollable" },
-            ["table", { class: "rme-table" }, ["tbody", 0]],
+            'div',
+            { class: 'scrollable' },
+            ['table', { class: 'rme-table' }, ['tbody', 0]],
           ],
         ];
       },
@@ -62,7 +62,7 @@ export default class Table extends Node {
     return {
       createTable: ({ rowsCount, colsCount, withHeaderRow }) => (
         state,
-        dispatch
+        dispatch,
       ) => {
         const offset = state.tr.selection.anchor + 1;
 
@@ -71,8 +71,6 @@ export default class Table extends Node {
         const resolvedPos = tr.doc.resolve(offset);
 
         tr.setSelection(TextSelection.near(resolvedPos));
-
-        console.log("table");
 
         dispatch(tr);
       },
@@ -122,7 +120,7 @@ export default class Table extends Node {
   keys() {
     return {
       Tab: goToNextCell(1),
-      "Shift-Tab": goToNextCell(-1),
+      'Shift-Tab': goToNextCell(-1),
     };
   }
 
@@ -140,7 +138,7 @@ export default class Table extends Node {
             doc.descendants((node, pos) => {
               if (node.type.name !== this.name) return;
 
-              const elements = document.getElementsByClassName("tuture-table");
+              const elements = document.getElementsByClassName('tuture-table');
               const table = elements[index];
 
               if (!table) return;
@@ -153,11 +151,11 @@ export default class Table extends Node {
               if (shadowRight) {
                 decorations.push(
                   Decoration.widget(pos + 1, () => {
-                    const shadow = document.createElement("div");
-                    shadow.className = "scrollable-shadow right";
+                    const shadow = document.createElement('div');
+                    shadow.className = 'scrollable-shadow right';
 
                     return shadow;
-                  })
+                  }),
                 );
               }
 
