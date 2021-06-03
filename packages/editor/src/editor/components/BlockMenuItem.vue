@@ -1,5 +1,10 @@
 <template>
-  <div ref="menuItemRef" class="menu-item" @click="handleClick">
+  <div
+    ref="menuItemRef"
+    class="menu-item"
+    @click="handleClick"
+    :style="menuItemStyle"
+  >
     <font-awesome-icon :icon="icon" style=""></font-awesome-icon>
     &nbsp;&nbsp;{{ title }}
     <span class="short-cut">{{ shortcut }}</span>
