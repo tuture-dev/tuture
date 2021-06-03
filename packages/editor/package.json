@@ -22,6 +22,8 @@
     "core-js": "^3.6.5",
     "lodash.some": "^4.6.0",
     "medium-zoom": "^1.0.6",
+    "monaco-editor": "^0.24.0",
+    "nano-assign": "^1.0.1",
     "prosemirror-commands": "^1.1.7",
     "prosemirror-keymap": "^1.1.4",
     "prosemirror-model": "^1.0.0",

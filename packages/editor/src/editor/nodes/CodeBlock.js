@@ -1,12 +1,12 @@
-import { Node } from "tiptap";
-import low from "lowlight/lib/core";
-import { keymap } from "prosemirror-keymap";
-import { toggleBlockType, setBlockType } from "tiptap-commands";
+import { Node } from 'tiptap';
+import low from 'lowlight/lib/core';
+import { keymap } from 'prosemirror-keymap';
+import { toggleBlockType, setBlockType } from 'tiptap-commands';
 
-import CodeBlockView from "../components/CodeBlockView.vue";
-import HighlightPlugin from "../plugins/Highlight";
-import SelectAllWithinBlockPlugin from "../plugins/SelectAllWithinBlock";
-import { languages } from "../utils/languages";
+import CodeBlockView from '../components/CodeBlockView.vue';
+import HighlightPlugin from '../plugins/Highlight';
+import SelectAllWithinBlockPlugin from '../plugins/SelectAllWithinBlock';
+import { languages } from '../utils/languages';
 
 function getLanguageFromRawMatch(rawMatch) {
   const raw = rawMatch.toLowerCase();
@@ -15,7 +15,7 @@ function getLanguageFromRawMatch(rawMatch) {
       return lang;
     }
   }
-  return "auto";
+  return 'Auto';
 }
 
 export default class CodeBlockHighlight extends Node {
@@ -25,17 +25,17 @@ export default class CodeBlockHighlight extends Node {
       Object.entries(this.defaultOptions.languages).forEach(
         ([name, mapping]) => {
           low.registerLanguage(name, mapping);
-        }
+        },
       );
     } catch (err) {
       throw new Error(
-        "Invalid syntax highlight definitions: define at least one highlight.js language mapping"
+        'Invalid syntax highlight definitions: define at least one highlight.js language mapping',
       );
     }
   }
 
   get name() {
-    return "code_block";
+    return 'code_block';
   }
 
   get view() {
@@ -49,7 +49,7 @@ export default class CodeBlockHighlight extends Node {
           ...acc,
           [cur]: languages[cur].mapping,
         }),
-        {}
+        {},
       ),
     };
   }
@@ -58,21 +58,21 @@ export default class CodeBlockHighlight extends Node {
     return {
       attrs: {
         language: {
-          default: "auto",
+          default: 'Auto',
         },
       },
-      content: "text*",
-      marks: "",
-      group: "block",
+      content: 'text*',
+      marks: '',
+      group: 'block',
       code: true,
       defining: true,
       draggable: false,
       parseDOM: [
-        { tag: "pre", preserveWhitespace: "full" },
+        { tag: 'pre', preserveWhitespace: 'full' },
         {
-          tag: ".code-block",
-          preserveWhitespace: "full",
-          contentElement: "code",
+          tag: '.code-block',
+          preserveWhitespace: 'full',
+          contentElement: 'code',
           getAttrs: (node) => {
             return {
               language: node.dataset.language,
@@ -81,10 +81,10 @@ export default class CodeBlockHighlight extends Node {
         },
       ],
       toDOM: (node) => [
-        "div",
-        { class: "code-block", "data-language": node.attrs.language },
-        ["div", { contentEditable: false }, "select", "button"],
-        ["pre", ["code", { spellCheck: false }, 0]],
+        'div',
+        { class: 'code-block', 'data-language': node.attrs.language },
+        ['div', { contentEditable: false }, 'select', 'button'],
+        ['pre', ['code', { spellCheck: false }, 0]],
       ],
     };
   }
@@ -95,7 +95,7 @@ export default class CodeBlockHighlight extends Node {
 
   keys({ type }) {
     return {
-      "Shift-Ctrl-\\": setBlockType(type),
+      'Shift-Ctrl-\\': setBlockType(type),
     };
   }
 
@@ -107,7 +107,7 @@ export default class CodeBlockHighlight extends Node {
         Enter: (state, dispatch) => {
           const selection = state.selection;
           const match = selection.$head.parent.textContent.match(
-            /^```\s*(\w*)$/
+            /^```\s*(\w*)$/,
           );
           if (match) {
             dispatch(
@@ -116,9 +116,9 @@ export default class CodeBlockHighlight extends Node {
                   selection.from,
                   selection.to,
                   state.schema.nodes[this.name],
-                  { language: getLanguageFromRawMatch(match[1]) }
+                  { language: getLanguageFromRawMatch(match[1]) },
                 )
-                .delete(selection.$head.start(), selection.head)
+                .delete(selection.$head.start(), selection.head),
             );
             return true;
           }

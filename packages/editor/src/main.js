@@ -13,13 +13,14 @@ import {
   Tooltip,
   Row,
   Col,
+  Select,
   Spin,
   FormModel,
   Input,
   Icon,
   Transfer,
   Tag,
-  Select,
+  Switch,
 } from 'ant-design-vue';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import {
@@ -99,6 +100,7 @@ Vue.use(Menu);
 Vue.use(Tooltip);
 Vue.use(Row);
 Vue.use(Col);
+Vue.use(Select);
 Vue.use(Spin);
 Vue.use(FormModel);
 Vue.use(Input);
@@ -106,6 +108,7 @@ Vue.use(Icon);
 Vue.use(Transfer);
 Vue.use(Tag);
 Vue.use(Select);
+Vue.use(Switch);
 
 // 捕获 monaco 的 unhandledrejection
 window.addEventListener('unhandledrejection', function(event) {

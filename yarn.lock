@@ -12131,6 +12131,11 @@ moment@^2.21.0:
   resolved "https://registry.npm.taobao.org/moment/download/moment-2.29.1.tgz?cache=0&sync_timestamp=1601983423917&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fmoment%2Fdownload%2Fmoment-2.29.1.tgz#b2be769fa31940be9eeea6469c075e35006fa3d3"
   integrity sha1-sr52n6MZQL6e7qZGnAdeNQBvo9M=
 
+monaco-editor@^0.24.0:
+  version "0.24.0"
+  resolved "https://registry.nlark.com/monaco-editor/download/monaco-editor-0.24.0.tgz#990b55096bcc95d08d8d28e55264c6eb17707269"
+  integrity sha1-mQtVCWvMldCNjSjlUmTG6xdwcmk=
+
 morgan@^1.9.1:
   version "1.10.0"
   resolved "https://registry.npm.taobao.org/morgan/download/morgan-1.10.0.tgz#091778abc1fc47cd3509824653dae1faab6b17d7"
@@ -12241,6 +12246,11 @@ nan@^2.12.1:
   version "2.14.2"
   resolved "https://registry.npm.taobao.org/nan/download/nan-2.14.2.tgz?cache=0&sync_timestamp=1602591700047&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fnan%2Fdownload%2Fnan-2.14.2.tgz#f5376400695168f4cc694ac9393d0c9585eeea19"
   integrity sha1-9TdkAGlRaPTMaUrJOT0MlYXu6hk=
+
+nano-assign@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.npm.taobao.org/nano-assign/download/nano-assign-1.0.1.tgz#abb1c50d0416b865fb37bbd155c5368bb54378e5"
+  integrity sha1-q7HFDQQWuGX7N7vRVcU2i7VDeOU=
 
 nanoid@^2.1.0:
   version "2.1.11"

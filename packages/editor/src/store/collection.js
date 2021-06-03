@@ -16,22 +16,6 @@ export const state = () => ({
   lastSaved: null,
   saveFailed: false,
   outdatedNotificationClicked: false,
-  articles: [
-    {
-      id: '1',
-      name: 'Hail Tuture',
-      created: '',
-      topics: ['vue_1', 'vuex_1'],
-      categories: ['前端_1'],
-    },
-    {
-      id: '2',
-      name: 'Tuture is Back!!',
-      created: '',
-      topics: ['vue_2', 'vuex_2'],
-      categories: ['前端_2'],
-    },
-  ],
 });
 
 export const mutations = {

@@ -1,6 +1,7 @@
 <template>
   <div class="p-8">
     <h1 class="text-xl">{{ article.name }}</h1>
+    <button @click="addDiffBlock">Add Diff</button>
     <a-divider />
     <div class="editure">
       <editor-content :editor="editor" />
@@ -78,8 +79,8 @@ import {
   TodoItem,
   Image,
   Notice,
-  // CodeBlock,
-  // DiffBlock,
+  CodeBlock,
+  DiffBlock,
   Table,
   TableHeaderCell,
   TableRow,
@@ -122,8 +123,8 @@ export default defineComponent({
             onShowToast: this.onShowToast,
           }),
           new Blockquote(),
-          // new CodeBlock(),
-          // new DiffBlock(),
+          new CodeBlock(),
+          new DiffBlock(),
           new Notice({
             dictionary,
           }),
@@ -315,6 +316,9 @@ export default defineComponent({
     handleCloseBlockMenu() {
       if (!this.blockMenuOpen) return;
       this.blockMenuOpen = false;
+    },
+    addDiffBlock() {
+      this.editor.commands.insertDiff();
     },
   },
   beforeDestroy() {
