@@ -188,10 +188,14 @@ export default {
           }
         : {};
 
+      let top = this.top !== undefined ? { top: `${this.top}px` } : {};
+      let bottom =
+        this.bottom !== undefined ? { bottom: `${this.bottom}px` } : {};
+
       return {
-        top: this.top,
-        left: this.left,
-        bottom: this.bottom,
+        left: `${this.left}px`,
+        ...top,
+        ...bottom,
         ...extraStyle,
       };
     },
@@ -247,7 +251,6 @@ export default {
       this.clearSearch();
 
       const command = this.$props.commands[item.name];
-      console.log('command', command, item);
       if (command) {
         command(item.attrs);
       } else {
@@ -456,7 +459,7 @@ export default {
   },
   watch: {
     isActive(val, oldVal) {
-      if (val !== oldVal) {
+      if (!oldVal && val) {
         const { left, top, bottom, isAbove } = this.calculatePosition(
           this.$props,
         );
@@ -479,7 +482,7 @@ export default {
   beforeDestroy() {
     window.removeEventListener('keydown', this.handleKeyDown);
   },
-  updated() {
+  mounted() {
     window.addEventListener('keydown', this.handleKeyDown);
   },
 };
