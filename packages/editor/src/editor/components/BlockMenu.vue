@@ -263,13 +263,11 @@ export default {
       const { state, dispatch } = this.$props.view;
       const parent = findParentNode((node) => !!node)(state.selection);
 
-      console.log('clearSearch', parent);
-
       if (parent) {
         dispatch(
           state.tr.insertText(
             '',
-            parent.pos,
+            parent.pos + 1,
             parent.pos + parent.node.textContent.length + 1,
           ),
         );

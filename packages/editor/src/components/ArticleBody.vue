@@ -84,6 +84,8 @@ import {
   TableHeaderCell,
   TableRow,
   TableCell,
+  Paragraph,
+  Text,
 } from '@/editor/nodes';
 import { Link } from '@/editor/marks';
 import { Title, Doc, BlockMenuTrigger } from '@/editor/extensions';
@@ -110,17 +112,11 @@ export default defineComponent({
       editor: new Editor({
         autoFocus: true,
         extensions: [
-          new History(),
-          new Heading({
-            levels: [1, 2, 3, 4],
-          }),
-          new Image({
-            dictionary,
-            uploadImage: this.uploadImage,
-            onImageUploadStart: this.onImageUploadStart,
-            onImageUploadStop: this.onImageUploadStop,
-            onShowToast: this.onShowToast,
-          }),
+          new Doc(),
+          new Text(),
+          new HardBreak(),
+          new Paragraph(),
+          new Title(),
           new Blockquote(),
           new CodeBlock(),
           new DiffBlock(),
@@ -134,18 +130,17 @@ export default defineComponent({
             nested: true,
           }),
           new TodoList(),
-          new HorizontalRule(),
-          new Bold(),
-          new Italic(),
-          new Underline(),
-          new Strike(),
-          new Link({
-            onKeyboardShortcut: this.onKeyboardShortcut,
-            onClick: this.handleClickLink,
-            onClickHashtag: this.onClickHashtag,
-            onHoverLink: this.onHoverLink,
+          new Heading({
+            levels: [1, 2, 3, 4],
           }),
-          new HardBreak(),
+          new HorizontalRule(),
+          new Image({
+            dictionary,
+            uploadImage: this.uploadImage,
+            onImageUploadStart: this.onImageUploadStart,
+            onImageUploadStop: this.onImageUploadStop,
+            onShowToast: this.onShowToast,
+          }),
           new Table({
             resizable: true,
           }),
@@ -157,9 +152,18 @@ export default defineComponent({
             onSelectColumn: this.handleSelectColumn,
           }),
           new TableRow(),
+          new Bold(),
+          new Italic(),
+          new Underline(),
+          new Strike(),
+          new Link({
+            onKeyboardShortcut: this.onKeyboardShortcut,
+            onClick: this.handleClickLink,
+            onClickHashtag: this.onClickHashtag,
+            onHoverLink: this.onHoverLink,
+          }),
           new Code(),
-          new Doc(),
-          new Title(),
+          new History(),
           new TrailingNode(),
           new BlockMenuTrigger({
             dictionary,
