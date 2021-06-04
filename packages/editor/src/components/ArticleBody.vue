@@ -135,7 +135,6 @@ export default defineComponent({
           }),
           new TodoList(),
           new HorizontalRule(),
-          new TrailingNode(),
           new Bold(),
           new Italic(),
           new Underline(),
@@ -161,6 +160,7 @@ export default defineComponent({
           new Code(),
           new Doc(),
           new Title(),
+          new TrailingNode(),
           new BlockMenuTrigger({
             dictionary,
             onOpen: this.handleOpenBlockMenu,
@@ -434,5 +434,15 @@ li[data-done='false'] {
 a {
   color: inherit;
   text-decoration: underline;
+}
+
+.placeholder {
+  &:before {
+    display: block;
+    content: attr(data-empty-text);
+    pointer-events: none;
+    height: 0;
+    color: #b1becc;
+  }
 }
 </style>
