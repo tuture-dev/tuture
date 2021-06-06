@@ -4,6 +4,7 @@ import { isInTable } from 'prosemirror-tables';
 import { Decoration, DecorationSet } from 'prosemirror-view';
 import { Extension } from 'tiptap';
 import { findParentNode } from 'prosemirror-utils';
+import { ResolvedPos, Node } from 'prosemirror-model';
 
 const MAX_MATCH = 500;
 const OPEN_REGEX = /^\/(\w+)?$/;
@@ -92,11 +93,21 @@ export default class BlockMenuTrigger extends Extension {
             return false;
           },
           decorations: (state) => {
-            const parent = findParentNode(
-              (node) => node.type.name === 'paragraph',
-            )(state.selection);
+            const parent = findParentNode((node) => {
+              return node.type.name === 'paragraph';
+            })(state.selection);
 
-            if (!parent) {
+            const { $from } = state.selection;
+
+            const node = $from.node(1);
+            let firstParent = {
+              pos: $from.before(1),
+              start: $from.start(1),
+              depth: 1,
+              node,
+            };
+
+            if (!firstParent || !parent) {
               return;
             }
 
@@ -105,7 +116,11 @@ export default class BlockMenuTrigger extends Extension {
             const isSlash = parent && parent.node.textContent === '/';
             const isTopLevel = state.selection.$from.depth === 1;
 
-            if (isTopLevel) {
+            console.log('now', isEmpty, isTopLevel);
+
+            // 只有在 parent 是 paragraph，且处于 topLevel 时才可以快捷键处理
+            // TODO: 后续可以在任意符合要求的块里面使用快捷键来添加元素
+            if (parent && isTopLevel) {
               if (isEmpty) {
                 decorations.push(
                   Decoration.widget(parent.pos, () => {
@@ -140,6 +155,20 @@ export default class BlockMenuTrigger extends Extension {
                   ),
                 );
               }
+
+              return DecorationSet.create(state.doc, decorations);
+            }
+
+            // 内容不为空时，或者处于顶层，但是并非 paragraph
+            if (firstParent && (!isEmpty || (isTopLevel && !parent))) {
+              decorations.push(
+                Decoration.widget(firstParent.pos, () => {
+                  button.addEventListener('click', () => {
+                    this.options.onOpen('');
+                  });
+                  return button;
+                }),
+              );
 
               return DecorationSet.create(state.doc, decorations);
             }
