@@ -28,6 +28,7 @@
         :onClose="handleCloseLinkMenu"
       ></link-toolbar>
       <block-menu
+        v-if="blockMenuOpenType === 'create'"
         :view="editor.view"
         :commands="editor.commands"
         :dictionary="dictionary"
@@ -41,6 +42,21 @@
         :onShowToast="onShowToast"
         :embeds="embeds"
       ></block-menu>
+      <edit-block-menu
+        v-if="blockMenuOpenType === 'edit'"
+        :view="editor.view"
+        :commands="editor.commands"
+        :dictionary="dictionary"
+        :isActive="blockMenuOpen"
+        :onClose="handleCloseBlockMenu"
+        :uploadImage="uploadImage"
+        :onLinkToolbarOpen="handleOpenLinkMenu"
+        :onImageUploadStart="onImageUploadStart"
+        :onImageUploadStop="onImageUploadStop"
+        :onShowToast="onShowToast"
+        :embeds="embeds"
+      >
+      </edit-block-menu>
     </div>
   </div>
 </template>
@@ -187,6 +203,8 @@ export default defineComponent({
       linkMenuIsActive: false,
       dictionary: dictionary,
       blockMenuOpen: false,
+      blockMenuOpenType: 'create',
+      ancestorNodeTypeName: [],
       linkMenuOpen: false,
       blockMenuSearch: '',
       selectionMenuOpen: false,
@@ -312,9 +330,11 @@ export default defineComponent({
     onClickLink(href) {
       window.open(href, '_blank');
     },
-    handleOpenBlockMenu(search) {
+    handleOpenBlockMenu(search, type, ancestorNodeTypeName) {
       this.blockMenuOpen = true;
       this.blockMenuSearch = search;
+      this.blockMenuOpenType = type;
+      this.ancestorNodeTypeName = ancestorNodeTypeName;
     },
     handleCloseBlockMenu() {
       if (!this.blockMenuOpen) return;
@@ -424,8 +444,8 @@ li[data-done='false'] {
   outline: none;
   border: 0;
   padding: 0;
-  margin-top: 1px;
   margin-left: -24px;
+  font-size: 14px;
 
   &:hover,
   &:focus {

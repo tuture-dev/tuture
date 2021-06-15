@@ -4,7 +4,7 @@ import { isInTable } from 'prosemirror-tables';
 import { Decoration, DecorationSet } from 'prosemirror-view';
 import { Extension } from 'tiptap';
 import { findParentNode, findParentNodeOfType } from 'prosemirror-utils';
-import { ResolvedPos, Node } from 'prosemirror-model';
+import { getAncestorNodeTypeName } from '../utils/selection';
 
 const MAX_MATCH = 500;
 const OPEN_REGEX = /^\/(\w+)?$/;
@@ -41,11 +41,19 @@ export default class BlockMenuTrigger extends Extension {
   }
 
   get plugins() {
-    const button = document.createElement('button');
-    button.className = 'block-menu-trigger';
-    const icon = document.createElement('span');
-    icon.innerHTML = '+';
-    button.appendChild(icon);
+    // 新建菜单的激活按钮
+    const createButton = document.createElement('button');
+    createButton.className = 'block-menu-trigger';
+    const createIcon = document.createElement('span');
+    createIcon.innerHTML = '+';
+    createButton.appendChild(createIcon);
+
+    // 编辑菜单的激活按钮
+    const editButton = document.createElement('button');
+    editButton.className = 'block-menu-trigger';
+    const editIcon = document.createElement('span');
+    editIcon.innerHTML = '三';
+    editButton.appendChild(editIcon);
 
     return [
       new Plugin({
@@ -157,10 +165,11 @@ export default class BlockMenuTrigger extends Extension {
               if (isEmpty) {
                 decorations.push(
                   Decoration.widget(directParent.pos, () => {
-                    button.addEventListener('click', () => {
-                      this.options.onOpen('');
+                    console.log('hello');
+                    createButton.addEventListener('click', () => {
+                      this.options.onOpen('', 'create');
                     });
-                    return button;
+                    return createButton;
                   }),
                 );
 
@@ -212,12 +221,14 @@ export default class BlockMenuTrigger extends Extension {
                   directParent.node.type.name,
                 ))
             ) {
+              const ancestorNodeTypeName = getAncestorNodeTypeName($from);
+
               decorations.push(
-                Decoration.widget(directParent.pos, () => {
-                  button.addEventListener('click', () => {
-                    this.options.onOpen('');
+                Decoration.widget(directParent.start, () => {
+                  editButton.addEventListener('click', () => {
+                    this.options.onOpen('', 'edit', ancestorNodeTypeName);
                   });
-                  return button;
+                  return editButton;
                 }),
               );
             }
@@ -232,12 +243,14 @@ export default class BlockMenuTrigger extends Extension {
                 secondUpperParent.node.type.name,
               )
             ) {
+              const ancestorNodeTypeName = getAncestorNodeTypeName($from);
+
               decorations.push(
-                Decoration.widget(secondUpperParent.pos, () => {
-                  button.addEventListener('click', () => {
-                    this.options.onOpen('');
+                Decoration.widget(secondUpperParent.start, () => {
+                  editButton.addEventListener('click', () => {
+                    this.options.onOpen('', 'edit', ancestorNodeTypeName);
                   });
-                  return button;
+                  return editButton;
                 }),
               );
             }
@@ -251,11 +264,11 @@ export default class BlockMenuTrigger extends Extension {
             )(state.selection);
             if (tableParent) {
               decorations.push(
-                Decoration.widget(tableParent.pos, () => {
-                  button.addEventListener('click', () => {
-                    this.options.onOpen('');
+                Decoration.widget(tableParent.start, () => {
+                  editButton.addEventListener('click', () => {
+                    this.options.onOpen('', 'edit', ['table']);
                   });
-                  return button;
+                  return editButton;
                 }),
               );
             }
@@ -268,11 +281,11 @@ export default class BlockMenuTrigger extends Extension {
             )(state.selection);
             if (imageParent) {
               decorations.push(
-                Decoration.widget(imageParent.pos, () => {
-                  button.addEventListener('click', () => {
-                    this.options.onOpen('');
+                Decoration.widget(imageParent.start, () => {
+                  editButton.addEventListener('click', () => {
+                    this.options.onOpen('', 'edit', ['image']);
                   });
-                  return button;
+                  return editButton;
                 }),
               );
             }
