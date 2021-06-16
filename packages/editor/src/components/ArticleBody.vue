@@ -28,13 +28,12 @@
         :onClose="handleCloseLinkMenu"
       ></link-toolbar>
       <block-menu
-        v-if="blockMenuOpenType === 'create'"
         :view="editor.view"
         :commands="editor.commands"
         :dictionary="dictionary"
-        :isActive="blockMenuOpen"
+        :isActive="createBlockMenuOpen"
         :search="blockMenuSearch"
-        :onClose="handleCloseBlockMenu"
+        :onClose="handleCloseBlockMenu('create')"
         :uploadImage="uploadImage"
         :onLinkToolbarOpen="handleOpenLinkMenu"
         :onImageUploadStart="onImageUploadStart"
@@ -43,12 +42,11 @@
         :embeds="embeds"
       ></block-menu>
       <edit-block-menu
-        v-if="blockMenuOpenType === 'edit'"
         :view="editor.view"
         :commands="editor.commands"
         :dictionary="dictionary"
-        :isActive="blockMenuOpen"
-        :onClose="handleCloseBlockMenu"
+        :isActive="editBlockMenuOpen"
+        :onClose="handleCloseBlockMenu('edit')"
         :uploadImage="uploadImage"
         :onLinkToolbarOpen="handleOpenLinkMenu"
         :onImageUploadStart="onImageUploadStart"
@@ -202,8 +200,8 @@ export default defineComponent({
       linkUrl: null,
       linkMenuIsActive: false,
       dictionary: dictionary,
-      blockMenuOpen: false,
-      blockMenuOpenType: 'create',
+      createBlockMenuOpen: false,
+      editBlockMenuOpen: false,
       ancestorNodeTypeName: [],
       linkMenuOpen: false,
       blockMenuSearch: '',
@@ -235,7 +233,8 @@ export default defineComponent({
     },
     handleOpenLinkMenu() {
       // this.showLinkMenu(this.editor.getMarkAttrs("link"));
-      this.blockMenuOpen = false;
+      this.createBlockMenuOpen = false;
+      this.editBlockMenuOpen = false;
       this.linkMenuOpen = true;
     },
     showLinkMenu(attrs) {
@@ -331,14 +330,22 @@ export default defineComponent({
       window.open(href, '_blank');
     },
     handleOpenBlockMenu(search, type, ancestorNodeTypeName) {
-      this.blockMenuOpen = true;
-      this.blockMenuSearch = search;
-      this.blockMenuOpenType = type;
-      this.ancestorNodeTypeName = ancestorNodeTypeName;
+      if (type === 'create') {
+        this.createBlockMenuOpen = true;
+        this.blockMenuSearch = search;
+      } else if (type === 'edit') {
+        this.editBlockMenuOpen = true;
+        this.ancestorNodeTypeName = ancestorNodeTypeName;
+      }
     },
-    handleCloseBlockMenu() {
-      if (!this.blockMenuOpen) return;
-      this.blockMenuOpen = false;
+    handleCloseBlockMenu(type) {
+      if (type === 'create') {
+        if (!this.createBlockMenuOpen) return;
+        this.createBlockMenuOpen = false;
+      } else if (type === 'edit') {
+        if (!this.editBlockMenuOpen) return;
+        this.editBlockMenuOpen = false;
+      }
     },
   },
   beforeDestroy() {
