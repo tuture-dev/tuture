@@ -54,7 +54,7 @@
 <script>
 import { Portal } from '@linusborg/vue-simple-portal';
 import capitalize from 'lodash/capitalize';
-import getMenuItems from '../menus/block';
+import getMenuItems from '../menus/editBlock';
 import getDataTransferFiles from '../lib/getDataTransferFiles';
 import { findParentNode } from 'prosemirror-utils';
 import insertFiles from '../commands/insertFiles';
@@ -74,6 +74,7 @@ export default {
     'onLinkToolbarOpen',
     'onClose',
     'dictionary',
+    'ancestorNodeTypeName',
   ],
   components: {
     Portal,
@@ -91,33 +92,17 @@ export default {
   },
   computed: {
     filtered() {
-      const { dictionary, embeds, search = '', uploadImage } = this.$props;
-      let items = getMenuItems(dictionary);
+      const { dictionary, search } = this.$props;
+      let { actionList, canTurnIntoMenuItems = [] } = getMenuItems(
+        this.view.state,
+        dictionary,
+        this.ancestorNodeTypeName,
+      );
 
-      // 一些可嵌入内容的支持
-      const embedItems = [];
+      console.log('items', actionList);
 
-      for (const embed of embeds) {
-        if (embed.title && embed.icon) {
-          embedItems.push({
-            ...embed,
-            name: 'embed',
-          });
-        }
-      }
-
-      if (embedItems.length) {
-        items.push({
-          name: 'separator',
-        });
-        items = items.concat(embedItems);
-      }
-
-      const filtered = items.filter((item) => {
+      const filtered = actionList.filter((item) => {
         if (item.name === 'separator') return true;
-
-        // If no image upload callback has been passed, filter the image block out
-        if (!uploadImage && item.name === 'image') return false;
 
         // some items (defaultHidden) are not visible until a search query exists
         if (!search) return !item.defaultHidden;

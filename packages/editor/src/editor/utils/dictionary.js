@@ -60,6 +60,12 @@ const base = {
   subheading: 'Subheading',
 
   diffBlock: 'DiffBlock',
+
+  //
+  cut: '剪切',
+  copy: '复制',
+  delete: '删除',
+  copyLink: '复制链接',
 };
 
 export default base;

@@ -27,26 +27,27 @@
         :onShowToast="onShowToast"
         :onClose="handleCloseLinkMenu"
       ></link-toolbar>
-      <block-menu
+      <create-block-menu
         :view="editor.view"
         :commands="editor.commands"
         :dictionary="dictionary"
         :isActive="createBlockMenuOpen"
         :search="blockMenuSearch"
-        :onClose="handleCloseBlockMenu('create')"
+        :onClose="handleCloseCreateBlockMenu"
         :uploadImage="uploadImage"
         :onLinkToolbarOpen="handleOpenLinkMenu"
         :onImageUploadStart="onImageUploadStart"
         :onImageUploadStop="onImageUploadStop"
         :onShowToast="onShowToast"
         :embeds="embeds"
-      ></block-menu>
+      ></create-block-menu>
       <edit-block-menu
         :view="editor.view"
         :commands="editor.commands"
         :dictionary="dictionary"
         :isActive="editBlockMenuOpen"
-        :onClose="handleCloseBlockMenu('edit')"
+        :ancestorNodeTypeName="ancestorNodeTypeName"
+        :onClose="handleCloseEditBlockMenu"
         :uploadImage="uploadImage"
         :onLinkToolbarOpen="handleOpenLinkMenu"
         :onImageUploadStart="onImageUploadStart"
@@ -108,7 +109,8 @@ import getDataTransferFiles from '@/editor/lib/getDataTransferFiles';
 import SelectionToolbar from '@/editor/components/SelectionToolbar';
 import LinkToolbar from '@/editor/components/LinkToolbar.vue';
 import insertFiles from '@/editor/commands/insertFiles';
-import BlockMenu from '@/editor/components/BlockMenu.vue';
+import CreateBlockMenu from '@/editor/components/CreateBlockMenu.vue';
+import EditBlockMenu from '@/editor/components/EditBlockMenu.vue';
 
 import useNowArticleId from '@/use/useNowArticleId';
 
@@ -119,7 +121,8 @@ export default defineComponent({
     EditorContent,
     SelectionToolbar,
     LinkToolbar,
-    BlockMenu,
+    CreateBlockMenu,
+    EditBlockMenu,
   },
   data() {
     return {
@@ -334,9 +337,16 @@ export default defineComponent({
         this.createBlockMenuOpen = true;
         this.blockMenuSearch = search;
       } else if (type === 'edit') {
+        console.log('search', ancestorNodeTypeName);
         this.editBlockMenuOpen = true;
         this.ancestorNodeTypeName = ancestorNodeTypeName;
       }
+    },
+    handleCloseCreateBlockMenu() {
+      this.handleCloseBlockMenu('create');
+    },
+    handleCloseEditBlockMenu() {
+      this.handleCloseBlockMenu('edit');
     },
     handleCloseBlockMenu(type) {
       if (type === 'create') {
@@ -451,7 +461,7 @@ li[data-done='false'] {
   outline: none;
   border: 0;
   padding: 0;
-  margin-left: -24px;
+  margin-left: -40px;
   font-size: 14px;
 
   &:hover,

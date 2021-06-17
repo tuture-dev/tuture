@@ -5,6 +5,7 @@ import { Decoration, DecorationSet } from 'prosemirror-view';
 import { Extension } from 'tiptap';
 import { findParentNode, findParentNodeOfType } from 'prosemirror-utils';
 import { getAncestorNodeTypeName } from '../utils/selection';
+import { isNodeActive } from '../queries';
 
 const MAX_MATCH = 500;
 const OPEN_REGEX = /^\/(\w+)?$/;
@@ -59,7 +60,7 @@ export default class BlockMenuTrigger extends Extension {
       new Plugin({
         props: {
           handleClick: () => {
-            this.options.onClose();
+            this.options.onClose('create');
             return false;
           },
           handleKeyDown: (view, event) => {
@@ -73,9 +74,9 @@ export default class BlockMenuTrigger extends Extension {
                 const { pos } = view.state.selection.$from;
                 return run(view, pos, pos, OPEN_REGEX, (state, match) => {
                   if (match) {
-                    this.options.onOpen(match[1]);
+                    this.options.onOpen(match[1], 'create');
                   } else {
-                    this.options.onClose();
+                    this.options.onClose('create');
                   }
                   return null;
                 });
@@ -112,7 +113,8 @@ export default class BlockMenuTrigger extends Extension {
              *  4. Table 只针对整个块
              *  5. Image 只针对 Image
              */
-            console.log('schema', this.editor.schema.nodes);
+            console.log('nowActive', state.schema);
+            // console.log('schema', this.editor.schema.nodes);
             const $from = state.selection.$from;
             const isTopLevel = $from.depth === 1;
 
@@ -139,15 +141,15 @@ export default class BlockMenuTrigger extends Extension {
             const isEmpty = directParent.node.content.size === 0;
             const isSlash = directParent.node.textContent === '/';
 
-            console.log('schema', this);
+            //console.log('schema', this);
 
-            console.log(
-              'now',
-              isEmpty,
-              isTopLevel,
-              directParent,
-              secondUpperParent,
-            );
+            // console.log(
+            //   'now',
+            //   isEmpty,
+            //   isTopLevel,
+            //   directParent,
+            //   secondUpperParent,
+            // );
 
             /**
              * 只有如下两种情况可以使用快捷键处理：
@@ -308,7 +310,7 @@ export default class BlockMenuTrigger extends Extension {
           state.selection.$from.parent.type.name === 'paragraph' &&
           !isInTable(state)
         ) {
-          this.options.onOpen(match[1]);
+          this.options.onOpen(match[1], 'create');
         }
         return null;
       }),
@@ -318,7 +320,7 @@ export default class BlockMenuTrigger extends Extension {
       // /word<space>
       new InputRule(CLOSE_REGEX, (state, match) => {
         if (match) {
-          this.options.onClose();
+          this.options.onClose('create');
         }
         return null;
       }),
