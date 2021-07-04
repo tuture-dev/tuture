@@ -27,7 +27,7 @@
             class="list-item"
           >
             <block-menu-item
-              :onClick="() => insertItem(item)"
+              :onClick="() => handleActionClick(item)"
               :selected="index === selectedIndex && isActive"
               :icon="item.icon"
               :title="item.title"
@@ -59,6 +59,7 @@ import getDataTransferFiles from '../lib/getDataTransferFiles';
 import { findParentNode } from 'prosemirror-utils';
 import insertFiles from '../commands/insertFiles';
 import BlockMenuItem from './BlockMenuItem';
+import { removeParentNodeOfType } from 'prosemirror-utils';
 
 export default {
   props: [
@@ -244,6 +245,7 @@ export default {
 
       this.$props.onClose();
     },
+    insertBlockInNextLine(item) {},
     clearSearch() {
       const { state, dispatch } = this.$props.view;
       const parent = findParentNode((node) => !!node)(state.selection);
@@ -377,6 +379,55 @@ export default {
         }
         default:
           this.insertBlock(item);
+      }
+    },
+
+    tiggerCut() {},
+    tiggerCopy() {},
+    tiggerDelete(item, ancestorNodeTypeName = []) {
+      // paragraph 和 heading 的删除
+      if (
+        (ancestorNodeTypeName.length === 1 &&
+          ['paragraph', 'heading'].includes(ancestorNodeTypeName[0])) ||
+        (ancestorNodeTypeName.length === 2 &&
+          ['paragraph', 'heading'].includes(ancestorNodeTypeName[0]) &&
+          ['notice', 'blockquote'].includes(ancestorNodeTypeName[1]))
+      ) {
+        const { dispatch, state } = this.view;
+        const { schema } = state;
+
+        dispatch(
+          removeParentNodeOfType(schema.nodes[ancestorNodeTypeName[0]])(
+            state.tr,
+          ),
+        );
+      }
+
+      // list_item/todo_item 的删除
+      if (['list_item', 'todo_item'].includes(ancestorNodeTypeName[1])) {
+        const { dispatch, state } = this.view;
+        const { schema } = state;
+
+        dispatch(
+          removeParentNodeOfType(schema.nodes[ancestorNodeTypeName[1]])(
+            state.tr,
+          ),
+        );
+      }
+
+      this.close();
+    },
+
+    handleActionClick(item) {
+      switch (item.name) {
+        case '剪切':
+          return this.tiggerCut(item, this.ancestorNodeTypeName);
+        case '复制':
+          return this.tiggerCopy(item, this.ancestorNodeTypeName);
+        case '删除':
+          return this.tiggerDelete(item, this.ancestorNodeTypeName);
+        default:
+          this.insertBlockInNextLine(item, this.ancestorNodeTypeName);
       }
     },
 

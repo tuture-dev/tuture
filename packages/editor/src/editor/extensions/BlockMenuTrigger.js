@@ -61,6 +61,7 @@ export default class BlockMenuTrigger extends Extension {
         props: {
           handleClick: () => {
             this.options.onClose('create');
+            this.options.onClose('edit');
             return false;
           },
           handleKeyDown: (view, event) => {
