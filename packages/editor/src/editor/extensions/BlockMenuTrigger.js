@@ -224,6 +224,7 @@ export default class BlockMenuTrigger extends Extension {
                   directParent.node.type.name,
                 ))
             ) {
+              debugger;
               const ancestorNodeTypeName = getAncestorNodeTypeName($from);
 
               decorations.push(

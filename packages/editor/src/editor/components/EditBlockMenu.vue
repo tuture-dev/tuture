@@ -100,8 +100,6 @@ export default {
         this.ancestorNodeTypeName,
       );
 
-      console.log('items', actionList);
-
       const filtered = actionList.filter((item) => {
         if (item.name === 'separator') return true;
 
@@ -389,7 +387,7 @@ export default {
       if (
         (ancestorNodeTypeName.length === 1 &&
           ['paragraph', 'heading'].includes(ancestorNodeTypeName[0])) ||
-        (ancestorNodeTypeName.length === 2 &&
+        (ancestorNodeTypeName.length >= 2 &&
           ['paragraph', 'heading'].includes(ancestorNodeTypeName[0]) &&
           ['notice', 'blockquote'].includes(ancestorNodeTypeName[1]))
       ) {
@@ -410,6 +408,28 @@ export default {
 
         dispatch(
           removeParentNodeOfType(schema.nodes[ancestorNodeTypeName[1]])(
+            state.tr,
+          ),
+        );
+      }
+
+      // notice/blockquote/codeblock/diffblock/table/image
+      if (
+        [
+          'notice',
+          'blockquote',
+          'code_block',
+          'horizontal_rule',
+          'image',
+          'diff_block',
+          'table',
+        ].includes(ancestorNodeTypeName[0])
+      ) {
+        const { dispatch, state } = this.view;
+        const { schema } = state;
+
+        dispatch(
+          removeParentNodeOfType(schema.nodes[ancestorNodeTypeName[0]])(
             state.tr,
           ),
         );
