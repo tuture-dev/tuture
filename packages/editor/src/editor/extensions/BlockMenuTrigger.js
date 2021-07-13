@@ -4,7 +4,11 @@ import { isInTable } from 'prosemirror-tables';
 import { Decoration, DecorationSet } from 'prosemirror-view';
 import { Extension } from 'tiptap';
 import { findParentNode, findParentNodeOfType } from 'prosemirror-utils';
-import { getAncestorNodeTypeName } from '../utils/selection';
+import {
+  getAncestorNodeTypeName,
+  getChildrenOfType,
+  getChildrenLength,
+} from '../utils/selection';
 import { isNodeActive } from '../queries';
 
 const MAX_MATCH = 500;
@@ -224,12 +228,19 @@ export default class BlockMenuTrigger extends Extension {
                   directParent.node.type.name,
                 ))
             ) {
-              debugger;
               const ancestorNodeTypeName = getAncestorNodeTypeName($from);
 
               decorations.push(
                 Decoration.widget(directParent.start, () => {
                   editButton.addEventListener('click', () => {
+                    /**
+                     * 四个参数：
+                     *
+                     * - 第一个参数：open 时输入的文字，打开即搜索
+                     * - 第二个参数：代表此时打开的是 edit | create 框
+                     * - 第三个参数：此节点的父系节点链
+                     * - 第四个参数：如果是父含子，且子节点是唯一节点，那么需要把父节点一起删除
+                     */
                     this.options.onOpen('', 'edit', ancestorNodeTypeName);
                   });
                   return editButton;
@@ -241,6 +252,7 @@ export default class BlockMenuTrigger extends Extension {
              * 以下几种情况会弹出处理框（目前是只在最外层弹出，后续考虑类似 gitbook 可以在内层弹出）：
              * 1. ul/ol/todolist，
              */
+
             if (
               secondUpperParent &&
               ['list_item', 'todo_item'].includes(

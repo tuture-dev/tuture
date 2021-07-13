@@ -182,7 +182,11 @@ export default function editBlockMenuItems(
    * 3. image/codeblock/diffblock/table/hr
    */
 
-  if (!ancestorNodeTypeName.length) return [];
+  if (!ancestorNodeTypeName.length)
+    return {
+      actionList: [],
+      canTurnIntoMenuItems: [],
+    };
 
   // 进入第一类编辑菜单，针对文本的不同形式
   if (

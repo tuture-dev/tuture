@@ -59,7 +59,11 @@ import getDataTransferFiles from '../lib/getDataTransferFiles';
 import { findParentNode } from 'prosemirror-utils';
 import insertFiles from '../commands/insertFiles';
 import BlockMenuItem from './BlockMenuItem';
-import { removeParentNodeOfType } from 'prosemirror-utils';
+import {
+  removeParentNodeOfType,
+  findParentNodeOfType,
+  findChildrenByType,
+} from 'prosemirror-utils';
 
 export default {
   props: [
@@ -404,13 +408,30 @@ export default {
       // list_item/todo_item 的删除
       if (['list_item', 'todo_item'].includes(ancestorNodeTypeName[1])) {
         const { dispatch, state } = this.view;
-        const { schema } = state;
+        const { schema, selection } = state;
 
-        dispatch(
-          removeParentNodeOfType(schema.nodes[ancestorNodeTypeName[1]])(
-            state.tr,
-          ),
-        );
+        // 如果是唯一的子 item，那么删掉整个 list
+        const { node } = findParentNodeOfType(
+          schema.nodes[ancestorNodeTypeName[2]],
+        )(selection);
+
+        // 获取此节点下所有的 item 节点
+        const childNodes =
+          findChildrenByType(node, schema.nodes[ancestorNodeTypeName[1]]) || [];
+
+        if (childNodes.length === 1) {
+          dispatch(
+            removeParentNodeOfType(schema.nodes[ancestorNodeTypeName[2]])(
+              state.tr,
+            ),
+          );
+        } else {
+          dispatch(
+            removeParentNodeOfType(schema.nodes[ancestorNodeTypeName[1]])(
+              state.tr,
+            ),
+          );
+        }
       }
 
       // notice/blockquote/codeblock/diffblock/table/image
