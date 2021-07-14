@@ -118,7 +118,6 @@ export default class BlockMenuTrigger extends Extension {
              *  4. Table 只针对整个块
              *  5. Image 只针对 Image
              */
-            console.log('nowActive', state.schema);
             // console.log('schema', this.editor.schema.nodes);
             const $from = state.selection.$from;
             const isTopLevel = $from.depth === 1;
@@ -147,6 +146,7 @@ export default class BlockMenuTrigger extends Extension {
             const isSlash = directParent.node.textContent === '/';
 
             //console.log('schema', this);
+            console.log('isTop', isTopLevel, directParent, secondUpperParent);
 
             // console.log(
             //   'now',
@@ -222,16 +222,37 @@ export default class BlockMenuTrigger extends Extension {
                   secondUpperParent.node.type.name,
                 ) &&
                 directParent.node.content.size !== 0) ||
-              directParent.node.type.name === 'heading' ||
-              (isTopLevel &&
-                ['code_block', 'diff_block'].includes(
-                  directParent.node.type.name,
-                ))
+              directParent.node.type.name === 'heading'
             ) {
               const ancestorNodeTypeName = getAncestorNodeTypeName($from);
 
               decorations.push(
                 Decoration.widget(directParent.start, () => {
+                  editButton.addEventListener('click', () => {
+                    /**
+                     * 四个参数：
+                     *
+                     * - 第一个参数：open 时输入的文字，打开即搜索
+                     * - 第二个参数：代表此时打开的是 edit | create 框
+                     * - 第三个参数：此节点的父系节点链
+                     * - 第四个参数：如果是父含子，且子节点是唯一节点，那么需要把父节点一起删除
+                     */
+                    this.options.onOpen('', 'edit', ancestorNodeTypeName);
+                  });
+                  return editButton;
+                }),
+              );
+            }
+
+            console.log('diff', isTopLevel, directParent, secondUpperParent);
+            if (
+              isTopLevel &&
+              ['code_block', 'diff_block'].includes(directParent.node.type.name)
+            ) {
+              const ancestorNodeTypeName = getAncestorNodeTypeName($from);
+
+              decorations.push(
+                Decoration.widget(directParent.pos, () => {
                   editButton.addEventListener('click', () => {
                     /**
                      * 四个参数：
