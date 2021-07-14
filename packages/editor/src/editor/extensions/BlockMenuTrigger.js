@@ -204,6 +204,9 @@ export default class BlockMenuTrigger extends Extension {
                   ),
                 );
               }
+
+              if (decorations.length > 0)
+                return DecorationSet.create(state.doc, decorations);
             }
 
             /**
@@ -221,13 +224,12 @@ export default class BlockMenuTrigger extends Extension {
                 ['notice', 'blockquote'].includes(
                   secondUpperParent.node.type.name,
                 ) &&
-                directParent.node.content.size !== 0) ||
-              directParent.node.type.name === 'heading'
+                directParent.node.content.size !== 0)
             ) {
               const ancestorNodeTypeName = getAncestorNodeTypeName($from);
 
               decorations.push(
-                Decoration.widget(directParent.start, () => {
+                Decoration.widget(directParent.pos, () => {
                   editButton.addEventListener('click', () => {
                     /**
                      * 四个参数：
@@ -242,11 +244,39 @@ export default class BlockMenuTrigger extends Extension {
                   return editButton;
                 }),
               );
+
+              if (decorations.length === 0) return;
+              return DecorationSet.create(state.doc, decorations);
             }
 
-            console.log('diff', isTopLevel, directParent, secondUpperParent);
+            if (directParent.node.type.name === 'heading') {
+              const ancestorNodeTypeName = getAncestorNodeTypeName($from);
+
+              console.log('ancestorNodeTypeName', ancestorNodeTypeName);
+
+              decorations.push(
+                Decoration.widget(directParent.pos, () => {
+                  editButton.addEventListener('click', () => {
+                    /**
+                     * 四个参数：
+                     *
+                     * - 第一个参数：open 时输入的文字，打开即搜索
+                     * - 第二个参数：代表此时打开的是 edit | create 框
+                     * - 第三个参数：此节点的父系节点链
+                     * - 第四个参数：如果是父含子，且子节点是唯一节点，那么需要把父节点一起删除
+                     */
+                    this.options.onOpen('', 'edit', ancestorNodeTypeName);
+                  });
+                  return editButton;
+                }),
+              );
+
+              if (decorations.length === 0) return;
+              return DecorationSet.create(state.doc, decorations);
+            }
+
+            // console.log('diff', isTopLevel, directParent, secondUpperParent);
             if (
-              isTopLevel &&
               ['code_block', 'diff_block'].includes(directParent.node.type.name)
             ) {
               const ancestorNodeTypeName = getAncestorNodeTypeName($from);
@@ -267,6 +297,9 @@ export default class BlockMenuTrigger extends Extension {
                   return editButton;
                 }),
               );
+
+              if (decorations.length === 0) return;
+              return DecorationSet.create(state.doc, decorations);
             }
 
             /**
@@ -290,6 +323,9 @@ export default class BlockMenuTrigger extends Extension {
                   return editButton;
                 }),
               );
+
+              if (decorations.length === 0) return;
+              return DecorationSet.create(state.doc, decorations);
             }
 
             /**
@@ -308,6 +344,9 @@ export default class BlockMenuTrigger extends Extension {
                   return editButton;
                 }),
               );
+
+              if (decorations.length === 0) return;
+              return DecorationSet.create(state.doc, decorations);
             }
 
             /**

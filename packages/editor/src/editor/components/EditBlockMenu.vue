@@ -388,6 +388,7 @@ export default {
     tiggerCopy() {},
     tiggerDelete(item, ancestorNodeTypeName = []) {
       // paragraph 和 heading 的删除
+      console.log('ancestorNodeTypeName', ancestorNodeTypeName);
       if (
         (ancestorNodeTypeName.length === 1 &&
           ['paragraph', 'heading'].includes(ancestorNodeTypeName[0])) ||

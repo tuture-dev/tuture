@@ -333,10 +333,10 @@ export default defineComponent({
       window.open(href, '_blank');
     },
     handleOpenBlockMenu(search, type, ancestorNodeTypeName) {
-      if (type === 'create' && !this.createBlockMenuOpen) {
+      if (type === 'create') {
         this.createBlockMenuOpen = true;
         this.blockMenuSearch = search;
-      } else if (type === 'edit' && !this.editBlockMenuOpen) {
+      } else if (type === 'edit') {
         console.log('search', ancestorNodeTypeName);
         this.editBlockMenuOpen = true;
         this.ancestorNodeTypeName = ancestorNodeTypeName;
