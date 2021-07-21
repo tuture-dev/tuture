@@ -385,9 +385,113 @@ export default {
           this.insertBlock(item);
       }
     },
+    triggerCut(item, ancestorNodeTypeName) {
+      // paragraph 和 heading 的删除
+      if (
+        (ancestorNodeTypeName.length === 1 &&
+          ['paragraph', 'heading'].includes(ancestorNodeTypeName[0])) ||
+        (ancestorNodeTypeName.length >= 2 &&
+          ['paragraph', 'heading'].includes(ancestorNodeTypeName[0]) &&
+          ['notice', 'blockquote'].includes(ancestorNodeTypeName[1]))
+      ) {
+        const { dispatch, state } = this.view;
+        const { schema, selection } = state;
 
-    tiggerCut() {},
-    tiggerCopy(item, ancestorNodeTypeName) {
+        const parentNode = findParentNodeOfType(
+          schema.nodes[ancestorNodeTypeName[0]],
+        )(selection);
+
+        dispatch(
+          state.tr.setSelection(
+            NodeSelection.create(state.doc, parentNode.pos),
+          ),
+        );
+
+        document.execCommand('copy');
+
+        dispatch(
+          removeParentNodeOfType(schema.nodes[ancestorNodeTypeName[0]])(
+            state.tr,
+          ),
+        );
+      }
+
+      // list_item/todo_item 的删除
+      if (['list_item', 'todo_item'].includes(ancestorNodeTypeName[1])) {
+        const { dispatch, state } = this.view;
+        const { schema, selection } = state;
+        const parentNode = findParentNodeOfType(
+          schema.nodes[ancestorNodeTypeName[1]],
+        )(selection);
+
+        dispatch(
+          state.tr.setSelection(
+            NodeSelection.create(state.doc, parentNode.pos),
+          ),
+        );
+
+        document.execCommand('copy');
+
+        // 如果是唯一的子 item，那么删掉整个 list
+        const { node } = findParentNodeOfType(
+          schema.nodes[ancestorNodeTypeName[2]],
+        )(selection);
+
+        // 获取此节点下所有的 item 节点
+        const childNodes =
+          findChildrenByType(node, schema.nodes[ancestorNodeTypeName[1]]) || [];
+
+        if (childNodes.length === 1) {
+          dispatch(
+            removeParentNodeOfType(schema.nodes[ancestorNodeTypeName[2]])(
+              state.tr,
+            ),
+          );
+        } else {
+          dispatch(
+            removeParentNodeOfType(schema.nodes[ancestorNodeTypeName[1]])(
+              state.tr,
+            ),
+          );
+        }
+      }
+
+      // notice/blockquote/codeblock/diffblock/table/image
+      if (
+        [
+          'notice',
+          'blockquote',
+          'code_block',
+          'horizontal_rule',
+          'image',
+          'diff_block',
+          'table',
+        ].includes(ancestorNodeTypeName[0])
+      ) {
+        const { dispatch, state } = this.view;
+        const { schema, selection } = state;
+        const parentNode = findParentNodeOfType(
+          schema.nodes[ancestorNodeTypeName[0]],
+        )(selection);
+
+        dispatch(
+          state.tr.setSelection(
+            NodeSelection.create(state.doc, parentNode.pos),
+          ),
+        );
+
+        document.execCommand('copy');
+
+        dispatch(
+          removeParentNodeOfType(schema.nodes[ancestorNodeTypeName[0]])(
+            state.tr,
+          ),
+        );
+      }
+
+      this.close();
+    },
+    triggerCopy(item, ancestorNodeTypeName) {
       // paragraph 和 heading 的删除
       if (
         (ancestorNodeTypeName.length === 1 &&
@@ -458,7 +562,7 @@ export default {
 
       this.close();
     },
-    tiggerDelete(item, ancestorNodeTypeName = []) {
+    triggerDelete(item, ancestorNodeTypeName = []) {
       // paragraph 和 heading 的删除
       console.log('ancestorNodeTypeName', ancestorNodeTypeName);
       if (
@@ -535,11 +639,11 @@ export default {
     handleActionClick(item) {
       switch (item.name) {
         case '剪切':
-          return this.tiggerCut(item, this.ancestorNodeTypeName);
+          return this.triggerCut(item, this.ancestorNodeTypeName);
         case '复制':
-          return this.tiggerCopy(item, this.ancestorNodeTypeName);
+          return this.triggerCopy(item, this.ancestorNodeTypeName);
         case '删除':
-          return this.tiggerDelete(item, this.ancestorNodeTypeName);
+          return this.triggerDelete(item, this.ancestorNodeTypeName);
         default:
           this.insertBlockInNextLine(item, this.ancestorNodeTypeName);
       }
