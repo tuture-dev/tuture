@@ -180,7 +180,6 @@ export default {
       };
     },
     userStyle() {
-      console.log('isAx', this.isActive);
       const extraStyle = this.isActive
         ? {
             transform: `translateY(${this.isAbove ? '6px' : '-6px'}) scale(1)`,

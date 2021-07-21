@@ -113,6 +113,7 @@ import CreateBlockMenu from '@/editor/components/CreateBlockMenu.vue';
 import EditBlockMenu from '@/editor/components/EditBlockMenu.vue';
 
 import useNowArticleId from '@/use/useNowArticleId';
+import { DataPaste } from '@/editor/plugins';
 
 export default defineComponent({
   name: 'ArticleBody',
@@ -195,6 +196,7 @@ export default defineComponent({
               }
             },
           }),
+          new DataPaste(),
         ],
         onUpdate: ({ getJSON }) => {
           localStorage.setItem('editure-doc', JSON.stringify(getJSON()));

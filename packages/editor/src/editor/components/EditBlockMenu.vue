@@ -59,9 +59,11 @@ import getDataTransferFiles from '../lib/getDataTransferFiles';
 import { findParentNode } from 'prosemirror-utils';
 import insertFiles from '../commands/insertFiles';
 import BlockMenuItem from './BlockMenuItem';
+import { NodeSelection } from 'prosemirror-state';
 import {
   removeParentNodeOfType,
   findParentNodeOfType,
+  findParentDomRefOfType,
   findChildrenByType,
 } from 'prosemirror-utils';
 
@@ -385,7 +387,77 @@ export default {
     },
 
     tiggerCut() {},
-    tiggerCopy() {},
+    tiggerCopy(item, ancestorNodeTypeName) {
+      // paragraph 和 heading 的删除
+      if (
+        (ancestorNodeTypeName.length === 1 &&
+          ['paragraph', 'heading'].includes(ancestorNodeTypeName[0])) ||
+        (ancestorNodeTypeName.length >= 2 &&
+          ['paragraph', 'heading'].includes(ancestorNodeTypeName[0]) &&
+          ['notice', 'blockquote'].includes(ancestorNodeTypeName[1]))
+      ) {
+        const { dispatch, state } = this.view;
+        const { schema, selection } = state;
+
+        const parentNode = findParentNodeOfType(
+          schema.nodes[ancestorNodeTypeName[0]],
+        )(selection);
+
+        dispatch(
+          state.tr.setSelection(
+            NodeSelection.create(state.doc, parentNode.pos),
+          ),
+        );
+
+        document.execCommand('copy');
+      }
+
+      // list_item/todo_item 的删除
+      if (['list_item', 'todo_item'].includes(ancestorNodeTypeName[1])) {
+        const { dispatch, state } = this.view;
+        const { schema, selection } = state;
+        const parentNode = findParentNodeOfType(
+          schema.nodes[ancestorNodeTypeName[1]],
+        )(selection);
+
+        dispatch(
+          state.tr.setSelection(
+            NodeSelection.create(state.doc, parentNode.pos),
+          ),
+        );
+
+        document.execCommand('copy');
+      }
+
+      // notice/blockquote/codeblock/diffblock/table/image
+      if (
+        [
+          'notice',
+          'blockquote',
+          'code_block',
+          'horizontal_rule',
+          'image',
+          'diff_block',
+          'table',
+        ].includes(ancestorNodeTypeName[0])
+      ) {
+        const { dispatch, state } = this.view;
+        const { schema, selection } = state;
+        const parentNode = findParentNodeOfType(
+          schema.nodes[ancestorNodeTypeName[0]],
+        )(selection);
+
+        dispatch(
+          state.tr.setSelection(
+            NodeSelection.create(state.doc, parentNode.pos),
+          ),
+        );
+
+        document.execCommand('copy');
+      }
+
+      this.close();
+    },
     tiggerDelete(item, ancestorNodeTypeName = []) {
       // paragraph 和 heading 的删除
       console.log('ancestorNodeTypeName', ancestorNodeTypeName);

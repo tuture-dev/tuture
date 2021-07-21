@@ -3,7 +3,12 @@ import { Plugin } from 'prosemirror-state';
 import { isInTable } from 'prosemirror-tables';
 import { Decoration, DecorationSet } from 'prosemirror-view';
 import { Extension } from 'tiptap';
-import { findParentNode, findParentNodeOfType } from 'prosemirror-utils';
+import {
+  findParentNode,
+  findParentNodeOfType,
+  findParentDomRefOfType,
+} from 'prosemirror-utils';
+import { NodeSpec, Node } from 'prosemirror-model';
 import {
   getAncestorNodeTypeName,
   getChildrenOfType,
@@ -146,7 +151,7 @@ export default class BlockMenuTrigger extends Extension {
             const isSlash = directParent.node.textContent === '/';
 
             //console.log('schema', this);
-            console.log('isTop', isTopLevel, directParent, secondUpperParent);
+            // console.log('isTop', isTopLevel, directParent, secondUpperParent);
 
             // console.log(
             //   'now',
@@ -172,7 +177,7 @@ export default class BlockMenuTrigger extends Extension {
               if (isEmpty) {
                 decorations.push(
                   Decoration.widget(directParent.pos, () => {
-                    console.log('hello');
+                    // console.log('hello');
                     createButton.addEventListener('click', () => {
                       this.options.onOpen('', 'create');
                     });
@@ -251,8 +256,6 @@ export default class BlockMenuTrigger extends Extension {
 
             if (directParent.node.type.name === 'heading') {
               const ancestorNodeTypeName = getAncestorNodeTypeName($from);
-
-              console.log('ancestorNodeTypeName', ancestorNodeTypeName);
 
               decorations.push(
                 Decoration.widget(directParent.pos, () => {
