@@ -5,9 +5,10 @@
     @click="handleClick"
     :style="menuItemStyle"
   >
-    <font-awesome-icon :icon="icon" style=""></font-awesome-icon>
-    &nbsp;&nbsp;{{ title }}
+    <span v-if="type === 'create'"><font-awesome-icon :icon="icon" style=""></font-awesome-icon>&nbsp;&nbsp;</span>
+    {{ title }}
     <span class="short-cut">{{ shortcut }}</span>
+    <span v-if="type === 'edit' && hasSubMenu"> &nbsp;&nbsp;<font-awesome-icon icon="arrow-right" style=""></font-awesome-icon></span>
   </button>
 </template>
 
@@ -15,7 +16,7 @@
 import scrollIntoView from 'smooth-scroll-into-view-if-needed';
 
 export default {
-  props: ['selected', 'disabled', 'onClick', 'icon', 'title', 'shortcut'],
+  props: ['selected', 'disabled', 'onClick', 'icon', 'title', 'shortcut', 'type', 'hasSubMenu'],
   data() {
     return {
       iconStyle: this.selected ? '#000' : undefined,

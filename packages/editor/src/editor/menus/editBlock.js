@@ -148,6 +148,7 @@ export const getActionMenuItems = (dictionary, extraItems = []) => {
     title: dictionary.turnInto,
     keywords: 'turnInto convert changeTo',
     icon: 'change',
+    hasSubMenu: true,
   };
 
   // link

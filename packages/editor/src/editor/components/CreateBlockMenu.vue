@@ -27,6 +27,7 @@
             class="list-item"
           >
             <block-menu-item
+              type="create"
               :onClick="() => insertItem(item)"
               :selected="index === selectedIndex && isActive"
               :icon="item.icon"

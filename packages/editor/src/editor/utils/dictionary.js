@@ -66,6 +66,7 @@ const base = {
   copy: '复制',
   delete: '删除',
   copyLink: '复制链接',
+  turnInto: '转成',
 };
 
 export default base;

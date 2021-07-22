@@ -26,7 +26,34 @@
             :key="index"
             class="list-item"
           >
+            <template v-if="item.hasSubMenu">
+              <a-popover placement="right">
+                <template slot="content">
+                  <p
+                    v-for="(menuItem, index) in subMenuItems"
+                    :key="index"
+                    :style="menuItemStyle"
+                    class="submenu-item"
+                    @click="() => turnIntoItem(menuItem)"
+                  >
+                    {{ menuItem.title }}
+                  </p>
+                </template>
+                <block-menu-item
+                  type="edit"
+                  :hasSubMenu="item.hasSubMenu"
+                  :onClick="() => {}"
+                  :selected="index === selectedIndex && isActive"
+                  :icon="item.icon"
+                  :title="item.title"
+                  :shortcut="item.shortcut"
+                ></block-menu-item>
+              </a-popover>
+            </template>
             <block-menu-item
+              v-else
+              type="edit"
+              :hasSubMenu="item.hasSubMenu"
               :onClick="() => handleActionClick(item)"
               :selected="index === selectedIndex && isActive"
               :icon="item.icon"
@@ -66,6 +93,7 @@ import {
   findParentDomRefOfType,
   findChildrenByType,
 } from 'prosemirror-utils';
+import { toggleBlockType, toggleList } from 'tiptap-commands';
 
 export default {
   props: [
@@ -98,9 +126,27 @@ export default {
     };
   },
   computed: {
+    menuItemStyle() {
+      return {
+        color: this.selected ? '#000' : '#181A1B',
+        background: this.selected ? '#C5CCD3' : 'none',
+        '--active-background': this.selected ? '#C5CCD3' : '#F4F7FA',
+      };
+    },
+    subMenuItems() {
+      const { dictionary } = this.$props;
+      let { canTurnIntoMenuItems = [] } = getMenuItems(
+        this.view.state,
+        dictionary,
+        this.ancestorNodeTypeName,
+      );
+
+      return canTurnIntoMenuItems;
+    },
     filtered() {
       const { dictionary, search } = this.$props;
-      let { actionList, canTurnIntoMenuItems = [] } = getMenuItems(
+
+      let { actionList = [] } = getMenuItems(
         this.view.state,
         dictionary,
         this.ancestorNodeTypeName,
@@ -636,6 +682,37 @@ export default {
       this.close();
     },
 
+    turnIntoItem(item) {
+      // 针对 heading，第一层级进行转换
+      const { dispatch, state } = this.view;
+      const { schema, selection } = state;
+
+      if (['heading'].includes(item.name)) {
+        toggleBlockType(
+          schema.nodes[item.name],
+          schema.nodes.paragraph,
+          item?.attrs,
+        )(state, dispatch, this.view);
+        this.view.focus();
+        return;
+      }
+
+      const mapListItem = {
+        todo_list: 'todo_item',
+        ordered_list: 'list_item',
+        bullet_list: 'list_item',
+      };
+      if (['todo_list', 'bullet_list', 'ordered_list'].includes(item.name)) {
+        toggleList(
+          schema.nodes[item.name],
+          schema.nodes[mapListItem[item.name]],
+        )(state, dispatch, this.view);
+
+        this.view.focus();
+        return;
+      }
+    },
+
     handleActionClick(item) {
       switch (item.name) {
         case '剪切':
@@ -830,5 +907,27 @@ export default {
   overflow: hidden;
   clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
   clip: rect(1px, 1px, 1px, 1px);
+}
+
+.submenu-item {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 1;
+  width: 100%;
+  height: 36px;
+  cursor: pointer;
+  border: none;
+  opacity: 1;
+  padding: 0 16px;
+  outline: none;
+
+  &:hover,
+  &:active {
+    color: #000 !important;
+    background: var(--active-background) !important;
+  }
 }
 </style>
