@@ -16,8 +16,8 @@
 </template>
 
 <script>
-import { ResizeObserver } from "@juggle/resize-observer";
-import { Portal } from "@linusborg/vue-simple-portal";
+import { ResizeObserver } from '@juggle/resize-observer';
+import { Portal } from '@linusborg/vue-simple-portal';
 
 const defaultPosition = {
   left: -1000,
@@ -101,11 +101,11 @@ export default {
       const margin = 12;
       const left = Math.min(
         window.innerWidth - menuWidth - margin,
-        Math.max(margin, centerOfSelection - menuWidth / 2)
+        Math.max(margin, centerOfSelection - menuWidth / 2),
       );
       const top = Math.min(
         window.innerHeight - menuHeight - margin,
-        Math.max(margin, selectionBounds.top - menuHeight)
+        Math.max(margin, selectionBounds.top - menuHeight),
       );
 
       // if the menu has been offset to not extend offscreen then we should adjust
@@ -147,8 +147,8 @@ export default {
   },
   mounted() {
     // 注册 mousedown/mouseup
-    window.addEventListener("mousedown", this.handleMouseDown);
-    window.addEventListener("mouseup", this.handleMouseUp);
+    window.addEventListener('mousedown', this.handleMouseDown);
+    window.addEventListener('mouseup', this.handleMouseUp);
   },
   updated() {
     this.resizeObj.observe(this.$refs.innerWrapper);
@@ -158,8 +158,8 @@ export default {
     this.resizeObj.disconnect();
 
     // 销毁注册的鼠标事件
-    window.removeEventListener("mousedown", this.handleMouseDown);
-    window.removeEventListener("mouseup", this.handleMouseUp);
+    window.removeEventListener('mousedown', this.handleMouseDown);
+    window.removeEventListener('mouseup', this.handleMouseUp);
   },
 };
 </script>
@@ -184,7 +184,7 @@ export default {
   white-space: nowrap;
 
   &::before {
-    content: "";
+    content: '';
     display: block;
     width: 24px;
     height: 24px;

@@ -21,6 +21,7 @@ import {
   Transfer,
   Tag,
   Switch,
+  Popover,
 } from 'ant-design-vue';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import {
@@ -48,6 +49,7 @@ import {
   faGripHorizontal,
   faImage,
   faTint,
+  faArrowRight,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
@@ -81,6 +83,7 @@ library.add(
   faGripHorizontal,
   faImage,
   faTint,
+  faArrowRight,
 );
 
 Vue.component('font-awesome-icon', FontAwesomeIcon);
@@ -109,6 +112,7 @@ Vue.use(Transfer);
 Vue.use(Tag);
 Vue.use(Select);
 Vue.use(Switch);
+Vue.use(Popover);
 
 // 捕获 monaco 的 unhandledrejection
 window.addEventListener('unhandledrejection', function(event) {
