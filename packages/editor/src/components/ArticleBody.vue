@@ -141,7 +141,6 @@ export default defineComponent({
           new HardBreak(),
           new Paragraph(),
           new Title(),
-          new History(),
           new Explain(),
           new StepStart(),
           new StepEnd(),
@@ -170,17 +169,7 @@ export default defineComponent({
             nested: true,
           }),
           new TodoList(),
-          new Heading({
-            levels: [1, 2, 3, 4],
-          }),
           new HorizontalRule(),
-          new Image({
-            dictionary,
-            uploadImage: this.uploadImage,
-            onImageUploadStart: this.onImageUploadStart,
-            onImageUploadStop: this.onImageUploadStop,
-            onShowToast: this.onShowToast,
-          }),
           new Table({
             resizable: true,
           }),
@@ -396,7 +385,7 @@ export default defineComponent({
   updated() {
     console.log('this.doc', this.doc);
     console.log('this.doc.value', this.doc.value);
-    if (this.doc) {
+    if (this.doc && this.editor) {
       this.editor.setContent(this.doc);
     }
   },
