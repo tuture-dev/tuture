@@ -27,6 +27,7 @@
             class="list-item"
           >
             <block-menu-item
+              type="create"
               :onClick="() => insertItem(item)"
               :selected="index === selectedIndex && isActive"
               :icon="item.icon"
@@ -210,7 +211,7 @@ export default {
       const { view } = props;
       const { selection } = view.state;
       const startPos = view.coordsAtPos(selection.$from.pos);
-      const ref = this.$refs.menuRef.$el;
+      const ref = this.$refs.menuRef;
       const offsetHeight = ref ? ref.offsetHeight : 0;
       const paragraph = view.domAtPos(selection.$from.pos);
 
@@ -267,7 +268,7 @@ export default {
         dispatch(
           state.tr.insertText(
             '',
-            parent.pos,
+            parent.pos + 1,
             parent.pos + parent.node.textContent.length + 1,
           ),
         );
