@@ -95,6 +95,11 @@ import {
   Notice,
   CodeBlock,
   DiffBlock,
+  Explain,
+  StepStart,
+  StepEnd,
+  FileStart,
+  FileEnd,
   Table,
   TableHeaderCell,
   TableRow,
@@ -114,6 +119,7 @@ import EditBlockMenu from '@/editor/components/EditBlockMenu.vue';
 
 import useNowArticleId from '@/use/useNowArticleId';
 import { DataPaste } from '@/editor/plugins';
+import useArticleDoc from '@/use/useArticleDoc';
 
 export default defineComponent({
   name: 'ArticleBody',
@@ -135,6 +141,22 @@ export default defineComponent({
           new HardBreak(),
           new Paragraph(),
           new Title(),
+          new History(),
+          new Explain(),
+          new StepStart(),
+          new StepEnd(),
+          new FileStart(),
+          new FileEnd(),
+          new Heading({
+            levels: [1, 2, 3, 4, 5, 6],
+          }),
+          new Image({
+            dictionary,
+            uploadImage: this.uploadImage,
+            onImageUploadStart: this.onImageUploadStart,
+            onImageUploadStop: this.onImageUploadStop,
+            onShowToast: this.onShowToast,
+          }),
           new Blockquote(),
           new CodeBlock(),
           new DiffBlock(),
@@ -199,6 +221,7 @@ export default defineComponent({
           new DataPaste(),
         ],
         onUpdate: ({ getJSON }) => {
+          this.doc = getJSON();
           localStorage.setItem('editure-doc', JSON.stringify(getJSON()));
         },
       }),
@@ -370,15 +393,26 @@ export default defineComponent({
       return this.getArticleById(this.nowArticleId) || {};
     },
   },
-  mounted() {
-    const doc = localStorage.getItem('editure-doc');
-    if (doc) {
-      this.editor.setContent(JSON.parse(doc));
+  updated() {
+    console.log('this.doc', this.doc);
+    console.log('this.doc.value', this.doc.value);
+    if (this.doc) {
+      this.editor.setContent(this.doc);
     }
   },
-  setup() {
+  // mounted() {
+  //   // const doc = localStorage.getItem('editure-doc');
+  //   console.log('this.doc', this.doc);
+  //   console.log('this.doc.value', this.doc.value);
+  //   if (this.content) {
+  //     this.editor.setContent(this.content);
+  //   }
+  // },
+  setup(props) {
     const { nowArticleId } = useNowArticleId();
-    return { nowArticleId };
+    const { doc } = useArticleDoc(nowArticleId.value);
+    // this.editor.setContent(JSON.parse(doc));
+    return { nowArticleId, doc };
   },
 });
 </script>

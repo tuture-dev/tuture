@@ -1,12 +1,13 @@
 import { Router } from 'express';
 
+import { loadArticle, loadCollection, saveArticle } from '../utils/collection';
 import TaskQueue from '../utils/task-queue';
 
 export function createArticlesRouter(queue: TaskQueue) {
   const router = Router();
 
   router.get('/', (_, res) => {
-    const { articles } = queue.readCollection();
+    const { articles } = loadCollection();
     res.json(articles);
   });
 
@@ -17,23 +18,23 @@ export function createArticlesRouter(queue: TaskQueue) {
 
   router.get('/:articleId', (req, res) => {
     const { articleId } = req.params;
-    const { articles } = queue.readCollection();
-    const article = articles.filter(({ id }) => articleId === id);
+    res.json(loadArticle(articleId));
+  });
 
-    res.json(article);
+  router.put('/:articleId', (req, res) => {
+    const { articleId } = req.params;
+    saveArticle(articleId, req.body);
+    res.sendStatus(200);
   });
 
   router.delete('/:articleId', (req, res) => {
     const { articleId } = req.params;
 
     queue.addTask((c) => {
-      const { articles, steps } = c;
+      const { articles } = c;
       return {
         ...c,
         articles: articles.filter((article) => article.id !== articleId),
-        steps: steps.map((step) =>
-          step.articleId === articleId ? { ...step, articleId: null } : step,
-        ),
       };
     }, 0);
 
