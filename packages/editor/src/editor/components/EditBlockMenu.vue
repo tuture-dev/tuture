@@ -93,7 +93,8 @@ import {
   findParentDomRefOfType,
   findChildrenByType,
 } from 'prosemirror-utils';
-import { toggleBlockType, toggleList } from 'tiptap-commands';
+import { toggleBlockType, setBlockType } from 'tiptap-commands';
+import { toggleList } from '../commands/list';
 
 export default {
   props: [
@@ -703,11 +704,8 @@ export default {
         bullet_list: 'list_item',
       };
       if (['todo_list', 'bullet_list', 'ordered_list'].includes(item.name)) {
-        toggleList(
-          schema.nodes[item.name],
-          schema.nodes[mapListItem[item.name]],
-        )(state, dispatch, this.view);
-
+        // 首先将原块变为 paragraph，然后再变到对应的 list
+        toggleList(schema.nodes[item.name])(state, dispatch, this.view);
         this.view.focus();
         return;
       }
