@@ -71,7 +71,6 @@ import {
   Strike,
   HardBreak,
   Code,
-  Heading,
   History,
   Blockquote,
   ListItem,
@@ -91,6 +90,7 @@ import {
 
 import {
   TodoItem,
+  Heading,
   Image,
   Notice,
   CodeBlock,
@@ -383,24 +383,13 @@ export default defineComponent({
     },
   },
   updated() {
-    console.log('this.doc', this.doc);
-    console.log('this.doc.value', this.doc.value);
     if (this.doc && this.editor) {
       this.editor.setContent(this.doc);
     }
   },
-  // mounted() {
-  //   // const doc = localStorage.getItem('editure-doc');
-  //   console.log('this.doc', this.doc);
-  //   console.log('this.doc.value', this.doc.value);
-  //   if (this.content) {
-  //     this.editor.setContent(this.content);
-  //   }
-  // },
-  setup(props) {
+  setup() {
     const { nowArticleId } = useNowArticleId();
     const { doc } = useArticleDoc(nowArticleId.value);
-    // this.editor.setContent(JSON.parse(doc));
     return { nowArticleId, doc };
   },
 });

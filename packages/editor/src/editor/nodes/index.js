@@ -1,4 +1,5 @@
 export { default as TodoItem } from './TodoItem';
+export { default as Heading } from './Heading';
 export { default as Image } from './Image';
 export { default as Notice } from './Notice';
 export { default as Explain } from './Explain';

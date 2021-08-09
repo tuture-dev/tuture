@@ -15,7 +15,6 @@ export default class StepEnd extends Node {
       editable: false,
       attrs: {
         commit: { default: '' },
-        file: { default: '' },
       },
       toDOM: () => ['div', 0],
     };
