@@ -1,16 +1,26 @@
-import fs from 'fs';
-import path from 'path';
 import { Router } from 'express';
-import { TUTURE_ROOT, DIFF_PATH } from '@tuture/core';
-
-const workspace = process.env.TUTURE_PATH || process.cwd();
-const diffPath = path.join(workspace, TUTURE_ROOT, DIFF_PATH);
+import { readDiff, readFileAtCommit } from '../utils';
 
 export const createDiffRouter = () => {
   const router = Router();
 
-  router.get('/', (_, res) => {
-    res.json(JSON.parse(fs.readFileSync(diffPath).toString()));
+  router.get('/', async (req, res) => {
+    const commit = req.query.commit as string;
+    const file = req.query.file as string;
+
+    if (!commit || !file) {
+      return res.sendStatus(400);
+    }
+
+    const diff = await readDiff(commit);
+    const fd = diff.filter((f) => f.to === file)[0];
+
+    const data = {
+      code: fd.deleted ? '' : await readFileAtCommit(commit, file),
+      originalCode: fd.new ? '' : await readFileAtCommit(commit, file),
+    };
+
+    res.json(data);
   });
 
   return router;

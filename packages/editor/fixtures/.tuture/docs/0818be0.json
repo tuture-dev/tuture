@@ -1,0 +1,5270 @@
+{
+  "type": "doc",
+  "content": [
+    {
+      "type": "step_start",
+      "attrs": {
+        "commit": "c64b3b6",
+        "outdated": true
+      }
+    },
+    {
+      "type": "heading",
+      "content": [
+        {
+          "type": "text",
+          "text": "项目初始化"
+        }
+      ],
+      "attrs": {
+        "id": "655e1e53",
+        "level": 2,
+        "fixed": true,
+        "step": {
+          "commit": "c64b3b6"
+        },
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "fixed": true,
+        "level": "step",
+        "pos": "pre",
+        "commit": "c64b3b6",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "在这一系列教程中，我们将会实现一个全栈美食分享网站，后端用 Django 实现，前端则是 Nuxt 框架，下面是最终完成后的项目效果："
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "image",
+              "attrs": {
+                "src": ".tuture/assets/demo.gif",
+                "alt": "",
+                "title": ""
+              }
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 3
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "预备知识"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "本教程假定你已经知道了"
+            }
+          ]
+        },
+        {
+          "type": "bullet_list",
+          "content": [
+            {
+              "type": "list_item",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "基本的 Python 3 语言知识，包括使用 pip 安装包"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "list_item",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Django 框架的基础概念（MTV 架构），可参考这篇"
+                    },
+                    {
+                      "type": "text",
+                      "text": "快速入门教程",
+                      "marks": [
+                        {
+                          "type": "link",
+                          "attrs": {
+                            "href": "https://tuture.co/2019/11/19/55d393c/",
+                            "title": ""
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": "进行学习"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "list_item",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Vue 的基础概念，以及用 npm 工具链的使用，可参考"
+                    },
+                    {
+                      "type": "text",
+                      "text": "这篇教程",
+                      "marks": [
+                        {
+                          "type": "link",
+                          "attrs": {
+                            "href": "https://tuture.co/2019/10/17/0b662ce/",
+                            "title": ""
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "list_item",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "前后端分离的基本概念，包括前端如何通过发起 HTTP(S) 请求从后端获取数据"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 3
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "学习目标"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "学完这篇教程后，你将："
+            }
+          ]
+        },
+        {
+          "type": "bullet_list",
+          "content": [
+            {
+              "type": "list_item",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "了解用 pipenv 工具管理 Python 依赖"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "list_item",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "学会用 Django REST Framework 快速开发 REST API"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "list_item",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "学会用 Nuxt 框架快速开发 SPA（单页应用），能够从后端获取数据并渲染"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 3
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "用 pipenv 初始化 Python 环境"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "首先创建项目目录，并进入："
+            }
+          ]
+        },
+        {
+          "type": "code_block",
+          "attrs": {
+            "language": "bash"
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "$ mkdir recipes_app && cd recipes_app"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "在这个项目中，我们用 "
+            },
+            {
+              "type": "text",
+              "text": "pipenv",
+              "marks": [
+                {
+                  "type": "link",
+                  "attrs": {
+                    "href": "https://pipenv.kennethreitz.org/",
+                    "title": ""
+                  }
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "text": " 来管理 Python 项目的环境依赖。Pipenv 是 Python 社区偶像级大师 Kenneth Reitz 牵头开发的开发流程优化工具，立志集所有项目管理工具（Node 的 npm、Ruby 的 bundler、PHP 的 composer 等等）的优势为一体。我们通过下面的命令安装 pipenv，并创建项目的依赖环境："
+            }
+          ]
+        },
+        {
+          "type": "code_block",
+          "attrs": {
+            "language": "bash"
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "$ pip install pipenv\n$ pipenv shell"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "如果看到命令提示符前面出现 "
+            },
+            {
+              "type": "text",
+              "text": "(recipes_app-nV3wuGJ1)",
+              "marks": [
+                {
+                  "type": "code"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "text": " 的提示（后面那串随机字符串可能不一样），就表明我们已经成功地创建了项目独有的虚拟环境！我们接着安装 Django “三件套”："
+            }
+          ]
+        },
+        {
+          "type": "bullet_list",
+          "content": [
+            {
+              "type": "list_item",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Django",
+                      "marks": [
+                        {
+                          "type": "bold"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": ": Django 框架本身，提供了丰富且强大的服务器开发组件；"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "list_item",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "DRF (Django Rest Framework)",
+                      "marks": [
+                        {
+                          "type": "bold"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": "：Django 框架的超级搭档，大大方便了 REST API 的开发；"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "list_item",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Django CORS Headers",
+                      "marks": [
+                        {
+                          "type": "bold"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": "：用于实现跨域资源请求（CORS）的 Django 中间件（如果你不了解 CORS，可以参考阮一峰的"
+                    },
+                    {
+                      "type": "text",
+                      "text": "日志",
+                      "marks": [
+                        {
+                          "type": "link",
+                          "attrs": {
+                            "href": "http://www.ruanyifeng.com/blog/2016/04/cors.html",
+                            "title": ""
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": "）。"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "安装命令如下："
+            }
+          ]
+        },
+        {
+          "type": "code_block",
+          "attrs": {
+            "language": "bash"
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "(recipes_app-nV3wuGJ1) $ pipenv install django django-rest-framework django-cors-headers"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "file": "Pipfile",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "file": "Pipfile",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "这时 pipenv 便产生了 Pipfile 文件，它的作用就类似 Node 项目中的 package.json 文件："
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "file": "Pipfile",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "file": "Pipfile",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "file": "Pipfile",
+        "outdated": true
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "file": "api/api/__init__.py",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "file": "api/api/__init__.py",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "file": "api/api/__init__.py",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "file": "api/api/__init__.py",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "file": "api/api/__init__.py",
+        "outdated": true
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "file": "api/api/settings.py",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "file": "api/api/settings.py",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "file": "api/api/settings.py",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "file": "api/api/settings.py",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "file": "api/api/settings.py",
+        "outdated": true
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "file": "api/api/urls.py",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "file": "api/api/urls.py",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "file": "api/api/urls.py",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "file": "api/api/urls.py",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "file": "api/api/urls.py",
+        "outdated": true
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "file": "api/api/wsgi.py",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "file": "api/api/wsgi.py",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "file": "api/api/wsgi.py",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "file": "api/api/wsgi.py",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "file": "api/api/wsgi.py",
+        "outdated": true
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "file": "api/core/__init__.py",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "file": "api/core/__init__.py",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "file": "api/core/__init__.py",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "file": "api/core/__init__.py",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "file": "api/core/__init__.py",
+        "outdated": true
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "file": "api/core/admin.py",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "file": "api/core/admin.py",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "file": "api/core/admin.py",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "file": "api/core/admin.py",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "file": "api/core/admin.py",
+        "outdated": true
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "file": "api/core/apps.py",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "file": "api/core/apps.py",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "file": "api/core/apps.py",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "file": "api/core/apps.py",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "file": "api/core/apps.py",
+        "outdated": true
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "file": "api/core/migrations/__init__.py",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "file": "api/core/migrations/__init__.py",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "file": "api/core/migrations/__init__.py",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "file": "api/core/migrations/__init__.py",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "file": "api/core/migrations/__init__.py",
+        "outdated": true
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "file": "api/core/models.py",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "file": "api/core/models.py",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "file": "api/core/models.py",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "file": "api/core/models.py",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "file": "api/core/models.py",
+        "outdated": true
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "file": "api/core/tests.py",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "file": "api/core/tests.py",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "file": "api/core/tests.py",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "file": "api/core/tests.py",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "file": "api/core/tests.py",
+        "outdated": true
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "file": "api/core/views.py",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "file": "api/core/views.py",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "file": "api/core/views.py",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "file": "api/core/views.py",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "file": "api/core/views.py",
+        "outdated": true
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "file": "api/manage.py",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "file": "api/manage.py",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "file": "api/manage.py",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "file": "api/manage.py",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "file": "api/manage.py",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "fixed": true,
+        "level": "step",
+        "pos": "post",
+        "commit": "c64b3b6",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "然后用 Django 脚手架创建服务器项目 "
+            },
+            {
+              "type": "text",
+              "text": "api",
+              "marks": [
+                {
+                  "type": "code"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "text": " 的基本结构，并进入到 "
+            },
+            {
+              "type": "text",
+              "text": "api",
+              "marks": [
+                {
+                  "type": "code"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "text": "创建一个子应用 "
+            },
+            {
+              "type": "text",
+              "text": "core",
+              "marks": [
+                {
+                  "type": "code"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "text": "："
+            }
+          ]
+        },
+        {
+          "type": "code_block",
+          "attrs": {
+            "language": "bash"
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "(recipes_app-nV3wuGJ1) $ django-admin startproject api\n(recipes_app-nV3wuGJ1) $ cd api\n(recipes_app-nV3wuGJ1) $ python manage.py startapp core"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "接着进行数据库迁移，并创建用于登录后台管理的超级用户："
+            }
+          ]
+        },
+        {
+          "type": "code_block",
+          "attrs": {
+            "language": "bash"
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "(recipes_app-nV3wuGJ1) $ python manage.py migrate\n(recipes_app-nV3wuGJ1) $ python manage.py createsuperuser"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "按照问题输入信息即可。要记住用户名和密码哦！然后运行开发服务器："
+            }
+          ]
+        },
+        {
+          "type": "code_block",
+          "attrs": {
+            "language": "bash"
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "(recipes_app-nV3wuGJ1) $ python manage.py runserver"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "访问 "
+            },
+            {
+              "type": "text",
+              "text": "http://localhost:8000/admin",
+              "marks": [
+                {
+                  "type": "link",
+                  "attrs": {
+                    "href": "http://localhost:8000/admin",
+                    "title": ""
+                  }
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "text": "，可以看到后台管理的登录页面。输入刚才创建的超级用户的用户名和密码，就进入了后台管理系统，如下所示："
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "image",
+              "attrs": {
+                "src": ".tuture/assets/django-admin.png",
+                "alt": "",
+                "title": ""
+              }
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "熟悉的界面，但是——没什么东西，而且全是英文！别担心，后面我们会一个个搞定。"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "step_end",
+      "attrs": {
+        "commit": "c64b3b6",
+        "outdated": true
+      }
+    },
+    {
+      "type": "step_start",
+      "attrs": {
+        "commit": "d4d056f",
+        "outdated": true
+      }
+    },
+    {
+      "type": "heading",
+      "content": [
+        {
+          "type": "text",
+          "text": "用 Django 实现 REST API"
+        }
+      ],
+      "attrs": {
+        "id": "a083382f",
+        "level": 2,
+        "fixed": true,
+        "step": {
+          "commit": "d4d056f"
+        },
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "fixed": true,
+        "level": "step",
+        "pos": "pre",
+        "commit": "d4d056f",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "接下来我们将实现本项目所需要用的所有 API。对，你没有听错，我们会在这一步实现所有后端接口，大概只 10 分钟左右可以敲完！这就是 Django 的宣言："
+            }
+          ]
+        },
+        {
+          "type": "blockquote",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "The web framework for perfectionists with deadlines."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "“为赶时间的完美主义者而生！”"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "file": ".editorconfig",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "file": ".editorconfig",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "file": ".editorconfig",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "file": ".editorconfig",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "file": ".editorconfig",
+        "outdated": true
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "file": ".gitignore",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "file": ".gitignore",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "file": ".gitignore",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "file": ".gitignore",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "file": ".gitignore",
+        "outdated": true
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "file": "api/api/settings.py",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "file": "api/api/settings.py",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 3
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "全局配置"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "首先，在全局配置文件 settings.py 中做如下改动："
+            }
+          ]
+        },
+        {
+          "type": "ordered_list",
+          "attrs": {
+            "order": 1
+          },
+          "content": [
+            {
+              "type": "list_item",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "在 "
+                    },
+                    {
+                      "type": "text",
+                      "text": "INSTALLED_APPS",
+                      "marks": [
+                        {
+                          "type": "code"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": " 中添加 "
+                    },
+                    {
+                      "type": "text",
+                      "text": "rest_framework",
+                      "marks": [
+                        {
+                          "type": "code"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": "、"
+                    },
+                    {
+                      "type": "text",
+                      "text": "corsheaders",
+                      "marks": [
+                        {
+                          "type": "code"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": " 和 "
+                    },
+                    {
+                      "type": "text",
+                      "text": "core",
+                      "marks": [
+                        {
+                          "type": "code"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": "，前两个分别是 Django Rest Framework 和 Django CORS Headers 的应用，最后一个是我们网站的应用；"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "list_item",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "在 "
+                    },
+                    {
+                      "type": "text",
+                      "text": "MIDDLEWARE",
+                      "marks": [
+                        {
+                          "type": "code"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": " 中添加 "
+                    },
+                    {
+                      "type": "text",
+                      "text": "corsheaders.middleware.CorsMiddleware",
+                      "marks": [
+                        {
+                          "type": "code"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": "，注册跨域请求中间件（"
+                    },
+                    {
+                      "type": "text",
+                      "text": "注意一定要放在最前面！",
+                      "marks": [
+                        {
+                          "type": "bold"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": "）;"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "list_item",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "设置 "
+                    },
+                    {
+                      "type": "text",
+                      "text": "CORS_ORIGIN_WHITELIST",
+                      "marks": [
+                        {
+                          "type": "code"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": "，添加跨域请求白名单，这里我们先写上 "
+                    },
+                    {
+                      "type": "text",
+                      "text": "http://localhost:3000",
+                      "marks": [
+                        {
+                          "type": "code"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": "，后面开发前端时将用到；"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "list_item",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "设置 "
+                    },
+                    {
+                      "type": "text",
+                      "text": "LANGUAGE_CODE",
+                      "marks": [
+                        {
+                          "type": "code"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": " 为 "
+                    },
+                    {
+                      "type": "text",
+                      "text": "zh-hans",
+                      "marks": [
+                        {
+                          "type": "code"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": "，可以将后台管理设置为中文，非常方便；"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "list_item",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "设置 "
+                    },
+                    {
+                      "type": "text",
+                      "text": "MEDIA_URL",
+                      "marks": [
+                        {
+                          "type": "code"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": " 和 "
+                    },
+                    {
+                      "type": "text",
+                      "text": "MEDIA_ROOT",
+                      "marks": [
+                        {
+                          "type": "code"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": "，用于在开发中提供图片资源文件的访问。"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "具体代码如下："
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30,
+          31,
+          32,
+          33,
+          34,
+          35,
+          49,
+          50,
+          51,
+          62,
+          63,
+          64,
+          65,
+          66,
+          67,
+          68,
+          69,
+          70,
+          71,
+          72,
+          73,
+          74,
+          75,
+          76,
+          77,
+          78,
+          79,
+          80,
+          81,
+          82,
+          83,
+          84,
+          85,
+          86,
+          87,
+          88,
+          89,
+          90,
+          91,
+          92,
+          93,
+          94,
+          95,
+          96,
+          97,
+          98,
+          99,
+          100,
+          101,
+          102,
+          103,
+          104,
+          105,
+          106,
+          107,
+          108,
+          109,
+          118,
+          119,
+          120,
+          121,
+          122,
+          123,
+          124,
+          125
+        ],
+        "file": "api/api/settings.py",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "file": "api/api/settings.py",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "file": "api/api/settings.py",
+        "outdated": true
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "file": "api/core/models.py",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "file": "api/core/models.py",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 3
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "实现 core 应用"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "接下来就是实现 "
+            },
+            {
+              "type": "text",
+              "text": "core",
+              "marks": [
+                {
+                  "type": "code"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "text": " 这个 Django 应用。实现一个 Django 应用大致都是按照这样的流程："
+            }
+          ]
+        },
+        {
+          "type": "ordered_list",
+          "attrs": {
+            "order": 1
+          },
+          "content": [
+            {
+              "type": "list_item",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "定义数据模型（models.py），用于实现和数据库之间的绑定；"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "list_item",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "定义后台管理配置（admin.py），用于在后台管理系统中进行操作；"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "list_item",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "定义序列化器（serializers.py），"
+                    },
+                    {
+                      "type": "text",
+                      "text": "仅当实现 REST API 时需要",
+                      "marks": [
+                        {
+                          "type": "italic"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": "，用于提供数据模型的 JSON 序列化（或其他数据交换格式）；"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "list_item",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "定义视图（views.py），用于实现具体的业务逻辑；"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "list_item",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "定义路由（urls.py），用于定义路由规则，将其映射到相应的视图；"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "list_item",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "将应用路由接入全局路由文件（api/urls.py）中。"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "我们从第一步开始，完成菜谱 "
+            },
+            {
+              "type": "text",
+              "text": "Recipe",
+              "marks": [
+                {
+                  "type": "code"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "text": " 数据模型如下："
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "file": "api/core/models.py",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "file": "api/core/models.py",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "其中，"
+            },
+            {
+              "type": "text",
+              "text": "class Meta",
+              "marks": [
+                {
+                  "type": "code"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "text": " 定义了 "
+            },
+            {
+              "type": "text",
+              "text": "Recipe",
+              "marks": [
+                {
+                  "type": "code"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "text": " 的元数据；"
+            },
+            {
+              "type": "text",
+              "text": "__str__",
+              "marks": [
+                {
+                  "type": "code"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "text": " 方法定义了一个菜谱对象转换为字符串时应该怎样显示。这些设置的作用在打开后台管理系统之后就会很清晰了。想要了解更多关于 Django 数据模型的知识，请参考相关"
+            },
+            {
+              "type": "text",
+              "text": "中文文档",
+              "marks": [
+                {
+                  "type": "link",
+                  "attrs": {
+                    "href": "https://docs.djangoproject.com/zh-hans/2.2/topics/db/models/",
+                    "title": ""
+                  }
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "text": "。"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "file": "api/core/models.py",
+        "outdated": true
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "file": "api/core/admin.py",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "file": "api/core/admin.py",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "第二步，为 "
+            },
+            {
+              "type": "text",
+              "text": "core",
+              "marks": [
+                {
+                  "type": "code"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "text": " 子应用配置相应的后台管理功能。非常简单，只需注册定义好的 "
+            },
+            {
+              "type": "text",
+              "text": "Recipe",
+              "marks": [
+                {
+                  "type": "code"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "text": " 模型："
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "file": "api/core/admin.py",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "file": "api/core/admin.py",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "file": "api/core/admin.py",
+        "outdated": true
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "file": "api/core/serializers.py",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "file": "api/core/serializers.py",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "第三步，定义序列化器 serializers.py（脚手架并不会自动创建，需要手动创建）。序列化器是 Django Rest Framework 提供的功能，能够非常方便地将 Django 数据模型序列化成相应的 JSON 数据格式。在这里，我们定义一个 "
+            },
+            {
+              "type": "text",
+              "text": "RecipeSerializer",
+              "marks": [
+                {
+                  "type": "code"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "text": "，并在 "
+            },
+            {
+              "type": "text",
+              "text": "class Meta",
+              "marks": [
+                {
+                  "type": "code"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "text": " 中指定对应的数据模型为刚才创建的 "
+            },
+            {
+              "type": "text",
+              "text": "Recipe",
+              "marks": [
+                {
+                  "type": "code"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "text": "，并选择相应的字段展示："
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "file": "api/core/serializers.py",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "file": "api/core/serializers.py",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "file": "api/core/serializers.py",
+        "outdated": true
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "file": "api/core/views.py",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "file": "api/core/views.py",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "第四步，实现视图。这里我们采用开挂模式，直接调用 Django Rest Framework 提供的模型视图集（"
+            },
+            {
+              "type": "text",
+              "text": "ModelViewset",
+              "marks": [
+                {
+                  "type": "code"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "text": "）直接搞定数据模型的增删改查逻辑："
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "file": "api/core/views.py",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "file": "api/core/views.py",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "只需指定 "
+            },
+            {
+              "type": "text",
+              "text": "serializer_class",
+              "marks": [
+                {
+                  "type": "code"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "text": "（序列器类）和 "
+            },
+            {
+              "type": "text",
+              "text": "queryset",
+              "marks": [
+                {
+                  "type": "code"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "text": "（模型查询集），就自动定义好了模型的添加、删除、查询和修改！虽然视图集非常强大，但是如果要实现更加灵活的业务逻辑，那么还是要为每个接口定义单独的视图类才行。"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "file": "api/core/views.py",
+        "outdated": true
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "file": "api/core/urls.py",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "file": "api/core/urls.py",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "第五步，实现路由。由于我们上一步使用了视图集，因此只需先调用 "
+            },
+            {
+              "type": "text",
+              "text": "DefaultRouter",
+              "marks": [
+                {
+                  "type": "code"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "text": " 自动生成相关的路由，然后加入记录路由映射的列表 "
+            },
+            {
+              "type": "text",
+              "text": "urlpatterns",
+              "marks": [
+                {
+                  "type": "code"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "text": " 中："
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "file": "api/core/urls.py",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "file": "api/core/urls.py",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "router",
+              "marks": [
+                {
+                  "type": "code"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "text": " 为我们自动生成以下路由："
+            }
+          ]
+        },
+        {
+          "type": "bullet_list",
+          "content": [
+            {
+              "type": "list_item",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "/recipes/",
+                      "marks": [
+                        {
+                          "type": "code"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": "：创建食谱（POST 方法）或读取食谱列表（GET方法）；"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "list_item",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "/recipes/{id}",
+                      "marks": [
+                        {
+                          "type": "code"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": "：获取单个食谱（GET）、更新单个食谱（PUT）或删除食谱（DELETE）。"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "notice",
+          "attrs": {
+            "style": "warning"
+          },
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "在 Django 路由定义中不包括 HTTP 方法，具体的 HTTP 方法可以在视图中读取并判断。"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "file": "api/core/urls.py",
+        "outdated": true
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "file": "api/api/urls.py",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "file": "api/api/urls.py",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "最后一步，我们将 "
+            },
+            {
+              "type": "text",
+              "text": "core",
+              "marks": [
+                {
+                  "type": "code"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "text": " 子应用中的路由接入全局路由："
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+        "file": "api/api/urls.py",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "file": "api/api/urls.py",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "file": "api/api/urls.py",
+        "outdated": true
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "file": "api/core/migrations/0001_initial.py",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "file": "api/core/migrations/0001_initial.py",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "file": "api/core/migrations/0001_initial.py",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "file": "api/core/migrations/0001_initial.py",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "file": "api/core/migrations/0001_initial.py",
+        "outdated": true
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "file": "tuture.yml",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "file": "tuture.yml",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "file": "tuture.yml",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "file": "tuture.yml",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "file": "tuture.yml",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "fixed": true,
+        "level": "step",
+        "pos": "post",
+        "commit": "d4d056f",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "没错，关于食谱的增删改查的 API 我们全都实现了！不信？先运行开发服务器："
+            }
+          ]
+        },
+        {
+          "type": "code_block",
+          "attrs": {
+            "language": "bash"
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "(recipes_app-nV3wuGJ1) $ python manage.py runserver"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "由于 Django REST Framework 为我们提供了测试 API 的 Web 界面，因此这里就不用 Postman 等工具进行测试了。用浏览器访问 "
+            },
+            {
+              "type": "text",
+              "text": "localhost:8000/api/recipes",
+              "marks": [
+                {
+                  "type": "link",
+                  "attrs": {
+                    "href": "localhost:8000/api/recipes",
+                    "title": ""
+                  }
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "text": "，就进入了如下所示的 API 测试页面："
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "image",
+              "attrs": {
+                "src": ".tuture/assets/image.png",
+                "alt": "",
+                "title": ""
+              }
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "这个页面的下方还有添加数据（发起 POST 请求）的表单，我们填一些数据，然后点击 POST 按钮："
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "image",
+              "attrs": {
+                "src": ".tuture/assets/image-f3d22507493bf44a.png",
+                "alt": "",
+                "title": ""
+              }
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "然后再次访问食谱列表页面，就有我们刚刚添加的食谱了！此外，你还可以尝试访问单个食谱的详情页面（例如 "
+            },
+            {
+              "type": "text",
+              "text": "localhost:8000/api/recipes/1",
+              "marks": [
+                {
+                  "type": "link",
+                  "attrs": {
+                    "href": "localhost:8000/api/recipes/1",
+                    "title": ""
+                  }
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "text": "），并且可以通过 Web 页面直接修改或删除哦！"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "step_end",
+      "attrs": {
+        "commit": "d4d056f",
+        "outdated": true
+      }
+    },
+    {
+      "type": "step_start",
+      "attrs": {
+        "commit": "596203d",
+        "outdated": true
+      }
+    },
+    {
+      "type": "heading",
+      "content": [
+        {
+          "type": "text",
+          "text": "用 Nuxt.js 实现网站首页"
+        }
+      ],
+      "attrs": {
+        "id": "1e127db7",
+        "level": 2,
+        "fixed": true,
+        "step": {
+          "commit": "596203d"
+        },
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "fixed": true,
+        "level": "step",
+        "pos": "pre",
+        "commit": "596203d",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "Django 的 MTV 架构固然优秀，但是随着现在的业务逻辑越来越多地向前端倾斜（也就是现在流行的"
+            },
+            {
+              "type": "text",
+              "text": "富前端应用",
+              "marks": [
+                {
+                  "type": "bold"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "text": "），其中的 T（Template）需要更强大的武器来解决，这里就是我们的第二位主角 Nuxt。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 3
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "用脚手架初始化 Nuxt 项目"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "我们将把所有的前端代码放到 client 目录中，不过无需自己创建，我们调用 nuxt 的脚手架来创建前端应用："
+            }
+          ]
+        },
+        {
+          "type": "code_block",
+          "attrs": {
+            "language": "bash"
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "$ npx create-nuxt-app client"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "之后脚手架应用会询问一系列问题，按下面的截图进行选择（当然作者名填自己）："
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "image",
+              "attrs": {
+                "src": ".tuture/assets/create-nuxt-app.jpg",
+                "alt": "",
+                "title": ""
+              }
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "我们对 Nuxt 脚手架生成的目录结构稍作讲解。可以看到 client 目录下有以下子目录："
+            }
+          ]
+        },
+        {
+          "type": "bullet_list",
+          "content": [
+            {
+              "type": "list_item",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "assets：存放图片、CSS、JS 等原始资源文件"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "list_item",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "components：存放 Vue 组件"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "list_item",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "layouts：存放应用布局文件，布局可在多个页面中使用"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "list_item",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "middleware：存放应用的中间件。Nuxt 中的中间件指页面渲染前执行的自定义函数（本教程中不需要）"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "list_item",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "pages：应用的视图和路由。Nuxt 会根据此目录中的 "
+                    },
+                    {
+                      "type": "text",
+                      "text": ".vue",
+                      "marks": [
+                        {
+                          "type": "code"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": " 文件自动创建应用的路由"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "list_item",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "plugins: 存放 JavaScript 插件，用于在应用启动前加载（本教程中不需要）"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "list_item",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "static：存放通常不会改变的静态文件，并且将直接映射到路由（即可通过 "
+                    },
+                    {
+                      "type": "text",
+                      "text": "/static/picture.png",
+                      "marks": [
+                        {
+                          "type": "code"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": " 访问）"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "list_item",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "store：存放 Vuex Store 文件（本教程中不需要）"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "本项目所用到的图片资源请访问我的 "
+            },
+            {
+              "type": "text",
+              "text": "GitHub 仓库",
+              "marks": [
+                {
+                  "type": "link",
+                  "attrs": {
+                    "href": "https://github.com/mRcfps/recipes_app/tree/master/client/static/images",
+                    "title": ""
+                  }
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "text": "，并下载到对应的目录中。"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "file": "client/.editorconfig",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "file": "client/.editorconfig",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "file": "client/.editorconfig",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "file": "client/.editorconfig",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "file": "client/.editorconfig",
+        "outdated": true
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "file": "client/.gitignore",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "file": "client/.gitignore",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "file": "client/.gitignore",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "file": "client/.gitignore",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "file": "client/.gitignore",
+        "outdated": true
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "file": "client/README.md",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "file": "client/README.md",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "file": "client/README.md",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "file": "client/README.md",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "file": "client/README.md",
+        "outdated": true
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "file": "client/assets/README.md",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "file": "client/assets/README.md",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "file": "client/assets/README.md",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "file": "client/assets/README.md",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "file": "client/assets/README.md",
+        "outdated": true
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "file": "client/components/Logo.vue",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "file": "client/components/Logo.vue",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "file": "client/components/Logo.vue",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "file": "client/components/Logo.vue",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "file": "client/components/Logo.vue",
+        "outdated": true
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "file": "client/components/README.md",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "file": "client/components/README.md",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "file": "client/components/README.md",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "file": "client/components/README.md",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "file": "client/components/README.md",
+        "outdated": true
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "file": "client/layouts/README.md",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "file": "client/layouts/README.md",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "file": "client/layouts/README.md",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "file": "client/layouts/README.md",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "file": "client/layouts/README.md",
+        "outdated": true
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "file": "client/layouts/default.vue",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "file": "client/layouts/default.vue",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "file": "client/layouts/default.vue",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "file": "client/layouts/default.vue",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "file": "client/layouts/default.vue",
+        "outdated": true
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "file": "client/middleware/README.md",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "file": "client/middleware/README.md",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "file": "client/middleware/README.md",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "file": "client/middleware/README.md",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "file": "client/middleware/README.md",
+        "outdated": true
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "file": "client/nuxt.config.js",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "file": "client/nuxt.config.js",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "file": "client/nuxt.config.js",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "file": "client/nuxt.config.js",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "file": "client/nuxt.config.js",
+        "outdated": true
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "file": "client/package.json",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "file": "client/package.json",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "file": "client/package.json",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "file": "client/package.json",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "file": "client/package.json",
+        "outdated": true
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "file": "client/pages/README.md",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "file": "client/pages/README.md",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "file": "client/pages/README.md",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "file": "client/pages/README.md",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "file": "client/pages/README.md",
+        "outdated": true
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "file": "client/pages/index.vue",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "file": "client/pages/index.vue",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 3
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "编写前端首页"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "我们在 client/pages 中创建 index.vue 文件，并在其中实现我们的前端首页："
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "file": "client/pages/index.vue",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "file": "client/pages/index.vue",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "模板（Template）+ 脚本（Script）+ 样式（Style），经典的 Vue.js 组件。"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "file": "client/pages/index.vue",
+        "outdated": true
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "file": "client/pages/recipes/_id/edit.vue",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "file": "client/pages/recipes/_id/edit.vue",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "file": "client/pages/recipes/_id/edit.vue",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "file": "client/pages/recipes/_id/edit.vue",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "file": "client/pages/recipes/_id/edit.vue",
+        "outdated": true
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "file": "client/pages/recipes/_id/index.vue",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "file": "client/pages/recipes/_id/index.vue",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "file": "client/pages/recipes/_id/index.vue",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "file": "client/pages/recipes/_id/index.vue",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "file": "client/pages/recipes/_id/index.vue",
+        "outdated": true
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "file": "client/pages/recipes/add.vue",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "file": "client/pages/recipes/add.vue",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "file": "client/pages/recipes/add.vue",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "file": "client/pages/recipes/add.vue",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "file": "client/pages/recipes/add.vue",
+        "outdated": true
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "file": "client/pages/recipes/index.vue",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "file": "client/pages/recipes/index.vue",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "file": "client/pages/recipes/index.vue",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "file": "client/pages/recipes/index.vue",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "file": "client/pages/recipes/index.vue",
+        "outdated": true
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "file": "client/plugins/README.md",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "file": "client/plugins/README.md",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "file": "client/plugins/README.md",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "file": "client/plugins/README.md",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "file": "client/plugins/README.md",
+        "outdated": true
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "file": "client/static/README.md",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "file": "client/static/README.md",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "file": "client/static/README.md",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "file": "client/static/README.md",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "file": "client/static/README.md",
+        "outdated": true
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "file": "client/static/favicon.ico",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "file": "client/static/favicon.ico",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "file": "client/static/favicon.ico",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "file": "client/static/favicon.ico",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "file": "client/static/favicon.ico",
+        "outdated": true
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "file": "client/static/icon.png",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "file": "client/static/icon.png",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "file": "client/static/icon.png",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "file": "client/static/icon.png",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "file": "client/static/icon.png",
+        "outdated": true
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "file": "client/static/images/banner.jpg",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "file": "client/static/images/banner.jpg",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "file": "client/static/images/banner.jpg",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "file": "client/static/images/banner.jpg",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "file": "client/static/images/banner.jpg",
+        "outdated": true
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "file": "client/store/README.md",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "file": "client/store/README.md",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "file": "client/store/README.md",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "file": "client/store/README.md",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "file": "client/store/README.md",
+        "outdated": true
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "file": "client/yarn.lock",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "file": "client/yarn.lock",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "file": "client/yarn.lock",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "file": "client/yarn.lock",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "file": "client/yarn.lock",
+        "outdated": true
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "file": "tuture.yml",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "file": "tuture.yml",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [0, 1, 2, 3, 4, 5],
+        "file": "tuture.yml",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "file": "tuture.yml",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "file": "tuture.yml",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "fixed": true,
+        "level": "step",
+        "pos": "post",
+        "commit": "596203d",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "我们刚刚创建了 pages 目录下的 index.vue 文件，这意味着当访问根路由 "
+            },
+            {
+              "type": "text",
+              "text": "/",
+              "marks": [
+                {
+                  "type": "code"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "text": " 时，这个文件将被访问到。通过 "
+            },
+            {
+              "type": "text",
+              "text": "npm run dev",
+              "marks": [
+                {
+                  "type": "code"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "text": "运行我们的前端页面（"
+            },
+            {
+              "type": "text",
+              "text": "记得在 client 子目录下运行！",
+              "marks": [
+                {
+                  "type": "italic"
+                },
+                {
+                  "type": "bold"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "text": "），可以看到："
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "image",
+              "attrs": {
+                "src": ".tuture/assets/index-page.jpg",
+                "alt": "",
+                "title": ""
+              }
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "真是让人食欲大开！"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "step_end",
+      "attrs": {
+        "commit": "596203d",
+        "outdated": true
+      }
+    },
+    {
+      "type": "step_start",
+      "attrs": {
+        "commit": "63f7ab0",
+        "outdated": true
+      }
+    },
+    {
+      "type": "heading",
+      "content": [
+        {
+          "type": "text",
+          "text": "数据展示：实现食谱列表"
+        }
+      ],
+      "attrs": {
+        "id": "cc4982e5",
+        "level": 2,
+        "fixed": true,
+        "step": {
+          "commit": "63f7ab0"
+        },
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "fixed": true,
+        "level": "step",
+        "pos": "pre",
+        "commit": "63f7ab0",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "接下来我们将演示如何展示数据，并实现食谱列表页面。"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "file": "client/components/RecipeCard.vue",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "file": "client/components/RecipeCard.vue",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 3
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "实现 RecipeCard 组件"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "首先，实现将会在多个页面中反复使用的食谱卡片组件 "
+            },
+            {
+              "type": "text",
+              "text": "RecipeCard",
+              "marks": [
+                {
+                  "type": "code"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "text": " 如下："
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "file": "client/components/RecipeCard.vue",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "file": "client/components/RecipeCard.vue",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "在这个组件中，我们定义了两个 "
+            },
+            {
+              "type": "text",
+              "text": "props",
+              "marks": [
+                {
+                  "type": "code"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "text": "，分别是 "
+            },
+            {
+              "type": "text",
+              "text": "recipe",
+              "marks": [
+                {
+                  "type": "code"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "text": "（代表食谱对象）和 "
+            },
+            {
+              "type": "text",
+              "text": "onDelete",
+              "marks": [
+                {
+                  "type": "code"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "text": "（删除时的回调函数），并在模板中使用这两个成员。"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "file": "client/components/RecipeCard.vue",
+        "outdated": true
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "file": "client/pages/recipes/index.vue",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "file": "client/pages/recipes/index.vue",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 3
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "了解 Nuxt 的路由功能"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "在实现第二个页面之前，我们有必要先了解一下 Nuxt 的路由功能——通过 pages 目录下的文档结构，就可以自动生成 vue-router 的路由器配置！"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "例如我们这样安排 pages 下面的目录结构👇："
+            }
+          ]
+        },
+        {
+          "type": "code_block",
+          "attrs": {
+            "language": "text"
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "pages\n├── README.md\n├── index.vue\n└── recipes\n    ├── _id\n    │   ├── edit.vue\n    │   └── index.vue\n    ├── add.vue\n    └── index.vue"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "_id",
+              "marks": [
+                {
+                  "type": "code"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "text": " 目录（或者其他以单下划线开头的目录或 .vue 文件）被称作是"
+            },
+            {
+              "type": "text",
+              "text": "动态路由",
+              "marks": [
+                {
+                  "type": "bold"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "text": "（Dynamic Routing），可以接受参数作为 URL 的一部分。上面的 pages 目录自动生成下面的 "
+            },
+            {
+              "type": "text",
+              "text": "router",
+              "marks": [
+                {
+                  "type": "code"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "text": "："
+            }
+          ]
+        },
+        {
+          "type": "code_block",
+          "attrs": {
+            "language": "js"
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "router: {\n  routes: [\n    {\n      name: 'index',\n      path: '/',\n      component: 'pages/index.vue'\n    },\n    {\n      name: 'recipes',\n      path: '/recipes',\n      component: 'pages/recipes/index.vue'\n    },\n    {\n      name: 'recipes-add',\n      path: '/recipes/add',\n      component: 'pages/recipes/add.vue'\n    },\n    {\n      name: 'recipes-id',\n      path: '/recipes/:id?',\n      component: 'pages/recipes/_id/index.vue'\n    },\n    {\n      name: 'recipes-id-edit',\n      path: '/recipes/:id?/edit',\n      component: 'pages/recipes/_id/edit.vue'\n    }\n  ]\n}"
+            }
+          ]
+        },
+        {
+          "type": "notice",
+          "attrs": {
+            "style": "info"
+          },
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "如果想要更深入地了解 Nuxt 的路由功能，请参考"
+                },
+                {
+                  "type": "text",
+                  "text": "官方文档",
+                  "marks": [
+                    {
+                      "type": "link",
+                      "attrs": {
+                        "href": "https://nuxtjs.org/guide/routing",
+                        "title": ""
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": "。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 3
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "实现食谱列表页面"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "创建食谱列表页面 pages/recipes/index.vue（先使用假数据填充），代码如下："
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "file": "client/pages/recipes/index.vue",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "file": "client/pages/recipes/index.vue",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "file": "client/pages/recipes/index.vue",
+        "outdated": true
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "file": "client/static/images/food-1.jpeg",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "file": "client/static/images/food-1.jpeg",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "file": "client/static/images/food-1.jpeg",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "file": "client/static/images/food-1.jpeg",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "file": "client/static/images/food-1.jpeg",
+        "outdated": true
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "file": "client/static/images/food-2.jpeg",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "file": "client/static/images/food-2.jpeg",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "file": "client/static/images/food-2.jpeg",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "file": "client/static/images/food-2.jpeg",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "file": "client/static/images/food-2.jpeg",
+        "outdated": true
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "file": "tuture.yml",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "file": "tuture.yml",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30,
+          31,
+          32,
+          33,
+          34,
+          35,
+          36,
+          37,
+          38,
+          39,
+          40,
+          41,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47,
+          48,
+          49,
+          50,
+          51,
+          52,
+          53,
+          54,
+          55,
+          56,
+          57,
+          58,
+          59,
+          60,
+          61,
+          62,
+          63,
+          64,
+          65,
+          66,
+          67,
+          68,
+          69,
+          70,
+          71,
+          72,
+          73,
+          74
+        ],
+        "file": "tuture.yml",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "file": "tuture.yml",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "file": "tuture.yml",
+        "outdated": true
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "fixed": true,
+        "level": "step",
+        "pos": "post",
+        "commit": "63f7ab0",
+        "outdated": true
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "打开前端网站，可以看到我们刚才实现的食谱列表页面："
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "image",
+              "attrs": {
+                "src": ".tuture/assets/recipe-list-fake.jpg",
+                "alt": "",
+                "title": ""
+              }
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "到这儿，我们分别实现了这个全栈食谱网站的前端和后端应用，这篇教程的第一部分也就结束了。在接下来的教程中，我们将实现前后端之间的通信，并进一步实现食谱的详情及添加页面，不见不散！"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "step_end",
+      "attrs": {
+        "commit": "63f7ab0",
+        "outdated": true
+      }
+    }
+  ]
+}

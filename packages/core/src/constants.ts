@@ -9,10 +9,11 @@ export const TUTURE_IGNORE_PATH = '.tutureignore';
 // The workspace for storing tutorial-related data.
 export const TUTURE_ROOT = '.tuture';
 
+// Root directory for storing json documents.
+export const TUTURE_DOC_ROOT = 'docs';
+
 // Directory which houses tutorial data on VCS.
 export const TUTURE_VCS_ROOT = '.tuture-committed';
-
-export const DIFF_PATH = 'diff.json';
 
 export const TUTURE_COMMIT_PREFIX = 'tuture:';
 
