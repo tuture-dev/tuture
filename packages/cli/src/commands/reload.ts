@@ -1,6 +1,6 @@
 import fs from 'fs-extra';
 import { flags } from '@oclif/command';
-import { INode } from '@tuture/core';
+import { INode, includeCommit } from '@tuture/core';
 import { collectionPath, saveArticle } from '@tuture/local-server';
 
 import sync from './sync';
@@ -48,7 +48,7 @@ export default class Reload extends BaseCommand {
         const commit = nodes[i].attrs!.commit;
         if (
           nodes[i].type === 'step_start' &&
-          !currentCommits.includes(commit)
+          !includeCommit(currentCommits, commit)
         ) {
           while (nodes[i].type !== 'step_end') {
             if (isStepTitle(nodes[i])) {
@@ -72,7 +72,7 @@ export default class Reload extends BaseCommand {
       const commit = currentNodes[i].attrs!.commit;
       if (
         currentNodes[i].type === 'step_start' &&
-        !collectionCommits.includes(commit)
+        !includeCommit(collectionCommits, commit)
       ) {
         while (currentNodes[i].type !== 'step_end') {
           if (isStepTitle(currentNodes[i])) {
