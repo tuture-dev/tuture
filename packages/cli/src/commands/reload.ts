@@ -8,12 +8,7 @@ import BaseCommand from '../base';
 import { git } from '../utils/git';
 import logger from '../utils/logger';
 import { initNodes, loadArticleDocs } from '../utils';
-import {
-  getNodeText,
-  isStepTitle,
-  isText,
-  readCommitsFromNodes,
-} from '../utils/node';
+import { getNodeText, isStepTitle, readCommitsFromNodes } from '../utils/node';
 
 export default class Reload extends BaseCommand {
   static description = 'Update workspace with latest commit history';
@@ -32,7 +27,7 @@ export default class Reload extends BaseCommand {
 
     const collectionDocs = loadArticleDocs();
     const collectionCommits = readCommitsFromNodes(
-      collectionDocs.flatMap((articleDoc) => articleDoc.doc),
+      collectionDocs.flatMap((articleDoc) => articleDoc.doc.content!),
     );
 
     await git.checkout('master');
