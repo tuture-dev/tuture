@@ -17,7 +17,7 @@ export const createDiffRouter = () => {
 
     const data = {
       code: fd.deleted ? '' : await readFileAtCommit(commit, file),
-      originalCode: fd.new ? '' : await readFileAtCommit(commit, file),
+      originalCode: fd.new ? '' : await readFileAtCommit(`${commit}~1`, file),
     };
 
     res.json(data);
