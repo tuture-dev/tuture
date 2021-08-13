@@ -12,17 +12,15 @@ export default class DiffBlock extends Node {
   }
 
   get schema() {
-    // filename: {
-    //   type: string,
-    //   default: '',
-    // },
-    // commit: '',
-    // language: '',
-    // code: '',
-    // originalCode: '',
-    // splitDiff: false,
     return {
-      attrs: {},
+      attrs: {
+        // 对应着 fileId，标志某个 file 级别的解释
+        id: { default: '' },
+        // 原 diff_block 相关的信息
+        file: { default: '' },
+        commit: { default: '' },
+        hiddenLines: { default: [] },
+      },
       content: 'text*',
       marks: '',
       group: 'block',

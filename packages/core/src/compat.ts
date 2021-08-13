@@ -164,7 +164,7 @@ function convertFile(file: File): INode[] {
     throw new Error(`number of children err, file: ${JSON.stringify(file)}`);
   }
   const [prex, diff, postex] = file.children;
-  const commitFile = { commit: file.commit, file: file.file };
+  const commitFile = { commit: diff.commit, file: file.file };
   return [
     {
       type: 'file_start',

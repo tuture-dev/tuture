@@ -4,8 +4,7 @@
     {
       "type": "step_start",
       "attrs": {
-        "commit": "c64b3b6",
-        "outdated": true
+        "commit": "c64b3b6"
       }
     },
     {
@@ -17,13 +16,12 @@
         }
       ],
       "attrs": {
-        "id": "655e1e53",
+        "id": "85c37162",
         "level": 2,
         "fixed": true,
         "step": {
           "commit": "c64b3b6"
-        },
-        "outdated": true
+        }
       }
     },
     {
@@ -32,8 +30,7 @@
         "fixed": true,
         "level": "step",
         "pos": "pre",
-        "commit": "c64b3b6",
-        "outdated": true
+        "commit": "c64b3b6"
       },
       "content": [
         {
@@ -448,8 +445,8 @@
     {
       "type": "file_start",
       "attrs": {
-        "file": "Pipfile",
-        "outdated": true
+        "commit": "c64b3b6",
+        "file": "Pipfile"
       }
     },
     {
@@ -457,8 +454,8 @@
       "attrs": {
         "level": "file",
         "pos": "pre",
-        "file": "Pipfile",
-        "outdated": true
+        "commit": "c64b3b6",
+        "file": "Pipfile"
       },
       "content": [
         {
@@ -476,8 +473,8 @@
       "type": "diff_block",
       "attrs": {
         "hiddenLines": [],
-        "file": "Pipfile",
-        "outdated": true
+        "commit": "c64b3b6",
+        "file": "Pipfile"
       }
     },
     {
@@ -485,8 +482,8 @@
       "attrs": {
         "level": "file",
         "pos": "post",
-        "file": "Pipfile",
-        "outdated": true
+        "commit": "c64b3b6",
+        "file": "Pipfile"
       },
       "content": [
         {
@@ -498,15 +495,15 @@
     {
       "type": "file_end",
       "attrs": {
-        "file": "Pipfile",
-        "outdated": true
+        "commit": "c64b3b6",
+        "file": "Pipfile"
       }
     },
     {
       "type": "file_start",
       "attrs": {
-        "file": "api/api/__init__.py",
-        "outdated": true
+        "commit": "c64b3b6",
+        "file": "api/api/__init__.py"
       }
     },
     {
@@ -514,8 +511,8 @@
       "attrs": {
         "level": "file",
         "pos": "pre",
-        "file": "api/api/__init__.py",
-        "outdated": true
+        "commit": "c64b3b6",
+        "file": "api/api/__init__.py"
       },
       "content": [
         {
@@ -528,8 +525,8 @@
       "type": "diff_block",
       "attrs": {
         "hiddenLines": [],
-        "file": "api/api/__init__.py",
-        "outdated": true
+        "commit": "c64b3b6",
+        "file": "api/api/__init__.py"
       }
     },
     {
@@ -537,8 +534,8 @@
       "attrs": {
         "level": "file",
         "pos": "post",
-        "file": "api/api/__init__.py",
-        "outdated": true
+        "commit": "c64b3b6",
+        "file": "api/api/__init__.py"
       },
       "content": [
         {
@@ -550,15 +547,15 @@
     {
       "type": "file_end",
       "attrs": {
-        "file": "api/api/__init__.py",
-        "outdated": true
+        "commit": "c64b3b6",
+        "file": "api/api/__init__.py"
       }
     },
     {
       "type": "file_start",
       "attrs": {
-        "file": "api/api/settings.py",
-        "outdated": true
+        "commit": "c64b3b6",
+        "file": "api/api/settings.py"
       }
     },
     {
@@ -566,8 +563,8 @@
       "attrs": {
         "level": "file",
         "pos": "pre",
-        "file": "api/api/settings.py",
-        "outdated": true
+        "commit": "c64b3b6",
+        "file": "api/api/settings.py"
       },
       "content": [
         {
@@ -580,8 +577,8 @@
       "type": "diff_block",
       "attrs": {
         "hiddenLines": [],
-        "file": "api/api/settings.py",
-        "outdated": true
+        "commit": "c64b3b6",
+        "file": "api/api/settings.py"
       }
     },
     {
@@ -589,8 +586,8 @@
       "attrs": {
         "level": "file",
         "pos": "post",
-        "file": "api/api/settings.py",
-        "outdated": true
+        "commit": "c64b3b6",
+        "file": "api/api/settings.py"
       },
       "content": [
         {
@@ -602,15 +599,15 @@
     {
       "type": "file_end",
       "attrs": {
-        "file": "api/api/settings.py",
-        "outdated": true
+        "commit": "c64b3b6",
+        "file": "api/api/settings.py"
       }
     },
     {
       "type": "file_start",
       "attrs": {
-        "file": "api/api/urls.py",
-        "outdated": true
+        "commit": "c64b3b6",
+        "file": "api/api/urls.py"
       }
     },
     {
@@ -618,8 +615,8 @@
       "attrs": {
         "level": "file",
         "pos": "pre",
-        "file": "api/api/urls.py",
-        "outdated": true
+        "commit": "c64b3b6",
+        "file": "api/api/urls.py"
       },
       "content": [
         {
@@ -632,8 +629,8 @@
       "type": "diff_block",
       "attrs": {
         "hiddenLines": [],
-        "file": "api/api/urls.py",
-        "outdated": true
+        "commit": "c64b3b6",
+        "file": "api/api/urls.py"
       }
     },
     {
@@ -641,8 +638,8 @@
       "attrs": {
         "level": "file",
         "pos": "post",
-        "file": "api/api/urls.py",
-        "outdated": true
+        "commit": "c64b3b6",
+        "file": "api/api/urls.py"
       },
       "content": [
         {
@@ -654,15 +651,15 @@
     {
       "type": "file_end",
       "attrs": {
-        "file": "api/api/urls.py",
-        "outdated": true
+        "commit": "c64b3b6",
+        "file": "api/api/urls.py"
       }
     },
     {
       "type": "file_start",
       "attrs": {
-        "file": "api/api/wsgi.py",
-        "outdated": true
+        "commit": "c64b3b6",
+        "file": "api/api/wsgi.py"
       }
     },
     {
@@ -670,8 +667,8 @@
       "attrs": {
         "level": "file",
         "pos": "pre",
-        "file": "api/api/wsgi.py",
-        "outdated": true
+        "commit": "c64b3b6",
+        "file": "api/api/wsgi.py"
       },
       "content": [
         {
@@ -684,8 +681,8 @@
       "type": "diff_block",
       "attrs": {
         "hiddenLines": [],
-        "file": "api/api/wsgi.py",
-        "outdated": true
+        "commit": "c64b3b6",
+        "file": "api/api/wsgi.py"
       }
     },
     {
@@ -693,8 +690,8 @@
       "attrs": {
         "level": "file",
         "pos": "post",
-        "file": "api/api/wsgi.py",
-        "outdated": true
+        "commit": "c64b3b6",
+        "file": "api/api/wsgi.py"
       },
       "content": [
         {
@@ -706,15 +703,15 @@
     {
       "type": "file_end",
       "attrs": {
-        "file": "api/api/wsgi.py",
-        "outdated": true
+        "commit": "c64b3b6",
+        "file": "api/api/wsgi.py"
       }
     },
     {
       "type": "file_start",
       "attrs": {
-        "file": "api/core/__init__.py",
-        "outdated": true
+        "commit": "c64b3b6",
+        "file": "api/core/__init__.py"
       }
     },
     {
@@ -722,8 +719,8 @@
       "attrs": {
         "level": "file",
         "pos": "pre",
-        "file": "api/core/__init__.py",
-        "outdated": true
+        "commit": "c64b3b6",
+        "file": "api/core/__init__.py"
       },
       "content": [
         {
@@ -736,8 +733,8 @@
       "type": "diff_block",
       "attrs": {
         "hiddenLines": [],
-        "file": "api/core/__init__.py",
-        "outdated": true
+        "commit": "c64b3b6",
+        "file": "api/core/__init__.py"
       }
     },
     {
@@ -745,8 +742,8 @@
       "attrs": {
         "level": "file",
         "pos": "post",
-        "file": "api/core/__init__.py",
-        "outdated": true
+        "commit": "c64b3b6",
+        "file": "api/core/__init__.py"
       },
       "content": [
         {
@@ -758,15 +755,15 @@
     {
       "type": "file_end",
       "attrs": {
-        "file": "api/core/__init__.py",
-        "outdated": true
+        "commit": "c64b3b6",
+        "file": "api/core/__init__.py"
       }
     },
     {
       "type": "file_start",
       "attrs": {
-        "file": "api/core/admin.py",
-        "outdated": true
+        "commit": "c64b3b6",
+        "file": "api/core/admin.py"
       }
     },
     {
@@ -774,8 +771,8 @@
       "attrs": {
         "level": "file",
         "pos": "pre",
-        "file": "api/core/admin.py",
-        "outdated": true
+        "commit": "c64b3b6",
+        "file": "api/core/admin.py"
       },
       "content": [
         {
@@ -788,8 +785,8 @@
       "type": "diff_block",
       "attrs": {
         "hiddenLines": [],
-        "file": "api/core/admin.py",
-        "outdated": true
+        "commit": "c64b3b6",
+        "file": "api/core/admin.py"
       }
     },
     {
@@ -797,8 +794,8 @@
       "attrs": {
         "level": "file",
         "pos": "post",
-        "file": "api/core/admin.py",
-        "outdated": true
+        "commit": "c64b3b6",
+        "file": "api/core/admin.py"
       },
       "content": [
         {
@@ -810,15 +807,15 @@
     {
       "type": "file_end",
       "attrs": {
-        "file": "api/core/admin.py",
-        "outdated": true
+        "commit": "c64b3b6",
+        "file": "api/core/admin.py"
       }
     },
     {
       "type": "file_start",
       "attrs": {
-        "file": "api/core/apps.py",
-        "outdated": true
+        "commit": "c64b3b6",
+        "file": "api/core/apps.py"
       }
     },
     {
@@ -826,8 +823,8 @@
       "attrs": {
         "level": "file",
         "pos": "pre",
-        "file": "api/core/apps.py",
-        "outdated": true
+        "commit": "c64b3b6",
+        "file": "api/core/apps.py"
       },
       "content": [
         {
@@ -840,8 +837,8 @@
       "type": "diff_block",
       "attrs": {
         "hiddenLines": [],
-        "file": "api/core/apps.py",
-        "outdated": true
+        "commit": "c64b3b6",
+        "file": "api/core/apps.py"
       }
     },
     {
@@ -849,8 +846,8 @@
       "attrs": {
         "level": "file",
         "pos": "post",
-        "file": "api/core/apps.py",
-        "outdated": true
+        "commit": "c64b3b6",
+        "file": "api/core/apps.py"
       },
       "content": [
         {
@@ -862,15 +859,15 @@
     {
       "type": "file_end",
       "attrs": {
-        "file": "api/core/apps.py",
-        "outdated": true
+        "commit": "c64b3b6",
+        "file": "api/core/apps.py"
       }
     },
     {
       "type": "file_start",
       "attrs": {
-        "file": "api/core/migrations/__init__.py",
-        "outdated": true
+        "commit": "c64b3b6",
+        "file": "api/core/migrations/__init__.py"
       }
     },
     {
@@ -878,8 +875,8 @@
       "attrs": {
         "level": "file",
         "pos": "pre",
-        "file": "api/core/migrations/__init__.py",
-        "outdated": true
+        "commit": "c64b3b6",
+        "file": "api/core/migrations/__init__.py"
       },
       "content": [
         {
@@ -892,8 +889,8 @@
       "type": "diff_block",
       "attrs": {
         "hiddenLines": [],
-        "file": "api/core/migrations/__init__.py",
-        "outdated": true
+        "commit": "c64b3b6",
+        "file": "api/core/migrations/__init__.py"
       }
     },
     {
@@ -901,8 +898,8 @@
       "attrs": {
         "level": "file",
         "pos": "post",
-        "file": "api/core/migrations/__init__.py",
-        "outdated": true
+        "commit": "c64b3b6",
+        "file": "api/core/migrations/__init__.py"
       },
       "content": [
         {
@@ -914,15 +911,15 @@
     {
       "type": "file_end",
       "attrs": {
-        "file": "api/core/migrations/__init__.py",
-        "outdated": true
+        "commit": "c64b3b6",
+        "file": "api/core/migrations/__init__.py"
       }
     },
     {
       "type": "file_start",
       "attrs": {
-        "file": "api/core/models.py",
-        "outdated": true
+        "commit": "c64b3b6",
+        "file": "api/core/models.py"
       }
     },
     {
@@ -930,8 +927,8 @@
       "attrs": {
         "level": "file",
         "pos": "pre",
-        "file": "api/core/models.py",
-        "outdated": true
+        "commit": "c64b3b6",
+        "file": "api/core/models.py"
       },
       "content": [
         {
@@ -944,8 +941,8 @@
       "type": "diff_block",
       "attrs": {
         "hiddenLines": [],
-        "file": "api/core/models.py",
-        "outdated": true
+        "commit": "c64b3b6",
+        "file": "api/core/models.py"
       }
     },
     {
@@ -953,8 +950,8 @@
       "attrs": {
         "level": "file",
         "pos": "post",
-        "file": "api/core/models.py",
-        "outdated": true
+        "commit": "c64b3b6",
+        "file": "api/core/models.py"
       },
       "content": [
         {
@@ -966,15 +963,15 @@
     {
       "type": "file_end",
       "attrs": {
-        "file": "api/core/models.py",
-        "outdated": true
+        "commit": "c64b3b6",
+        "file": "api/core/models.py"
       }
     },
     {
       "type": "file_start",
       "attrs": {
-        "file": "api/core/tests.py",
-        "outdated": true
+        "commit": "c64b3b6",
+        "file": "api/core/tests.py"
       }
     },
     {
@@ -982,8 +979,8 @@
       "attrs": {
         "level": "file",
         "pos": "pre",
-        "file": "api/core/tests.py",
-        "outdated": true
+        "commit": "c64b3b6",
+        "file": "api/core/tests.py"
       },
       "content": [
         {
@@ -996,8 +993,8 @@
       "type": "diff_block",
       "attrs": {
         "hiddenLines": [],
-        "file": "api/core/tests.py",
-        "outdated": true
+        "commit": "c64b3b6",
+        "file": "api/core/tests.py"
       }
     },
     {
@@ -1005,8 +1002,8 @@
       "attrs": {
         "level": "file",
         "pos": "post",
-        "file": "api/core/tests.py",
-        "outdated": true
+        "commit": "c64b3b6",
+        "file": "api/core/tests.py"
       },
       "content": [
         {
@@ -1018,15 +1015,15 @@
     {
       "type": "file_end",
       "attrs": {
-        "file": "api/core/tests.py",
-        "outdated": true
+        "commit": "c64b3b6",
+        "file": "api/core/tests.py"
       }
     },
     {
       "type": "file_start",
       "attrs": {
-        "file": "api/core/views.py",
-        "outdated": true
+        "commit": "c64b3b6",
+        "file": "api/core/views.py"
       }
     },
     {
@@ -1034,8 +1031,8 @@
       "attrs": {
         "level": "file",
         "pos": "pre",
-        "file": "api/core/views.py",
-        "outdated": true
+        "commit": "c64b3b6",
+        "file": "api/core/views.py"
       },
       "content": [
         {
@@ -1048,8 +1045,8 @@
       "type": "diff_block",
       "attrs": {
         "hiddenLines": [],
-        "file": "api/core/views.py",
-        "outdated": true
+        "commit": "c64b3b6",
+        "file": "api/core/views.py"
       }
     },
     {
@@ -1057,8 +1054,8 @@
       "attrs": {
         "level": "file",
         "pos": "post",
-        "file": "api/core/views.py",
-        "outdated": true
+        "commit": "c64b3b6",
+        "file": "api/core/views.py"
       },
       "content": [
         {
@@ -1070,15 +1067,15 @@
     {
       "type": "file_end",
       "attrs": {
-        "file": "api/core/views.py",
-        "outdated": true
+        "commit": "c64b3b6",
+        "file": "api/core/views.py"
       }
     },
     {
       "type": "file_start",
       "attrs": {
-        "file": "api/manage.py",
-        "outdated": true
+        "commit": "c64b3b6",
+        "file": "api/manage.py"
       }
     },
     {
@@ -1086,8 +1083,8 @@
       "attrs": {
         "level": "file",
         "pos": "pre",
-        "file": "api/manage.py",
-        "outdated": true
+        "commit": "c64b3b6",
+        "file": "api/manage.py"
       },
       "content": [
         {
@@ -1100,8 +1097,8 @@
       "type": "diff_block",
       "attrs": {
         "hiddenLines": [],
-        "file": "api/manage.py",
-        "outdated": true
+        "commit": "c64b3b6",
+        "file": "api/manage.py"
       }
     },
     {
@@ -1109,8 +1106,8 @@
       "attrs": {
         "level": "file",
         "pos": "post",
-        "file": "api/manage.py",
-        "outdated": true
+        "commit": "c64b3b6",
+        "file": "api/manage.py"
       },
       "content": [
         {
@@ -1122,8 +1119,8 @@
     {
       "type": "file_end",
       "attrs": {
-        "file": "api/manage.py",
-        "outdated": true
+        "commit": "c64b3b6",
+        "file": "api/manage.py"
       }
     },
     {
@@ -1132,8 +1129,7 @@
         "fixed": true,
         "level": "step",
         "pos": "post",
-        "commit": "c64b3b6",
-        "outdated": true
+        "commit": "c64b3b6"
       },
       "content": [
         {
@@ -1291,15 +1287,13 @@
     {
       "type": "step_end",
       "attrs": {
-        "commit": "c64b3b6",
-        "outdated": true
+        "commit": "c64b3b6"
       }
     },
     {
       "type": "step_start",
       "attrs": {
-        "commit": "d4d056f",
-        "outdated": true
+        "commit": "d4d056f"
       }
     },
     {
@@ -1311,13 +1305,12 @@
         }
       ],
       "attrs": {
-        "id": "a083382f",
+        "id": "079b7022",
         "level": 2,
         "fixed": true,
         "step": {
           "commit": "d4d056f"
-        },
-        "outdated": true
+        }
       }
     },
     {
@@ -1326,8 +1319,7 @@
         "fixed": true,
         "level": "step",
         "pos": "pre",
-        "commit": "d4d056f",
-        "outdated": true
+        "commit": "d4d056f"
       },
       "content": [
         {
@@ -1367,8 +1359,8 @@
     {
       "type": "file_start",
       "attrs": {
-        "file": ".editorconfig",
-        "outdated": true
+        "commit": "d4d056f",
+        "file": ".editorconfig"
       }
     },
     {
@@ -1376,8 +1368,8 @@
       "attrs": {
         "level": "file",
         "pos": "pre",
-        "file": ".editorconfig",
-        "outdated": true
+        "commit": "d4d056f",
+        "file": ".editorconfig"
       },
       "content": [
         {
@@ -1390,8 +1382,8 @@
       "type": "diff_block",
       "attrs": {
         "hiddenLines": [],
-        "file": ".editorconfig",
-        "outdated": true
+        "commit": "d4d056f",
+        "file": ".editorconfig"
       }
     },
     {
@@ -1399,8 +1391,8 @@
       "attrs": {
         "level": "file",
         "pos": "post",
-        "file": ".editorconfig",
-        "outdated": true
+        "commit": "d4d056f",
+        "file": ".editorconfig"
       },
       "content": [
         {
@@ -1412,15 +1404,15 @@
     {
       "type": "file_end",
       "attrs": {
-        "file": ".editorconfig",
-        "outdated": true
+        "commit": "d4d056f",
+        "file": ".editorconfig"
       }
     },
     {
       "type": "file_start",
       "attrs": {
-        "file": ".gitignore",
-        "outdated": true
+        "commit": "d4d056f",
+        "file": ".gitignore"
       }
     },
     {
@@ -1428,8 +1420,8 @@
       "attrs": {
         "level": "file",
         "pos": "pre",
-        "file": ".gitignore",
-        "outdated": true
+        "commit": "d4d056f",
+        "file": ".gitignore"
       },
       "content": [
         {
@@ -1442,8 +1434,8 @@
       "type": "diff_block",
       "attrs": {
         "hiddenLines": [],
-        "file": ".gitignore",
-        "outdated": true
+        "commit": "d4d056f",
+        "file": ".gitignore"
       }
     },
     {
@@ -1451,8 +1443,8 @@
       "attrs": {
         "level": "file",
         "pos": "post",
-        "file": ".gitignore",
-        "outdated": true
+        "commit": "d4d056f",
+        "file": ".gitignore"
       },
       "content": [
         {
@@ -1464,15 +1456,15 @@
     {
       "type": "file_end",
       "attrs": {
-        "file": ".gitignore",
-        "outdated": true
+        "commit": "d4d056f",
+        "file": ".gitignore"
       }
     },
     {
       "type": "file_start",
       "attrs": {
-        "file": "api/api/settings.py",
-        "outdated": true
+        "commit": "d4d056f",
+        "file": "api/api/settings.py"
       }
     },
     {
@@ -1480,8 +1472,8 @@
       "attrs": {
         "level": "file",
         "pos": "pre",
-        "file": "api/api/settings.py",
-        "outdated": true
+        "commit": "d4d056f",
+        "file": "api/api/settings.py"
       },
       "content": [
         {
@@ -1863,8 +1855,8 @@
           124,
           125
         ],
-        "file": "api/api/settings.py",
-        "outdated": true
+        "commit": "d4d056f",
+        "file": "api/api/settings.py"
       }
     },
     {
@@ -1872,8 +1864,8 @@
       "attrs": {
         "level": "file",
         "pos": "post",
-        "file": "api/api/settings.py",
-        "outdated": true
+        "commit": "d4d056f",
+        "file": "api/api/settings.py"
       },
       "content": [
         {
@@ -1885,15 +1877,15 @@
     {
       "type": "file_end",
       "attrs": {
-        "file": "api/api/settings.py",
-        "outdated": true
+        "commit": "d4d056f",
+        "file": "api/api/settings.py"
       }
     },
     {
       "type": "file_start",
       "attrs": {
-        "file": "api/core/models.py",
-        "outdated": true
+        "commit": "d4d056f",
+        "file": "api/core/models.py"
       }
     },
     {
@@ -1901,8 +1893,8 @@
       "attrs": {
         "level": "file",
         "pos": "pre",
-        "file": "api/core/models.py",
-        "outdated": true
+        "commit": "d4d056f",
+        "file": "api/core/models.py"
       },
       "content": [
         {
@@ -2072,8 +2064,8 @@
       "type": "diff_block",
       "attrs": {
         "hiddenLines": [],
-        "file": "api/core/models.py",
-        "outdated": true
+        "commit": "d4d056f",
+        "file": "api/core/models.py"
       }
     },
     {
@@ -2081,8 +2073,8 @@
       "attrs": {
         "level": "file",
         "pos": "post",
-        "file": "api/core/models.py",
-        "outdated": true
+        "commit": "d4d056f",
+        "file": "api/core/models.py"
       },
       "content": [
         {
@@ -2155,15 +2147,15 @@
     {
       "type": "file_end",
       "attrs": {
-        "file": "api/core/models.py",
-        "outdated": true
+        "commit": "d4d056f",
+        "file": "api/core/models.py"
       }
     },
     {
       "type": "file_start",
       "attrs": {
-        "file": "api/core/admin.py",
-        "outdated": true
+        "commit": "d4d056f",
+        "file": "api/core/admin.py"
       }
     },
     {
@@ -2171,8 +2163,8 @@
       "attrs": {
         "level": "file",
         "pos": "pre",
-        "file": "api/core/admin.py",
-        "outdated": true
+        "commit": "d4d056f",
+        "file": "api/core/admin.py"
       },
       "content": [
         {
@@ -2216,8 +2208,8 @@
       "type": "diff_block",
       "attrs": {
         "hiddenLines": [],
-        "file": "api/core/admin.py",
-        "outdated": true
+        "commit": "d4d056f",
+        "file": "api/core/admin.py"
       }
     },
     {
@@ -2225,8 +2217,8 @@
       "attrs": {
         "level": "file",
         "pos": "post",
-        "file": "api/core/admin.py",
-        "outdated": true
+        "commit": "d4d056f",
+        "file": "api/core/admin.py"
       },
       "content": [
         {
@@ -2238,15 +2230,15 @@
     {
       "type": "file_end",
       "attrs": {
-        "file": "api/core/admin.py",
-        "outdated": true
+        "commit": "d4d056f",
+        "file": "api/core/admin.py"
       }
     },
     {
       "type": "file_start",
       "attrs": {
-        "file": "api/core/serializers.py",
-        "outdated": true
+        "commit": "d4d056f",
+        "file": "api/core/serializers.py"
       }
     },
     {
@@ -2254,8 +2246,8 @@
       "attrs": {
         "level": "file",
         "pos": "pre",
-        "file": "api/core/serializers.py",
-        "outdated": true
+        "commit": "d4d056f",
+        "file": "api/core/serializers.py"
       },
       "content": [
         {
@@ -2312,8 +2304,8 @@
       "type": "diff_block",
       "attrs": {
         "hiddenLines": [],
-        "file": "api/core/serializers.py",
-        "outdated": true
+        "commit": "d4d056f",
+        "file": "api/core/serializers.py"
       }
     },
     {
@@ -2321,8 +2313,8 @@
       "attrs": {
         "level": "file",
         "pos": "post",
-        "file": "api/core/serializers.py",
-        "outdated": true
+        "commit": "d4d056f",
+        "file": "api/core/serializers.py"
       },
       "content": [
         {
@@ -2334,15 +2326,15 @@
     {
       "type": "file_end",
       "attrs": {
-        "file": "api/core/serializers.py",
-        "outdated": true
+        "commit": "d4d056f",
+        "file": "api/core/serializers.py"
       }
     },
     {
       "type": "file_start",
       "attrs": {
-        "file": "api/core/views.py",
-        "outdated": true
+        "commit": "d4d056f",
+        "file": "api/core/views.py"
       }
     },
     {
@@ -2350,8 +2342,8 @@
       "attrs": {
         "level": "file",
         "pos": "pre",
-        "file": "api/core/views.py",
-        "outdated": true
+        "commit": "d4d056f",
+        "file": "api/core/views.py"
       },
       "content": [
         {
@@ -2382,8 +2374,8 @@
       "type": "diff_block",
       "attrs": {
         "hiddenLines": [],
-        "file": "api/core/views.py",
-        "outdated": true
+        "commit": "d4d056f",
+        "file": "api/core/views.py"
       }
     },
     {
@@ -2391,8 +2383,8 @@
       "attrs": {
         "level": "file",
         "pos": "post",
-        "file": "api/core/views.py",
-        "outdated": true
+        "commit": "d4d056f",
+        "file": "api/core/views.py"
       },
       "content": [
         {
@@ -2435,15 +2427,15 @@
     {
       "type": "file_end",
       "attrs": {
-        "file": "api/core/views.py",
-        "outdated": true
+        "commit": "d4d056f",
+        "file": "api/core/views.py"
       }
     },
     {
       "type": "file_start",
       "attrs": {
-        "file": "api/core/urls.py",
-        "outdated": true
+        "commit": "d4d056f",
+        "file": "api/core/urls.py"
       }
     },
     {
@@ -2451,8 +2443,8 @@
       "attrs": {
         "level": "file",
         "pos": "pre",
-        "file": "api/core/urls.py",
-        "outdated": true
+        "commit": "d4d056f",
+        "file": "api/core/urls.py"
       },
       "content": [
         {
@@ -2496,8 +2488,8 @@
       "type": "diff_block",
       "attrs": {
         "hiddenLines": [],
-        "file": "api/core/urls.py",
-        "outdated": true
+        "commit": "d4d056f",
+        "file": "api/core/urls.py"
       }
     },
     {
@@ -2505,8 +2497,8 @@
       "attrs": {
         "level": "file",
         "pos": "post",
-        "file": "api/core/urls.py",
-        "outdated": true
+        "commit": "d4d056f",
+        "file": "api/core/urls.py"
       },
       "content": [
         {
@@ -2600,15 +2592,15 @@
     {
       "type": "file_end",
       "attrs": {
-        "file": "api/core/urls.py",
-        "outdated": true
+        "commit": "d4d056f",
+        "file": "api/core/urls.py"
       }
     },
     {
       "type": "file_start",
       "attrs": {
-        "file": "api/api/urls.py",
-        "outdated": true
+        "commit": "d4d056f",
+        "file": "api/api/urls.py"
       }
     },
     {
@@ -2616,8 +2608,8 @@
       "attrs": {
         "level": "file",
         "pos": "pre",
-        "file": "api/api/urls.py",
-        "outdated": true
+        "commit": "d4d056f",
+        "file": "api/api/urls.py"
       },
       "content": [
         {
@@ -2648,8 +2640,8 @@
       "type": "diff_block",
       "attrs": {
         "hiddenLines": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
-        "file": "api/api/urls.py",
-        "outdated": true
+        "commit": "d4d056f",
+        "file": "api/api/urls.py"
       }
     },
     {
@@ -2657,8 +2649,8 @@
       "attrs": {
         "level": "file",
         "pos": "post",
-        "file": "api/api/urls.py",
-        "outdated": true
+        "commit": "d4d056f",
+        "file": "api/api/urls.py"
       },
       "content": [
         {
@@ -2670,15 +2662,15 @@
     {
       "type": "file_end",
       "attrs": {
-        "file": "api/api/urls.py",
-        "outdated": true
+        "commit": "d4d056f",
+        "file": "api/api/urls.py"
       }
     },
     {
       "type": "file_start",
       "attrs": {
-        "file": "api/core/migrations/0001_initial.py",
-        "outdated": true
+        "commit": "d4d056f",
+        "file": "api/core/migrations/0001_initial.py"
       }
     },
     {
@@ -2686,8 +2678,8 @@
       "attrs": {
         "level": "file",
         "pos": "pre",
-        "file": "api/core/migrations/0001_initial.py",
-        "outdated": true
+        "commit": "d4d056f",
+        "file": "api/core/migrations/0001_initial.py"
       },
       "content": [
         {
@@ -2700,8 +2692,8 @@
       "type": "diff_block",
       "attrs": {
         "hiddenLines": [],
-        "file": "api/core/migrations/0001_initial.py",
-        "outdated": true
+        "commit": "d4d056f",
+        "file": "api/core/migrations/0001_initial.py"
       }
     },
     {
@@ -2709,8 +2701,8 @@
       "attrs": {
         "level": "file",
         "pos": "post",
-        "file": "api/core/migrations/0001_initial.py",
-        "outdated": true
+        "commit": "d4d056f",
+        "file": "api/core/migrations/0001_initial.py"
       },
       "content": [
         {
@@ -2722,15 +2714,15 @@
     {
       "type": "file_end",
       "attrs": {
-        "file": "api/core/migrations/0001_initial.py",
-        "outdated": true
+        "commit": "d4d056f",
+        "file": "api/core/migrations/0001_initial.py"
       }
     },
     {
       "type": "file_start",
       "attrs": {
-        "file": "tuture.yml",
-        "outdated": true
+        "commit": "d4d056f",
+        "file": "tuture.yml"
       }
     },
     {
@@ -2738,8 +2730,8 @@
       "attrs": {
         "level": "file",
         "pos": "pre",
-        "file": "tuture.yml",
-        "outdated": true
+        "commit": "d4d056f",
+        "file": "tuture.yml"
       },
       "content": [
         {
@@ -2752,8 +2744,8 @@
       "type": "diff_block",
       "attrs": {
         "hiddenLines": [],
-        "file": "tuture.yml",
-        "outdated": true
+        "commit": "d4d056f",
+        "file": "tuture.yml"
       }
     },
     {
@@ -2761,8 +2753,8 @@
       "attrs": {
         "level": "file",
         "pos": "post",
-        "file": "tuture.yml",
-        "outdated": true
+        "commit": "d4d056f",
+        "file": "tuture.yml"
       },
       "content": [
         {
@@ -2774,8 +2766,8 @@
     {
       "type": "file_end",
       "attrs": {
-        "file": "tuture.yml",
-        "outdated": true
+        "commit": "d4d056f",
+        "file": "tuture.yml"
       }
     },
     {
@@ -2784,8 +2776,7 @@
         "fixed": true,
         "level": "step",
         "pos": "post",
-        "commit": "d4d056f",
-        "outdated": true
+        "commit": "d4d056f"
       },
       "content": [
         {
@@ -2901,15 +2892,13 @@
     {
       "type": "step_end",
       "attrs": {
-        "commit": "d4d056f",
-        "outdated": true
+        "commit": "d4d056f"
       }
     },
     {
       "type": "step_start",
       "attrs": {
-        "commit": "596203d",
-        "outdated": true
+        "commit": "596203d"
       }
     },
     {
@@ -2921,13 +2910,12 @@
         }
       ],
       "attrs": {
-        "id": "1e127db7",
+        "id": "21171146",
         "level": 2,
         "fixed": true,
         "step": {
           "commit": "596203d"
-        },
-        "outdated": true
+        }
       }
     },
     {
@@ -2936,8 +2924,7 @@
         "fixed": true,
         "level": "step",
         "pos": "pre",
-        "commit": "596203d",
-        "outdated": true
+        "commit": "596203d"
       },
       "content": [
         {
@@ -3200,8 +3187,8 @@
     {
       "type": "file_start",
       "attrs": {
-        "file": "client/.editorconfig",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/.editorconfig"
       }
     },
     {
@@ -3209,8 +3196,8 @@
       "attrs": {
         "level": "file",
         "pos": "pre",
-        "file": "client/.editorconfig",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/.editorconfig"
       },
       "content": [
         {
@@ -3223,8 +3210,8 @@
       "type": "diff_block",
       "attrs": {
         "hiddenLines": [],
-        "file": "client/.editorconfig",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/.editorconfig"
       }
     },
     {
@@ -3232,8 +3219,8 @@
       "attrs": {
         "level": "file",
         "pos": "post",
-        "file": "client/.editorconfig",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/.editorconfig"
       },
       "content": [
         {
@@ -3245,15 +3232,15 @@
     {
       "type": "file_end",
       "attrs": {
-        "file": "client/.editorconfig",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/.editorconfig"
       }
     },
     {
       "type": "file_start",
       "attrs": {
-        "file": "client/.gitignore",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/.gitignore"
       }
     },
     {
@@ -3261,8 +3248,8 @@
       "attrs": {
         "level": "file",
         "pos": "pre",
-        "file": "client/.gitignore",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/.gitignore"
       },
       "content": [
         {
@@ -3275,8 +3262,8 @@
       "type": "diff_block",
       "attrs": {
         "hiddenLines": [],
-        "file": "client/.gitignore",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/.gitignore"
       }
     },
     {
@@ -3284,8 +3271,8 @@
       "attrs": {
         "level": "file",
         "pos": "post",
-        "file": "client/.gitignore",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/.gitignore"
       },
       "content": [
         {
@@ -3297,15 +3284,15 @@
     {
       "type": "file_end",
       "attrs": {
-        "file": "client/.gitignore",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/.gitignore"
       }
     },
     {
       "type": "file_start",
       "attrs": {
-        "file": "client/README.md",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/README.md"
       }
     },
     {
@@ -3313,8 +3300,8 @@
       "attrs": {
         "level": "file",
         "pos": "pre",
-        "file": "client/README.md",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/README.md"
       },
       "content": [
         {
@@ -3327,8 +3314,8 @@
       "type": "diff_block",
       "attrs": {
         "hiddenLines": [],
-        "file": "client/README.md",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/README.md"
       }
     },
     {
@@ -3336,8 +3323,8 @@
       "attrs": {
         "level": "file",
         "pos": "post",
-        "file": "client/README.md",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/README.md"
       },
       "content": [
         {
@@ -3349,15 +3336,15 @@
     {
       "type": "file_end",
       "attrs": {
-        "file": "client/README.md",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/README.md"
       }
     },
     {
       "type": "file_start",
       "attrs": {
-        "file": "client/assets/README.md",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/assets/README.md"
       }
     },
     {
@@ -3365,8 +3352,8 @@
       "attrs": {
         "level": "file",
         "pos": "pre",
-        "file": "client/assets/README.md",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/assets/README.md"
       },
       "content": [
         {
@@ -3379,8 +3366,8 @@
       "type": "diff_block",
       "attrs": {
         "hiddenLines": [],
-        "file": "client/assets/README.md",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/assets/README.md"
       }
     },
     {
@@ -3388,8 +3375,8 @@
       "attrs": {
         "level": "file",
         "pos": "post",
-        "file": "client/assets/README.md",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/assets/README.md"
       },
       "content": [
         {
@@ -3401,15 +3388,15 @@
     {
       "type": "file_end",
       "attrs": {
-        "file": "client/assets/README.md",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/assets/README.md"
       }
     },
     {
       "type": "file_start",
       "attrs": {
-        "file": "client/components/Logo.vue",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/components/Logo.vue"
       }
     },
     {
@@ -3417,8 +3404,8 @@
       "attrs": {
         "level": "file",
         "pos": "pre",
-        "file": "client/components/Logo.vue",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/components/Logo.vue"
       },
       "content": [
         {
@@ -3431,8 +3418,8 @@
       "type": "diff_block",
       "attrs": {
         "hiddenLines": [],
-        "file": "client/components/Logo.vue",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/components/Logo.vue"
       }
     },
     {
@@ -3440,8 +3427,8 @@
       "attrs": {
         "level": "file",
         "pos": "post",
-        "file": "client/components/Logo.vue",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/components/Logo.vue"
       },
       "content": [
         {
@@ -3453,15 +3440,15 @@
     {
       "type": "file_end",
       "attrs": {
-        "file": "client/components/Logo.vue",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/components/Logo.vue"
       }
     },
     {
       "type": "file_start",
       "attrs": {
-        "file": "client/components/README.md",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/components/README.md"
       }
     },
     {
@@ -3469,8 +3456,8 @@
       "attrs": {
         "level": "file",
         "pos": "pre",
-        "file": "client/components/README.md",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/components/README.md"
       },
       "content": [
         {
@@ -3483,8 +3470,8 @@
       "type": "diff_block",
       "attrs": {
         "hiddenLines": [],
-        "file": "client/components/README.md",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/components/README.md"
       }
     },
     {
@@ -3492,8 +3479,8 @@
       "attrs": {
         "level": "file",
         "pos": "post",
-        "file": "client/components/README.md",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/components/README.md"
       },
       "content": [
         {
@@ -3505,15 +3492,15 @@
     {
       "type": "file_end",
       "attrs": {
-        "file": "client/components/README.md",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/components/README.md"
       }
     },
     {
       "type": "file_start",
       "attrs": {
-        "file": "client/layouts/README.md",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/layouts/README.md"
       }
     },
     {
@@ -3521,8 +3508,8 @@
       "attrs": {
         "level": "file",
         "pos": "pre",
-        "file": "client/layouts/README.md",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/layouts/README.md"
       },
       "content": [
         {
@@ -3535,8 +3522,8 @@
       "type": "diff_block",
       "attrs": {
         "hiddenLines": [],
-        "file": "client/layouts/README.md",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/layouts/README.md"
       }
     },
     {
@@ -3544,8 +3531,8 @@
       "attrs": {
         "level": "file",
         "pos": "post",
-        "file": "client/layouts/README.md",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/layouts/README.md"
       },
       "content": [
         {
@@ -3557,15 +3544,15 @@
     {
       "type": "file_end",
       "attrs": {
-        "file": "client/layouts/README.md",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/layouts/README.md"
       }
     },
     {
       "type": "file_start",
       "attrs": {
-        "file": "client/layouts/default.vue",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/layouts/default.vue"
       }
     },
     {
@@ -3573,8 +3560,8 @@
       "attrs": {
         "level": "file",
         "pos": "pre",
-        "file": "client/layouts/default.vue",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/layouts/default.vue"
       },
       "content": [
         {
@@ -3587,8 +3574,8 @@
       "type": "diff_block",
       "attrs": {
         "hiddenLines": [],
-        "file": "client/layouts/default.vue",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/layouts/default.vue"
       }
     },
     {
@@ -3596,8 +3583,8 @@
       "attrs": {
         "level": "file",
         "pos": "post",
-        "file": "client/layouts/default.vue",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/layouts/default.vue"
       },
       "content": [
         {
@@ -3609,15 +3596,15 @@
     {
       "type": "file_end",
       "attrs": {
-        "file": "client/layouts/default.vue",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/layouts/default.vue"
       }
     },
     {
       "type": "file_start",
       "attrs": {
-        "file": "client/middleware/README.md",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/middleware/README.md"
       }
     },
     {
@@ -3625,8 +3612,8 @@
       "attrs": {
         "level": "file",
         "pos": "pre",
-        "file": "client/middleware/README.md",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/middleware/README.md"
       },
       "content": [
         {
@@ -3639,8 +3626,8 @@
       "type": "diff_block",
       "attrs": {
         "hiddenLines": [],
-        "file": "client/middleware/README.md",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/middleware/README.md"
       }
     },
     {
@@ -3648,8 +3635,8 @@
       "attrs": {
         "level": "file",
         "pos": "post",
-        "file": "client/middleware/README.md",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/middleware/README.md"
       },
       "content": [
         {
@@ -3661,15 +3648,15 @@
     {
       "type": "file_end",
       "attrs": {
-        "file": "client/middleware/README.md",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/middleware/README.md"
       }
     },
     {
       "type": "file_start",
       "attrs": {
-        "file": "client/nuxt.config.js",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/nuxt.config.js"
       }
     },
     {
@@ -3677,8 +3664,8 @@
       "attrs": {
         "level": "file",
         "pos": "pre",
-        "file": "client/nuxt.config.js",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/nuxt.config.js"
       },
       "content": [
         {
@@ -3691,8 +3678,8 @@
       "type": "diff_block",
       "attrs": {
         "hiddenLines": [],
-        "file": "client/nuxt.config.js",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/nuxt.config.js"
       }
     },
     {
@@ -3700,8 +3687,8 @@
       "attrs": {
         "level": "file",
         "pos": "post",
-        "file": "client/nuxt.config.js",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/nuxt.config.js"
       },
       "content": [
         {
@@ -3713,15 +3700,15 @@
     {
       "type": "file_end",
       "attrs": {
-        "file": "client/nuxt.config.js",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/nuxt.config.js"
       }
     },
     {
       "type": "file_start",
       "attrs": {
-        "file": "client/package.json",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/package.json"
       }
     },
     {
@@ -3729,8 +3716,8 @@
       "attrs": {
         "level": "file",
         "pos": "pre",
-        "file": "client/package.json",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/package.json"
       },
       "content": [
         {
@@ -3743,8 +3730,8 @@
       "type": "diff_block",
       "attrs": {
         "hiddenLines": [],
-        "file": "client/package.json",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/package.json"
       }
     },
     {
@@ -3752,8 +3739,8 @@
       "attrs": {
         "level": "file",
         "pos": "post",
-        "file": "client/package.json",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/package.json"
       },
       "content": [
         {
@@ -3765,15 +3752,15 @@
     {
       "type": "file_end",
       "attrs": {
-        "file": "client/package.json",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/package.json"
       }
     },
     {
       "type": "file_start",
       "attrs": {
-        "file": "client/pages/README.md",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/pages/README.md"
       }
     },
     {
@@ -3781,8 +3768,8 @@
       "attrs": {
         "level": "file",
         "pos": "pre",
-        "file": "client/pages/README.md",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/pages/README.md"
       },
       "content": [
         {
@@ -3795,8 +3782,8 @@
       "type": "diff_block",
       "attrs": {
         "hiddenLines": [],
-        "file": "client/pages/README.md",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/pages/README.md"
       }
     },
     {
@@ -3804,8 +3791,8 @@
       "attrs": {
         "level": "file",
         "pos": "post",
-        "file": "client/pages/README.md",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/pages/README.md"
       },
       "content": [
         {
@@ -3817,15 +3804,15 @@
     {
       "type": "file_end",
       "attrs": {
-        "file": "client/pages/README.md",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/pages/README.md"
       }
     },
     {
       "type": "file_start",
       "attrs": {
-        "file": "client/pages/index.vue",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/pages/index.vue"
       }
     },
     {
@@ -3833,8 +3820,8 @@
       "attrs": {
         "level": "file",
         "pos": "pre",
-        "file": "client/pages/index.vue",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/pages/index.vue"
       },
       "content": [
         {
@@ -3864,8 +3851,8 @@
       "type": "diff_block",
       "attrs": {
         "hiddenLines": [],
-        "file": "client/pages/index.vue",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/pages/index.vue"
       }
     },
     {
@@ -3873,8 +3860,8 @@
       "attrs": {
         "level": "file",
         "pos": "post",
-        "file": "client/pages/index.vue",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/pages/index.vue"
       },
       "content": [
         {
@@ -3891,15 +3878,15 @@
     {
       "type": "file_end",
       "attrs": {
-        "file": "client/pages/index.vue",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/pages/index.vue"
       }
     },
     {
       "type": "file_start",
       "attrs": {
-        "file": "client/pages/recipes/_id/edit.vue",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/pages/recipes/_id/edit.vue"
       }
     },
     {
@@ -3907,8 +3894,8 @@
       "attrs": {
         "level": "file",
         "pos": "pre",
-        "file": "client/pages/recipes/_id/edit.vue",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/pages/recipes/_id/edit.vue"
       },
       "content": [
         {
@@ -3921,8 +3908,8 @@
       "type": "diff_block",
       "attrs": {
         "hiddenLines": [],
-        "file": "client/pages/recipes/_id/edit.vue",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/pages/recipes/_id/edit.vue"
       }
     },
     {
@@ -3930,8 +3917,8 @@
       "attrs": {
         "level": "file",
         "pos": "post",
-        "file": "client/pages/recipes/_id/edit.vue",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/pages/recipes/_id/edit.vue"
       },
       "content": [
         {
@@ -3943,15 +3930,15 @@
     {
       "type": "file_end",
       "attrs": {
-        "file": "client/pages/recipes/_id/edit.vue",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/pages/recipes/_id/edit.vue"
       }
     },
     {
       "type": "file_start",
       "attrs": {
-        "file": "client/pages/recipes/_id/index.vue",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/pages/recipes/_id/index.vue"
       }
     },
     {
@@ -3959,8 +3946,8 @@
       "attrs": {
         "level": "file",
         "pos": "pre",
-        "file": "client/pages/recipes/_id/index.vue",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/pages/recipes/_id/index.vue"
       },
       "content": [
         {
@@ -3973,8 +3960,8 @@
       "type": "diff_block",
       "attrs": {
         "hiddenLines": [],
-        "file": "client/pages/recipes/_id/index.vue",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/pages/recipes/_id/index.vue"
       }
     },
     {
@@ -3982,8 +3969,8 @@
       "attrs": {
         "level": "file",
         "pos": "post",
-        "file": "client/pages/recipes/_id/index.vue",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/pages/recipes/_id/index.vue"
       },
       "content": [
         {
@@ -3995,15 +3982,15 @@
     {
       "type": "file_end",
       "attrs": {
-        "file": "client/pages/recipes/_id/index.vue",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/pages/recipes/_id/index.vue"
       }
     },
     {
       "type": "file_start",
       "attrs": {
-        "file": "client/pages/recipes/add.vue",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/pages/recipes/add.vue"
       }
     },
     {
@@ -4011,8 +3998,8 @@
       "attrs": {
         "level": "file",
         "pos": "pre",
-        "file": "client/pages/recipes/add.vue",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/pages/recipes/add.vue"
       },
       "content": [
         {
@@ -4025,8 +4012,8 @@
       "type": "diff_block",
       "attrs": {
         "hiddenLines": [],
-        "file": "client/pages/recipes/add.vue",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/pages/recipes/add.vue"
       }
     },
     {
@@ -4034,8 +4021,8 @@
       "attrs": {
         "level": "file",
         "pos": "post",
-        "file": "client/pages/recipes/add.vue",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/pages/recipes/add.vue"
       },
       "content": [
         {
@@ -4047,15 +4034,15 @@
     {
       "type": "file_end",
       "attrs": {
-        "file": "client/pages/recipes/add.vue",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/pages/recipes/add.vue"
       }
     },
     {
       "type": "file_start",
       "attrs": {
-        "file": "client/pages/recipes/index.vue",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/pages/recipes/index.vue"
       }
     },
     {
@@ -4063,8 +4050,8 @@
       "attrs": {
         "level": "file",
         "pos": "pre",
-        "file": "client/pages/recipes/index.vue",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/pages/recipes/index.vue"
       },
       "content": [
         {
@@ -4077,8 +4064,8 @@
       "type": "diff_block",
       "attrs": {
         "hiddenLines": [],
-        "file": "client/pages/recipes/index.vue",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/pages/recipes/index.vue"
       }
     },
     {
@@ -4086,8 +4073,8 @@
       "attrs": {
         "level": "file",
         "pos": "post",
-        "file": "client/pages/recipes/index.vue",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/pages/recipes/index.vue"
       },
       "content": [
         {
@@ -4099,15 +4086,15 @@
     {
       "type": "file_end",
       "attrs": {
-        "file": "client/pages/recipes/index.vue",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/pages/recipes/index.vue"
       }
     },
     {
       "type": "file_start",
       "attrs": {
-        "file": "client/plugins/README.md",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/plugins/README.md"
       }
     },
     {
@@ -4115,8 +4102,8 @@
       "attrs": {
         "level": "file",
         "pos": "pre",
-        "file": "client/plugins/README.md",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/plugins/README.md"
       },
       "content": [
         {
@@ -4129,8 +4116,8 @@
       "type": "diff_block",
       "attrs": {
         "hiddenLines": [],
-        "file": "client/plugins/README.md",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/plugins/README.md"
       }
     },
     {
@@ -4138,8 +4125,8 @@
       "attrs": {
         "level": "file",
         "pos": "post",
-        "file": "client/plugins/README.md",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/plugins/README.md"
       },
       "content": [
         {
@@ -4151,15 +4138,15 @@
     {
       "type": "file_end",
       "attrs": {
-        "file": "client/plugins/README.md",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/plugins/README.md"
       }
     },
     {
       "type": "file_start",
       "attrs": {
-        "file": "client/static/README.md",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/static/README.md"
       }
     },
     {
@@ -4167,8 +4154,8 @@
       "attrs": {
         "level": "file",
         "pos": "pre",
-        "file": "client/static/README.md",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/static/README.md"
       },
       "content": [
         {
@@ -4181,8 +4168,8 @@
       "type": "diff_block",
       "attrs": {
         "hiddenLines": [],
-        "file": "client/static/README.md",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/static/README.md"
       }
     },
     {
@@ -4190,8 +4177,8 @@
       "attrs": {
         "level": "file",
         "pos": "post",
-        "file": "client/static/README.md",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/static/README.md"
       },
       "content": [
         {
@@ -4203,15 +4190,15 @@
     {
       "type": "file_end",
       "attrs": {
-        "file": "client/static/README.md",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/static/README.md"
       }
     },
     {
       "type": "file_start",
       "attrs": {
-        "file": "client/static/favicon.ico",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/static/favicon.ico"
       }
     },
     {
@@ -4219,8 +4206,8 @@
       "attrs": {
         "level": "file",
         "pos": "pre",
-        "file": "client/static/favicon.ico",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/static/favicon.ico"
       },
       "content": [
         {
@@ -4233,8 +4220,8 @@
       "type": "diff_block",
       "attrs": {
         "hiddenLines": [],
-        "file": "client/static/favicon.ico",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/static/favicon.ico"
       }
     },
     {
@@ -4242,8 +4229,8 @@
       "attrs": {
         "level": "file",
         "pos": "post",
-        "file": "client/static/favicon.ico",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/static/favicon.ico"
       },
       "content": [
         {
@@ -4255,15 +4242,15 @@
     {
       "type": "file_end",
       "attrs": {
-        "file": "client/static/favicon.ico",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/static/favicon.ico"
       }
     },
     {
       "type": "file_start",
       "attrs": {
-        "file": "client/static/icon.png",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/static/icon.png"
       }
     },
     {
@@ -4271,8 +4258,8 @@
       "attrs": {
         "level": "file",
         "pos": "pre",
-        "file": "client/static/icon.png",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/static/icon.png"
       },
       "content": [
         {
@@ -4285,8 +4272,8 @@
       "type": "diff_block",
       "attrs": {
         "hiddenLines": [],
-        "file": "client/static/icon.png",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/static/icon.png"
       }
     },
     {
@@ -4294,8 +4281,8 @@
       "attrs": {
         "level": "file",
         "pos": "post",
-        "file": "client/static/icon.png",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/static/icon.png"
       },
       "content": [
         {
@@ -4307,15 +4294,15 @@
     {
       "type": "file_end",
       "attrs": {
-        "file": "client/static/icon.png",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/static/icon.png"
       }
     },
     {
       "type": "file_start",
       "attrs": {
-        "file": "client/static/images/banner.jpg",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/static/images/banner.jpg"
       }
     },
     {
@@ -4323,8 +4310,8 @@
       "attrs": {
         "level": "file",
         "pos": "pre",
-        "file": "client/static/images/banner.jpg",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/static/images/banner.jpg"
       },
       "content": [
         {
@@ -4337,8 +4324,8 @@
       "type": "diff_block",
       "attrs": {
         "hiddenLines": [],
-        "file": "client/static/images/banner.jpg",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/static/images/banner.jpg"
       }
     },
     {
@@ -4346,8 +4333,8 @@
       "attrs": {
         "level": "file",
         "pos": "post",
-        "file": "client/static/images/banner.jpg",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/static/images/banner.jpg"
       },
       "content": [
         {
@@ -4359,15 +4346,15 @@
     {
       "type": "file_end",
       "attrs": {
-        "file": "client/static/images/banner.jpg",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/static/images/banner.jpg"
       }
     },
     {
       "type": "file_start",
       "attrs": {
-        "file": "client/store/README.md",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/store/README.md"
       }
     },
     {
@@ -4375,8 +4362,8 @@
       "attrs": {
         "level": "file",
         "pos": "pre",
-        "file": "client/store/README.md",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/store/README.md"
       },
       "content": [
         {
@@ -4389,8 +4376,8 @@
       "type": "diff_block",
       "attrs": {
         "hiddenLines": [],
-        "file": "client/store/README.md",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/store/README.md"
       }
     },
     {
@@ -4398,8 +4385,8 @@
       "attrs": {
         "level": "file",
         "pos": "post",
-        "file": "client/store/README.md",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/store/README.md"
       },
       "content": [
         {
@@ -4411,15 +4398,15 @@
     {
       "type": "file_end",
       "attrs": {
-        "file": "client/store/README.md",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/store/README.md"
       }
     },
     {
       "type": "file_start",
       "attrs": {
-        "file": "client/yarn.lock",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/yarn.lock"
       }
     },
     {
@@ -4427,8 +4414,8 @@
       "attrs": {
         "level": "file",
         "pos": "pre",
-        "file": "client/yarn.lock",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/yarn.lock"
       },
       "content": [
         {
@@ -4441,8 +4428,8 @@
       "type": "diff_block",
       "attrs": {
         "hiddenLines": [],
-        "file": "client/yarn.lock",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/yarn.lock"
       }
     },
     {
@@ -4450,8 +4437,8 @@
       "attrs": {
         "level": "file",
         "pos": "post",
-        "file": "client/yarn.lock",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/yarn.lock"
       },
       "content": [
         {
@@ -4463,15 +4450,15 @@
     {
       "type": "file_end",
       "attrs": {
-        "file": "client/yarn.lock",
-        "outdated": true
+        "commit": "596203d",
+        "file": "client/yarn.lock"
       }
     },
     {
       "type": "file_start",
       "attrs": {
-        "file": "tuture.yml",
-        "outdated": true
+        "commit": "596203d",
+        "file": "tuture.yml"
       }
     },
     {
@@ -4479,8 +4466,8 @@
       "attrs": {
         "level": "file",
         "pos": "pre",
-        "file": "tuture.yml",
-        "outdated": true
+        "commit": "596203d",
+        "file": "tuture.yml"
       },
       "content": [
         {
@@ -4493,8 +4480,8 @@
       "type": "diff_block",
       "attrs": {
         "hiddenLines": [0, 1, 2, 3, 4, 5],
-        "file": "tuture.yml",
-        "outdated": true
+        "commit": "596203d",
+        "file": "tuture.yml"
       }
     },
     {
@@ -4502,8 +4489,8 @@
       "attrs": {
         "level": "file",
         "pos": "post",
-        "file": "tuture.yml",
-        "outdated": true
+        "commit": "596203d",
+        "file": "tuture.yml"
       },
       "content": [
         {
@@ -4515,8 +4502,8 @@
     {
       "type": "file_end",
       "attrs": {
-        "file": "tuture.yml",
-        "outdated": true
+        "commit": "596203d",
+        "file": "tuture.yml"
       }
     },
     {
@@ -4525,8 +4512,7 @@
         "fixed": true,
         "level": "step",
         "pos": "post",
-        "commit": "596203d",
-        "outdated": true
+        "commit": "596203d"
       },
       "content": [
         {
@@ -4607,15 +4593,13 @@
     {
       "type": "step_end",
       "attrs": {
-        "commit": "596203d",
-        "outdated": true
+        "commit": "596203d"
       }
     },
     {
       "type": "step_start",
       "attrs": {
-        "commit": "63f7ab0",
-        "outdated": true
+        "commit": "63f7ab0"
       }
     },
     {
@@ -4627,13 +4611,12 @@
         }
       ],
       "attrs": {
-        "id": "cc4982e5",
+        "id": "9d2c7377",
         "level": 2,
         "fixed": true,
         "step": {
           "commit": "63f7ab0"
-        },
-        "outdated": true
+        }
       }
     },
     {
@@ -4642,8 +4625,7 @@
         "fixed": true,
         "level": "step",
         "pos": "pre",
-        "commit": "63f7ab0",
-        "outdated": true
+        "commit": "63f7ab0"
       },
       "content": [
         {
@@ -4660,8 +4642,8 @@
     {
       "type": "file_start",
       "attrs": {
-        "file": "client/components/RecipeCard.vue",
-        "outdated": true
+        "commit": "63f7ab0",
+        "file": "client/components/RecipeCard.vue"
       }
     },
     {
@@ -4669,8 +4651,8 @@
       "attrs": {
         "level": "file",
         "pos": "pre",
-        "file": "client/components/RecipeCard.vue",
-        "outdated": true
+        "commit": "63f7ab0",
+        "file": "client/components/RecipeCard.vue"
       },
       "content": [
         {
@@ -4713,8 +4695,8 @@
       "type": "diff_block",
       "attrs": {
         "hiddenLines": [],
-        "file": "client/components/RecipeCard.vue",
-        "outdated": true
+        "commit": "63f7ab0",
+        "file": "client/components/RecipeCard.vue"
       }
     },
     {
@@ -4722,8 +4704,8 @@
       "attrs": {
         "level": "file",
         "pos": "post",
-        "file": "client/components/RecipeCard.vue",
-        "outdated": true
+        "commit": "63f7ab0",
+        "file": "client/components/RecipeCard.vue"
       },
       "content": [
         {
@@ -4779,15 +4761,15 @@
     {
       "type": "file_end",
       "attrs": {
-        "file": "client/components/RecipeCard.vue",
-        "outdated": true
+        "commit": "63f7ab0",
+        "file": "client/components/RecipeCard.vue"
       }
     },
     {
       "type": "file_start",
       "attrs": {
-        "file": "client/pages/recipes/index.vue",
-        "outdated": true
+        "commit": "63f7ab0",
+        "file": "client/pages/recipes/index.vue"
       }
     },
     {
@@ -4795,8 +4777,8 @@
       "attrs": {
         "level": "file",
         "pos": "pre",
-        "file": "client/pages/recipes/index.vue",
-        "outdated": true
+        "commit": "63f7ab0",
+        "file": "client/pages/recipes/index.vue"
       },
       "content": [
         {
@@ -4958,8 +4940,8 @@
       "type": "diff_block",
       "attrs": {
         "hiddenLines": [],
-        "file": "client/pages/recipes/index.vue",
-        "outdated": true
+        "commit": "63f7ab0",
+        "file": "client/pages/recipes/index.vue"
       }
     },
     {
@@ -4967,8 +4949,8 @@
       "attrs": {
         "level": "file",
         "pos": "post",
-        "file": "client/pages/recipes/index.vue",
-        "outdated": true
+        "commit": "63f7ab0",
+        "file": "client/pages/recipes/index.vue"
       },
       "content": [
         {
@@ -4980,15 +4962,15 @@
     {
       "type": "file_end",
       "attrs": {
-        "file": "client/pages/recipes/index.vue",
-        "outdated": true
+        "commit": "63f7ab0",
+        "file": "client/pages/recipes/index.vue"
       }
     },
     {
       "type": "file_start",
       "attrs": {
-        "file": "client/static/images/food-1.jpeg",
-        "outdated": true
+        "commit": "63f7ab0",
+        "file": "client/static/images/food-1.jpeg"
       }
     },
     {
@@ -4996,8 +4978,8 @@
       "attrs": {
         "level": "file",
         "pos": "pre",
-        "file": "client/static/images/food-1.jpeg",
-        "outdated": true
+        "commit": "63f7ab0",
+        "file": "client/static/images/food-1.jpeg"
       },
       "content": [
         {
@@ -5010,8 +4992,8 @@
       "type": "diff_block",
       "attrs": {
         "hiddenLines": [],
-        "file": "client/static/images/food-1.jpeg",
-        "outdated": true
+        "commit": "63f7ab0",
+        "file": "client/static/images/food-1.jpeg"
       }
     },
     {
@@ -5019,8 +5001,8 @@
       "attrs": {
         "level": "file",
         "pos": "post",
-        "file": "client/static/images/food-1.jpeg",
-        "outdated": true
+        "commit": "63f7ab0",
+        "file": "client/static/images/food-1.jpeg"
       },
       "content": [
         {
@@ -5032,15 +5014,15 @@
     {
       "type": "file_end",
       "attrs": {
-        "file": "client/static/images/food-1.jpeg",
-        "outdated": true
+        "commit": "63f7ab0",
+        "file": "client/static/images/food-1.jpeg"
       }
     },
     {
       "type": "file_start",
       "attrs": {
-        "file": "client/static/images/food-2.jpeg",
-        "outdated": true
+        "commit": "63f7ab0",
+        "file": "client/static/images/food-2.jpeg"
       }
     },
     {
@@ -5048,8 +5030,8 @@
       "attrs": {
         "level": "file",
         "pos": "pre",
-        "file": "client/static/images/food-2.jpeg",
-        "outdated": true
+        "commit": "63f7ab0",
+        "file": "client/static/images/food-2.jpeg"
       },
       "content": [
         {
@@ -5062,8 +5044,8 @@
       "type": "diff_block",
       "attrs": {
         "hiddenLines": [],
-        "file": "client/static/images/food-2.jpeg",
-        "outdated": true
+        "commit": "63f7ab0",
+        "file": "client/static/images/food-2.jpeg"
       }
     },
     {
@@ -5071,8 +5053,8 @@
       "attrs": {
         "level": "file",
         "pos": "post",
-        "file": "client/static/images/food-2.jpeg",
-        "outdated": true
+        "commit": "63f7ab0",
+        "file": "client/static/images/food-2.jpeg"
       },
       "content": [
         {
@@ -5084,15 +5066,15 @@
     {
       "type": "file_end",
       "attrs": {
-        "file": "client/static/images/food-2.jpeg",
-        "outdated": true
+        "commit": "63f7ab0",
+        "file": "client/static/images/food-2.jpeg"
       }
     },
     {
       "type": "file_start",
       "attrs": {
-        "file": "tuture.yml",
-        "outdated": true
+        "commit": "63f7ab0",
+        "file": "tuture.yml"
       }
     },
     {
@@ -5100,8 +5082,8 @@
       "attrs": {
         "level": "file",
         "pos": "pre",
-        "file": "tuture.yml",
-        "outdated": true
+        "commit": "63f7ab0",
+        "file": "tuture.yml"
       },
       "content": [
         {
@@ -5190,8 +5172,8 @@
           73,
           74
         ],
-        "file": "tuture.yml",
-        "outdated": true
+        "commit": "63f7ab0",
+        "file": "tuture.yml"
       }
     },
     {
@@ -5199,8 +5181,8 @@
       "attrs": {
         "level": "file",
         "pos": "post",
-        "file": "tuture.yml",
-        "outdated": true
+        "commit": "63f7ab0",
+        "file": "tuture.yml"
       },
       "content": [
         {
@@ -5212,8 +5194,8 @@
     {
       "type": "file_end",
       "attrs": {
-        "file": "tuture.yml",
-        "outdated": true
+        "commit": "63f7ab0",
+        "file": "tuture.yml"
       }
     },
     {
@@ -5222,8 +5204,7 @@
         "fixed": true,
         "level": "step",
         "pos": "post",
-        "commit": "63f7ab0",
-        "outdated": true
+        "commit": "63f7ab0"
       },
       "content": [
         {
@@ -5262,8 +5243,7 @@
     {
       "type": "step_end",
       "attrs": {
-        "commit": "63f7ab0",
-        "outdated": true
+        "commit": "63f7ab0"
       }
     }
   ]
