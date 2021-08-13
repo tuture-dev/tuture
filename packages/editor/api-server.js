@@ -24,7 +24,7 @@ const app = makeServer({
       if (!commit || !file) {
         res.status(400).json(req.query);
       }
-      res.json(mockDiff[commit][file]);
+      res.json(mockDiff[commit.slice(0, 7)][file]);
     });
   },
 });

@@ -4,8 +4,7 @@
     {
       "type": "step_start",
       "attrs": {
-        "commit": "60a60d7",
-        "outdated": true
+        "commit": "60a60d7"
       }
     },
     {
@@ -17,13 +16,12 @@
         }
       ],
       "attrs": {
-        "id": "db639412",
+        "id": "d4dde0d1",
         "level": 2,
         "fixed": true,
         "step": {
           "commit": "60a60d7"
-        },
-        "outdated": true
+        }
       }
     },
     {
@@ -32,8 +30,7 @@
         "fixed": true,
         "level": "step",
         "pos": "pre",
-        "commit": "60a60d7",
-        "outdated": true
+        "commit": "60a60d7"
       },
       "content": [
         {
@@ -50,8 +47,8 @@
     {
       "type": "file_start",
       "attrs": {
-        "file": "api/api/urls.py",
-        "outdated": true
+        "commit": "60a60d7",
+        "file": "api/api/urls.py"
       }
     },
     {
@@ -59,8 +56,8 @@
       "attrs": {
         "level": "file",
         "pos": "pre",
-        "file": "api/api/urls.py",
-        "outdated": true
+        "commit": "60a60d7",
+        "file": "api/api/urls.py"
       },
       "content": [
         {
@@ -90,8 +87,8 @@
       "type": "diff_block",
       "attrs": {
         "hiddenLines": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
-        "file": "api/api/urls.py",
-        "outdated": true
+        "commit": "60a60d7",
+        "file": "api/api/urls.py"
       }
     },
     {
@@ -99,8 +96,8 @@
       "attrs": {
         "level": "file",
         "pos": "post",
-        "file": "api/api/urls.py",
-        "outdated": true
+        "commit": "60a60d7",
+        "file": "api/api/urls.py"
       },
       "content": [
         {
@@ -164,15 +161,15 @@
     {
       "type": "file_end",
       "attrs": {
-        "file": "api/api/urls.py",
-        "outdated": true
+        "commit": "60a60d7",
+        "file": "api/api/urls.py"
       }
     },
     {
       "type": "file_start",
       "attrs": {
-        "file": "client/nuxt.config.js",
-        "outdated": true
+        "commit": "60a60d7",
+        "file": "client/nuxt.config.js"
       }
     },
     {
@@ -180,8 +177,8 @@
       "attrs": {
         "level": "file",
         "pos": "pre",
-        "file": "client/nuxt.config.js",
-        "outdated": true
+        "commit": "60a60d7",
+        "file": "client/nuxt.config.js"
       },
       "content": [
         {
@@ -299,8 +296,8 @@
           62,
           63
         ],
-        "file": "client/nuxt.config.js",
-        "outdated": true
+        "commit": "60a60d7",
+        "file": "client/nuxt.config.js"
       }
     },
     {
@@ -308,8 +305,8 @@
       "attrs": {
         "level": "file",
         "pos": "post",
-        "file": "client/nuxt.config.js",
-        "outdated": true
+        "commit": "60a60d7",
+        "file": "client/nuxt.config.js"
       },
       "content": [
         {
@@ -321,15 +318,15 @@
     {
       "type": "file_end",
       "attrs": {
-        "file": "client/nuxt.config.js",
-        "outdated": true
+        "commit": "60a60d7",
+        "file": "client/nuxt.config.js"
       }
     },
     {
       "type": "file_start",
       "attrs": {
-        "file": "client/pages/recipes/index.vue",
-        "outdated": true
+        "commit": "60a60d7",
+        "file": "client/pages/recipes/index.vue"
       }
     },
     {
@@ -337,8 +334,8 @@
       "attrs": {
         "level": "file",
         "pos": "pre",
-        "file": "client/pages/recipes/index.vue",
-        "outdated": true
+        "commit": "60a60d7",
+        "file": "client/pages/recipes/index.vue"
       },
       "content": [
         {
@@ -435,8 +432,8 @@
           99,
           100
         ],
-        "file": "client/pages/recipes/index.vue",
-        "outdated": true
+        "commit": "60a60d7",
+        "file": "client/pages/recipes/index.vue"
       }
     },
     {
@@ -444,8 +441,8 @@
       "attrs": {
         "level": "file",
         "pos": "post",
-        "file": "client/pages/recipes/index.vue",
-        "outdated": true
+        "commit": "60a60d7",
+        "file": "client/pages/recipes/index.vue"
       },
       "content": [
         {
@@ -457,15 +454,15 @@
     {
       "type": "file_end",
       "attrs": {
-        "file": "client/pages/recipes/index.vue",
-        "outdated": true
+        "commit": "60a60d7",
+        "file": "client/pages/recipes/index.vue"
       }
     },
     {
       "type": "file_start",
       "attrs": {
-        "file": "client/pages/recipes/_id/index.vue",
-        "outdated": true
+        "commit": "60a60d7",
+        "file": "client/pages/recipes/_id/index.vue"
       }
     },
     {
@@ -473,8 +470,8 @@
       "attrs": {
         "level": "file",
         "pos": "pre",
-        "file": "client/pages/recipes/_id/index.vue",
-        "outdated": true
+        "commit": "60a60d7",
+        "file": "client/pages/recipes/_id/index.vue"
       },
       "content": [
         {
@@ -504,8 +501,8 @@
       "type": "diff_block",
       "attrs": {
         "hiddenLines": [],
-        "file": "client/pages/recipes/_id/index.vue",
-        "outdated": true
+        "commit": "60a60d7",
+        "file": "client/pages/recipes/_id/index.vue"
       }
     },
     {
@@ -513,8 +510,8 @@
       "attrs": {
         "level": "file",
         "pos": "post",
-        "file": "client/pages/recipes/_id/index.vue",
-        "outdated": true
+        "commit": "60a60d7",
+        "file": "client/pages/recipes/_id/index.vue"
       },
       "content": [
         {
@@ -526,8 +523,8 @@
     {
       "type": "file_end",
       "attrs": {
-        "file": "client/pages/recipes/_id/index.vue",
-        "outdated": true
+        "commit": "60a60d7",
+        "file": "client/pages/recipes/_id/index.vue"
       }
     },
     {
@@ -536,8 +533,7 @@
         "fixed": true,
         "level": "step",
         "pos": "post",
-        "commit": "60a60d7",
-        "outdated": true
+        "commit": "60a60d7"
       },
       "content": [
         {
@@ -619,15 +615,13 @@
     {
       "type": "step_end",
       "attrs": {
-        "commit": "60a60d7",
-        "outdated": true
+        "commit": "60a60d7"
       }
     },
     {
       "type": "step_start",
       "attrs": {
-        "commit": "5f1edd9",
-        "outdated": true
+        "commit": "5f1edd9"
       }
     },
     {
@@ -639,13 +633,12 @@
         }
       ],
       "attrs": {
-        "id": "4899e0bf",
+        "id": "5edbcc2e",
         "level": 2,
         "fixed": true,
         "step": {
           "commit": "5f1edd9"
-        },
-        "outdated": true
+        }
       }
     },
     {
@@ -654,8 +647,7 @@
         "fixed": true,
         "level": "step",
         "pos": "pre",
-        "commit": "5f1edd9",
-        "outdated": true
+        "commit": "5f1edd9"
       },
       "content": [
         {
@@ -698,8 +690,8 @@
     {
       "type": "file_start",
       "attrs": {
-        "file": "client/pages/recipes/_id/edit.vue",
-        "outdated": true
+        "commit": "5f1edd9",
+        "file": "client/pages/recipes/_id/edit.vue"
       }
     },
     {
@@ -707,8 +699,8 @@
       "attrs": {
         "level": "file",
         "pos": "pre",
-        "file": "client/pages/recipes/_id/edit.vue",
-        "outdated": true
+        "commit": "5f1edd9",
+        "file": "client/pages/recipes/_id/edit.vue"
       },
       "content": [
         {
@@ -721,8 +713,8 @@
       "type": "diff_block",
       "attrs": {
         "hiddenLines": [],
-        "file": "client/pages/recipes/_id/edit.vue",
-        "outdated": true
+        "commit": "5f1edd9",
+        "file": "client/pages/recipes/_id/edit.vue"
       }
     },
     {
@@ -730,8 +722,8 @@
       "attrs": {
         "level": "file",
         "pos": "post",
-        "file": "client/pages/recipes/_id/edit.vue",
-        "outdated": true
+        "commit": "5f1edd9",
+        "file": "client/pages/recipes/_id/edit.vue"
       },
       "content": [
         {
@@ -761,15 +753,15 @@
     {
       "type": "file_end",
       "attrs": {
-        "file": "client/pages/recipes/_id/edit.vue",
-        "outdated": true
+        "commit": "5f1edd9",
+        "file": "client/pages/recipes/_id/edit.vue"
       }
     },
     {
       "type": "file_start",
       "attrs": {
-        "file": "client/pages/recipes/add.vue",
-        "outdated": true
+        "commit": "5f1edd9",
+        "file": "client/pages/recipes/add.vue"
       }
     },
     {
@@ -777,8 +769,8 @@
       "attrs": {
         "level": "file",
         "pos": "pre",
-        "file": "client/pages/recipes/add.vue",
-        "outdated": true
+        "commit": "5f1edd9",
+        "file": "client/pages/recipes/add.vue"
       },
       "content": [
         {
@@ -791,8 +783,8 @@
       "type": "diff_block",
       "attrs": {
         "hiddenLines": [],
-        "file": "client/pages/recipes/add.vue",
-        "outdated": true
+        "commit": "5f1edd9",
+        "file": "client/pages/recipes/add.vue"
       }
     },
     {
@@ -800,8 +792,8 @@
       "attrs": {
         "level": "file",
         "pos": "post",
-        "file": "client/pages/recipes/add.vue",
-        "outdated": true
+        "commit": "5f1edd9",
+        "file": "client/pages/recipes/add.vue"
       },
       "content": [
         {
@@ -831,15 +823,15 @@
     {
       "type": "file_end",
       "attrs": {
-        "file": "client/pages/recipes/add.vue",
-        "outdated": true
+        "commit": "5f1edd9",
+        "file": "client/pages/recipes/add.vue"
       }
     },
     {
       "type": "file_start",
       "attrs": {
-        "file": "client/static/images/placeholder.png",
-        "outdated": true
+        "commit": "5f1edd9",
+        "file": "client/static/images/placeholder.png"
       }
     },
     {
@@ -847,8 +839,8 @@
       "attrs": {
         "level": "file",
         "pos": "pre",
-        "file": "client/static/images/placeholder.png",
-        "outdated": true
+        "commit": "5f1edd9",
+        "file": "client/static/images/placeholder.png"
       },
       "content": [
         {
@@ -861,8 +853,8 @@
       "type": "diff_block",
       "attrs": {
         "hiddenLines": [],
-        "file": "client/static/images/placeholder.png",
-        "outdated": true
+        "commit": "5f1edd9",
+        "file": "client/static/images/placeholder.png"
       }
     },
     {
@@ -870,8 +862,8 @@
       "attrs": {
         "level": "file",
         "pos": "post",
-        "file": "client/static/images/placeholder.png",
-        "outdated": true
+        "commit": "5f1edd9",
+        "file": "client/static/images/placeholder.png"
       },
       "content": [
         {
@@ -883,8 +875,8 @@
     {
       "type": "file_end",
       "attrs": {
-        "file": "client/static/images/placeholder.png",
-        "outdated": true
+        "commit": "5f1edd9",
+        "file": "client/static/images/placeholder.png"
       }
     },
     {
@@ -893,8 +885,7 @@
         "fixed": true,
         "level": "step",
         "pos": "post",
-        "commit": "5f1edd9",
-        "outdated": true
+        "commit": "5f1edd9"
       },
       "content": [
         {
@@ -906,15 +897,13 @@
     {
       "type": "step_end",
       "attrs": {
-        "commit": "5f1edd9",
-        "outdated": true
+        "commit": "5f1edd9"
       }
     },
     {
       "type": "step_start",
       "attrs": {
-        "commit": "04edf4c",
-        "outdated": true
+        "commit": "04edf4c"
       }
     },
     {
@@ -926,13 +915,12 @@
         }
       ],
       "attrs": {
-        "id": "a6046e6b",
+        "id": "11fe4d37",
         "level": 2,
         "fixed": true,
         "step": {
           "commit": "04edf4c"
-        },
-        "outdated": true
+        }
       }
     },
     {
@@ -941,8 +929,7 @@
         "fixed": true,
         "level": "step",
         "pos": "pre",
-        "commit": "04edf4c",
-        "outdated": true
+        "commit": "04edf4c"
       },
       "content": [
         {
@@ -959,8 +946,8 @@
     {
       "type": "file_start",
       "attrs": {
-        "file": "client/assets/css/transition.css",
-        "outdated": true
+        "commit": "04edf4c",
+        "file": "client/assets/css/transition.css"
       }
     },
     {
@@ -968,8 +955,8 @@
       "attrs": {
         "level": "file",
         "pos": "pre",
-        "file": "client/assets/css/transition.css",
-        "outdated": true
+        "commit": "04edf4c",
+        "file": "client/assets/css/transition.css"
       },
       "content": [
         {
@@ -987,8 +974,8 @@
       "type": "diff_block",
       "attrs": {
         "hiddenLines": [],
-        "file": "client/assets/css/transition.css",
-        "outdated": true
+        "commit": "04edf4c",
+        "file": "client/assets/css/transition.css"
       }
     },
     {
@@ -996,8 +983,8 @@
       "attrs": {
         "level": "file",
         "pos": "post",
-        "file": "client/assets/css/transition.css",
-        "outdated": true
+        "commit": "04edf4c",
+        "file": "client/assets/css/transition.css"
       },
       "content": [
         {
@@ -1009,15 +996,15 @@
     {
       "type": "file_end",
       "attrs": {
-        "file": "client/assets/css/transition.css",
-        "outdated": true
+        "commit": "04edf4c",
+        "file": "client/assets/css/transition.css"
       }
     },
     {
       "type": "file_start",
       "attrs": {
-        "file": "client/nuxt.config.js",
-        "outdated": true
+        "commit": "04edf4c",
+        "file": "client/nuxt.config.js"
       }
     },
     {
@@ -1025,8 +1012,8 @@
       "attrs": {
         "level": "file",
         "pos": "pre",
-        "file": "client/nuxt.config.js",
-        "outdated": true
+        "commit": "04edf4c",
+        "file": "client/nuxt.config.js"
       },
       "content": [
         {
@@ -1103,8 +1090,8 @@
           63,
           64
         ],
-        "file": "client/nuxt.config.js",
-        "outdated": true
+        "commit": "04edf4c",
+        "file": "client/nuxt.config.js"
       }
     },
     {
@@ -1112,8 +1099,8 @@
       "attrs": {
         "level": "file",
         "pos": "post",
-        "file": "client/nuxt.config.js",
-        "outdated": true
+        "commit": "04edf4c",
+        "file": "client/nuxt.config.js"
       },
       "content": [
         {
@@ -1125,15 +1112,15 @@
     {
       "type": "file_end",
       "attrs": {
-        "file": "client/nuxt.config.js",
-        "outdated": true
+        "commit": "04edf4c",
+        "file": "client/nuxt.config.js"
       }
     },
     {
       "type": "file_start",
       "attrs": {
-        "file": "tuture.yml",
-        "outdated": true
+        "commit": "04edf4c",
+        "file": "tuture.yml"
       }
     },
     {
@@ -1141,8 +1128,8 @@
       "attrs": {
         "level": "file",
         "pos": "pre",
-        "file": "tuture.yml",
-        "outdated": true
+        "commit": "04edf4c",
+        "file": "tuture.yml"
       },
       "content": [
         {
@@ -1283,8 +1270,8 @@
           125,
           126
         ],
-        "file": "tuture.yml",
-        "outdated": true
+        "commit": "04edf4c",
+        "file": "tuture.yml"
       }
     },
     {
@@ -1292,8 +1279,8 @@
       "attrs": {
         "level": "file",
         "pos": "post",
-        "file": "tuture.yml",
-        "outdated": true
+        "commit": "04edf4c",
+        "file": "tuture.yml"
       },
       "content": [
         {
@@ -1305,8 +1292,8 @@
     {
       "type": "file_end",
       "attrs": {
-        "file": "tuture.yml",
-        "outdated": true
+        "commit": "04edf4c",
+        "file": "tuture.yml"
       }
     },
     {
@@ -1315,8 +1302,7 @@
         "fixed": true,
         "level": "step",
         "pos": "post",
-        "commit": "04edf4c",
-        "outdated": true
+        "commit": "04edf4c"
       },
       "content": [
         {
@@ -1333,3808 +1319,7 @@
     {
       "type": "step_end",
       "attrs": {
-        "commit": "04edf4c",
-        "outdated": true
-      }
-    },
-    {
-      "type": "step_start",
-      "attrs": {
-        "commit": "c64b3b61b1bfd3c890f8600c80f7b26d1d8e784d"
-      }
-    },
-    {
-      "type": "heading",
-      "content": [
-        {
-          "type": "text",
-          "text": "项目初始化"
-        }
-      ],
-      "attrs": {
-        "id": "cc533645",
-        "level": 2,
-        "fixed": true,
-        "step": {
-          "commit": "c64b3b61b1bfd3c890f8600c80f7b26d1d8e784d"
-        }
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "step",
-        "pos": "pre",
-        "commit": "c64b3b61b1bfd3c890f8600c80f7b26d1d8e784d"
-      }
-    },
-    {
-      "type": "file_start",
-      "attrs": {
-        "commit": "c64b3b61b1bfd3c890f8600c80f7b26d1d8e784d",
-        "file": "Pipfile"
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "pre",
-        "commit": "c64b3b61b1bfd3c890f8600c80f7b26d1d8e784d",
-        "file": "Pipfile"
-      }
-    },
-    {
-      "type": "diff_block",
-      "attrs": {
-        "commit": "c64b3b61b1bfd3c890f8600c80f7b26d1d8e784d",
-        "hidden": false,
-        "file": "Pipfile",
-        "hiddenLines": []
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "post",
-        "commit": "c64b3b61b1bfd3c890f8600c80f7b26d1d8e784d",
-        "file": "Pipfile"
-      }
-    },
-    {
-      "type": "file_end",
-      "attrs": {
-        "commit": "c64b3b61b1bfd3c890f8600c80f7b26d1d8e784d",
-        "file": "Pipfile"
-      }
-    },
-    {
-      "type": "file_start",
-      "attrs": {
-        "commit": "c64b3b61b1bfd3c890f8600c80f7b26d1d8e784d",
-        "file": "api/api/__init__.py"
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "pre",
-        "commit": "c64b3b61b1bfd3c890f8600c80f7b26d1d8e784d",
-        "file": "api/api/__init__.py"
-      }
-    },
-    {
-      "type": "diff_block",
-      "attrs": {
-        "commit": "c64b3b61b1bfd3c890f8600c80f7b26d1d8e784d",
-        "hidden": false,
-        "file": "api/api/__init__.py",
-        "hiddenLines": []
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "post",
-        "commit": "c64b3b61b1bfd3c890f8600c80f7b26d1d8e784d",
-        "file": "api/api/__init__.py"
-      }
-    },
-    {
-      "type": "file_end",
-      "attrs": {
-        "commit": "c64b3b61b1bfd3c890f8600c80f7b26d1d8e784d",
-        "file": "api/api/__init__.py"
-      }
-    },
-    {
-      "type": "file_start",
-      "attrs": {
-        "commit": "c64b3b61b1bfd3c890f8600c80f7b26d1d8e784d",
-        "file": "api/api/settings.py"
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "pre",
-        "commit": "c64b3b61b1bfd3c890f8600c80f7b26d1d8e784d",
-        "file": "api/api/settings.py"
-      }
-    },
-    {
-      "type": "diff_block",
-      "attrs": {
-        "commit": "c64b3b61b1bfd3c890f8600c80f7b26d1d8e784d",
-        "hidden": false,
-        "file": "api/api/settings.py",
-        "hiddenLines": []
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "post",
-        "commit": "c64b3b61b1bfd3c890f8600c80f7b26d1d8e784d",
-        "file": "api/api/settings.py"
-      }
-    },
-    {
-      "type": "file_end",
-      "attrs": {
-        "commit": "c64b3b61b1bfd3c890f8600c80f7b26d1d8e784d",
-        "file": "api/api/settings.py"
-      }
-    },
-    {
-      "type": "file_start",
-      "attrs": {
-        "commit": "c64b3b61b1bfd3c890f8600c80f7b26d1d8e784d",
-        "file": "api/api/urls.py"
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "pre",
-        "commit": "c64b3b61b1bfd3c890f8600c80f7b26d1d8e784d",
-        "file": "api/api/urls.py"
-      }
-    },
-    {
-      "type": "diff_block",
-      "attrs": {
-        "commit": "c64b3b61b1bfd3c890f8600c80f7b26d1d8e784d",
-        "hidden": false,
-        "file": "api/api/urls.py",
-        "hiddenLines": []
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "post",
-        "commit": "c64b3b61b1bfd3c890f8600c80f7b26d1d8e784d",
-        "file": "api/api/urls.py"
-      }
-    },
-    {
-      "type": "file_end",
-      "attrs": {
-        "commit": "c64b3b61b1bfd3c890f8600c80f7b26d1d8e784d",
-        "file": "api/api/urls.py"
-      }
-    },
-    {
-      "type": "file_start",
-      "attrs": {
-        "commit": "c64b3b61b1bfd3c890f8600c80f7b26d1d8e784d",
-        "file": "api/api/wsgi.py"
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "pre",
-        "commit": "c64b3b61b1bfd3c890f8600c80f7b26d1d8e784d",
-        "file": "api/api/wsgi.py"
-      }
-    },
-    {
-      "type": "diff_block",
-      "attrs": {
-        "commit": "c64b3b61b1bfd3c890f8600c80f7b26d1d8e784d",
-        "hidden": false,
-        "file": "api/api/wsgi.py",
-        "hiddenLines": []
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "post",
-        "commit": "c64b3b61b1bfd3c890f8600c80f7b26d1d8e784d",
-        "file": "api/api/wsgi.py"
-      }
-    },
-    {
-      "type": "file_end",
-      "attrs": {
-        "commit": "c64b3b61b1bfd3c890f8600c80f7b26d1d8e784d",
-        "file": "api/api/wsgi.py"
-      }
-    },
-    {
-      "type": "file_start",
-      "attrs": {
-        "commit": "c64b3b61b1bfd3c890f8600c80f7b26d1d8e784d",
-        "file": "api/core/__init__.py"
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "pre",
-        "commit": "c64b3b61b1bfd3c890f8600c80f7b26d1d8e784d",
-        "file": "api/core/__init__.py"
-      }
-    },
-    {
-      "type": "diff_block",
-      "attrs": {
-        "commit": "c64b3b61b1bfd3c890f8600c80f7b26d1d8e784d",
-        "hidden": false,
-        "file": "api/core/__init__.py",
-        "hiddenLines": []
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "post",
-        "commit": "c64b3b61b1bfd3c890f8600c80f7b26d1d8e784d",
-        "file": "api/core/__init__.py"
-      }
-    },
-    {
-      "type": "file_end",
-      "attrs": {
-        "commit": "c64b3b61b1bfd3c890f8600c80f7b26d1d8e784d",
-        "file": "api/core/__init__.py"
-      }
-    },
-    {
-      "type": "file_start",
-      "attrs": {
-        "commit": "c64b3b61b1bfd3c890f8600c80f7b26d1d8e784d",
-        "file": "api/core/admin.py"
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "pre",
-        "commit": "c64b3b61b1bfd3c890f8600c80f7b26d1d8e784d",
-        "file": "api/core/admin.py"
-      }
-    },
-    {
-      "type": "diff_block",
-      "attrs": {
-        "commit": "c64b3b61b1bfd3c890f8600c80f7b26d1d8e784d",
-        "hidden": false,
-        "file": "api/core/admin.py",
-        "hiddenLines": []
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "post",
-        "commit": "c64b3b61b1bfd3c890f8600c80f7b26d1d8e784d",
-        "file": "api/core/admin.py"
-      }
-    },
-    {
-      "type": "file_end",
-      "attrs": {
-        "commit": "c64b3b61b1bfd3c890f8600c80f7b26d1d8e784d",
-        "file": "api/core/admin.py"
-      }
-    },
-    {
-      "type": "file_start",
-      "attrs": {
-        "commit": "c64b3b61b1bfd3c890f8600c80f7b26d1d8e784d",
-        "file": "api/core/apps.py"
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "pre",
-        "commit": "c64b3b61b1bfd3c890f8600c80f7b26d1d8e784d",
-        "file": "api/core/apps.py"
-      }
-    },
-    {
-      "type": "diff_block",
-      "attrs": {
-        "commit": "c64b3b61b1bfd3c890f8600c80f7b26d1d8e784d",
-        "hidden": false,
-        "file": "api/core/apps.py",
-        "hiddenLines": []
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "post",
-        "commit": "c64b3b61b1bfd3c890f8600c80f7b26d1d8e784d",
-        "file": "api/core/apps.py"
-      }
-    },
-    {
-      "type": "file_end",
-      "attrs": {
-        "commit": "c64b3b61b1bfd3c890f8600c80f7b26d1d8e784d",
-        "file": "api/core/apps.py"
-      }
-    },
-    {
-      "type": "file_start",
-      "attrs": {
-        "commit": "c64b3b61b1bfd3c890f8600c80f7b26d1d8e784d",
-        "file": "api/core/migrations/__init__.py"
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "pre",
-        "commit": "c64b3b61b1bfd3c890f8600c80f7b26d1d8e784d",
-        "file": "api/core/migrations/__init__.py"
-      }
-    },
-    {
-      "type": "diff_block",
-      "attrs": {
-        "commit": "c64b3b61b1bfd3c890f8600c80f7b26d1d8e784d",
-        "hidden": false,
-        "file": "api/core/migrations/__init__.py",
-        "hiddenLines": []
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "post",
-        "commit": "c64b3b61b1bfd3c890f8600c80f7b26d1d8e784d",
-        "file": "api/core/migrations/__init__.py"
-      }
-    },
-    {
-      "type": "file_end",
-      "attrs": {
-        "commit": "c64b3b61b1bfd3c890f8600c80f7b26d1d8e784d",
-        "file": "api/core/migrations/__init__.py"
-      }
-    },
-    {
-      "type": "file_start",
-      "attrs": {
-        "commit": "c64b3b61b1bfd3c890f8600c80f7b26d1d8e784d",
-        "file": "api/core/models.py"
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "pre",
-        "commit": "c64b3b61b1bfd3c890f8600c80f7b26d1d8e784d",
-        "file": "api/core/models.py"
-      }
-    },
-    {
-      "type": "diff_block",
-      "attrs": {
-        "commit": "c64b3b61b1bfd3c890f8600c80f7b26d1d8e784d",
-        "hidden": false,
-        "file": "api/core/models.py",
-        "hiddenLines": []
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "post",
-        "commit": "c64b3b61b1bfd3c890f8600c80f7b26d1d8e784d",
-        "file": "api/core/models.py"
-      }
-    },
-    {
-      "type": "file_end",
-      "attrs": {
-        "commit": "c64b3b61b1bfd3c890f8600c80f7b26d1d8e784d",
-        "file": "api/core/models.py"
-      }
-    },
-    {
-      "type": "file_start",
-      "attrs": {
-        "commit": "c64b3b61b1bfd3c890f8600c80f7b26d1d8e784d",
-        "file": "api/core/tests.py"
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "pre",
-        "commit": "c64b3b61b1bfd3c890f8600c80f7b26d1d8e784d",
-        "file": "api/core/tests.py"
-      }
-    },
-    {
-      "type": "diff_block",
-      "attrs": {
-        "commit": "c64b3b61b1bfd3c890f8600c80f7b26d1d8e784d",
-        "hidden": false,
-        "file": "api/core/tests.py",
-        "hiddenLines": []
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "post",
-        "commit": "c64b3b61b1bfd3c890f8600c80f7b26d1d8e784d",
-        "file": "api/core/tests.py"
-      }
-    },
-    {
-      "type": "file_end",
-      "attrs": {
-        "commit": "c64b3b61b1bfd3c890f8600c80f7b26d1d8e784d",
-        "file": "api/core/tests.py"
-      }
-    },
-    {
-      "type": "file_start",
-      "attrs": {
-        "commit": "c64b3b61b1bfd3c890f8600c80f7b26d1d8e784d",
-        "file": "api/core/views.py"
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "pre",
-        "commit": "c64b3b61b1bfd3c890f8600c80f7b26d1d8e784d",
-        "file": "api/core/views.py"
-      }
-    },
-    {
-      "type": "diff_block",
-      "attrs": {
-        "commit": "c64b3b61b1bfd3c890f8600c80f7b26d1d8e784d",
-        "hidden": false,
-        "file": "api/core/views.py",
-        "hiddenLines": []
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "post",
-        "commit": "c64b3b61b1bfd3c890f8600c80f7b26d1d8e784d",
-        "file": "api/core/views.py"
-      }
-    },
-    {
-      "type": "file_end",
-      "attrs": {
-        "commit": "c64b3b61b1bfd3c890f8600c80f7b26d1d8e784d",
-        "file": "api/core/views.py"
-      }
-    },
-    {
-      "type": "file_start",
-      "attrs": {
-        "commit": "c64b3b61b1bfd3c890f8600c80f7b26d1d8e784d",
-        "file": "api/manage.py"
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "pre",
-        "commit": "c64b3b61b1bfd3c890f8600c80f7b26d1d8e784d",
-        "file": "api/manage.py"
-      }
-    },
-    {
-      "type": "diff_block",
-      "attrs": {
-        "commit": "c64b3b61b1bfd3c890f8600c80f7b26d1d8e784d",
-        "hidden": false,
-        "file": "api/manage.py",
-        "hiddenLines": []
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "post",
-        "commit": "c64b3b61b1bfd3c890f8600c80f7b26d1d8e784d",
-        "file": "api/manage.py"
-      }
-    },
-    {
-      "type": "file_end",
-      "attrs": {
-        "commit": "c64b3b61b1bfd3c890f8600c80f7b26d1d8e784d",
-        "file": "api/manage.py"
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "step",
-        "pos": "post",
-        "commit": "c64b3b61b1bfd3c890f8600c80f7b26d1d8e784d"
-      }
-    },
-    {
-      "type": "step_end",
-      "attrs": {
-        "commit": "c64b3b61b1bfd3c890f8600c80f7b26d1d8e784d"
-      }
-    },
-    {
-      "type": "step_start",
-      "attrs": {
-        "commit": "d4d056f946c836f091c5eacfbb45d96b873678af"
-      }
-    },
-    {
-      "type": "heading",
-      "content": [
-        {
-          "type": "text",
-          "text": "用 Django 实现 REST API"
-        }
-      ],
-      "attrs": {
-        "id": "22d69a91",
-        "level": 2,
-        "fixed": true,
-        "step": {
-          "commit": "d4d056f946c836f091c5eacfbb45d96b873678af"
-        }
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "step",
-        "pos": "pre",
-        "commit": "d4d056f946c836f091c5eacfbb45d96b873678af"
-      }
-    },
-    {
-      "type": "file_start",
-      "attrs": {
-        "commit": "d4d056f946c836f091c5eacfbb45d96b873678af",
-        "file": ".editorconfig"
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "pre",
-        "commit": "d4d056f946c836f091c5eacfbb45d96b873678af",
-        "file": ".editorconfig"
-      }
-    },
-    {
-      "type": "diff_block",
-      "attrs": {
-        "commit": "d4d056f946c836f091c5eacfbb45d96b873678af",
-        "hidden": false,
-        "file": ".editorconfig",
-        "hiddenLines": []
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "post",
-        "commit": "d4d056f946c836f091c5eacfbb45d96b873678af",
-        "file": ".editorconfig"
-      }
-    },
-    {
-      "type": "file_end",
-      "attrs": {
-        "commit": "d4d056f946c836f091c5eacfbb45d96b873678af",
-        "file": ".editorconfig"
-      }
-    },
-    {
-      "type": "file_start",
-      "attrs": {
-        "commit": "d4d056f946c836f091c5eacfbb45d96b873678af",
-        "file": ".gitignore"
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "pre",
-        "commit": "d4d056f946c836f091c5eacfbb45d96b873678af",
-        "file": ".gitignore"
-      }
-    },
-    {
-      "type": "diff_block",
-      "attrs": {
-        "commit": "d4d056f946c836f091c5eacfbb45d96b873678af",
-        "hidden": true,
-        "file": ".gitignore",
-        "hiddenLines": []
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "post",
-        "commit": "d4d056f946c836f091c5eacfbb45d96b873678af",
-        "file": ".gitignore"
-      }
-    },
-    {
-      "type": "file_end",
-      "attrs": {
-        "commit": "d4d056f946c836f091c5eacfbb45d96b873678af",
-        "file": ".gitignore"
-      }
-    },
-    {
-      "type": "file_start",
-      "attrs": {
-        "commit": "d4d056f946c836f091c5eacfbb45d96b873678af",
-        "file": "api/api/settings.py"
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "pre",
-        "commit": "d4d056f946c836f091c5eacfbb45d96b873678af",
-        "file": "api/api/settings.py"
-      }
-    },
-    {
-      "type": "diff_block",
-      "attrs": {
-        "commit": "d4d056f946c836f091c5eacfbb45d96b873678af",
-        "hidden": false,
-        "file": "api/api/settings.py",
-        "hiddenLines": [
-          [0, 35],
-          [49, 51],
-          [62, 109],
-          [118, 125]
-        ]
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "post",
-        "commit": "d4d056f946c836f091c5eacfbb45d96b873678af",
-        "file": "api/api/settings.py"
-      }
-    },
-    {
-      "type": "file_end",
-      "attrs": {
-        "commit": "d4d056f946c836f091c5eacfbb45d96b873678af",
-        "file": "api/api/settings.py"
-      }
-    },
-    {
-      "type": "file_start",
-      "attrs": {
-        "commit": "d4d056f946c836f091c5eacfbb45d96b873678af",
-        "file": "api/api/urls.py"
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "pre",
-        "commit": "d4d056f946c836f091c5eacfbb45d96b873678af",
-        "file": "api/api/urls.py"
-      }
-    },
-    {
-      "type": "diff_block",
-      "attrs": {
-        "commit": "d4d056f946c836f091c5eacfbb45d96b873678af",
-        "hidden": false,
-        "file": "api/api/urls.py",
-        "hiddenLines": [[0, 12]]
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "post",
-        "commit": "d4d056f946c836f091c5eacfbb45d96b873678af",
-        "file": "api/api/urls.py"
-      }
-    },
-    {
-      "type": "file_end",
-      "attrs": {
-        "commit": "d4d056f946c836f091c5eacfbb45d96b873678af",
-        "file": "api/api/urls.py"
-      }
-    },
-    {
-      "type": "file_start",
-      "attrs": {
-        "commit": "d4d056f946c836f091c5eacfbb45d96b873678af",
-        "file": "api/core/admin.py"
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "pre",
-        "commit": "d4d056f946c836f091c5eacfbb45d96b873678af",
-        "file": "api/core/admin.py"
-      }
-    },
-    {
-      "type": "diff_block",
-      "attrs": {
-        "commit": "d4d056f946c836f091c5eacfbb45d96b873678af",
-        "hidden": false,
-        "file": "api/core/admin.py",
-        "hiddenLines": []
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "post",
-        "commit": "d4d056f946c836f091c5eacfbb45d96b873678af",
-        "file": "api/core/admin.py"
-      }
-    },
-    {
-      "type": "file_end",
-      "attrs": {
-        "commit": "d4d056f946c836f091c5eacfbb45d96b873678af",
-        "file": "api/core/admin.py"
-      }
-    },
-    {
-      "type": "file_start",
-      "attrs": {
-        "commit": "d4d056f946c836f091c5eacfbb45d96b873678af",
-        "file": "api/core/migrations/0001_initial.py"
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "pre",
-        "commit": "d4d056f946c836f091c5eacfbb45d96b873678af",
-        "file": "api/core/migrations/0001_initial.py"
-      }
-    },
-    {
-      "type": "diff_block",
-      "attrs": {
-        "commit": "d4d056f946c836f091c5eacfbb45d96b873678af",
-        "hidden": false,
-        "file": "api/core/migrations/0001_initial.py",
-        "hiddenLines": []
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "post",
-        "commit": "d4d056f946c836f091c5eacfbb45d96b873678af",
-        "file": "api/core/migrations/0001_initial.py"
-      }
-    },
-    {
-      "type": "file_end",
-      "attrs": {
-        "commit": "d4d056f946c836f091c5eacfbb45d96b873678af",
-        "file": "api/core/migrations/0001_initial.py"
-      }
-    },
-    {
-      "type": "file_start",
-      "attrs": {
-        "commit": "d4d056f946c836f091c5eacfbb45d96b873678af",
-        "file": "api/core/models.py"
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "pre",
-        "commit": "d4d056f946c836f091c5eacfbb45d96b873678af",
-        "file": "api/core/models.py"
-      }
-    },
-    {
-      "type": "diff_block",
-      "attrs": {
-        "commit": "d4d056f946c836f091c5eacfbb45d96b873678af",
-        "hidden": false,
-        "file": "api/core/models.py",
-        "hiddenLines": []
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "post",
-        "commit": "d4d056f946c836f091c5eacfbb45d96b873678af",
-        "file": "api/core/models.py"
-      }
-    },
-    {
-      "type": "file_end",
-      "attrs": {
-        "commit": "d4d056f946c836f091c5eacfbb45d96b873678af",
-        "file": "api/core/models.py"
-      }
-    },
-    {
-      "type": "file_start",
-      "attrs": {
-        "commit": "d4d056f946c836f091c5eacfbb45d96b873678af",
-        "file": "api/core/serializers.py"
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "pre",
-        "commit": "d4d056f946c836f091c5eacfbb45d96b873678af",
-        "file": "api/core/serializers.py"
-      }
-    },
-    {
-      "type": "diff_block",
-      "attrs": {
-        "commit": "d4d056f946c836f091c5eacfbb45d96b873678af",
-        "hidden": false,
-        "file": "api/core/serializers.py",
-        "hiddenLines": []
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "post",
-        "commit": "d4d056f946c836f091c5eacfbb45d96b873678af",
-        "file": "api/core/serializers.py"
-      }
-    },
-    {
-      "type": "file_end",
-      "attrs": {
-        "commit": "d4d056f946c836f091c5eacfbb45d96b873678af",
-        "file": "api/core/serializers.py"
-      }
-    },
-    {
-      "type": "file_start",
-      "attrs": {
-        "commit": "d4d056f946c836f091c5eacfbb45d96b873678af",
-        "file": "api/core/urls.py"
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "pre",
-        "commit": "d4d056f946c836f091c5eacfbb45d96b873678af",
-        "file": "api/core/urls.py"
-      }
-    },
-    {
-      "type": "diff_block",
-      "attrs": {
-        "commit": "d4d056f946c836f091c5eacfbb45d96b873678af",
-        "hidden": false,
-        "file": "api/core/urls.py",
-        "hiddenLines": []
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "post",
-        "commit": "d4d056f946c836f091c5eacfbb45d96b873678af",
-        "file": "api/core/urls.py"
-      }
-    },
-    {
-      "type": "file_end",
-      "attrs": {
-        "commit": "d4d056f946c836f091c5eacfbb45d96b873678af",
-        "file": "api/core/urls.py"
-      }
-    },
-    {
-      "type": "file_start",
-      "attrs": {
-        "commit": "d4d056f946c836f091c5eacfbb45d96b873678af",
-        "file": "api/core/views.py"
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "pre",
-        "commit": "d4d056f946c836f091c5eacfbb45d96b873678af",
-        "file": "api/core/views.py"
-      }
-    },
-    {
-      "type": "diff_block",
-      "attrs": {
-        "commit": "d4d056f946c836f091c5eacfbb45d96b873678af",
-        "hidden": false,
-        "file": "api/core/views.py",
-        "hiddenLines": []
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "post",
-        "commit": "d4d056f946c836f091c5eacfbb45d96b873678af",
-        "file": "api/core/views.py"
-      }
-    },
-    {
-      "type": "file_end",
-      "attrs": {
-        "commit": "d4d056f946c836f091c5eacfbb45d96b873678af",
-        "file": "api/core/views.py"
-      }
-    },
-    {
-      "type": "file_start",
-      "attrs": {
-        "commit": "d4d056f946c836f091c5eacfbb45d96b873678af",
-        "file": "tuture.yml"
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "pre",
-        "commit": "d4d056f946c836f091c5eacfbb45d96b873678af",
-        "file": "tuture.yml"
-      }
-    },
-    {
-      "type": "diff_block",
-      "attrs": {
-        "commit": "d4d056f946c836f091c5eacfbb45d96b873678af",
-        "hidden": false,
-        "file": "tuture.yml",
-        "hiddenLines": []
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "post",
-        "commit": "d4d056f946c836f091c5eacfbb45d96b873678af",
-        "file": "tuture.yml"
-      }
-    },
-    {
-      "type": "file_end",
-      "attrs": {
-        "commit": "d4d056f946c836f091c5eacfbb45d96b873678af",
-        "file": "tuture.yml"
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "step",
-        "pos": "post",
-        "commit": "d4d056f946c836f091c5eacfbb45d96b873678af"
-      }
-    },
-    {
-      "type": "step_end",
-      "attrs": {
-        "commit": "d4d056f946c836f091c5eacfbb45d96b873678af"
-      }
-    },
-    {
-      "type": "step_start",
-      "attrs": {
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b"
-      }
-    },
-    {
-      "type": "heading",
-      "content": [
-        {
-          "type": "text",
-          "text": "用 Nuxt.js 实现网站首页"
-        }
-      ],
-      "attrs": {
-        "id": "78e8172c",
-        "level": 2,
-        "fixed": true,
-        "step": {
-          "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b"
-        }
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "step",
-        "pos": "pre",
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b"
-      }
-    },
-    {
-      "type": "file_start",
-      "attrs": {
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "client/.editorconfig"
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "pre",
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "client/.editorconfig"
-      }
-    },
-    {
-      "type": "diff_block",
-      "attrs": {
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "hidden": false,
-        "file": "client/.editorconfig",
-        "hiddenLines": []
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "post",
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "client/.editorconfig"
-      }
-    },
-    {
-      "type": "file_end",
-      "attrs": {
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "client/.editorconfig"
-      }
-    },
-    {
-      "type": "file_start",
-      "attrs": {
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "client/.gitignore"
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "pre",
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "client/.gitignore"
-      }
-    },
-    {
-      "type": "diff_block",
-      "attrs": {
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "hidden": false,
-        "file": "client/.gitignore",
-        "hiddenLines": []
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "post",
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "client/.gitignore"
-      }
-    },
-    {
-      "type": "file_end",
-      "attrs": {
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "client/.gitignore"
-      }
-    },
-    {
-      "type": "file_start",
-      "attrs": {
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "client/README.md"
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "pre",
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "client/README.md"
-      }
-    },
-    {
-      "type": "diff_block",
-      "attrs": {
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "hidden": false,
-        "file": "client/README.md",
-        "hiddenLines": []
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "post",
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "client/README.md"
-      }
-    },
-    {
-      "type": "file_end",
-      "attrs": {
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "client/README.md"
-      }
-    },
-    {
-      "type": "file_start",
-      "attrs": {
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "client/assets/README.md"
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "pre",
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "client/assets/README.md"
-      }
-    },
-    {
-      "type": "diff_block",
-      "attrs": {
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "hidden": false,
-        "file": "client/assets/README.md",
-        "hiddenLines": []
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "post",
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "client/assets/README.md"
-      }
-    },
-    {
-      "type": "file_end",
-      "attrs": {
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "client/assets/README.md"
-      }
-    },
-    {
-      "type": "file_start",
-      "attrs": {
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "client/components/Logo.vue"
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "pre",
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "client/components/Logo.vue"
-      }
-    },
-    {
-      "type": "diff_block",
-      "attrs": {
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "hidden": false,
-        "file": "client/components/Logo.vue",
-        "hiddenLines": []
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "post",
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "client/components/Logo.vue"
-      }
-    },
-    {
-      "type": "file_end",
-      "attrs": {
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "client/components/Logo.vue"
-      }
-    },
-    {
-      "type": "file_start",
-      "attrs": {
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "client/components/README.md"
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "pre",
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "client/components/README.md"
-      }
-    },
-    {
-      "type": "diff_block",
-      "attrs": {
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "hidden": false,
-        "file": "client/components/README.md",
-        "hiddenLines": []
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "post",
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "client/components/README.md"
-      }
-    },
-    {
-      "type": "file_end",
-      "attrs": {
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "client/components/README.md"
-      }
-    },
-    {
-      "type": "file_start",
-      "attrs": {
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "client/layouts/README.md"
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "pre",
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "client/layouts/README.md"
-      }
-    },
-    {
-      "type": "diff_block",
-      "attrs": {
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "hidden": false,
-        "file": "client/layouts/README.md",
-        "hiddenLines": []
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "post",
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "client/layouts/README.md"
-      }
-    },
-    {
-      "type": "file_end",
-      "attrs": {
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "client/layouts/README.md"
-      }
-    },
-    {
-      "type": "file_start",
-      "attrs": {
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "client/layouts/default.vue"
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "pre",
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "client/layouts/default.vue"
-      }
-    },
-    {
-      "type": "diff_block",
-      "attrs": {
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "hidden": false,
-        "file": "client/layouts/default.vue",
-        "hiddenLines": []
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "post",
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "client/layouts/default.vue"
-      }
-    },
-    {
-      "type": "file_end",
-      "attrs": {
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "client/layouts/default.vue"
-      }
-    },
-    {
-      "type": "file_start",
-      "attrs": {
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "client/middleware/README.md"
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "pre",
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "client/middleware/README.md"
-      }
-    },
-    {
-      "type": "diff_block",
-      "attrs": {
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "hidden": false,
-        "file": "client/middleware/README.md",
-        "hiddenLines": []
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "post",
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "client/middleware/README.md"
-      }
-    },
-    {
-      "type": "file_end",
-      "attrs": {
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "client/middleware/README.md"
-      }
-    },
-    {
-      "type": "file_start",
-      "attrs": {
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "client/nuxt.config.js"
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "pre",
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "client/nuxt.config.js"
-      }
-    },
-    {
-      "type": "diff_block",
-      "attrs": {
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "hidden": false,
-        "file": "client/nuxt.config.js",
-        "hiddenLines": []
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "post",
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "client/nuxt.config.js"
-      }
-    },
-    {
-      "type": "file_end",
-      "attrs": {
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "client/nuxt.config.js"
-      }
-    },
-    {
-      "type": "file_start",
-      "attrs": {
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "client/package.json"
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "pre",
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "client/package.json"
-      }
-    },
-    {
-      "type": "diff_block",
-      "attrs": {
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "hidden": false,
-        "file": "client/package.json",
-        "hiddenLines": []
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "post",
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "client/package.json"
-      }
-    },
-    {
-      "type": "file_end",
-      "attrs": {
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "client/package.json"
-      }
-    },
-    {
-      "type": "file_start",
-      "attrs": {
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "client/pages/README.md"
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "pre",
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "client/pages/README.md"
-      }
-    },
-    {
-      "type": "diff_block",
-      "attrs": {
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "hidden": false,
-        "file": "client/pages/README.md",
-        "hiddenLines": []
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "post",
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "client/pages/README.md"
-      }
-    },
-    {
-      "type": "file_end",
-      "attrs": {
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "client/pages/README.md"
-      }
-    },
-    {
-      "type": "file_start",
-      "attrs": {
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "client/pages/index.vue"
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "pre",
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "client/pages/index.vue"
-      }
-    },
-    {
-      "type": "diff_block",
-      "attrs": {
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "hidden": false,
-        "file": "client/pages/index.vue",
-        "hiddenLines": []
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "post",
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "client/pages/index.vue"
-      }
-    },
-    {
-      "type": "file_end",
-      "attrs": {
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "client/pages/index.vue"
-      }
-    },
-    {
-      "type": "file_start",
-      "attrs": {
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "client/pages/recipes/_id/edit.vue"
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "pre",
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "client/pages/recipes/_id/edit.vue"
-      }
-    },
-    {
-      "type": "diff_block",
-      "attrs": {
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "hidden": false,
-        "file": "client/pages/recipes/_id/edit.vue",
-        "hiddenLines": []
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "post",
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "client/pages/recipes/_id/edit.vue"
-      }
-    },
-    {
-      "type": "file_end",
-      "attrs": {
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "client/pages/recipes/_id/edit.vue"
-      }
-    },
-    {
-      "type": "file_start",
-      "attrs": {
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "client/pages/recipes/_id/index.vue"
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "pre",
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "client/pages/recipes/_id/index.vue"
-      }
-    },
-    {
-      "type": "diff_block",
-      "attrs": {
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "hidden": false,
-        "file": "client/pages/recipes/_id/index.vue",
-        "hiddenLines": []
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "post",
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "client/pages/recipes/_id/index.vue"
-      }
-    },
-    {
-      "type": "file_end",
-      "attrs": {
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "client/pages/recipes/_id/index.vue"
-      }
-    },
-    {
-      "type": "file_start",
-      "attrs": {
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "client/pages/recipes/add.vue"
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "pre",
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "client/pages/recipes/add.vue"
-      }
-    },
-    {
-      "type": "diff_block",
-      "attrs": {
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "hidden": false,
-        "file": "client/pages/recipes/add.vue",
-        "hiddenLines": []
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "post",
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "client/pages/recipes/add.vue"
-      }
-    },
-    {
-      "type": "file_end",
-      "attrs": {
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "client/pages/recipes/add.vue"
-      }
-    },
-    {
-      "type": "file_start",
-      "attrs": {
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "client/pages/recipes/index.vue"
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "pre",
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "client/pages/recipes/index.vue"
-      }
-    },
-    {
-      "type": "diff_block",
-      "attrs": {
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "hidden": false,
-        "file": "client/pages/recipes/index.vue",
-        "hiddenLines": []
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "post",
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "client/pages/recipes/index.vue"
-      }
-    },
-    {
-      "type": "file_end",
-      "attrs": {
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "client/pages/recipes/index.vue"
-      }
-    },
-    {
-      "type": "file_start",
-      "attrs": {
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "client/plugins/README.md"
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "pre",
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "client/plugins/README.md"
-      }
-    },
-    {
-      "type": "diff_block",
-      "attrs": {
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "hidden": false,
-        "file": "client/plugins/README.md",
-        "hiddenLines": []
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "post",
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "client/plugins/README.md"
-      }
-    },
-    {
-      "type": "file_end",
-      "attrs": {
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "client/plugins/README.md"
-      }
-    },
-    {
-      "type": "file_start",
-      "attrs": {
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "client/static/README.md"
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "pre",
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "client/static/README.md"
-      }
-    },
-    {
-      "type": "diff_block",
-      "attrs": {
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "hidden": false,
-        "file": "client/static/README.md",
-        "hiddenLines": []
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "post",
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "client/static/README.md"
-      }
-    },
-    {
-      "type": "file_end",
-      "attrs": {
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "client/static/README.md"
-      }
-    },
-    {
-      "type": "file_start",
-      "attrs": {
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "client/static/favicon.ico"
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "pre",
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "client/static/favicon.ico"
-      }
-    },
-    {
-      "type": "diff_block",
-      "attrs": {
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "hidden": false,
-        "file": "client/static/favicon.ico",
-        "hiddenLines": []
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "post",
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "client/static/favicon.ico"
-      }
-    },
-    {
-      "type": "file_end",
-      "attrs": {
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "client/static/favicon.ico"
-      }
-    },
-    {
-      "type": "file_start",
-      "attrs": {
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "client/static/icon.png"
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "pre",
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "client/static/icon.png"
-      }
-    },
-    {
-      "type": "diff_block",
-      "attrs": {
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "hidden": false,
-        "file": "client/static/icon.png",
-        "hiddenLines": []
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "post",
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "client/static/icon.png"
-      }
-    },
-    {
-      "type": "file_end",
-      "attrs": {
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "client/static/icon.png"
-      }
-    },
-    {
-      "type": "file_start",
-      "attrs": {
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "client/static/images/banner.jpg"
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "pre",
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "client/static/images/banner.jpg"
-      }
-    },
-    {
-      "type": "diff_block",
-      "attrs": {
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "hidden": false,
-        "file": "client/static/images/banner.jpg",
-        "hiddenLines": []
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "post",
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "client/static/images/banner.jpg"
-      }
-    },
-    {
-      "type": "file_end",
-      "attrs": {
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "client/static/images/banner.jpg"
-      }
-    },
-    {
-      "type": "file_start",
-      "attrs": {
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "client/store/README.md"
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "pre",
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "client/store/README.md"
-      }
-    },
-    {
-      "type": "diff_block",
-      "attrs": {
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "hidden": false,
-        "file": "client/store/README.md",
-        "hiddenLines": []
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "post",
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "client/store/README.md"
-      }
-    },
-    {
-      "type": "file_end",
-      "attrs": {
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "client/store/README.md"
-      }
-    },
-    {
-      "type": "file_start",
-      "attrs": {
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "client/yarn.lock"
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "pre",
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "client/yarn.lock"
-      }
-    },
-    {
-      "type": "diff_block",
-      "attrs": {
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "hidden": false,
-        "file": "client/yarn.lock",
-        "hiddenLines": []
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "post",
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "client/yarn.lock"
-      }
-    },
-    {
-      "type": "file_end",
-      "attrs": {
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "client/yarn.lock"
-      }
-    },
-    {
-      "type": "file_start",
-      "attrs": {
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "tuture.yml"
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "pre",
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "tuture.yml"
-      }
-    },
-    {
-      "type": "diff_block",
-      "attrs": {
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "hidden": false,
-        "file": "tuture.yml",
-        "hiddenLines": [[0, 5]]
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "post",
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "tuture.yml"
-      }
-    },
-    {
-      "type": "file_end",
-      "attrs": {
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b",
-        "file": "tuture.yml"
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "step",
-        "pos": "post",
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b"
-      }
-    },
-    {
-      "type": "step_end",
-      "attrs": {
-        "commit": "596203d651d54151da8bb36a85d4e02c15fcc35b"
-      }
-    },
-    {
-      "type": "step_start",
-      "attrs": {
-        "commit": "63f7ab05fc4e63d132b6eacde116051f609a27c1"
-      }
-    },
-    {
-      "type": "heading",
-      "content": [
-        {
-          "type": "text",
-          "text": "数据展示：实现食谱列表"
-        }
-      ],
-      "attrs": {
-        "id": "6a013660",
-        "level": 2,
-        "fixed": true,
-        "step": {
-          "commit": "63f7ab05fc4e63d132b6eacde116051f609a27c1"
-        }
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "step",
-        "pos": "pre",
-        "commit": "63f7ab05fc4e63d132b6eacde116051f609a27c1"
-      }
-    },
-    {
-      "type": "file_start",
-      "attrs": {
-        "commit": "63f7ab05fc4e63d132b6eacde116051f609a27c1",
-        "file": "client/components/RecipeCard.vue"
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "pre",
-        "commit": "63f7ab05fc4e63d132b6eacde116051f609a27c1",
-        "file": "client/components/RecipeCard.vue"
-      }
-    },
-    {
-      "type": "diff_block",
-      "attrs": {
-        "commit": "63f7ab05fc4e63d132b6eacde116051f609a27c1",
-        "hidden": false,
-        "file": "client/components/RecipeCard.vue",
-        "hiddenLines": []
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "post",
-        "commit": "63f7ab05fc4e63d132b6eacde116051f609a27c1",
-        "file": "client/components/RecipeCard.vue"
-      }
-    },
-    {
-      "type": "file_end",
-      "attrs": {
-        "commit": "63f7ab05fc4e63d132b6eacde116051f609a27c1",
-        "file": "client/components/RecipeCard.vue"
-      }
-    },
-    {
-      "type": "file_start",
-      "attrs": {
-        "commit": "63f7ab05fc4e63d132b6eacde116051f609a27c1",
-        "file": "client/pages/recipes/index.vue"
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "pre",
-        "commit": "63f7ab05fc4e63d132b6eacde116051f609a27c1",
-        "file": "client/pages/recipes/index.vue"
-      }
-    },
-    {
-      "type": "diff_block",
-      "attrs": {
-        "commit": "63f7ab05fc4e63d132b6eacde116051f609a27c1",
-        "hidden": false,
-        "file": "client/pages/recipes/index.vue",
-        "hiddenLines": []
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "post",
-        "commit": "63f7ab05fc4e63d132b6eacde116051f609a27c1",
-        "file": "client/pages/recipes/index.vue"
-      }
-    },
-    {
-      "type": "file_end",
-      "attrs": {
-        "commit": "63f7ab05fc4e63d132b6eacde116051f609a27c1",
-        "file": "client/pages/recipes/index.vue"
-      }
-    },
-    {
-      "type": "file_start",
-      "attrs": {
-        "commit": "63f7ab05fc4e63d132b6eacde116051f609a27c1",
-        "file": "client/static/images/food-1.jpeg"
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "pre",
-        "commit": "63f7ab05fc4e63d132b6eacde116051f609a27c1",
-        "file": "client/static/images/food-1.jpeg"
-      }
-    },
-    {
-      "type": "diff_block",
-      "attrs": {
-        "commit": "63f7ab05fc4e63d132b6eacde116051f609a27c1",
-        "hidden": false,
-        "file": "client/static/images/food-1.jpeg",
-        "hiddenLines": []
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "post",
-        "commit": "63f7ab05fc4e63d132b6eacde116051f609a27c1",
-        "file": "client/static/images/food-1.jpeg"
-      }
-    },
-    {
-      "type": "file_end",
-      "attrs": {
-        "commit": "63f7ab05fc4e63d132b6eacde116051f609a27c1",
-        "file": "client/static/images/food-1.jpeg"
-      }
-    },
-    {
-      "type": "file_start",
-      "attrs": {
-        "commit": "63f7ab05fc4e63d132b6eacde116051f609a27c1",
-        "file": "client/static/images/food-2.jpeg"
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "pre",
-        "commit": "63f7ab05fc4e63d132b6eacde116051f609a27c1",
-        "file": "client/static/images/food-2.jpeg"
-      }
-    },
-    {
-      "type": "diff_block",
-      "attrs": {
-        "commit": "63f7ab05fc4e63d132b6eacde116051f609a27c1",
-        "hidden": false,
-        "file": "client/static/images/food-2.jpeg",
-        "hiddenLines": []
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "post",
-        "commit": "63f7ab05fc4e63d132b6eacde116051f609a27c1",
-        "file": "client/static/images/food-2.jpeg"
-      }
-    },
-    {
-      "type": "file_end",
-      "attrs": {
-        "commit": "63f7ab05fc4e63d132b6eacde116051f609a27c1",
-        "file": "client/static/images/food-2.jpeg"
-      }
-    },
-    {
-      "type": "file_start",
-      "attrs": {
-        "commit": "63f7ab05fc4e63d132b6eacde116051f609a27c1",
-        "file": "tuture.yml"
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "pre",
-        "commit": "63f7ab05fc4e63d132b6eacde116051f609a27c1",
-        "file": "tuture.yml"
-      }
-    },
-    {
-      "type": "diff_block",
-      "attrs": {
-        "commit": "63f7ab05fc4e63d132b6eacde116051f609a27c1",
-        "hidden": false,
-        "file": "tuture.yml",
-        "hiddenLines": [[0, 74]]
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "post",
-        "commit": "63f7ab05fc4e63d132b6eacde116051f609a27c1",
-        "file": "tuture.yml"
-      }
-    },
-    {
-      "type": "file_end",
-      "attrs": {
-        "commit": "63f7ab05fc4e63d132b6eacde116051f609a27c1",
-        "file": "tuture.yml"
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "step",
-        "pos": "post",
-        "commit": "63f7ab05fc4e63d132b6eacde116051f609a27c1"
-      }
-    },
-    {
-      "type": "step_end",
-      "attrs": {
-        "commit": "63f7ab05fc4e63d132b6eacde116051f609a27c1"
-      }
-    },
-    {
-      "type": "step_start",
-      "attrs": {
-        "commit": "60a60d72787672243a8ec0c94aa12e6b18b99efe"
-      }
-    },
-    {
-      "type": "heading",
-      "content": [
-        {
-          "type": "text",
-          "text": "从服务器获取数据"
-        }
-      ],
-      "attrs": {
-        "id": "04c3dc2c",
-        "level": 2,
-        "fixed": true,
-        "step": {
-          "commit": "60a60d72787672243a8ec0c94aa12e6b18b99efe"
-        }
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "step",
-        "pos": "pre",
-        "commit": "60a60d72787672243a8ec0c94aa12e6b18b99efe"
-      }
-    },
-    {
-      "type": "file_start",
-      "attrs": {
-        "commit": "60a60d72787672243a8ec0c94aa12e6b18b99efe",
-        "file": "api/api/urls.py"
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "pre",
-        "commit": "60a60d72787672243a8ec0c94aa12e6b18b99efe",
-        "file": "api/api/urls.py"
-      }
-    },
-    {
-      "type": "diff_block",
-      "attrs": {
-        "commit": "60a60d72787672243a8ec0c94aa12e6b18b99efe",
-        "hidden": false,
-        "file": "api/api/urls.py",
-        "hiddenLines": [[0, 13]]
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "post",
-        "commit": "60a60d72787672243a8ec0c94aa12e6b18b99efe",
-        "file": "api/api/urls.py"
-      }
-    },
-    {
-      "type": "file_end",
-      "attrs": {
-        "commit": "60a60d72787672243a8ec0c94aa12e6b18b99efe",
-        "file": "api/api/urls.py"
-      }
-    },
-    {
-      "type": "file_start",
-      "attrs": {
-        "commit": "60a60d72787672243a8ec0c94aa12e6b18b99efe",
-        "file": "client/nuxt.config.js"
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "pre",
-        "commit": "60a60d72787672243a8ec0c94aa12e6b18b99efe",
-        "file": "client/nuxt.config.js"
-      }
-    },
-    {
-      "type": "diff_block",
-      "attrs": {
-        "commit": "60a60d72787672243a8ec0c94aa12e6b18b99efe",
-        "hidden": false,
-        "file": "client/nuxt.config.js",
-        "hiddenLines": [[0, 47]]
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "post",
-        "commit": "60a60d72787672243a8ec0c94aa12e6b18b99efe",
-        "file": "client/nuxt.config.js"
-      }
-    },
-    {
-      "type": "file_end",
-      "attrs": {
-        "commit": "60a60d72787672243a8ec0c94aa12e6b18b99efe",
-        "file": "client/nuxt.config.js"
-      }
-    },
-    {
-      "type": "file_start",
-      "attrs": {
-        "commit": "60a60d72787672243a8ec0c94aa12e6b18b99efe",
-        "file": "client/pages/recipes/_id/index.vue"
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "pre",
-        "commit": "60a60d72787672243a8ec0c94aa12e6b18b99efe",
-        "file": "client/pages/recipes/_id/index.vue"
-      }
-    },
-    {
-      "type": "diff_block",
-      "attrs": {
-        "commit": "60a60d72787672243a8ec0c94aa12e6b18b99efe",
-        "hidden": false,
-        "file": "client/pages/recipes/_id/index.vue",
-        "hiddenLines": []
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "post",
-        "commit": "60a60d72787672243a8ec0c94aa12e6b18b99efe",
-        "file": "client/pages/recipes/_id/index.vue"
-      }
-    },
-    {
-      "type": "file_end",
-      "attrs": {
-        "commit": "60a60d72787672243a8ec0c94aa12e6b18b99efe",
-        "file": "client/pages/recipes/_id/index.vue"
-      }
-    },
-    {
-      "type": "file_start",
-      "attrs": {
-        "commit": "60a60d72787672243a8ec0c94aa12e6b18b99efe",
-        "file": "client/pages/recipes/index.vue"
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "pre",
-        "commit": "60a60d72787672243a8ec0c94aa12e6b18b99efe",
-        "file": "client/pages/recipes/index.vue"
-      }
-    },
-    {
-      "type": "diff_block",
-      "attrs": {
-        "commit": "60a60d72787672243a8ec0c94aa12e6b18b99efe",
-        "hidden": false,
-        "file": "client/pages/recipes/index.vue",
-        "hiddenLines": [
-          [0, 17],
-          [57, 59],
-          [78, 78]
-        ]
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "post",
-        "commit": "60a60d72787672243a8ec0c94aa12e6b18b99efe",
-        "file": "client/pages/recipes/index.vue"
-      }
-    },
-    {
-      "type": "file_end",
-      "attrs": {
-        "commit": "60a60d72787672243a8ec0c94aa12e6b18b99efe",
-        "file": "client/pages/recipes/index.vue"
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "step",
-        "pos": "post",
-        "commit": "60a60d72787672243a8ec0c94aa12e6b18b99efe"
-      }
-    },
-    {
-      "type": "step_end",
-      "attrs": {
-        "commit": "60a60d72787672243a8ec0c94aa12e6b18b99efe"
-      }
-    },
-    {
-      "type": "step_start",
-      "attrs": {
-        "commit": "5f1edd9282b809ef595b1d44082004fd8d1b2ff8"
-      }
-    },
-    {
-      "type": "heading",
-      "content": [
-        {
-          "type": "text",
-          "text": "实现食谱的添加和删除"
-        }
-      ],
-      "attrs": {
-        "id": "ddbd4f66",
-        "level": 2,
-        "fixed": true,
-        "step": {
-          "commit": "5f1edd9282b809ef595b1d44082004fd8d1b2ff8"
-        }
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "step",
-        "pos": "pre",
-        "commit": "5f1edd9282b809ef595b1d44082004fd8d1b2ff8"
-      }
-    },
-    {
-      "type": "file_start",
-      "attrs": {
-        "commit": "5f1edd9282b809ef595b1d44082004fd8d1b2ff8",
-        "file": "client/pages/recipes/_id/edit.vue"
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "pre",
-        "commit": "5f1edd9282b809ef595b1d44082004fd8d1b2ff8",
-        "file": "client/pages/recipes/_id/edit.vue"
-      }
-    },
-    {
-      "type": "diff_block",
-      "attrs": {
-        "commit": "5f1edd9282b809ef595b1d44082004fd8d1b2ff8",
-        "hidden": false,
-        "file": "client/pages/recipes/_id/edit.vue",
-        "hiddenLines": []
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "post",
-        "commit": "5f1edd9282b809ef595b1d44082004fd8d1b2ff8",
-        "file": "client/pages/recipes/_id/edit.vue"
-      }
-    },
-    {
-      "type": "file_end",
-      "attrs": {
-        "commit": "5f1edd9282b809ef595b1d44082004fd8d1b2ff8",
-        "file": "client/pages/recipes/_id/edit.vue"
-      }
-    },
-    {
-      "type": "file_start",
-      "attrs": {
-        "commit": "5f1edd9282b809ef595b1d44082004fd8d1b2ff8",
-        "file": "client/pages/recipes/add.vue"
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "pre",
-        "commit": "5f1edd9282b809ef595b1d44082004fd8d1b2ff8",
-        "file": "client/pages/recipes/add.vue"
-      }
-    },
-    {
-      "type": "diff_block",
-      "attrs": {
-        "commit": "5f1edd9282b809ef595b1d44082004fd8d1b2ff8",
-        "hidden": false,
-        "file": "client/pages/recipes/add.vue",
-        "hiddenLines": []
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "post",
-        "commit": "5f1edd9282b809ef595b1d44082004fd8d1b2ff8",
-        "file": "client/pages/recipes/add.vue"
-      }
-    },
-    {
-      "type": "file_end",
-      "attrs": {
-        "commit": "5f1edd9282b809ef595b1d44082004fd8d1b2ff8",
-        "file": "client/pages/recipes/add.vue"
-      }
-    },
-    {
-      "type": "file_start",
-      "attrs": {
-        "commit": "5f1edd9282b809ef595b1d44082004fd8d1b2ff8",
-        "file": "client/static/images/placeholder.png"
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "pre",
-        "commit": "5f1edd9282b809ef595b1d44082004fd8d1b2ff8",
-        "file": "client/static/images/placeholder.png"
-      }
-    },
-    {
-      "type": "diff_block",
-      "attrs": {
-        "commit": "5f1edd9282b809ef595b1d44082004fd8d1b2ff8",
-        "hidden": false,
-        "file": "client/static/images/placeholder.png",
-        "hiddenLines": []
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "post",
-        "commit": "5f1edd9282b809ef595b1d44082004fd8d1b2ff8",
-        "file": "client/static/images/placeholder.png"
-      }
-    },
-    {
-      "type": "file_end",
-      "attrs": {
-        "commit": "5f1edd9282b809ef595b1d44082004fd8d1b2ff8",
-        "file": "client/static/images/placeholder.png"
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "step",
-        "pos": "post",
-        "commit": "5f1edd9282b809ef595b1d44082004fd8d1b2ff8"
-      }
-    },
-    {
-      "type": "step_end",
-      "attrs": {
-        "commit": "5f1edd9282b809ef595b1d44082004fd8d1b2ff8"
-      }
-    },
-    {
-      "type": "step_start",
-      "attrs": {
-        "commit": "04edf4cf9aa13627aea4041fb131c896482f394b"
-      }
-    },
-    {
-      "type": "heading",
-      "content": [
-        {
-          "type": "text",
-          "text": "一点强迫症：全局页面跳转"
-        }
-      ],
-      "attrs": {
-        "id": "bb3480c4",
-        "level": 2,
-        "fixed": true,
-        "step": {
-          "commit": "04edf4cf9aa13627aea4041fb131c896482f394b"
-        }
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "step",
-        "pos": "pre",
-        "commit": "04edf4cf9aa13627aea4041fb131c896482f394b"
-      }
-    },
-    {
-      "type": "file_start",
-      "attrs": {
-        "commit": "04edf4cf9aa13627aea4041fb131c896482f394b",
-        "file": "client/assets/css/transition.css"
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "pre",
-        "commit": "04edf4cf9aa13627aea4041fb131c896482f394b",
-        "file": "client/assets/css/transition.css"
-      }
-    },
-    {
-      "type": "diff_block",
-      "attrs": {
-        "commit": "04edf4cf9aa13627aea4041fb131c896482f394b",
-        "hidden": false,
-        "file": "client/assets/css/transition.css",
-        "hiddenLines": []
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "post",
-        "commit": "04edf4cf9aa13627aea4041fb131c896482f394b",
-        "file": "client/assets/css/transition.css"
-      }
-    },
-    {
-      "type": "file_end",
-      "attrs": {
-        "commit": "04edf4cf9aa13627aea4041fb131c896482f394b",
-        "file": "client/assets/css/transition.css"
-      }
-    },
-    {
-      "type": "file_start",
-      "attrs": {
-        "commit": "04edf4cf9aa13627aea4041fb131c896482f394b",
-        "file": "client/nuxt.config.js"
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "pre",
-        "commit": "04edf4cf9aa13627aea4041fb131c896482f394b",
-        "file": "client/nuxt.config.js"
-      }
-    },
-    {
-      "type": "diff_block",
-      "attrs": {
-        "commit": "04edf4cf9aa13627aea4041fb131c896482f394b",
-        "hidden": false,
-        "file": "client/nuxt.config.js",
-        "hiddenLines": [[0, 21]]
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "post",
-        "commit": "04edf4cf9aa13627aea4041fb131c896482f394b",
-        "file": "client/nuxt.config.js"
-      }
-    },
-    {
-      "type": "file_end",
-      "attrs": {
-        "commit": "04edf4cf9aa13627aea4041fb131c896482f394b",
-        "file": "client/nuxt.config.js"
-      }
-    },
-    {
-      "type": "file_start",
-      "attrs": {
-        "commit": "04edf4cf9aa13627aea4041fb131c896482f394b",
-        "file": "tuture.yml"
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "pre",
-        "commit": "04edf4cf9aa13627aea4041fb131c896482f394b",
-        "file": "tuture.yml"
-      }
-    },
-    {
-      "type": "diff_block",
-      "attrs": {
-        "commit": "04edf4cf9aa13627aea4041fb131c896482f394b",
-        "hidden": false,
-        "file": "tuture.yml",
-        "hiddenLines": [[0, 126]]
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "file",
-        "pos": "post",
-        "commit": "04edf4cf9aa13627aea4041fb131c896482f394b",
-        "file": "tuture.yml"
-      }
-    },
-    {
-      "type": "file_end",
-      "attrs": {
-        "commit": "04edf4cf9aa13627aea4041fb131c896482f394b",
-        "file": "tuture.yml"
-      }
-    },
-    {
-      "type": "explain",
-      "content": [
-        {
-          "type": "paragraph"
-        }
-      ],
-      "attrs": {
-        "fixed": true,
-        "level": "step",
-        "pos": "post",
-        "commit": "04edf4cf9aa13627aea4041fb131c896482f394b"
-      }
-    },
-    {
-      "type": "step_end",
-      "attrs": {
-        "commit": "04edf4cf9aa13627aea4041fb131c896482f394b"
+        "commit": "04edf4c"
       }
     }
   ]

@@ -8,19 +8,20 @@ async function generate() {
   const commits = await listAllCommits();
 
   const commitDiffProms = commits.map(async ({ hash }) => {
-    const files = await readDiff(hash);
+    const commit = hash.slice(0, 7);
+    const files = await readDiff(commit);
     const fileProms = files.map(async (file) => ({
       file: file.to,
       diff: {
-        code: file.deleted ? '' : await readFileAtCommit(hash, file.to),
+        code: file.deleted ? '' : await readFileAtCommit(commit, file.to),
         originalCode: file.new
           ? ''
-          : await readFileAtCommit(`${hash}~1`, file.to),
+          : await readFileAtCommit(`${commit}~1`, file.to),
       },
     }));
     const fileDiffs = await Promise.all(fileProms);
     return {
-      commit: hash,
+      commit: commit,
       files: fileDiffs,
     };
   });

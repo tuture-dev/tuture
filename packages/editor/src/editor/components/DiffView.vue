@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="flex justify-between mb-2">
-      <b class="diff-filename">{{ filename }}</b>
+      <b class="diff-filename">{{ node.attrs.file }}</b>
       <a-switch
         class="diff-mode-switch"
         v-model="splitDiff"
@@ -34,7 +34,6 @@ export default {
     return {
       diffEditor: true,
       splitDiff: false,
-      filename: 'hello.js',
       language: 'javascript',
       link: '',
       code: '',
@@ -48,7 +47,6 @@ export default {
       .then((data) => {
         this.code = data.code;
         this.originalCode = data.originalCode;
-        7;
       });
   },
   computed: {
