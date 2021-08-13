@@ -12,13 +12,14 @@ export default function useArticleDoc(articleId) {
   debouncedWatch(
     doc,
     () => {
-      fetch(`/api/articles/${articleId}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(doc.value),
-      });
+      console.log('doc changed!');
+      // fetch(`/api/articles/${articleId}`, {
+      //   method: 'PUT',
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //   },
+      //   body: JSON.stringify(doc.value),
+      // });
     },
     { debounce: 1000 },
   );

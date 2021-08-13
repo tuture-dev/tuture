@@ -37,9 +37,19 @@ export default {
       filename: 'hello.js',
       language: 'javascript',
       link: '',
-      code: "console.log('hello world');",
-      originalCode: "console.log('hello');",
+      code: '',
+      originalCode: '',
     };
+  },
+  mounted() {
+    const { commit, file } = this.node.attrs;
+    fetch(`/api/diff?commit=${commit}&file=${file}`)
+      .then((res) => res.json())
+      .then((data) => {
+        this.code = data.code;
+        this.originalCode = data.originalCode;
+        7;
+      });
   },
   computed: {
     monacoDiffOptions: function() {
