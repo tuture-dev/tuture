@@ -24,7 +24,7 @@ export const makeServer = (options?: ServerOptions) => {
   // Make sure the task queue is flushed
   process.on('exit', () => queue.flush());
 
-  const { mockRoutes, baseUrl = '/', onGitHistoryChange } = options || {};
+  const { mockRoutes, baseUrl = '/api', onGitHistoryChange } = options || {};
 
   // Watch for changes of git master ref if listener is provided.
   if (onGitHistoryChange) {

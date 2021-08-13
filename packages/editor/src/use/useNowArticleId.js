@@ -16,7 +16,6 @@ export default function useNowArticleId() {
   });
 
   watch(firstArticle, (updated) => {
-    console.log('updated', updated);
     nowArticleId.value = updated.id;
   });
 

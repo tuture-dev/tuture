@@ -27,20 +27,35 @@
         :onShowToast="onShowToast"
         :onClose="handleCloseLinkMenu"
       ></link-toolbar>
-      <block-menu
+      <create-block-menu
         :view="editor.view"
         :commands="editor.commands"
         :dictionary="dictionary"
-        :isActive="blockMenuOpen"
+        :isActive="createBlockMenuOpen"
         :search="blockMenuSearch"
-        :onClose="handleCloseBlockMenu"
+        :onClose="handleCloseCreateBlockMenu"
         :uploadImage="uploadImage"
         :onLinkToolbarOpen="handleOpenLinkMenu"
         :onImageUploadStart="onImageUploadStart"
         :onImageUploadStop="onImageUploadStop"
         :onShowToast="onShowToast"
         :embeds="embeds"
-      ></block-menu>
+      ></create-block-menu>
+      <edit-block-menu
+        :view="editor.view"
+        :commands="editor.commands"
+        :dictionary="dictionary"
+        :isActive="editBlockMenuOpen"
+        :ancestorNodeTypeName="ancestorNodeTypeName"
+        :onClose="handleCloseEditBlockMenu"
+        :uploadImage="uploadImage"
+        :onLinkToolbarOpen="handleOpenLinkMenu"
+        :onImageUploadStart="onImageUploadStart"
+        :onImageUploadStop="onImageUploadStop"
+        :onShowToast="onShowToast"
+        :embeds="embeds"
+      >
+      </edit-block-menu>
     </div>
   </div>
 </template>
@@ -56,7 +71,6 @@ import {
   Strike,
   HardBreak,
   Code,
-  Heading,
   History,
   Blockquote,
   ListItem,
@@ -76,14 +90,22 @@ import {
 
 import {
   TodoItem,
+  Heading,
   Image,
   Notice,
   CodeBlock,
   DiffBlock,
+  Explain,
+  StepStart,
+  StepEnd,
+  FileStart,
+  FileEnd,
   Table,
   TableHeaderCell,
   TableRow,
   TableCell,
+  Paragraph,
+  Text,
 } from '@/editor/nodes';
 import { Link } from '@/editor/marks';
 import { Title, Doc, BlockMenuTrigger } from '@/editor/extensions';
@@ -92,9 +114,12 @@ import getDataTransferFiles from '@/editor/lib/getDataTransferFiles';
 import SelectionToolbar from '@/editor/components/SelectionToolbar';
 import LinkToolbar from '@/editor/components/LinkToolbar.vue';
 import insertFiles from '@/editor/commands/insertFiles';
-import BlockMenu from '@/editor/components/BlockMenu.vue';
+import CreateBlockMenu from '@/editor/components/CreateBlockMenu.vue';
+import EditBlockMenu from '@/editor/components/EditBlockMenu.vue';
 
 import useNowArticleId from '@/use/useNowArticleId';
+import { DataPaste } from '@/editor/plugins';
+import useArticleDoc from '@/use/useArticleDoc';
 
 export default defineComponent({
   name: 'ArticleBody',
@@ -103,16 +128,26 @@ export default defineComponent({
     EditorContent,
     SelectionToolbar,
     LinkToolbar,
-    BlockMenu,
+    CreateBlockMenu,
+    EditBlockMenu,
   },
   data() {
     return {
       editor: new Editor({
         autoFocus: true,
         extensions: [
-          new History(),
+          new Doc(),
+          new Text(),
+          new HardBreak(),
+          new Paragraph(),
+          new Title(),
+          new Explain(),
+          new StepStart(),
+          new StepEnd(),
+          new FileStart(),
+          new FileEnd(),
           new Heading({
-            levels: [1, 2, 3, 4],
+            levels: [1, 2, 3, 4, 5, 6],
           }),
           new Image({
             dictionary,
@@ -135,18 +170,6 @@ export default defineComponent({
           }),
           new TodoList(),
           new HorizontalRule(),
-          new TrailingNode(),
-          new Bold(),
-          new Italic(),
-          new Underline(),
-          new Strike(),
-          new Link({
-            onKeyboardShortcut: this.onKeyboardShortcut,
-            onClick: this.handleClickLink,
-            onClickHashtag: this.onClickHashtag,
-            onHoverLink: this.onHoverLink,
-          }),
-          new HardBreak(),
           new Table({
             resizable: true,
           }),
@@ -158,9 +181,19 @@ export default defineComponent({
             onSelectColumn: this.handleSelectColumn,
           }),
           new TableRow(),
+          new Bold(),
+          new Italic(),
+          new Underline(),
+          new Strike(),
+          new Link({
+            onKeyboardShortcut: this.onKeyboardShortcut,
+            onClick: this.handleClickLink,
+            onClickHashtag: this.onClickHashtag,
+            onHoverLink: this.onHoverLink,
+          }),
           new Code(),
-          new Doc(),
-          new Title(),
+          new History(),
+          new TrailingNode(),
           new BlockMenuTrigger({
             dictionary,
             onOpen: this.handleOpenBlockMenu,
@@ -174,15 +207,19 @@ export default defineComponent({
               }
             },
           }),
+          new DataPaste(),
         ],
         onUpdate: ({ getJSON }) => {
+          this.doc = getJSON();
           localStorage.setItem('editure-doc', JSON.stringify(getJSON()));
         },
       }),
       linkUrl: null,
       linkMenuIsActive: false,
       dictionary: dictionary,
-      blockMenuOpen: false,
+      createBlockMenuOpen: false,
+      editBlockMenuOpen: false,
+      ancestorNodeTypeName: [],
       linkMenuOpen: false,
       blockMenuSearch: '',
       selectionMenuOpen: false,
@@ -213,7 +250,8 @@ export default defineComponent({
     },
     handleOpenLinkMenu() {
       // this.showLinkMenu(this.editor.getMarkAttrs("link"));
-      this.blockMenuOpen = false;
+      this.createBlockMenuOpen = false;
+      this.editBlockMenuOpen = false;
       this.linkMenuOpen = true;
     },
     showLinkMenu(attrs) {
@@ -308,13 +346,30 @@ export default defineComponent({
     onClickLink(href) {
       window.open(href, '_blank');
     },
-    handleOpenBlockMenu(search) {
-      this.blockMenuOpen = true;
-      this.blockMenuSearch = search;
+    handleOpenBlockMenu(search, type, ancestorNodeTypeName) {
+      if (type === 'create') {
+        this.createBlockMenuOpen = true;
+        this.blockMenuSearch = search;
+      } else if (type === 'edit') {
+        console.log('search', ancestorNodeTypeName);
+        this.editBlockMenuOpen = true;
+        this.ancestorNodeTypeName = ancestorNodeTypeName;
+      }
     },
-    handleCloseBlockMenu() {
-      if (!this.blockMenuOpen) return;
-      this.blockMenuOpen = false;
+    handleCloseCreateBlockMenu() {
+      this.handleCloseBlockMenu('create');
+    },
+    handleCloseEditBlockMenu() {
+      this.handleCloseBlockMenu('edit');
+    },
+    handleCloseBlockMenu(type) {
+      if (type === 'create') {
+        if (!this.createBlockMenuOpen) return;
+        this.createBlockMenuOpen = false;
+      } else if (type === 'edit') {
+        if (!this.editBlockMenuOpen) return;
+        this.editBlockMenuOpen = false;
+      }
     },
   },
   beforeDestroy() {
@@ -327,15 +382,15 @@ export default defineComponent({
       return this.getArticleById(this.nowArticleId) || {};
     },
   },
-  mounted() {
-    const doc = localStorage.getItem('editure-doc');
-    if (doc) {
-      this.editor.setContent(JSON.parse(doc));
+  updated() {
+    if (this.doc && this.editor) {
+      this.editor.setContent(this.doc);
     }
   },
   setup() {
     const { nowArticleId } = useNowArticleId();
-    return { nowArticleId };
+    const { doc } = useArticleDoc(nowArticleId.value);
+    return { nowArticleId, doc };
   },
 });
 </script>
@@ -420,8 +475,8 @@ li[data-done='false'] {
   outline: none;
   border: 0;
   padding: 0;
-  margin-top: 1px;
-  margin-left: -24px;
+  margin-left: -40px;
+  font-size: 14px;
 
   &:hover,
   &:focus {
@@ -434,5 +489,15 @@ li[data-done='false'] {
 a {
   color: inherit;
   text-decoration: underline;
+}
+
+.placeholder {
+  &:before {
+    display: block;
+    content: attr(data-empty-text);
+    pointer-events: none;
+    height: 0;
+    color: #b1becc;
+  }
 }
 </style>

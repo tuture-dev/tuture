@@ -1,0 +1,931 @@
+<template>
+  <portal>
+    <div
+      ref="menuRef"
+      id="block-menu-container"
+      class="wrapper"
+      :style="userStyle"
+    >
+      <div v-if="needInsertItem" class="link-input-wrapper">
+        <input
+          type="text"
+          :placeholder="linkInputPlaceholder"
+          class="link-input"
+          @keydown="handleLinkInputKeydown"
+          @paste="handleLinkInputPaste"
+          autofocus
+        />
+      </div>
+      <ol v-else class="list">
+        <template v-for="(item, index) in filtered">
+          <div v-if="item.name === 'separatpr'" :key="index" class="list-item">
+            <hr />
+          </div>
+          <div
+            v-else-if="item.title && item.icon"
+            :key="index"
+            class="list-item"
+          >
+            <template v-if="item.hasSubMenu">
+              <a-popover placement="right">
+                <template slot="content">
+                  <p
+                    v-for="(menuItem, index) in subMenuItems"
+                    :key="index"
+                    :style="menuItemStyle"
+                    class="submenu-item"
+                    @click="() => turnIntoItem(menuItem)"
+                  >
+                    {{ menuItem.title }}
+                  </p>
+                </template>
+                <block-menu-item
+                  type="edit"
+                  :hasSubMenu="item.hasSubMenu"
+                  :onClick="() => {}"
+                  :selected="index === selectedIndex && isActive"
+                  :icon="item.icon"
+                  :title="item.title"
+                  :shortcut="item.shortcut"
+                ></block-menu-item>
+              </a-popover>
+            </template>
+            <block-menu-item
+              v-else
+              type="edit"
+              :hasSubMenu="item.hasSubMenu"
+              :onClick="() => handleActionClick(item)"
+              :selected="index === selectedIndex && isActive"
+              :icon="item.icon"
+              :title="item.title"
+              :shortcut="item.shortcut"
+            ></block-menu-item>
+          </div>
+        </template>
+        <div v-if="filtered.length === 0" class="list-item">
+          <div class="empty">{{ dictionary.noResults }}</div>
+        </div>
+      </ol>
+      <span class="visually-hidden" v-if="uploadImage">
+        <input
+          type="file"
+          ref="inputRef"
+          @change="handleImagePicked"
+          accept="image/*"
+        />
+      </span>
+    </div>
+  </portal>
+</template>
+
+<script>
+import { Portal } from '@linusborg/vue-simple-portal';
+import capitalize from 'lodash/capitalize';
+import getMenuItems from '../menus/editBlock';
+import getDataTransferFiles from '../lib/getDataTransferFiles';
+import { findParentNode } from 'prosemirror-utils';
+import insertFiles from '../commands/insertFiles';
+import BlockMenuItem from './BlockMenuItem';
+import { NodeSelection } from 'prosemirror-state';
+import {
+  removeParentNodeOfType,
+  findParentNodeOfType,
+  findParentDomRefOfType,
+  findChildrenByType,
+} from 'prosemirror-utils';
+import { toggleBlockType, setBlockType } from 'tiptap-commands';
+import { toggleList } from '../commands/list';
+
+export default {
+  props: [
+    'isActive',
+    'commands',
+    'embeds',
+    'search',
+    'uploadImage',
+    'view',
+    'onImageUploadStart',
+    'onImageUploadStop',
+    'onShowToast',
+    'onLinkToolbarOpen',
+    'onClose',
+    'dictionary',
+    'ancestorNodeTypeName',
+  ],
+  components: {
+    Portal,
+    BlockMenuItem,
+  },
+  data() {
+    return {
+      left: -1000,
+      top: 0,
+      bottom: undefined,
+      isAbove: false,
+      selectedIndex: 0,
+      needInsertItem: undefined,
+    };
+  },
+  computed: {
+    menuItemStyle() {
+      return {
+        color: this.selected ? '#000' : '#181A1B',
+        background: this.selected ? '#C5CCD3' : 'none',
+        '--active-background': this.selected ? '#C5CCD3' : '#F4F7FA',
+      };
+    },
+    subMenuItems() {
+      const { dictionary } = this.$props;
+      let { canTurnIntoMenuItems = [] } = getMenuItems(
+        this.view.state,
+        dictionary,
+        this.ancestorNodeTypeName,
+      );
+
+      return canTurnIntoMenuItems;
+    },
+    filtered() {
+      const { dictionary, search } = this.$props;
+
+      let { actionList = [] } = getMenuItems(
+        this.view.state,
+        dictionary,
+        this.ancestorNodeTypeName,
+      );
+
+      const filtered = actionList.filter((item) => {
+        if (item.name === 'separator') return true;
+
+        // some items (defaultHidden) are not visible until a search query exists
+        if (!search) return !item.defaultHidden;
+
+        const n = search.toLowerCase();
+        return (
+          (item.title || '').toLowerCase().includes(n) ||
+          (item.keywords || '').toLowerCase().includes(n)
+        );
+      });
+
+      // this block literally just trims unneccessary separators from the results
+      return filtered.reduce((acc, item, index) => {
+        // trim separators from start / end
+        if (item.name === 'separator' && index === 0) return acc;
+        if (item.name === 'separator' && index === filtered.length - 1)
+          return acc;
+
+        // trim double separators looking ahead / behind
+        const prev = filtered[index - 1];
+        if (prev && prev.name === 'separator' && item.name === 'separator')
+          return acc;
+
+        const next = filtered[index + 1];
+        if (next && next.name === 'separator' && item.name === 'separator')
+          return acc;
+
+        // otherwise, continue
+        return [...acc, item];
+      }, []);
+    },
+    caretPosition() {
+      const selection = window.document.getSelection();
+      if (!selection || !selection.anchorNode || !selection.focusNode) {
+        return {
+          top: 0,
+          left: 0,
+        };
+      }
+
+      const range = window.document.createRange();
+      range.setStart(selection.anchorNode, selection.anchorOffset);
+      range.setEnd(selection.focusNode, selection.focusOffset);
+
+      // This is a workaround for an edgecase where getBoundingClientRect will
+      // return zero values if the selection is collapsed at the start of a newline
+      // see reference here: https://stackoverflow.com/a/59780954
+      const rects = range.getClientRects();
+      if (rects.length === 0) {
+        // probably buggy newline behavior, explicitly select the node contents
+        if (range.startContainer && range.collapsed) {
+          range.selectNodeContents(range.startContainer);
+        }
+      }
+
+      const rect = range.getBoundingClientRect();
+      return {
+        top: rect.top,
+        left: rect.left,
+      };
+    },
+    userStyle() {
+      const extraStyle = this.isActive
+        ? {
+            transform: `translateY(${this.isAbove ? '6px' : '-6px'}) scale(1)`,
+            'pointer-events': 'all',
+            opacity: 1,
+          }
+        : {};
+
+      let top = this.top !== undefined ? { top: `${this.top}px` } : {};
+      let bottom =
+        this.bottom !== undefined ? { bottom: `${this.bottom}px` } : {};
+
+      return {
+        left: `${this.left}px`,
+        ...top,
+        ...bottom,
+        ...extraStyle,
+      };
+    },
+    linkInputPlaceholder() {
+      return this.needInsertItem?.title
+        ? this.dictionary.pasteLinkWithTitle(this.needInsertItem?.title)
+        : this.dictionary.pasteLink;
+    },
+  },
+  methods: {
+    calculatePosition(props) {
+      const { view } = props;
+      const { selection } = view.state;
+      const startPos = view.coordsAtPos(selection.$from.pos);
+      const ref = this.$refs.menuRef;
+      const offsetHeight = ref ? ref.offsetHeight : 0;
+      const paragraph = view.domAtPos(selection.$from.pos);
+
+      if (
+        !props.isActive ||
+        !paragraph.node ||
+        !paragraph.node.getBoundingClientRect
+      ) {
+        return {
+          left: -1000,
+          top: 0,
+          bottom: undefined,
+          isAbove: false,
+        };
+      }
+
+      const { left } = this.caretPosition;
+      const { top, bottom } = paragraph.node.getBoundingClientRect();
+      const margin = 24;
+
+      if (startPos.top - offsetHeight > margin) {
+        return {
+          left: left + window.scrollX,
+          top: undefined,
+          bottom: window.innerHeight - top - window.scrollY,
+          isAbove: false,
+        };
+      } else {
+        return {
+          left: left + window.scrollX,
+          top: bottom + window.scrollY,
+          bottom: undefined,
+          isAbove: true,
+        };
+      }
+    },
+    insertBlock(item) {
+      this.clearSearch();
+
+      const command = this.$props.commands[item.name];
+      if (command) {
+        command(item.attrs);
+      } else {
+        this.$props.commands[`create${capitalize(item.name)}`](item.attrs);
+      }
+
+      this.$props.onClose();
+    },
+    insertBlockInNextLine(item) {},
+    clearSearch() {
+      const { state, dispatch } = this.$props.view;
+      const parent = findParentNode((node) => !!node)(state.selection);
+
+      if (parent) {
+        dispatch(
+          state.tr.insertText(
+            '',
+            parent.pos + 1,
+            parent.pos + parent.node.textContent.length + 1,
+          ),
+        );
+      }
+    },
+    handleImagePicked(event) {
+      const files = getDataTransferFiles(event);
+
+      const {
+        view,
+        uploadImage,
+        onImageUploadStart,
+        onImageUploadStop,
+        onShowToast,
+      } = this.$props;
+      const { state, dispatch } = view;
+      const parent = findParentNode((node) => !!node)(state.selection);
+
+      if (parent) {
+        dispatch(
+          state.tr.insertText(
+            '',
+            parent.pos,
+            parent.pos + parent.node.textContent.length + 1,
+          ),
+        );
+
+        insertFiles(view, event, parent.pos, files, {
+          uploadImage,
+          onImageUploadStart,
+          onImageUploadStop,
+          onShowToast,
+          dictionary: this.$props.dictionary,
+        });
+      }
+
+      if (this.$refs.inputRef.$el) {
+        this.$refs.inputRef.$el.value = '';
+      }
+
+      this.$props.onClose();
+    },
+    triggerImagePick() {
+      if (this.$refs.inputRef) {
+        this.$refs.inputRef.click();
+      }
+    },
+    triggerLinkInput(item) {
+      this.needInsertItem = item;
+    },
+    handleKeyDown(event) {
+      if (!this.$props.isActive) return;
+
+      if (event.key === 'Enter') {
+        event.preventDefault();
+        event.stopPropagation();
+
+        const item = this.filtered[this.selectedIndex];
+
+        if (item) {
+          this.insertItem(item);
+        } else {
+          this.$props.onClose();
+        }
+      }
+
+      if (event.key === 'ArrowUp' || (event.ctrlKey && event.key === 'p')) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        if (this.filtered.length) {
+          const prevIndex = this.selectedIndex - 1;
+          const prev = this.filtered[prevIndex];
+
+          this.selectedIndex = Math.max(
+            0,
+            prev && prev.name === 'separator' ? prevIndex - 1 : prevIndex,
+          );
+        } else {
+          this.close();
+        }
+      }
+
+      if (
+        event.key === 'ArrowDown' ||
+        event.key === 'Tab' ||
+        (event.ctrlKey && event.key === 'n')
+      ) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        if (this.filtered.length) {
+          const total = this.filtered.length - 1;
+          const nextIndex = this.selectedIndex + 1;
+          const next = this.filtered[nextIndex];
+
+          this.selectedIndex = Math.min(
+            next && next.name === 'separator' ? nextIndex + 1 : nextIndex,
+            total,
+          );
+        } else {
+          this.close();
+        }
+      }
+
+      if (event.key === 'Escape') {
+        this.close();
+      }
+    },
+
+    insertItem(item) {
+      switch (item.name) {
+        case 'image':
+          return this.triggerImagePick();
+        case 'embed':
+          return this.triggerLinkInput(item);
+        case 'link': {
+          this.clearSearch();
+          this.$props.onClose();
+          this.$props.onLinkToolbarOpen();
+          return;
+        }
+        default:
+          this.insertBlock(item);
+      }
+    },
+    triggerCut(item, ancestorNodeTypeName) {
+      // paragraph 和 heading 的删除
+      if (
+        (ancestorNodeTypeName.length === 1 &&
+          ['paragraph', 'heading'].includes(ancestorNodeTypeName[0])) ||
+        (ancestorNodeTypeName.length >= 2 &&
+          ['paragraph', 'heading'].includes(ancestorNodeTypeName[0]) &&
+          ['notice', 'blockquote'].includes(ancestorNodeTypeName[1]))
+      ) {
+        const { dispatch, state } = this.view;
+        const { schema, selection } = state;
+
+        const parentNode = findParentNodeOfType(
+          schema.nodes[ancestorNodeTypeName[0]],
+        )(selection);
+
+        dispatch(
+          state.tr.setSelection(
+            NodeSelection.create(state.doc, parentNode.pos),
+          ),
+        );
+
+        document.execCommand('copy');
+
+        dispatch(
+          removeParentNodeOfType(schema.nodes[ancestorNodeTypeName[0]])(
+            state.tr,
+          ),
+        );
+      }
+
+      // list_item/todo_item 的删除
+      if (['list_item', 'todo_item'].includes(ancestorNodeTypeName[1])) {
+        const { dispatch, state } = this.view;
+        const { schema, selection } = state;
+        const parentNode = findParentNodeOfType(
+          schema.nodes[ancestorNodeTypeName[1]],
+        )(selection);
+
+        dispatch(
+          state.tr.setSelection(
+            NodeSelection.create(state.doc, parentNode.pos),
+          ),
+        );
+
+        document.execCommand('copy');
+
+        // 如果是唯一的子 item，那么删掉整个 list
+        const { node } = findParentNodeOfType(
+          schema.nodes[ancestorNodeTypeName[2]],
+        )(selection);
+
+        // 获取此节点下所有的 item 节点
+        const childNodes =
+          findChildrenByType(node, schema.nodes[ancestorNodeTypeName[1]]) || [];
+
+        if (childNodes.length === 1) {
+          dispatch(
+            removeParentNodeOfType(schema.nodes[ancestorNodeTypeName[2]])(
+              state.tr,
+            ),
+          );
+        } else {
+          dispatch(
+            removeParentNodeOfType(schema.nodes[ancestorNodeTypeName[1]])(
+              state.tr,
+            ),
+          );
+        }
+      }
+
+      // notice/blockquote/codeblock/diffblock/table/image
+      if (
+        [
+          'notice',
+          'blockquote',
+          'code_block',
+          'horizontal_rule',
+          'image',
+          'diff_block',
+          'table',
+        ].includes(ancestorNodeTypeName[0])
+      ) {
+        const { dispatch, state } = this.view;
+        const { schema, selection } = state;
+        const parentNode = findParentNodeOfType(
+          schema.nodes[ancestorNodeTypeName[0]],
+        )(selection);
+
+        dispatch(
+          state.tr.setSelection(
+            NodeSelection.create(state.doc, parentNode.pos),
+          ),
+        );
+
+        document.execCommand('copy');
+
+        dispatch(
+          removeParentNodeOfType(schema.nodes[ancestorNodeTypeName[0]])(
+            state.tr,
+          ),
+        );
+      }
+
+      this.close();
+    },
+    triggerCopy(item, ancestorNodeTypeName) {
+      // paragraph 和 heading 的删除
+      if (
+        (ancestorNodeTypeName.length === 1 &&
+          ['paragraph', 'heading'].includes(ancestorNodeTypeName[0])) ||
+        (ancestorNodeTypeName.length >= 2 &&
+          ['paragraph', 'heading'].includes(ancestorNodeTypeName[0]) &&
+          ['notice', 'blockquote'].includes(ancestorNodeTypeName[1]))
+      ) {
+        const { dispatch, state } = this.view;
+        const { schema, selection } = state;
+
+        const parentNode = findParentNodeOfType(
+          schema.nodes[ancestorNodeTypeName[0]],
+        )(selection);
+
+        dispatch(
+          state.tr.setSelection(
+            NodeSelection.create(state.doc, parentNode.pos),
+          ),
+        );
+
+        document.execCommand('copy');
+      }
+
+      // list_item/todo_item 的删除
+      if (['list_item', 'todo_item'].includes(ancestorNodeTypeName[1])) {
+        const { dispatch, state } = this.view;
+        const { schema, selection } = state;
+        const parentNode = findParentNodeOfType(
+          schema.nodes[ancestorNodeTypeName[1]],
+        )(selection);
+
+        dispatch(
+          state.tr.setSelection(
+            NodeSelection.create(state.doc, parentNode.pos),
+          ),
+        );
+
+        document.execCommand('copy');
+      }
+
+      // notice/blockquote/codeblock/diffblock/table/image
+      if (
+        [
+          'notice',
+          'blockquote',
+          'code_block',
+          'horizontal_rule',
+          'image',
+          'diff_block',
+          'table',
+        ].includes(ancestorNodeTypeName[0])
+      ) {
+        const { dispatch, state } = this.view;
+        const { schema, selection } = state;
+        const parentNode = findParentNodeOfType(
+          schema.nodes[ancestorNodeTypeName[0]],
+        )(selection);
+
+        dispatch(
+          state.tr.setSelection(
+            NodeSelection.create(state.doc, parentNode.pos),
+          ),
+        );
+
+        document.execCommand('copy');
+      }
+
+      this.close();
+    },
+    triggerDelete(item, ancestorNodeTypeName = []) {
+      // paragraph 和 heading 的删除
+      console.log('ancestorNodeTypeName', ancestorNodeTypeName);
+      if (
+        (ancestorNodeTypeName.length === 1 &&
+          ['paragraph', 'heading'].includes(ancestorNodeTypeName[0])) ||
+        (ancestorNodeTypeName.length >= 2 &&
+          ['paragraph', 'heading'].includes(ancestorNodeTypeName[0]) &&
+          ['notice', 'blockquote'].includes(ancestorNodeTypeName[1]))
+      ) {
+        const { dispatch, state } = this.view;
+        const { schema } = state;
+
+        dispatch(
+          removeParentNodeOfType(schema.nodes[ancestorNodeTypeName[0]])(
+            state.tr,
+          ),
+        );
+      }
+
+      // list_item/todo_item 的删除
+      if (['list_item', 'todo_item'].includes(ancestorNodeTypeName[1])) {
+        const { dispatch, state } = this.view;
+        const { schema, selection } = state;
+
+        // 如果是唯一的子 item，那么删掉整个 list
+        const { node } = findParentNodeOfType(
+          schema.nodes[ancestorNodeTypeName[2]],
+        )(selection);
+
+        // 获取此节点下所有的 item 节点
+        const childNodes =
+          findChildrenByType(node, schema.nodes[ancestorNodeTypeName[1]]) || [];
+
+        if (childNodes.length === 1) {
+          dispatch(
+            removeParentNodeOfType(schema.nodes[ancestorNodeTypeName[2]])(
+              state.tr,
+            ),
+          );
+        } else {
+          dispatch(
+            removeParentNodeOfType(schema.nodes[ancestorNodeTypeName[1]])(
+              state.tr,
+            ),
+          );
+        }
+      }
+
+      // notice/blockquote/codeblock/diffblock/table/image
+      if (
+        [
+          'notice',
+          'blockquote',
+          'code_block',
+          'horizontal_rule',
+          'image',
+          'diff_block',
+          'table',
+        ].includes(ancestorNodeTypeName[0])
+      ) {
+        const { dispatch, state } = this.view;
+        const { schema } = state;
+
+        dispatch(
+          removeParentNodeOfType(schema.nodes[ancestorNodeTypeName[0]])(
+            state.tr,
+          ),
+        );
+      }
+
+      this.close();
+    },
+
+    turnIntoItem(item) {
+      // 针对 heading，第一层级进行转换
+      const { dispatch, state } = this.view;
+      const { schema, selection } = state;
+
+      if (['heading'].includes(item.name)) {
+        toggleBlockType(
+          schema.nodes[item.name],
+          schema.nodes.paragraph,
+          item?.attrs,
+        )(state, dispatch, this.view);
+        this.view.focus();
+        return;
+      }
+
+      const mapListItem = {
+        todo_list: 'todo_item',
+        ordered_list: 'list_item',
+        bullet_list: 'list_item',
+      };
+      if (['todo_list', 'bullet_list', 'ordered_list'].includes(item.name)) {
+        // 首先将原块变为 paragraph，然后再变到对应的 list
+        toggleList(schema.nodes[item.name])(state, dispatch, this.view);
+        this.view.focus();
+        return;
+      }
+    },
+
+    handleActionClick(item) {
+      switch (item.name) {
+        case '剪切':
+          return this.triggerCut(item, this.ancestorNodeTypeName);
+        case '复制':
+          return this.triggerCopy(item, this.ancestorNodeTypeName);
+        case '删除':
+          return this.triggerDelete(item, this.ancestorNodeTypeName);
+        default:
+          this.insertBlockInNextLine(item, this.ancestorNodeTypeName);
+      }
+    },
+
+    close() {
+      this.$props.onClose();
+      this.$props.view.focus();
+    },
+
+    handleLinkInputKeydown(event) {
+      if (!this.$props.isActive) return;
+      if (!this.needInsertItem) return;
+
+      if (event.key === 'Enter') {
+        event.preventDefault();
+        event.stopPropagation();
+
+        const href = event.currentTarget.value;
+        const matches = this.needInsertItem.matcher(href);
+
+        if (!matches && this.$props.onShowToast) {
+          this.$props.onShowToast(
+            this.$props.dictionary.embedInvalidLink,
+            'error',
+          );
+          return;
+        }
+
+        this.insertBlock({
+          name: 'embed',
+          attrs: {
+            href,
+            component: this.needInsertItem.component,
+            matches,
+          },
+        });
+      }
+
+      if (event.key === 'Escape') {
+        this.$props.onClose();
+        this.$props.view.focus();
+      }
+    },
+
+    handleLinkInputPaste(event) {
+      if (!this.$props.isActive) return;
+      if (!this.needInsertItem) return;
+
+      const href = event.clipboardData.getData('text/plain');
+      const matches = this.needInsertItem.matcher(href);
+
+      if (matches) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        this.insertBlock({
+          name: 'embed',
+          attrs: {
+            href,
+            component: this.needInsertItem.component,
+            matches,
+          },
+        });
+      }
+    },
+  },
+  watch: {
+    isActive(val, oldVal) {
+      if (!oldVal && val) {
+        const { left, top, bottom, isAbove } = this.calculatePosition(
+          this.$props,
+        );
+
+        this.needInsertItem = undefined;
+        this.selectedIndex = 0;
+
+        this.left = left;
+        this.top = top;
+        this.bottom = bottom;
+        this.isAbove = isAbove;
+      }
+    },
+    search(val, oldVal) {
+      if (val !== oldVal) {
+        this.selectedIndex = 0;
+      }
+    },
+  },
+  beforeDestroy() {
+    window.removeEventListener('keydown', this.handleKeyDown);
+  },
+  mounted() {
+    window.addEventListener('keydown', this.handleKeyDown);
+  },
+};
+</script>
+
+<style scoped lang="scss">
+.wrapper {
+  color: #181a1b;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+    Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  position: absolute;
+  z-index: 200;
+  background-color: #fff;
+  border-radius: 4px;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px,
+    rgba(0, 0, 0, 0.08) 0px 4px 8px, rgba(0, 0, 0, 0.08) 0px 2px 4px;
+  opacity: 0;
+  transform: scale(0.95);
+  transition: opacity 150ms cubic-bezier(0.175, 0.885, 0.32, 1.275),
+    transform 150ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transition-delay: 150ms;
+  line-height: 0;
+  box-sizing: border-box;
+  pointer-events: none;
+  white-space: nowrap;
+  width: 300px;
+  max-height: 224px;
+  overflow: hidden;
+  overflow-y: auto;
+
+  * {
+    box-sizing: border-box;
+  }
+
+  hr {
+    border: 0;
+    height: 0;
+    border-top: 1px solid #c5ccd3;
+  }
+
+  @media print {
+    display: none;
+  }
+}
+
+.link-input-wrapper {
+  margin: 8px;
+}
+
+.link-input {
+  font-size: 15px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #181a1b;
+  border-radius: 2px;
+  padding: 3px 8px;
+  border: 0;
+  margin: 0;
+  outline: none;
+  flex-grow: 1;
+  height: 36px;
+  width: 100%;
+}
+
+.list {
+  list-style: none;
+  text-align: left;
+  height: 100%;
+  padding: 8px 0;
+  margin: 0;
+}
+
+.list-item {
+  padding: 0;
+  margin: 0;
+}
+
+.empty {
+  display: flex;
+  align-items: center;
+  color: #4e5c6e;
+  font-weight: 500;
+  font-size: 14px;
+  height: 36px;
+  padding: 0 16px;
+}
+
+.visually-hidden {
+  position: absolute !important;
+  height: 1px;
+  width: 1px;
+  overflow: hidden;
+  clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
+  clip: rect(1px, 1px, 1px, 1px);
+}
+
+.submenu-item {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 1;
+  width: 100%;
+  height: 36px;
+  cursor: pointer;
+  border: none;
+  opacity: 1;
+  padding: 0 16px;
+  outline: none;
+
+  &:hover,
+  &:active {
+    color: #000 !important;
+    background: var(--active-background) !important;
+  }
+}
+</style>

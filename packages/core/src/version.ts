@@ -1,1 +1,1 @@
-export const SCHEMA_VERSION = 'v1';
+export const SCHEMA_VERSION = 'v2';
