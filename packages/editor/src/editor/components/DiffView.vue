@@ -34,7 +34,7 @@ export default {
     return {
       diffEditor: true,
       splitDiff: false,
-      language: 'javascript',
+      language: 'typescript',
       link: '',
       code: '',
       originalCode: '',
