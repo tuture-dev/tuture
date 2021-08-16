@@ -1,23 +1,32 @@
 import chalk from 'chalk';
 import fs from 'fs-extra';
+import path from 'path';
 import mm from 'micromatch';
 import { prompt } from 'inquirer';
 import {
-  Step,
-  File,
-  Remote,
-  DiffBlock,
-  DiffFile,
-  randHex,
-  isCommitEqual,
+  INode,
+  IRemote,
   TUTURE_ROOT,
+  TUTURE_DOC_ROOT,
   TUTURE_BRANCH,
 } from '@tuture/core';
-import { collectionPath } from '@tuture/local-server';
+import {
+  git,
+  readDiff,
+  Commit,
+  collectionPath,
+  loadCollection,
+  loadArticle,
+} from '@tuture/local-server';
 
+import { newEmptyExplain, newStepTitle, newEmptyFile } from './node';
 import logger from './logger';
-import { git, storeDiff } from './git';
-import { getEmptyExplain } from './nodes';
+
+export const docRoot = path.join(
+  process.env.TUTURE_PATH || process.cwd(),
+  TUTURE_ROOT,
+  TUTURE_DOC_ROOT,
+);
 
 /**
  * Remove all Tuture-related files.
@@ -26,82 +35,27 @@ export async function removeTutureSuite() {
   await fs.remove(TUTURE_ROOT);
 }
 
-type Range = [number, number];
+type ArticleDoc = {
+  articleId: string;
+  doc: INode;
+};
 
-function getHiddenLines(diffItem: DiffFile): Range[] {
-  // Number of context normal lines to show for each diff.
-  const context = 3;
-
-  if (diffItem.chunks.length === 0) {
-    return [];
-  }
-
-  // An array to indicate whether a line should be shown.
-  const shownArr = diffItem.chunks[0].changes.map(
-    (change) => change.type !== 'normal',
-  );
-
-  let contextCounter = -1;
-  for (let i = 0; i < shownArr.length; i++) {
-    if (shownArr[i]) {
-      contextCounter = context;
-    } else {
-      contextCounter--;
-      if (contextCounter >= 0) {
-        shownArr[i] = true;
-      }
-    }
-  }
-
-  contextCounter = -1;
-  for (let i = shownArr.length - 1; i >= 0; i--) {
-    if (shownArr[i]) {
-      contextCounter = context;
-    } else {
-      contextCounter--;
-      if (contextCounter >= 0) {
-        shownArr[i] = true;
-      }
-    }
-  }
-
-  const hiddenLines: Range[] = [];
-  let startNumber = null;
-
-  for (let i = 0; i < shownArr.length; i++) {
-    if (!shownArr[i] && startNumber === null) {
-      startNumber = i;
-    } else if (i > 0 && !shownArr[i - 1] && shownArr[i]) {
-      hiddenLines.push([startNumber!, i - 1]);
-      startNumber = null;
-    }
-  }
-
-  return hiddenLines;
-}
-
-function convertFile(commit: string, file: DiffFile, display = false) {
-  const diffBlock: DiffBlock = {
-    type: 'diff-block',
-    file: file.to!,
-    commit,
-    hiddenLines: getHiddenLines(file),
-    children: [{ text: '' }],
-  };
-  const fileObj: File = {
-    type: 'file',
-    file: file.to!,
-    display,
-    children: [getEmptyExplain(), diffBlock, getEmptyExplain()],
-  };
-
-  return fileObj;
+/**
+ * Load nodes from tuture root.
+ * @returns current nodes from tuture root.
+ */
+export function loadArticleDocs(): ArticleDoc[] {
+  const collection = loadCollection();
+  return collection.articles.map(({ id }) => ({
+    articleId: id,
+    doc: loadArticle(id),
+  }));
 }
 
 /**
- * Store diff data of all commits and return corresponding steps.
+ * Initialize nodes from repository.
  */
-export async function makeSteps(ignoredFiles?: string[]) {
+export async function initNodes(ignoredFiles?: string[]): Promise<INode[]> {
   if (!(await git.branchLocal()).current) {
     // No commits yet.
     return [];
@@ -113,70 +67,34 @@ export async function makeSteps(ignoredFiles?: string[]) {
     // filter out commits whose commit message starts with 'tuture:'
     .filter(({ message }) => !message.startsWith('tuture:'));
 
-  // Store all diff into .tuture/diff.json
-  const commits = logs.map(({ hash }) => hash);
-  const diffs = await storeDiff(commits);
-
-  const stepProms: Promise<Step>[] = logs.map(async ({ message, hash }) => {
-    const diff = diffs.filter((diff) => isCommitEqual(diff.commit, hash))[0];
-    const files = diff.diff;
-    return {
-      type: 'step',
-      id: randHex(8),
-      articleId: null,
-      commit: hash,
-      children: [
-        {
-          type: 'heading-two',
-          commit: hash,
-          id: randHex(8),
-          fixed: true,
-          children: [{ text: message }],
-        },
-        getEmptyExplain(),
-        ...files.map((diffFile) => {
-          const display =
-            ignoredFiles &&
-            !ignoredFiles.some((pattern: string) =>
-              mm.isMatch(diffFile.to!, pattern),
-            );
-          return convertFile(hash, diffFile, display);
-        }),
-        getEmptyExplain(),
-      ],
-    } as Step;
+  const nodeProms: Promise<INode[]>[] = logs.map(async ({ message, hash }) => {
+    const files = await readDiff(hash);
+    const delimiterAttrs = { commit: hash };
+    return [
+      { type: 'step_start', attrs: delimiterAttrs },
+      newStepTitle(hash, [{ type: 'text', text: message }]),
+      newEmptyExplain({
+        level: 'step',
+        pos: 'pre',
+        commit: hash,
+      }),
+      ...files.flatMap((diffFile) => {
+        const hidden = ignoredFiles?.some((pattern) =>
+          mm.isMatch(diffFile.to!, pattern),
+        );
+        return newEmptyFile(hash, diffFile, Boolean(hidden)).flat();
+      }),
+      newEmptyExplain({
+        level: 'step',
+        pos: 'post',
+        commit: hash,
+      }),
+      { type: 'step_end', attrs: delimiterAttrs },
+    ];
   });
 
-  const steps = await Promise.all(stepProms);
-  return steps;
-}
-
-/**
- * Merge previous and current steps. All previous explain will be kept.
- * If any step is rebased out, it will be marked outdated and added to the end.
- */
-export function mergeSteps(prevSteps: Step[], currentSteps: Step[]) {
-  const steps = currentSteps.map((currentStep) => {
-    const prevStep = prevSteps.filter((step) =>
-      isCommitEqual(step.commit, currentStep.commit),
-    )[0];
-
-    // If previous step with the same commit exists, copy it.
-    // Or just return the new step.
-    return prevStep || currentStep;
-  });
-
-  // Outdated steps are those not included in current git history.
-  const outdatedSteps = prevSteps
-    .filter((prevStep) => {
-      const currentStep = currentSteps.filter((step) =>
-        isCommitEqual(step.commit, prevStep.commit),
-      )[0];
-      return !currentStep;
-    })
-    .map((prevStep) => ({ ...prevStep, outdated: true }));
-
-  return steps.concat(outdatedSteps);
+  const nodes = await Promise.all(nodeProms);
+  return nodes.flat();
 }
 
 /**
@@ -232,12 +150,12 @@ export async function checkInitStatus(nothrow = false) {
 }
 
 export async function selectRemotes(
-  remotes: Remote[],
-  selected: Remote[] = [],
+  remotes: IRemote[],
+  selected: IRemote[] = [],
 ) {
   // All remotes are shown as:
   // <remote_name> (fetch: <fetch_ref>, push: <push_ref>)
-  const remoteToChoice = (remote: Remote) => {
+  const remoteToChoice = (remote: IRemote) => {
     const { name, refs } = remote;
     const { fetch, push } = refs;
     const { underline } = chalk;

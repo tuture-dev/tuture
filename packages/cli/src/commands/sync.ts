@@ -2,7 +2,7 @@ import chalk from 'chalk';
 import fs from 'fs-extra';
 import { flags } from '@oclif/command';
 import {
-  Remote,
+  IRemote,
   COLLECTION_PATH,
   TUTURE_BRANCH,
   ASSETS_JSON_PATH,
@@ -81,7 +81,7 @@ export default class Sync extends BaseCommand {
     saveCheckpoint();
   }
 
-  async pullFromRemotes(remotes: Remote[]) {
+  async pullFromRemotes(remotes: IRemote[]) {
     await Promise.all(
       remotes.map(
         ({ name }) =>
@@ -92,7 +92,7 @@ export default class Sync extends BaseCommand {
     );
   }
 
-  async pushToRemotes(remotes: Remote[]) {
+  async pushToRemotes(remotes: IRemote[]) {
     await Promise.all(
       remotes.map(
         ({ name }) =>

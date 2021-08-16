@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="flex justify-between mb-2">
-      <b class="diff-filename">{{ filename }}</b>
+      <b class="diff-filename">{{ node.attrs.file }}</b>
       <a-switch
         class="diff-mode-switch"
         v-model="splitDiff"
@@ -34,12 +34,20 @@ export default {
     return {
       diffEditor: true,
       splitDiff: false,
-      filename: 'hello.js',
       language: 'javascript',
       link: '',
-      code: "console.log('hello world');",
-      originalCode: "console.log('hello');",
+      code: '',
+      originalCode: '',
     };
+  },
+  mounted() {
+    const { commit, file } = this.node.attrs;
+    fetch(`/api/diff?commit=${commit}&file=${file}`)
+      .then((res) => res.json())
+      .then((data) => {
+        this.code = data.code;
+        this.originalCode = data.originalCode;
+      });
   },
   computed: {
     monacoDiffOptions: function() {

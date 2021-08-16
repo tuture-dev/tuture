@@ -71,7 +71,6 @@ import {
   Strike,
   HardBreak,
   Code,
-  Heading,
   History,
   Blockquote,
   ListItem,
@@ -91,10 +90,16 @@ import {
 
 import {
   TodoItem,
+  Heading,
   Image,
   Notice,
   CodeBlock,
   DiffBlock,
+  Explain,
+  StepStart,
+  StepEnd,
+  FileStart,
+  FileEnd,
   Table,
   TableHeaderCell,
   TableRow,
@@ -114,6 +119,7 @@ import EditBlockMenu from '@/editor/components/EditBlockMenu.vue';
 
 import useNowArticleId from '@/use/useNowArticleId';
 import { DataPaste } from '@/editor/plugins';
+import useArticleDoc from '@/use/useArticleDoc';
 
 export default defineComponent({
   name: 'ArticleBody',
@@ -135,6 +141,21 @@ export default defineComponent({
           new HardBreak(),
           new Paragraph(),
           new Title(),
+          new Explain(),
+          new StepStart(),
+          new StepEnd(),
+          new FileStart(),
+          new FileEnd(),
+          new Heading({
+            levels: [1, 2, 3, 4, 5, 6],
+          }),
+          new Image({
+            dictionary,
+            uploadImage: this.uploadImage,
+            onImageUploadStart: this.onImageUploadStart,
+            onImageUploadStop: this.onImageUploadStop,
+            onShowToast: this.onShowToast,
+          }),
           new Blockquote(),
           new CodeBlock(),
           new DiffBlock(),
@@ -148,17 +169,7 @@ export default defineComponent({
             nested: true,
           }),
           new TodoList(),
-          new Heading({
-            levels: [1, 2, 3, 4],
-          }),
           new HorizontalRule(),
-          new Image({
-            dictionary,
-            uploadImage: this.uploadImage,
-            onImageUploadStart: this.onImageUploadStart,
-            onImageUploadStop: this.onImageUploadStop,
-            onShowToast: this.onShowToast,
-          }),
           new Table({
             resizable: true,
           }),
@@ -199,6 +210,7 @@ export default defineComponent({
           new DataPaste(),
         ],
         onUpdate: ({ getJSON }) => {
+          this.doc = getJSON();
           localStorage.setItem('editure-doc', JSON.stringify(getJSON()));
         },
       }),
@@ -370,15 +382,15 @@ export default defineComponent({
       return this.getArticleById(this.nowArticleId) || {};
     },
   },
-  mounted() {
-    const doc = localStorage.getItem('editure-doc');
-    if (doc) {
-      this.editor.setContent(JSON.parse(doc));
+  updated() {
+    if (this.doc && this.editor) {
+      this.editor.setContent(this.doc);
     }
   },
   setup() {
     const { nowArticleId } = useNowArticleId();
-    return { nowArticleId };
+    const { doc } = useArticleDoc(nowArticleId.value);
+    return { nowArticleId, doc };
   },
 });
 </script>

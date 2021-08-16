@@ -26,7 +26,7 @@ export const assetsTableVcsPath = path.join(
  */
 export function loadAssetsTable(): Asset[] {
   if (fs.existsSync(assetsTablePath)) {
-    return JSON.parse(fs.readFileSync(assetsTablePath).toString());
+    return fs.readJSONSync(assetsTablePath);
   }
 
   return [];
