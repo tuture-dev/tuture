@@ -97,7 +97,9 @@ export default {
   },
   computed: {
     src() {
-      return this.node.attrs.src;
+      // 目前图片服务还不稳定，暂时使用替代链接
+      return 'https://static.powerformer.com/c/f40c6ff/js-test-cover-1.jpg';
+      // return this.node.attrs.src;
     },
     alt() {
       return this.node.attrs.alt;

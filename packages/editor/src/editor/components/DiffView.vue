@@ -45,7 +45,7 @@ export default {
     fetch(`/api/diff?commit=${commit}&file=${file}`)
       .then((res) => res.json())
       .then((data) => {
-        this.code = data.code;
+        this.code = data.code || '';
         this.originalCode = data.originalCode;
       });
   },
