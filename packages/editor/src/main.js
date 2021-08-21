@@ -52,6 +52,7 @@ import {
   faArrowRight,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import VueLazyComponent from '@xunlei/vue-lazy-component';
 
 import App from './App.vue';
 import router from './router';
@@ -113,6 +114,8 @@ Vue.use(Tag);
 Vue.use(Select);
 Vue.use(Switch);
 Vue.use(Popover);
+
+Vue.use(VueLazyComponent);
 
 // 捕获 monaco 的 unhandledrejection
 window.addEventListener('unhandledrejection', function(event) {
