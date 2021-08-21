@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <vue-lazy-component threshold="100px" @init="fetchDiff">
     <div class="flex justify-between mb-2">
       <b class="diff-filename">{{ node.attrs.file }}</b>
       <a-switch
@@ -19,13 +19,14 @@
       :value="code"
       :original="originalCode"
     />
-  </div>
+  </vue-lazy-component>
 </template>
 
-<script>
+<script setup>
+import { defineComponent } from 'vue-demi';
 import MonacoEditor from './MonacoEditor.vue';
 
-export default {
+export default defineComponent({
   props: ['node', 'updateAttrs', 'view', 'editor'],
   components: {
     MonacoEditor,
@@ -40,15 +41,6 @@ export default {
       originalCode: '',
     };
   },
-  mounted() {
-    const { commit, file } = this.node.attrs;
-    fetch(`/api/diff?commit=${commit}&file=${file}`)
-      .then((res) => res.json())
-      .then((data) => {
-        this.code = data.code || '';
-        this.originalCode = data.originalCode;
-      });
-  },
   computed: {
     monacoDiffOptions: function() {
       return {
@@ -61,7 +53,18 @@ export default {
       this.$refs.editor.getEditor().updateOptions({ renderSideBySide: newVal });
     },
   },
-};
+  methods: {
+    fetchDiff() {
+      const { commit, file } = this.node.attrs;
+      fetch(`/api/diff?commit=${commit}&file=${file}`)
+        .then((res) => res.json())
+        .then((data) => {
+          this.code = data.code;
+          this.originalCode = data.originalCode;
+        });
+    },
+  },
+});
 </script>
 
 <style scoped></style>
