@@ -108,7 +108,7 @@ import {
   Text,
 } from '@/editor/nodes';
 import { Link } from '@/editor/marks';
-import { Title, Doc, BlockMenuTrigger } from '@/editor/extensions';
+import { BlockMenuTrigger } from '@/editor/extensions';
 import { dictionary } from '@/editor/utils';
 import getDataTransferFiles from '@/editor/lib/getDataTransferFiles';
 import SelectionToolbar from '@/editor/components/SelectionToolbar';
@@ -136,11 +136,9 @@ export default defineComponent({
       editor: new Editor({
         autoFocus: true,
         extensions: [
-          new Doc(),
           new Text(),
           new HardBreak(),
           new Paragraph(),
-          new Title(),
           new Explain(),
           new StepStart(),
           new StepEnd(),
