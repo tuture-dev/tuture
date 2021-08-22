@@ -53,6 +53,8 @@ export default class Explain extends Node {
           )
             return false;
 
+          const isEmpty = directParent.node.content.size === 0;
+
           let secondUpperParent;
 
           if (!isTopLevel) {
@@ -72,8 +74,12 @@ export default class Explain extends Node {
           )
             return false;
 
-          splitBlock(state, dispatch, view);
-          return true;
+          if (isEmpty) {
+            splitBlock(state, dispatch, view);
+            return true;
+          }
+
+          return false;
         },
       }),
     ];
