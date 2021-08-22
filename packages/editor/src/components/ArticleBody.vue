@@ -123,7 +123,16 @@ import useArticleDoc from '@/use/useArticleDoc';
 
 export default defineComponent({
   name: 'ArticleBody',
-  props: ['onCreateLink', 'onSearchLink', 'onShowToast', 'onClose'],
+  props: {
+    onCreateLink: Function,
+    onSearchLink: Function,
+    onShowToast: Function,
+    onClose: Function,
+    mode: {
+      type: String,
+      default: 'strict',
+    },
+  },
   components: {
     EditorContent,
     SelectionToolbar,
@@ -132,6 +141,17 @@ export default defineComponent({
     EditBlockMenu,
   },
   data() {
+    const extraExtensions =
+      this.mode && this.mode === 'strict'
+        ? [
+            new Explain(),
+            new StepStart(),
+            new StepEnd(),
+            new FileStart(),
+            new FileEnd(),
+          ]
+        : [];
+
     return {
       editor: new Editor({
         autoFocus: true,
@@ -141,11 +161,7 @@ export default defineComponent({
           new HardBreak(),
           new Paragraph(),
           new Title(),
-          new Explain(),
-          new StepStart(),
-          new StepEnd(),
-          new FileStart(),
-          new FileEnd(),
+          ...extraExtensions,
           new Heading({
             levels: [1, 2, 3, 4, 5, 6],
           }),
@@ -198,6 +214,7 @@ export default defineComponent({
             dictionary,
             onOpen: this.handleOpenBlockMenu,
             onClose: this.handleCloseBlockMenu,
+            mode: this.mode,
           }),
           new Placeholder({
             showOnlyCurrent: false,
