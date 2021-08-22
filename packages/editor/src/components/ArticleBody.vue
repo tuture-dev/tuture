@@ -380,14 +380,16 @@ export default defineComponent({
       return this.getArticleById(this.nowArticleId) || {};
     },
   },
-  updated() {
-    if (this.doc && this.editor) {
-      this.editor.setContent(this.doc);
-    }
+  watch: {
+    doc: function(newVal) {
+      if (this.editor) {
+        this.editor.setContent(newVal);
+      }
+    },
   },
   setup() {
     const { nowArticleId } = useNowArticleId();
-    const { doc } = useArticleDoc(nowArticleId.value);
+    const { doc } = useArticleDoc(nowArticleId);
     return { nowArticleId, doc };
   },
 });

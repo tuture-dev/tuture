@@ -1,12 +1,21 @@
-import { onMounted, ref } from 'vue-demi';
+import { onMounted, ref, watch } from 'vue-demi';
 import { debouncedWatch } from '@vueuse/core';
 
 export default function useArticleDoc(articleId) {
   const doc = ref({ type: 'doc', content: [] });
 
   onMounted(async () => {
-    const resp = await fetch(`/api/articles/${articleId}`);
-    doc.value = await resp.json();
+    if (articleId) {
+      const resp = await fetch(`/api/articles/${articleId.value}`);
+      doc.value = await resp.json();
+    }
+  });
+
+  watch(articleId, async () => {
+    if (articleId) {
+      const resp = await fetch(`/api/articles/${articleId.value}`);
+      doc.value = await resp.json();
+    }
   });
 
   debouncedWatch(
