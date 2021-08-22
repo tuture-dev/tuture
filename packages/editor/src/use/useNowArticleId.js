@@ -8,15 +8,14 @@ export default function useNowArticleId() {
     .getFirstArticle;
   const nowArticleId = useStorage(
     'now-article-id',
-    route.value.params.id || firstArticle ? firstArticle.id : '',
+    firstArticle ? firstArticle.id : '',
   );
+  if (route.value.params.id) {
+    nowArticleId.value = route.value.params.id;
+  }
 
   watch(route, (updated) => {
     nowArticleId.value = updated.params.id;
-  });
-
-  watch(firstArticle, (updated) => {
-    nowArticleId.value = updated.id;
   });
 
   return { nowArticleId };
