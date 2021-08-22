@@ -440,6 +440,19 @@ li[data-type='todo_item'] {
   flex-direction: row;
 }
 
+.explain {
+  margin: 4px;
+  padding: 4px 12px;
+  width: 100%;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  transition: border 0.3s ease 0s;
+}
+
+.explain:hover {
+  border: 1px solid rgb(221, 221, 221);
+}
+
 .todo-checkbox {
   border: 2px solid #000;
   height: 0.9em;
