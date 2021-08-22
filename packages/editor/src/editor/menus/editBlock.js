@@ -240,6 +240,16 @@ export default function editBlockMenuItems(
     };
   }
 
+  const diffCanTurnIntoList = [
+    'paragraph',
+    'heading',
+    'todo_list',
+    'bullet_list',
+    'ordered_list',
+    'blockquote',
+    'notice',
+  ];
+
   // 进入第二类编辑菜单，针对一些特殊的块，目前只支持基础的 action
   if (
     ['image', 'code_block', 'diff_block', 'table', 'hr'].includes(
@@ -250,7 +260,7 @@ export default function editBlockMenuItems(
 
     return {
       actionList,
-      canTurnIntoMenuItems: [],
+      canTurnIntoMenuItems: diffCanTurnIntoList,
     };
   }
 }
