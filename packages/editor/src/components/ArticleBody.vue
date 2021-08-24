@@ -226,10 +226,6 @@ export default defineComponent({
           }),
           new DataPaste(),
         ],
-        onUpdate: ({ getJSON }) => {
-          this.doc = getJSON();
-          localStorage.setItem('editure-doc', JSON.stringify(getJSON()));
-        },
       }),
       linkUrl: null,
       linkMenuIsActive: false,
@@ -399,10 +395,24 @@ export default defineComponent({
       return this.getArticleById(this.nowArticleId) || {};
     },
   },
-  updated() {
-    if (this.doc && this.editor) {
-      this.editor.setContent(this.doc);
-    }
+  // updated() {
+  //   if (this.doc && this.editor) {
+  //     debugger;
+  //     console.log('hello world');
+  //     this.editor.setContent(this.doc);
+  //   }
+  // },
+  watch: {
+    doc: {
+      handler(val) {
+        if (val) this.editor.setContent(this.doc);
+      },
+    },
+    editor: {
+      handler(val) {
+        if (val) this.editor.setContent(this.doc);
+      },
+    },
   },
   setup() {
     const { nowArticleId } = useNowArticleId();
