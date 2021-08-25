@@ -108,7 +108,7 @@ import {
   Text,
 } from '@/editor/nodes';
 import { Link } from '@/editor/marks';
-import { Title, Doc, BlockMenuTrigger } from '@/editor/extensions';
+import { BlockMenuTrigger } from '@/editor/extensions';
 import { dictionary } from '@/editor/utils';
 import getDataTransferFiles from '@/editor/lib/getDataTransferFiles';
 import SelectionToolbar from '@/editor/components/SelectionToolbar';
@@ -136,11 +136,9 @@ export default defineComponent({
       editor: new Editor({
         autoFocus: true,
         extensions: [
-          new Doc(),
           new Text(),
           new HardBreak(),
           new Paragraph(),
-          new Title(),
           new Explain(),
           new StepStart(),
           new StepEnd(),
@@ -382,14 +380,16 @@ export default defineComponent({
       return this.getArticleById(this.nowArticleId) || {};
     },
   },
-  updated() {
-    if (this.doc && this.editor) {
-      this.editor.setContent(this.doc);
-    }
+  watch: {
+    doc: function(newVal) {
+      if (this.editor) {
+        this.editor.setContent(newVal);
+      }
+    },
   },
   setup() {
     const { nowArticleId } = useNowArticleId();
-    const { doc } = useArticleDoc(nowArticleId.value);
+    const { doc } = useArticleDoc(nowArticleId);
     return { nowArticleId, doc };
   },
 });

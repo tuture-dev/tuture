@@ -3,11 +3,11 @@
 </template>
 
 <script>
-import assign from "nano-assign";
-import * as esmMonaco from "monaco-editor";
+import assign from 'nano-assign';
+import * as esmMonaco from 'monaco-editor';
 
 export default {
-  name: "MonacoEditor",
+  name: 'MonacoEditor',
 
   props: {
     original: String,
@@ -17,7 +17,7 @@ export default {
     },
     theme: {
       type: String,
-      default: "vs",
+      default: 'vs',
     },
     language: String,
     options: Object,
@@ -39,7 +39,7 @@ export default {
   },
 
   model: {
-    event: "change",
+    event: 'change',
   },
 
   watch: {
@@ -87,7 +87,7 @@ export default {
 
   mounted() {
     if (this.amdRequire) {
-      this.amdRequire(["vs/editor/editor.main"], () => {
+      this.amdRequire(['vs/editor/editor.main'], () => {
         this.monaco = window.monaco;
         this.$nextTick(() => {
           this.initMonaco(window.monaco);
@@ -95,7 +95,7 @@ export default {
       });
     } else if (this.commonjsRequire) {
       // ESM format so it can't be resolved by commonjs `require` in eslint
-      const monaco = require("monaco-editor");
+      const monaco = require('monaco-editor');
       this.monaco = monaco;
       this.$nextTick(() => {
         this.initMonaco(monaco);
@@ -114,7 +114,9 @@ export default {
 
   methods: {
     initMonaco(monaco) {
-      this.$emit("editorWillMount", this.monaco);
+      this.$emit('editorWillMount', this.monaco);
+
+      console.log('language', this.language);
 
       const options = assign(
         {
@@ -122,18 +124,18 @@ export default {
           theme: this.theme,
           language: this.language,
         },
-        this.options
+        this.options,
       );
 
       if (this.diffEditor) {
         this.editor = monaco.editor.createDiffEditor(this.$el, options);
         const originalModel = monaco.editor.createModel(
           this.original,
-          this.language
+          this.language,
         );
         const modifiedModel = monaco.editor.createModel(
           this.value,
-          this.language
+          this.language,
         );
         this.editor.setModel({
           original: originalModel,
@@ -148,11 +150,11 @@ export default {
       editor.onDidChangeModelContent((event) => {
         const value = editor.getValue();
         if (this.value !== value) {
-          this.$emit("change", value, event);
+          this.$emit('change', value, event);
         }
       });
 
-      this.$emit("editorDidMount", this.editor);
+      this.$emit('editorDidMount', this.editor);
     },
 
     /** @deprecated */

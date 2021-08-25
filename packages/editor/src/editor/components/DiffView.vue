@@ -35,7 +35,7 @@ export default defineComponent({
     return {
       diffEditor: true,
       splitDiff: false,
-      language: 'javascript',
+      language: 'typescript',
       link: '',
       code: '',
       originalCode: '',
@@ -59,8 +59,9 @@ export default defineComponent({
       fetch(`/api/diff?commit=${commit}&file=${file}`)
         .then((res) => res.json())
         .then((data) => {
-          this.code = data.code;
-          this.originalCode = data.originalCode;
+          this.code = data.code || '';
+
+          this.originalCode = data.originalCode || '';
         });
     },
   },
