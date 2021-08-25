@@ -17,7 +17,7 @@ export default class FileStart extends Node {
         commit: { default: '' },
         file: { default: '' },
       },
-      toDOM: () => ['div', 0],
+      toDOM: () => ['div', { class: 'file-start' }, 0],
     };
   }
 }

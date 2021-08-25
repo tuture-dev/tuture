@@ -1,25 +1,25 @@
-import { Node } from "tiptap";
-import { toggleWrap } from "tiptap-commands";
-import { findWrapping } from "prosemirror-transform";
-import { keymap } from "prosemirror-keymap";
+import { Node } from 'tiptap';
+import { toggleWrap } from 'tiptap-commands';
+import { findWrapping } from 'prosemirror-transform';
+import { keymap } from 'prosemirror-keymap';
 
-import SelectAllWithinBlockPlugin from "../plugins/SelectAllWithinBlock";
-import { TextSelection } from "prosemirror-state";
+import SelectAllWithinBlockPlugin from '../plugins/SelectAllWithinBlock';
+import { TextSelection } from 'prosemirror-state';
 
-const STYLES = ["default", "primary", "success", "info", "warning", "danger"];
+const STYLES = ['default', 'primary', 'success', 'info', 'warning', 'danger'];
 
 function getStyle(className) {
   for (const style of STYLES) {
     if (className.includes(style)) return style;
   }
-  return "default";
+  return 'default';
 }
 
 function getStyleFromRawMatch(rawMatch) {
   if (STYLES.includes(rawMatch.toLowerCase())) {
     return rawMatch.toLowerCase();
   }
-  return "default";
+  return 'default';
 }
 
 export default class Notice extends Node {
@@ -35,36 +35,36 @@ export default class Notice extends Node {
   }
 
   get name() {
-    return "notice";
+    return 'notice';
   }
 
   get schema() {
     return {
       attrs: {
         style: {
-          default: "default,",
+          default: 'default,',
         },
       },
-      content: "block+",
-      group: "block",
+      content: 'block+',
+      group: 'block',
       defining: true,
       draggable: true,
       parseDOM: [
         {
-          tag: "div.notice-block",
-          preserveWhitespace: "full",
-          contentElement: "div:last-child",
+          tag: 'div.notice-block',
+          preserveWhitespace: 'full',
+          contentElement: 'div:last-child',
           getAttrs: (dom) => ({
             style: getStyle(dom.className),
           }),
         },
       ],
       toDOM: (node) => {
-        const select = document.createElement("select");
-        select.addEventListener("change", this.handleStyleChange);
+        const select = document.createElement('select');
+        select.addEventListener('change', this.handleStyleChange);
 
         this.styleOptions.forEach(([key, label]) => {
-          const option = document.createElement("option");
+          const option = document.createElement('option');
           option.value = key;
           option.innerText = label;
           option.selected = node.attrs.style === key;
@@ -72,10 +72,10 @@ export default class Notice extends Node {
         });
 
         return [
-          "div",
+          'div',
           { class: `notice-block ${node.attrs.style}` },
-          ["div", { contentEditable: false }, select],
-          ["div", 0],
+          ['div', { contentEditable: false }, select],
+          ['div', 0],
         ];
       },
     };
@@ -107,7 +107,7 @@ export default class Notice extends Node {
         Enter: (state, dispatch) => {
           const selection = state.selection;
           const match = selection.$head.parent.textContent.match(
-            /^:::\s*(\w*)$/
+            /^:::\s*(\w*)$/,
           );
 
           if (match) {
@@ -124,12 +124,12 @@ export default class Notice extends Node {
                   TextSelection.create(
                     state.doc,
                     selection.$head.start(),
-                    selection.head
-                  )
+                    selection.head,
+                  ),
                 )
                 .wrap(range, wrapping)
                 .deleteSelection()
-                .scrollIntoView()
+                .scrollIntoView(),
             );
             return true;
           }
