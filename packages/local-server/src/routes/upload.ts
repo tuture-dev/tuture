@@ -29,10 +29,7 @@ export const createUploadRouter = () => {
 
   router.post('/', upload.array('files'), (req, res) => {
     const files = (req.files as Express.Multer.File[]) || [];
-    console.log('files', files);
-    const targets = files.map((file) => `/assets/${file.filename}`);
-    console.log('targets', targets);
-    res.json(targets);
+    res.json(files.map((file) => `/assets/${file.filename}`));
   });
 
   return router;
