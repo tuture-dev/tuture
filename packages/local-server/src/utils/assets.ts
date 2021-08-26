@@ -31,3 +31,9 @@ export function loadAssetsTable(): Asset[] {
 
   return [];
 }
+
+export const assetsRoot = path.join(
+  process.env.TUTURE_PATH || process.cwd(),
+  TUTURE_ROOT,
+  'assets',
+);
