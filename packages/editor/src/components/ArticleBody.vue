@@ -123,7 +123,16 @@ import useArticleDoc from '@/use/useArticleDoc';
 
 export default defineComponent({
   name: 'ArticleBody',
-  props: ['onCreateLink', 'onSearchLink', 'onShowToast', 'onClose'],
+  props: {
+    onCreateLink: Function,
+    onSearchLink: Function,
+    onShowToast: Function,
+    onClose: Function,
+    mode: {
+      type: String,
+      default: 'strict',
+    },
+  },
   components: {
     EditorContent,
     SelectionToolbar,
@@ -132,6 +141,17 @@ export default defineComponent({
     EditBlockMenu,
   },
   data() {
+    const extraExtensions =
+      this.mode && this.mode === 'strict'
+        ? [
+            new Explain(),
+            new StepStart(),
+            new StepEnd(),
+            new FileStart(),
+            new FileEnd(),
+          ]
+        : [];
+
     return {
       editor: new Editor({
         autoFocus: true,
@@ -139,11 +159,7 @@ export default defineComponent({
           new Text(),
           new HardBreak(),
           new Paragraph(),
-          new Explain(),
-          new StepStart(),
-          new StepEnd(),
-          new FileStart(),
-          new FileEnd(),
+          ...extraExtensions,
           new Heading({
             levels: [1, 2, 3, 4, 5, 6],
           }),
@@ -196,6 +212,7 @@ export default defineComponent({
             dictionary,
             onOpen: this.handleOpenBlockMenu,
             onClose: this.handleCloseBlockMenu,
+            mode: this.mode,
           }),
           new Placeholder({
             showOnlyCurrent: false,
@@ -207,10 +224,6 @@ export default defineComponent({
           }),
           new DataPaste(),
         ],
-        onUpdate: ({ getJSON }) => {
-          this.doc = getJSON();
-          localStorage.setItem('editure-doc', JSON.stringify(getJSON()));
-        },
       }),
       linkUrl: null,
       linkMenuIsActive: false,
@@ -421,6 +434,19 @@ ul[data-type='todo_list'] {
 li[data-type='todo_item'] {
   display: flex;
   flex-direction: row;
+}
+
+.explain {
+  margin: 4px;
+  padding: 4px 12px;
+  width: 100%;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  transition: border 0.3s ease 0s;
+}
+
+.explain:hover {
+  border: 1px solid rgb(221, 221, 221);
 }
 
 .todo-checkbox {

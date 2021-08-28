@@ -16,7 +16,7 @@ export default class StepStart extends Node {
       attrs: {
         commit: { default: '' },
       },
-      toDOM: () => ['div', 0],
+      toDOM: () => ['div', { class: 'step-start' }, 0],
     };
   }
 }

@@ -166,211 +166,429 @@ export default class BlockMenuTrigger extends Extension {
              * 1. 鼠标在顶层，且顶层为 paragraph，且内容为空
              * 2. 鼠标没有在最顶层，上上层为 notice/blockquote，上层为 paragraph，且内容为空
              */
-            if (
-              (isTopLevel && directParent.node.type.name === 'paragraph') ||
-              (!isTopLevel &&
-                directParent.node.type.name === 'paragraph' &&
-                ['blockquote', 'notice'].includes(
-                  secondUpperParent.node.type.name,
-                ))
-            ) {
-              if (isEmpty) {
+            // debugger;
+            console.log('parent', directParent, secondUpperParent);
+            console.log('mode', this.options.mode);
+
+            if (this.options.mode === 'strict') {
+              if (
+                (directParent.node.type.name === 'paragraph' &&
+                  secondUpperParent &&
+                  secondUpperParent.node.type.name === 'explain') ||
+                (directParent.node.type.name === 'paragraph' &&
+                  secondUpperParent &&
+                  ['blockquote', 'notice'].includes(
+                    secondUpperParent.node.type.name,
+                  ))
+              ) {
+                if (isEmpty) {
+                  decorations.push(
+                    Decoration.widget(directParent.pos, () => {
+                      // console.log('hello');
+                      createButton.addEventListener('click', () => {
+                        this.options.onOpen('', 'create');
+                      });
+                      return createButton;
+                    }),
+                  );
+
+                  decorations.push(
+                    Decoration.node(
+                      directParent.pos,
+                      directParent.pos + directParent.node.nodeSize,
+                      {
+                        class: 'placeholder',
+                        'data-empty-text': this.options.dictionary.newLineEmpty,
+                      },
+                    ),
+                  );
+                }
+
+                if (isSlash) {
+                  decorations.push(
+                    Decoration.node(
+                      directParent.pos,
+                      directParent.pos + directParent.node.nodeSize,
+                      {
+                        class: 'placeholder',
+                        'data-empty-text': `  ${this.options.dictionary.newLineWithSlash}`,
+                      },
+                    ),
+                  );
+                }
+
+                if (decorations.length > 0)
+                  return DecorationSet.create(state.doc, decorations);
+              }
+
+              /**
+               * 以下几种情况会弹出处理框（目前是只在最外层弹出，后续考虑类似 gitbook 可以在内层弹出）：
+               * 1. 鼠标在顶层 depth = 1，顶层为 paragraph，内容不为空
+               * 2. 鼠标在 heading 中
+               * 3. 鼠标在 notice/blockquote 中，且 directParent 为 paragraph
+               */
+              if (
+                (isTopLevel &&
+                  directParent.node.type.name === 'paragraph' &&
+                  directParent.node.content.size !== 0) ||
+                (secondUpperParent &&
+                  directParent.node.type.name === 'paragraph' &&
+                  ['notice', 'blockquote'].includes(
+                    secondUpperParent.node.type.name,
+                  ) &&
+                  directParent.node.content.size !== 0)
+              ) {
+                const ancestorNodeTypeName = getAncestorNodeTypeName($from);
+
                 decorations.push(
                   Decoration.widget(directParent.pos, () => {
-                    // console.log('hello');
-                    createButton.addEventListener('click', () => {
-                      this.options.onOpen('', 'create');
+                    editButton.addEventListener('click', () => {
+                      /**
+                       * 四个参数：
+                       *
+                       * - 第一个参数：open 时输入的文字，打开即搜索
+                       * - 第二个参数：代表此时打开的是 edit | create 框
+                       * - 第三个参数：此节点的父系节点链
+                       * - 第四个参数：如果是父含子，且子节点是唯一节点，那么需要把父节点一起删除
+                       */
+                      this.options.onOpen('', 'edit', ancestorNodeTypeName);
                     });
-                    return createButton;
+                    return editButton;
                   }),
                 );
 
-                decorations.push(
-                  Decoration.node(
-                    directParent.pos,
-                    directParent.pos + directParent.node.nodeSize,
-                    {
-                      class: 'placeholder',
-                      'data-empty-text': this.options.dictionary.newLineEmpty,
-                    },
-                  ),
-                );
-              }
-
-              if (isSlash) {
-                decorations.push(
-                  Decoration.node(
-                    directParent.pos,
-                    directParent.pos + directParent.node.nodeSize,
-                    {
-                      class: 'placeholder',
-                      'data-empty-text': `  ${this.options.dictionary.newLineWithSlash}`,
-                    },
-                  ),
-                );
-              }
-
-              if (decorations.length > 0)
+                if (decorations.length === 0) return;
                 return DecorationSet.create(state.doc, decorations);
-            }
+              }
 
-            /**
-             * 以下几种情况会弹出处理框（目前是只在最外层弹出，后续考虑类似 gitbook 可以在内层弹出）：
-             * 1. 鼠标在顶层 depth = 1，顶层为 paragraph，内容不为空
-             * 2. 鼠标在 heading 中
-             * 3. 鼠标在 notice/blockquote 中，且 directParent 为 paragraph
-             */
-            if (
-              (isTopLevel &&
-                directParent.node.type.name === 'paragraph' &&
-                directParent.node.content.size !== 0) ||
-              (secondUpperParent &&
-                directParent.node.type.name === 'paragraph' &&
-                ['notice', 'blockquote'].includes(
+              if (directParent.node.type.name === 'heading') {
+                const ancestorNodeTypeName = getAncestorNodeTypeName($from);
+
+                decorations.push(
+                  Decoration.widget(directParent.pos, () => {
+                    editButton.addEventListener('click', () => {
+                      /**
+                       * 四个参数：
+                       *
+                       * - 第一个参数：open 时输入的文字，打开即搜索
+                       * - 第二个参数：代表此时打开的是 edit | create 框
+                       * - 第三个参数：此节点的父系节点链
+                       * - 第四个参数：如果是父含子，且子节点是唯一节点，那么需要把父节点一起删除
+                       */
+                      this.options.onOpen('', 'edit', ancestorNodeTypeName);
+                    });
+                    return editButton;
+                  }),
+                );
+
+                if (decorations.length === 0) return;
+                return DecorationSet.create(state.doc, decorations);
+              }
+
+              // console.log('diff', isTopLevel, directParent, secondUpperParent);
+              if (
+                ['code_block', 'diff_block'].includes(
+                  directParent.node.type.name,
+                )
+              ) {
+                const ancestorNodeTypeName = getAncestorNodeTypeName($from);
+
+                decorations.push(
+                  Decoration.widget(directParent.pos, () => {
+                    editButton.addEventListener('click', () => {
+                      /**
+                       * 四个参数：
+                       *
+                       * - 第一个参数：open 时输入的文字，打开即搜索
+                       * - 第二个参数：代表此时打开的是 edit | create 框
+                       * - 第三个参数：此节点的父系节点链
+                       * - 第四个参数：如果是父含子，且子节点是唯一节点，那么需要把父节点一起删除
+                       */
+                      this.options.onOpen('', 'edit', ancestorNodeTypeName);
+                    });
+                    return editButton;
+                  }),
+                );
+
+                if (decorations.length === 0) return;
+                return DecorationSet.create(state.doc, decorations);
+              }
+
+              /**
+               * 以下几种情况会弹出处理框（目前是只在最外层弹出，后续考虑类似 gitbook 可以在内层弹出）：
+               * 1. ul/ol/todolist，
+               */
+
+              if (
+                secondUpperParent &&
+                ['list_item', 'todo_item'].includes(
                   secondUpperParent.node.type.name,
-                ) &&
-                directParent.node.content.size !== 0)
-            ) {
-              const ancestorNodeTypeName = getAncestorNodeTypeName($from);
+                )
+              ) {
+                const ancestorNodeTypeName = getAncestorNodeTypeName($from);
 
-              decorations.push(
-                Decoration.widget(directParent.pos, () => {
-                  editButton.addEventListener('click', () => {
-                    /**
-                     * 四个参数：
-                     *
-                     * - 第一个参数：open 时输入的文字，打开即搜索
-                     * - 第二个参数：代表此时打开的是 edit | create 框
-                     * - 第三个参数：此节点的父系节点链
-                     * - 第四个参数：如果是父含子，且子节点是唯一节点，那么需要把父节点一起删除
-                     */
-                    this.options.onOpen('', 'edit', ancestorNodeTypeName);
-                  });
-                  return editButton;
-                }),
-              );
+                decorations.push(
+                  Decoration.widget(secondUpperParent.start, () => {
+                    editButton.addEventListener('click', () => {
+                      this.options.onOpen('', 'edit', ancestorNodeTypeName);
+                    });
+                    return editButton;
+                  }),
+                );
+
+                if (decorations.length === 0) return;
+                return DecorationSet.create(state.doc, decorations);
+              }
+
+              /**
+               * 以下几种情况会弹出处理框（目前是只在最外层弹出，后续考虑类似 gitbook 可以在内层弹出）：
+               * 1. Table 针对整个块
+               */
+              const tableParent = findParentNodeOfType(
+                this.editor.schema.nodes.table,
+              )(state.selection);
+              if (tableParent) {
+                decorations.push(
+                  Decoration.widget(tableParent.start, () => {
+                    editButton.addEventListener('click', () => {
+                      this.options.onOpen('', 'edit', ['table']);
+                    });
+                    return editButton;
+                  }),
+                );
+
+                if (decorations.length === 0) return;
+                return DecorationSet.create(state.doc, decorations);
+              }
+
+              /**
+               * 针对图片，只在图片元素上展示编辑菜单
+               */
+              const imageParent = findParentNodeOfType(
+                this.editor.schema.nodes.image,
+              )(state.selection);
+              if (imageParent) {
+                decorations.push(
+                  Decoration.widget(imageParent.start, () => {
+                    editButton.addEventListener('click', () => {
+                      this.options.onOpen('', 'edit', ['image']);
+                    });
+                    return editButton;
+                  }),
+                );
+              }
+
+              if (decorations.length === 0) return;
+              return DecorationSet.create(state.doc, decorations);
+            } else {
+              if (
+                (isTopLevel && directParent.node.type.name === 'paragraph') ||
+                (!isTopLevel &&
+                  directParent.node.type.name === 'paragraph' &&
+                  ['blockquote', 'notice'].includes(
+                    secondUpperParent.node.type.name,
+                  ))
+              ) {
+                if (isEmpty) {
+                  decorations.push(
+                    Decoration.widget(directParent.pos, () => {
+                      // console.log('hello');
+                      createButton.addEventListener('click', () => {
+                        this.options.onOpen('', 'create');
+                      });
+                      return createButton;
+                    }),
+                  );
+
+                  decorations.push(
+                    Decoration.node(
+                      directParent.pos,
+                      directParent.pos + directParent.node.nodeSize,
+                      {
+                        class: 'placeholder',
+                        'data-empty-text': this.options.dictionary.newLineEmpty,
+                      },
+                    ),
+                  );
+                }
+
+                if (isSlash) {
+                  decorations.push(
+                    Decoration.node(
+                      directParent.pos,
+                      directParent.pos + directParent.node.nodeSize,
+                      {
+                        class: 'placeholder',
+                        'data-empty-text': `  ${this.options.dictionary.newLineWithSlash}`,
+                      },
+                    ),
+                  );
+                }
+
+                if (decorations.length > 0)
+                  return DecorationSet.create(state.doc, decorations);
+              }
+
+              /**
+               * 以下几种情况会弹出处理框（目前是只在最外层弹出，后续考虑类似 gitbook 可以在内层弹出）：
+               * 1. 鼠标在顶层 depth = 1，顶层为 paragraph，内容不为空
+               * 2. 鼠标在 heading 中
+               * 3. 鼠标在 notice/blockquote 中，且 directParent 为 paragraph
+               */
+              if (
+                (isTopLevel &&
+                  directParent.node.type.name === 'paragraph' &&
+                  directParent.node.content.size !== 0) ||
+                (secondUpperParent &&
+                  directParent.node.type.name === 'paragraph' &&
+                  ['notice', 'blockquote'].includes(
+                    secondUpperParent.node.type.name,
+                  ) &&
+                  directParent.node.content.size !== 0)
+              ) {
+                const ancestorNodeTypeName = getAncestorNodeTypeName($from);
+
+                decorations.push(
+                  Decoration.widget(directParent.pos, () => {
+                    editButton.addEventListener('click', () => {
+                      /**
+                       * 四个参数：
+                       *
+                       * - 第一个参数：open 时输入的文字，打开即搜索
+                       * - 第二个参数：代表此时打开的是 edit | create 框
+                       * - 第三个参数：此节点的父系节点链
+                       * - 第四个参数：如果是父含子，且子节点是唯一节点，那么需要把父节点一起删除
+                       */
+                      this.options.onOpen('', 'edit', ancestorNodeTypeName);
+                    });
+                    return editButton;
+                  }),
+                );
+
+                if (decorations.length === 0) return;
+                return DecorationSet.create(state.doc, decorations);
+              }
+
+              if (directParent.node.type.name === 'heading') {
+                const ancestorNodeTypeName = getAncestorNodeTypeName($from);
+
+                decorations.push(
+                  Decoration.widget(directParent.pos, () => {
+                    editButton.addEventListener('click', () => {
+                      /**
+                       * 四个参数：
+                       *
+                       * - 第一个参数：open 时输入的文字，打开即搜索
+                       * - 第二个参数：代表此时打开的是 edit | create 框
+                       * - 第三个参数：此节点的父系节点链
+                       * - 第四个参数：如果是父含子，且子节点是唯一节点，那么需要把父节点一起删除
+                       */
+                      this.options.onOpen('', 'edit', ancestorNodeTypeName);
+                    });
+                    return editButton;
+                  }),
+                );
+
+                if (decorations.length === 0) return;
+                return DecorationSet.create(state.doc, decorations);
+              }
+
+              // console.log('diff', isTopLevel, directParent, secondUpperParent);
+              if (
+                ['code_block', 'diff_block'].includes(
+                  directParent.node.type.name,
+                )
+              ) {
+                const ancestorNodeTypeName = getAncestorNodeTypeName($from);
+
+                decorations.push(
+                  Decoration.widget(directParent.pos, () => {
+                    editButton.addEventListener('click', () => {
+                      /**
+                       * 四个参数：
+                       *
+                       * - 第一个参数：open 时输入的文字，打开即搜索
+                       * - 第二个参数：代表此时打开的是 edit | create 框
+                       * - 第三个参数：此节点的父系节点链
+                       * - 第四个参数：如果是父含子，且子节点是唯一节点，那么需要把父节点一起删除
+                       */
+                      this.options.onOpen('', 'edit', ancestorNodeTypeName);
+                    });
+                    return editButton;
+                  }),
+                );
+
+                if (decorations.length === 0) return;
+                return DecorationSet.create(state.doc, decorations);
+              }
+
+              /**
+               * 以下几种情况会弹出处理框（目前是只在最外层弹出，后续考虑类似 gitbook 可以在内层弹出）：
+               * 1. ul/ol/todolist，
+               */
+
+              if (
+                secondUpperParent &&
+                ['list_item', 'todo_item'].includes(
+                  secondUpperParent.node.type.name,
+                )
+              ) {
+                const ancestorNodeTypeName = getAncestorNodeTypeName($from);
+
+                decorations.push(
+                  Decoration.widget(secondUpperParent.start, () => {
+                    editButton.addEventListener('click', () => {
+                      this.options.onOpen('', 'edit', ancestorNodeTypeName);
+                    });
+                    return editButton;
+                  }),
+                );
+
+                if (decorations.length === 0) return;
+                return DecorationSet.create(state.doc, decorations);
+              }
+
+              /**
+               * 以下几种情况会弹出处理框（目前是只在最外层弹出，后续考虑类似 gitbook 可以在内层弹出）：
+               * 1. Table 针对整个块
+               */
+              const tableParent = findParentNodeOfType(
+                this.editor.schema.nodes.table,
+              )(state.selection);
+              if (tableParent) {
+                decorations.push(
+                  Decoration.widget(tableParent.start, () => {
+                    editButton.addEventListener('click', () => {
+                      this.options.onOpen('', 'edit', ['table']);
+                    });
+                    return editButton;
+                  }),
+                );
+
+                if (decorations.length === 0) return;
+                return DecorationSet.create(state.doc, decorations);
+              }
+
+              /**
+               * 针对图片，只在图片元素上展示编辑菜单
+               */
+              const imageParent = findParentNodeOfType(
+                this.editor.schema.nodes.image,
+              )(state.selection);
+              if (imageParent) {
+                decorations.push(
+                  Decoration.widget(imageParent.start, () => {
+                    editButton.addEventListener('click', () => {
+                      this.options.onOpen('', 'edit', ['image']);
+                    });
+                    return editButton;
+                  }),
+                );
+              }
 
               if (decorations.length === 0) return;
               return DecorationSet.create(state.doc, decorations);
             }
-
-            if (directParent.node.type.name === 'heading') {
-              const ancestorNodeTypeName = getAncestorNodeTypeName($from);
-
-              decorations.push(
-                Decoration.widget(directParent.pos, () => {
-                  editButton.addEventListener('click', () => {
-                    /**
-                     * 四个参数：
-                     *
-                     * - 第一个参数：open 时输入的文字，打开即搜索
-                     * - 第二个参数：代表此时打开的是 edit | create 框
-                     * - 第三个参数：此节点的父系节点链
-                     * - 第四个参数：如果是父含子，且子节点是唯一节点，那么需要把父节点一起删除
-                     */
-                    this.options.onOpen('', 'edit', ancestorNodeTypeName);
-                  });
-                  return editButton;
-                }),
-              );
-
-              if (decorations.length === 0) return;
-              return DecorationSet.create(state.doc, decorations);
-            }
-
-            // console.log('diff', isTopLevel, directParent, secondUpperParent);
-            if (
-              ['code_block', 'diff_block'].includes(directParent.node.type.name)
-            ) {
-              const ancestorNodeTypeName = getAncestorNodeTypeName($from);
-
-              decorations.push(
-                Decoration.widget(directParent.pos, () => {
-                  editButton.addEventListener('click', () => {
-                    /**
-                     * 四个参数：
-                     *
-                     * - 第一个参数：open 时输入的文字，打开即搜索
-                     * - 第二个参数：代表此时打开的是 edit | create 框
-                     * - 第三个参数：此节点的父系节点链
-                     * - 第四个参数：如果是父含子，且子节点是唯一节点，那么需要把父节点一起删除
-                     */
-                    this.options.onOpen('', 'edit', ancestorNodeTypeName);
-                  });
-                  return editButton;
-                }),
-              );
-
-              if (decorations.length === 0) return;
-              return DecorationSet.create(state.doc, decorations);
-            }
-
-            /**
-             * 以下几种情况会弹出处理框（目前是只在最外层弹出，后续考虑类似 gitbook 可以在内层弹出）：
-             * 1. ul/ol/todolist，
-             */
-
-            if (
-              secondUpperParent &&
-              ['list_item', 'todo_item'].includes(
-                secondUpperParent.node.type.name,
-              )
-            ) {
-              const ancestorNodeTypeName = getAncestorNodeTypeName($from);
-
-              decorations.push(
-                Decoration.widget(secondUpperParent.start, () => {
-                  editButton.addEventListener('click', () => {
-                    this.options.onOpen('', 'edit', ancestorNodeTypeName);
-                  });
-                  return editButton;
-                }),
-              );
-
-              if (decorations.length === 0) return;
-              return DecorationSet.create(state.doc, decorations);
-            }
-
-            /**
-             * 以下几种情况会弹出处理框（目前是只在最外层弹出，后续考虑类似 gitbook 可以在内层弹出）：
-             * 1. Table 针对整个块
-             */
-            const tableParent = findParentNodeOfType(
-              this.editor.schema.nodes.table,
-            )(state.selection);
-            if (tableParent) {
-              decorations.push(
-                Decoration.widget(tableParent.start, () => {
-                  editButton.addEventListener('click', () => {
-                    this.options.onOpen('', 'edit', ['table']);
-                  });
-                  return editButton;
-                }),
-              );
-
-              if (decorations.length === 0) return;
-              return DecorationSet.create(state.doc, decorations);
-            }
-
-            /**
-             * 针对图片，只在图片元素上展示编辑菜单
-             */
-            const imageParent = findParentNodeOfType(
-              this.editor.schema.nodes.image,
-            )(state.selection);
-            if (imageParent) {
-              decorations.push(
-                Decoration.widget(imageParent.start, () => {
-                  editButton.addEventListener('click', () => {
-                    this.options.onOpen('', 'edit', ['image']);
-                  });
-                  return editButton;
-                }),
-              );
-            }
-
-            if (decorations.length === 0) return;
-            return DecorationSet.create(state.doc, decorations);
           },
         },
       }),
