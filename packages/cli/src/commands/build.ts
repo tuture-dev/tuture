@@ -431,7 +431,7 @@ export default class Build extends BaseCommand {
     articleDocs.forEach(({ articleId, doc }) => {
       const article = readArticleMeta(collection, articleId);
       const nodes = tutureSchema.nodeFromJSON(doc);
-      const out = markdownSerializer.serialize(nodes);
+      const out = markdownSerializer.serialize(nodes as any);
       const dest =
         this.userConfig.out ||
         path.join(buildPath, `${article?.name || articleId}.md`);
