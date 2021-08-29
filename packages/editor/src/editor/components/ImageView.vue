@@ -37,6 +37,7 @@
       @blur="handleBlur"
       :tabindex="-1"
       :contenteditable="true"
+      data-placeholder="点击添加图片标题"
     >
       {{ alt }}
     </p>
@@ -370,9 +371,9 @@ export default {
   user-select: text;
   cursor: text;
 
-  &:empty:before {
+  &:empty:not(:focus)::before {
     color: #b1becc;
-    content: 'Write a caption';
+    content: attr(data-placeholder);
     pointer-events: none;
   }
 }
