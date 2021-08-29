@@ -27,3 +27,4 @@ package-lock.json
 dist
 
 tuture-error.log
+tsconfig.tsbuildinfo
