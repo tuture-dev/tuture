@@ -85,7 +85,7 @@ export function isText(node: INode): node is IText {
 export function getNodeText(node: INode): string {
   return isText(node)
     ? node.text
-    : node.content!.map((child) => getNodeText(child)).join();
+    : (node.content! as INode[]).map((child) => getNodeText(child)).join();
 }
 
 export function readCommitsFromNodes(nodes: INode[]): string[] {
