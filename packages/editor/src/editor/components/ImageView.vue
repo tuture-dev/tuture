@@ -301,7 +301,7 @@ export default {
 
         console.log('pos', this.node);
         view.focus();
-        view.dispatch(setTextSelection(pos)(view.state.tr));
+        view.dispatch(setTextSelection(pos + 1)(view.state.tr));
 
         return;
       }
@@ -331,12 +331,16 @@ export default {
 
       // update meta on object
       const pos = getPos();
-      const transaction = tr.setNodeMarkup(pos, undefined, {
-        src,
-        alt,
-        title,
-        layoutClass,
-      });
+      const transaction = tr.setNodeMarkup(
+        pos - (alt || '').length,
+        undefined,
+        {
+          src,
+          alt,
+          title,
+          layoutClass,
+        },
+      );
       view.dispatch(transaction);
     },
   },
