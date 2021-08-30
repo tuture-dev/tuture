@@ -1,20 +1,27 @@
 import fs from 'fs-extra';
 import path from 'path';
 import {
+  INode,
   Collection,
   TUTURE_ROOT,
   TUTURE_VCS_ROOT,
   COLLECTION_PATH,
+  TUTURE_DOC_ROOT,
   COLLECTION_CHECKPOINT,
   SCHEMA_VERSION,
+  convertV1ToV2,
 } from '@tuture/core';
-
-import { loadAssetsTable } from './assets';
 
 export const collectionPath = path.join(
   process.env.TUTURE_PATH || process.cwd(),
   TUTURE_ROOT,
   COLLECTION_PATH,
+);
+
+export const tutureDocRoot = path.join(
+  process.env.TUTURE_PATH || process.cwd(),
+  TUTURE_ROOT,
+  TUTURE_DOC_ROOT,
 );
 
 export const collectionCheckpoint = path.join(
@@ -33,65 +40,19 @@ export const collectionVcsPath = path.join(
  * Load collection.
  */
 export function loadCollection(): Collection {
-  let rawCollection = fs.readFileSync(collectionPath).toString();
-  const assetsTable = loadAssetsTable();
+  const collection = fs.readJSONSync(collectionPath);
 
-  // COMPAT: convert all asset paths
-  assetsTable.forEach((asset) => {
-    const { localPath, hostingUri } = asset;
-    if (hostingUri) {
-      rawCollection = rawCollection.replace(
-        new RegExp(localPath, 'g'),
-        hostingUri,
-      );
-    }
-  });
-  const collection = JSON.parse(rawCollection);
-
-  if (collection.version !== 'v1') {
-    const convertHiddenLines = (hiddenLines: number[]) => {
-      const rangeGroups = [];
-      let startNumber = null;
-
-      for (let i = 0; i < hiddenLines.length; i++) {
-        const prev = hiddenLines[i - 1];
-        const current = hiddenLines[i];
-        const next = hiddenLines[i + 1];
-
-        if (current !== prev + 1 && current !== next - 1) {
-          rangeGroups.push([current, current]);
-        } else if (current !== prev + 1) {
-          startNumber = hiddenLines[i];
-        } else if (current + 1 !== next) {
-          rangeGroups.push([startNumber, hiddenLines[i]]);
-        }
-      }
-
-      return rangeGroups;
-    };
-
-    for (const step of collection.steps) {
-      for (const node of step.children) {
-        if (node.type === 'file') {
-          const diffBlock = node.children[1];
-          if (diffBlock.hiddenLines) {
-            diffBlock.hiddenLines = convertHiddenLines(diffBlock.hiddenLines);
-          }
-        }
-      }
-    }
-
-    collection.version = 'v1';
+  if (collection.version !== 'v1' && collection.version !== SCHEMA_VERSION) {
+    throw new Error(
+      'incompatible collection version, please contact mrc@mail.tuture.co to fix it',
+    );
   }
 
-  // COMPAT: normalize children of all diff blocks
-  for (const step of collection.steps) {
-    for (const node of step.children) {
-      if (node.type === 'file') {
-        const diffBlock = node.children[1];
-        diffBlock.children = [{ text: '' }];
-      }
-    }
+  if (collection.version === 'v1') {
+    convertV1ToV2(collection).forEach((an) =>
+      saveArticle(an.articleId, { type: 'doc', content: an.nodes }),
+    );
+    collection.version = SCHEMA_VERSION;
   }
 
   return collection;
@@ -102,7 +63,7 @@ export function loadCollection(): Collection {
  */
 export function saveCollection(collection: Collection) {
   collection.version = SCHEMA_VERSION;
-  fs.writeFileSync(collectionPath, JSON.stringify(collection, null, 2));
+  fs.outputJSONSync(collectionPath, collection, { spaces: 2 });
 }
 
 export function saveCheckpoint() {
@@ -117,4 +78,23 @@ export function hasCollectionChangedSinceCheckpoint() {
   return !fs
     .readFileSync(collectionPath)
     .equals(fs.readFileSync(collectionCheckpoint));
+}
+
+/**
+ * Read article from workspace.
+ * @param articleId article id
+ * @returns the parsed doc
+ */
+export function loadArticle(articleId: string): INode {
+  return fs.readJSONSync(path.join(tutureDocRoot, `${articleId}.json`));
+}
+
+/**
+ * Save article nodes to json doc.
+ * @param articleId article id
+ * @param nodes prosemirror nodes for this article
+ */
+export function saveArticle(articleId: string, doc: INode) {
+  const docPath = path.join(tutureDocRoot, `${articleId}.json`);
+  fs.outputJSONSync(docPath, doc, { spaces: 2 });
 }

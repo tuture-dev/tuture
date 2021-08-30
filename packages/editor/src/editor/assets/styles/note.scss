@@ -1,0 +1,35 @@
+.notice-block {
+  background: rgb(247, 247, 247);
+  border-radius: 4px;
+  padding: 8px 16px;
+  margin: 8px 0;
+}
+
+.notice-block .icon {
+  width: 24px;
+  height: 24px;
+  align-self: flex-start;
+  margin-right: 4px;
+  position: relative;
+  top: 1px;
+}
+
+.notice-block.primary {
+  background: rgb(245, 240, 250);
+}
+
+.notice-block.success {
+  background: rgb(239, 248, 240);
+}
+
+.notice-block.info {
+  background: rgb(238, 247, 250);
+}
+
+.notice-block.warning {
+  background: rgb(253, 248, 234);
+}
+
+.notice-block.danger {
+  background: rgb(252, 241, 242);
+}

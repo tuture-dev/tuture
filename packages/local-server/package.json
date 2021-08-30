@@ -19,6 +19,7 @@
     "lodash.omit": "^4.5.0",
     "lodash.pick": "^4.4.0",
     "morgan": "^1.9.1",
+    "parse-diff": "^0.4.2",
     "simple-git": "^1.129.0"
   },
   "devDependencies": {

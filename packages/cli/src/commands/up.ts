@@ -11,7 +11,7 @@ import {
 import reload from './reload';
 import BaseCommand from '../base';
 import logger from '../utils/logger';
-import { diffPath, shouldReloadSteps } from '../utils/git';
+import { shouldReloadSteps } from '../utils/git';
 
 export default class Up extends BaseCommand {
   static description = 'Render and edit tutorial in browser';
@@ -49,13 +49,13 @@ export default class Up extends BaseCommand {
     this.userConfig = Object.assign(this.userConfig, flags);
 
     // Run sync command if workspace is not prepared.
-    if (
-      !fs.existsSync(collectionPath) ||
-      !fs.existsSync(diffPath) ||
-      (await shouldReloadSteps())
-    ) {
-      await reload.run([]);
-    }
+    // if (
+    //   !fs.existsSync(collectionPath) ||
+    //   !fs.existsSync(diffPath) ||
+    //   (await shouldReloadSteps())
+    // ) {
+    //   await reload.run([]);
+    // }
 
     // Trying to load collection for sanity check.
     loadCollection();

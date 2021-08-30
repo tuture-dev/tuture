@@ -1,9 +1,7 @@
 import fs from 'fs-extra';
 import path from 'path';
-import parseDiff from 'parse-diff';
 import simplegit from 'simple-git/promise';
-import { RawDiff, TUTURE_ROOT, DIFF_PATH, isCommitEqual } from '@tuture/core';
-import { loadCollection } from '@tuture/local-server';
+import { TUTURE_ROOT, TUTURE_BRANCH } from '@tuture/core';
 
 import logger from './logger';
 
@@ -11,32 +9,60 @@ import logger from './logger';
 // https://github.com/steveukx/git-js
 export const git = simplegit().silent(true);
 
-export const diffPath = path.join(
-  process.env.TUTURE_PATH || process.cwd(),
-  TUTURE_ROOT,
-  DIFF_PATH,
-);
+/**
+ * Whether the local tuture branch exists.
+ */
+export async function hasLocalTutureBranch() {
+  return (await git.branchLocal()).all.includes(TUTURE_BRANCH);
+}
 
 /**
- * Store diff of all commits.
+ * Whether the remote tuture branch exists.
  */
-export async function storeDiff(commits: string[]) {
-  const diffPromises = commits.map(async (commit: string) => {
-    const command = ['show', '-U99999', commit];
-    const output = await git.raw(command);
-    const diffText = output
-      .replace(/\\ No newline at end of file\n/g, '')
-      .split('\n\n')
-      .slice(-1)[0];
-    const diff = parseDiff(diffText);
-    return { commit, diff } as RawDiff;
-  });
+export async function hasRemoteTutureBranch() {
+  const remote = await git.remote([]);
 
-  const diffs = await Promise.all(diffPromises);
+  if (!remote) {
+    logger.log('warning', 'No remote found for this repository.');
+    return false;
+  }
 
-  fs.writeFileSync(diffPath, JSON.stringify(diffs));
+  const branchExists = async (branch: string) => {
+    const { all } = await git.branch({ '-a': true });
+    return all.includes(branch);
+  };
 
-  return diffs;
+  const remoteBranch = `remotes/${remote.trim()}/${TUTURE_BRANCH}`;
+
+  // Trying to update remote branches (time-consuming).
+  await git.remote(['update', '--prune']);
+
+  return await branchExists(remoteBranch);
+}
+
+/**
+ * Fetch tuture branch from remote.
+ */
+export async function initializeTutureBranch() {
+  const { all: allBranches } = await git.branch({ '-a': true });
+
+  // Already exists.
+  if (allBranches.includes(TUTURE_BRANCH)) {
+    return;
+  }
+
+  const remoteBranchIndex = allBranches
+    .map((branch) => branch.split('/').slice(-1)[0])
+    .indexOf(TUTURE_BRANCH);
+
+  if (remoteBranchIndex < 0) {
+    await git.branch([TUTURE_BRANCH]);
+    logger.log('info', 'New tuture branch has been created.');
+  } else {
+    const [_, remote, branch] = allBranches[remoteBranchIndex].split('/');
+    await git.fetch(remote, branch);
+    logger.log('success', 'Remote tuture branch has been fetched.');
+  }
 }
 
 /**
@@ -93,30 +119,31 @@ export async function inferGithubField() {
  * Determine whether we should run `reload` command.
  */
 export async function shouldReloadSteps() {
-  const { all } = await git.log();
-  const gitCommits = all
-    .filter((log) => !log.message.startsWith('tuture:'))
-    .map((log) => log.hash);
+  // const { all } = await git.log();
+  // const gitCommits = all
+  //   .filter((log) => !log.message.startsWith('tuture:'))
+  //   .map((log) => log.hash);
 
-  const { steps } = loadCollection();
-  const collectionCommits = steps
-    .filter((step) => !step.outdated)
-    .map((step) => step.commit);
+  // const { steps } = loadCollection();
+  // const collectionCommits = steps
+  //   .filter((step) => !step.outdated)
+  //   .map((step) => step.commit);
 
-  collectionCommits.reverse();
+  // collectionCommits.reverse();
 
-  let shouldReload = false;
+  // let shouldReload = false;
 
-  for (
-    let i = 0;
-    i < Math.min(gitCommits.length, collectionCommits.length);
-    i++
-  ) {
-    if (!isCommitEqual(gitCommits[i], collectionCommits[i])) {
-      shouldReload = true;
-      break;
-    }
-  }
+  // for (
+  //   let i = 0;
+  //   i < Math.min(gitCommits.length, collectionCommits.length);
+  //   i++
+  // ) {
+  //   if (!isCommitEqual(gitCommits[i], collectionCommits[i])) {
+  //     shouldReload = true;
+  //     break;
+  //   }
+  // }
 
-  return shouldReload;
+  // return shouldReload;
+  return false;
 }

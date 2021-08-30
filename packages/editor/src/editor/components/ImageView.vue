@@ -37,9 +37,7 @@
       @blur="handleBlur"
       :tabindex="-1"
       :contenteditable="true"
-    >
-      {{ alt }}
-    </p>
+    >{{ alt }}</p>
     <!-- <input
       type="file"
       ref="image"
