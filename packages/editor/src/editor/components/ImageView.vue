@@ -37,6 +37,7 @@
       @blur="handleBlur"
       :tabindex="-1"
       :contenteditable="true"
+      data-placeholder="点击添加图片标题"
     >
       {{ alt }}
     </p>
@@ -97,9 +98,7 @@ export default {
   },
   computed: {
     src() {
-      // 目前图片服务还不稳定，暂时使用替代链接
-      return 'https://static.powerformer.com/c/f40c6ff/js-test-cover-1.jpg';
-      // return this.node.attrs.src;
+      return this.node.attrs.src;
     },
     alt() {
       return this.node.attrs.alt;
@@ -276,17 +275,20 @@ export default {
 
       e.preventDefault();
 
-      images.forEach((image) => {
-        const reader = new FileReader();
+      const formData = new FormData();
+      images.forEach((image) => formData.append('files', image));
 
-        reader.onload = (readerEvent) => {
-          const src = readerEvent.target.result;
-
-          this.editor.commands.image({ src });
-        };
-
-        reader.readAsDataURL(image);
-      });
+      fetch(`/api/upload`, {
+        method: 'POST',
+        body: formData,
+      })
+        .then((res) => res.json())
+        .then((data) =>
+          data.forEach((src) => this.editor.commands.image({ src })),
+        )
+        .catch((err) => {
+          throw err;
+        });
     },
     handleKeyDown(event) {
       console.log('keydown', event);
@@ -369,9 +371,9 @@ export default {
   user-select: text;
   cursor: text;
 
-  &:empty:before {
+  &:empty:not(:focus)::before {
     color: #b1becc;
-    content: 'Write a caption';
+    content: attr(data-placeholder);
     pointer-events: none;
   }
 }

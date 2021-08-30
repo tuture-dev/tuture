@@ -22,7 +22,7 @@ const app = makeServer({
     app.get('/api/diff', (req, res) => {
       const { commit, file } = req.query;
       if (!commit || !file) {
-        res.status(400).json(req.query);
+        return res.status(400).json(req.query);
       }
       res.json(mockDiff[commit.slice(0, 7)][file]);
     });
