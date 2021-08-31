@@ -27,4 +27,7 @@ package-lock.json
 dist
 
 tuture-error.log
-tsconfig.tsbuildinfo
+
+.history
+.rollup.cache
+packages/**/tsconfig.tsbuildinfo
