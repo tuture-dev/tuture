@@ -1,9 +1,9 @@
 import * as path from 'path';
-import { TUTURE_ROOT } from '@tuture/core';
+import { TUTURE_ROOT, TUTURE_ASSETS_ROOT } from '@tuture/core';
 
 export default {
   // Directory to store assets temporarily.
-  assetsRoot: path.join(TUTURE_ROOT, 'assets'),
+  assetsRoot: path.join(TUTURE_ROOT, TUTURE_ASSETS_ROOT),
 
   // Time interval to synchronize all assets.
   assetsSyncInterval: 10000,
