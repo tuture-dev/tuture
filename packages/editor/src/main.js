@@ -10,6 +10,7 @@ import {
   Drawer,
   Layout,
   Menu,
+  Modal,
   Tooltip,
   Row,
   Col,
@@ -101,6 +102,7 @@ Vue.use(Divider);
 Vue.use(Drawer);
 Vue.use(Layout);
 Vue.use(Menu);
+Vue.use(Modal);
 Vue.use(Tooltip);
 Vue.use(Row);
 Vue.use(Col);

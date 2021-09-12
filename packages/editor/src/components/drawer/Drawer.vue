@@ -17,7 +17,6 @@ import { mapMutations, mapState } from 'vuex';
 
 import CollectionCatalogue from '@/components/CollectionCatalogue.vue';
 import CollectionSetting from '@/components/CollectionSetting.vue';
-import Toc from '@/components/Toc.vue';
 
 const mapTypeToTitle = {
   CollectionSetting: '文集设置',
@@ -29,7 +28,6 @@ export default defineComponent({
   components: {
     CollectionCatalogue,
     CollectionSetting,
-    Toc,
   },
   computed: {
     title() {
