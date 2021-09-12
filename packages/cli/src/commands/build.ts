@@ -6,27 +6,24 @@ import { toMarkdown } from 'editure';
 import { flags } from '@oclif/command';
 import { comment, getIdFromFilename, getHighlightFromId } from 'yutang';
 import {
-  RawDiff,
+  IRawDiff,
   DiffFile,
   ChangeType,
-  DiffBlock,
-  Step,
   Collection,
-  Meta,
+  IMeta,
   isCommitEqual,
+  ArticleNodes,
+  tutureSchema,
+  markdownSerializer,
 } from '@tuture/core';
-import {
-  loadCollection,
-  collectionPath,
-  Asset,
-  loadAssetsTable,
-} from '@tuture/local-server';
+import { loadCollection, collectionPath, Asset } from '@tuture/local-server';
 
 import reload from './reload';
 import BaseCommand from '../base';
 import logger from '../utils/logger';
-import { diffPath } from '../utils/git';
 import { generateUserProfile } from '../utils/internals';
+import { loadArticleDocs } from '../utils';
+import { readArticleMeta } from '../utils/node';
 
 // Internal hints for rendering code lines.
 const diffRenderHints: { [mode: string]: { [diffType: string]: string } } = {
@@ -122,7 +119,7 @@ export default class Build extends BaseCommand {
   }
 
   // Template for metadata of hexo posts.
-  hexoFrontMatterTmpl(meta: Meta) {
+  hexoFrontMatterTmpl(meta: IMeta) {
     const { name, description, topics, categories, created, cover } = meta;
     const elements = ['---', `title: "${name.replace('"', '')}"`];
     if (description) {
@@ -244,7 +241,7 @@ export default class Build extends BaseCommand {
     return lines.map((line) => (line ? `> ${line}` : '>')).join('\n');
   }
 
-  getDiffFile(rawDiffs: RawDiff[], commit: string, file: string) {
+  getDiffFile(rawDiffs: IRawDiff[], commit: string, file: string) {
     const diffItem = rawDiffs.filter((rawDiff) =>
       isCommitEqual(rawDiff.commit, commit),
     )[0];
@@ -258,7 +255,7 @@ export default class Build extends BaseCommand {
   }
 
   // Markdown template for the whole tutorial.
-  articleTmpl(meta: Meta, steps: Step[], rawDiffs: RawDiff[]) {
+  articleTmpl(meta: IMeta, steps: any[]) {
     const { name, description, cover, github } = meta;
 
     const stepConverter = (node: Element) => {
@@ -277,19 +274,19 @@ export default class Build extends BaseCommand {
       );
     };
 
-    const diffBlockConverter = (node: Element) => {
-      const { commit, file, hiddenLines = [], hideDiff } = node as DiffBlock;
-      const diff = this.getDiffFile(rawDiffs, commit, file);
-      const link = github ? `${github}/blob/${commit}/${file}` : undefined;
-      const flatHiddenLines = hiddenLines.flatMap((range) => {
-        const [start, end] = range;
-        return [...Array(end - start + 1).keys()].map((elem) => elem + start);
-      });
+    // const diffBlockConverter = (node: Element) => {
+    //   const { commit, file, hiddenLines = [], hideDiff } = node as any;
+    //   const diff = this.getDiffFile(rawDiffs, commit, file);
+    //   const link = github ? `${github}/blob/${commit}/${file}` : undefined;
+    //   const flatHiddenLines = hiddenLines.flatMap((range: any) => {
+    //     const [start, end] = range;
+    //     return [...Array(end - start + 1).keys()].map((elem) => elem + start);
+    //   });
 
-      return diff
-        ? this.diffBlockTmpl(diff, hideDiff, flatHiddenLines, link)
-        : '';
-    };
+    //   return diff
+    //     ? this.diffBlockTmpl(diff, hideDiff, flatHiddenLines, link)
+    //     : '';
+    // };
 
     const noteBlockConverter = (node: Element) => {
       const { level = 'default', children } = node;
@@ -302,7 +299,7 @@ export default class Build extends BaseCommand {
       step: stepConverter,
       file: fileConverter,
       explain: explainConverter,
-      ['diff-block']: diffBlockConverter,
+      // ['diff-block']: diffBlockConverter,
       note: noteBlockConverter,
     };
 
@@ -346,7 +343,7 @@ export default class Build extends BaseCommand {
     return updated;
   }
 
-  generateTutorials(collection: Collection, rawDiffs: RawDiff[]) {
+  generateTutorials(collection: Collection, articleNodes: ArticleNodes[]) {
     const {
       name,
       articles,
@@ -354,7 +351,6 @@ export default class Build extends BaseCommand {
       topics,
       categories,
       github,
-      steps,
       created,
       cover,
     } = collection;
@@ -375,14 +371,15 @@ export default class Build extends BaseCommand {
 
     // Iterate over each split of tutorial.
     const tutorials = articles.map((article) => {
-      const articleSteps = steps.filter(
-        (step) => step.articleId === article.id,
-      );
+      // const articleSteps = steps.filter(
+      //   (step) => step.articleId === article.id,
+      // );
+      const articleSteps: any[] = [];
 
       // Override outmost metadata with article metadata.
       const articleMeta = { ...meta, ...article };
 
-      return this.articleTmpl(articleMeta, articleSteps, rawDiffs);
+      return this.articleTmpl(articleMeta, articleSteps);
     });
 
     return [tutorials, titles];
@@ -416,32 +413,34 @@ export default class Build extends BaseCommand {
   async run() {
     const { flags } = this.parse(Build);
     this.userConfig = Object.assign(this.userConfig, flags);
-
     // Run sync command if workspace is not prepared.
-    if (!fs.existsSync(collectionPath) || !fs.existsSync(diffPath)) {
+    if (!fs.existsSync(collectionPath)) {
       await reload.run([]);
     }
-
     const collection = loadCollection();
-    const rawDiffs: RawDiff[] = JSON.parse(
-      fs.readFileSync(diffPath).toString(),
-    );
-
-    if (rawDiffs.length === 0) {
-      logger.log(
-        'warning',
-        'No commits yet. Target tutorial will have empty content.',
-      );
-    }
-
+    const articleDocs = loadArticleDocs();
     if (flags.hexo && !collection.github) {
-      logger.log('warning', 'No github field provided.');
+      logger.log('warning', 'No github field provided when hexo mode is on.');
     }
 
-    // COMPAT: we have to replace image paths in earlier versions of tutorials.
-    const assets = loadAssetsTable();
+    const { buildPath } = this.userConfig;
+    if (!this.userConfig.out && !fs.existsSync(buildPath)) {
+      fs.mkdirSync(buildPath);
+    }
 
-    const [tutorials, titles] = this.generateTutorials(collection, rawDiffs);
-    this.saveTutorials(tutorials, titles, assets);
+    articleDocs.forEach(({ articleId, doc }) => {
+      const article = readArticleMeta(collection, articleId);
+      const nodes = tutureSchema.nodeFromJSON(doc);
+      const out = markdownSerializer.serialize(nodes as any);
+      const dest =
+        this.userConfig.out ||
+        path.join(buildPath, `${article?.name || articleId}.md`);
+      fs.writeFileSync(dest, out);
+
+      logger.log(
+        'success',
+        `Tutorial has been written to ${chalk.bold(dest)}.`,
+      );
+    });
   }
 }

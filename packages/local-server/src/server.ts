@@ -5,6 +5,7 @@ import express, { Express } from 'express';
 
 import { createBaseRouter } from './routes';
 import TaskQueue from './utils/task-queue';
+import { assetsRoot } from './utils';
 
 // Editor path
 const EDITOR_PATH = path.join(__dirname, 'editor');
@@ -24,7 +25,7 @@ export const makeServer = (options?: ServerOptions) => {
   // Make sure the task queue is flushed
   process.on('exit', () => queue.flush());
 
-  const { mockRoutes, baseUrl = '/', onGitHistoryChange } = options || {};
+  const { mockRoutes, baseUrl = '/api', onGitHistoryChange } = options || {};
 
   // Watch for changes of git master ref if listener is provided.
   if (onGitHistoryChange) {
@@ -42,6 +43,7 @@ export const makeServer = (options?: ServerOptions) => {
   app.use(express.json({ limit: '50mb' }));
   app.use(express.urlencoded({ extended: false }));
   app.use('/static', express.static(EDITOR_STATIC_PATH));
+  app.use('/assets', express.static(assetsRoot));
 
   // Register mocking routes. This will override real routes below.
   // (For development purposes only.)

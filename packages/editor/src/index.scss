@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import '@/editor/assets/styles/main.scss';
+@import '@/editor/assets/styles/table.scss';
+@import '@/editor/assets/styles/code.scss';
+@import '@/editor/assets/styles/note.scss';
+
+.anticon > svg {
+  height: 18px;
+  width: 18px;
+}
+
+.ant-select-selection-selected-value {
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.ant-drawer-left.ant-drawer-open .ant-drawer-content-wrapper {
+  box-shadow: none;
+}
+
+.ant-drawer-body {
+  padding: 24px 0;
+}
+
+.ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
+  background: transparent;
+}

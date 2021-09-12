@@ -1,7 +1,12 @@
 import fs from 'fs-extra';
 import path from 'path';
 
-import { TUTURE_ROOT, TUTURE_VCS_ROOT, ASSETS_JSON_PATH } from '@tuture/core';
+import {
+  TUTURE_ROOT,
+  TUTURE_ASSETS_ROOT,
+  TUTURE_VCS_ROOT,
+  ASSETS_JSON_PATH,
+} from '@tuture/core';
 
 export interface Asset {
   localPath: string;
@@ -26,8 +31,14 @@ export const assetsTableVcsPath = path.join(
  */
 export function loadAssetsTable(): Asset[] {
   if (fs.existsSync(assetsTablePath)) {
-    return JSON.parse(fs.readFileSync(assetsTablePath).toString());
+    return fs.readJSONSync(assetsTablePath);
   }
 
   return [];
 }
+
+export const assetsRoot = path.join(
+  process.env.TUTURE_PATH || process.cwd(),
+  TUTURE_ROOT,
+  TUTURE_ASSETS_ROOT,
+);

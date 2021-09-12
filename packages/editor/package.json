@@ -1,87 +1,125 @@
 {
-  "name": "@tuture/editor",
-  "version": "0.0.7",
+  "name": "editor",
+  "version": "0.1.0",
   "private": true,
-  "dependencies": {
-    "@emotion/core": "^10.0.27",
-    "@emotion/styled": "^10.0.27",
-    "@rematch/core": "^1.4.0",
-    "@rematch/immer": "^1.2.0",
-    "@rematch/loading": "^1.2.1",
-    "@rematch/select": "^2.0.5",
-    "@tuture/core": "^0.0.7",
-    "@tuture/local-server": "^0.0.7",
-    "@types/axios": "^0.14.0",
-    "antd": "^3.26.9",
-    "axios": "^0.19.2",
-    "customize-cra": "^0.9.1",
-    "dayjs": "^1.8.20",
-    "editure": "0.1.13",
-    "editure-constants": "0.1.2",
-    "editure-react": "0.1.13",
-    "emotion": "^10.0.27",
-    "is-hotkey": "^0.1.6",
-    "lodash.omit": "^4.5.0",
-    "lodash.pick": "^4.4.0",
-    "prism-react-renderer": "^1.0.2",
-    "react": "^16.12.0",
-    "react-dom": "^16.12.0",
-    "react-lazy-load": "^3.0.13",
-    "react-redux": "^7.1.3",
-    "react-router-dom": "^5.1.2",
-    "react-scripts": "3.4.0",
-    "react-smooth-dnd": "^0.11.1",
-    "react-table": "^7.0.0-rc.16",
-    "react-use": "^14.1.1",
-    "refractor": "^2.10.1",
-    "yutang": "^0.0.4"
-  },
   "scripts": {
-    "start:api": "cross-env TUTURE_PATH=fixtures NODE_ENV=development node api-server.js",
-    "start": "concurrently \"yarn start:api\" \"react-app-rewired start\"",
-    "build": "react-app-rewired build",
-    "postbuild": "rimraf build/**/*.map",
-    "analyze": "source-map-explorer 'build/static/js/*.js'",
-    "test": "react-app-rewired test",
-    "eject": "react-scripts eject",
-    "lint": "../node_modules/.bin/eslint . --fix"
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint",
+    "preview": "serve ./dist/",
+    "start": "concurrently -r \"yarn start:api\" \"vue-cli-service serve\"",
+    "start:api": "cross-env TUTURE_PATH=fixtures NODE_ENV=development node api-server.js"
   },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
-  "proxy": "http://localhost:8000/",
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+  "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.35",
+    "@fortawesome/free-solid-svg-icons": "^5.15.3",
+    "@fortawesome/vue-fontawesome": "^2.0.2",
+    "@juggle/resize-observer": "^3.3.1",
+    "@linusborg/vue-simple-portal": "^0.1.5",
+    "@u3u/vue-hooks": "^2.0.1",
+    "@vue/composition-api": "^1.0.0-rc.8",
+    "@vueuse/core": "^4.8.1",
+    "@xunlei/vue-lazy-component": "^1.1.3",
+    "ant-design-vue": "^1.7.4",
+    "core-js": "^3.6.5",
+    "lodash": "^4.17.21",
+    "lodash.some": "^4.6.0",
+    "medium-zoom": "^1.0.6",
+    "monaco-editor": "0.25.0",
+    "monaco-editor-webpack-plugin": "4.0.0",
+    "nano-assign": "^1.0.1",
+    "prosemirror-commands": "1.1.7",
+    "prosemirror-keymap": "1.1.4",
+    "prosemirror-model": "1.14.3",
+    "prosemirror-state": "1.3.4",
+    "prosemirror-tables": "1.1.1",
+    "prosemirror-utils": "0.9.6",
+    "prosemirror-view": "1.18.0",
+    "smooth-scroll-into-view-if-needed": "^1.1.32",
+    "tiptap": "1.32.2",
+    "tiptap-extensions": "1.35.2",
+    "vue": "^2.6.11",
+    "vue-demi": "^0.7.4",
+    "vue-router": "^3.2.0",
+    "vuex": "^3.4.0"
   },
   "devDependencies": {
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.3.2",
-    "@testing-library/user-event": "^7.1.2",
-    "@types/express": "^4.16.0",
-    "@types/lodash.omit": "^4.5.6",
-    "@types/lodash.pick": "^4.4.6",
-    "@types/node": "^12.12.31",
-    "@types/react": "^16.9.25",
-    "@types/react-redux": "^7.1.7",
-    "@types/react-router-dom": "^5.1.3",
-    "@types/react-table": "^7.0.12",
-    "@types/refractor": "^2.8.0",
-    "babel-plugin-emotion": "^10.0.27",
-    "babel-plugin-import": "^1.13.0",
-    "concurrently": "^5.1.0",
-    "cross-env": "^7.0.2",
-    "less": "^3.11.1",
-    "less-loader": "^5.0.0",
-    "react-app-rewired": "^2.1.5",
-    "source-map-explorer": "^2.4.2"
+    "@commitlint/cli": "^7.2.1",
+    "@vue/cli-plugin-babel": "~4.5.0",
+    "@vue/cli-plugin-eslint": "~4.5.0",
+    "@vue/cli-plugin-router": "~4.5.0",
+    "@vue/cli-plugin-vuex": "~4.5.0",
+    "@vue/cli-service": "~4.5.0",
+    "autoprefixer": "^9",
+    "babel-eslint": "^10.1.0",
+    "babel-plugin-import": "^1.13.3",
+    "commitizen": "^3.0.5",
+    "concurrently": "^6.1.0",
+    "conventional-changelog": "^3.0.5",
+    "cross-env": "^7.0.3",
+    "css-loader": "^5.2.1",
+    "cz-conventional-changelog": "^2.1.0",
+    "eslint": "^6.7.2",
+    "eslint-loader": "^4.0.2",
+    "eslint-plugin-prettier": "^3.0.1",
+    "eslint-plugin-vue": "^6.2.2",
+    "less": "^2.7.3",
+    "less-loader": "^4.1.0",
+    "lint-staged": "^7.2.2",
+    "mini-css-extract-plugin": "^1.4.1",
+    "monaco-editor-webpack-plugin": "^4.0.0",
+    "postcss": "^7",
+    "postcss-loader": "4.0.3",
+    "prettier": "^1.16.3",
+    "sass": "^1.32.8",
+    "sass-loader": "^10",
+    "serve": "^11.3.2",
+    "standard-version": "^4.4.0",
+    "style-loader": "^2.0.0",
+    "stylelint": "^13.0.0",
+    "stylelint-webpack-plugin": "^2.1.1",
+    "tailwindcss": "npm:@tailwindcss/postcss7-compat",
+    "vite-plugin-importer": "^0.2.1",
+    "vue-cli-plugin-vite": "~1.0.0-rc.3",
+    "vue-style-loader": "^4.1.3",
+    "vue-template-compiler": "^2.6.11",
+    "webpack": "^4.0.0"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/essential",
+      "eslint:recommended"
+    ],
+    "parserOptions": {
+      "parser": "babel-eslint"
+    },
+    "rules": {
+      "no-unused-vars": "off",
+      "no-fallthrough": "off",
+      "no-debugger": "off"
+    }
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ],
+  "config": {
+    "commitizen": {
+      "path": "node_modules/cz-conventional-changelog"
+    }
+  },
+  "lint-staged": {
+    "*.js": [
+      "vue-cli-service lint",
+      "git add"
+    ],
+    "*.vue": [
+      "vue-cli-service lint",
+      "git add"
+    ]
   }
 }

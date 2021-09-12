@@ -1,0 +1,29 @@
+@import './variables';
+
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+h1,
+h2,
+h3,
+p,
+ul,
+ol,
+pre,
+blockquote {
+  margin: 1rem 0;
+
+  &:first-child {
+    margin-top: 0;
+  }
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+@import './editor';
+@import './menubar';
+@import './menububble';
