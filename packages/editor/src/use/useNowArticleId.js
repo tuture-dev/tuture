@@ -14,8 +14,16 @@ export default function useNowArticleId() {
     nowArticleId.value = route.value.params.id;
   }
 
+  // When the route changes, nowArticleId must change accordingly.
   watch(route, (updated) => {
     nowArticleId.value = updated.params.id;
+  });
+
+  // Prevent the case where firstArticle is not ready at first.
+  watch(firstArticle, (updated) => {
+    if (!nowArticleId.value) {
+      nowArticleId.value = updated.id;
+    }
   });
 
   return { nowArticleId };
