@@ -33,7 +33,7 @@ import ChildDrawer from '@/components/drawer/ChildDrawer.vue';
 import ArticleBody from '@/components/ArticleBody.vue';
 import ArticleCatalogue from '@/components/ArticleCatalogue.vue';
 import CollectionCatalogue from '@/components/CollectionCatalogue.vue';
-import StepAllocation from '@/components/StepAllocation.vue';
+import StepAllocation from '@/components/toc/StepAllocation.vue';
 
 export default defineComponent({
   components: {
