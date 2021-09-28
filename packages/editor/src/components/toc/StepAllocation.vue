@@ -18,16 +18,29 @@
               :key="step.id"
               class="step-list-item px-4 h-12"
             >
-              <OutdatedTag v-if="step.oudated"></OutdatedTag>
-              <span>{{ step.title }}</span>
+              <span>
+                <OutdatedTag v-if="step.outdated"></OutdatedTag>
+                <span class="step-title">{{ step.title }}</span>
+              </span>
+              <span>
+                <a-popconfirm
+                  class="mr-1"
+                  v-if="step.outdated"
+                  title="确定删除此过时步骤吗？"
+                  @confirm="deleteStep(step)"
+                >
+                  <a-icon type="delete"></a-icon>
+                </a-popconfirm>
+                <span class="list-item-action hidden" @click="assignStep(step)">
+                  <span class="mr-1">添加</span>
+                  <a-icon type="double-right"></a-icon>
+                </span>
+              </span>
             </li>
           </ul>
         </div>
       </a-col>
-      <a-col
-        :span="16"
-        class="box-border bg-white border border-gray-50 px-12 py-8"
-      >
+      <a-col :span="16" class="box-border bg-white border border-gray-50 px-12">
         <div class="border-b border-gray-100 pb-4">
           <h1 class="text-2xl">文集目录</h1>
           <p class="text-sm mt-2 font-normal text-gray-400">
@@ -38,21 +51,29 @@
           <ul class="list-none mt-4">
             <li
               v-for="item in articleSteps"
-              class="step-list-item h-10 px-4"
+              v-show="
+                item.type === 'article' || item.articleId === activeArticle
+              "
               :key="item.id"
-              :style="{ marginLeft: item.type == 'article' ? '0px' : '24px' }"
+              class="step-list-item h-10 px-4"
+              :class="{
+                'ml-6': item.type === 'step',
+                'border-green-600': item.id === activeArticle,
+              }"
+              @click="toggleActiveArticle(item)"
             >
-              <span class="">
+              <span>
                 <a-icon
                   v-if="item.type === 'article'"
-                  class="icon"
-                  type="caret-right"
+                  :type="
+                    activeArticle == item.id ? 'caret-down' : 'caret-right'
+                  "
                 ></a-icon>
                 <OutdatedTag
                   v-if="item.type === 'step' && item.outdated"
                 ></OutdatedTag>
                 <span
-                  class="whitespace-nowrap overflow-ellipsis overflow-hidden"
+                  class="step-title"
                   :style="{ width: item.outdated ? '390px' : '430px' }"
                 >
                   {{ item.title }}
@@ -64,7 +85,16 @@
                 >步骤</span
               >
               <span class="list-item-action hidden">
-                <a-icon type="delete"></a-icon>
+                <a-popconfirm
+                  title="确认要删除文章吗？"
+                  v-if="item.type === 'article'"
+                  @confirm="deleteArticle(item)"
+                >
+                  <a-icon type="delete"></a-icon>
+                </a-popconfirm>
+                <span v-else @click="releaseStep(item)">
+                  <a-icon type="delete"></a-icon>
+                </span>
               </span>
             </li>
           </ul>
@@ -76,6 +106,7 @@
 
 <script>
 import { defineComponent } from 'vue-demi';
+import omit from 'lodash.omit';
 import OutdatedTag from './widgets/OutdatedTag.vue';
 
 export default defineComponent({
@@ -84,19 +115,24 @@ export default defineComponent({
   },
   data() {
     return {
+      activeArticle: '1',
       releasedSteps: [
         {
-          id: '1',
+          type: 'step',
+          id: '1003',
           commit: '60a60d7',
-          title: '从服务器获取数据',
+          title: '待分配的步骤一',
           articleId: '',
+          number: 3,
           outdated: false,
         },
         {
-          id: '2',
+          type: 'step',
+          id: '2006',
           commit: '5f1edd9',
-          title: '实现食谱的编辑和创建页面',
+          title: '待分配的步骤二',
           articleId: '',
+          number: 6,
           outdated: true,
         },
       ],
@@ -108,43 +144,155 @@ export default defineComponent({
         },
         {
           type: 'step',
-          id: '2',
+          id: '1001',
           commit: '60a60d7',
           title: '从服务器获取数据',
-          articleId: '',
+          articleId: '1',
+          number: 1,
           outdated: false,
         },
         {
           type: 'step',
-          id: '3',
+          id: '1002',
           commit: '5f1edd9',
           title: '实现食谱的编辑和创建页面',
-          articleId: '',
+          articleId: '1',
+          number: 2,
           outdated: true,
         },
         {
           type: 'article',
-          id: '4',
+          id: '2',
           title: '第二篇教程',
         },
         {
           type: 'step',
-          id: '5',
+          id: '2001',
           commit: '60a60d7',
-          title: '从服务器获取数据',
-          articleId: '',
+          title: '从客户端获取数据',
+          articleId: '2',
+          number: 4,
           outdated: false,
         },
         {
           type: 'step',
-          id: '6',
+          id: '2002',
           commit: '5f1edd9',
-          title: '实现食谱的编辑和创建页面',
-          articleId: '',
+          title: '哦豁哦豁',
+          articleId: '2',
+          number: 5,
           outdated: true,
         },
       ],
+      stepsToDelete: [],
     };
+  },
+  methods: {
+    toggleActiveArticle(item) {
+      if (item.type === 'article') {
+        this.activeArticle = item.id;
+      }
+    },
+    handleInsertStep(step, stepList) {
+      const insertIndex = stepList.findIndex(
+        (stepItem) => stepItem.number > step.number,
+      );
+
+      if (insertIndex > -1) {
+        return [
+          ...stepList.slice(0, insertIndex),
+          omit(step, ['articleId']),
+          ...stepList.slice(insertIndex),
+        ];
+      } else {
+        return stepList.concat(omit(step, ['articleId']));
+      }
+    },
+    assignStep(item) {
+      if (!this.releasedSteps) return;
+      if (!this.activeArticle) {
+        return this.$message.warning('请选中文章，再添加步骤');
+      }
+
+      const targetArticleStepIndex = this.articleSteps.findIndex(
+        (step) =>
+          step.type === 'step' &&
+          step.articleId === this.activeArticle &&
+          step.number > item.number,
+      );
+
+      // The index to insert this item.
+      let insertIndex;
+
+      if (targetArticleStepIndex < 0) {
+        const articleIndex = this.articleSteps.findIndex(
+          (articleStep) => articleStep.id === this.activeArticle,
+        );
+        const articleStepsLen = this.articleSteps.filter(
+          (articleStep) =>
+            articleStep.type === 'step' &&
+            articleStep.articleId === this.activeArticle,
+        ).length;
+
+        if (articleStepsLen > 0) {
+          insertIndex = articleIndex + articleStepsLen + 1;
+        } else {
+          insertIndex = articleIndex + 1;
+        }
+      } else {
+        insertIndex = targetArticleStepIndex;
+      }
+
+      this.articleSteps.splice(insertIndex, 0, {
+        ...item,
+        articleId: this.activeArticle,
+      });
+
+      this.releasedSteps = this.releasedSteps.filter(
+        (articleStep) => articleStep.id !== item.id,
+      );
+    },
+    releaseStep(item) {
+      if (item.type === 'step') {
+        const newArticleSteps = this.articleSteps.filter(
+          (articleStep) => articleStep.id !== item.id,
+        );
+        this.articleSteps = newArticleSteps;
+
+        const newUnassignedStepList = this.handleInsertStep(
+          item,
+          this.releasedSteps,
+        );
+        this.releasedSteps = newUnassignedStepList;
+      } else {
+        this.deleteArticle(item);
+      }
+    },
+    deleteStep(item) {
+      this.stepsToDelete.push(item.id);
+      this.releasedSteps = this.releasedSteps.filter(
+        (step) => step.id !== item.id,
+      );
+    },
+    deleteArticle(item) {
+      const stepList = this.articleSteps.filter(
+        (step) => step.type === 'step' && step.articleId === item.id,
+      );
+      const newUnassignedStepList = stepList.reduce(
+        (unassignedStepList, currentStep) =>
+          this.handleInsertStep(currentStep, unassignedStepList),
+        this.releasedSteps,
+      );
+      const newArticleStepList = this.articleSteps.filter(
+        (step) =>
+          (step.type === 'step' && step.articleId !== item.id) ||
+          (step.type === 'article' && step.id !== item.id),
+      );
+
+      this.releasedSteps = newUnassignedStepList;
+      this.articleSteps = newArticleStepList;
+      this.activeArticle = '';
+    },
   },
   setup() {},
 });
@@ -171,8 +319,7 @@ export default defineComponent({
   @apply text-xs font-normal text-gray-400;
 }
 
-.icon > svg {
-  width: 10px;
-  height: 10px;
+.step-title {
+  @apply whitespace-nowrap overflow-ellipsis overflow-hidden;
 }
 </style>

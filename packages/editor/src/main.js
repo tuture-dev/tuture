@@ -23,6 +23,7 @@ import {
   Tag,
   Switch,
   Popover,
+  Popconfirm,
 } from 'ant-design-vue';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import {
@@ -116,6 +117,7 @@ Vue.use(Tag);
 Vue.use(Select);
 Vue.use(Switch);
 Vue.use(Popover);
+Vue.use(Popconfirm);
 
 Vue.use(VueLazyComponent);
 
