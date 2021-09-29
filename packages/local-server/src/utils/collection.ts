@@ -11,7 +11,6 @@ import {
   SCHEMA_VERSION,
   convertV1ToV2,
   StepDoc,
-  StepAttrs,
 } from '@tuture/core';
 
 export const collectionPath = path.join(
@@ -37,6 +36,8 @@ export const collectionVcsPath = path.join(
   TUTURE_VCS_ROOT,
   COLLECTION_PATH,
 );
+
+export const unassignedStepsPath = path.join(tutureDocRoot, '_unassigned.json');
 
 /**
  * Load collection.
@@ -135,4 +136,12 @@ export function loadStepSync(stepId: string): StepDoc {
 export function saveStepSync(stepId: string, doc: StepDoc) {
   const docPath = path.join(tutureDocRoot, `${stepId}.json`);
   fs.outputJsonSync(docPath, doc, { spaces: 2 });
+}
+
+export function loadUnassignedSteps(): INode[] {
+  return fs.readJSONSync(unassignedStepsPath);
+}
+
+export function saveUnassignedSteps(nodes: INode[]) {
+  return fs.outputJSONSync(unassignedStepsPath, nodes, { spaces: 2 });
 }

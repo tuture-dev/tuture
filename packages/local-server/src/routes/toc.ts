@@ -1,102 +1,115 @@
-// import { Router } from 'express';
-// import { getStepTitle } from '@tuture/core';
-// import pick from 'lodash.pick';
+import { Router } from 'express';
+import { INode, getNodeText } from '@tuture/core';
 
-// import { TocStepItem, TocArticleItem, TocItem } from '../types';
-// import TaskQueue from '../utils/task-queue';
+import TaskQueue from '../utils/task-queue';
+import { TocStepItem, TocArticleItem, TocItem } from '../types';
+import {
+  loadCollection,
+  loadArticle,
+  loadUnassignedSteps,
+} from '../utils/collection';
 
-// interface TocUpdateBody {
-//   articleStepList: TocItem[];
-//   unassignedStepList: TocStepItem[];
-//   needDeleteOutdatedStepList: string[];
-// }
+interface TocUpdateBody {
+  articleStepList: TocItem[];
+  unassignedStepList: TocStepItem[];
+  needDeleteOutdatedStepList: string[];
+}
 
-// export function createTocRouter(queue: TaskQueue) {
-//   const router = Router();
+export function createTocRouter(queue: TaskQueue) {
+  const router = Router();
 
-//   router.get('/', (_, res) => {
-//     const { articles = [], steps = [] } = queue.readCollection();
+  router.get('/', (_, res) => {
+    const { articles = [] } = loadCollection();
 
-//     const articleStepList = articles.reduce<TocItem[]>(
-//       (initialArticleStepList, nowArticle) => {
-//         const articleItem: TocArticleItem = {
-//           ...pick(nowArticle, ['id', 'name']),
-//           type: 'article',
-//           level: 0,
-//         };
-//         const stepList: TocStepItem[] = steps
-//           .filter((step) => step.articleId === nowArticle.id)
-//           .map((step) => ({
-//             ...pick(step, ['id', 'articleId', 'outdated']),
-//             type: 'step',
-//             level: 1,
-//             number: steps.findIndex(({ id }) => step.id === id),
-//             name: getStepTitle(step),
-//           }));
+    const articleStepList: TocItem[] = [];
+    const unassignedStepList: TocItem[] = [];
 
-//         return initialArticleStepList.concat(articleItem, ...stepList);
-//       },
-//       [],
-//     );
+    let stepCounter = 0;
+    for (let article of articles) {
+      const articleItem: TocArticleItem = {
+        ...article,
+        type: 'article',
+      };
+      articleStepList.push(articleItem);
 
-//     const unassignedStepList = steps
-//       .filter((step) => !step.articleId)
-//       .map((step) => ({
-//         id: step.id,
-//         outdated: step.outdated,
-//         type: 'step',
-//         level: 1,
-//         number: steps.findIndex(({ id }) => step.id === id),
-//         name: getStepTitle(step),
-//       })) as TocStepItem[];
+      const nodes: INode[] = loadArticle(articleItem.id).content!;
+      for (let node of nodes) {
+        if (node.type === 'heading' && node.attrs?.step) {
+          const stepItem: TocStepItem = {
+            type: 'step',
+            id: node.attrs.step.id,
+            articleId: article.id,
+            outdated: node.attrs.outdated,
+            number: stepCounter++,
+            name: getNodeText(node),
+          };
+          articleStepList.push(stepItem);
+        }
+      }
+    }
 
-//     res.json({ articleStepList, unassignedStepList });
-//   });
+    const unassignedSteps = loadUnassignedSteps();
+    for (let node of unassignedSteps) {
+      if (node.type === 'heading' && node.attrs?.step) {
+        const stepItem: TocStepItem = {
+          type: 'step',
+          id: node.attrs.step.id,
+          articleId: '',
+          outdated: node.attrs.outdated,
+          number: stepCounter++,
+          name: getNodeText(node),
+        };
+        unassignedStepList.push(stepItem);
+      }
+    }
 
-//   router.put('/', (req, res) => {
-//     const {
-//       articleStepList,
-//       unassignedStepList,
-//       needDeleteOutdatedStepList,
-//     }: TocUpdateBody = req.body;
+    res.json({ articleStepList, unassignedStepList });
+  });
 
-//     queue.addTask((c) => {
-//       let { steps, articles } = c;
+  router.put('/', (req, res) => {
+    const {
+      articleStepList,
+      unassignedStepList,
+      needDeleteOutdatedStepList,
+    }: TocUpdateBody = req.body;
 
-//       // handle article deletion
-//       const validArticles = articleStepList
-//         .filter((item) => item.type === 'article')
-//         .map((item) => item.id);
-//       articles = articles.filter(({ id }) => validArticles.includes(id));
+    // queue.addTask((c) => {
+    //   let { steps, articles } = c;
 
-//       // handle step allocation
-//       const nowAllocationStepList = articleStepList.filter(
-//         (item) => item.type === 'step',
-//       ) as TocStepItem[];
-//       const nowAllocationStepIdList = nowAllocationStepList.map(
-//         (item) => item.id,
-//       );
-//       const unassignedStepIdList = unassignedStepList.map((step) => step.id);
+    //   // handle article deletion
+    //   const validArticles = articleStepList
+    //     .filter((item) => item.type === 'article')
+    //     .map((item) => item.id);
+    //   articles = articles.filter(({ id }) => validArticles.includes(id));
 
-//       steps = steps
-//         .map((step) => {
-//           if (nowAllocationStepIdList.includes(step.id)) {
-//             step.articleId = nowAllocationStepList.filter(
-//               (item) => item.id === step.id,
-//             )[0].articleId;
-//           }
-//           if (unassignedStepIdList.includes(step.id)) {
-//             step.articleId = null;
-//           }
-//           return step;
-//         })
-//         .filter((step) => !needDeleteOutdatedStepList.includes(step.id));
+    //   // handle step allocation
+    //   const nowAllocationStepList = articleStepList.filter(
+    //     (item) => item.type === 'step',
+    //   ) as TocStepItem[];
+    //   const nowAllocationStepIdList = nowAllocationStepList.map(
+    //     (item) => item.id,
+    //   );
+    //   const unassignedStepIdList = unassignedStepList.map((step) => step.id);
 
-//       return { ...c, articles, steps };
-//     });
+    //   steps = steps
+    //     .map((step) => {
+    //       if (nowAllocationStepIdList.includes(step.id)) {
+    //         step.articleId = nowAllocationStepList.filter(
+    //           (item) => item.id === step.id,
+    //         )[0].articleId;
+    //       }
+    //       if (unassignedStepIdList.includes(step.id)) {
+    //         step.articleId = null;
+    //       }
+    //       return step;
+    //     })
+    //     .filter((step) => !needDeleteOutdatedStepList.includes(step.id));
 
-//     res.sendStatus(200);
-//   });
+    //   return { ...c, articles, steps };
+    // });
 
-//   return router;
-// }
+    res.sendStatus(200);
+  });
+
+  return router;
+}

@@ -1,107 +1,120 @@
 <template>
-  <div class="w-auto m-auto">
-    <a-row>
-      <a-col :span="8" class="box-border">
-        <div class="pl-6 pr-6">
-          <div class="pb-4 border-b">
-            <h5 class="text-base">待分配步骤</h5>
-            <p class="text-sm font-normal mt-2">把步骤分配给目录中对应的文章</p>
+  <a-spin :spinning="loading">
+    <div class="w-auto m-auto">
+      <a-row>
+        <a-col :span="8" class="box-border">
+          <div class="pl-6 pr-6">
+            <div class="pb-4 border-b">
+              <h5 class="text-base">待分配步骤</h5>
+              <p class="text-sm font-normal mt-2">
+                把步骤分配给目录中对应的文章
+              </p>
+            </div>
           </div>
-        </div>
-        <div class="menu-body">
-          <div class="w-full my-4">
-            <a-input-search placeholder="搜索步骤的标题" style="height: 40px" />
-          </div>
-          <ul class="list-none">
-            <li
-              v-for="step in releasedSteps"
-              :key="step.id"
-              class="step-list-item px-4 h-12"
-            >
-              <span>
-                <OutdatedTag v-if="step.outdated"></OutdatedTag>
-                <span class="step-title">{{ step.title }}</span>
-              </span>
-              <span>
-                <a-popconfirm
-                  class="mr-1"
-                  v-if="step.outdated"
-                  title="确定删除此过时步骤吗？"
-                  @confirm="deleteStep(step)"
-                >
-                  <a-icon type="delete"></a-icon>
-                </a-popconfirm>
-                <span class="list-item-action hidden" @click="assignStep(step)">
-                  <span class="mr-1">添加</span>
-                  <a-icon type="double-right"></a-icon>
-                </span>
-              </span>
-            </li>
-          </ul>
-        </div>
-      </a-col>
-      <a-col :span="16" class="box-border bg-white border border-gray-50 px-12">
-        <div class="border-b border-gray-100 pb-4">
-          <h1 class="text-2xl">文集目录</h1>
-          <p class="text-sm mt-2 font-normal text-gray-400">
-            选择文章，点击添加或拖拽左边的步骤进行分配
-          </p>
-        </div>
-        <div>
-          <ul class="list-none mt-4">
-            <li
-              v-for="item in articleSteps"
-              v-show="
-                item.type === 'article' || item.articleId === activeArticle
-              "
-              :key="item.id"
-              class="step-list-item h-10 px-4"
-              :class="{
-                'ml-6': item.type === 'step',
-                'border-green-600': item.id === activeArticle,
-              }"
-              @click="toggleActiveArticle(item)"
-            >
-              <span>
-                <a-icon
-                  v-if="item.type === 'article'"
-                  :type="
-                    activeArticle == item.id ? 'caret-down' : 'caret-right'
-                  "
-                ></a-icon>
-                <OutdatedTag
-                  v-if="item.type === 'step' && item.outdated"
-                ></OutdatedTag>
-                <span
-                  class="step-title"
-                  :style="{ width: item.outdated ? '390px' : '430px' }"
-                >
-                  {{ item.title }}
-                </span>
-              </span>
-              <span
-                v-if="item.type === 'step'"
-                class="list-item-action list-item-tail"
-                >步骤</span
+          <div class="menu-body">
+            <div class="w-full my-4">
+              <a-input-search
+                placeholder="搜索步骤的标题"
+                style="height: 40px"
+              />
+            </div>
+            <ul class="list-none">
+              <li
+                v-for="step in releasedSteps"
+                :key="step.id"
+                class="step-list-item px-4 h-12"
               >
-              <span class="list-item-action hidden">
-                <a-popconfirm
-                  title="确认要删除文章吗？"
-                  v-if="item.type === 'article'"
-                  @confirm="deleteArticle(item)"
-                >
-                  <a-icon type="delete"></a-icon>
-                </a-popconfirm>
-                <span v-else @click="releaseStep(item)">
-                  <a-icon type="delete"></a-icon>
+                <span>
+                  <OutdatedTag v-if="step.outdated"></OutdatedTag>
+                  <span class="step-title">{{ step.name }}</span>
                 </span>
-              </span>
-            </li>
-          </ul>
-        </div>
-      </a-col>
-    </a-row>
-  </div>
+                <span>
+                  <a-popconfirm
+                    class="mr-1"
+                    v-if="step.outdated"
+                    title="确定删除此过时步骤吗？"
+                    @confirm="deleteStep(step)"
+                  >
+                    <a-icon type="delete"></a-icon>
+                  </a-popconfirm>
+                  <span
+                    class="list-item-action hidden"
+                    @click="assignStep(step)"
+                  >
+                    <span class="mr-1">添加</span>
+                    <a-icon type="double-right"></a-icon>
+                  </span>
+                </span>
+              </li>
+            </ul>
+          </div>
+        </a-col>
+        <a-col
+          :span="16"
+          class="box-border bg-white border border-gray-50 px-12"
+        >
+          <div class="border-b border-gray-100 pb-4">
+            <h1 class="text-2xl">文集目录</h1>
+            <p class="text-sm mt-2 font-normal text-gray-400">
+              选择文章，点击添加或拖拽左边的步骤进行分配
+            </p>
+          </div>
+          <div>
+            <ul class="list-none mt-4">
+              <li
+                v-for="item in articleSteps"
+                v-show="
+                  item.type === 'article' || item.articleId === activeArticle
+                "
+                :key="item.id"
+                class="step-list-item h-10 px-4"
+                :class="{
+                  'ml-6': item.type === 'step',
+                  'border-green-600': item.id === activeArticle,
+                }"
+                @click="toggleActiveArticle(item)"
+              >
+                <span>
+                  <a-icon
+                    v-if="item.type === 'article'"
+                    :type="
+                      activeArticle == item.id ? 'caret-down' : 'caret-right'
+                    "
+                  ></a-icon>
+                  <OutdatedTag
+                    v-if="item.type === 'step' && item.outdated"
+                  ></OutdatedTag>
+                  <span
+                    class="step-title"
+                    :style="{ width: item.outdated ? '390px' : '430px' }"
+                  >
+                    {{ item.name }}
+                  </span>
+                </span>
+                <span
+                  v-if="item.type === 'step'"
+                  class="list-item-action list-item-tail"
+                  >步骤</span
+                >
+                <span class="list-item-action hidden">
+                  <a-popconfirm
+                    title="确认要删除文章吗？"
+                    v-if="item.type === 'article'"
+                    @confirm="deleteArticle(item)"
+                  >
+                    <a-icon type="delete"></a-icon>
+                  </a-popconfirm>
+                  <span v-else @click="releaseStep(item)">
+                    <a-icon type="delete"></a-icon>
+                  </span>
+                </span>
+              </li>
+            </ul>
+          </div>
+        </a-col>
+      </a-row>
+    </div>
+  </a-spin>
 </template>
 
 <script>
@@ -115,75 +128,10 @@ export default defineComponent({
   },
   data() {
     return {
+      loading: false,
       activeArticle: '1',
-      releasedSteps: [
-        {
-          type: 'step',
-          id: '1003',
-          commit: '60a60d7',
-          title: '待分配的步骤一',
-          articleId: '',
-          number: 3,
-          outdated: false,
-        },
-        {
-          type: 'step',
-          id: '2006',
-          commit: '5f1edd9',
-          title: '待分配的步骤二',
-          articleId: '',
-          number: 6,
-          outdated: true,
-        },
-      ],
-      articleSteps: [
-        {
-          type: 'article',
-          id: '1',
-          title: '第一篇教程',
-        },
-        {
-          type: 'step',
-          id: '1001',
-          commit: '60a60d7',
-          title: '从服务器获取数据',
-          articleId: '1',
-          number: 1,
-          outdated: false,
-        },
-        {
-          type: 'step',
-          id: '1002',
-          commit: '5f1edd9',
-          title: '实现食谱的编辑和创建页面',
-          articleId: '1',
-          number: 2,
-          outdated: true,
-        },
-        {
-          type: 'article',
-          id: '2',
-          title: '第二篇教程',
-        },
-        {
-          type: 'step',
-          id: '2001',
-          commit: '60a60d7',
-          title: '从客户端获取数据',
-          articleId: '2',
-          number: 4,
-          outdated: false,
-        },
-        {
-          type: 'step',
-          id: '2002',
-          commit: '5f1edd9',
-          title: '哦豁哦豁',
-          articleId: '2',
-          number: 5,
-          outdated: true,
-        },
-      ],
+      releasedSteps: [],
+      articleSteps: [],
       stepsToDelete: [],
     };
   },
@@ -293,6 +241,20 @@ export default defineComponent({
       this.articleSteps = newArticleStepList;
       this.activeArticle = '';
     },
+  },
+  mounted() {
+    this.loading = true;
+    fetch('/api/toc')
+      .then((res) => res.json())
+      .then((data) => {
+        this.releasedSteps = data.unassignedStepList;
+        this.articleSteps = data.articleStepList;
+        this.loading = false;
+      })
+      .catch((err) => {
+        this.$message.error(err);
+        this.loading = false;
+      });
   },
   setup() {},
 });
