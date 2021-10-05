@@ -10,9 +10,10 @@ import {
   getHiddenLines,
   Collection,
   Article,
+  StepAttrs,
 } from '@tuture/core';
 
-export function newStepTitle(hash: string, content: IText[]): IHeading {
+export function newStepTitle(attrs: StepAttrs, content: IText[]): IHeading {
   return {
     type: 'heading',
     content,
@@ -21,7 +22,7 @@ export function newStepTitle(hash: string, content: IText[]): IHeading {
       id: randHex(8),
       level: 2,
       fixed: true,
-      step: { commit: hash },
+      step: attrs,
     },
   };
 }

@@ -3,15 +3,11 @@ import fs from 'fs-extra';
 import { flags } from '@oclif/command';
 import { prompt } from 'inquirer';
 import { Collection, SCHEMA_VERSION, randHex } from '@tuture/core';
-import {
-  collectionPath,
-  saveCollection,
-  saveArticle,
-} from '@tuture/local-server';
+import { collectionPath, saveCollection, saveStep } from '@tuture/local-server';
 
 import logger from '../utils/logger';
 import BaseCommand from '../base';
-import { initNodes, removeTutureSuite, selectRemotes } from '../utils';
+import { initSteps, removeTutureSuite, selectRemotes } from '../utils';
 import { git, inferGithubField, appendGitignore } from '../utils/git';
 
 export default class Init extends BaseCommand {
@@ -81,10 +77,12 @@ export default class Init extends BaseCommand {
     const meta = await this.promptMetaData(flags.yes);
 
     try {
-      const nodes = await initNodes(this.userConfig.ignoredFiles);
-      const defaultArticleId = randHex(8);
-
-      saveArticle(defaultArticleId, { type: 'doc', content: nodes });
+      const defaultArticleId = randHex(32);
+      const steps = await initSteps(
+        defaultArticleId,
+        this.userConfig.ignoredFiles,
+      );
+      steps.forEach((step) => saveStep(step.attrs.stepId, step));
 
       const collection: Collection = {
         ...meta,
@@ -99,8 +97,13 @@ export default class Init extends BaseCommand {
             categories: [],
             created: new Date(),
             cover: '',
+            steps: steps.map((step) => ({
+              id: step.attrs.stepId,
+              commit: step.attrs.commit,
+            })),
           },
         ],
+        unassignedSteps: [],
       };
 
       const github = await inferGithubField();

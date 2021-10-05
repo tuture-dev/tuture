@@ -10,6 +10,8 @@ import {
   COLLECTION_CHECKPOINT,
   SCHEMA_VERSION,
   convertV1ToV2,
+  StepDoc,
+  StepAttrs,
 } from '@tuture/core';
 
 export const collectionPath = path.join(
@@ -40,7 +42,7 @@ export const collectionVcsPath = path.join(
  * Load collection.
  */
 export function loadCollection(): Collection {
-  const collection = fs.readJSONSync(collectionPath);
+  let collection = fs.readJSONSync(collectionPath);
 
   if (collection.version !== 'v1' && collection.version !== SCHEMA_VERSION) {
     throw new Error(
@@ -49,10 +51,11 @@ export function loadCollection(): Collection {
   }
 
   if (collection.version === 'v1') {
-    convertV1ToV2(collection).forEach((an) =>
-      saveArticle(an.articleId, { type: 'doc', content: an.nodes }),
-    );
+    let [collectionV2, stepDocs] = convertV1ToV2(collection);
+    collection = collectionV2;
     collection.version = SCHEMA_VERSION;
+
+    Object.entries(stepDocs).forEach(([stepId, doc]) => saveStep(stepId, doc));
   }
 
   return collection;
@@ -97,4 +100,35 @@ export function loadArticle(articleId: string): INode {
 export function saveArticle(articleId: string, doc: INode) {
   const docPath = path.join(tutureDocRoot, `${articleId}.json`);
   fs.outputJSONSync(docPath, doc, { spaces: 2 });
+}
+
+/**
+ * Read given step from workspace.
+ * @param stepId step id
+ * @returns doc for this step
+ */
+export function loadStep(stepId: string): StepDoc {
+  const docPath = path.join(tutureDocRoot, `${stepId}.json`);
+  return fs.readJsonSync(docPath);
+}
+
+/**
+ * Save step nodes to json doc. If the step doc already exists, update it.
+ * Otherwise create a new doc.
+ * @param stepId step id
+ * @param doc prosemirror node for this step
+ */
+export function saveStep(stepId: string, doc: StepDoc) {
+  const docPath = path.join(tutureDocRoot, `${stepId}.json`);
+  fs.outputJsonSync(docPath, doc, { spaces: 2 });
+}
+
+export function updateStepAttrs(stepId: string, attrs: Partial<StepAttrs>) {
+  const docPath = path.join(tutureDocRoot, `${stepId}.json`);
+  if (!fs.existsSync(docPath)) {
+    throw new Error(`step ${stepId} not found`);
+  }
+  let docToUpdate: StepDoc = fs.readJSONSync(docPath);
+  docToUpdate.attrs = { ...docToUpdate.attrs, ...attrs };
+  fs.outputJsonSync(docPath, docToUpdate, { spaces: 2 });
 }

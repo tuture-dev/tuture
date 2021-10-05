@@ -6,9 +6,11 @@ import { prompt } from 'inquirer';
 import {
   INode,
   IRemote,
+  StepDoc,
   TUTURE_ROOT,
   TUTURE_DOC_ROOT,
   TUTURE_BRANCH,
+  randHex,
 } from '@tuture/core';
 import {
   git,
@@ -53,9 +55,12 @@ export function loadArticleDocs(): ArticleDoc[] {
 }
 
 /**
- * Initialize nodes from repository.
+ * Initialize steps from repository.
  */
-export async function initNodes(ignoredFiles?: string[]): Promise<INode[]> {
+export async function initSteps(
+  articleId: string,
+  ignoredFiles?: string[],
+): Promise<StepDoc[]> {
   if (!(await git.branchLocal()).current) {
     // No commits yet.
     return [];
@@ -67,34 +72,44 @@ export async function initNodes(ignoredFiles?: string[]): Promise<INode[]> {
     // filter out commits whose commit message starts with 'tuture:'
     .filter(({ message }) => !message.startsWith('tuture:'));
 
-  const nodeProms: Promise<INode[]>[] = logs.map(async ({ message, hash }) => {
+  const nodeProms = logs.map(async ({ message, hash }, index) => {
     const files = await readDiff(hash);
     const delimiterAttrs = { commit: hash };
-    return [
-      { type: 'step_start', attrs: delimiterAttrs },
-      newStepTitle(hash, [{ type: 'text', text: message }]),
-      newEmptyExplain({
-        level: 'step',
-        pos: 'pre',
-        commit: hash,
-      }),
-      ...files.flatMap((diffFile) => {
-        const hidden = ignoredFiles?.some((pattern) =>
-          mm.isMatch(diffFile.to!, pattern),
-        );
-        return newEmptyFile(hash, diffFile, Boolean(hidden)).flat();
-      }),
-      newEmptyExplain({
-        level: 'step',
-        pos: 'post',
-        commit: hash,
-      }),
-      { type: 'step_end', attrs: delimiterAttrs },
-    ];
+    const stepAttrs = {
+      articleId,
+      stepId: randHex(32),
+      name: message,
+      commit: hash,
+      order: index,
+    };
+    return {
+      type: 'doc',
+      attrs: stepAttrs,
+      content: [
+        { type: 'step_start', attrs: stepAttrs },
+        newStepTitle(stepAttrs, [{ type: 'text', text: message }]),
+        newEmptyExplain({
+          level: 'step',
+          pos: 'pre',
+          commit: hash,
+        }),
+        ...files.flatMap((diffFile) => {
+          const hidden = ignoredFiles?.some((pattern) =>
+            mm.isMatch(diffFile.to!, pattern),
+          );
+          return newEmptyFile(hash, diffFile, Boolean(hidden)).flat();
+        }),
+        newEmptyExplain({
+          level: 'step',
+          pos: 'post',
+          commit: hash,
+        }),
+        { type: 'step_end', attrs: delimiterAttrs },
+      ],
+    } as StepDoc;
   });
 
-  const nodes = await Promise.all(nodeProms);
-  return nodes.flat();
+  return await Promise.all(nodeProms);
 }
 
 /**

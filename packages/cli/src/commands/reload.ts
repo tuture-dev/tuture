@@ -1,14 +1,19 @@
 import fs from 'fs-extra';
 import { flags } from '@oclif/command';
-import { INode, includeCommit } from '@tuture/core';
-import { collectionPath, saveArticle } from '@tuture/local-server';
+import { includeCommit } from '@tuture/core';
+import {
+  collectionPath,
+  loadCollection,
+  saveCollection,
+  loadStep,
+  saveStep,
+} from '@tuture/local-server';
 
 import sync from './sync';
 import BaseCommand from '../base';
 import { git } from '../utils/git';
 import logger from '../utils/logger';
-import { initNodes, loadArticleDocs } from '../utils';
-import { getNodeText, isStepTitle, readCommitsFromNodes } from '../utils/node';
+import { initSteps } from '../utils';
 
 export default class Reload extends BaseCommand {
   static description = 'Update workspace with latest commit history';
@@ -25,69 +30,49 @@ export default class Reload extends BaseCommand {
       await sync.run([]);
     }
 
-    const collectionDocs = loadArticleDocs();
-    const collectionCommits = readCommitsFromNodes(
-      collectionDocs.flatMap((articleDoc) => articleDoc.doc.content!),
+    const collection = loadCollection();
+    const assignedSteps = collection.articles.flatMap(
+      (article) => article.steps,
     );
+    const unassignedSteps = collection.unassignedSteps;
+    const collectionSteps = assignedSteps.concat(unassignedSteps);
+    const collectionCommits = collectionSteps.map((step) => step.commit);
 
     await git.checkout('master');
 
     const ignoredFiles: string[] = this.userConfig.ignoredFiles;
-    const currentNodes = await initNodes(ignoredFiles);
-    const currentCommits = readCommitsFromNodes(currentNodes);
+    const currentSteps = await initSteps('', ignoredFiles);
+    const currentCommits = currentSteps.map((step) => step.attrs.commit);
 
     // Mark outdated nodes whose commit no longer exists
-    collectionDocs.forEach((articleDocs) => {
-      const nodes: INode[] = articleDocs.doc.content!;
-      for (let i = 0; i < nodes.length; i++) {
-        const commit = nodes[i].attrs!.commit;
-        if (
-          nodes[i].type === 'step_start' &&
-          !includeCommit(currentCommits, commit)
-        ) {
-          while (nodes[i].type !== 'step_end') {
-            if (isStepTitle(nodes[i])) {
-              logger.log(
-                'warning',
-                `Outdated step: ${getNodeText(nodes[i])} (${commit})`,
-              );
-            }
-            nodes[i].attrs = { ...nodes[i].attrs, outdated: true };
-            i++;
-          }
-          nodes[i].attrs = { ...nodes[i].attrs, outdated: true };
-        }
+    collectionSteps.forEach((step) => {
+      if (!includeCommit(currentCommits, step.commit)) {
+        const outdatedStep = loadStep(step.id);
+        const { name, commit } = outdatedStep.attrs;
+        outdatedStep.attrs.outdated = true;
+        saveStep(step.id, outdatedStep);
+        logger.log('warning', `Outdated step: ${name} (${commit})`);
       }
     });
 
     // Add new nodes to last article
-    const lastArticle = collectionDocs[collectionDocs.length - 1];
-    const docContent: INode[] = lastArticle.doc.content || [];
-    for (let i = 0; i < currentNodes.length; i++) {
-      const commit = currentNodes[i].attrs!.commit;
-      if (
-        currentNodes[i].type === 'step_start' &&
-        !includeCommit(collectionCommits, commit)
-      ) {
-        while (currentNodes[i].type !== 'step_end') {
-          if (isStepTitle(currentNodes[i])) {
-            logger.log(
-              'success',
-              `New step: ${getNodeText(currentNodes[i])} (${commit})`,
-            );
-          }
-          docContent.push(currentNodes[i]);
-          i++;
-        }
-        docContent.push(currentNodes[i]);
-      }
-    }
+    const lastArticle = collection.articles[collection.articles.length - 1];
+    const newSteps = currentSteps.filter(
+      (step) => !includeCommit(collectionCommits, step.attrs.commit),
+    );
+    newSteps.forEach((step) => {
+      step.attrs.articleId = lastArticle.id;
+      saveStep(step.attrs.stepId, step);
+
+      lastArticle.steps.push({
+        id: step.attrs.stepId,
+        commit: step.attrs.commit,
+      });
+    });
 
     // TODO: clean out ignored files, set display to false for those nodes.
 
-    collectionDocs.forEach((articleDoc) =>
-      saveArticle(articleDoc.articleId, articleDoc.doc),
-    );
+    saveCollection(collection);
 
     logger.log('success', 'Reload complete!');
   }
