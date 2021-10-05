@@ -1,0 +1,1621 @@
+{
+  "type": "doc",
+  "attrs": {
+    "stepId": "a53j6F4Fmy",
+    "name": "用 Django 实现 REST API",
+    "articleId": "0818be0",
+    "commit": "d4d056f",
+    "order": 1
+  },
+  "content": [
+    {
+      "type": "step_start",
+      "attrs": {
+        "commit": "d4d056f"
+      }
+    },
+    {
+      "type": "heading",
+      "content": [
+        {
+          "type": "text",
+          "text": "用 Django 实现 REST API"
+        }
+      ],
+      "attrs": {
+        "id": "fcb6dbb1",
+        "level": 2,
+        "fixed": true,
+        "step": {
+          "stepId": "a53j6F4Fmy",
+          "name": "用 Django 实现 REST API",
+          "articleId": "0818be0",
+          "commit": "d4d056f",
+          "order": 1
+        }
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "fixed": true,
+        "level": "step",
+        "pos": "pre",
+        "commit": "d4d056f"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "接下来我们将实现本项目所需要用的所有 API。对，你没有听错，我们会在这一步实现所有后端接口，大概只 10 分钟左右可以敲完！这就是 Django 的宣言："
+            }
+          ]
+        },
+        {
+          "type": "blockquote",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "The web framework for perfectionists with deadlines."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "“为赶时间的完美主义者而生！”"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "commit": "d4d056f",
+        "file": ".editorconfig"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "commit": "d4d056f",
+        "file": ".editorconfig"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "commit": "d4d056f",
+        "file": ".editorconfig"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "commit": "d4d056f",
+        "file": ".editorconfig"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "commit": "d4d056f",
+        "file": ".editorconfig"
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "commit": "d4d056f",
+        "file": ".gitignore"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "commit": "d4d056f",
+        "file": ".gitignore"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "commit": "d4d056f",
+        "file": ".gitignore"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "commit": "d4d056f",
+        "file": ".gitignore"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "commit": "d4d056f",
+        "file": ".gitignore"
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "commit": "d4d056f",
+        "file": "api/api/settings.py"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "commit": "d4d056f",
+        "file": "api/api/settings.py"
+      },
+      "content": [
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 3
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "全局配置"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "首先，在全局配置文件 settings.py 中做如下改动："
+            }
+          ]
+        },
+        {
+          "type": "ordered_list",
+          "attrs": {
+            "order": 1
+          },
+          "content": [
+            {
+              "type": "list_item",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "在 "
+                    },
+                    {
+                      "type": "text",
+                      "text": "INSTALLED_APPS",
+                      "marks": [
+                        {
+                          "type": "code"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": " 中添加 "
+                    },
+                    {
+                      "type": "text",
+                      "text": "rest_framework",
+                      "marks": [
+                        {
+                          "type": "code"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": "、"
+                    },
+                    {
+                      "type": "text",
+                      "text": "corsheaders",
+                      "marks": [
+                        {
+                          "type": "code"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": " 和 "
+                    },
+                    {
+                      "type": "text",
+                      "text": "core",
+                      "marks": [
+                        {
+                          "type": "code"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": "，前两个分别是 Django Rest Framework 和 Django CORS Headers 的应用，最后一个是我们网站的应用；"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "list_item",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "在 "
+                    },
+                    {
+                      "type": "text",
+                      "text": "MIDDLEWARE",
+                      "marks": [
+                        {
+                          "type": "code"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": " 中添加 "
+                    },
+                    {
+                      "type": "text",
+                      "text": "corsheaders.middleware.CorsMiddleware",
+                      "marks": [
+                        {
+                          "type": "code"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": "，注册跨域请求中间件（"
+                    },
+                    {
+                      "type": "text",
+                      "text": "注意一定要放在最前面！",
+                      "marks": [
+                        {
+                          "type": "bold"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": "）;"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "list_item",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "设置 "
+                    },
+                    {
+                      "type": "text",
+                      "text": "CORS_ORIGIN_WHITELIST",
+                      "marks": [
+                        {
+                          "type": "code"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": "，添加跨域请求白名单，这里我们先写上 "
+                    },
+                    {
+                      "type": "text",
+                      "text": "http://localhost:3000",
+                      "marks": [
+                        {
+                          "type": "code"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": "，后面开发前端时将用到；"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "list_item",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "设置 "
+                    },
+                    {
+                      "type": "text",
+                      "text": "LANGUAGE_CODE",
+                      "marks": [
+                        {
+                          "type": "code"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": " 为 "
+                    },
+                    {
+                      "type": "text",
+                      "text": "zh-hans",
+                      "marks": [
+                        {
+                          "type": "code"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": "，可以将后台管理设置为中文，非常方便；"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "list_item",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "设置 "
+                    },
+                    {
+                      "type": "text",
+                      "text": "MEDIA_URL",
+                      "marks": [
+                        {
+                          "type": "code"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": " 和 "
+                    },
+                    {
+                      "type": "text",
+                      "text": "MEDIA_ROOT",
+                      "marks": [
+                        {
+                          "type": "code"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": "，用于在开发中提供图片资源文件的访问。"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "具体代码如下："
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30,
+          31,
+          32,
+          33,
+          34,
+          35,
+          49,
+          50,
+          51,
+          62,
+          63,
+          64,
+          65,
+          66,
+          67,
+          68,
+          69,
+          70,
+          71,
+          72,
+          73,
+          74,
+          75,
+          76,
+          77,
+          78,
+          79,
+          80,
+          81,
+          82,
+          83,
+          84,
+          85,
+          86,
+          87,
+          88,
+          89,
+          90,
+          91,
+          92,
+          93,
+          94,
+          95,
+          96,
+          97,
+          98,
+          99,
+          100,
+          101,
+          102,
+          103,
+          104,
+          105,
+          106,
+          107,
+          108,
+          109,
+          118,
+          119,
+          120,
+          121,
+          122,
+          123,
+          124,
+          125
+        ],
+        "commit": "d4d056f",
+        "file": "api/api/settings.py"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "commit": "d4d056f",
+        "file": "api/api/settings.py"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "commit": "d4d056f",
+        "file": "api/api/settings.py"
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "commit": "d4d056f",
+        "file": "api/core/models.py"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "commit": "d4d056f",
+        "file": "api/core/models.py"
+      },
+      "content": [
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 3
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "实现 core 应用"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "接下来就是实现 "
+            },
+            {
+              "type": "text",
+              "text": "core",
+              "marks": [
+                {
+                  "type": "code"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "text": " 这个 Django 应用。实现一个 Django 应用大致都是按照这样的流程："
+            }
+          ]
+        },
+        {
+          "type": "ordered_list",
+          "attrs": {
+            "order": 1
+          },
+          "content": [
+            {
+              "type": "list_item",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "定义数据模型（models.py），用于实现和数据库之间的绑定；"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "list_item",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "定义后台管理配置（admin.py），用于在后台管理系统中进行操作；"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "list_item",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "定义序列化器（serializers.py），"
+                    },
+                    {
+                      "type": "text",
+                      "text": "仅当实现 REST API 时需要",
+                      "marks": [
+                        {
+                          "type": "italic"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": "，用于提供数据模型的 JSON 序列化（或其他数据交换格式）；"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "list_item",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "定义视图（views.py），用于实现具体的业务逻辑；"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "list_item",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "定义路由（urls.py），用于定义路由规则，将其映射到相应的视图；"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "list_item",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "将应用路由接入全局路由文件（api/urls.py）中。"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "我们从第一步开始，完成菜谱 "
+            },
+            {
+              "type": "text",
+              "text": "Recipe",
+              "marks": [
+                {
+                  "type": "code"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "text": " 数据模型如下："
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "commit": "d4d056f",
+        "file": "api/core/models.py"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "commit": "d4d056f",
+        "file": "api/core/models.py"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "其中，"
+            },
+            {
+              "type": "text",
+              "text": "class Meta",
+              "marks": [
+                {
+                  "type": "code"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "text": " 定义了 "
+            },
+            {
+              "type": "text",
+              "text": "Recipe",
+              "marks": [
+                {
+                  "type": "code"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "text": " 的元数据；"
+            },
+            {
+              "type": "text",
+              "text": "__str__",
+              "marks": [
+                {
+                  "type": "code"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "text": " 方法定义了一个菜谱对象转换为字符串时应该怎样显示。这些设置的作用在打开后台管理系统之后就会很清晰了。想要了解更多关于 Django 数据模型的知识，请参考相关"
+            },
+            {
+              "type": "text",
+              "text": "中文文档",
+              "marks": [
+                {
+                  "type": "link",
+                  "attrs": {
+                    "href": "https://docs.djangoproject.com/zh-hans/2.2/topics/db/models/",
+                    "title": ""
+                  }
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "text": "。"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "commit": "d4d056f",
+        "file": "api/core/models.py"
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "commit": "d4d056f",
+        "file": "api/core/admin.py"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "commit": "d4d056f",
+        "file": "api/core/admin.py"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "第二步，为 "
+            },
+            {
+              "type": "text",
+              "text": "core",
+              "marks": [
+                {
+                  "type": "code"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "text": " 子应用配置相应的后台管理功能。非常简单，只需注册定义好的 "
+            },
+            {
+              "type": "text",
+              "text": "Recipe",
+              "marks": [
+                {
+                  "type": "code"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "text": " 模型："
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "commit": "d4d056f",
+        "file": "api/core/admin.py"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "commit": "d4d056f",
+        "file": "api/core/admin.py"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "commit": "d4d056f",
+        "file": "api/core/admin.py"
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "commit": "d4d056f",
+        "file": "api/core/serializers.py"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "commit": "d4d056f",
+        "file": "api/core/serializers.py"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "第三步，定义序列化器 serializers.py（脚手架并不会自动创建，需要手动创建）。序列化器是 Django Rest Framework 提供的功能，能够非常方便地将 Django 数据模型序列化成相应的 JSON 数据格式。在这里，我们定义一个 "
+            },
+            {
+              "type": "text",
+              "text": "RecipeSerializer",
+              "marks": [
+                {
+                  "type": "code"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "text": "，并在 "
+            },
+            {
+              "type": "text",
+              "text": "class Meta",
+              "marks": [
+                {
+                  "type": "code"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "text": " 中指定对应的数据模型为刚才创建的 "
+            },
+            {
+              "type": "text",
+              "text": "Recipe",
+              "marks": [
+                {
+                  "type": "code"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "text": "，并选择相应的字段展示："
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "commit": "d4d056f",
+        "file": "api/core/serializers.py"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "commit": "d4d056f",
+        "file": "api/core/serializers.py"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "commit": "d4d056f",
+        "file": "api/core/serializers.py"
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "commit": "d4d056f",
+        "file": "api/core/views.py"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "commit": "d4d056f",
+        "file": "api/core/views.py"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "第四步，实现视图。这里我们采用开挂模式，直接调用 Django Rest Framework 提供的模型视图集（"
+            },
+            {
+              "type": "text",
+              "text": "ModelViewset",
+              "marks": [
+                {
+                  "type": "code"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "text": "）直接搞定数据模型的增删改查逻辑："
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "commit": "d4d056f",
+        "file": "api/core/views.py"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "commit": "d4d056f",
+        "file": "api/core/views.py"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "只需指定 "
+            },
+            {
+              "type": "text",
+              "text": "serializer_class",
+              "marks": [
+                {
+                  "type": "code"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "text": "（序列器类）和 "
+            },
+            {
+              "type": "text",
+              "text": "queryset",
+              "marks": [
+                {
+                  "type": "code"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "text": "（模型查询集），就自动定义好了模型的添加、删除、查询和修改！虽然视图集非常强大，但是如果要实现更加灵活的业务逻辑，那么还是要为每个接口定义单独的视图类才行。"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "commit": "d4d056f",
+        "file": "api/core/views.py"
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "commit": "d4d056f",
+        "file": "api/core/urls.py"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "commit": "d4d056f",
+        "file": "api/core/urls.py"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "第五步，实现路由。由于我们上一步使用了视图集，因此只需先调用 "
+            },
+            {
+              "type": "text",
+              "text": "DefaultRouter",
+              "marks": [
+                {
+                  "type": "code"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "text": " 自动生成相关的路由，然后加入记录路由映射的列表 "
+            },
+            {
+              "type": "text",
+              "text": "urlpatterns",
+              "marks": [
+                {
+                  "type": "code"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "text": " 中："
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "commit": "d4d056f",
+        "file": "api/core/urls.py"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "commit": "d4d056f",
+        "file": "api/core/urls.py"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "router",
+              "marks": [
+                {
+                  "type": "code"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "text": " 为我们自动生成以下路由："
+            }
+          ]
+        },
+        {
+          "type": "bullet_list",
+          "content": [
+            {
+              "type": "list_item",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "/recipes/",
+                      "marks": [
+                        {
+                          "type": "code"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": "：创建食谱（POST 方法）或读取食谱列表（GET方法）；"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "list_item",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "/recipes/{id}",
+                      "marks": [
+                        {
+                          "type": "code"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": "：获取单个食谱（GET）、更新单个食谱（PUT）或删除食谱（DELETE）。"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "notice",
+          "attrs": {
+            "style": "warning"
+          },
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "在 Django 路由定义中不包括 HTTP 方法，具体的 HTTP 方法可以在视图中读取并判断。"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "commit": "d4d056f",
+        "file": "api/core/urls.py"
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "commit": "d4d056f",
+        "file": "api/api/urls.py"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "commit": "d4d056f",
+        "file": "api/api/urls.py"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "最后一步，我们将 "
+            },
+            {
+              "type": "text",
+              "text": "core",
+              "marks": [
+                {
+                  "type": "code"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "text": " 子应用中的路由接入全局路由："
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+        "commit": "d4d056f",
+        "file": "api/api/urls.py"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "commit": "d4d056f",
+        "file": "api/api/urls.py"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "commit": "d4d056f",
+        "file": "api/api/urls.py"
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "commit": "d4d056f",
+        "file": "api/core/migrations/0001_initial.py"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "commit": "d4d056f",
+        "file": "api/core/migrations/0001_initial.py"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "commit": "d4d056f",
+        "file": "api/core/migrations/0001_initial.py"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "commit": "d4d056f",
+        "file": "api/core/migrations/0001_initial.py"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "commit": "d4d056f",
+        "file": "api/core/migrations/0001_initial.py"
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "commit": "d4d056f",
+        "file": "tuture.yml"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "commit": "d4d056f",
+        "file": "tuture.yml"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "commit": "d4d056f",
+        "file": "tuture.yml"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "commit": "d4d056f",
+        "file": "tuture.yml"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "commit": "d4d056f",
+        "file": "tuture.yml"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "fixed": true,
+        "level": "step",
+        "pos": "post",
+        "commit": "d4d056f"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "没错，关于食谱的增删改查的 API 我们全都实现了！不信？先运行开发服务器："
+            }
+          ]
+        },
+        {
+          "type": "code_block",
+          "attrs": {
+            "language": "bash"
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "(recipes_app-nV3wuGJ1) $ python manage.py runserver"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "由于 Django REST Framework 为我们提供了测试 API 的 Web 界面，因此这里就不用 Postman 等工具进行测试了。用浏览器访问 "
+            },
+            {
+              "type": "text",
+              "text": "localhost:8000/api/recipes",
+              "marks": [
+                {
+                  "type": "link",
+                  "attrs": {
+                    "href": "localhost:8000/api/recipes",
+                    "title": ""
+                  }
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "text": "，就进入了如下所示的 API 测试页面："
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "image",
+              "attrs": {
+                "src": ".tuture/assets/image.png",
+                "alt": "",
+                "title": ""
+              }
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "这个页面的下方还有添加数据（发起 POST 请求）的表单，我们填一些数据，然后点击 POST 按钮："
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "image",
+              "attrs": {
+                "src": ".tuture/assets/image-f3d22507493bf44a.png",
+                "alt": "",
+                "title": ""
+              }
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "然后再次访问食谱列表页面，就有我们刚刚添加的食谱了！此外，你还可以尝试访问单个食谱的详情页面（例如 "
+            },
+            {
+              "type": "text",
+              "text": "localhost:8000/api/recipes/1",
+              "marks": [
+                {
+                  "type": "link",
+                  "attrs": {
+                    "href": "localhost:8000/api/recipes/1",
+                    "title": ""
+                  }
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "text": "），并且可以通过 Web 页面直接修改或删除哦！"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "step_end",
+      "attrs": {
+        "commit": "d4d056f"
+      }
+    }
+  ]
+}
