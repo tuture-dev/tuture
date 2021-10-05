@@ -55,7 +55,9 @@ export function loadCollection(): Collection {
     collection = collectionV2;
     collection.version = SCHEMA_VERSION;
 
-    Object.entries(stepDocs).forEach(([stepId, doc]) => saveStep(stepId, doc));
+    Object.entries(stepDocs).forEach(([stepId, doc]) =>
+      saveStepSync(stepId, doc),
+    );
   }
 
   return collection;
@@ -102,33 +104,35 @@ export function saveArticle(articleId: string, doc: INode) {
   fs.outputJSONSync(docPath, doc, { spaces: 2 });
 }
 
+function getStepDocPath(stepId: string): string {
+  return path.join(tutureDocRoot, `${stepId}.json`);
+}
+
 /**
  * Read given step from workspace.
  * @param stepId step id
  * @returns doc for this step
  */
-export function loadStep(stepId: string): StepDoc {
-  const docPath = path.join(tutureDocRoot, `${stepId}.json`);
-  return fs.readJsonSync(docPath);
+export async function loadStep(stepId: string): Promise<StepDoc> {
+  return fs.readJSON(getStepDocPath(stepId));
 }
 
 /**
- * Save step nodes to json doc. If the step doc already exists, update it.
- * Otherwise create a new doc.
+ * Read given step from workspace, synchronously.
+ * @param stepId step id
+ * @returns doc for this step
+ */
+export function loadStepSync(stepId: string): StepDoc {
+  return fs.readJsonSync(getStepDocPath(stepId));
+}
+
+/**
+ * Save step nodes to json doc synchronously.
+ * If the step doc already exists, update it. Otherwise create a new doc.
  * @param stepId step id
  * @param doc prosemirror node for this step
  */
-export function saveStep(stepId: string, doc: StepDoc) {
+export function saveStepSync(stepId: string, doc: StepDoc) {
   const docPath = path.join(tutureDocRoot, `${stepId}.json`);
   fs.outputJsonSync(docPath, doc, { spaces: 2 });
-}
-
-export function updateStepAttrs(stepId: string, attrs: Partial<StepAttrs>) {
-  const docPath = path.join(tutureDocRoot, `${stepId}.json`);
-  if (!fs.existsSync(docPath)) {
-    throw new Error(`step ${stepId} not found`);
-  }
-  let docToUpdate: StepDoc = fs.readJSONSync(docPath);
-  docToUpdate.attrs = { ...docToUpdate.attrs, ...attrs };
-  fs.outputJsonSync(docPath, docToUpdate, { spaces: 2 });
 }

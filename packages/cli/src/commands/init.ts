@@ -3,7 +3,11 @@ import fs from 'fs-extra';
 import { flags } from '@oclif/command';
 import { prompt } from 'inquirer';
 import { Collection, SCHEMA_VERSION, randHex } from '@tuture/core';
-import { collectionPath, saveCollection, saveStep } from '@tuture/local-server';
+import {
+  collectionPath,
+  saveCollection,
+  saveStepSync,
+} from '@tuture/local-server';
 
 import logger from '../utils/logger';
 import BaseCommand from '../base';
@@ -82,7 +86,7 @@ export default class Init extends BaseCommand {
         defaultArticleId,
         this.userConfig.ignoredFiles,
       );
-      steps.forEach((step) => saveStep(step.attrs.stepId, step));
+      steps.forEach((step) => saveStepSync(step.attrs.stepId, step));
 
       const collection: Collection = {
         ...meta,

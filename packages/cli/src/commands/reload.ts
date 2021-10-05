@@ -5,8 +5,8 @@ import {
   collectionPath,
   loadCollection,
   saveCollection,
-  loadStep,
-  saveStep,
+  loadStepSync,
+  saveStepSync,
 } from '@tuture/local-server';
 
 import sync from './sync';
@@ -47,10 +47,10 @@ export default class Reload extends BaseCommand {
     // Mark outdated nodes whose commit no longer exists
     collectionSteps.forEach((step) => {
       if (!includeCommit(currentCommits, step.commit)) {
-        const outdatedStep = loadStep(step.id);
+        const outdatedStep = loadStepSync(step.id);
         const { name, commit } = outdatedStep.attrs;
         outdatedStep.attrs.outdated = true;
-        saveStep(step.id, outdatedStep);
+        saveStepSync(step.id, outdatedStep);
         logger.log('warning', `Outdated step: ${name} (${commit})`);
       }
     });
@@ -62,7 +62,7 @@ export default class Reload extends BaseCommand {
     );
     newSteps.forEach((step) => {
       step.attrs.articleId = lastArticle.id;
-      saveStep(step.attrs.stepId, step);
+      saveStepSync(step.attrs.stepId, step);
 
       lastArticle.steps.push({
         id: step.attrs.stepId,
