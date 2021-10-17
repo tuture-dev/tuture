@@ -38,8 +38,13 @@ export interface IDiffBlock {
   } & BasicAttrs;
 }
 
-export interface StepTitleAttrs {
+export interface StepAttrs {
+  name: string;
+  stepId: string;
+  articleId: string;
   commit: string;
+  order: number;
+  outdated?: boolean;
 }
 
 export interface IHeading {
@@ -48,7 +53,7 @@ export interface IHeading {
   attrs: {
     id: string;
     level: number;
-    step?: StepTitleAttrs;
+    step?: StepAttrs;
   } & BasicAttrs;
 }
 
@@ -84,15 +89,34 @@ export interface IMeta {
   github?: string;
 }
 
-export interface Article extends IMeta {}
+export interface StepMeta {
+  id: string;
+  commit: string;
+}
+
+export interface Article extends IMeta {
+  steps: StepMeta[];
+}
 
 export interface Collection extends IMeta {
-  version?: string;
   articles: Article[];
+  unassignedSteps: StepMeta[];
+  version?: string;
   remotes?: IRemote[];
 }
 
 export interface TutureConfig {
   ignoredFiles: string[];
   port: number;
+}
+
+export interface Doc {
+  type: 'doc';
+  content: INode[];
+}
+
+export interface StepDoc {
+  type: 'doc';
+  content: INode[];
+  attrs: StepAttrs;
 }

@@ -1,15 +1,15 @@
 import {
-  IText,
   INode,
   IExplain,
   IHeading,
   IDiffBlock,
+  StepAttrs,
   ExplainAttrs,
 } from './interfaces';
 import { randHex } from './utils';
 import { DiffFile, getHiddenLines } from './diff';
 
-export function newStepTitle(hash: string, content: INode[]): IHeading {
+export function newStepTitle(content: INode[], attrs: StepAttrs): IHeading {
   return {
     type: 'heading',
     content,
@@ -17,7 +17,7 @@ export function newStepTitle(hash: string, content: INode[]): IHeading {
       id: randHex(8),
       level: 2,
       fixed: true,
-      step: { commit: hash },
+      step: attrs,
     },
   };
 }
