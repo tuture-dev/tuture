@@ -214,7 +214,7 @@ export type ArticleNodes = {
   nodes: INode[];
 };
 
-export type StepDocs = { [stepId: string]: StepDoc };
+export type StepDocs = { [id: string]: StepDoc };
 
 export function convertV1ToV2(
   collection: Collection,
@@ -243,7 +243,7 @@ export function convertV1ToV2(
     }
 
     const stepAttrs = {
-      stepId: stepV1.id,
+      id: stepV1.id,
       name: getStepTitle(stepV1),
       articleId: stepV1.articleId || '',
       commit: stepV1.commit,

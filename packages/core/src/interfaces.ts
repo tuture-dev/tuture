@@ -39,8 +39,8 @@ export interface IDiffBlock {
 }
 
 export interface StepAttrs {
+  id: string;
   name: string;
-  stepId: string;
   articleId: string;
   commit: string;
   order: number;

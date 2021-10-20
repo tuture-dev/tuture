@@ -1,8 +1,6 @@
 <template>
   <a-row class="h-full">
-    <a-modal title="步骤编排" width="70%" :visible="true">
-      <StepAllocation></StepAllocation>
-    </a-modal>
+    <StepAllocation></StepAllocation>
     <a-affix>
       <Drawer></Drawer>
     </a-affix>

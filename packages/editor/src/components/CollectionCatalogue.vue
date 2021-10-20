@@ -36,7 +36,7 @@
             <Icon type="icon-setting"></Icon>
           </span>
         </li>
-        <li @click="onToggleDrawer('Toc')">
+        <li @click="setTocVisible(true)">
           <span>步骤编排</span>
           <span>
             <Icon type="icon-profile"></Icon>
@@ -65,6 +65,7 @@ export default defineComponent({
   },
   methods: {
     ...mapMutations('collection', ['setEditArticleId']),
+    ...mapMutations('toc', ['setTocVisible']),
     ...mapMutations('drawer', [
       'setVisible',
       'setChildVisible',

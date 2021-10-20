@@ -1,7 +1,7 @@
 {
   "type": "doc",
   "attrs": {
-    "stepId": "TS_VxEGaGC",
+    "id": "TS_VxEGaGC",
     "name": "从服务器获取数据",
     "articleId": "425a3a9",
     "commit": "60a60d7",
@@ -27,7 +27,7 @@
         "level": 2,
         "fixed": true,
         "step": {
-          "stepId": "TS_VxEGaGC",
+          "id": "TS_VxEGaGC",
           "name": "从服务器获取数据",
           "articleId": "425a3a9",
           "commit": "60a60d7",

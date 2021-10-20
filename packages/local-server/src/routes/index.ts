@@ -17,7 +17,7 @@ export function createBaseRouter(queue: TaskQueue) {
   router.use('/meta', createMetaRouter(queue));
   router.use('/remotes', createRemotesRouter(queue));
   router.use('/upload', createUploadRouter());
-  router.use('/toc', createTocRouter(queue));
+  router.use('/toc', createTocRouter());
 
   router.get('/sync', async (req, res) => {
     cp.execFile('tuture', ['sync'], {}, (err) => {

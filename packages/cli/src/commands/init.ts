@@ -86,7 +86,7 @@ export default class Init extends BaseCommand {
         defaultArticleId,
         this.userConfig.ignoredFiles,
       );
-      steps.forEach((step) => saveStepSync(step.attrs.stepId, step));
+      steps.forEach((step) => saveStepSync(step.attrs.id, step));
 
       const collection: Collection = {
         ...meta,
@@ -102,7 +102,7 @@ export default class Init extends BaseCommand {
             created: new Date(),
             cover: '',
             steps: steps.map((step) => ({
-              id: step.attrs.stepId,
+              id: step.attrs.id,
               commit: step.attrs.commit,
             })),
           },

@@ -24,6 +24,7 @@ import {
   Switch,
   Popover,
   Popconfirm,
+  message,
 } from 'ant-design-vue';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import {
@@ -120,6 +121,8 @@ Vue.use(Popover);
 Vue.use(Popconfirm);
 
 Vue.use(VueLazyComponent);
+
+Vue.prototype.$message = message;
 
 // 捕获 monaco 的 unhandledrejection
 window.addEventListener('unhandledrejection', function(event) {

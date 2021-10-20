@@ -3,19 +3,17 @@ import { debouncedWatch } from '@vueuse/core';
 
 export default function useArticleDoc(articleId) {
   const doc = ref({ type: 'doc', content: [] });
+  const refresh = async () => {
+    const resp = await fetch(`/api/articles/${articleId.value}`);
+    doc.value = await resp.json();
+  };
 
-  onMounted(async () => {
-    if (articleId) {
-      const resp = await fetch(`/api/articles/${articleId.value}`);
-      doc.value = await resp.json();
-    }
+  onMounted(() => {
+    if (articleId) refresh();
   });
 
   watch(articleId, async () => {
-    if (articleId) {
-      const resp = await fetch(`/api/articles/${articleId.value}`);
-      doc.value = await resp.json();
-    }
+    if (articleId) refresh();
   });
 
   debouncedWatch(
@@ -33,5 +31,5 @@ export default function useArticleDoc(articleId) {
     { debounce: 1000 },
   );
 
-  return { doc };
+  return { doc, refresh };
 }
