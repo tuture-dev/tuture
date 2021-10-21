@@ -38,7 +38,6 @@ export default class DiffBlock extends Node {
         ? selection.$cursor.pos
         : selection.$to.pos;
 
-      console.log('type', type);
       const node = type.create(attrs);
       const transaction = state.tr.insert(position, node);
       dispatch(transaction);

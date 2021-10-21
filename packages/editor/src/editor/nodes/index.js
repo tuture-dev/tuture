@@ -15,3 +15,4 @@ export { default as TableRow } from './TableRow';
 export { default as TableHeaderCell } from './TableHeaderCell';
 export { default as Paragraph } from './Paragraph';
 export { default as Text } from './Text';
+export { default as BulletList } from './BulletList';

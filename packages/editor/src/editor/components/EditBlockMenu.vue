@@ -688,27 +688,29 @@ export default {
       const { dispatch, state } = this.view;
       const { schema, selection } = state;
 
-      if (['heading'].includes(item.name)) {
-        toggleBlockType(
-          schema.nodes[item.name],
-          schema.nodes.paragraph,
-          item?.attrs,
-        )(state, dispatch, this.view);
-        this.view.focus();
-        return;
-      }
+      this.$props.commands[item.name](item?.attrs);
 
-      const mapListItem = {
-        todo_list: 'todo_item',
-        ordered_list: 'list_item',
-        bullet_list: 'list_item',
-      };
-      if (['todo_list', 'bullet_list', 'ordered_list'].includes(item.name)) {
-        // 首先将原块变为 paragraph，然后再变到对应的 list
-        toggleList(schema.nodes[item.name])(state, dispatch, this.view);
-        this.view.focus();
-        return;
-      }
+      // if (['heading'].includes(item.name)) {
+      //   toggleBlockType(
+      //     schema.nodes[item.name],
+      //     schema.nodes.paragraph,
+      //     item?.attrs,
+      //   )(state, dispatch, this.view);
+      //   this.view.focus();
+      //   return;
+      // }
+
+      // const mapListItem = {
+      //   todo_list: 'todo_item',
+      //   ordered_list: 'list_item',
+      //   bullet_list: 'list_item',
+      // };
+      // if (['todo_list', 'bullet_list', 'ordered_list'].includes(item.name)) {
+      //   // 首先将原块变为 paragraph，然后再变到对应的 list
+      //   toggleList(schema.nodes[item.name])(state, dispatch, this.view);
+      //   this.view.focus();
+      //   return;
+      // }
     },
 
     handleActionClick(item) {

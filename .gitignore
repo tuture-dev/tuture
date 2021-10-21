@@ -27,3 +27,7 @@ package-lock.json
 dist
 
 tuture-error.log
+
+packages/editor/fixtures/.tuture/**
+.rollup.cache/**
+packages/**/tsconfig.tsbuildinfo
