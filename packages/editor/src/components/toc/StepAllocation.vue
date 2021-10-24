@@ -3,7 +3,7 @@
     title="步骤编排"
     width="70%"
     :visible="tocVisible"
-    :confirm-loading="confirmLoading"
+    :confirm-loading="tocSaving"
     @ok="handleOk"
     @cancel="handleCancel"
   >
@@ -41,7 +41,7 @@
                       class="mr-1"
                       v-if="step.outdated"
                       title="确定删除此过时步骤吗？"
-                      @confirm="deleteStep(step)"
+                      @confirm="deleteReleasedStep(step.id)"
                     >
                       <a-icon type="delete"></a-icon>
                     </a-popconfirm>
@@ -139,20 +139,27 @@ export default defineComponent({
   },
   data() {
     return {
-      modalVisible: true,
-      tocLoading: false,
-      confirmLoading: false,
       activeArticle: '1',
-      releasedSteps: [],
-      articleSteps: [],
-      stepsToDelete: [],
     };
   },
   computed: {
-    ...mapState('toc', ['tocVisible']),
+    ...mapState('toc', [
+      'tocVisible',
+      'tocLoading',
+      'tocSaving',
+      'releasedSteps',
+      'articleSteps',
+    ]),
   },
   methods: {
-    ...mapMutations('toc', ['setTocVisible']),
+    ...mapMutations('toc', [
+      'setTocVisible',
+      'setReleasedSteps',
+      'deleteReleasedStep',
+      'setArticleSteps',
+      'insertArticleStep',
+    ]),
+    ...mapActions('toc', ['fetchToc', 'saveToc']),
     ...mapActions('editor', ['fetchDoc']),
     toggleActiveArticle(item) {
       if (item.type === 'article') {
@@ -180,6 +187,7 @@ export default defineComponent({
         return this.$message.warning('请选中文章，再添加步骤');
       }
 
+      console.log('this.articleSteps', this.articleSteps);
       const targetArticleStepIndex = this.articleSteps.findIndex(
         (step) =>
           step.type === 'step' &&
@@ -209,14 +217,11 @@ export default defineComponent({
         insertIndex = targetArticleStepIndex;
       }
 
-      this.articleSteps.splice(insertIndex, 0, {
-        ...item,
-        articleId: this.activeArticle,
+      this.insertArticleStep({
+        start: insertIndex,
+        item: { ...item, articleId: this.activeArticle },
       });
-
-      this.releasedSteps = this.releasedSteps.filter(
-        (articleStep) => articleStep.id !== item.id,
-      );
+      this.deleteReleasedStep(item.id);
     },
     releaseStep(item) {
       if (item.type === 'article') {
@@ -225,19 +230,13 @@ export default defineComponent({
       const newArticleSteps = this.articleSteps.filter(
         (articleStep) => articleStep.id !== item.id,
       );
-      this.articleSteps = newArticleSteps;
+      this.setArticleSteps(newArticleSteps);
 
       const newUnassignedStepList = this.handleInsertStep(
         item,
         this.releasedSteps,
       );
-      this.releasedSteps = newUnassignedStepList;
-    },
-    deleteStep(item) {
-      this.stepsToDelete.push(item.id);
-      this.releasedSteps = this.releasedSteps.filter(
-        (step) => step.id !== item.id,
-      );
+      this.setReleasedSteps(newUnassignedStepList);
     },
     deleteArticle(item) {
       const stepList = this.articleSteps.filter(
@@ -254,50 +253,25 @@ export default defineComponent({
           (step.type === 'article' && step.id !== item.id),
       );
 
-      this.releasedSteps = newUnassignedStepList;
-      this.articleSteps = newArticleStepList;
+      this.setReleaseSteps(newUnassignedStepList);
+      this.setArticleSteps(newArticleStepList);
       this.activeArticle = '';
     },
     handleOk() {
-      this.confirmLoading = true;
-      fetch('/api/toc', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          articleStepList: this.articleSteps,
-          unassignedStepList: this.releasedSteps,
-        }),
-      })
+      this.saveToc()
         .then(() => {
-          setTimeout(() => {
-            this.$message.success('保存成功');
-            this.confirmLoading = false;
-            this.setTocVisible(false);
-
-            // 重新拉取文章内容
-            this.fetchDoc();
-          }, 1000);
+          this.$message.success('保存成功');
+          this.fetchDoc();
         })
-        .catch((err) => {
-          this.$message.error(err);
-          this.confirmLoading = false;
-        });
+        .catch((err) => this.$message.error(err));
     },
     handleCancel() {
       this.setTocVisible(false);
     },
   },
   mounted() {
-    this.tocLoading = true;
-    fetch('/api/toc')
-      .then((res) => res.json())
-      .then((data) => {
-        this.releasedSteps = data.unassignedStepList;
-        this.articleSteps = data.articleStepList;
-        this.tocLoading = false;
-
+    this.fetchToc()
+      .then(() => {
         const firstArticle = this.articleSteps.filter(
           (articleStep) => articleStep.type === 'article',
         )[0];
@@ -307,7 +281,6 @@ export default defineComponent({
       })
       .catch((err) => {
         this.$message.error(err);
-        this.tocLoading = false;
       });
   },
 });

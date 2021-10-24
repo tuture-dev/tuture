@@ -36,7 +36,7 @@
             <Icon type="icon-setting"></Icon>
           </span>
         </li>
-        <li @click="setTocVisible(true)">
+        <li @click="onToggleToc">
           <span>步骤编排</span>
           <span>
             <Icon type="icon-profile"></Icon>
@@ -49,7 +49,7 @@
 
 <script setup>
 import { defineComponent } from 'vue-demi';
-import { mapState, mapMutations } from 'vuex';
+import { mapState, mapMutations, mapActions } from 'vuex';
 
 import Icon from '@/components/common/Icon.vue';
 
@@ -73,6 +73,7 @@ export default defineComponent({
       'setDrawerType',
       'setChildDrawerType',
     ]),
+    ...mapActions('toc', ['fetchToc']),
     onClickCatalogueItem(articleId) {
       this.setNowArticleId(articleId);
       this.$router
@@ -95,6 +96,10 @@ export default defineComponent({
       }
 
       this.setChildDrawerType(drawerType);
+    },
+    onToggleToc() {
+      this.setTocVisible(true);
+      this.fetchToc();
     },
   },
 });
