@@ -128,12 +128,10 @@
 
 <script>
 import { defineComponent } from 'vue-demi';
-import { mapState, mapMutations } from 'vuex';
+import { mapState, mapMutations, mapActions } from 'vuex';
 import omit from 'lodash.omit';
 
 import OutdatedTag from './widgets/OutdatedTag.vue';
-import useNowArticleId from '@/use/useNowArticleId';
-import useArticleDoc from '@/use/useArticleDoc';
 
 export default defineComponent({
   components: {
@@ -155,6 +153,7 @@ export default defineComponent({
   },
   methods: {
     ...mapMutations('toc', ['setTocVisible']),
+    ...mapActions('editor', ['fetchDoc']),
     toggleActiveArticle(item) {
       if (item.type === 'article') {
         this.activeArticle = item.id;
@@ -278,8 +277,8 @@ export default defineComponent({
             this.setTocVisible(false);
 
             // 重新拉取文章内容
-            this.refresh(this.nowArticleId);
-          }, 2000);
+            this.fetchDoc();
+          }, 1000);
         })
         .catch((err) => {
           this.$message.error(err);
@@ -310,11 +309,6 @@ export default defineComponent({
         this.$message.error(err);
         this.tocLoading = false;
       });
-  },
-  setup() {
-    const { nowArticleId } = useNowArticleId();
-    const { refresh } = useArticleDoc(nowArticleId);
-    return { nowArticleId, refresh };
   },
 });
 </script>

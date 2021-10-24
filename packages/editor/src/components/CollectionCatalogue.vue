@@ -51,7 +51,6 @@
 import { defineComponent } from 'vue-demi';
 import { mapState, mapMutations } from 'vuex';
 
-import useNowArticleId from '@/use/useNowArticleId';
 import Icon from '@/components/common/Icon.vue';
 
 export default defineComponent({
@@ -60,11 +59,13 @@ export default defineComponent({
     Icon,
   },
   computed: {
+    ...mapState('editor', ['nowArticleId']),
     ...mapState('collection', ['meta', 'articles']),
     ...mapState('drawer', ['childVisible', 'childDrawerType']),
   },
   methods: {
     ...mapMutations('collection', ['setEditArticleId']),
+    ...mapMutations('editor', ['setNowArticleId']),
     ...mapMutations('toc', ['setTocVisible']),
     ...mapMutations('drawer', [
       'setVisible',
@@ -73,7 +74,7 @@ export default defineComponent({
       'setChildDrawerType',
     ]),
     onClickCatalogueItem(articleId) {
-      this.nowArticleId = articleId;
+      this.setNowArticleId(articleId);
       this.$router
         .push({ name: 'Article', params: { id: articleId } })
         .catch(() => {});
@@ -95,10 +96,6 @@ export default defineComponent({
 
       this.setChildDrawerType(drawerType);
     },
-  },
-  setup() {
-    const { nowArticleId } = useNowArticleId();
-    return { nowArticleId };
   },
 });
 </script>
