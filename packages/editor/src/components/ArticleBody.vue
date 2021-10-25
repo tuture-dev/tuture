@@ -75,7 +75,6 @@ import {
   Blockquote,
   ListItem,
   OrderedList,
-  TodoList,
   HorizontalRule,
   Placeholder,
   TrailingNode,
@@ -106,6 +105,7 @@ import {
   Paragraph,
   Text,
   BulletList,
+  TodoList,
 } from '@/editor/nodes';
 import { Link } from '@/editor/marks';
 import { BlockMenuTrigger } from '@/editor/extensions';

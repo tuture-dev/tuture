@@ -16,3 +16,4 @@ export { default as TableHeaderCell } from './TableHeaderCell';
 export { default as Paragraph } from './Paragraph';
 export { default as Text } from './Text';
 export { default as BulletList } from './BulletList';
+export { default as TodoList } from './TodoList';
