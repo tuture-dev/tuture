@@ -173,7 +173,7 @@ export default class EditBlockMenuTrigger extends Extension {
                   directParent.node.content.size !== 0) ||
                 (secondUpperParent &&
                   directParent.node.type.name === 'paragraph' &&
-                  ['notice', 'blockquote'].includes(
+                  ['notice', 'blockquote', 'explain'].includes(
                     secondUpperParent.node.type.name,
                   ) &&
                   directParent.node.content.size !== 0)
