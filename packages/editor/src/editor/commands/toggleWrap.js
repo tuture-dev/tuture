@@ -1,5 +1,6 @@
-import { wrapIn, lift } from 'prosemirror-commands';
+import { lift } from 'prosemirror-commands';
 import { isNodeActive } from '../queries';
+import { wrapIn } from '../commands';
 
 export default function(type, attrs = {}) {
   return (state, dispatch, view) => {

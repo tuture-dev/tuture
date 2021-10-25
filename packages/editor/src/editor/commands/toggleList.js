@@ -68,7 +68,6 @@ export default function toggleList(listType, itemType) {
       };
 
       clearNodes()(props);
-      console.log(tr === props.state.tr);
       wrapInList(listType)(props);
 
       return view.dispatch(tr);

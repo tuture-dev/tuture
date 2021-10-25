@@ -41,7 +41,6 @@ export function originalWrapInList(listType, attrs) {
       doJoin = true;
     }
     let wrap = findWrapping(outerRange, listType, attrs, range);
-    console.log('wrap', wrap);
     if (!wrap) return false;
     if (dispatch) {
       dispatch(
