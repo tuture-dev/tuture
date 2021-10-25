@@ -2,7 +2,7 @@
   <portal>
     <div
       ref="menuRef"
-      id="block-menu-container"
+      id="edit-block-menu-container"
       class="wrapper"
       :style="userStyle"
     >
@@ -135,9 +135,10 @@ export default {
       };
     },
     subMenuItems() {
-      const { dictionary } = this.$props;
+      const { dictionary, view } = this.$props;
+      const { schema } = view.state;
       let { canTurnIntoMenuItems = [] } = getMenuItems(
-        this.view.state,
+        schema,
         dictionary,
         this.ancestorNodeTypeName,
       );
@@ -249,13 +250,13 @@ export default {
       const startPos = view.coordsAtPos(selection.$from.pos);
       const ref = this.$refs.menuRef;
       const offsetHeight = ref ? ref.offsetHeight : 0;
-      const paragraph = view.domAtPos(selection.$from.pos);
+      let paragraph = view.domAtPos(selection.$from.pos);
+      const node =
+        paragraph.node.nodeName === '#text'
+          ? paragraph.node.parentNode
+          : paragraph.node;
 
-      if (
-        !props.isActive ||
-        !paragraph.node ||
-        !paragraph.node.getBoundingClientRect
-      ) {
+      if (!props.isActive || !paragraph.node || !node.getBoundingClientRect) {
         return {
           left: -1000,
           top: 0,
@@ -265,7 +266,7 @@ export default {
       }
 
       const { left } = this.caretPosition;
-      const { top, bottom } = paragraph.node.getBoundingClientRect();
+      const { top, bottom } = node.getBoundingClientRect();
       const margin = 24;
 
       if (startPos.top - offsetHeight > margin) {
@@ -611,7 +612,6 @@ export default {
     },
     triggerDelete(item, ancestorNodeTypeName = []) {
       // paragraph 和 heading 的删除
-      console.log('ancestorNodeTypeName', ancestorNodeTypeName);
       if (
         (ancestorNodeTypeName.length === 1 &&
           ['paragraph', 'heading'].includes(ancestorNodeTypeName[0])) ||
