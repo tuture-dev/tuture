@@ -36,7 +36,7 @@
             <Icon type="icon-setting"></Icon>
           </span>
         </li>
-        <li @click="onToggleDrawer('Toc')">
+        <li @click="onToggleToc">
           <span>步骤编排</span>
           <span>
             <Icon type="icon-profile"></Icon>
@@ -49,9 +49,8 @@
 
 <script setup>
 import { defineComponent } from 'vue-demi';
-import { mapState, mapMutations } from 'vuex';
+import { mapState, mapMutations, mapActions } from 'vuex';
 
-import useNowArticleId from '@/use/useNowArticleId';
 import Icon from '@/components/common/Icon.vue';
 
 export default defineComponent({
@@ -60,19 +59,23 @@ export default defineComponent({
     Icon,
   },
   computed: {
+    ...mapState('editor', ['nowArticleId']),
     ...mapState('collection', ['meta', 'articles']),
     ...mapState('drawer', ['childVisible', 'childDrawerType']),
   },
   methods: {
     ...mapMutations('collection', ['setEditArticleId']),
+    ...mapMutations('editor', ['setNowArticleId']),
+    ...mapMutations('toc', ['setTocVisible']),
     ...mapMutations('drawer', [
       'setVisible',
       'setChildVisible',
       'setDrawerType',
       'setChildDrawerType',
     ]),
+    ...mapActions('toc', ['fetchToc']),
     onClickCatalogueItem(articleId) {
-      this.nowArticleId = articleId;
+      this.setNowArticleId(articleId);
       this.$router
         .push({ name: 'Article', params: { id: articleId } })
         .catch(() => {});
@@ -94,10 +97,10 @@ export default defineComponent({
 
       this.setChildDrawerType(drawerType);
     },
-  },
-  setup() {
-    const { nowArticleId } = useNowArticleId();
-    return { nowArticleId };
+    onToggleToc() {
+      this.setTocVisible(true);
+      this.fetchToc();
+    },
   },
 });
 </script>

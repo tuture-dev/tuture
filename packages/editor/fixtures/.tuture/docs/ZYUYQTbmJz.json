@@ -1,7 +1,7 @@
 {
   "type": "doc",
   "attrs": {
-    "stepId": "ZYUYQTbmJz",
+    "id": "ZYUYQTbmJz",
     "name": "数据展示：实现食谱列表",
     "articleId": "0818be0",
     "commit": "63f7ab0",
@@ -27,7 +27,7 @@
         "level": 2,
         "fixed": true,
         "step": {
-          "stepId": "ZYUYQTbmJz",
+          "id": "ZYUYQTbmJz",
           "name": "数据展示：实现食谱列表",
           "articleId": "0818be0",
           "commit": "63f7ab0",

@@ -1,6 +1,5 @@
 import fs from 'fs-extra';
 import { flags } from '@oclif/command';
-import { includeCommit } from '@tuture/core';
 import {
   collectionPath,
   loadCollection,
@@ -8,12 +7,13 @@ import {
   loadStepSync,
   saveStepSync,
 } from '@tuture/local-server';
+import { includeCommit } from '@tuture/core';
 
 import sync from './sync';
 import BaseCommand from '../base';
+import { initSteps } from '../utils';
 import { git } from '../utils/git';
 import logger from '../utils/logger';
-import { initSteps } from '../utils';
 
 export default class Reload extends BaseCommand {
   static description = 'Update workspace with latest commit history';
@@ -62,10 +62,10 @@ export default class Reload extends BaseCommand {
     );
     newSteps.forEach((step) => {
       step.attrs.articleId = lastArticle.id;
-      saveStepSync(step.attrs.stepId, step);
+      saveStepSync(step.attrs.id, step);
 
       lastArticle.steps.push({
-        id: step.attrs.stepId,
+        id: step.attrs.id,
         commit: step.attrs.commit,
       });
     });

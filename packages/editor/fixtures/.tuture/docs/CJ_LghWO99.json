@@ -1,7 +1,7 @@
 {
   "type": "doc",
   "attrs": {
-    "stepId": "CJ_LghWO99",
+    "id": "CJ_LghWO99",
     "name": "一点强迫症：全局页面跳转效果",
     "articleId": "425a3a9",
     "commit": "04edf4c",
@@ -27,7 +27,7 @@
         "level": 2,
         "fixed": true,
         "step": {
-          "stepId": "CJ_LghWO99",
+          "id": "CJ_LghWO99",
           "name": "一点强迫症：全局页面跳转效果",
           "articleId": "425a3a9",
           "commit": "04edf4c",

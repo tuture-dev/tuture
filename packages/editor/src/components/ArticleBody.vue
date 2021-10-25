@@ -1,5 +1,5 @@
 <template>
-  <div class="p-8">
+  <a-spin class="p-8" :spinning="docLoading">
     <h1 class="text-xl">{{ article.name }}</h1>
     <a-divider />
     <div class="editure">
@@ -57,12 +57,12 @@
       >
       </edit-block-menu>
     </div>
-  </div>
+  </a-spin>
 </template>
 
 <script setup>
 import { defineComponent } from 'vue-demi';
-import { mapGetters, mapState } from 'vuex';
+import { mapActions, mapGetters, mapState } from 'vuex';
 import { Editor, EditorContent } from 'tiptap';
 import {
   Bold,
@@ -116,10 +116,7 @@ import LinkToolbar from '@/editor/components/LinkToolbar.vue';
 import insertFiles from '@/editor/commands/insertFiles';
 import CreateBlockMenu from '@/editor/components/CreateBlockMenu.vue';
 import EditBlockMenu from '@/editor/components/EditBlockMenu.vue';
-
-import useNowArticleId from '@/use/useNowArticleId';
 import { DataPaste } from '@/editor/plugins';
-import useArticleDoc from '@/use/useArticleDoc';
 
 export default defineComponent({
   name: 'ArticleBody',
@@ -239,6 +236,7 @@ export default defineComponent({
     };
   },
   methods: {
+    ...mapActions('editor', ['fetchDoc']),
     handleToggleLink() {
       if (this.editor.isActive.link()) {
         this.editor.commands.link({});
@@ -389,22 +387,24 @@ export default defineComponent({
   },
   computed: {
     ...mapState('collection', ['articles']),
+    ...mapState('editor', ['doc', 'docLoading', 'nowArticleId']),
     ...mapGetters('collection', ['getArticleById']),
     article() {
       return this.getArticleById(this.nowArticleId) || {};
     },
   },
   watch: {
+    nowArticleId: function(articleId) {
+      this.fetchDoc();
+    },
     doc: function(newVal) {
       if (this.editor) {
         this.editor.setContent(newVal);
       }
     },
   },
-  setup() {
-    const { nowArticleId } = useNowArticleId();
-    const { doc } = useArticleDoc(nowArticleId);
-    return { nowArticleId, doc };
+  mounted() {
+    this.fetchDoc();
   },
 });
 </script>

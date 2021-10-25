@@ -1,7 +1,7 @@
 {
   "type": "doc",
   "attrs": {
-    "stepId": "AJziwEM6Mk",
+    "id": "AJziwEM6Mk",
     "name": "用 Nuxt.js 实现网站首页",
     "articleId": "0818be0",
     "commit": "596203d",
@@ -27,7 +27,7 @@
         "level": 2,
         "fixed": true,
         "step": {
-          "stepId": "AJziwEM6Mk",
+          "id": "AJziwEM6Mk",
           "name": "用 Nuxt.js 实现网站首页",
           "articleId": "0818be0",
           "commit": "596203d",

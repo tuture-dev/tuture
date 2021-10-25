@@ -1,6 +1,7 @@
 *.md
 *.html
 *.json
+*.scss
 .github
 build
 dist

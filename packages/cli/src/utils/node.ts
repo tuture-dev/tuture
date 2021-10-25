@@ -11,6 +11,7 @@ import {
   Collection,
   Article,
   StepAttrs,
+  isStepTitle,
 } from '@tuture/core';
 
 export function newStepTitle(attrs: StepAttrs, content: IText[]): IHeading {
@@ -73,20 +74,6 @@ export function newEmptyFile(
     }),
     { type: 'file_end', attrs: delimiterAttrs },
   ];
-}
-
-export function isStepTitle(node: INode): boolean {
-  return node.type === 'heading' && node.attrs!.step;
-}
-
-export function isText(node: INode): node is IText {
-  return node.type === 'text';
-}
-
-export function getNodeText(node: INode): string {
-  return isText(node)
-    ? node.text
-    : (node.content! as INode[]).map((child) => getNodeText(child)).join();
 }
 
 export function readCommitsFromNodes(nodes: INode[]): string[] {

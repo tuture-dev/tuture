@@ -1,5 +1,5 @@
 <template>
-  <a-spin :spinning="isFetching">
+  <a-spin :spinning="metaLoading || articlesLoading">
     <div id="app">
       <router-view />
     </div>
@@ -7,22 +7,19 @@
 </template>
 
 <script setup>
-import useFetchMeta from '@/use/useFetchMeta';
-import useFetchArticles from '@/use/useFetchArticles';
+import { mapState, mapActions } from 'vuex';
 
 export default {
   name: 'App',
-  setup() {
-    const { isFetching: metaFetching, error: metaError } = useFetchMeta();
-    const {
-      isFetching: articlesFetching,
-      error: articlesError,
-    } = useFetchArticles();
-
-    return {
-      isFetching: metaFetching && articlesFetching,
-      error: metaError + articlesError,
-    };
+  computed: {
+    ...mapState('collection', ['metaLoading', 'articlesLoading']),
+  },
+  methods: {
+    ...mapActions('collection', ['fetchMeta', 'fetchArticles']),
+  },
+  mounted() {
+    this.fetchMeta();
+    this.fetchArticles();
   },
 };
 </script>

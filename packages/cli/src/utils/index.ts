@@ -77,7 +77,7 @@ export async function initSteps(
     const delimiterAttrs = { commit: hash };
     const stepAttrs = {
       articleId,
-      stepId: randHex(32),
+      id: randHex(32),
       name: message,
       commit: hash,
       order: index,

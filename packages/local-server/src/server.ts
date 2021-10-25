@@ -53,11 +53,15 @@ export const makeServer = (options?: ServerOptions) => {
 
   app.use(baseUrl, apiRouter);
 
+  const editorHTMLPath = path.join(EDITOR_PATH, 'index.html');
+  const editorHTML = fs.existsSync(editorHTMLPath)
+    ? fs.readFileSync(editorHTMLPath).toString()
+    : '';
   app.get('*', (_, res) => {
-    const html = fs
-      .readFileSync(path.join(EDITOR_PATH, 'index.html'))
-      .toString();
-    res.send(html);
+    if (editorHTML) {
+      return res.send(editorHTML);
+    }
+    res.sendStatus(404);
   });
 
   return app;

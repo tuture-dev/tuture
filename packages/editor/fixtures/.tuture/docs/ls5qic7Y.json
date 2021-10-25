@@ -1,7 +1,7 @@
 {
   "type": "doc",
   "attrs": {
-    "stepId": "ls5qic7Y",
+    "id": "ls5qic7Y",
     "name": "项目初始化",
     "articleId": "0818be0",
     "commit": "c64b3b6",
@@ -27,7 +27,7 @@
         "level": 2,
         "fixed": true,
         "step": {
-          "stepId": "ls5qic7Y",
+          "id": "ls5qic7Y",
           "name": "项目初始化",
           "articleId": "0818be0",
           "commit": "c64b3b6",

@@ -1,7 +1,7 @@
 {
   "type": "doc",
   "attrs": {
-    "stepId": "UrPiWOoIpE",
+    "id": "UrPiWOoIpE",
     "name": "实现食谱的编辑和创建页面",
     "articleId": "425a3a9",
     "commit": "5f1edd9",
@@ -27,7 +27,7 @@
         "level": 2,
         "fixed": true,
         "step": {
-          "stepId": "UrPiWOoIpE",
+          "id": "UrPiWOoIpE",
           "name": "实现食谱的编辑和创建页面",
           "articleId": "425a3a9",
           "commit": "5f1edd9",

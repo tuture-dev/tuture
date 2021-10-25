@@ -1,7 +1,7 @@
 {
   "type": "doc",
   "attrs": {
-    "stepId": "a53j6F4Fmy",
+    "id": "a53j6F4Fmy",
     "name": "用 Django 实现 REST API",
     "articleId": "0818be0",
     "commit": "d4d056f",
@@ -27,7 +27,7 @@
         "level": 2,
         "fixed": true,
         "step": {
-          "stepId": "a53j6F4Fmy",
+          "id": "a53j6F4Fmy",
           "name": "用 Django 实现 REST API",
           "articleId": "0818be0",
           "commit": "d4d056f",
