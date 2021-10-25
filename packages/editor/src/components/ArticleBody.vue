@@ -72,7 +72,6 @@ import {
   HardBreak,
   Code,
   History,
-  Blockquote,
   ListItem,
   OrderedList,
   HorizontalRule,
@@ -106,9 +105,13 @@ import {
   Text,
   BulletList,
   TodoList,
+  Blockquote,
 } from '@/editor/nodes';
 import { Link } from '@/editor/marks';
-import { BlockMenuTrigger } from '@/editor/extensions';
+import {
+  CreateBlockMenuTrigger,
+  EditBlockMenuTrigger,
+} from '@/editor/extensions';
 import { dictionary } from '@/editor/utils';
 import getDataTransferFiles from '@/editor/lib/getDataTransferFiles';
 import SelectionToolbar from '@/editor/components/SelectionToolbar';
@@ -208,7 +211,15 @@ export default defineComponent({
           new Code(),
           new History(),
           new TrailingNode(),
-          new BlockMenuTrigger({
+          new CreateBlockMenuTrigger({
+            type: 'create',
+            dictionary,
+            onOpen: this.handleOpenBlockMenu,
+            onClose: this.handleCloseBlockMenu,
+            mode: this.mode,
+          }),
+          new EditBlockMenuTrigger({
+            type: 'edit',
             dictionary,
             onOpen: this.handleOpenBlockMenu,
             onClose: this.handleCloseBlockMenu,
@@ -362,7 +373,6 @@ export default defineComponent({
         this.createBlockMenuOpen = true;
         this.blockMenuSearch = search;
       } else if (type === 'edit') {
-        console.log('search', ancestorNodeTypeName);
         this.editBlockMenuOpen = true;
         this.ancestorNodeTypeName = ancestorNodeTypeName;
       }

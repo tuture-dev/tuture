@@ -45,19 +45,12 @@ function run(view, from, to, regex, handler) {
   return true;
 }
 
-export default class BlockMenuTrigger extends Extension {
+export default class EditBlockMenuTrigger extends Extension {
   get name() {
-    return 'blockmenu';
+    return 'edit_blockmenu';
   }
 
   get plugins() {
-    // 新建菜单的激活按钮
-    const createButton = document.createElement('button');
-    createButton.className = 'block-menu-trigger';
-    const createIcon = document.createElement('span');
-    createIcon.innerHTML = '+';
-    createButton.appendChild(createIcon);
-
     // 编辑菜单的激活按钮
     const editButton = document.createElement('button');
     editButton.className = 'block-menu-trigger';
@@ -69,7 +62,6 @@ export default class BlockMenuTrigger extends Extension {
       new Plugin({
         props: {
           handleClick: () => {
-            this.options.onClose('create');
             this.options.onClose('edit');
             return false;
           },
@@ -84,9 +76,9 @@ export default class BlockMenuTrigger extends Extension {
                 const { pos } = view.state.selection.$from;
                 return run(view, pos, pos, OPEN_REGEX, (state, match) => {
                   if (match) {
-                    this.options.onOpen(match[1], 'create');
+                    this.options.onOpen(match[1], 'edit');
                   } else {
-                    this.options.onClose('create');
+                    this.options.onClose('edit');
                   }
                   return null;
                 });
@@ -147,8 +139,6 @@ export default class BlockMenuTrigger extends Extension {
             if (!directParent) return;
 
             const decorations = [];
-            const isEmpty = directParent.node.content.size === 0;
-            const isSlash = directParent.node.textContent === '/';
 
             //console.log('schema', this);
             // console.log('isTop', isTopLevel, directParent, secondUpperParent);
@@ -167,60 +157,9 @@ export default class BlockMenuTrigger extends Extension {
              * 2. 鼠标没有在最顶层，上上层为 notice/blockquote，上层为 paragraph，且内容为空
              */
             // debugger;
-            console.log('parent', directParent, secondUpperParent);
-            console.log('mode', this.options.mode);
+            console.log('edit parent', directParent, secondUpperParent);
 
             if (this.options.mode === 'strict') {
-              if (
-                (directParent.node.type.name === 'paragraph' &&
-                  secondUpperParent &&
-                  secondUpperParent.node.type.name === 'explain') ||
-                (directParent.node.type.name === 'paragraph' &&
-                  secondUpperParent &&
-                  ['blockquote', 'notice'].includes(
-                    secondUpperParent.node.type.name,
-                  ))
-              ) {
-                if (isEmpty) {
-                  decorations.push(
-                    Decoration.widget(directParent.pos, () => {
-                      // console.log('hello');
-                      createButton.addEventListener('click', () => {
-                        this.options.onOpen('', 'create');
-                      });
-                      return createButton;
-                    }),
-                  );
-
-                  decorations.push(
-                    Decoration.node(
-                      directParent.pos,
-                      directParent.pos + directParent.node.nodeSize,
-                      {
-                        class: 'placeholder',
-                        'data-empty-text': this.options.dictionary.newLineEmpty,
-                      },
-                    ),
-                  );
-                }
-
-                if (isSlash) {
-                  decorations.push(
-                    Decoration.node(
-                      directParent.pos,
-                      directParent.pos + directParent.node.nodeSize,
-                      {
-                        class: 'placeholder',
-                        'data-empty-text': `  ${this.options.dictionary.newLineWithSlash}`,
-                      },
-                    ),
-                  );
-                }
-
-                if (decorations.length > 0)
-                  return DecorationSet.create(state.doc, decorations);
-              }
-
               /**
                * 以下几种情况会弹出处理框（目前是只在最外层弹出，后续考虑类似 gitbook 可以在内层弹出）：
                * 1. 鼠标在顶层 depth = 1，顶层为 paragraph，内容不为空
@@ -325,13 +264,13 @@ export default class BlockMenuTrigger extends Extension {
                   secondUpperParent.node.type.name,
                 )
               ) {
-                debugger;
+                // debugger;
                 const ancestorNodeTypeName = getAncestorNodeTypeName($from);
 
                 decorations.push(
                   Decoration.widget(secondUpperParent.start, () => {
                     editButton.addEventListener('click', () => {
-                      debugger;
+                      // debugger;
                       this.options.onOpen('', 'edit', ancestorNodeTypeName);
                     });
                     return editButton;
@@ -383,54 +322,6 @@ export default class BlockMenuTrigger extends Extension {
               if (decorations.length === 0) return;
               return DecorationSet.create(state.doc, decorations);
             } else {
-              if (
-                (isTopLevel && directParent.node.type.name === 'paragraph') ||
-                (!isTopLevel &&
-                  directParent.node.type.name === 'paragraph' &&
-                  ['blockquote', 'notice'].includes(
-                    secondUpperParent.node.type.name,
-                  ))
-              ) {
-                if (isEmpty) {
-                  decorations.push(
-                    Decoration.widget(directParent.pos, () => {
-                      // console.log('hello');
-                      createButton.addEventListener('click', () => {
-                        this.options.onOpen('', 'create');
-                      });
-                      return createButton;
-                    }),
-                  );
-
-                  decorations.push(
-                    Decoration.node(
-                      directParent.pos,
-                      directParent.pos + directParent.node.nodeSize,
-                      {
-                        class: 'placeholder',
-                        'data-empty-text': this.options.dictionary.newLineEmpty,
-                      },
-                    ),
-                  );
-                }
-
-                if (isSlash) {
-                  decorations.push(
-                    Decoration.node(
-                      directParent.pos,
-                      directParent.pos + directParent.node.nodeSize,
-                      {
-                        class: 'placeholder',
-                        'data-empty-text': `  ${this.options.dictionary.newLineWithSlash}`,
-                      },
-                    ),
-                  );
-                }
-
-                if (decorations.length > 0)
-                  return DecorationSet.create(state.doc, decorations);
-              }
-
               /**
                * 以下几种情况会弹出处理框（目前是只在最外层弹出，后续考虑类似 gitbook 可以在内层弹出）：
                * 1. 鼠标在顶层 depth = 1，顶层为 paragraph，内容不为空
@@ -593,33 +484,6 @@ export default class BlockMenuTrigger extends Extension {
             }
           },
         },
-      }),
-    ];
-  }
-
-  inputRules() {
-    return [
-      // main regex should match only:
-      // /word
-      new InputRule(OPEN_REGEX, (state, match) => {
-        if (
-          match &&
-          state.selection.$from.parent.type.name === 'paragraph' &&
-          !isInTable(state)
-        ) {
-          this.options.onOpen(match[1], 'create');
-        }
-        return null;
-      }),
-      // invert regex should match some of these scenarios:
-      // /<space>word
-      // /<space>
-      // /word<space>
-      new InputRule(CLOSE_REGEX, (state, match) => {
-        if (match) {
-          this.options.onClose('create');
-        }
-        return null;
       }),
     ];
   }
