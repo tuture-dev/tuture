@@ -159,7 +159,8 @@ export default class BlockMenuTrigger extends Extension {
              * 2. 鼠标没有在最顶层，上上层为 notice/blockquote，上层为 paragraph，且内容为空
              */
             // debugger;
-            console.log('create parent', directParent, secondUpperParent);
+            // console.log('create parent', directParent, secondUpperParent);
+            // debugger;
 
             if (this.options.mode === 'strict') {
               if (
@@ -173,9 +174,9 @@ export default class BlockMenuTrigger extends Extension {
                   ))
               ) {
                 if (isEmpty) {
+                  // 直接父块
                   decorations.push(
                     Decoration.widget(directParent.pos, () => {
-                      // console.log('hello');
                       createButton.addEventListener('click', () => {
                         this.options.onOpen('', 'create');
                       });

@@ -157,7 +157,8 @@ export default class EditBlockMenuTrigger extends Extension {
              * 2. 鼠标没有在最顶层，上上层为 notice/blockquote，上层为 paragraph，且内容为空
              */
             // debugger;
-            console.log('edit parent', directParent, secondUpperParent);
+            // console.log('edit parent', directParent, secondUpperParent);
+            // debugger;
 
             if (this.options.mode === 'strict') {
               /**
@@ -181,6 +182,7 @@ export default class EditBlockMenuTrigger extends Extension {
 
                 decorations.push(
                   Decoration.widget(directParent.pos, () => {
+                    // debugger;
                     editButton.addEventListener('click', () => {
                       /**
                        * 四个参数：
@@ -268,9 +270,8 @@ export default class EditBlockMenuTrigger extends Extension {
                 const ancestorNodeTypeName = getAncestorNodeTypeName($from);
 
                 decorations.push(
-                  Decoration.widget(secondUpperParent.start, () => {
+                  Decoration.widget(secondUpperParent.pos, () => {
                     editButton.addEventListener('click', () => {
-                      // debugger;
                       this.options.onOpen('', 'edit', ancestorNodeTypeName);
                     });
                     return editButton;

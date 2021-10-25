@@ -154,7 +154,6 @@ export default defineComponent({
             new FileEnd(),
           ]
         : [];
-
     return {
       editor: new Editor({
         autoFocus: true,
