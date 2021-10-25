@@ -1,9 +1,7 @@
 import { Node } from 'tiptap';
-import {
-  setBlockType,
-  textblockTypeInputRule,
-  toggleBlockType,
-} from 'tiptap-commands';
+import { setBlockType, textblockTypeInputRule } from 'tiptap-commands';
+
+import { toggleBlockType } from '../commands';
 
 export default class Heading extends Node {
   get name() {
