@@ -405,9 +405,9 @@ export default {
     triggerCut(item, ancestorNodeTypeName) {
       // paragraph 和 heading 的删除
       if (
-        (ancestorNodeTypeName.length === 1 &&
+        (ancestorNodeTypeName.length === 2 &&
           ['paragraph', 'heading'].includes(ancestorNodeTypeName[0])) ||
-        (ancestorNodeTypeName.length >= 2 &&
+        (ancestorNodeTypeName.length >= 3 &&
           ['paragraph', 'heading'].includes(ancestorNodeTypeName[0]) &&
           ['notice', 'blockquote'].includes(ancestorNodeTypeName[1]))
       ) {
@@ -511,9 +511,9 @@ export default {
     triggerCopy(item, ancestorNodeTypeName) {
       // paragraph 和 heading 的删除
       if (
-        (ancestorNodeTypeName.length === 1 &&
+        (ancestorNodeTypeName.length === 2 &&
           ['paragraph', 'heading'].includes(ancestorNodeTypeName[0])) ||
-        (ancestorNodeTypeName.length >= 2 &&
+        (ancestorNodeTypeName.length >= 3 &&
           ['paragraph', 'heading'].includes(ancestorNodeTypeName[0]) &&
           ['notice', 'blockquote'].includes(ancestorNodeTypeName[1]))
       ) {
@@ -582,9 +582,9 @@ export default {
     triggerDelete(item, ancestorNodeTypeName = []) {
       // paragraph 和 heading 的删除
       if (
-        (ancestorNodeTypeName.length === 1 &&
+        (ancestorNodeTypeName.length === 2 &&
           ['paragraph', 'heading'].includes(ancestorNodeTypeName[0])) ||
-        (ancestorNodeTypeName.length >= 2 &&
+        (ancestorNodeTypeName.length >= 3 &&
           ['paragraph', 'heading'].includes(ancestorNodeTypeName[0]) &&
           ['notice', 'blockquote'].includes(ancestorNodeTypeName[1]))
       ) {
