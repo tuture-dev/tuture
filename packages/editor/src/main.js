@@ -10,6 +10,7 @@ import {
   Drawer,
   Layout,
   Menu,
+  Modal,
   Tooltip,
   Row,
   Col,
@@ -22,6 +23,8 @@ import {
   Tag,
   Switch,
   Popover,
+  Popconfirm,
+  message,
 } from 'ant-design-vue';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import {
@@ -101,6 +104,7 @@ Vue.use(Divider);
 Vue.use(Drawer);
 Vue.use(Layout);
 Vue.use(Menu);
+Vue.use(Modal);
 Vue.use(Tooltip);
 Vue.use(Row);
 Vue.use(Col);
@@ -114,8 +118,11 @@ Vue.use(Tag);
 Vue.use(Select);
 Vue.use(Switch);
 Vue.use(Popover);
+Vue.use(Popconfirm);
 
 Vue.use(VueLazyComponent);
+
+Vue.prototype.$message = message;
 
 // 捕获 monaco 的 unhandledrejection
 window.addEventListener('unhandledrejection', function(event) {

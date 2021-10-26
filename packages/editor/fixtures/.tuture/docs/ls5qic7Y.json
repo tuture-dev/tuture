@@ -1,0 +1,1305 @@
+{
+  "type": "doc",
+  "attrs": {
+    "id": "ls5qic7Y",
+    "name": "项目初始化",
+    "articleId": "0818be0",
+    "commit": "c64b3b6",
+    "order": 0
+  },
+  "content": [
+    {
+      "type": "step_start",
+      "attrs": {
+        "commit": "c64b3b6"
+      }
+    },
+    {
+      "type": "heading",
+      "content": [
+        {
+          "type": "text",
+          "text": "项目初始化"
+        }
+      ],
+      "attrs": {
+        "id": "08355a31",
+        "level": 2,
+        "fixed": true,
+        "step": {
+          "id": "ls5qic7Y",
+          "name": "项目初始化",
+          "articleId": "0818be0",
+          "commit": "c64b3b6",
+          "order": 0
+        }
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "fixed": true,
+        "level": "step",
+        "pos": "pre",
+        "commit": "c64b3b6"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "在这一系列教程中，我们将会实现一个全栈美食分享网站，后端用 Django 实现，前端则是 Nuxt 框架，下面是最终完成后的项目效果："
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "image",
+              "attrs": {
+                "src": ".tuture/assets/demo.gif",
+                "alt": "",
+                "title": ""
+              }
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 3
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "预备知识"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "本教程假定你已经知道了"
+            }
+          ]
+        },
+        {
+          "type": "bullet_list",
+          "content": [
+            {
+              "type": "list_item",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "基本的 Python 3 语言知识，包括使用 pip 安装包"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "list_item",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Django 框架的基础概念（MTV 架构），可参考这篇"
+                    },
+                    {
+                      "type": "text",
+                      "text": "快速入门教程",
+                      "marks": [
+                        {
+                          "type": "link",
+                          "attrs": {
+                            "href": "https://tuture.co/2019/11/19/55d393c/",
+                            "title": ""
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": "进行学习"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "list_item",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Vue 的基础概念，以及用 npm 工具链的使用，可参考"
+                    },
+                    {
+                      "type": "text",
+                      "text": "这篇教程",
+                      "marks": [
+                        {
+                          "type": "link",
+                          "attrs": {
+                            "href": "https://tuture.co/2019/10/17/0b662ce/",
+                            "title": ""
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "list_item",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "前后端分离的基本概念，包括前端如何通过发起 HTTP(S) 请求从后端获取数据"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 3
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "学习目标"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "学完这篇教程后，你将："
+            }
+          ]
+        },
+        {
+          "type": "bullet_list",
+          "content": [
+            {
+              "type": "list_item",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "了解用 pipenv 工具管理 Python 依赖"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "list_item",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "学会用 Django REST Framework 快速开发 REST API"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "list_item",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "学会用 Nuxt 框架快速开发 SPA（单页应用），能够从后端获取数据并渲染"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 3
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "用 pipenv 初始化 Python 环境"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "首先创建项目目录，并进入："
+            }
+          ]
+        },
+        {
+          "type": "code_block",
+          "attrs": {
+            "language": "bash"
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "$ mkdir recipes_app && cd recipes_app"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "在这个项目中，我们用 "
+            },
+            {
+              "type": "text",
+              "text": "pipenv",
+              "marks": [
+                {
+                  "type": "link",
+                  "attrs": {
+                    "href": "https://pipenv.kennethreitz.org/",
+                    "title": ""
+                  }
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "text": " 来管理 Python 项目的环境依赖。Pipenv 是 Python 社区偶像级大师 Kenneth Reitz 牵头开发的开发流程优化工具，立志集所有项目管理工具（Node 的 npm、Ruby 的 bundler、PHP 的 composer 等等）的优势为一体。我们通过下面的命令安装 pipenv，并创建项目的依赖环境："
+            }
+          ]
+        },
+        {
+          "type": "code_block",
+          "attrs": {
+            "language": "bash"
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "$ pip install pipenv\n$ pipenv shell"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "如果看到命令提示符前面出现 "
+            },
+            {
+              "type": "text",
+              "text": "(recipes_app-nV3wuGJ1)",
+              "marks": [
+                {
+                  "type": "code"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "text": " 的提示（后面那串随机字符串可能不一样），就表明我们已经成功地创建了项目独有的虚拟环境！我们接着安装 Django “三件套”："
+            }
+          ]
+        },
+        {
+          "type": "bullet_list",
+          "content": [
+            {
+              "type": "list_item",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Django",
+                      "marks": [
+                        {
+                          "type": "bold"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": ": Django 框架本身，提供了丰富且强大的服务器开发组件；"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "list_item",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "DRF (Django Rest Framework)",
+                      "marks": [
+                        {
+                          "type": "bold"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": "：Django 框架的超级搭档，大大方便了 REST API 的开发；"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "list_item",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "Django CORS Headers",
+                      "marks": [
+                        {
+                          "type": "bold"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": "：用于实现跨域资源请求（CORS）的 Django 中间件（如果你不了解 CORS，可以参考阮一峰的"
+                    },
+                    {
+                      "type": "text",
+                      "text": "日志",
+                      "marks": [
+                        {
+                          "type": "link",
+                          "attrs": {
+                            "href": "http://www.ruanyifeng.com/blog/2016/04/cors.html",
+                            "title": ""
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": "）。"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "安装命令如下："
+            }
+          ]
+        },
+        {
+          "type": "code_block",
+          "attrs": {
+            "language": "bash"
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "(recipes_app-nV3wuGJ1) $ pipenv install django django-rest-framework django-cors-headers"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "commit": "c64b3b6",
+        "file": "Pipfile"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "commit": "c64b3b6",
+        "file": "Pipfile"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "这时 pipenv 便产生了 Pipfile 文件，它的作用就类似 Node 项目中的 package.json 文件："
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "commit": "c64b3b6",
+        "file": "Pipfile"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "commit": "c64b3b6",
+        "file": "Pipfile"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "commit": "c64b3b6",
+        "file": "Pipfile"
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "commit": "c64b3b6",
+        "file": "api/api/__init__.py"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "commit": "c64b3b6",
+        "file": "api/api/__init__.py"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "commit": "c64b3b6",
+        "file": "api/api/__init__.py"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "commit": "c64b3b6",
+        "file": "api/api/__init__.py"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "commit": "c64b3b6",
+        "file": "api/api/__init__.py"
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "commit": "c64b3b6",
+        "file": "api/api/settings.py"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "commit": "c64b3b6",
+        "file": "api/api/settings.py"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "commit": "c64b3b6",
+        "file": "api/api/settings.py"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "commit": "c64b3b6",
+        "file": "api/api/settings.py"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "commit": "c64b3b6",
+        "file": "api/api/settings.py"
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "commit": "c64b3b6",
+        "file": "api/api/urls.py"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "commit": "c64b3b6",
+        "file": "api/api/urls.py"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "commit": "c64b3b6",
+        "file": "api/api/urls.py"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "commit": "c64b3b6",
+        "file": "api/api/urls.py"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "commit": "c64b3b6",
+        "file": "api/api/urls.py"
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "commit": "c64b3b6",
+        "file": "api/api/wsgi.py"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "commit": "c64b3b6",
+        "file": "api/api/wsgi.py"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "commit": "c64b3b6",
+        "file": "api/api/wsgi.py"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "commit": "c64b3b6",
+        "file": "api/api/wsgi.py"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "commit": "c64b3b6",
+        "file": "api/api/wsgi.py"
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "commit": "c64b3b6",
+        "file": "api/core/__init__.py"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "commit": "c64b3b6",
+        "file": "api/core/__init__.py"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "commit": "c64b3b6",
+        "file": "api/core/__init__.py"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "commit": "c64b3b6",
+        "file": "api/core/__init__.py"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "commit": "c64b3b6",
+        "file": "api/core/__init__.py"
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "commit": "c64b3b6",
+        "file": "api/core/admin.py"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "commit": "c64b3b6",
+        "file": "api/core/admin.py"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "commit": "c64b3b6",
+        "file": "api/core/admin.py"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "commit": "c64b3b6",
+        "file": "api/core/admin.py"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "commit": "c64b3b6",
+        "file": "api/core/admin.py"
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "commit": "c64b3b6",
+        "file": "api/core/apps.py"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "commit": "c64b3b6",
+        "file": "api/core/apps.py"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "commit": "c64b3b6",
+        "file": "api/core/apps.py"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "commit": "c64b3b6",
+        "file": "api/core/apps.py"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "commit": "c64b3b6",
+        "file": "api/core/apps.py"
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "commit": "c64b3b6",
+        "file": "api/core/migrations/__init__.py"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "commit": "c64b3b6",
+        "file": "api/core/migrations/__init__.py"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "commit": "c64b3b6",
+        "file": "api/core/migrations/__init__.py"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "commit": "c64b3b6",
+        "file": "api/core/migrations/__init__.py"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "commit": "c64b3b6",
+        "file": "api/core/migrations/__init__.py"
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "commit": "c64b3b6",
+        "file": "api/core/models.py"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "commit": "c64b3b6",
+        "file": "api/core/models.py"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "commit": "c64b3b6",
+        "file": "api/core/models.py"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "commit": "c64b3b6",
+        "file": "api/core/models.py"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "commit": "c64b3b6",
+        "file": "api/core/models.py"
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "commit": "c64b3b6",
+        "file": "api/core/tests.py"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "commit": "c64b3b6",
+        "file": "api/core/tests.py"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "commit": "c64b3b6",
+        "file": "api/core/tests.py"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "commit": "c64b3b6",
+        "file": "api/core/tests.py"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "commit": "c64b3b6",
+        "file": "api/core/tests.py"
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "commit": "c64b3b6",
+        "file": "api/core/views.py"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "commit": "c64b3b6",
+        "file": "api/core/views.py"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "commit": "c64b3b6",
+        "file": "api/core/views.py"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "commit": "c64b3b6",
+        "file": "api/core/views.py"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "commit": "c64b3b6",
+        "file": "api/core/views.py"
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "commit": "c64b3b6",
+        "file": "api/manage.py"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "commit": "c64b3b6",
+        "file": "api/manage.py"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "commit": "c64b3b6",
+        "file": "api/manage.py"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "commit": "c64b3b6",
+        "file": "api/manage.py"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "commit": "c64b3b6",
+        "file": "api/manage.py"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "fixed": true,
+        "level": "step",
+        "pos": "post",
+        "commit": "c64b3b6"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "然后用 Django 脚手架创建服务器项目 "
+            },
+            {
+              "type": "text",
+              "text": "api",
+              "marks": [
+                {
+                  "type": "code"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "text": " 的基本结构，并进入到 "
+            },
+            {
+              "type": "text",
+              "text": "api",
+              "marks": [
+                {
+                  "type": "code"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "text": "创建一个子应用 "
+            },
+            {
+              "type": "text",
+              "text": "core",
+              "marks": [
+                {
+                  "type": "code"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "text": "："
+            }
+          ]
+        },
+        {
+          "type": "code_block",
+          "attrs": {
+            "language": "bash"
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "(recipes_app-nV3wuGJ1) $ django-admin startproject api\n(recipes_app-nV3wuGJ1) $ cd api\n(recipes_app-nV3wuGJ1) $ python manage.py startapp core"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "接着进行数据库迁移，并创建用于登录后台管理的超级用户："
+            }
+          ]
+        },
+        {
+          "type": "code_block",
+          "attrs": {
+            "language": "bash"
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "(recipes_app-nV3wuGJ1) $ python manage.py migrate\n(recipes_app-nV3wuGJ1) $ python manage.py createsuperuser"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "按照问题输入信息即可。要记住用户名和密码哦！然后运行开发服务器："
+            }
+          ]
+        },
+        {
+          "type": "code_block",
+          "attrs": {
+            "language": "bash"
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "(recipes_app-nV3wuGJ1) $ python manage.py runserver"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "访问 "
+            },
+            {
+              "type": "text",
+              "text": "http://localhost:8000/admin",
+              "marks": [
+                {
+                  "type": "link",
+                  "attrs": {
+                    "href": "http://localhost:8000/admin",
+                    "title": ""
+                  }
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "text": "，可以看到后台管理的登录页面。输入刚才创建的超级用户的用户名和密码，就进入了后台管理系统，如下所示："
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "image",
+              "attrs": {
+                "src": ".tuture/assets/django-admin.png",
+                "alt": "",
+                "title": ""
+              }
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "熟悉的界面，但是——没什么东西，而且全是英文！别担心，后面我们会一个个搞定。"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "step_end",
+      "attrs": {
+        "commit": "c64b3b6"
+      }
+    }
+  ]
+}
