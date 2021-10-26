@@ -64,13 +64,13 @@ export default function toggleList(listType, itemType) {
           state,
           transaction: tr,
         }),
-        dispatch: () => undefined,
+        dispatch,
       };
 
       clearNodes()(props);
-      wrapInList(listType)(props);
-
-      return view.dispatch(tr);
+      view.dispatch(tr);
+      view.focus();
+      return wrapInList(listType)({ state: view.state, dispatch });
     }
 
     return wrapInList(listType)({ state, dispatch, view });

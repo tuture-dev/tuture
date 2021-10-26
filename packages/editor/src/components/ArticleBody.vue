@@ -73,7 +73,6 @@ import {
   Code,
   History,
   ListItem,
-  OrderedList,
   HorizontalRule,
   Placeholder,
   TrailingNode,
@@ -106,6 +105,7 @@ import {
   BulletList,
   TodoList,
   Blockquote,
+  OrderedList,
 } from '@/editor/nodes';
 import { Link } from '@/editor/marks';
 import {
