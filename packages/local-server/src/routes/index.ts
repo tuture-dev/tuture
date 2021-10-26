@@ -5,6 +5,7 @@ import { createArticlesRouter } from './articles';
 import { createDiffRouter } from './diff';
 import { createMetaRouter } from './meta';
 import { createRemotesRouter } from './remotes';
+import { createUploadRouter } from './upload';
 // import { createTocRouter } from './toc';
 import TaskQueue from '../utils/task-queue';
 
@@ -15,6 +16,7 @@ export function createBaseRouter(queue: TaskQueue) {
   router.use('/diff', createDiffRouter());
   router.use('/meta', createMetaRouter(queue));
   router.use('/remotes', createRemotesRouter(queue));
+  router.use('/upload', createUploadRouter());
   // router.use('/toc', createTocRouter(queue));
 
   router.get('/sync', async (req, res) => {

@@ -1,6 +1,5 @@
-import resolve from '@rollup/plugin-node-resolve';
 import json from 'rollup-plugin-json';
-import typescript from 'rollup-plugin-typescript2';
+import typescript from '@rollup/plugin-typescript';
 
 export default [
   {
@@ -21,9 +20,10 @@ export default [
     plugins: [
       typescript({
         tsconfig: 'packages/core/tsconfig.json',
+        outputToFilesystem: true,
       }),
     ],
-    external: (id) => !id.startsWith('.') && !id.startsWith('/'),
+    external: (id) => !id.startsWith('.') && !id.endsWith('.ts'),
   },
   {
     input: 'packages/local-server/src/index.ts',
@@ -41,12 +41,12 @@ export default [
       },
     ],
     plugins: [
-      resolve({ browser: true }),
       json(),
       typescript({
         tsconfig: 'packages/local-server/tsconfig.json',
+        outputToFilesystem: true,
       }),
     ],
-    external: (id) => !id.startsWith('.') && !id.startsWith('/'),
+    external: (id) => !id.startsWith('.') && !id.endsWith('.ts'),
   },
 ];

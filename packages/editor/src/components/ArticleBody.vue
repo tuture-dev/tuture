@@ -297,17 +297,18 @@ export default defineComponent({
     },
     uploadImage(file) {
       if (!file) return;
+      console.log('file', file);
 
-      return new Promise((resolve) => {
-        const reader = new FileReader();
-
-        reader.onload = (readerEvent) => {
-          const src = readerEvent.target.result;
-
-          resolve(src);
-        };
-
-        reader.readAsDataURL(file);
+      return new Promise((resolve, reject) => {
+        const formData = new FormData();
+        formData.append('files', file);
+        fetch(`/api/upload`, {
+          method: 'POST',
+          body: formData,
+        })
+          .then((res) => res.json())
+          .then((data) => resolve(data[0]))
+          .catch((err) => reject(err));
       });
     },
     handleImagePicked(event) {

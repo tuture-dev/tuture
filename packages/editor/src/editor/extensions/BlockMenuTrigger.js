@@ -325,13 +325,11 @@ export default class BlockMenuTrigger extends Extension {
                   secondUpperParent.node.type.name,
                 )
               ) {
-                debugger;
                 const ancestorNodeTypeName = getAncestorNodeTypeName($from);
 
                 decorations.push(
                   Decoration.widget(secondUpperParent.start, () => {
                     editButton.addEventListener('click', () => {
-                      debugger;
                       this.options.onOpen('', 'edit', ancestorNodeTypeName);
                     });
                     return editButton;

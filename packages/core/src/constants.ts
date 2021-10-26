@@ -12,6 +12,9 @@ export const TUTURE_ROOT = '.tuture';
 // Root directory for storing json documents.
 export const TUTURE_DOC_ROOT = 'docs';
 
+// Root directory for storing assets.
+export const TUTURE_ASSETS_ROOT = 'assets';
+
 // Directory which houses tutorial data on VCS.
 export const TUTURE_VCS_ROOT = '.tuture-committed';
 
