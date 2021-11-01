@@ -1,4 +1,4 @@
-import { findParentNode, findSelectedNodeOfType } from "prosemirror-utils";
+import { findParentNode, findSelectedNodeOfType } from 'prosemirror-utils';
 
 export function getColumnIndex(selection) {
   const isColSelection = selection.isColSelection && selection.isColSelection();
@@ -98,8 +98,8 @@ export function isInList(state) {
   const $head = state.selection.$head;
   for (let d = $head.depth; d > 0; d--) {
     if (
-      ["ordered_list", "bullet_list", "todo_list"].includes(
-        $head.node(d).type.name
+      ['ordered_list', 'bullet_list', 'todo_list'].includes(
+        $head.node(d).type.name,
       )
     ) {
       return true;
