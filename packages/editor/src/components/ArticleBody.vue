@@ -62,7 +62,7 @@
 
 <script setup>
 import { defineComponent } from 'vue-demi';
-import { mapActions, mapGetters, mapState } from 'vuex';
+import { mapActions, mapGetters, mapMutations, mapState } from 'vuex';
 import { Editor, EditorContent } from 'tiptap';
 import {
   Bold,
@@ -231,7 +231,11 @@ export default defineComponent({
           }),
           new DataPaste(),
         ],
+        onUpdate: ({ getJSON }) => {
+          this.setDoc(getJSON());
+        },
       }),
+      initialized: false,
       linkUrl: null,
       linkMenuIsActive: false,
       dictionary: dictionary,
@@ -246,6 +250,7 @@ export default defineComponent({
     };
   },
   methods: {
+    ...mapMutations('editor', ['setDoc']),
     ...mapActions('editor', ['fetchDoc']),
     handleToggleLink() {
       if (this.editor.isActive.link()) {
@@ -404,11 +409,13 @@ export default defineComponent({
   },
   watch: {
     nowArticleId: function(articleId) {
+      this.initialized = false;
       this.fetchDoc();
     },
     doc: function(newVal) {
-      if (this.editor) {
+      if (this.editor && !this.initialized) {
         this.editor.setContent(newVal);
+        this.initialized = true;
       }
     },
   },
