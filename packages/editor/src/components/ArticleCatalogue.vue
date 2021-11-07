@@ -42,7 +42,6 @@ export default defineComponent({
               return [];
           }
         });
-      console.log('headings changed', headings);
 
       return headings;
     },
