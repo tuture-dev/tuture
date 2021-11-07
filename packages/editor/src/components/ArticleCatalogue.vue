@@ -1,24 +1,52 @@
 <template>
   <div class="p-10 bg-gray-100 h-screen">
     <a-anchor wrapperClass="bg-gray-100">
-      <a-anchor-link href="#components-anchor-demo-basic" title="Basic demo" />
       <a-anchor-link
-        href="#components-anchor-demo-static"
-        title="Static demo"
+        v-for="heading in headings"
+        :key="heading.target"
+        :href="`#${heading.target}`"
+        :title="heading.title"
+        :style="{ 'padding-left': `${heading.level - 1}rem` }"
       />
-      <a-anchor-link href="#API" title="API">
-        <a-anchor-link href="#Anchor-Props" title="Anchor Props" />
-        <a-anchor-link href="#Link-Props" title="Link Props" />
-      </a-anchor-link>
     </a-anchor>
   </div>
 </template>
 
 <script setup>
 import { defineComponent } from 'vue-demi';
+import { mapState } from 'vuex';
+import { getNodeText } from '@tuture/core';
 
 export default defineComponent({
   name: 'ArticleCatalogue',
+  computed: {
+    ...mapState('editor', ['doc']),
+    headings() {
+      const convertNodeToHeading = (node) => ({
+        target: node.attrs.id,
+        title: getNodeText(node),
+        level: node.attrs.level,
+      });
+
+      const headings = this.doc.content
+        .filter((node) => node.type === 'heading' || node.type === 'explain')
+        .flatMap((node) => {
+          switch (node.type) {
+            case 'heading':
+              return convertNodeToHeading(node);
+            case 'explain':
+              return node.content
+                .filter((node) => node.type === 'heading')
+                .map(convertNodeToHeading);
+            default:
+              return [];
+          }
+        });
+      console.log('headings changed', headings);
+
+      return headings;
+    },
+  },
 });
 </script>
 

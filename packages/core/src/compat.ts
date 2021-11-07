@@ -125,37 +125,37 @@ function convertBlock(node: Element): INode {
     case 'heading-one':
       return {
         type: 'heading',
-        attrs: { level: 1 },
+        attrs: { level: 1, id: node.id },
         content: convertInlineNodes(node.children),
       };
     case 'heading-two':
       return {
         type: 'heading',
-        attrs: { level: 2 },
+        attrs: { level: 2, id: node.id },
         content: convertInlineNodes(node.children),
       };
     case 'heading-three':
       return {
         type: 'heading',
-        attrs: { level: 3 },
+        attrs: { level: 3, id: node.id },
         content: convertInlineNodes(node.children),
       };
     case 'heading-four':
       return {
         type: 'heading',
-        attrs: { level: 4 },
+        attrs: { level: 4, id: node.id },
         content: convertInlineNodes(node.children),
       };
     case 'heading-five':
       return {
         type: 'heading',
-        attrs: { level: 5 },
+        attrs: { level: 5, id: node.id },
         content: convertInlineNodes(node.children),
       };
     case 'heading-six':
       return {
         type: 'heading',
-        attrs: { level: 6 },
+        attrs: { level: 6, id: node.id },
         content: convertInlineNodes(node.children),
       };
     default:

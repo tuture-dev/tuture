@@ -1,3 +1,5 @@
+import { getNodeText } from '@tuture/core';
+
 export const namespaced = true;
 
 export const state = () => ({
@@ -16,6 +18,25 @@ export const mutations = {
   setDocLoading(state, loading) {
     state.docLoading = loading;
   },
+};
+
+const convertNodeToHeading = (node) => ({
+  target: node.attrs.id,
+  title: getNodeText(node),
+  level: node.attrs.level,
+});
+
+export const getters = {
+  getHeadings: (state) =>
+    state.doc.content
+      .filter((node) => node.type === 'heading' || node.type === 'explain')
+      .flatMap((node) =>
+        node.type === 'heading'
+          ? convertNodeToHeading(node)
+          : node.content
+              .filter((node) => node.type === 'heading')
+              .map(convertNodeToHeading),
+      ),
 };
 
 export const actions = {

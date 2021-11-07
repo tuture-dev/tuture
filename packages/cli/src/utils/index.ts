@@ -12,14 +12,7 @@ import {
   TUTURE_BRANCH,
   randHex,
 } from '@tuture/core';
-import {
-  git,
-  readDiff,
-  Commit,
-  collectionPath,
-  loadCollection,
-  loadArticle,
-} from '@tuture/local-server';
+import { git, readDiff, collectionPath } from '@tuture/local-server';
 
 import { newEmptyExplain, newStepTitle, newEmptyFile } from './node';
 import logger from './logger';
@@ -41,18 +34,6 @@ type ArticleDoc = {
   articleId: string;
   doc: INode;
 };
-
-/**
- * Load nodes from tuture root.
- * @returns current nodes from tuture root.
- */
-export function loadArticleDocs(): ArticleDoc[] {
-  const collection = loadCollection();
-  return collection.articles.map(({ id }) => ({
-    articleId: id,
-    doc: loadArticle(id),
-  }));
-}
 
 /**
  * Initialize steps from repository.

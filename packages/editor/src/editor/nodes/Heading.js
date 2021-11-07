@@ -1,5 +1,6 @@
 import { Node } from 'tiptap';
 import { setBlockType, textblockTypeInputRule } from 'tiptap-commands';
+import { randHex } from '@tuture/core';
 
 import { toggleBlockType } from '../commands';
 
@@ -33,12 +34,16 @@ export default class Heading extends Node {
         tag: `h${level}`,
         attrs: { level },
       })),
-      toDOM: (node) => [`h${node.attrs.level}`, 0],
+      toDOM: (node) => [`h${node.attrs.level}`, { id: node.attrs.id }, 0],
     };
   }
 
   commands({ type, schema }) {
-    return (attrs) => toggleBlockType(type, schema.nodes.paragraph, attrs);
+    return (attrs) =>
+      toggleBlockType(type, schema.nodes.paragraph, {
+        ...attrs,
+        id: randHex(8),
+      });
   }
 
   keys({ type }) {
@@ -57,6 +62,7 @@ export default class Heading extends Node {
     return this.options.levels.map((level) =>
       textblockTypeInputRule(new RegExp(`^(#{1,${level}})\\s$`), type, () => ({
         level,
+        id: randHex(8),
       })),
     );
   }

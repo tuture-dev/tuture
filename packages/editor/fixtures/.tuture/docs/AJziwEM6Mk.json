@@ -23,7 +23,7 @@
         }
       ],
       "attrs": {
-        "id": "464b1165",
+        "id": "1a0e9b0c",
         "level": 2,
         "fixed": true,
         "step": {
@@ -69,7 +69,8 @@
         {
           "type": "heading",
           "attrs": {
-            "level": 3
+            "level": 3,
+            "id": "oHnEK73CzO"
           },
           "content": [
             {
@@ -944,7 +945,8 @@
         {
           "type": "heading",
           "attrs": {
-            "level": 3
+            "level": 3,
+            "id": "9RNmTKsTqq"
           },
           "content": [
             {
