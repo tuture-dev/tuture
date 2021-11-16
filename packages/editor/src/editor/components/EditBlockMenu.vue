@@ -2,7 +2,7 @@
   <portal>
     <div
       ref="menuRef"
-      id="block-menu-container"
+      id="edit-block-menu-container"
       class="wrapper"
       :style="userStyle"
     >
@@ -135,9 +135,10 @@ export default {
       };
     },
     subMenuItems() {
-      const { dictionary } = this.$props;
+      const { dictionary, view } = this.$props;
+      const { schema } = view.state;
       let { canTurnIntoMenuItems = [] } = getMenuItems(
-        this.view.state,
+        schema,
         dictionary,
         this.ancestorNodeTypeName,
       );
@@ -186,36 +187,6 @@ export default {
         return [...acc, item];
       }, []);
     },
-    caretPosition() {
-      const selection = window.document.getSelection();
-      if (!selection || !selection.anchorNode || !selection.focusNode) {
-        return {
-          top: 0,
-          left: 0,
-        };
-      }
-
-      const range = window.document.createRange();
-      range.setStart(selection.anchorNode, selection.anchorOffset);
-      range.setEnd(selection.focusNode, selection.focusOffset);
-
-      // This is a workaround for an edgecase where getBoundingClientRect will
-      // return zero values if the selection is collapsed at the start of a newline
-      // see reference here: https://stackoverflow.com/a/59780954
-      const rects = range.getClientRects();
-      if (rects.length === 0) {
-        // probably buggy newline behavior, explicitly select the node contents
-        if (range.startContainer && range.collapsed) {
-          range.selectNodeContents(range.startContainer);
-        }
-      }
-
-      const rect = range.getBoundingClientRect();
-      return {
-        top: rect.top,
-        left: rect.left,
-      };
-    },
     userStyle() {
       const extraStyle = this.isActive
         ? {
@@ -249,13 +220,13 @@ export default {
       const startPos = view.coordsAtPos(selection.$from.pos);
       const ref = this.$refs.menuRef;
       const offsetHeight = ref ? ref.offsetHeight : 0;
-      const paragraph = view.domAtPos(selection.$from.pos);
+      let paragraph = view.domAtPos(selection.$from.pos);
+      const node =
+        paragraph.node.nodeName === '#text'
+          ? paragraph.node.parentNode
+          : paragraph.node;
 
-      if (
-        !props.isActive ||
-        !paragraph.node ||
-        !paragraph.node.getBoundingClientRect
-      ) {
+      if (!props.isActive || !paragraph.node || !node.getBoundingClientRect) {
         return {
           left: -1000,
           top: 0,
@@ -264,8 +235,7 @@ export default {
         };
       }
 
-      const { left } = this.caretPosition;
-      const { top, bottom } = paragraph.node.getBoundingClientRect();
+      const { top, bottom, left } = node.getBoundingClientRect();
       const margin = 24;
 
       if (startPos.top - offsetHeight > margin) {
@@ -435,9 +405,9 @@ export default {
     triggerCut(item, ancestorNodeTypeName) {
       // paragraph 和 heading 的删除
       if (
-        (ancestorNodeTypeName.length === 1 &&
+        (ancestorNodeTypeName.length === 2 &&
           ['paragraph', 'heading'].includes(ancestorNodeTypeName[0])) ||
-        (ancestorNodeTypeName.length >= 2 &&
+        (ancestorNodeTypeName.length >= 3 &&
           ['paragraph', 'heading'].includes(ancestorNodeTypeName[0]) &&
           ['notice', 'blockquote'].includes(ancestorNodeTypeName[1]))
       ) {
@@ -541,9 +511,9 @@ export default {
     triggerCopy(item, ancestorNodeTypeName) {
       // paragraph 和 heading 的删除
       if (
-        (ancestorNodeTypeName.length === 1 &&
+        (ancestorNodeTypeName.length === 2 &&
           ['paragraph', 'heading'].includes(ancestorNodeTypeName[0])) ||
-        (ancestorNodeTypeName.length >= 2 &&
+        (ancestorNodeTypeName.length >= 3 &&
           ['paragraph', 'heading'].includes(ancestorNodeTypeName[0]) &&
           ['notice', 'blockquote'].includes(ancestorNodeTypeName[1]))
       ) {
@@ -611,11 +581,10 @@ export default {
     },
     triggerDelete(item, ancestorNodeTypeName = []) {
       // paragraph 和 heading 的删除
-      console.log('ancestorNodeTypeName', ancestorNodeTypeName);
       if (
-        (ancestorNodeTypeName.length === 1 &&
+        (ancestorNodeTypeName.length === 2 &&
           ['paragraph', 'heading'].includes(ancestorNodeTypeName[0])) ||
-        (ancestorNodeTypeName.length >= 2 &&
+        (ancestorNodeTypeName.length >= 3 &&
           ['paragraph', 'heading'].includes(ancestorNodeTypeName[0]) &&
           ['notice', 'blockquote'].includes(ancestorNodeTypeName[1]))
       ) {
@@ -688,27 +657,29 @@ export default {
       const { dispatch, state } = this.view;
       const { schema, selection } = state;
 
-      if (['heading'].includes(item.name)) {
-        toggleBlockType(
-          schema.nodes[item.name],
-          schema.nodes.paragraph,
-          item?.attrs,
-        )(state, dispatch, this.view);
-        this.view.focus();
-        return;
-      }
+      this.$props.commands[item.name](item?.attrs);
 
-      const mapListItem = {
-        todo_list: 'todo_item',
-        ordered_list: 'list_item',
-        bullet_list: 'list_item',
-      };
-      if (['todo_list', 'bullet_list', 'ordered_list'].includes(item.name)) {
-        // 首先将原块变为 paragraph，然后再变到对应的 list
-        toggleList(schema.nodes[item.name])(state, dispatch, this.view);
-        this.view.focus();
-        return;
-      }
+      // if (['heading'].includes(item.name)) {
+      //   toggleBlockType(
+      //     schema.nodes[item.name],
+      //     schema.nodes.paragraph,
+      //     item?.attrs,
+      //   )(state, dispatch, this.view);
+      //   this.view.focus();
+      //   return;
+      // }
+
+      // const mapListItem = {
+      //   todo_list: 'todo_item',
+      //   ordered_list: 'list_item',
+      //   bullet_list: 'list_item',
+      // };
+      // if (['todo_list', 'bullet_list', 'ordered_list'].includes(item.name)) {
+      //   // 首先将原块变为 paragraph，然后再变到对应的 list
+      //   toggleList(schema.nodes[item.name])(state, dispatch, this.view);
+      //   this.view.focus();
+      //   return;
+      // }
     },
 
     handleActionClick(item) {

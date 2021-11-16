@@ -1,6 +1,13 @@
-import { Text as TextV1, Element, Node } from 'editure';
-import { IText, INode, IMark } from './interfaces';
-import { Collection, File, Explain, StepTitle } from './legacy';
+import { Element, Node } from 'editure';
+import {
+  Collection as CollectionV2,
+  IText,
+  INode,
+  IMark,
+  StepDoc,
+  Article,
+} from './interfaces';
+import { Collection, File, Explain, StepTitle, getStepTitle } from './legacy';
 
 import { newStepTitle } from './nodes';
 
@@ -118,37 +125,37 @@ function convertBlock(node: Element): INode {
     case 'heading-one':
       return {
         type: 'heading',
-        attrs: { level: 1 },
+        attrs: { level: 1, id: node.id },
         content: convertInlineNodes(node.children),
       };
     case 'heading-two':
       return {
         type: 'heading',
-        attrs: { level: 2 },
+        attrs: { level: 2, id: node.id },
         content: convertInlineNodes(node.children),
       };
     case 'heading-three':
       return {
         type: 'heading',
-        attrs: { level: 3 },
+        attrs: { level: 3, id: node.id },
         content: convertInlineNodes(node.children),
       };
     case 'heading-four':
       return {
         type: 'heading',
-        attrs: { level: 4 },
+        attrs: { level: 4, id: node.id },
         content: convertInlineNodes(node.children),
       };
     case 'heading-five':
       return {
         type: 'heading',
-        attrs: { level: 5 },
+        attrs: { level: 5, id: node.id },
         content: convertInlineNodes(node.children),
       };
     case 'heading-six':
       return {
         type: 'heading',
-        attrs: { level: 6 },
+        attrs: { level: 6, id: node.id },
         content: convertInlineNodes(node.children),
       };
     default:
@@ -207,37 +214,73 @@ export type ArticleNodes = {
   nodes: INode[];
 };
 
-export function convertV1ToV2(collection: Collection): ArticleNodes[] {
-  return collection.articles.map((article) => {
-    const steps = collection.steps.filter(
-      (step) => step.articleId === article.id,
-    );
-    const nodes = steps.flatMap((step) => [
-      { type: 'step_start', attrs: { commit: step.commit } },
-      ...step.children.flatMap((node, index) => {
-        if (index === 0) {
-          const title = node as StepTitle;
-          return newStepTitle(title.commit, convertInlineNodes(title.children));
-        } else if (index === 1 || index === step.children.length - 1) {
-          return {
-            type: 'explain',
-            attrs: {
-              fixed: true,
-              level: 'step',
-              pos: index === 1 ? 'pre' : 'post',
-              commit: step.commit,
-            },
-            content: (node as Explain).children.map((block) =>
-              convertBlock(block as Element),
-            ),
-          };
-        } else {
-          return convertFile(node as File);
-        }
-      }),
-      { type: 'step_end', attrs: { commit: step.commit } },
-    ]) as INode[];
+export type StepDocs = { [id: string]: StepDoc };
 
-    return { articleId: article.id, nodes };
+export function convertV1ToV2(
+  collection: Collection,
+): [CollectionV2, StepDocs] {
+  const stepDocs: StepDocs = {};
+  const collectionV2 = collection as any;
+  collectionV2.unassignedSteps = [];
+  collectionV2.articles.forEach((article: Article) => {
+    article.steps = [];
   });
+
+  for (let i = 0; i < collection.steps.length; i++) {
+    const stepV1 = collection.steps[i];
+    const stepMeta = {
+      id: stepV1.id,
+      commit: stepV1.commit,
+    };
+    if (stepV1.articleId) {
+      for (let article of collectionV2.articles) {
+        if (article.id === stepV1.articleId) {
+          article.steps.push(stepMeta);
+        }
+      }
+    } else {
+      collectionV2.unassignedSteps.push(stepMeta);
+    }
+
+    const stepAttrs = {
+      id: stepV1.id,
+      name: getStepTitle(stepV1),
+      articleId: stepV1.articleId || '',
+      commit: stepV1.commit,
+      order: i,
+    };
+    stepDocs[stepV1.id] = {
+      type: 'doc',
+      attrs: stepAttrs,
+      content: [
+        { type: 'step_start', attrs: { commit: stepV1.commit } },
+        ...stepV1.children.flatMap((node, index) => {
+          if (index === 0) {
+            const title = node as StepTitle;
+            return newStepTitle(convertInlineNodes(title.children), stepAttrs);
+          } else if (index === 1 || index === stepV1.children.length - 1) {
+            return {
+              type: 'explain',
+              attrs: {
+                fixed: true,
+                level: 'step',
+                pos: index === 1 ? 'pre' : 'post',
+                commit: stepV1.commit,
+              },
+              content: (node as Explain).children.map((block) =>
+                convertBlock(block as Element),
+              ),
+            };
+          } else {
+            return convertFile(node as File);
+          }
+        }),
+        { type: 'step_end', attrs: { commit: stepV1.commit } },
+      ],
+    };
+  }
+
+  delete collectionV2.steps;
+
+  return [collectionV2 as CollectionV2, stepDocs];
 }

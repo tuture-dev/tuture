@@ -1,0 +1,1719 @@
+{
+  "type": "doc",
+  "attrs": {
+    "id": "AJziwEM6Mk",
+    "name": "用 Nuxt.js 实现网站首页",
+    "articleId": "0818be0",
+    "commit": "596203d",
+    "order": 2
+  },
+  "content": [
+    {
+      "type": "step_start",
+      "attrs": {
+        "commit": "596203d"
+      }
+    },
+    {
+      "type": "heading",
+      "content": [
+        {
+          "type": "text",
+          "text": "用 Nuxt.js 实现网站首页"
+        }
+      ],
+      "attrs": {
+        "id": "1a0e9b0c",
+        "level": 2,
+        "fixed": true,
+        "step": {
+          "id": "AJziwEM6Mk",
+          "name": "用 Nuxt.js 实现网站首页",
+          "articleId": "0818be0",
+          "commit": "596203d",
+          "order": 2
+        }
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "fixed": true,
+        "level": "step",
+        "pos": "pre",
+        "commit": "596203d"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "Django 的 MTV 架构固然优秀，但是随着现在的业务逻辑越来越多地向前端倾斜（也就是现在流行的"
+            },
+            {
+              "type": "text",
+              "text": "富前端应用",
+              "marks": [
+                {
+                  "type": "bold"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "text": "），其中的 T（Template）需要更强大的武器来解决，这里就是我们的第二位主角 Nuxt。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 3,
+            "id": "oHnEK73CzO"
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "用脚手架初始化 Nuxt 项目"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "我们将把所有的前端代码放到 client 目录中，不过无需自己创建，我们调用 nuxt 的脚手架来创建前端应用："
+            }
+          ]
+        },
+        {
+          "type": "code_block",
+          "attrs": {
+            "language": "bash"
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "$ npx create-nuxt-app client"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "之后脚手架应用会询问一系列问题，按下面的截图进行选择（当然作者名填自己）："
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "image",
+              "attrs": {
+                "src": ".tuture/assets/create-nuxt-app.jpg",
+                "alt": "",
+                "title": ""
+              }
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "我们对 Nuxt 脚手架生成的目录结构稍作讲解。可以看到 client 目录下有以下子目录："
+            }
+          ]
+        },
+        {
+          "type": "bullet_list",
+          "content": [
+            {
+              "type": "list_item",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "assets：存放图片、CSS、JS 等原始资源文件"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "list_item",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "components：存放 Vue 组件"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "list_item",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "layouts：存放应用布局文件，布局可在多个页面中使用"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "list_item",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "middleware：存放应用的中间件。Nuxt 中的中间件指页面渲染前执行的自定义函数（本教程中不需要）"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "list_item",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "pages：应用的视图和路由。Nuxt 会根据此目录中的 "
+                    },
+                    {
+                      "type": "text",
+                      "text": ".vue",
+                      "marks": [
+                        {
+                          "type": "code"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": " 文件自动创建应用的路由"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "list_item",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "plugins: 存放 JavaScript 插件，用于在应用启动前加载（本教程中不需要）"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "list_item",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "static：存放通常不会改变的静态文件，并且将直接映射到路由（即可通过 "
+                    },
+                    {
+                      "type": "text",
+                      "text": "/static/picture.png",
+                      "marks": [
+                        {
+                          "type": "code"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "text": " 访问）"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "list_item",
+              "content": [
+                {
+                  "type": "paragraph",
+                  "content": [
+                    {
+                      "type": "text",
+                      "text": "store：存放 Vuex Store 文件（本教程中不需要）"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "本项目所用到的图片资源请访问我的 "
+            },
+            {
+              "type": "text",
+              "text": "GitHub 仓库",
+              "marks": [
+                {
+                  "type": "link",
+                  "attrs": {
+                    "href": "https://github.com/mRcfps/recipes_app/tree/master/client/static/images",
+                    "title": ""
+                  }
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "text": "，并下载到对应的目录中。"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "commit": "596203d",
+        "file": "client/.editorconfig"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "commit": "596203d",
+        "file": "client/.editorconfig"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "commit": "596203d",
+        "file": "client/.editorconfig"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "commit": "596203d",
+        "file": "client/.editorconfig"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "commit": "596203d",
+        "file": "client/.editorconfig"
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "commit": "596203d",
+        "file": "client/.gitignore"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "commit": "596203d",
+        "file": "client/.gitignore"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "commit": "596203d",
+        "file": "client/.gitignore"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "commit": "596203d",
+        "file": "client/.gitignore"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "commit": "596203d",
+        "file": "client/.gitignore"
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "commit": "596203d",
+        "file": "client/README.md"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "commit": "596203d",
+        "file": "client/README.md"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "commit": "596203d",
+        "file": "client/README.md"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "commit": "596203d",
+        "file": "client/README.md"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "commit": "596203d",
+        "file": "client/README.md"
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "commit": "596203d",
+        "file": "client/assets/README.md"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "commit": "596203d",
+        "file": "client/assets/README.md"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "commit": "596203d",
+        "file": "client/assets/README.md"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "commit": "596203d",
+        "file": "client/assets/README.md"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "commit": "596203d",
+        "file": "client/assets/README.md"
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "commit": "596203d",
+        "file": "client/components/Logo.vue"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "commit": "596203d",
+        "file": "client/components/Logo.vue"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "commit": "596203d",
+        "file": "client/components/Logo.vue"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "commit": "596203d",
+        "file": "client/components/Logo.vue"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "commit": "596203d",
+        "file": "client/components/Logo.vue"
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "commit": "596203d",
+        "file": "client/components/README.md"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "commit": "596203d",
+        "file": "client/components/README.md"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "commit": "596203d",
+        "file": "client/components/README.md"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "commit": "596203d",
+        "file": "client/components/README.md"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "commit": "596203d",
+        "file": "client/components/README.md"
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "commit": "596203d",
+        "file": "client/layouts/README.md"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "commit": "596203d",
+        "file": "client/layouts/README.md"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "commit": "596203d",
+        "file": "client/layouts/README.md"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "commit": "596203d",
+        "file": "client/layouts/README.md"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "commit": "596203d",
+        "file": "client/layouts/README.md"
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "commit": "596203d",
+        "file": "client/layouts/default.vue"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "commit": "596203d",
+        "file": "client/layouts/default.vue"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "commit": "596203d",
+        "file": "client/layouts/default.vue"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "commit": "596203d",
+        "file": "client/layouts/default.vue"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "commit": "596203d",
+        "file": "client/layouts/default.vue"
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "commit": "596203d",
+        "file": "client/middleware/README.md"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "commit": "596203d",
+        "file": "client/middleware/README.md"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "commit": "596203d",
+        "file": "client/middleware/README.md"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "commit": "596203d",
+        "file": "client/middleware/README.md"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "commit": "596203d",
+        "file": "client/middleware/README.md"
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "commit": "596203d",
+        "file": "client/nuxt.config.js"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "commit": "596203d",
+        "file": "client/nuxt.config.js"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "commit": "596203d",
+        "file": "client/nuxt.config.js"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "commit": "596203d",
+        "file": "client/nuxt.config.js"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "commit": "596203d",
+        "file": "client/nuxt.config.js"
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "commit": "596203d",
+        "file": "client/package.json"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "commit": "596203d",
+        "file": "client/package.json"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "commit": "596203d",
+        "file": "client/package.json"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "commit": "596203d",
+        "file": "client/package.json"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "commit": "596203d",
+        "file": "client/package.json"
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "commit": "596203d",
+        "file": "client/pages/README.md"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "commit": "596203d",
+        "file": "client/pages/README.md"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "commit": "596203d",
+        "file": "client/pages/README.md"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "commit": "596203d",
+        "file": "client/pages/README.md"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "commit": "596203d",
+        "file": "client/pages/README.md"
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "commit": "596203d",
+        "file": "client/pages/index.vue"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "commit": "596203d",
+        "file": "client/pages/index.vue"
+      },
+      "content": [
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 3,
+            "id": "9RNmTKsTqq"
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "编写前端首页"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "我们在 client/pages 中创建 index.vue 文件，并在其中实现我们的前端首页："
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "commit": "596203d",
+        "file": "client/pages/index.vue"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "commit": "596203d",
+        "file": "client/pages/index.vue"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "模板（Template）+ 脚本（Script）+ 样式（Style），经典的 Vue.js 组件。"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "commit": "596203d",
+        "file": "client/pages/index.vue"
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "commit": "596203d",
+        "file": "client/pages/recipes/_id/edit.vue"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "commit": "596203d",
+        "file": "client/pages/recipes/_id/edit.vue"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "commit": "596203d",
+        "file": "client/pages/recipes/_id/edit.vue"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "commit": "596203d",
+        "file": "client/pages/recipes/_id/edit.vue"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "commit": "596203d",
+        "file": "client/pages/recipes/_id/edit.vue"
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "commit": "596203d",
+        "file": "client/pages/recipes/_id/index.vue"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "commit": "596203d",
+        "file": "client/pages/recipes/_id/index.vue"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "commit": "596203d",
+        "file": "client/pages/recipes/_id/index.vue"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "commit": "596203d",
+        "file": "client/pages/recipes/_id/index.vue"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "commit": "596203d",
+        "file": "client/pages/recipes/_id/index.vue"
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "commit": "596203d",
+        "file": "client/pages/recipes/add.vue"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "commit": "596203d",
+        "file": "client/pages/recipes/add.vue"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "commit": "596203d",
+        "file": "client/pages/recipes/add.vue"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "commit": "596203d",
+        "file": "client/pages/recipes/add.vue"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "commit": "596203d",
+        "file": "client/pages/recipes/add.vue"
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "commit": "596203d",
+        "file": "client/pages/recipes/index.vue"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "commit": "596203d",
+        "file": "client/pages/recipes/index.vue"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "commit": "596203d",
+        "file": "client/pages/recipes/index.vue"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "commit": "596203d",
+        "file": "client/pages/recipes/index.vue"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "commit": "596203d",
+        "file": "client/pages/recipes/index.vue"
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "commit": "596203d",
+        "file": "client/plugins/README.md"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "commit": "596203d",
+        "file": "client/plugins/README.md"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "commit": "596203d",
+        "file": "client/plugins/README.md"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "commit": "596203d",
+        "file": "client/plugins/README.md"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "commit": "596203d",
+        "file": "client/plugins/README.md"
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "commit": "596203d",
+        "file": "client/static/README.md"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "commit": "596203d",
+        "file": "client/static/README.md"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "commit": "596203d",
+        "file": "client/static/README.md"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "commit": "596203d",
+        "file": "client/static/README.md"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "commit": "596203d",
+        "file": "client/static/README.md"
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "commit": "596203d",
+        "file": "client/static/favicon.ico"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "commit": "596203d",
+        "file": "client/static/favicon.ico"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "commit": "596203d",
+        "file": "client/static/favicon.ico"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "commit": "596203d",
+        "file": "client/static/favicon.ico"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "commit": "596203d",
+        "file": "client/static/favicon.ico"
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "commit": "596203d",
+        "file": "client/static/icon.png"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "commit": "596203d",
+        "file": "client/static/icon.png"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "commit": "596203d",
+        "file": "client/static/icon.png"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "commit": "596203d",
+        "file": "client/static/icon.png"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "commit": "596203d",
+        "file": "client/static/icon.png"
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "commit": "596203d",
+        "file": "client/static/images/banner.jpg"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "commit": "596203d",
+        "file": "client/static/images/banner.jpg"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "commit": "596203d",
+        "file": "client/static/images/banner.jpg"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "commit": "596203d",
+        "file": "client/static/images/banner.jpg"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "commit": "596203d",
+        "file": "client/static/images/banner.jpg"
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "commit": "596203d",
+        "file": "client/store/README.md"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "commit": "596203d",
+        "file": "client/store/README.md"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "commit": "596203d",
+        "file": "client/store/README.md"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "commit": "596203d",
+        "file": "client/store/README.md"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "commit": "596203d",
+        "file": "client/store/README.md"
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "commit": "596203d",
+        "file": "client/yarn.lock"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "commit": "596203d",
+        "file": "client/yarn.lock"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "commit": "596203d",
+        "file": "client/yarn.lock"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "commit": "596203d",
+        "file": "client/yarn.lock"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "commit": "596203d",
+        "file": "client/yarn.lock"
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "commit": "596203d",
+        "file": "tuture.yml"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "commit": "596203d",
+        "file": "tuture.yml"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [0, 1, 2, 3, 4, 5],
+        "commit": "596203d",
+        "file": "tuture.yml"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "commit": "596203d",
+        "file": "tuture.yml"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "commit": "596203d",
+        "file": "tuture.yml"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "fixed": true,
+        "level": "step",
+        "pos": "post",
+        "commit": "596203d"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "我们刚刚创建了 pages 目录下的 index.vue 文件，这意味着当访问根路由 "
+            },
+            {
+              "type": "text",
+              "text": "/",
+              "marks": [
+                {
+                  "type": "code"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "text": " 时，这个文件将被访问到。通过 "
+            },
+            {
+              "type": "text",
+              "text": "npm run dev",
+              "marks": [
+                {
+                  "type": "code"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "text": "运行我们的前端页面（"
+            },
+            {
+              "type": "text",
+              "text": "记得在 client 子目录下运行！",
+              "marks": [
+                {
+                  "type": "italic"
+                },
+                {
+                  "type": "bold"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "text": "），可以看到："
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "image",
+              "attrs": {
+                "src": ".tuture/assets/index-page.jpg",
+                "alt": "",
+                "title": ""
+              }
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "真是让人食欲大开！"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "step_end",
+      "attrs": {
+        "commit": "596203d"
+      }
+    }
+  ]
+}

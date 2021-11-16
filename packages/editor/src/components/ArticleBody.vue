@@ -1,5 +1,5 @@
 <template>
-  <div class="p-8">
+  <a-spin class="p-8" :spinning="docLoading">
     <h1 class="text-xl">{{ article.name }}</h1>
     <a-divider />
     <div class="editure">
@@ -57,12 +57,12 @@
       >
       </edit-block-menu>
     </div>
-  </div>
+  </a-spin>
 </template>
 
 <script setup>
 import { defineComponent } from 'vue-demi';
-import { mapGetters, mapState } from 'vuex';
+import { mapActions, mapGetters, mapMutations, mapState } from 'vuex';
 import { Editor, EditorContent } from 'tiptap';
 import {
   Bold,
@@ -72,11 +72,7 @@ import {
   HardBreak,
   Code,
   History,
-  Blockquote,
   ListItem,
-  OrderedList,
-  BulletList,
-  TodoList,
   HorizontalRule,
   Placeholder,
   TrailingNode,
@@ -106,9 +102,16 @@ import {
   TableCell,
   Paragraph,
   Text,
+  BulletList,
+  TodoList,
+  Blockquote,
+  OrderedList,
 } from '@/editor/nodes';
 import { Link } from '@/editor/marks';
-import { BlockMenuTrigger } from '@/editor/extensions';
+import {
+  CreateBlockMenuTrigger,
+  EditBlockMenuTrigger,
+} from '@/editor/extensions';
 import { dictionary } from '@/editor/utils';
 import getDataTransferFiles from '@/editor/lib/getDataTransferFiles';
 import SelectionToolbar from '@/editor/components/SelectionToolbar';
@@ -116,10 +119,7 @@ import LinkToolbar from '@/editor/components/LinkToolbar.vue';
 import insertFiles from '@/editor/commands/insertFiles';
 import CreateBlockMenu from '@/editor/components/CreateBlockMenu.vue';
 import EditBlockMenu from '@/editor/components/EditBlockMenu.vue';
-
-import useNowArticleId from '@/use/useNowArticleId';
 import { DataPaste } from '@/editor/plugins';
-import useArticleDoc from '@/use/useArticleDoc';
 
 export default defineComponent({
   name: 'ArticleBody',
@@ -151,7 +151,6 @@ export default defineComponent({
             new FileEnd(),
           ]
         : [];
-
     return {
       editor: new Editor({
         autoFocus: true,
@@ -208,7 +207,15 @@ export default defineComponent({
           new Code(),
           new History(),
           new TrailingNode(),
-          new BlockMenuTrigger({
+          new CreateBlockMenuTrigger({
+            type: 'create',
+            dictionary,
+            onOpen: this.handleOpenBlockMenu,
+            onClose: this.handleCloseBlockMenu,
+            mode: this.mode,
+          }),
+          new EditBlockMenuTrigger({
+            type: 'edit',
             dictionary,
             onOpen: this.handleOpenBlockMenu,
             onClose: this.handleCloseBlockMenu,
@@ -224,7 +231,11 @@ export default defineComponent({
           }),
           new DataPaste(),
         ],
+        onUpdate: ({ getJSON }) => {
+          this.setDoc(getJSON());
+        },
       }),
+      initialized: false,
       linkUrl: null,
       linkMenuIsActive: false,
       dictionary: dictionary,
@@ -239,6 +250,8 @@ export default defineComponent({
     };
   },
   methods: {
+    ...mapMutations('editor', ['setDoc']),
+    ...mapActions('editor', ['fetchDoc']),
     handleToggleLink() {
       if (this.editor.isActive.link()) {
         this.editor.commands.link({});
@@ -363,7 +376,6 @@ export default defineComponent({
         this.createBlockMenuOpen = true;
         this.blockMenuSearch = search;
       } else if (type === 'edit') {
-        console.log('search', ancestorNodeTypeName);
         this.editBlockMenuOpen = true;
         this.ancestorNodeTypeName = ancestorNodeTypeName;
       }
@@ -389,22 +401,26 @@ export default defineComponent({
   },
   computed: {
     ...mapState('collection', ['articles']),
+    ...mapState('editor', ['doc', 'docLoading', 'nowArticleId']),
     ...mapGetters('collection', ['getArticleById']),
     article() {
       return this.getArticleById(this.nowArticleId) || {};
     },
   },
   watch: {
+    nowArticleId: function(articleId) {
+      this.initialized = false;
+      this.fetchDoc();
+    },
     doc: function(newVal) {
-      if (this.editor) {
+      if (this.editor && !this.initialized) {
         this.editor.setContent(newVal);
+        this.initialized = true;
       }
     },
   },
-  setup() {
-    const { nowArticleId } = useNowArticleId();
-    const { doc } = useArticleDoc(nowArticleId);
-    return { nowArticleId, doc };
+  mounted() {
+    this.fetchDoc();
   },
 });
 </script>

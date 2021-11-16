@@ -10,9 +10,11 @@ import {
   getHiddenLines,
   Collection,
   Article,
+  StepAttrs,
+  isStepTitle,
 } from '@tuture/core';
 
-export function newStepTitle(hash: string, content: IText[]): IHeading {
+export function newStepTitle(attrs: StepAttrs, content: IText[]): IHeading {
   return {
     type: 'heading',
     content,
@@ -21,7 +23,7 @@ export function newStepTitle(hash: string, content: IText[]): IHeading {
       id: randHex(8),
       level: 2,
       fixed: true,
-      step: { commit: hash },
+      step: attrs,
     },
   };
 }
@@ -72,20 +74,6 @@ export function newEmptyFile(
     }),
     { type: 'file_end', attrs: delimiterAttrs },
   ];
-}
-
-export function isStepTitle(node: INode): boolean {
-  return node.type === 'heading' && node.attrs!.step;
-}
-
-export function isText(node: INode): node is IText {
-  return node.type === 'text';
-}
-
-export function getNodeText(node: INode): string {
-  return isText(node)
-    ? node.text
-    : (node.content! as INode[]).map((child) => getNodeText(child)).join();
 }
 
 export function readCommitsFromNodes(nodes: INode[]): string[] {

@@ -1,0 +1,298 @@
+{
+  "type": "doc",
+  "attrs": {
+    "id": "UrPiWOoIpE",
+    "name": "实现食谱的编辑和创建页面",
+    "articleId": "425a3a9",
+    "commit": "5f1edd9",
+    "order": 5
+  },
+  "content": [
+    {
+      "type": "step_start",
+      "attrs": {
+        "commit": "5f1edd9"
+      }
+    },
+    {
+      "type": "heading",
+      "content": [
+        {
+          "type": "text",
+          "text": "实现食谱的编辑和创建页面"
+        }
+      ],
+      "attrs": {
+        "id": "a403273b",
+        "level": 2,
+        "fixed": true,
+        "step": {
+          "id": "UrPiWOoIpE",
+          "name": "实现食谱的编辑和创建页面",
+          "articleId": "425a3a9",
+          "commit": "5f1edd9",
+          "order": 5
+        }
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "fixed": true,
+        "level": "step",
+        "pos": "pre",
+        "commit": "5f1edd9"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "有了前面的铺垫，实现食谱的添加和删除也基本上是按部就班了。我们在 pages/recipes/_id 中分别实现 "
+            },
+            {
+              "type": "text",
+              "text": "edit.vue",
+              "marks": [
+                {
+                  "type": "code"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "text": "（食谱编辑页面） 和 "
+            },
+            {
+              "type": "text",
+              "text": "add.vue",
+              "marks": [
+                {
+                  "type": "code"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "text": " （创建食谱页面）如下。"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "commit": "5f1edd9",
+        "file": "client/pages/recipes/_id/edit.vue"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "commit": "5f1edd9",
+        "file": "client/pages/recipes/_id/edit.vue"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "commit": "5f1edd9",
+        "file": "client/pages/recipes/_id/edit.vue"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "commit": "5f1edd9",
+        "file": "client/pages/recipes/_id/edit.vue"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "实现之后的页面如下："
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "image",
+              "attrs": {
+                "src": ".tuture/assets/recipe-detail.jpg",
+                "alt": "",
+                "title": ""
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "commit": "5f1edd9",
+        "file": "client/pages/recipes/_id/edit.vue"
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "commit": "5f1edd9",
+        "file": "client/pages/recipes/add.vue"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "commit": "5f1edd9",
+        "file": "client/pages/recipes/add.vue"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "commit": "5f1edd9",
+        "file": "client/pages/recipes/add.vue"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "commit": "5f1edd9",
+        "file": "client/pages/recipes/add.vue"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "实现的页面如下："
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "image",
+              "attrs": {
+                "src": ".tuture/assets/add-recipe.jpg",
+                "alt": "",
+                "title": ""
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "commit": "5f1edd9",
+        "file": "client/pages/recipes/add.vue"
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "commit": "5f1edd9",
+        "file": "client/static/images/placeholder.png"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "commit": "5f1edd9",
+        "file": "client/static/images/placeholder.png"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "commit": "5f1edd9",
+        "file": "client/static/images/placeholder.png"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "commit": "5f1edd9",
+        "file": "client/static/images/placeholder.png"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "commit": "5f1edd9",
+        "file": "client/static/images/placeholder.png"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "fixed": true,
+        "level": "step",
+        "pos": "post",
+        "commit": "5f1edd9"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "step_end",
+      "attrs": {
+        "commit": "5f1edd9"
+      }
+    }
+  ]
+}

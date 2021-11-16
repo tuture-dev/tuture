@@ -16,13 +16,17 @@ import {
   tutureSchema,
   markdownSerializer,
 } from '@tuture/core';
-import { loadCollection, collectionPath, Asset } from '@tuture/local-server';
+import {
+  loadCollection,
+  collectionPath,
+  Asset,
+  loadStepSync,
+} from '@tuture/local-server';
 
 import reload from './reload';
 import BaseCommand from '../base';
 import logger from '../utils/logger';
 import { generateUserProfile } from '../utils/internals';
-import { loadArticleDocs } from '../utils';
 import { readArticleMeta } from '../utils/node';
 
 // Internal hints for rendering code lines.
@@ -418,7 +422,6 @@ export default class Build extends BaseCommand {
       await reload.run([]);
     }
     const collection = loadCollection();
-    const articleDocs = loadArticleDocs();
     if (flags.hexo && !collection.github) {
       logger.log('warning', 'No github field provided when hexo mode is on.');
     }
@@ -428,13 +431,17 @@ export default class Build extends BaseCommand {
       fs.mkdirSync(buildPath);
     }
 
-    articleDocs.forEach(({ articleId, doc }) => {
-      const article = readArticleMeta(collection, articleId);
-      const nodes = tutureSchema.nodeFromJSON(doc);
-      const out = markdownSerializer.serialize(nodes as any);
+    collection.articles.forEach((article) => {
+      const out = article.steps
+        .map((step) => {
+          const nodes = tutureSchema.nodeFromJSON(loadStepSync(step.id));
+          return markdownSerializer.serialize(nodes as any);
+        })
+        .join('\n\n');
+
       const dest =
         this.userConfig.out ||
-        path.join(buildPath, `${article?.name || articleId}.md`);
+        path.join(buildPath, `${article.name || article.id}.md`);
       fs.writeFileSync(dest, out);
 
       logger.log(

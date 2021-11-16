@@ -1,3 +1,21 @@
+import { INode, IText } from './interfaces';
+
+export function isStepTitle(node: INode): boolean {
+  return node.type === 'heading' && node.attrs!.step;
+}
+
+export function isText(node: INode): node is IText {
+  return node.type === 'text';
+}
+
+export function getNodeText(node: INode): string {
+  return isText(node)
+    ? node.text
+    : ((node.content! as INode[]) || [])
+        .map((child) => getNodeText(child))
+        .join();
+}
+
 /**
  * Generate a random hex number.
  */

@@ -173,7 +173,7 @@ export const getActionMenuItems = (dictionary, extraItems = []) => {
 };
 
 export default function editBlockMenuItems(
-  state,
+  schema,
   dictionary,
   ancestorNodeTypeName = [],
 ) {
@@ -211,8 +211,7 @@ export default function editBlockMenuItems(
     ];
 
     // 实际展示菜单
-    const { nodes = [] } = state.schema;
-    console.log('state', state.schema.nodes);
+    const { nodes = [] } = schema;
     const getNodeTypeByName = (name) => nodes[name];
     const canTurnIntoMenuItems = basicBlockMenuItems(dictionary)
       .filter((item) => canTurnIntoList.includes(item.name))

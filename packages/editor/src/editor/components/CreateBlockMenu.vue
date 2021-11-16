@@ -2,7 +2,7 @@
   <portal>
     <div
       ref="menuRef"
-      id="block-menu-container"
+      id="create-block-menu-container"
       class="wrapper"
       :style="userStyle"
     >
@@ -214,6 +214,7 @@ export default {
       const ref = this.$refs.menuRef;
       const offsetHeight = ref ? ref.offsetHeight : 0;
       const paragraph = view.domAtPos(selection.$from.pos);
+      console.log('paragraph', paragraph);
 
       if (
         !props.isActive ||
