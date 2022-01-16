@@ -25,7 +25,7 @@ export default class TaskQueue {
   }
 
   readCollection() {
-    return loadCollection();
+    return loadCollection('');
   }
 
   isEmpty() {
@@ -38,7 +38,7 @@ export default class TaskQueue {
   }
 
   flush() {
-    let collection = loadCollection();
+    let collection = loadCollection('');
 
     while (!this.isEmpty()) {
       const task = this.tasks.shift();

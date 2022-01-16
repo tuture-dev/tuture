@@ -111,6 +111,7 @@ import { Link } from '@/editor/marks';
 import {
   CreateBlockMenuTrigger,
   EditBlockMenuTrigger,
+  Realtime,
 } from '@/editor/extensions';
 import { dictionary } from '@/editor/utils';
 import getDataTransferFiles from '@/editor/lib/getDataTransferFiles';

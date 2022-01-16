@@ -1,11 +1,7 @@
 import { Router } from 'express';
 
 import { TocStepItem, TocArticleItem, TocItem } from '../types';
-import {
-  loadCollection,
-  loadStepSync,
-  saveCollection,
-} from '../utils/collection';
+import { loadCollection, saveCollection } from '../utils/collection';
 
 interface TocUpdateBody {
   articleStepList: TocItem[];
@@ -16,36 +12,36 @@ export function createTocRouter() {
   const router = Router();
 
   router.get('/', (_, res) => {
-    const { articles = [], unassignedSteps = [] } = loadCollection();
+    // const { articles = [], unassignedSteps = [] } = loadCollection();
 
     const articleStepList: TocItem[] = [];
     const unassignedStepList: TocItem[] = [];
 
-    for (let article of articles) {
-      const articleItem: TocArticleItem = {
-        ...article,
-        type: 'article',
-      };
-      articleStepList.push(articleItem);
+    // for (let article of articles) {
+    //   const articleItem: TocArticleItem = {
+    //     ...article,
+    //     type: 'article',
+    //   };
+    //   articleStepList.push(articleItem);
 
-      for (let step of article.steps) {
-        const stepDoc = loadStepSync(step.id);
-        const stepItem: TocStepItem = {
-          type: 'step',
-          ...stepDoc.attrs,
-        };
-        articleStepList.push(stepItem);
-      }
-    }
+    //   for (let step of article.steps) {
+    //     const stepDoc = loadStepSync(step.id);
+    //     const stepItem: TocStepItem = {
+    //       type: 'step',
+    //       ...stepDoc.attrs,
+    //     };
+    //     articleStepList.push(stepItem);
+    //   }
+    // }
 
-    for (let step of unassignedSteps) {
-      const stepDoc = loadStepSync(step.id);
-      const stepItem: TocStepItem = {
-        type: 'step',
-        ...stepDoc.attrs,
-      };
-      unassignedStepList.push(stepItem);
-    }
+    // for (let step of unassignedSteps) {
+    //   const stepDoc = loadStepSync(step.id);
+    //   const stepItem: TocStepItem = {
+    //     type: 'step',
+    //     ...stepDoc.attrs,
+    //   };
+    //   unassignedStepList.push(stepItem);
+    // }
 
     res.json({ articleStepList, unassignedStepList });
   });
@@ -56,31 +52,31 @@ export function createTocRouter() {
       unassignedStepList = [],
     }: TocUpdateBody = req.body;
 
-    const collection = loadCollection();
-    const articles = collection.articles;
-    for (let i = 0; i < articles.length; i++) {
-      articles[i].steps = [];
-    }
+    // const collection = loadCollection();
+    // const articles = collection.articles;
+    // for (let i = 0; i < articles.length; i++) {
+    //   articles[i].steps = [];
+    // }
 
-    articleStepList.forEach((articleStep) => {
-      if (articleStep.type === 'step') {
-        for (let i = 0; i < articles.length; i++) {
-          if (articles[i].id === articleStep.articleId) {
-            articles[i].steps.push({
-              id: articleStep.id,
-              commit: articleStep.commit,
-            });
-          }
-        }
-      }
-    });
+    // articleStepList.forEach((articleStep) => {
+    //   if (articleStep.type === 'step') {
+    //     for (let i = 0; i < articles.length; i++) {
+    //       if (articles[i].id === articleStep.articleId) {
+    //         articles[i].steps.push({
+    //           id: articleStep.id,
+    //           commit: articleStep.commit,
+    //         });
+    //       }
+    //     }
+    //   }
+    // });
 
-    collection.unassignedSteps = unassignedStepList.map((step) => ({
-      id: step.id,
-      commit: step.commit,
-    }));
+    // collection.unassignedSteps = unassignedStepList.map((step) => ({
+    //   id: step.id,
+    //   commit: step.commit,
+    // }));
 
-    saveCollection(collection);
+    // saveCollection(collection);
 
     res.sendStatus(200);
   });

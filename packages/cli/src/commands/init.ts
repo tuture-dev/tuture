@@ -3,16 +3,12 @@ import fs from 'fs-extra';
 import { flags } from '@oclif/command';
 import { prompt } from 'inquirer';
 import { Collection, SCHEMA_VERSION, randHex } from '@tuture/core';
-import {
-  collectionPath,
-  saveCollection,
-  saveStepSync,
-} from '@tuture/local-server';
+import { collectionPath, saveToInventory, saveDoc } from '@tuture/local-server';
 
 import logger from '../utils/logger';
 import BaseCommand from '../base';
-import { initSteps, removeTutureSuite, selectRemotes } from '../utils';
-import { git, inferGithubField, appendGitignore } from '../utils/git';
+import { initNodes, removeTutureSuite } from '../utils';
+import { git, inferGithubField } from '../utils/git';
 
 export default class Init extends BaseCommand {
   static description = 'Initialize a tuture tutorial';
@@ -82,11 +78,12 @@ export default class Init extends BaseCommand {
 
     try {
       const defaultArticleId = randHex(32);
-      const steps = await initSteps(
-        defaultArticleId,
-        this.userConfig.ignoredFiles,
-      );
-      steps.forEach((step) => saveStepSync(step.attrs.id, step));
+      const nodes = await initNodes(this.userConfig.ignoredFiles);
+      saveDoc({
+        type: 'doc',
+        content: nodes,
+        attrs: { id: defaultArticleId },
+      });
 
       const collection: Collection = {
         ...meta,
@@ -101,13 +98,8 @@ export default class Init extends BaseCommand {
             categories: [],
             created: new Date(),
             cover: '',
-            steps: steps.map((step) => ({
-              id: step.attrs.id,
-              commit: step.attrs.commit,
-            })),
           },
         ],
-        unassignedSteps: [],
       };
 
       const github = await inferGithubField();
@@ -121,20 +113,8 @@ export default class Init extends BaseCommand {
         collection.github = github;
       }
 
-      const remotes = await git.getRemotes(true);
-
-      if (remotes.length > 0) {
-        if (flags.yes) {
-          collection.remotes = [remotes[0]];
-        } else {
-          collection.remotes = await selectRemotes(remotes);
-        }
-      }
-
       collection.version = SCHEMA_VERSION;
-
-      saveCollection(collection);
-      appendGitignore();
+      saveToInventory(process.cwd(), collection);
 
       logger.log('success', 'Tuture tutorial has been initialized!');
     } catch (err) {

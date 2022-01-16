@@ -16,12 +16,7 @@ import {
   tutureSchema,
   markdownSerializer,
 } from '@tuture/core';
-import {
-  loadCollection,
-  collectionPath,
-  Asset,
-  loadStepSync,
-} from '@tuture/local-server';
+import { loadCollection, collectionPath, Asset } from '@tuture/local-server';
 
 import reload from './reload';
 import BaseCommand from '../base';
@@ -421,33 +416,33 @@ export default class Build extends BaseCommand {
     if (!fs.existsSync(collectionPath)) {
       await reload.run([]);
     }
-    const collection = loadCollection();
-    if (flags.hexo && !collection.github) {
-      logger.log('warning', 'No github field provided when hexo mode is on.');
-    }
+    // const collection = loadCollection();
+    // if (flags.hexo && !collection.github) {
+    //   logger.log('warning', 'No github field provided when hexo mode is on.');
+    // }
 
-    const { buildPath } = this.userConfig;
-    if (!this.userConfig.out && !fs.existsSync(buildPath)) {
-      fs.mkdirSync(buildPath);
-    }
+    // const { buildPath } = this.userConfig;
+    // if (!this.userConfig.out && !fs.existsSync(buildPath)) {
+    //   fs.mkdirSync(buildPath);
+    // }
 
-    collection.articles.forEach((article) => {
-      const out = article.steps
-        .map((step) => {
-          const nodes = tutureSchema.nodeFromJSON(loadStepSync(step.id));
-          return markdownSerializer.serialize(nodes as any);
-        })
-        .join('\n\n');
+    // collection.articles.forEach((article) => {
+    //   const out = article.steps
+    //     .map((step) => {
+    //       const nodes = tutureSchema.nodeFromJSON(loadStepSync(step.id));
+    //       return markdownSerializer.serialize(nodes as any);
+    //     })
+    //     .join('\n\n');
 
-      const dest =
-        this.userConfig.out ||
-        path.join(buildPath, `${article.name || article.id}.md`);
-      fs.writeFileSync(dest, out);
+    //   const dest =
+    //     this.userConfig.out ||
+    //     path.join(buildPath, `${article.name || article.id}.md`);
+    //   fs.writeFileSync(dest, out);
 
-      logger.log(
-        'success',
-        `Tutorial has been written to ${chalk.bold(dest)}.`,
-      );
-    });
+    //   logger.log(
+    //     'success',
+    //     `Tutorial has been written to ${chalk.bold(dest)}.`,
+    //   );
+    // });
   }
 }

@@ -2,11 +2,7 @@ import open from 'open';
 import fs from 'fs-extra';
 import getPort from 'get-port';
 import { flags } from '@oclif/command';
-import {
-  makeServer,
-  loadCollection,
-  collectionPath,
-} from '@tuture/local-server';
+import { makeServer, collectionPath } from '@tuture/local-server';
 
 import reload from './reload';
 import BaseCommand from '../base';
@@ -56,9 +52,6 @@ export default class Up extends BaseCommand {
     // ) {
     //   await reload.run([]);
     // }
-
-    // Trying to load collection for sanity check.
-    loadCollection();
 
     this.fireTutureServer();
   }

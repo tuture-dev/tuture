@@ -36,12 +36,9 @@ type ArticleDoc = {
 };
 
 /**
- * Initialize steps from repository.
+ * Initialize nodes from repository.
  */
-export async function initSteps(
-  articleId: string,
-  ignoredFiles?: string[],
-): Promise<StepDoc[]> {
+export async function initNodes(ignoredFiles?: string[]): Promise<INode[]> {
   if (!(await git.branchLocal()).current) {
     // No commits yet.
     return [];
@@ -53,21 +50,18 @@ export async function initSteps(
     // filter out commits whose commit message starts with 'tuture:'
     .filter(({ message }) => !message.startsWith('tuture:'));
 
-  const nodeProms = logs.map(async ({ message, hash }, index) => {
-    const files = await readDiff(hash);
-    const delimiterAttrs = { commit: hash };
-    const stepAttrs = {
-      articleId,
-      id: randHex(32),
-      name: message,
-      commit: hash,
-      order: index,
-    };
-    return {
-      type: 'doc',
-      attrs: stepAttrs,
-      content: [
-        { type: 'step_start', attrs: stepAttrs },
+  const nodeProms: Promise<INode[]>[] = logs.map(
+    async ({ message, hash }, index) => {
+      const files = await readDiff(hash);
+      const delimiterAttrs = { commit: hash };
+      const stepAttrs = {
+        id: randHex(32),
+        name: message,
+        commit: hash,
+        order: index,
+      };
+      return [
+        { type: 'step_start', attrs: delimiterAttrs },
         newStepTitle(stepAttrs, [{ type: 'text', text: message }]),
         newEmptyExplain({
           level: 'step',
@@ -86,11 +80,12 @@ export async function initSteps(
           commit: hash,
         }),
         { type: 'step_end', attrs: delimiterAttrs },
-      ],
-    } as StepDoc;
-  });
+      ];
+    },
+  );
 
-  return await Promise.all(nodeProms);
+  const nodes = await Promise.all(nodeProms);
+  return nodes.flat();
 }
 
 /**
