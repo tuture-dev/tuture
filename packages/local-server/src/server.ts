@@ -1,12 +1,11 @@
 import fs from 'fs-extra';
 import http from 'http';
 import path from 'path';
-import { fileURLToPath } from 'url';
 import logger from 'morgan';
+import { fileURLToPath } from 'url';
 import express, { Express } from 'express';
 
-import { createBaseRouter } from './routes';
-import TaskQueue from './utils/task-queue.js';
+import baseRouter from './routes/index.js';
 import { configureRealtimeCollab } from './utils/realtime.js';
 
 // Editor path
@@ -23,11 +22,6 @@ export interface ServerOptions {
 
 export function makeServer(options?: ServerOptions): http.Server {
   const app = express();
-  const queue = new TaskQueue();
-  const apiRouter = createBaseRouter(queue);
-
-  // Make sure the task queue is flushed
-  process.on('exit', () => queue.flush());
 
   const { mockRoutes, baseUrl = '/api', onGitHistoryChange } = options || {};
 
@@ -55,7 +49,7 @@ export function makeServer(options?: ServerOptions): http.Server {
     mockRoutes(app);
   }
 
-  app.use(baseUrl, apiRouter);
+  app.use(baseUrl, baseRouter);
 
   const editorHTMLPath = path.join(EDITOR_PATH, 'index.html');
   const editorHTML = fs.existsSync(editorHTMLPath)

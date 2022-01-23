@@ -9,7 +9,6 @@
     "outDir": "dist",
     "rootDir": "src",
     "strict": false,
-    "target": "esnext",
     "skipLibCheck": true,
     "typeRoots": ["node_modules/@types", "../../node_modules/@types"]
   },

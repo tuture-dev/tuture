@@ -15,9 +15,11 @@
   },
   "dependencies": {
     "@tuture/core": "^0.0.7",
+    "debug": "^4.3.3",
     "express": "^4.16.3",
     "fs-extra": "^7.0.0",
     "lib0": "^0.2.43",
+    "lodash.pick": "^4.4.0",
     "lowdb": "2.1.0",
     "morgan": "^1.9.1",
     "multer": "^1.4.3",
@@ -29,6 +31,7 @@
     "y-protocols": "^1.0.5"
   },
   "devDependencies": {
+    "@types/debug": "^4.1.7",
     "@types/express": "^4.16.0",
     "@types/fs-extra": "^5.0.4",
     "@types/lodash.debounce": "^4.0.6",

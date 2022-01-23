@@ -1,12 +1,15 @@
 import http from 'http';
 import ws from 'ws';
+import debug from 'debug';
 import * as Y from 'yjs';
 import { LeveldbPersistence } from 'y-leveldb';
 import * as syncProtocol from 'y-protocols/sync';
 import * as awarenessProtocol from 'y-protocols/awareness';
-import { encoding, decoding, mutex, map, string } from 'lib0';
+import { encoding, decoding, mutex, map } from 'lib0';
 
 import { getDocDir } from './doc.js';
+
+const d = debug('tuture:local-server:realtime');
 
 const wsReadyStateConnecting = 0;
 const wsReadyStateOpen = 1;
@@ -196,6 +199,8 @@ function setupWSConnection(
   req: http.IncomingMessage,
   { docId = req.url!.slice(1).split('?')[0], gc = true } = {},
 ) {
+  d('setup ws connection for doc id: %s, gc: %s', docId, gc);
+
   conn.binaryType = 'arraybuffer';
   // get doc, initialize if it does not exist yet
   const doc = getYDoc(docId, gc);

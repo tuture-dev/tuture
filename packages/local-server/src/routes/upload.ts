@@ -22,15 +22,14 @@ const diskStorage = multer.diskStorage({
     cb(null, fname);
   },
 });
+
 const upload = multer({ storage: diskStorage });
 
-export const createUploadRouter = () => {
-  const router = Router();
+const router = Router();
 
-  router.post('/', upload.array('files'), (req, res) => {
-    const files = (req.files as Express.Multer.File[]) || [];
-    res.json(files.map((file) => `/assets/${file.filename}`));
-  });
+router.post('/', upload.array('files'), (req, res) => {
+  const files = (req.files as Express.Multer.File[]) || [];
+  res.json(files.map((file) => `/assets/${file.filename}`));
+});
 
-  return router;
-};
+export default router;

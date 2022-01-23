@@ -1,6 +1,6 @@
-const { makeServer } = require('@tuture/local-server');
-const mockRemotes = require('./fixtures/mock-remotes.json');
-const mockDiff = require('./fixtures/mock-diff.json');
+import { makeServer } from '@tuture/local-server';
+import mockRemotes from '../fixtures/mock-remotes.json';
+import mockDiff from '../fixtures/mock-diff.json';
 
 const PORT = 8000;
 

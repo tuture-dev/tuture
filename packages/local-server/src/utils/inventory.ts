@@ -13,22 +13,32 @@ export interface Inventory {
   items: InventoryItem[];
 }
 
-let inventory: Low<Inventory> | null;
+let db: Low<Inventory>;
 
-export function getInventoryDb() {
-  const db = inventory || new Low(new JSONFile(inventoryPath));
+process.on('exit', async () => await db.write());
+
+export async function getInventoryDb() {
+  if (db.data === null) {
+    db = new Low(new JSONFile(inventoryPath));
+    await db.read();
+  }
   db.data = db.data || { items: [] };
   return db;
 }
 
-export function getInventoryItemByPath(path: string) {
-  const db = getInventoryDb();
+export async function getInventoryItemByCollectionId(collectionId: string) {
+  const db = await getInventoryDb();
+  return db.data!.items.find((item) => item.id === collectionId);
+}
+
+export async function getInventoryItemByPath(path: string) {
+  const db = await getInventoryDb();
   return db.data!.items.find((item) => item.path === path);
 }
 
 // Save the collection to global inventory.
 export async function saveToInventory(path: string, collection: Collection) {
-  const db = getInventoryDb();
+  const db = await getInventoryDb();
   const item = db.data!.items.find(
     (item) => item.id === collection.id || item.path === path,
   );

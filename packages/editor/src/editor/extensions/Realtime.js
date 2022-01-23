@@ -19,7 +19,7 @@ export default class RealtimeExtension extends Extension {
     const ydoc = new Y.Doc();
     const provider = new WebsocketProvider(
       `ws://${window.location.hostname}`,
-      'tiptap-demo',
+      '8dbccb2fc6ae1',
       ydoc,
     );
     const type = ydoc.getXmlFragment('prosemirror');
