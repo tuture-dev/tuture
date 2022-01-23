@@ -7,6 +7,10 @@ import { prosemirrorJSONToYDoc } from 'y-prosemirror';
 
 import { docsRoot } from './path.js';
 
+export function getDocDir(docId: string) {
+  return path.join(docsRoot, docId);
+}
+
 export function saveDoc(doc: any) {
   const docRoot = path.join(docsRoot, doc.attrs.id);
   fs.ensureDirSync(docRoot);
