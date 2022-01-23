@@ -1,6 +1,6 @@
 import http from 'http';
-import ws from 'ws';
 import debug from 'debug';
+import { WebSocket, WebSocketServer } from 'ws';
 import * as Y from 'yjs';
 import { LeveldbPersistence } from 'y-leveldb';
 import * as syncProtocol from 'y-protocols/sync';
@@ -62,7 +62,7 @@ type change = {
 class WSSharedDoc extends Y.Doc {
   name: string;
   mux: mutex.mutex;
-  conns: Map<ws, Set<number>>;
+  conns: Map<WebSocket, Set<number>>;
   awareness: awarenessProtocol.Awareness;
   persistence: Persistence;
 
@@ -73,12 +73,12 @@ class WSSharedDoc extends Y.Doc {
     super({ gc: gcEnabled });
     this.name = name;
     this.mux = mutex.createMutex();
-    this.conns = new Map<ws, Set<number>>();
+    this.conns = new Map<WebSocket, Set<number>>();
 
     this.awareness = new awarenessProtocol.Awareness(this);
     this.awareness.setLocalState(null);
 
-    const awarenessChangeHandler = (change: change, conn: ws) => {
+    const awarenessChangeHandler = (change: change, conn: WebSocket) => {
       const { added, updated, removed } = change;
       const changedClients = added.concat(updated, removed);
       if (conn !== null) {
@@ -129,7 +129,11 @@ export const getYDoc = (docId: string, gc = true): WSSharedDoc =>
     return doc;
   });
 
-const messageListener = (conn: ws, doc: WSSharedDoc, message: Uint8Array) => {
+const messageListener = (
+  conn: WebSocket,
+  doc: WSSharedDoc,
+  message: Uint8Array,
+) => {
   const encoder = encoding.createEncoder();
   const decoder = decoding.createDecoder(message);
   const messageType = decoding.readVarUint(decoder);
@@ -152,7 +156,7 @@ const messageListener = (conn: ws, doc: WSSharedDoc, message: Uint8Array) => {
   }
 };
 
-const closeConn = (doc: WSSharedDoc, conn: ws) => {
+const closeConn = (doc: WSSharedDoc, conn: WebSocket) => {
   if (doc.conns.has(conn)) {
     doc.conns.delete(conn);
     const controlledIds = doc.conns.get(conn);
@@ -173,7 +177,7 @@ const closeConn = (doc: WSSharedDoc, conn: ws) => {
   conn.close();
 };
 
-const send = (doc: WSSharedDoc, conn: ws, m: Uint8Array) => {
+const send = (doc: WSSharedDoc, conn: WebSocket, m: Uint8Array) => {
   if (
     conn.readyState !== wsReadyStateConnecting &&
     conn.readyState !== wsReadyStateOpen
@@ -195,7 +199,7 @@ const send = (doc: WSSharedDoc, conn: ws, m: Uint8Array) => {
 const pingTimeout = 30000;
 
 function setupWSConnection(
-  conn: ws,
+  conn: WebSocket,
   req: http.IncomingMessage,
   { docId = req.url!.slice(1).split('?')[0], gc = true } = {},
 ) {
@@ -260,7 +264,7 @@ function setupWSConnection(
 }
 
 export function configureRealtimeCollab(server: http.Server) {
-  const wss = new ws.Server({ server });
+  const wss = new WebSocketServer({ server });
 
   wss.on('connection', (conn, req) =>
     setupWSConnection(conn, req, {

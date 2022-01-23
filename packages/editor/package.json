@@ -8,7 +8,7 @@
     "lint": "vue-cli-service lint",
     "preview": "serve ./dist/",
     "start": "concurrently -r \"yarn start:api\" \"vue-cli-service serve\"",
-    "start:api": "cross-env NODE_ENV=development node scripts/start-dev-server.js"
+    "start:api": "cross-env NODE_ENV=development node --experimental-json-modules scripts/start-dev-server.js"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.35",
@@ -16,6 +16,7 @@
     "@fortawesome/vue-fontawesome": "^2.0.2",
     "@juggle/resize-observer": "^3.3.1",
     "@linusborg/vue-simple-portal": "^0.1.5",
+    "@tuture/core": "^0.0.7",
     "@u3u/vue-hooks": "^2.0.1",
     "@vue/composition-api": "^1.0.0-rc.8",
     "@vueuse/core": "^4.8.1",

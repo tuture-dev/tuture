@@ -9,7 +9,7 @@ import logger from '../utils/logger.js';
 import { shouldReloadSteps } from '../utils/git.js';
 
 async function fireTutureServer() {
-  const port = await getPort({ port: this.userConfig.port });
+  const port = await getPort();
   const server = makeServer({
     baseUrl: '/api',
     // onGitHistoryChange: () => {
