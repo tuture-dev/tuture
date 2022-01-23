@@ -109,9 +109,9 @@ import {
 } from '@/editor/nodes';
 import { Link } from '@/editor/marks';
 import {
+  Realtime,
   CreateBlockMenuTrigger,
   EditBlockMenuTrigger,
-  Realtime,
 } from '@/editor/extensions';
 import { dictionary } from '@/editor/utils';
 import getDataTransferFiles from '@/editor/lib/getDataTransferFiles';
@@ -231,6 +231,7 @@ export default defineComponent({
             },
           }),
           new DataPaste(),
+          new Realtime(),
         ],
         onUpdate: ({ getJSON }) => {
           this.setDoc(getJSON());

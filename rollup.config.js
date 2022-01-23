@@ -6,14 +6,8 @@ export default [
     input: 'packages/core/src/index.ts',
     output: [
       {
-        file: 'packages/core/dist/index.esm.js',
-        format: 'esm',
-        sourcemap: true,
-      },
-      {
         file: 'packages/core/dist/index.js',
-        format: 'cjs',
-        exports: 'named',
+        format: 'esm',
         sourcemap: true,
       },
     ],
@@ -28,14 +22,8 @@ export default [
     input: 'packages/local-server/src/index.ts',
     output: [
       {
-        file: 'packages/local-server/dist/index.esm.js',
-        format: 'esm',
-        sourcemap: true,
-      },
-      {
         file: 'packages/local-server/dist/index.js',
-        format: 'cjs',
-        exports: 'named',
+        format: 'esm',
         sourcemap: true,
       },
     ],

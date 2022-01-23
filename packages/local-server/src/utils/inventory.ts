@@ -1,6 +1,7 @@
 import { Collection } from '@tuture/core';
 import { Low, JSONFile } from 'lowdb';
-import { inventoryPath } from './path';
+
+import { inventoryPath } from './path.js';
 
 export interface InventoryItem {
   id: string;
@@ -20,7 +21,13 @@ export function getInventoryDb() {
   return db;
 }
 
-export function saveToInventory(path: string, collection: Collection) {
+export function getInventoryItemByPath(path: string) {
+  const db = getInventoryDb();
+  return db.data!.items.find((item) => item.path === path);
+}
+
+// Save the collection to global inventory.
+export async function saveToInventory(path: string, collection: Collection) {
   const db = getInventoryDb();
   const item = db.data!.items.find(
     (item) => item.id === collection.id || item.path === path,
@@ -31,5 +38,6 @@ export function saveToInventory(path: string, collection: Collection) {
       id: collection.id,
       lastOpen: new Date().toISOString(),
     });
+    await db.write();
   }
 }

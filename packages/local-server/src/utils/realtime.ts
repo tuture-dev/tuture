@@ -1,10 +1,9 @@
 import http from 'http';
 import ws from 'ws';
-import Y from 'yjs';
+import * as Y from 'yjs';
 import { LeveldbPersistence } from 'y-leveldb';
-import syncProtocol from 'y-protocols/sync';
-import awarenessProtocol from 'y-protocols/awareness';
-
+import * as syncProtocol from 'y-protocols/sync';
+import * as awarenessProtocol from 'y-protocols/awareness';
 import { encoding, decoding, mutex, map } from 'lib0';
 import debounce from 'lodash.debounce';
 

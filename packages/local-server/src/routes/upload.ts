@@ -4,7 +4,7 @@ import { Router } from 'express';
 import multer from 'multer';
 import { randHex } from '@tuture/core';
 
-import { assetsRoot } from '../utils/assets';
+import { assetsRoot } from '../utils/path.js';
 
 fs.ensureDirSync(assetsRoot);
 

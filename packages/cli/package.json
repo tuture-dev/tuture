@@ -3,13 +3,15 @@
   "description": "Command line interface for Tuture",
   "version": "0.1.0",
   "bin": {
-    "tuture": "./bin/run"
+    "tuture": "./lib/index.js"
   },
+  "type": "module",
+  "main": "dist/index.js",
   "bugs": "https://github.com/tuture-dev/tuture/issues",
   "scripts": {
-    "build": "rimraf lib && tsc -v && tsc -b",
+    "build": "rimraf dist && tsc -v && tsc -b",
     "postpack": "rimraf oclif.manifest.json",
-    "prepack": "rimraf lib && tsc -b && oclif-dev manifest && oclif-dev readme",
+    "prepack": "rimraf dist && tsc -b && oclif-dev manifest && oclif-dev readme",
     "test": "echo NO TESTS"
   },
   "dependencies": {
@@ -20,6 +22,8 @@
     "@tuture/local-server": "^0.0.7",
     "@types/prosemirror-markdown": "1.5.2",
     "chalk": "^2.4.2",
+    "commander": "^8.3.0",
+    "debug": "^4.3.3",
     "editure": "^0.1.2",
     "editure-constants": "^0.1.2",
     "fs-extra": "^7.0.0",
@@ -37,6 +41,7 @@
   },
   "devDependencies": {
     "@oclif/dev-cli": "^1",
+    "@types/debug": "^4.1.7",
     "@types/inquirer": "^6.5.0",
     "@types/micromatch": "^4.0.1",
     "@types/node": "^10",
@@ -45,27 +50,15 @@
     "ts-node": "^8"
   },
   "engines": {
-    "node": ">=8.0.0"
+    "node": ">=16.0.0"
   },
   "files": [
-    "/bin",
-    "/lib",
-    "/npm-shrinkwrap.json",
-    "/oclif.manifest.json"
+    "/dist",
+    "/npm-shrinkwrap.json"
   ],
   "keywords": [
     "tuture",
-    "cli",
-    "oclif"
+    "cli"
   ],
-  "license": "MIT",
-  "main": "lib/index.js",
-  "oclif": {
-    "commands": "./lib/commands",
-    "bin": "tuture",
-    "plugins": [
-      "@oclif/plugin-help"
-    ]
-  },
-  "types": "lib/index.d.ts"
+  "license": "MIT"
 }

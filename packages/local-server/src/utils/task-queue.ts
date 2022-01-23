@@ -1,5 +1,5 @@
 import { Collection } from '@tuture/core';
-import { saveCollection, loadCollection } from './collection';
+import { saveCollection, loadCollection } from './collection.js';
 
 export type Task = (c: Collection) => Collection;
 export type TaskWithCallback = {

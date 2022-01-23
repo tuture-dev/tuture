@@ -5,9 +5,9 @@ import {
   IDiffBlock,
   StepAttrs,
   ExplainAttrs,
-} from './interfaces';
-import { randHex } from './utils';
-import { DiffFile, getHiddenLines } from './diff';
+} from './interfaces.js';
+import { randHex } from './utils.js';
+import { DiffFile, getHiddenLines } from './diff.js';
 
 export function newStepTitle(content: INode[], attrs: StepAttrs): IHeading {
   return {

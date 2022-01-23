@@ -1,4 +1,4 @@
-import { DiffFile } from './diff';
+import { DiffFile } from './diff.js';
 
 export interface IRawDiff {
   commit: string;

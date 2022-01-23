@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import simplegit from 'simple-git/promise';
+import simplegit from 'simple-git/promise.js';
 
 import TaskQueue from '../utils/task-queue';
 

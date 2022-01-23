@@ -1,13 +1,17 @@
 import fs from 'fs-extra';
+import http from 'http';
 import path from 'path';
+import { fileURLToPath } from 'url';
 import logger from 'morgan';
 import express, { Express } from 'express';
 
 import { createBaseRouter } from './routes';
-import TaskQueue from './utils/task-queue';
-import { assetsRoot } from './utils';
+import TaskQueue from './utils/task-queue.js';
+import { configureRealtimeCollab } from './utils/realtime.js';
 
 // Editor path
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 const EDITOR_PATH = path.join(__dirname, 'editor');
 const EDITOR_STATIC_PATH = path.join(EDITOR_PATH, 'static');
 
@@ -17,7 +21,7 @@ export interface ServerOptions {
   onGitHistoryChange?: (curr: fs.Stats, prev: fs.Stats) => void;
 }
 
-export const makeServer = (options?: ServerOptions) => {
+export function makeServer(options?: ServerOptions): http.Server {
   const app = express();
   const queue = new TaskQueue();
   const apiRouter = createBaseRouter(queue);
@@ -43,7 +47,7 @@ export const makeServer = (options?: ServerOptions) => {
   app.use(express.json({ limit: '50mb' }));
   app.use(express.urlencoded({ extended: false }));
   app.use('/static', express.static(EDITOR_STATIC_PATH));
-  app.use('/assets', express.static(assetsRoot));
+  // app.use('/assets', express.static(assetsRoot));
 
   // Register mocking routes. This will override real routes below.
   // (For development purposes only.)
@@ -64,5 +68,8 @@ export const makeServer = (options?: ServerOptions) => {
     res.sendStatus(404);
   });
 
-  return app;
-};
+  const server = http.createServer(app);
+  configureRealtimeCollab(server);
+
+  return server;
+}

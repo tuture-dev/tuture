@@ -1,6 +1,6 @@
-import simplegit from 'simple-git/promise';
+import simplegit from 'simple-git/promise.js';
 import parseDiff from 'parse-diff';
-import { DiffFile, TUTURE_COMMIT_PREFIX } from '@tuture/core';
+import { DiffFile } from '@tuture/core';
 
 // Interface for running git commands.
 // https://github.com/steveukx/git-js
@@ -25,7 +25,7 @@ export async function listAllCommits(): Promise<Commit[]> {
       .map(({ message, hash }) => ({ message, hash }))
       .reverse()
       // filter out commits whose commit message starts with 'tuture:'
-      .filter(({ message }) => !message.startsWith(TUTURE_COMMIT_PREFIX))
+      .filter(({ message }) => !message.startsWith('tuture:'))
   );
 }
 

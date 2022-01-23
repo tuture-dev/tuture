@@ -9,3 +9,5 @@ export const inventoryPath = path.join(tuturePath, 'inventory.json');
 export const collectionsRoot = path.join(tuturePath, 'collections');
 
 export const docsRoot = path.join(tuturePath, 'docs');
+
+export const assetsRoot = path.join(tuturePath, 'assets');
