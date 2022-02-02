@@ -2,13 +2,12 @@
   "name": "editor",
   "version": "0.1.0",
   "private": true,
-  "type": "module",
   "scripts": {
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "preview": "serve ./dist/",
     "start": "concurrently -r \"yarn start:api\" \"vue-cli-service serve\"",
-    "start:api": "cross-env NODE_ENV=development node --experimental-json-modules scripts/start-dev-server.js"
+    "start:api": "cd ../local-server && yarn start"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.35",

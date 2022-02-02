@@ -11,7 +11,8 @@
   ],
   "license": "MIT",
   "scripts": {
-    "collect-editor": "rimraf dist/editor && cp -r ../editor/build dist/editor"
+    "collect-editor": "rimraf dist/editor && cp -r ../editor/build dist/editor",
+    "start": "cross-env NODE_ENV=development node --experimental-json-modules scripts/start-dev-server.js"
   },
   "dependencies": {
     "@tuture/core": "^0.0.7",
@@ -39,6 +40,7 @@
     "@types/lodash.pick": "^4.4.6",
     "@types/morgan": "^1.7.35",
     "@types/multer": "^1.4.7",
-    "@types/ws": "^8.2.2"
+    "@types/ws": "^8.2.2",
+    "cross-env": "^7.0.3"
   }
 }

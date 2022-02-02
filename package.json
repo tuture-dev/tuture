@@ -14,9 +14,8 @@
     "diff-viewer",
     "git"
   ],
-  "type": "module",
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=12.0.0"
   },
   "scripts": {
     "lint": "eslint \"**/*.{js,jsx,ts,tsx}\" --fix",

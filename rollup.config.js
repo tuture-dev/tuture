@@ -6,8 +6,14 @@ export default [
     input: 'packages/core/src/index.ts',
     output: [
       {
-        file: 'packages/core/dist/index.js',
+        file: 'packages/core/dist/index.esm.js',
         format: 'esm',
+        sourcemap: true,
+      },
+      {
+        file: 'packages/core/dist/index.js',
+        format: 'cjs',
+        exports: 'named',
         sourcemap: true,
       },
     ],

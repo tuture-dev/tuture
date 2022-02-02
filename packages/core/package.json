@@ -2,8 +2,8 @@
   "name": "@tuture/core",
   "description": "Core logics and data interfaces for Tuture",
   "version": "0.0.7",
-  "type": "module",
-  "exports": "./dist/index.js",
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
   "types": "dist",
   "files": [
     "dist"

@@ -1,4 +1,4 @@
-import { makeServer } from '@tuture/local-server';
+import { makeServer } from '../dist/index.js';
 import mockRemotes from '../fixtures/mock-remotes.json';
 import mockDiff from '../fixtures/mock-diff.json';
 
