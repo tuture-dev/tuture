@@ -7,7 +7,7 @@ import * as syncProtocol from 'y-protocols/sync';
 import * as awarenessProtocol from 'y-protocols/awareness';
 import { encoding, decoding, mutex, map } from 'lib0';
 
-import { getDocDir } from './doc.js';
+import { getDocsRoot } from './path.js';
 
 const d = debug('tuture:local-server:realtime');
 
@@ -26,8 +26,10 @@ const gcEnabled = process.env.GC !== 'false' && process.env.GC !== '0';
 class Persistence {
   provider: LeveldbPersistence;
 
-  constructor(docName: string) {
-    this.provider = new LeveldbPersistence(getDocDir(docName));
+  constructor() {
+    const docsRoot = getDocsRoot();
+    d('init persistence: %s', docsRoot);
+    this.provider = new LeveldbPersistence(docsRoot);
   }
 
   async bindState(docName: string, ydoc: Y.Doc) {
@@ -42,6 +44,8 @@ class Persistence {
 
   async writeState(docName: string, ydoc: Y.Doc) {}
 }
+
+let persistence: Persistence | null;
 
 export const docs = new Map<string, WSSharedDoc>();
 
@@ -64,7 +68,6 @@ class WSSharedDoc extends Y.Doc {
   mux: mutex.mutex;
   conns: Map<WebSocket, Set<number>>;
   awareness: awarenessProtocol.Awareness;
-  persistence: Persistence;
 
   /**
    * @param {string} name
@@ -108,8 +111,6 @@ class WSSharedDoc extends Y.Doc {
     };
     this.awareness.on('update', awarenessChangeHandler);
     this.on('update', updateHandler);
-
-    this.persistence = new Persistence(name);
   }
 }
 
@@ -124,8 +125,11 @@ export const getYDoc = (docId: string, gc = true): WSSharedDoc =>
   map.setIfUndefined(docs, docId, () => {
     const doc = new WSSharedDoc(docId);
     doc.gc = gc;
-    doc.persistence.bindState(docId, doc);
     docs.set(docId, doc);
+
+    persistence = persistence || new Persistence();
+    persistence.bindState(docId, doc);
+
     return doc;
   });
 
@@ -168,7 +172,7 @@ const closeConn = (doc: WSSharedDoc, conn: WebSocket) => {
     );
     if (doc.conns.size === 0) {
       // if persisted, we store state and destroy ydocument
-      doc.persistence.writeState(doc.name, doc).then(() => {
+      persistence?.writeState(doc.name, doc).then(() => {
         doc.destroy();
       });
       docs.delete(doc.name);
@@ -208,6 +212,8 @@ function setupWSConnection(
   conn.binaryType = 'arraybuffer';
   // get doc, initialize if it does not exist yet
   const doc = getYDoc(docId, gc);
+  d('getYDoc %o', doc);
+
   doc.conns.set(conn, new Set());
   // listen and reply to events
   conn.on('message', (message: ArrayBuffer) =>

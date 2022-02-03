@@ -63,9 +63,12 @@ type InitOptions = {
 };
 
 async function doInit(options: InitOptions) {
+  d('cwd: %s', process.cwd());
   d('options: %o', options);
 
-  if (getInventoryItemByPath(process.cwd())) {
+  const item = await getInventoryItemByPath(process.cwd());
+  d('inventory item: %o', item);
+  if (item) {
     logger.log('success', 'Tuture tutorial has already been initialized!');
     return;
   }
@@ -77,58 +80,50 @@ async function doInit(options: InitOptions) {
   const meta = await promptMetaData(options.yes);
   d('meta: %o', meta);
 
-  try {
-    const defaultArticleId = randHex(32);
-    const nodes = await initNodes();
+  const defaultArticleId = randHex(32);
+  const nodes = await initNodes();
 
-    saveDoc({
-      type: 'doc',
-      content: nodes,
-      attrs: { id: defaultArticleId },
-    });
+  saveDoc({
+    type: 'doc',
+    content: nodes,
+    attrs: { id: defaultArticleId },
+  });
 
-    const collection: Collection = {
-      ...meta,
-      id: randHex(32),
-      created: new Date(),
-      articles: [
-        {
-          id: defaultArticleId,
-          name: meta.name,
-          description: '',
-          topics: [],
-          categories: [],
-          created: new Date(),
-          cover: '',
-        },
-      ],
-    };
+  const collection: Collection = {
+    ...meta,
+    id: randHex(32),
+    created: new Date(),
+    articles: [
+      {
+        id: defaultArticleId,
+        name: meta.name,
+        description: '',
+        topics: [],
+        categories: [],
+        created: new Date(),
+        cover: '',
+      },
+    ],
+  };
 
-    const github = await inferGithubField();
-    if (github) {
-      logger.log(
-        'info',
-        `Inferred github repository: ${chalk.underline(
-          github,
-        )}. Feel free to revise or delete it.`,
-      );
-      collection.github = github;
-    }
-
-    collection.version = SCHEMA_VERSION;
-    d('init collection: %O', collection);
-
-    await saveToInventory(process.cwd(), collection);
-    await saveCollection(collection);
-
-    logger.log('success', 'Tuture tutorial has been initialized!');
-  } catch (err) {
-    logger.log({
-      level: 'error',
-      message: err.message,
-      error: err,
-    });
+  const github = await inferGithubField();
+  if (github) {
+    logger.log(
+      'info',
+      `Inferred github repository: ${chalk.underline(
+        github,
+      )}. Feel free to revise or delete it.`,
+    );
+    collection.github = github;
   }
+
+  collection.version = SCHEMA_VERSION;
+  d('init collection: %O', collection);
+
+  await saveToInventory(process.cwd(), collection);
+  await saveCollection(collection);
+
+  logger.log('success', 'Tuture tutorial has been initialized!');
 }
 
 export function makeInitCommand() {

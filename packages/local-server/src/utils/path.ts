@@ -1,13 +1,22 @@
 import os from 'os';
 import path from 'path';
 
-const tuturePath =
-  process.env.TUTURE_PATH || path.join(os.homedir(), '.tuture');
+export function getTuturePath() {
+  return process.env.TUTURE_PATH || path.join(os.homedir(), '.tuture');
+}
 
-export const inventoryPath = path.join(tuturePath, 'inventory.json');
+export function getInventoryPath() {
+  return path.join(getTuturePath(), 'inventory.json');
+}
 
-export const collectionsRoot = path.join(tuturePath, 'collections');
+export function getCollectionsRoot() {
+  return path.join(getTuturePath(), 'collections');
+}
 
-export const docsRoot = path.join(tuturePath, 'docs');
+export function getDocsRoot() {
+  return path.join(getTuturePath(), 'docs');
+}
 
-export const assetsRoot = path.join(tuturePath, 'assets');
+export function getAssetsRoot() {
+  return path.join(getTuturePath(), 'assets');
+}

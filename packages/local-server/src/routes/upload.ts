@@ -4,32 +4,36 @@ import { Router } from 'express';
 import multer from 'multer';
 import { randHex } from '@tuture/core';
 
-import { assetsRoot } from '../utils/path.js';
+import { getAssetsRoot } from '../utils/path.js';
 
-fs.ensureDirSync(assetsRoot);
+export function createUploadRouter() {
+  const assetsRoot = getAssetsRoot();
 
-const diskStorage = multer.diskStorage({
-  destination: assetsRoot,
-  filename: function(req, file, cb) {
-    let fname = file.originalname;
-    const { name, ext } = path.parse(fname);
+  fs.ensureDirSync(assetsRoot);
 
-    // make sure to choose a unique filename
-    while (fs.existsSync(path.join(assetsRoot, fname))) {
-      fname = `${name}-${randHex(7)}${ext}`;
-    }
+  const diskStorage = multer.diskStorage({
+    destination: assetsRoot,
+    filename: function(req, file, cb) {
+      let fname = file.originalname;
+      const { name, ext } = path.parse(fname);
 
-    cb(null, fname);
-  },
-});
+      // make sure to choose a unique filename
+      while (fs.existsSync(path.join(assetsRoot, fname))) {
+        fname = `${name}-${randHex(7)}${ext}`;
+      }
 
-const upload = multer({ storage: diskStorage });
+      cb(null, fname);
+    },
+  });
 
-const router = Router();
+  const upload = multer({ storage: diskStorage });
 
-router.post('/', upload.array('files'), (req, res) => {
-  const files = (req.files as Express.Multer.File[]) || [];
-  res.json(files.map((file) => `/assets/${file.filename}`));
-});
+  const router = Router();
 
-export default router;
+  router.post('/', upload.array('files'), (req, res) => {
+    const files = (req.files as Express.Multer.File[]) || [];
+    res.json(files.map((file) => `/assets/${file.filename}`));
+  });
+
+  return router;
+}

@@ -1,6 +1,5 @@
-import fs from 'fs-extra';
-import { Request } from 'express';
 import debug from 'debug';
+import fs from 'fs-extra';
 import path from 'path';
 import {
   INode,
@@ -11,14 +10,15 @@ import {
 } from '@tuture/core';
 import { Low, JSONFile } from 'lowdb';
 
-import { collectionsRoot } from './path.js';
+import { getCollectionsRoot } from './path.js';
 import { getInventoryItemByPath } from './inventory.js';
 
 const d = debug('tuture:local-server:collection');
 
-let dbMap: Map<string, Low<Collection>>;
+const dbMap = new Map<string, Low<Collection>>();
 
 process.on('exit', async () => {
+  console.log('Saving db data to disk...');
   dbMap.forEach(async (db) => await db.write());
 });
 
@@ -34,13 +34,14 @@ async function getCollectionIdFromCwd() {
 
 async function getCollectionPath(collectionId?: string) {
   collectionId = collectionId || (await getCollectionIdFromCwd());
-  return path.join(collectionsRoot, `${collectionId}.json`);
+  return path.join(getCollectionsRoot(), `${collectionId}.json`);
 }
 
 export async function getCollectionDb(collectionId?: string) {
   collectionId = collectionId || (await getCollectionIdFromCwd());
   let db = dbMap.get(collectionId);
   if (!db) {
+    await fs.ensureDir(getCollectionsRoot());
     const collectionPath = await getCollectionPath(collectionId);
     db = new Low<Collection>(new JSONFile(collectionPath));
     await db.read();
@@ -53,8 +54,7 @@ export async function getCollectionDb(collectionId?: string) {
  * Load collection.
  */
 export async function loadCollection(collectionId?: string) {
-  const collectionPath = await getCollectionPath(collectionId);
-  let collection: Collection = await fs.readJSON(collectionPath);
+  const db = await getCollectionDb(collectionId);
 
   // if (collection.version !== 'v1' && collection.version !== SCHEMA_VERSION) {
   //   throw new Error(
@@ -70,15 +70,19 @@ export async function loadCollection(collectionId?: string) {
   //   Object.entries(stepDocs).forEach(([id, doc]) => saveStepSync(id, doc));
   // }
 
-  return collection;
+  return db.data!;
 }
 
 /**
- * Save the entire collection back to workspace.
+ * Save the entire collection.
  */
 export async function saveCollection(collection: Collection) {
-  collection.version = SCHEMA_VERSION;
-  const collectionPath = await getCollectionPath(collection.id);
-  await fs.outputJSON(collectionPath, collection, { spaces: 2 });
-  d('save collection to %s', collectionPath);
+  const db = await getCollectionDb(collection.id);
+  db.data = collection;
+  await db.write();
+  d('save collection %s', collection.id);
+}
+
+export async function deleteCollection(collectionId: string) {
+  await fs.remove(await getCollectionPath(collectionId));
 }

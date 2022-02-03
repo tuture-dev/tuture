@@ -1,21 +1,22 @@
-import path from 'path';
 import * as Y from 'yjs';
-import fs from 'fs-extra';
 import { tutureSchema } from '@tuture/core';
 import { LeveldbPersistence } from 'y-leveldb';
 import { prosemirrorJSONToYDoc } from 'y-prosemirror';
 
-import { docsRoot } from './path.js';
+import { getDocsRoot } from './path.js';
 
-export function getDocDir(docId: string) {
-  return path.join(docsRoot, docId);
+let ldb: LeveldbPersistence | null;
+
+function getLdb() {
+  ldb = ldb || new LeveldbPersistence(getDocsRoot());
+  return ldb;
 }
 
 export function saveDoc(doc: any) {
-  const docRoot = path.join(docsRoot, doc.attrs.id);
-  fs.ensureDirSync(docRoot);
-
-  const persistence = new LeveldbPersistence(docRoot);
   const yDoc = prosemirrorJSONToYDoc(tutureSchema as any, doc);
-  persistence.storeUpdate(doc.attrs.id, Y.encodeStateAsUpdate(yDoc));
+  getLdb().storeUpdate(doc.attrs.id, Y.encodeStateAsUpdate(yDoc));
+}
+
+export function deleteDoc(docId: string) {
+  getLdb().clearDocument(docId);
 }

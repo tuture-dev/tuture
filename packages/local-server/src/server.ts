@@ -5,7 +5,7 @@ import logger from 'morgan';
 import { fileURLToPath } from 'url';
 import express, { Express } from 'express';
 
-import baseRouter from './routes/index.js';
+import { createApiRouter } from './routes/index.js';
 import { configureRealtimeCollab } from './utils/realtime.js';
 
 // Editor path
@@ -49,7 +49,7 @@ export function makeServer(options?: ServerOptions): http.Server {
     mockRoutes(app);
   }
 
-  app.use(baseUrl, baseRouter);
+  app.use(baseUrl, createApiRouter());
 
   const editorHTMLPath = path.join(EDITOR_PATH, 'index.html');
   const editorHTML = fs.existsSync(editorHTMLPath)

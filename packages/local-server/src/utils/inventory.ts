@@ -1,7 +1,10 @@
+import debug from 'debug';
 import { Collection } from '@tuture/core';
 import { Low, JSONFile } from 'lowdb';
 
-import { inventoryPath } from './path.js';
+import { getInventoryPath } from './path.js';
+
+const d = debug('tuture:local-server:inventory');
 
 export interface InventoryItem {
   id: string;
@@ -13,16 +16,20 @@ export interface Inventory {
   items: InventoryItem[];
 }
 
-let db: Low<Inventory>;
+let db: Low<Inventory> | null;
 
-process.on('exit', async () => await db.write());
+process.on('exit', async () => await db?.write());
 
 export async function getInventoryDb() {
-  if (db.data === null) {
+  if (!db?.data) {
+    const inventoryPath = getInventoryPath();
+    d('reading inventory from %s', inventoryPath);
     db = new Low(new JSONFile(inventoryPath));
     await db.read();
   }
   db.data = db.data || { items: [] };
+  d('db.data %o', db.data);
+
   return db;
 }
 
@@ -48,6 +55,16 @@ export async function saveToInventory(path: string, collection: Collection) {
       id: collection.id,
       lastOpen: new Date().toISOString(),
     });
+    await db.write();
+  }
+}
+
+// Remove a collection from the inventory.
+export async function removeFromInventory(collectionId: string) {
+  const db = await getInventoryDb();
+  const index = db.data!.items.findIndex((item) => item.id === collectionId);
+  if (index > -1) {
+    db.data!.items.splice(index, 1);
     await db.write();
   }
 }
