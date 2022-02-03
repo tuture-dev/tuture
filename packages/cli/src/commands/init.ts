@@ -83,7 +83,7 @@ async function doInit(options: InitOptions) {
   const defaultArticleId = randHex(32);
   const nodes = await initNodes();
 
-  saveDoc({
+  await saveDoc({
     type: 'doc',
     content: nodes,
     attrs: { id: defaultArticleId },

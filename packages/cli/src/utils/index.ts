@@ -1,6 +1,6 @@
 import mm from 'micromatch';
 import { INode, randHex } from '@tuture/core';
-import { git, readDiff } from '@tuture/local-server';
+import { createGitHandler, readDiff } from '@tuture/local-server';
 
 import { newEmptyExplain, newStepTitle, newEmptyFile } from './node.js';
 
@@ -8,6 +8,7 @@ import { newEmptyExplain, newStepTitle, newEmptyFile } from './node.js';
  * Initialize doc nodes from repository.
  */
 export async function initNodes(ignoredFiles?: string[]): Promise<INode[]> {
+  const git = createGitHandler();
   if (!(await git.branchLocal()).current) {
     // No commits yet.
     return [];

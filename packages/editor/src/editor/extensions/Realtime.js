@@ -18,8 +18,8 @@ export default class RealtimeExtension extends Extension {
   get plugins() {
     const ydoc = new Y.Doc();
     const provider = new WebsocketProvider(
-      `ws://${window.location.hostname}`,
-      '8dbccb2fc6ae1',
+      `ws://${window.location.hostname}:8000`,
+      'ad587bb270ac',
       ydoc,
     );
     const type = ydoc.getXmlFragment('prosemirror');

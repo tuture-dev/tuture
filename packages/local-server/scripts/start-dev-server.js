@@ -6,7 +6,6 @@ import simplegit from 'simple-git/promise.js';
 import { makeServer } from '../dist/index.js';
 import { makeInitCommand } from '../../cli/dist/commands/init.js';
 import mockRemotes from '../fixtures/mock-remotes.json';
-import mockDiff from '../fixtures/mock-diff.json';
 
 async function prepareTempDir(prefix) {
   return await fs.mkdtemp(path.join(os.tmpdir(), prefix));
@@ -54,14 +53,6 @@ async function startDevServer() {
           res.sendStatus(200);
         }, 2000);
       });
-
-      // app.get('/api/diff', (req, res) => {
-      //   const { commit, file } = req.query;
-      //   if (!commit || !file) {
-      //     return res.status(400).json(req.query);
-      //   }
-      //   res.json(mockDiff[commit.slice(0, 7)][file]);
-      // });
     },
   });
 

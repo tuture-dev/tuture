@@ -39,13 +39,16 @@ async function getCollectionPath(collectionId?: string) {
 
 export async function getCollectionDb(collectionId?: string) {
   collectionId = collectionId || (await getCollectionIdFromCwd());
+  d('getCollectionDb for collection id: %s', collectionId);
   let db = dbMap.get(collectionId);
   if (!db) {
     await fs.ensureDir(getCollectionsRoot());
     const collectionPath = await getCollectionPath(collectionId);
+    d('getCollectionDb from %s', collectionPath);
     db = new Low<Collection>(new JSONFile(collectionPath));
     await db.read();
     dbMap.set(collectionId, db);
+    d('updated dbMap: %o', dbMap);
   }
   return db;
 }

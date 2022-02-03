@@ -212,7 +212,7 @@ function setupWSConnection(
   conn.binaryType = 'arraybuffer';
   // get doc, initialize if it does not exist yet
   const doc = getYDoc(docId, gc);
-  d('getYDoc %o', doc);
+  d('getYDoc %o', doc.toJSON());
 
   doc.conns.set(conn, new Set());
   // listen and reply to events
