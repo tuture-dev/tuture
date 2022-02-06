@@ -1,8 +1,6 @@
 table {
   width: 100%;
   border-collapse: collapse;
-  border-radius: 4px;
-  margin-top: 1em;
   box-sizing: border-box;
 
   p {
@@ -43,7 +41,7 @@ table {
      * in an empty table:
      * https://github.com/ProseMirror/prosemirror/issues/947 */
     &::after {
-      content: "";
+      content: '';
       cursor: pointer;
       position: absolute;
       top: -16px;
@@ -71,7 +69,7 @@ table {
 
   .grip-row {
     &::after {
-      content: "";
+      content: '';
       cursor: pointer;
       position: absolute;
       left: -16px;
@@ -99,7 +97,7 @@ table {
 
   .grip-table {
     &::after {
-      content: "";
+      content: '';
       cursor: pointer;
       background: #c5ccd3;
       width: 13px;

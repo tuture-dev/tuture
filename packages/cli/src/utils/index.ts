@@ -30,6 +30,14 @@ export async function initNodes(ignoredFiles?: string[]): Promise<INode[]> {
         commit: hash,
         order: index,
       };
+      const fileNodes = await Promise.all(
+        files.map(async (diffFile) => {
+          const hidden = ignoredFiles?.some((pattern) =>
+            mm.isMatch(diffFile.to!, pattern),
+          );
+          return await newEmptyFile(hash, diffFile, Boolean(hidden));
+        }),
+      );
       return [
         { type: 'step_start', attrs: delimiterAttrs },
         newStepTitle(stepAttrs, [{ type: 'text', text: message }]),
@@ -38,12 +46,7 @@ export async function initNodes(ignoredFiles?: string[]): Promise<INode[]> {
           pos: 'pre',
           commit: hash,
         }),
-        ...files.flatMap((diffFile) => {
-          const hidden = ignoredFiles?.some((pattern) =>
-            mm.isMatch(diffFile.to!, pattern),
-          );
-          return newEmptyFile(hash, diffFile, Boolean(hidden)).flat();
-        }),
+        ...fileNodes.flat(),
         newEmptyExplain({
           level: 'step',
           pos: 'post',

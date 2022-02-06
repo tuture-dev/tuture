@@ -34,6 +34,8 @@ export interface IDiffBlock {
   attrs: {
     file: string;
     commit: string;
+    code: string;
+    originalCode: string;
     hiddenLines?: [number, number][];
   } & BasicAttrs;
 }

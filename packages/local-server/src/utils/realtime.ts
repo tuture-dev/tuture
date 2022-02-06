@@ -161,6 +161,7 @@ const messageListener = (
 };
 
 const closeConn = (doc: WSSharedDoc, conn: WebSocket) => {
+  d('closeConn for doc %s', doc.name);
   if (doc.conns.has(conn)) {
     doc.conns.delete(conn);
     const controlledIds = doc.conns.get(conn);

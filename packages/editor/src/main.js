@@ -1,6 +1,7 @@
+import './installCompositionApi.js';
+
 import Vue from 'vue';
 import { createApp, h } from 'vue-demi';
-import VueCompositionAPI from '@vue/composition-api';
 import hooks from '@u3u/vue-hooks';
 import {
   Affix,
@@ -55,7 +56,7 @@ import {
   faArrowRight,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import VueLazyComponent from '@xunlei/vue-lazy-component';
+import CodeDiff from 'v-code-diff';
 
 import App from './App.vue';
 import router from './router';
@@ -95,7 +96,6 @@ Vue.component('font-awesome-icon', FontAwesomeIcon);
 Vue.config.productionTip = false;
 
 Vue.use(hooks);
-Vue.use(VueCompositionAPI);
 
 Vue.use(Affix);
 Vue.use(Anchor);
@@ -120,7 +120,7 @@ Vue.use(Switch);
 Vue.use(Popover);
 Vue.use(Popconfirm);
 
-Vue.use(VueLazyComponent);
+Vue.use(CodeDiff);
 
 Vue.prototype.$message = message;
 
@@ -137,5 +137,7 @@ const app = createApp({
   store,
   render: () => h(App),
 });
+
+// app.use(CodeDiff);
 
 app.mount('#app');
