@@ -16,7 +16,6 @@ import {
   tutureSchema,
   markdownSerializer,
 } from '@tuture/core';
-import { loadCollection } from '@tuture/local-server';
 
 import logger from '../utils/logger';
 import { generateUserProfile } from '../utils/internals';
