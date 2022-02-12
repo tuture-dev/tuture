@@ -1,18 +1,12 @@
-export interface TocArticleItem {
+import { Article, StepAttrs } from '@tuture/core';
+
+export interface TocArticleItem extends Article {
   type: 'article';
-  id: string;
-  name: string;
-  level: number;
 }
 
-export interface TocStepItem {
+export interface TocStepItem extends StepAttrs {
   type: 'step';
   id: string;
-  name: string;
-  level: number;
-  number: number;
-  articleId?: string | null;
-  outdated?: boolean;
 }
 
 export type TocItem = TocArticleItem | TocStepItem;

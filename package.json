@@ -15,7 +15,7 @@
     "git"
   ],
   "engines": {
-    "node": ">=8.0.0"
+    "node": ">=12.0.0"
   },
   "scripts": {
     "lint": "eslint \"**/*.{js,jsx,ts,tsx}\" --fix",
@@ -85,7 +85,7 @@
     "rollup": "^2.56.3",
     "rollup-plugin-json": "^4.0.0",
     "rollup-plugin-jsx": "^1.0.3",
-    "rollup-plugin-typescript2": "^0.26.0",
+    "rollup-plugin-typescript2": "^0.30.0",
     "ts-jest": "^24.1.0",
     "typescript": "^3.8.3"
   },

@@ -1,100 +1,91 @@
+import debug from 'debug';
 import fs from 'fs-extra';
 import path from 'path';
 import {
   INode,
   Collection,
-  TUTURE_ROOT,
-  TUTURE_VCS_ROOT,
-  COLLECTION_PATH,
-  TUTURE_DOC_ROOT,
-  COLLECTION_CHECKPOINT,
   SCHEMA_VERSION,
   convertV1ToV2,
+  StepDoc,
 } from '@tuture/core';
+import { Low, JSONFile } from 'lowdb';
 
-export const collectionPath = path.join(
-  process.env.TUTURE_PATH || process.cwd(),
-  TUTURE_ROOT,
-  COLLECTION_PATH,
-);
+import { getCollectionsRoot } from './path.js';
+import { getInventoryItemByPath } from './inventory.js';
 
-export const tutureDocRoot = path.join(
-  process.env.TUTURE_PATH || process.cwd(),
-  TUTURE_ROOT,
-  TUTURE_DOC_ROOT,
-);
+const d = debug('tuture:local-server:collection');
 
-export const collectionCheckpoint = path.join(
-  process.env.TUTURE_PATH || process.cwd(),
-  TUTURE_ROOT,
-  COLLECTION_CHECKPOINT,
-);
+const dbMap = new Map<string, Low<Collection>>();
 
-export const collectionVcsPath = path.join(
-  process.env.TUTURE_PATH || process.cwd(),
-  TUTURE_VCS_ROOT,
-  COLLECTION_PATH,
-);
+process.on('exit', async () => {
+  console.log('Saving db data to disk...');
+  dbMap.forEach(async (db) => await db.write());
+});
+
+async function getCollectionIdFromCwd() {
+  const item = await getInventoryItemByPath(process.cwd());
+  if (!item) {
+    throw new Error(
+      'collection not ready, please run `tuture init` to initialize',
+    );
+  }
+  return item.id;
+}
+
+async function getCollectionPath(collectionId?: string) {
+  collectionId = collectionId || (await getCollectionIdFromCwd());
+  return path.join(getCollectionsRoot(), `${collectionId}.json`);
+}
+
+export async function getCollectionDb(collectionId?: string) {
+  collectionId = collectionId || (await getCollectionIdFromCwd());
+  d('getCollectionDb for collection id: %s', collectionId);
+  let db = dbMap.get(collectionId);
+  if (!db) {
+    await fs.ensureDir(getCollectionsRoot());
+    const collectionPath = await getCollectionPath(collectionId);
+    d('getCollectionDb from %s', collectionPath);
+    db = new Low<Collection>(new JSONFile(collectionPath));
+    await db.read();
+    dbMap.set(collectionId, db);
+    d('updated dbMap: %o', dbMap);
+  }
+  return db;
+}
 
 /**
  * Load collection.
  */
-export function loadCollection(): Collection {
-  const collection = fs.readJSONSync(collectionPath);
+export async function loadCollection(collectionId?: string) {
+  const db = await getCollectionDb(collectionId);
 
-  if (collection.version !== 'v1' && collection.version !== SCHEMA_VERSION) {
-    throw new Error(
-      'incompatible collection version, please contact mrc@mail.tuture.co to fix it',
-    );
-  }
+  // if (collection.version !== 'v1' && collection.version !== SCHEMA_VERSION) {
+  //   throw new Error(
+  //     'incompatible collection version, please contact mrc@mail.tuture.co to fix it',
+  //   );
+  // }
 
-  if (collection.version === 'v1') {
-    convertV1ToV2(collection).forEach((an) =>
-      saveArticle(an.articleId, { type: 'doc', content: an.nodes }),
-    );
-    collection.version = SCHEMA_VERSION;
-  }
+  // if (collection.version === 'v1') {
+  //   let [collectionV2, stepDocs] = convertV1ToV2(collection);
+  //   collection = collectionV2;
+  //   collection.version = SCHEMA_VERSION;
 
-  return collection;
+  //   Object.entries(stepDocs).forEach(([id, doc]) => saveStepSync(id, doc));
+  // }
+
+  return db.data!;
 }
 
 /**
- * Save the entire collection back to workspace.
+ * Save the entire collection.
  */
-export function saveCollection(collection: Collection) {
-  collection.version = SCHEMA_VERSION;
-  fs.outputJSONSync(collectionPath, collection, { spaces: 2 });
+export async function saveCollection(collection: Collection) {
+  const db = await getCollectionDb(collection.id);
+  db.data = collection;
+  await db.write();
+  d('save collection %s', collection.id);
 }
 
-export function saveCheckpoint() {
-  // Copy the last committed file.
-  fs.copySync(collectionPath, collectionCheckpoint, { overwrite: true });
-}
-
-export function hasCollectionChangedSinceCheckpoint() {
-  if (!fs.existsSync(collectionCheckpoint)) {
-    return true;
-  }
-  return !fs
-    .readFileSync(collectionPath)
-    .equals(fs.readFileSync(collectionCheckpoint));
-}
-
-/**
- * Read article from workspace.
- * @param articleId article id
- * @returns the parsed doc
- */
-export function loadArticle(articleId: string): INode {
-  return fs.readJSONSync(path.join(tutureDocRoot, `${articleId}.json`));
-}
-
-/**
- * Save article nodes to json doc.
- * @param articleId article id
- * @param nodes prosemirror nodes for this article
- */
-export function saveArticle(articleId: string, doc: INode) {
-  const docPath = path.join(tutureDocRoot, `${articleId}.json`);
-  fs.outputJSONSync(docPath, doc, { spaces: 2 });
+export async function deleteCollection(collectionId: string) {
+  await fs.remove(await getCollectionPath(collectionId));
 }

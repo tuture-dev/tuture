@@ -1,81 +1,52 @@
-import { flags } from '@oclif/command';
-import { prompt } from 'inquirer';
-import { TUTURE_BRANCH } from '@tuture/core';
+import { Command } from 'commander';
+import inquirer from 'inquirer';
+import debug from 'debug';
 
-import BaseCommand from '../base';
-import logger from '../utils/logger';
-import { git } from '../utils/git';
-import { removeTutureSuite } from '../utils';
+import logger from '../utils/logger.js';
 
-export default class Destroy extends BaseCommand {
-  static description = 'Delete all tuture files';
+const { prompt } = inquirer;
+const d = debug('tuture:cli:destroy');
 
-  static flags = {
-    help: flags.help({ char: 'h' }),
-    force: flags.boolean({
-      char: 'f',
-      description: 'destroy without confirmation',
-    }),
-  };
+async function promptConfirm(message: string, defaultChoice = false) {
+  const response = await prompt<{ answer: boolean }>([
+    {
+      type: 'confirm',
+      name: 'answer',
+      message,
+      default: defaultChoice,
+    },
+  ]);
 
-  async promptConfirm(message: string, defaultChoice = false) {
-    const response = await prompt<{ answer: boolean }>([
-      {
-        type: 'confirm',
-        name: 'answer',
-        message,
-        default: defaultChoice,
-      },
-    ]);
+  return response.answer;
+}
 
-    return response.answer;
+type DestroyOptions = {
+  force: boolean;
+};
+
+async function doDestroy(options: DestroyOptions) {
+  d('options: %o', options);
+
+  if (!options.force) {
+    const confirmed = await promptConfirm('Are you sure?');
+    d('confirmed: %o', confirmed);
+    if (!confirmed) {
+      return;
+    }
   }
 
-  async run() {
-    const { flags } = this.parse(Destroy);
+  logger.log('success', 'Tutorial has been destroyed!');
+}
 
-    if (!flags.force) {
-      const confirmed = await this.promptConfirm('Are you sure?');
-      if (!confirmed) {
-        this.exit(0);
-      }
-    }
+export function makeDestroyCommand() {
+  const destroy = new Command('destroy');
 
-    await removeTutureSuite();
+  destroy
+    .description('delete current tutorial')
+    .option('-f, --force', 'destroy without confirmation')
+    .action(async () => {
+      await doDestroy(destroy.opts<DestroyOptions>());
+    });
 
-    const { all: allBranches } = await git.branch({ '-a': true });
-
-    // Remove local tuture branch if exists.
-    if (allBranches.includes(TUTURE_BRANCH)) {
-      await git.branch(['-D', TUTURE_BRANCH]);
-      logger.log('success', 'Local tuture branch has been deleted.');
-    }
-
-    const remoteBranches = allBranches.filter(
-      (branch) => branch.indexOf(TUTURE_BRANCH) > 0,
-    );
-
-    if (remoteBranches.length > 0) {
-      const confirmed = await this.promptConfirm(
-        `Do you want to delete ${remoteBranches.length} remote tuture branch(es)?`,
-      );
-
-      if (confirmed) {
-        try {
-          // Delete all remote branches.
-          await Promise.all(
-            remoteBranches.map(async (branch) => {
-              const [_, remote, ref] = branch.split('/');
-              await git.push(remote, ref, { '-d': true });
-              logger.log('success', `${branch} has been deleted.`);
-            }),
-          );
-        } catch (err) {
-          logger.log('error', err.message);
-        }
-      }
-    }
-
-    logger.log('success', 'Tuture tutorial has been destroyed!');
-  }
+  return destroy;
 }

@@ -1,3 +1,4 @@
+import debug from 'debug';
 import {
   IText,
   INode,
@@ -10,9 +11,14 @@ import {
   getHiddenLines,
   Collection,
   Article,
+  StepAttrs,
+  isStepTitle,
 } from '@tuture/core';
+import { readFileAtCommit } from '@tuture/local-server';
 
-export function newStepTitle(hash: string, content: IText[]): IHeading {
+const d = debug('tuture:cli:node');
+
+export function newStepTitle(attrs: StepAttrs, content: IText[]): IHeading {
   return {
     type: 'heading',
     content,
@@ -21,7 +27,7 @@ export function newStepTitle(hash: string, content: IText[]): IHeading {
       id: randHex(8),
       level: 2,
       fixed: true,
-      step: { commit: hash },
+      step: attrs,
     },
   };
 }
@@ -37,23 +43,29 @@ export function newEmptyExplain(explainAttrs: ExplainAttrs): IExplain {
   };
 }
 
-export function newEmptyFile(
+export async function newEmptyFile(
   commit: string,
-  file: DiffFile,
+  diffFile: DiffFile,
   hidden: boolean,
-): INode[] {
+): Promise<INode[]> {
+  const file = diffFile.to!;
   const diffBlock: IDiffBlock = {
     type: 'diff_block',
     attrs: {
       commit,
       hidden,
-      file: file.to!,
-      hiddenLines: getHiddenLines(file),
+      file,
+      code: diffFile.deleted ? '' : await readFileAtCommit(commit, file),
+      originalCode: diffFile.new
+        ? ''
+        : await readFileAtCommit(`${commit}~1`, file),
+      hiddenLines: getHiddenLines(diffFile),
     },
   };
+  d('diffBlock: %o', diffBlock);
   const delimiterAttrs = {
     commit,
-    file: file.to!,
+    file: diffFile.to!,
   };
   return [
     { type: 'file_start', attrs: delimiterAttrs },
@@ -61,31 +73,17 @@ export function newEmptyFile(
       level: 'file',
       pos: 'pre',
       commit,
-      file: file.to!,
+      file,
     }),
     diffBlock,
     newEmptyExplain({
       level: 'file',
       pos: 'post',
       commit,
-      file: file.to!,
+      file,
     }),
     { type: 'file_end', attrs: delimiterAttrs },
   ];
-}
-
-export function isStepTitle(node: INode): boolean {
-  return node.type === 'heading' && node.attrs!.step;
-}
-
-export function isText(node: INode): node is IText {
-  return node.type === 'text';
-}
-
-export function getNodeText(node: INode): string {
-  return isText(node)
-    ? node.text
-    : (node.content! as INode[]).map((child) => getNodeText(child)).join();
 }
 
 export function readCommitsFromNodes(nodes: INode[]): string[] {

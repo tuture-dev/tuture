@@ -1,6 +1,6 @@
 import { Node, Element } from 'editure';
 
-import { Step } from './interfaces.v1';
+import { Step } from './interfaces.v1.js';
 
 export interface HeadingItem {
   id: string;

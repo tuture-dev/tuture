@@ -1,5 +1,5 @@
 import json from 'rollup-plugin-json';
-import typescript from '@rollup/plugin-typescript';
+import typescript from 'rollup-plugin-typescript2';
 
 export default [
   {
@@ -20,7 +20,6 @@ export default [
     plugins: [
       typescript({
         tsconfig: 'packages/core/tsconfig.json',
-        outputToFilesystem: true,
       }),
     ],
     external: (id) => !id.startsWith('.') && !id.endsWith('.ts'),
@@ -29,14 +28,8 @@ export default [
     input: 'packages/local-server/src/index.ts',
     output: [
       {
-        file: 'packages/local-server/dist/index.esm.js',
-        format: 'esm',
-        sourcemap: true,
-      },
-      {
         file: 'packages/local-server/dist/index.js',
-        format: 'cjs',
-        exports: 'named',
+        format: 'esm',
         sourcemap: true,
       },
     ],
@@ -44,7 +37,6 @@ export default [
       json(),
       typescript({
         tsconfig: 'packages/local-server/tsconfig.json',
-        outputToFilesystem: true,
       }),
     ],
     external: (id) => !id.startsWith('.') && !id.endsWith('.ts'),

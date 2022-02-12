@@ -1,4 +1,4 @@
-import { DiffFile } from './diff';
+import { DiffFile } from './diff.js';
 
 export interface IRawDiff {
   commit: string;
@@ -34,12 +34,18 @@ export interface IDiffBlock {
   attrs: {
     file: string;
     commit: string;
+    code: string;
+    originalCode: string;
     hiddenLines?: [number, number][];
   } & BasicAttrs;
 }
 
-export interface StepTitleAttrs {
+export interface StepAttrs {
+  id: string;
+  name: string;
   commit: string;
+  order: number;
+  outdated?: boolean;
 }
 
 export interface IHeading {
@@ -48,7 +54,7 @@ export interface IHeading {
   attrs: {
     id: string;
     level: number;
-    step?: StepTitleAttrs;
+    step?: StepAttrs;
   } & BasicAttrs;
 }
 
@@ -84,15 +90,31 @@ export interface IMeta {
   github?: string;
 }
 
+export interface StepMeta {
+  id: string;
+  commit: string;
+}
+
 export interface Article extends IMeta {}
 
 export interface Collection extends IMeta {
-  version?: string;
   articles: Article[];
+  version?: string;
   remotes?: IRemote[];
 }
 
 export interface TutureConfig {
   ignoredFiles: string[];
   port: number;
+}
+
+export interface Doc {
+  type: 'doc';
+  content: INode[];
+}
+
+export interface StepDoc {
+  type: 'doc';
+  content: INode[];
+  attrs: StepAttrs;
 }

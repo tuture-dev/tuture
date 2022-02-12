@@ -1,5 +1,7 @@
 import chalk from 'chalk';
-import winston, { format, createLogger } from 'winston';
+import winston from 'winston';
+
+const { format, createLogger } = winston;
 
 const logLevels = {
   error: 0,

@@ -1,0 +1,669 @@
+{
+  "type": "doc",
+  "attrs": {
+    "id": "ZYUYQTbmJz",
+    "name": "数据展示：实现食谱列表",
+    "articleId": "0818be0",
+    "commit": "63f7ab0",
+    "order": 3
+  },
+  "content": [
+    {
+      "type": "step_start",
+      "attrs": {
+        "commit": "63f7ab0"
+      }
+    },
+    {
+      "type": "heading",
+      "content": [
+        {
+          "type": "text",
+          "text": "数据展示：实现食谱列表"
+        }
+      ],
+      "attrs": {
+        "id": "e121e897",
+        "level": 2,
+        "fixed": true,
+        "step": {
+          "id": "ZYUYQTbmJz",
+          "name": "数据展示：实现食谱列表",
+          "articleId": "0818be0",
+          "commit": "63f7ab0",
+          "order": 3
+        }
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "fixed": true,
+        "level": "step",
+        "pos": "pre",
+        "commit": "63f7ab0"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "接下来我们将演示如何展示数据，并实现食谱列表页面。"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "commit": "63f7ab0",
+        "file": "client/components/RecipeCard.vue"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "commit": "63f7ab0",
+        "file": "client/components/RecipeCard.vue"
+      },
+      "content": [
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 3,
+            "id": "wjF4hqcTJS"
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "实现 RecipeCard 组件"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "首先，实现将会在多个页面中反复使用的食谱卡片组件 "
+            },
+            {
+              "type": "text",
+              "text": "RecipeCard",
+              "marks": [
+                {
+                  "type": "code"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "text": " 如下："
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "commit": "63f7ab0",
+        "file": "client/components/RecipeCard.vue"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "commit": "63f7ab0",
+        "file": "client/components/RecipeCard.vue"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "在这个组件中，我们定义了两个 "
+            },
+            {
+              "type": "text",
+              "text": "props",
+              "marks": [
+                {
+                  "type": "code"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "text": "，分别是 "
+            },
+            {
+              "type": "text",
+              "text": "recipe",
+              "marks": [
+                {
+                  "type": "code"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "text": "（代表食谱对象）和 "
+            },
+            {
+              "type": "text",
+              "text": "onDelete",
+              "marks": [
+                {
+                  "type": "code"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "text": "（删除时的回调函数），并在模板中使用这两个成员。"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "commit": "63f7ab0",
+        "file": "client/components/RecipeCard.vue"
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "commit": "63f7ab0",
+        "file": "client/pages/recipes/index.vue"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "commit": "63f7ab0",
+        "file": "client/pages/recipes/index.vue"
+      },
+      "content": [
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 3,
+            "id": "B103kV9wnP"
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "了解 Nuxt 的路由功能"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "在实现第二个页面之前，我们有必要先了解一下 Nuxt 的路由功能——通过 pages 目录下的文档结构，就可以自动生成 vue-router 的路由器配置！"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "例如我们这样安排 pages 下面的目录结构👇："
+            }
+          ]
+        },
+        {
+          "type": "code_block",
+          "attrs": {
+            "language": "text"
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "pages\n├── README.md\n├── index.vue\n└── recipes\n    ├── _id\n    │   ├── edit.vue\n    │   └── index.vue\n    ├── add.vue\n    └── index.vue"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "_id",
+              "marks": [
+                {
+                  "type": "code"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "text": " 目录（或者其他以单下划线开头的目录或 .vue 文件）被称作是"
+            },
+            {
+              "type": "text",
+              "text": "动态路由",
+              "marks": [
+                {
+                  "type": "bold"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "text": "（Dynamic Routing），可以接受参数作为 URL 的一部分。上面的 pages 目录自动生成下面的 "
+            },
+            {
+              "type": "text",
+              "text": "router",
+              "marks": [
+                {
+                  "type": "code"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "text": "："
+            }
+          ]
+        },
+        {
+          "type": "code_block",
+          "attrs": {
+            "language": "js"
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "router: {\n  routes: [\n    {\n      name: 'index',\n      path: '/',\n      component: 'pages/index.vue'\n    },\n    {\n      name: 'recipes',\n      path: '/recipes',\n      component: 'pages/recipes/index.vue'\n    },\n    {\n      name: 'recipes-add',\n      path: '/recipes/add',\n      component: 'pages/recipes/add.vue'\n    },\n    {\n      name: 'recipes-id',\n      path: '/recipes/:id?',\n      component: 'pages/recipes/_id/index.vue'\n    },\n    {\n      name: 'recipes-id-edit',\n      path: '/recipes/:id?/edit',\n      component: 'pages/recipes/_id/edit.vue'\n    }\n  ]\n}"
+            }
+          ]
+        },
+        {
+          "type": "notice",
+          "attrs": {
+            "style": "info"
+          },
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "如果想要更深入地了解 Nuxt 的路由功能，请参考"
+                },
+                {
+                  "type": "text",
+                  "text": "官方文档",
+                  "marks": [
+                    {
+                      "type": "link",
+                      "attrs": {
+                        "href": "https://nuxtjs.org/guide/routing",
+                        "title": ""
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": "。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "attrs": {
+            "level": 3,
+            "id": "I1YgERmt8W"
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "实现食谱列表页面"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "创建食谱列表页面 pages/recipes/index.vue（先使用假数据填充），代码如下："
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "commit": "63f7ab0",
+        "file": "client/pages/recipes/index.vue"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "commit": "63f7ab0",
+        "file": "client/pages/recipes/index.vue"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "commit": "63f7ab0",
+        "file": "client/pages/recipes/index.vue"
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "commit": "63f7ab0",
+        "file": "client/static/images/food-1.jpeg"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "commit": "63f7ab0",
+        "file": "client/static/images/food-1.jpeg"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "commit": "63f7ab0",
+        "file": "client/static/images/food-1.jpeg"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "commit": "63f7ab0",
+        "file": "client/static/images/food-1.jpeg"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "commit": "63f7ab0",
+        "file": "client/static/images/food-1.jpeg"
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "commit": "63f7ab0",
+        "file": "client/static/images/food-2.jpeg"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "commit": "63f7ab0",
+        "file": "client/static/images/food-2.jpeg"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [],
+        "commit": "63f7ab0",
+        "file": "client/static/images/food-2.jpeg"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "commit": "63f7ab0",
+        "file": "client/static/images/food-2.jpeg"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "commit": "63f7ab0",
+        "file": "client/static/images/food-2.jpeg"
+      }
+    },
+    {
+      "type": "file_start",
+      "attrs": {
+        "commit": "63f7ab0",
+        "file": "tuture.yml"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "pre",
+        "commit": "63f7ab0",
+        "file": "tuture.yml"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "diff_block",
+      "attrs": {
+        "hiddenLines": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30,
+          31,
+          32,
+          33,
+          34,
+          35,
+          36,
+          37,
+          38,
+          39,
+          40,
+          41,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47,
+          48,
+          49,
+          50,
+          51,
+          52,
+          53,
+          54,
+          55,
+          56,
+          57,
+          58,
+          59,
+          60,
+          61,
+          62,
+          63,
+          64,
+          65,
+          66,
+          67,
+          68,
+          69,
+          70,
+          71,
+          72,
+          73,
+          74
+        ],
+        "commit": "63f7ab0",
+        "file": "tuture.yml"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "level": "file",
+        "pos": "post",
+        "commit": "63f7ab0",
+        "file": "tuture.yml"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": []
+        }
+      ]
+    },
+    {
+      "type": "file_end",
+      "attrs": {
+        "commit": "63f7ab0",
+        "file": "tuture.yml"
+      }
+    },
+    {
+      "type": "explain",
+      "attrs": {
+        "fixed": true,
+        "level": "step",
+        "pos": "post",
+        "commit": "63f7ab0"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "打开前端网站，可以看到我们刚才实现的食谱列表页面："
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "image",
+              "attrs": {
+                "src": ".tuture/assets/recipe-list-fake.jpg",
+                "alt": "",
+                "title": ""
+              }
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "到这儿，我们分别实现了这个全栈食谱网站的前端和后端应用，这篇教程的第一部分也就结束了。在接下来的教程中，我们将实现前后端之间的通信，并进一步实现食谱的详情及添加页面，不见不散！"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "step_end",
+      "attrs": {
+        "commit": "63f7ab0"
+      }
+    }
+  ]
+}

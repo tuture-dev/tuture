@@ -1,45 +1,45 @@
 import { Router } from 'express';
+import { Article, randHex } from '@tuture/core';
 
-import { loadArticle, loadCollection, saveArticle } from '../utils/collection';
-import TaskQueue from '../utils/task-queue';
+import { getCollectionDb } from '../utils/index.js';
 
-export function createArticlesRouter(queue: TaskQueue) {
-  const router = Router();
+const router = Router();
 
-  router.get('/', (_, res) => {
-    const { articles } = loadCollection();
-    res.json(articles);
-  });
+router.get('/', async (req, res) => {
+  const db = await getCollectionDb(req.params.collectionId);
+  res.json(db.data!.articles);
+});
 
-  router.put('/', (req, res) => {
-    queue.addTask((c) => ({ ...c, articles: req.body }), 0);
-    res.sendStatus(200);
-  });
+router.post('/create', async (req, res) => {
+  const newArticle: Article = {
+    id: randHex(32),
+    name: '',
+    description: '',
+    created: new Date(),
+    cover: '',
+    topics: [],
+    categories: [],
+    steps: [],
+    ...req.body,
+  };
+  const db = await getCollectionDb(req.params.collectionId);
+  db.data!.articles.push(newArticle);
+  await db.write();
+  return res.status(201).json(newArticle);
+});
 
-  router.get('/:articleId', (req, res) => {
-    const { articleId } = req.params;
-    res.json(loadArticle(articleId));
-  });
+router.delete('/:articleId', async (req, res) => {
+  const { articleId } = req.params;
+  const db = await getCollectionDb(req.params.collectionId);
+  const deleteIndex = db.data!.articles.findIndex(
+    (article) => article.id === articleId,
+  );
+  if (deleteIndex === -1) {
+    return res.sendStatus(404);
+  }
+  db.data!.articles.splice(deleteIndex, 1);
+  await db.write();
+  res.sendStatus(204);
+});
 
-  router.put('/:articleId', (req, res) => {
-    const { articleId } = req.params;
-    saveArticle(articleId, req.body);
-    res.sendStatus(200);
-  });
-
-  router.delete('/:articleId', (req, res) => {
-    const { articleId } = req.params;
-
-    queue.addTask((c) => {
-      const { articles } = c;
-      return {
-        ...c,
-        articles: articles.filter((article) => article.id !== articleId),
-      };
-    }, 0);
-
-    res.sendStatus(200);
-  });
-
-  return router;
-}
+export default router;

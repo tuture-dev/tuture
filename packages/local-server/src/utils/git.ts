@@ -1,10 +1,12 @@
-import simplegit from 'simple-git/promise';
+import simplegit from 'simple-git/promise.js';
 import parseDiff from 'parse-diff';
-import { DiffFile, TUTURE_COMMIT_PREFIX } from '@tuture/core';
+import { DiffFile } from '@tuture/core';
 
 // Interface for running git commands.
 // https://github.com/steveukx/git-js
-export const git = simplegit().silent(true);
+export function createGitHandler(basePath?: string) {
+  return simplegit(basePath).silent(true);
+}
 
 /**
  * Data type for a single git commit.
@@ -15,26 +17,12 @@ export type Commit = {
 };
 
 /**
- * List all commits on current branch from the repository.
- * @returns Hashes and messages of all commits.
- */
-export async function listAllCommits(): Promise<Commit[]> {
-  const logs = await git.log({ '--no-merges': true });
-  return (
-    logs.all
-      .map(({ message, hash }) => ({ message, hash }))
-      .reverse()
-      // filter out commits whose commit message starts with 'tuture:'
-      .filter(({ message }) => !message.startsWith(TUTURE_COMMIT_PREFIX))
-  );
-}
-
-/**
  * Read and parse diff from git command.
  * @param commit git commit hash
  * @returns RawDiff object
  */
 export async function readDiff(commit: string): Promise<DiffFile[]> {
+  const git = createGitHandler();
   const output = await git.raw(['show', '-U99999', commit]);
   const diffText = output
     .replace(/\\ No newline at end of file\n/g, '')
@@ -53,5 +41,6 @@ export async function readFileAtCommit(
   commit: string,
   file: string,
 ): Promise<string> {
+  const git = createGitHandler();
   return await git.raw(['show', '-U99999', `${commit}:${file}`]);
 }

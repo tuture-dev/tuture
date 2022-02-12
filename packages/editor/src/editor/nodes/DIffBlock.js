@@ -19,6 +19,8 @@ export default class DiffBlock extends Node {
         // 原 diff_block 相关的信息
         file: { default: '' },
         commit: { default: '' },
+        code: { default: '' },
+        originalCode: { default: '' },
         hiddenLines: { default: [] },
       },
       content: 'text*',
@@ -38,7 +40,6 @@ export default class DiffBlock extends Node {
         ? selection.$cursor.pos
         : selection.$to.pos;
 
-      console.log('type', type);
       const node = type.create(attrs);
       const transaction = state.tr.insert(position, node);
       dispatch(transaction);

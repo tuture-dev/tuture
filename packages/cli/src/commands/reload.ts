@@ -1,94 +1,69 @@
 import fs from 'fs-extra';
-import { flags } from '@oclif/command';
-import { INode, includeCommit } from '@tuture/core';
-import { collectionPath, saveArticle } from '@tuture/local-server';
+import { Command } from 'commander';
+import { loadCollection, saveCollection } from '@tuture/local-server';
+import { includeCommit } from '@tuture/core';
 
-import sync from './sync';
-import BaseCommand from '../base';
-import { git } from '../utils/git';
-import logger from '../utils/logger';
-import { initNodes, loadArticleDocs } from '../utils';
-import { getNodeText, isStepTitle, readCommitsFromNodes } from '../utils/node';
+import { initNodes } from '../utils';
+import logger from '../utils/logger.js';
 
-export default class Reload extends BaseCommand {
-  static description = 'Update workspace with latest commit history';
+async function doReload() {
+  // // Run sync command if workspace is not created.
+  // if (!fs.existsSync(collectionPath)) {
+  //   await sync.run([]);
+  // }
 
-  static flags = {
-    help: flags.help({ char: 'h' }),
-  };
+  // const collection = loadCollection();
+  // const assignedSteps = collection.articles.flatMap(
+  //   (article) => article.steps,
+  // );
+  // const unassignedSteps = collection.unassignedSteps;
+  // const collectionSteps = assignedSteps.concat(unassignedSteps);
+  // const collectionCommits = collectionSteps.map((step) => step.commit);
 
-  async run() {
-    this.parse(Reload);
+  // await git.checkout('master');
 
-    // Run sync command if workspace is not created.
-    if (!fs.existsSync(collectionPath)) {
-      await sync.run([]);
-    }
+  // const ignoredFiles: string[] = this.userConfig.ignoredFiles;
+  // const currentSteps = await initNodes(ignoredFiles);
+  // const currentCommits = currentSteps.map((step) => step.attrs.commit);
 
-    const collectionDocs = loadArticleDocs();
-    const collectionCommits = readCommitsFromNodes(
-      collectionDocs.flatMap((articleDoc) => articleDoc.doc.content!),
-    );
+  // // Mark outdated nodes whose commit no longer exists
+  // collectionSteps.forEach((step) => {
+  //   if (!includeCommit(currentCommits, step.commit)) {
+  //     const outdatedStep = loadStepSync(step.id);
+  //     const { name, commit } = outdatedStep.attrs;
+  //     outdatedStep.attrs.outdated = true;
+  //     saveStepSync(step.id, outdatedStep);
+  //     logger.log('warning', `Outdated step: ${name} (${commit})`);
+  //   }
+  // });
 
-    await git.checkout('master');
+  // // Add new nodes to last article
+  // const lastArticle = collection.articles[collection.articles.length - 1];
+  // const newSteps = currentSteps.filter(
+  //   (step) => !includeCommit(collectionCommits, step.attrs.commit),
+  // );
+  // newSteps.forEach((step) => {
+  //   step.attrs.articleId = lastArticle.id;
 
-    const ignoredFiles: string[] = this.userConfig.ignoredFiles;
-    const currentNodes = await initNodes(ignoredFiles);
-    const currentCommits = readCommitsFromNodes(currentNodes);
+  //   lastArticle.steps.push({
+  //     id: step.attrs.id,
+  //     commit: step.attrs.commit,
+  //   });
+  // });
 
-    // Mark outdated nodes whose commit no longer exists
-    collectionDocs.forEach((articleDocs) => {
-      const nodes: INode[] = articleDocs.doc.content!;
-      for (let i = 0; i < nodes.length; i++) {
-        const commit = nodes[i].attrs!.commit;
-        if (
-          nodes[i].type === 'step_start' &&
-          !includeCommit(currentCommits, commit)
-        ) {
-          while (nodes[i].type !== 'step_end') {
-            if (isStepTitle(nodes[i])) {
-              logger.log(
-                'warning',
-                `Outdated step: ${getNodeText(nodes[i])} (${commit})`,
-              );
-            }
-            nodes[i].attrs = { ...nodes[i].attrs, outdated: true };
-            i++;
-          }
-          nodes[i].attrs = { ...nodes[i].attrs, outdated: true };
-        }
-      }
-    });
+  // TODO: clean out ignored files, set display to false for those nodes.
 
-    // Add new nodes to last article
-    const lastArticle = collectionDocs[collectionDocs.length - 1];
-    const docContent: INode[] = lastArticle.doc.content || [];
-    for (let i = 0; i < currentNodes.length; i++) {
-      const commit = currentNodes[i].attrs!.commit;
-      if (
-        currentNodes[i].type === 'step_start' &&
-        !includeCommit(collectionCommits, commit)
-      ) {
-        while (currentNodes[i].type !== 'step_end') {
-          if (isStepTitle(currentNodes[i])) {
-            logger.log(
-              'success',
-              `New step: ${getNodeText(currentNodes[i])} (${commit})`,
-            );
-          }
-          docContent.push(currentNodes[i]);
-          i++;
-        }
-        docContent.push(currentNodes[i]);
-      }
-    }
+  // saveCollection(collection);
 
-    // TODO: clean out ignored files, set display to false for those nodes.
+  logger.log('success', 'Reload complete!');
+}
 
-    collectionDocs.forEach((articleDoc) =>
-      saveArticle(articleDoc.articleId, articleDoc.doc),
-    );
+export function makeReloadCommand() {
+  const reload = new Command('reload');
+  reload
+    .description('update workspace with latest git history')
+    .option('-y, --yes', 'do not ask for prompts')
+    .action(async () => {});
 
-    logger.log('success', 'Reload complete!');
-  }
+  return reload;
 }

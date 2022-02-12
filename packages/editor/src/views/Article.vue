@@ -1,5 +1,6 @@
 <template>
   <a-row class="h-full">
+    <StepAllocation></StepAllocation>
     <a-affix>
       <Drawer></Drawer>
     </a-affix>
@@ -30,6 +31,7 @@ import ChildDrawer from '@/components/drawer/ChildDrawer.vue';
 import ArticleBody from '@/components/ArticleBody.vue';
 import ArticleCatalogue from '@/components/ArticleCatalogue.vue';
 import CollectionCatalogue from '@/components/CollectionCatalogue.vue';
+import StepAllocation from '@/components/toc/StepAllocation.vue';
 
 export default defineComponent({
   components: {
@@ -38,6 +40,7 @@ export default defineComponent({
     CollectionCatalogue,
     Drawer,
     ChildDrawer,
+    StepAllocation,
   },
 });
 </script>

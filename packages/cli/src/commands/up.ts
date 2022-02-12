@@ -1,65 +1,54 @@
 import open from 'open';
 import fs from 'fs-extra';
 import getPort from 'get-port';
-import { flags } from '@oclif/command';
-import {
-  makeServer,
-  loadCollection,
-  collectionPath,
-} from '@tuture/local-server';
+import { Command } from 'commander';
+import { makeServer } from '@tuture/local-server';
 
-import reload from './reload';
-import BaseCommand from '../base';
-import logger from '../utils/logger';
-import { shouldReloadSteps } from '../utils/git';
+// import reload from './reload';
+import logger from '../utils/logger.js';
+import { shouldReloadSteps } from '../utils/git.js';
 
-export default class Up extends BaseCommand {
-  static description = 'Render and edit tutorial in browser';
+async function fireTutureServer() {
+  const port = await getPort();
+  const server = makeServer({
+    baseUrl: '/api',
+    // onGitHistoryChange: () => {
+    //   reload.run([]);
+    // },
+  });
 
-  static flags = {
-    help: flags.help({ char: 'h' }),
-    port: flags.integer({
-      char: 'p',
-      description: 'which port to use for editor server',
-    }),
-  };
+  server.listen(port, () => {
+    const url = `http://localhost:${port}`;
+    logger.log('success', `Tutorial editor is served on ${url}`);
 
-  async fireTutureServer() {
-    const port = await getPort({ port: this.userConfig.port });
-    const server = makeServer({
-      baseUrl: '/api',
-      onGitHistoryChange: () => {
-        reload.run([]);
-      },
-    });
+    // Don't open browser in test environment.
+    if (process.env.TEST !== 'yes') {
+      open(url);
+    }
+  });
+}
 
-    server.listen(port, () => {
-      const url = `http://localhost:${port}`;
-      logger.log('success', `Tutorial editor is served on ${url}`);
+export async function doUp() {
+  // this.userConfig = Object.assign(this.userConfig, flags);
 
-      // Don't open browser in test environment.
-      if (process.env.TEST !== 'yes') {
-        open(url);
-      }
-    });
-  }
+  // Run sync command if workspace is not prepared.
+  // if (
+  //   !fs.existsSync(collectionPath) ||
+  //   !fs.existsSync(diffPath) ||
+  //   (await shouldReloadSteps())
+  // ) {
+  //   await reload.run([]);
+  // }
 
-  async run() {
-    const { flags } = this.parse(Up);
-    this.userConfig = Object.assign(this.userConfig, flags);
+  fireTutureServer();
+}
 
-    // Run sync command if workspace is not prepared.
-    // if (
-    //   !fs.existsSync(collectionPath) ||
-    //   !fs.existsSync(diffPath) ||
-    //   (await shouldReloadSteps())
-    // ) {
-    //   await reload.run([]);
-    // }
+export function makeUpCommand() {
+  const up = new Command('up');
 
-    // Trying to load collection for sanity check.
-    loadCollection();
+  up.description('start editor server')
+    .option('-p, --port', 'which port to use for editor server')
+    .action(doUp);
 
-    this.fireTutureServer();
-  }
+  return up;
 }

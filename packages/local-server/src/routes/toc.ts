@@ -1,102 +1,83 @@
 import { Router } from 'express';
-import { getStepTitle } from '@tuture/core';
-import pick from 'lodash.pick';
 
 import { TocStepItem, TocArticleItem, TocItem } from '../types';
-import TaskQueue from '../utils/task-queue';
+import { loadCollection, saveCollection } from '../utils/collection';
 
 interface TocUpdateBody {
   articleStepList: TocItem[];
   unassignedStepList: TocStepItem[];
-  needDeleteOutdatedStepList: string[];
 }
 
-export function createTocRouter(queue: TaskQueue) {
-  const router = Router();
+const router = Router();
 
-  router.get('/', (_, res) => {
-    const { articles = [], steps = [] } = queue.readCollection();
+router.get('/', (_, res) => {
+  // const { articles = [], unassignedSteps = [] } = loadCollection();
 
-    const articleStepList = articles.reduce<TocItem[]>(
-      (initialArticleStepList, nowArticle) => {
-        const articleItem: TocArticleItem = {
-          ...pick(nowArticle, ['id', 'name']),
-          type: 'article',
-          level: 0,
-        };
-        const stepList: TocStepItem[] = steps
-          .filter((step) => step.articleId === nowArticle.id)
-          .map((step) => ({
-            ...pick(step, ['id', 'articleId', 'outdated']),
-            type: 'step',
-            level: 1,
-            number: steps.findIndex(({ id }) => step.id === id),
-            name: getStepTitle(step),
-          }));
+  const articleStepList: TocItem[] = [];
+  const unassignedStepList: TocItem[] = [];
 
-        return initialArticleStepList.concat(articleItem, ...stepList);
-      },
-      [],
-    );
+  // for (let article of articles) {
+  //   const articleItem: TocArticleItem = {
+  //     ...article,
+  //     type: 'article',
+  //   };
+  //   articleStepList.push(articleItem);
 
-    const unassignedStepList = steps
-      .filter((step) => !step.articleId)
-      .map((step) => ({
-        id: step.id,
-        outdated: step.outdated,
-        type: 'step',
-        level: 1,
-        number: steps.findIndex(({ id }) => step.id === id),
-        name: getStepTitle(step),
-      })) as TocStepItem[];
+  //   for (let step of article.steps) {
+  //     const stepDoc = loadStepSync(step.id);
+  //     const stepItem: TocStepItem = {
+  //       type: 'step',
+  //       ...stepDoc.attrs,
+  //     };
+  //     articleStepList.push(stepItem);
+  //   }
+  // }
 
-    res.json({ articleStepList, unassignedStepList });
-  });
+  // for (let step of unassignedSteps) {
+  //   const stepDoc = loadStepSync(step.id);
+  //   const stepItem: TocStepItem = {
+  //     type: 'step',
+  //     ...stepDoc.attrs,
+  //   };
+  //   unassignedStepList.push(stepItem);
+  // }
 
-  router.put('/', (req, res) => {
-    const {
-      articleStepList,
-      unassignedStepList,
-      needDeleteOutdatedStepList,
-    }: TocUpdateBody = req.body;
+  res.json({ articleStepList, unassignedStepList });
+});
 
-    queue.addTask((c) => {
-      let { steps, articles } = c;
+router.put('/', (req, res) => {
+  const {
+    articleStepList = [],
+    unassignedStepList = [],
+  }: TocUpdateBody = req.body;
 
-      // handle article deletion
-      const validArticles = articleStepList
-        .filter((item) => item.type === 'article')
-        .map((item) => item.id);
-      articles = articles.filter(({ id }) => validArticles.includes(id));
+  // const collection = loadCollection();
+  // const articles = collection.articles;
+  // for (let i = 0; i < articles.length; i++) {
+  //   articles[i].steps = [];
+  // }
 
-      // handle step allocation
-      const nowAllocationStepList = articleStepList.filter(
-        (item) => item.type === 'step',
-      ) as TocStepItem[];
-      const nowAllocationStepIdList = nowAllocationStepList.map(
-        (item) => item.id,
-      );
-      const unassignedStepIdList = unassignedStepList.map((step) => step.id);
+  // articleStepList.forEach((articleStep) => {
+  //   if (articleStep.type === 'step') {
+  //     for (let i = 0; i < articles.length; i++) {
+  //       if (articles[i].id === articleStep.articleId) {
+  //         articles[i].steps.push({
+  //           id: articleStep.id,
+  //           commit: articleStep.commit,
+  //         });
+  //       }
+  //     }
+  //   }
+  // });
 
-      steps = steps
-        .map((step) => {
-          if (nowAllocationStepIdList.includes(step.id)) {
-            step.articleId = nowAllocationStepList.filter(
-              (item) => item.id === step.id,
-            )[0].articleId;
-          }
-          if (unassignedStepIdList.includes(step.id)) {
-            step.articleId = null;
-          }
-          return step;
-        })
-        .filter((step) => !needDeleteOutdatedStepList.includes(step.id));
+  // collection.unassignedSteps = unassignedStepList.map((step) => ({
+  //   id: step.id,
+  //   commit: step.commit,
+  // }));
 
-      return { ...c, articles, steps };
-    });
+  // saveCollection(collection);
 
-    res.sendStatus(200);
-  });
+  res.sendStatus(200);
+});
 
-  return router;
-}
+export default router;
