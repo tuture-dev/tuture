@@ -1,4 +1,4 @@
-import { INode, IText } from './interfaces';
+import { INode, IText } from './interfaces.js';
 
 export function isStepTitle(node: INode): boolean {
   return node.type === 'heading' && node.attrs!.step;

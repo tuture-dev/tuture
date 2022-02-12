@@ -4,27 +4,30 @@ import { Router } from 'express';
 import multer from 'multer';
 import { randHex } from '@tuture/core';
 
-import { assetsRoot } from '../utils/assets';
+import { getAssetsRoot } from '../utils/path.js';
 
-fs.ensureDirSync(assetsRoot);
+export function createUploadRouter() {
+  const assetsRoot = getAssetsRoot();
 
-const diskStorage = multer.diskStorage({
-  destination: assetsRoot,
-  filename: function(req, file, cb) {
-    let fname = file.originalname;
-    const { name, ext } = path.parse(fname);
+  fs.ensureDirSync(assetsRoot);
 
-    // make sure to choose a unique filename
-    while (fs.existsSync(path.join(assetsRoot, fname))) {
-      fname = `${name}-${randHex(7)}${ext}`;
-    }
+  const diskStorage = multer.diskStorage({
+    destination: assetsRoot,
+    filename: function(req, file, cb) {
+      let fname = file.originalname;
+      const { name, ext } = path.parse(fname);
 
-    cb(null, fname);
-  },
-});
-const upload = multer({ storage: diskStorage });
+      // make sure to choose a unique filename
+      while (fs.existsSync(path.join(assetsRoot, fname))) {
+        fname = `${name}-${randHex(7)}${ext}`;
+      }
 
-export const createUploadRouter = () => {
+      cb(null, fname);
+    },
+  });
+
+  const upload = multer({ storage: diskStorage });
+
   const router = Router();
 
   router.post('/', upload.array('files'), (req, res) => {
@@ -33,4 +36,4 @@ export const createUploadRouter = () => {
   });
 
   return router;
-};
+}

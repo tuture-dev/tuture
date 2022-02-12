@@ -1,33 +1,19 @@
 import { Router } from 'express';
-import cp from 'child_process';
 
-import { createArticlesRouter } from './articles';
-import { createDiffRouter } from './diff';
-import { createMetaRouter } from './meta';
-import { createRemotesRouter } from './remotes';
-import { createUploadRouter } from './upload';
-import { createTocRouter } from './toc';
-import TaskQueue from '../utils/task-queue';
+import diffRouter from './diff.js';
+import metaRouter from './meta.js';
+import tocRouter from './toc.js';
+import articlesRouter from './articles.js';
+import { createUploadRouter } from './upload.js';
 
-export function createBaseRouter(queue: TaskQueue) {
+export function createApiRouter() {
   const router = Router();
 
-  router.use('/articles', createArticlesRouter());
-  router.use('/diff', createDiffRouter());
-  router.use('/meta', createMetaRouter(queue));
-  router.use('/remotes', createRemotesRouter(queue));
+  router.use('/diff', diffRouter);
+  router.use('/meta', metaRouter);
+  router.use('/toc', tocRouter);
+  router.use('/articles', articlesRouter);
   router.use('/upload', createUploadRouter());
-  router.use('/toc', createTocRouter());
-
-  router.get('/sync', async (req, res) => {
-    cp.execFile('tuture', ['sync'], {}, (err) => {
-      if (err) {
-        res.status(500).json({ code: err.code, message: err.message });
-      } else {
-        res.sendStatus(200);
-      }
-    });
-  });
 
   return router;
 }

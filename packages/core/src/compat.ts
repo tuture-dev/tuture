@@ -222,9 +222,9 @@ export function convertV1ToV2(
   const stepDocs: StepDocs = {};
   const collectionV2 = collection as any;
   collectionV2.unassignedSteps = [];
-  collectionV2.articles.forEach((article: Article) => {
-    article.steps = [];
-  });
+  // collectionV2.articles.forEach((article: Article) => {
+  //   article.steps = [];
+  // });
 
   for (let i = 0; i < collection.steps.length; i++) {
     const stepV1 = collection.steps[i];

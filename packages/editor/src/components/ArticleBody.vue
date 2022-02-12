@@ -109,6 +109,7 @@ import {
 } from '@/editor/nodes';
 import { Link } from '@/editor/marks';
 import {
+  Realtime,
   CreateBlockMenuTrigger,
   EditBlockMenuTrigger,
 } from '@/editor/extensions';
@@ -151,6 +152,8 @@ export default defineComponent({
             new FileEnd(),
           ]
         : [];
+    const docId = this.$route.params?.id;
+
     return {
       editor: new Editor({
         autoFocus: true,
@@ -230,9 +233,13 @@ export default defineComponent({
             },
           }),
           new DataPaste(),
+          new Realtime({
+            docId,
+          }),
         ],
         onUpdate: ({ getJSON }) => {
-          this.setDoc(getJSON());
+          console.log('doc', getJSON());
+          // this.setDoc(getJSON());
         },
       }),
       initialized: false,
@@ -250,8 +257,8 @@ export default defineComponent({
     };
   },
   methods: {
-    ...mapMutations('editor', ['setDoc']),
-    ...mapActions('editor', ['fetchDoc']),
+    // ...mapMutations('editor', ['setDoc']),
+    // ...mapActions('editor', ['fetchDoc']),
     handleToggleLink() {
       if (this.editor.isActive.link()) {
         this.editor.commands.link({});
@@ -408,19 +415,19 @@ export default defineComponent({
     },
   },
   watch: {
-    nowArticleId: function(articleId) {
-      this.initialized = false;
-      this.fetchDoc();
-    },
-    doc: function(newVal) {
-      if (this.editor && !this.initialized) {
-        this.editor.setContent(newVal);
-        this.initialized = true;
-      }
-    },
+    // nowArticleId: function(articleId) {
+    //   this.initialized = false;
+    //   this.fetchDoc();
+    // },
+    // doc: function(newVal) {
+    //   if (this.editor && !this.initialized) {
+    //     this.editor.setContent(newVal);
+    //     this.initialized = true;
+    //   }
+    // },
   },
   mounted() {
-    this.fetchDoc();
+    // this.fetchDoc();
   },
 });
 </script>

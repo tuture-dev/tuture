@@ -19,6 +19,8 @@ export default class DiffBlock extends Node {
         // 原 diff_block 相关的信息
         file: { default: '' },
         commit: { default: '' },
+        code: { default: '' },
+        originalCode: { default: '' },
         hiddenLines: { default: [] },
       },
       content: 'text*',

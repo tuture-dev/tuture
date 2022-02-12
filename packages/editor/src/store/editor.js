@@ -49,9 +49,9 @@ export const actions = {
       commit('setNowArticleId', nowArticleId);
     }
 
-    commit('setDocLoading', true);
-    const resp = await fetch(`/api/articles/${state.nowArticleId}`);
-    commit('setDoc', await resp.json());
-    commit('setDocLoading', false);
+    // commit('setDocLoading', true);
+    // const resp = await fetch(`/api/articles/${state.nowArticleId}`);
+    // commit('setDoc', await resp.json());
+    // commit('setDocLoading', false);
   },
 };
