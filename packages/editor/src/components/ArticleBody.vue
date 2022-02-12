@@ -152,6 +152,8 @@ export default defineComponent({
             new FileEnd(),
           ]
         : [];
+    const docId = this.$route.params?.id;
+
     return {
       editor: new Editor({
         autoFocus: true,
@@ -231,7 +233,9 @@ export default defineComponent({
             },
           }),
           new DataPaste(),
-          new Realtime(),
+          new Realtime({
+            docId,
+          }),
         ],
         onUpdate: ({ getJSON }) => {
           console.log('doc', getJSON());
