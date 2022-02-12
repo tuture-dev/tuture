@@ -73,7 +73,6 @@ export default defineComponent({
       'setDrawerType',
       'setChildDrawerType',
     ]),
-    ...mapActions('toc', ['fetchToc']),
     onClickCatalogueItem(articleId) {
       this.setNowArticleId(articleId);
       this.$router
@@ -98,8 +97,7 @@ export default defineComponent({
       this.setChildDrawerType(drawerType);
     },
     onToggleToc() {
-      this.setTocVisible(true);
-      this.fetchToc();
+      this.$router.push({ path: `/articles/${this.nowArticleId}/toc` });
     },
   },
 });

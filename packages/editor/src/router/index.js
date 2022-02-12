@@ -3,6 +3,7 @@ import VueRouter from 'vue-router';
 
 import Home from '../views/Home.vue';
 import Article from '../views/Article.vue';
+import Toc from '../views/Toc.vue';
 
 Vue.use(VueRouter);
 
@@ -16,6 +17,11 @@ const routes = [
     path: '/articles/:id',
     name: 'Article',
     component: Article,
+  },
+  {
+    path: '/articles/:id/toc',
+    name: 'Toc',
+    component: Toc,
   },
 ];
 
