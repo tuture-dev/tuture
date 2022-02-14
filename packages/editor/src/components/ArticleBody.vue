@@ -1,5 +1,5 @@
 <template>
-  <a-spin class="p-8" :spinning="docLoading">
+  <a-spin class="p-8" :spinning="false">
     <h1 class="text-xl">{{ article.name }}</h1>
     <a-divider />
     <div class="editure">
@@ -62,7 +62,8 @@
 
 <script setup>
 import { defineComponent } from 'vue-demi';
-import { mapActions, mapGetters, mapMutations, mapState } from 'vuex';
+import debounce from 'lodash.debounce';
+import { mapGetters, mapState, mapMutations } from 'vuex';
 import { Editor, EditorContent } from 'tiptap';
 import {
   Bold,
@@ -237,12 +238,11 @@ export default defineComponent({
             docId,
           }),
         ],
-        onUpdate: ({ getJSON }) => {
+        onUpdate: debounce(({ getJSON }) => {
           console.log('doc', getJSON());
-          // this.setDoc(getJSON());
-        },
+          this.setDoc(getJSON());
+        }, 500),
       }),
-      initialized: false,
       linkUrl: null,
       linkMenuIsActive: false,
       dictionary: dictionary,
@@ -257,8 +257,7 @@ export default defineComponent({
     };
   },
   methods: {
-    // ...mapMutations('editor', ['setDoc']),
-    // ...mapActions('editor', ['fetchDoc']),
+    ...mapMutations('editor', ['setDoc']),
     handleToggleLink() {
       if (this.editor.isActive.link()) {
         this.editor.commands.link({});
@@ -408,7 +407,7 @@ export default defineComponent({
   },
   computed: {
     ...mapState('collection', ['articles']),
-    ...mapState('editor', ['doc', 'docLoading', 'nowArticleId']),
+    ...mapState('editor', ['docLoading', 'nowArticleId']),
     ...mapGetters('collection', ['getArticleById']),
     article() {
       return this.getArticleById(this.nowArticleId) || {};
