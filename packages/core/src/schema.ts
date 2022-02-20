@@ -21,6 +21,8 @@ export const tutureSchema = new Schema({
         level: { default: 1 },
         // 严格模式不可删除此框
         fixed: { default: false },
+        // 是否过时（所属 commit 是否已不存在）
+        outdated: { default: false },
         // 有这个字段代表此为一个 step 的 stepTitle 也是 step 的开始
         step: { default: { commit: '' } },
       },
@@ -52,6 +54,8 @@ export const tutureSchema = new Schema({
         commit: { default: '' },
         // 所处 file 名称
         file: { default: '' },
+        // 是否过时（所属 commit 是否已不存在）
+        outdated: { default: false },
       },
       toDOM() {
         return ['div', 0];
@@ -145,7 +149,8 @@ export const tutureSchema = new Schema({
       editable: false,
       attrs: {
         commit: { default: '' },
-        file: { default: '' },
+        // 是否过时（所属 commit 是否已不存在）
+        outdated: { default: false },
       },
     },
 
@@ -158,7 +163,8 @@ export const tutureSchema = new Schema({
       editable: false,
       attrs: {
         commit: { default: '' },
-        file: { default: '' },
+        // 是否过时（所属 commit 是否已不存在）
+        outdated: { default: false },
       },
     },
 
@@ -172,6 +178,8 @@ export const tutureSchema = new Schema({
       attrs: {
         commit: { default: '' },
         file: { default: '' },
+        // 是否过时（所属 commit 是否已不存在）
+        outdated: { default: false },
       },
     },
 
@@ -185,6 +193,8 @@ export const tutureSchema = new Schema({
       attrs: {
         commit: { default: '' },
         file: { default: '' },
+        // 是否过时（所属 commit 是否已不存在）
+        outdated: { default: false },
       },
     },
   }),

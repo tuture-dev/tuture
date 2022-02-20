@@ -64,6 +64,7 @@
 import { defineComponent } from 'vue-demi';
 import debounce from 'lodash.debounce';
 import { mapGetters, mapState, mapMutations } from 'vuex';
+import { Node } from 'prosemirror-model';
 import { Editor, EditorContent } from 'tiptap';
 import {
   Bold,
@@ -239,6 +240,30 @@ export default defineComponent({
           }),
         ],
         onUpdate: debounce(({ getJSON }) => {
+          const { view } = this.editor;
+          const { state, dispatch } = view;
+          console.log('state', state);
+          console.log('state.schema', state.schema);
+          state.doc.content.descendant((node, pos) => {
+            if (node.type.name === 'diff_block') {
+              dispatch(state.tr.setBlockType);
+            }
+          });
+          dispatch(
+            state.tr.insert(
+              state.doc.content.size,
+              Node.fromJSON(state.schema, {
+                type: 'diff_block',
+                attrs: {
+                  id: 666,
+                  code: 'new code',
+                  originalCode: 'old code',
+                  commit: '666',
+                  file: 'test.js',
+                },
+              }),
+            ),
+          );
           console.log('doc', getJSON());
           this.setDoc(getJSON());
         }, 500),

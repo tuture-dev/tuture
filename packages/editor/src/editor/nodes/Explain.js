@@ -29,6 +29,8 @@ export default class Explain extends Node {
         commit: { default: '' },
         // 所处 file 名称
         file: { default: '' },
+        // 是否过时（所属 commit 是否已不存在）
+        outdated: { default: false },
       },
       parseDOM: [{ tag: 'div' }],
       toDOM: () => ['div', { class: 'explain' }, 0],

@@ -8,6 +8,10 @@ import { getDocsRoot } from './path.js';
 
 const d = debug('tuture:local-server:doc');
 
+export function getDocPersistence() {
+  return new LeveldbPersistence(getDocsRoot());
+}
+
 export async function saveDoc(doc: any) {
   const docId = doc.attrs.id;
   if (!docId) {
@@ -16,13 +20,13 @@ export async function saveDoc(doc: any) {
   const yDoc = prosemirrorJSONToYDoc(tutureSchema as any, doc);
   d('saveDoc id %s, content: %o', docId, yDoc.toJSON());
 
-  const ldb = new LeveldbPersistence(getDocsRoot());
+  const ldb = getDocPersistence();
   await ldb.storeUpdate(docId, Y.encodeStateAsUpdate(yDoc));
   await ldb.destroy();
 }
 
 export async function deleteDoc(docId: string) {
-  const ldb = new LeveldbPersistence(getDocsRoot());
+  const ldb = getDocPersistence();
   await ldb.clearDocument(docId);
   await ldb.destroy();
 }

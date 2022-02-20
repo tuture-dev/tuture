@@ -18,7 +18,6 @@ const d = debug('tuture:local-server:collection');
 const dbMap = new Map<string, Low<Collection>>();
 
 process.on('exit', async () => {
-  console.log('Saving db data to disk...');
   dbMap.forEach(async (db) => await db.write());
 });
 
