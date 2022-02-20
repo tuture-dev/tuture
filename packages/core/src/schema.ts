@@ -1,5 +1,4 @@
-import { Schema } from 'prosemirror-model';
-import { schema as defaultSchema } from 'prosemirror-markdown';
+import { NodeType, Schema } from 'prosemirror-model';
 
 const STYLES = ['default', 'primary', 'success', 'info', 'warning', 'danger'];
 
@@ -11,7 +10,39 @@ function getStyle(className: string[]) {
 }
 
 export const tutureSchema = new Schema({
-  nodes: Object.assign(defaultSchema.nodes, {
+  nodes: {
+    doc: {
+      content: 'block+',
+    },
+
+    // :: NodeSpec A plain paragraph textblock. Represented in the DOM
+    // as a `<p>` element.
+    paragraph: {
+      content: 'inline*',
+      group: 'block',
+      parseDOM: [{ tag: 'p' }],
+      toDOM() {
+        return ['p', 0];
+      },
+    },
+
+    // :: NodeSpec A blockquote (`<blockquote>`) wrapping one or more blocks.
+    blockquote: {
+      content: 'block+',
+      group: 'block',
+      defining: true,
+      parseDOM: [{ tag: 'blockquote' }],
+      toDOM(node: any) {
+        return ['blockquote', 0];
+      },
+    },
+    horizontal_rule: {
+      group: 'block',
+      parseDOM: [{ tag: 'hr' }],
+      toDOM() {
+        return ['hr'];
+      },
+    },
     heading: {
       group: 'block',
       content: 'text*',
@@ -42,7 +73,9 @@ export const tutureSchema = new Schema({
     },
 
     explain: {
-      content: 'block*',
+      content: 'block+',
+      group: 'block',
+      defining: true,
       attrs: {
         // 严格模式不可删除此框
         fixed: { default: false },
@@ -59,6 +92,55 @@ export const tutureSchema = new Schema({
       },
       toDOM() {
         return ['div', 0];
+      },
+    },
+
+    // :: NodeSpec The text node.
+    text: {
+      group: 'inline',
+    },
+
+    image: {
+      inline: true,
+      attrs: {
+        src: {},
+        alt: { default: null },
+        title: { default: null },
+      },
+      group: 'inline',
+      draggable: true,
+      parseDOM: [
+        {
+          tag: 'img[src]',
+          getAttrs: function getAttrs(dom) {
+            return {
+              // @ts-ignore
+              src: dom.getAttribute('src'),
+              // @ts-ignore
+              title: dom.getAttribute('title'),
+              // @ts-ignore
+              alt: dom.getAttribute('alt'),
+            };
+          },
+        },
+      ],
+      toDOM: function toDOM(node) {
+        var ref = node.attrs;
+        var src = ref.src;
+        var alt = ref.alt;
+        var title = ref.title;
+        return ['img', { src: src, alt: alt, title: title }];
+      },
+    },
+
+    // :: NodeSpec A hard line break, represented in the DOM as `<br>`.
+    hard_break: {
+      inline: true,
+      group: 'inline',
+      selectable: false,
+      parseDOM: [{ tag: 'br' }],
+      toDOM: function toDOM() {
+        return ['br'];
       },
     },
 
@@ -87,12 +169,15 @@ export const tutureSchema = new Schema({
           },
         },
       ],
-      toDOM: (node: any) => [
-        'div',
-        { class: 'code-block', 'data-language': node.attrs.language },
-        ['div', { contentEditable: false }, 'select', 'button'],
-        ['pre', ['code', { spellCheck: false }, 0]],
-      ],
+      // @ts-ignore
+      toDOM(node: any) {
+        return [
+          'div',
+          { class: 'code-block', 'data-language': node.attrs.language },
+          ['div', { contentEditable: false }, 'select', 'button'],
+          ['pre', ['code', { spellCheck: false }, 0]],
+        ];
+      },
     },
 
     diff_block: {
@@ -197,7 +282,7 @@ export const tutureSchema = new Schema({
         outdated: { default: false },
       },
     },
-  }),
+  },
 
   marks: {
     bold: {

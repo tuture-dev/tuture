@@ -2726,6 +2726,13 @@
   dependencies:
     "@types/orderedmap" "*"
 
+"@types/prosemirror-schema-basic@^1.0.2":
+  version "1.0.2"
+  resolved "http://bnpm.byted.org/@types/prosemirror-schema-basic/-/prosemirror-schema-basic-1.0.2.tgz#d6ba0f9e1dd054a312ff6fbf5b38e10b067c3d66"
+  integrity sha512-dzT/6t+dq8/On1be0yarcOIu8wROjhK8QB5wslpLbtTIr5wb0iQv/esJm/KAHcD/PBXR9nSV4TL5AtQmBrcRnw==
+  dependencies:
+    "@types/prosemirror-model" "*"
+
 "@types/prosemirror-state@*", "@types/prosemirror-state@1.2.7":
   version "1.2.7"
   resolved "https://registry.nlark.com/@types/prosemirror-state/download/@types/prosemirror-state-1.2.7.tgz#cd55062e4043a31e3426f47668f1d7038b5d8dfb"
@@ -14578,6 +14585,20 @@ prosemirror-model@1.14.3, prosemirror-model@^1.0.0, prosemirror-model@^1.1.0, pr
   integrity sha1-qcJQ08QCPd8Q7LQaCnoTDpdB034=
   dependencies:
     orderedmap "^1.1.0"
+
+prosemirror-model@^1.2.0:
+  version "1.16.1"
+  resolved "http://bnpm.byted.org/prosemirror-model/-/prosemirror-model-1.16.1.tgz#fb388270bc9609b66298d6a7e15d0cc1d6c61253"
+  integrity sha512-r1/w0HDU40TtkXp0DyKBnFPYwd8FSlUSJmGCGFv4DeynfeSlyQF2FD0RQbVEMOe6P3PpUSXM6LZBV7W/YNZ4mA==
+  dependencies:
+    orderedmap "^1.1.0"
+
+prosemirror-schema-basic@^1.1.2:
+  version "1.1.2"
+  resolved "http://bnpm.byted.org/prosemirror-schema-basic/-/prosemirror-schema-basic-1.1.2.tgz#4bde5c339c845e0d08ec8fe473064e372ca51ae3"
+  integrity sha1-S95cM5yEXg0I7I/kcwZONyylGuM=
+  dependencies:
+    prosemirror-model "^1.2.0"
 
 prosemirror-schema-list@^1.1.4:
   version "1.1.6"

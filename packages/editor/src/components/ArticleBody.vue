@@ -244,7 +244,7 @@ export default defineComponent({
           const { state, dispatch } = view;
           console.log('state', state);
           console.log('state.schema', state.schema);
-          state.doc.content.descendant((node, pos) => {
+          state.doc.content.descendants((node, pos) => {
             if (node.type.name === 'diff_block') {
               dispatch(state.tr.setBlockType);
             }
