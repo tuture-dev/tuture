@@ -56,15 +56,9 @@ export function makeServer(options?: ServerOptions): http.Server {
   d('editor path: %s', EDITOR_PATH);
   app.use('/', express.static(EDITOR_PATH));
 
-  // const editorHTML = fs.existsSync(editorHTMLPath)
-  //   ? fs.readFileSync(editorHTMLPath).toString()
-  //   : '';
-  // app.get('*', (_, res) => {
-  //   if (editorHTML) {
-  //     return res.send(editorHTML);
-  //   }
-  //   res.sendStatus(404);
-  // });
+  app.get('*', (_, res) => {
+    res.redirect('/');
+  });
 
   const server = http.createServer(app);
   configureRealtimeCollab(server);
