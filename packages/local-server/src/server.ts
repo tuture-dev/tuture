@@ -1,4 +1,5 @@
 import fs from 'fs-extra';
+import debug from 'debug';
 import http from 'http';
 import path from 'path';
 import logger from 'morgan';
@@ -8,11 +9,12 @@ import express, { Express } from 'express';
 import { createApiRouter } from './routes/index.js';
 import { configureRealtimeCollab } from './utils/realtime.js';
 
+const d = debug('tuture:local-server:server');
+
 // Editor path
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const EDITOR_PATH = path.join(__dirname, 'editor');
-const EDITOR_STATIC_PATH = path.join(EDITOR_PATH, 'static');
 
 export interface ServerOptions {
   baseUrl?: string;
@@ -40,7 +42,6 @@ export function makeServer(options?: ServerOptions): http.Server {
 
   app.use(express.json({ limit: '50mb' }));
   app.use(express.urlencoded({ extended: false }));
-  app.use('/static', express.static(EDITOR_STATIC_PATH));
   // app.use('/assets', express.static(assetsRoot));
 
   // Register mocking routes. This will override real routes below.
@@ -49,18 +50,21 @@ export function makeServer(options?: ServerOptions): http.Server {
     mockRoutes(app);
   }
 
+  d('baseUrl: %s', baseUrl);
   app.use(baseUrl, createApiRouter());
 
-  const editorHTMLPath = path.join(EDITOR_PATH, 'index.html');
-  const editorHTML = fs.existsSync(editorHTMLPath)
-    ? fs.readFileSync(editorHTMLPath).toString()
-    : '';
-  app.get('*', (_, res) => {
-    if (editorHTML) {
-      return res.send(editorHTML);
-    }
-    res.sendStatus(404);
-  });
+  d('editor path: %s', EDITOR_PATH);
+  app.use('/', express.static(EDITOR_PATH));
+
+  // const editorHTML = fs.existsSync(editorHTMLPath)
+  //   ? fs.readFileSync(editorHTMLPath).toString()
+  //   : '';
+  // app.get('*', (_, res) => {
+  //   if (editorHTML) {
+  //     return res.send(editorHTML);
+  //   }
+  //   res.sendStatus(404);
+  // });
 
   const server = http.createServer(app);
   configureRealtimeCollab(server);

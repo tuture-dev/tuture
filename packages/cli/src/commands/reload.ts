@@ -1,8 +1,7 @@
 import debug from 'debug';
 import { Command } from 'commander';
-import { EditorState } from 'prosemirror-state';
-import { Fragment, Node } from 'prosemirror-model';
-import { ySyncPlugin, yDocToProsemirror } from 'y-prosemirror';
+import * as Y from 'yjs';
+import { prosemirrorJSONToYDoc } from 'y-prosemirror';
 import { tutureSchema, includeCommit } from '@tuture/core';
 import { getCollectionDb, getDocPersistence } from '@tuture/local-server';
 
@@ -23,6 +22,21 @@ async function doReload(options: ReloadOptions) {
     .map((node) => node.attrs?.commit);
   d('currentCommits: %o', currentCommits);
 
+  const currentDoc = prosemirrorJSONToYDoc(tutureSchema, {
+    type: 'doc',
+    content: currentNodes,
+  });
+  const elements = currentDoc
+    .getXmlFragment('prosemirror')
+    .toArray() as Y.XmlElement[];
+  for (let i = 0; i < elements.length; i++) {
+    elements[i].doc = null;
+  }
+  d(
+    'current elements: %O',
+    elements.map((element) => element.toJSON()),
+  );
+
   const previousCommits = new Set<string>();
 
   const persistence = getDocPersistence();
@@ -33,78 +47,67 @@ async function doReload(options: ReloadOptions) {
   await Promise.all(
     articles.map(async (article, index) => {
       const ydoc = await persistence.getYDoc(article.id);
-      const state = EditorState.create({
-        schema: tutureSchema,
-        doc: yDocToProsemirror(tutureSchema, ydoc),
-        plugins: [ySyncPlugin(ydoc.getXmlFragment('prosemirror'))],
-      });
-      d('doc before reload: %O', state.doc.content.toJSON());
+      const fragment = ydoc.getXmlFragment('prosemirror');
+      d('fragment for article %s: %o', article.id, fragment.toJSON());
 
-      let tr = state.tr;
-
-      // mark outdated nodes (belonging commit no longer exists)
-      state.doc.content.descendants((node, pos) => {
-        switch (node.type.name) {
-          case 'step_start':
-          case 'step_end':
-          case 'file_start':
-          case 'file_end':
-          case 'explain':
-            if (!includeCommit(currentCommits, node.attrs.commit)) {
-              d('outdated node: %o', node);
-              tr = tr.setBlockType(pos, pos + node.nodeSize, node.type, {
-                ...node.attrs,
-                outdated: true,
-              });
-            } else {
-              previousCommits.add(node.attrs.commit);
+      ydoc.transact(() => {
+        // mark outdated nodes (belonging commit no longer exists)
+        fragment.toArray().forEach((element) => {
+          // don't care about texts or hooks
+          if (element instanceof Y.XmlText || element instanceof Y.XmlHook) {
+            return;
+          }
+          const topNodes = [
+            'step_start',
+            'step_end',
+            'file_start',
+            'file_end',
+            'explain',
+            'heading',
+          ];
+          if (topNodes.includes(element.nodeName)) {
+            const commit = element.getAttribute('commit');
+            if (commit) {
+              if (!includeCommit(currentCommits, commit)) {
+                d('outdated node: %o', element.toJSON());
+                element.setAttribute('outdated', 'true');
+              } else {
+                previousCommits.add(commit);
+              }
             }
-            break;
-          case 'heading':
-            if (
-              node.attrs.step?.commit &&
-              !includeCommit(currentCommits, node.attrs.step?.commit)
-            ) {
-              d('outdated heading: %o', node);
-              tr = tr.setBlockType(pos, pos + node.nodeSize, node.type, {
-                ...node.attrs,
-                outdated: true,
-              });
-            }
-            break;
-        }
+          }
+        });
       });
+
       d('previousCommits: %o', previousCommits);
 
       // for the last article, add new steps
       if (index === articles.length - 1) {
         currentCommits.forEach((commit) => {
           if (!previousCommits.has(commit)) {
-            const startIndex = currentNodes.findIndex(
-              (node) =>
-                node.type === 'step_start' && node.attrs.commit === commit,
+            d('start to insert nodes for commit: %s', commit);
+            const startIndex = elements.findIndex(
+              (element) =>
+                element.nodeName === 'step_start' &&
+                element.getAttribute('commit') === commit,
             );
-            const endIndex = currentNodes.findIndex(
-              (node) =>
-                node.type === 'step_end' && node.attrs.commit === commit,
+            const endIndex = elements.findIndex(
+              (element) =>
+                element.nodeName === 'step_end' &&
+                element.getAttribute('commit') === commit,
             );
-            const fragment = Fragment.fromJSON(
-              tutureSchema,
-              currentNodes.slice(startIndex, endIndex + 1),
-            );
-            d(
-              'insert new fragment (index from %o to %o): %o',
-              startIndex,
-              endIndex,
-              fragment.toJSON(),
-            );
+            const elementsSlice = elements
+              .slice(startIndex, endIndex + 1)
+              .map((element) => element.clone() as Y.XmlElement);
+            d('insert elements slice %O', elementsSlice);
 
-            tr = tr.insert(state.doc.content.size, fragment);
+            fragment.push(elementsSlice);
           }
         });
       }
 
-      state.applyTransaction(tr);
+      const newUpdates = Y.encodeStateAsUpdate(ydoc);
+      persistence.storeUpdate(article.id, newUpdates);
     }),
   );
 

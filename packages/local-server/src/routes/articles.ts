@@ -5,9 +5,13 @@ import { getCollectionDb } from '../utils/index.js';
 
 const router = Router();
 
-router.get('/', async (req, res) => {
-  const db = await getCollectionDb(req.params.collectionId);
-  res.json(db.data!.articles);
+router.get('/', async (req, res, next) => {
+  try {
+    const db = await getCollectionDb(req.params.collectionId);
+    res.json(db.data!.articles);
+  } catch (err) {
+    next(err);
+  }
 });
 
 router.post('/create', async (req, res) => {

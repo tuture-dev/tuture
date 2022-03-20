@@ -23,7 +23,8 @@ async function fireTutureServer() {
 
     // Don't open browser in test environment.
     if (process.env.TEST !== 'yes') {
-      open(url);
+      setTimeout(() => open(url), 500);
+      // open(url);
     }
   });
 }

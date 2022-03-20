@@ -11,7 +11,7 @@
   ],
   "license": "MIT",
   "scripts": {
-    "collect-editor": "rimraf dist/editor && cp -r ../editor/build dist/editor",
+    "collect-editor": "rimraf dist/editor && cp -r ../editor/dist dist/editor",
     "start": "cross-env NODE_ENV=development node --experimental-json-modules scripts/start-dev-server.js"
   },
   "dependencies": {

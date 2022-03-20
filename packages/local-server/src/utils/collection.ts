@@ -1,13 +1,7 @@
 import debug from 'debug';
 import fs from 'fs-extra';
 import path from 'path';
-import {
-  INode,
-  Collection,
-  SCHEMA_VERSION,
-  convertV1ToV2,
-  StepDoc,
-} from '@tuture/core';
+import { INode, Collection, SCHEMA_VERSION } from '@tuture/core';
 import { Low, JSONFile } from 'lowdb';
 
 import { getCollectionsRoot } from './path.js';
