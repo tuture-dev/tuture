@@ -86,12 +86,6 @@ export async function newEmptyFile(
   ];
 }
 
-export function readCommitsFromNodes(nodes: INode[]): string[] {
-  return nodes
-    .filter((node) => isStepTitle(node))
-    .map((node) => node.attrs!.step.commit);
-}
-
 export function readArticleMeta(
   collection: Collection,
   articleId: string,

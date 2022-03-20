@@ -3,16 +3,26 @@ import { Command } from 'commander';
 import * as Y from 'yjs';
 import { prosemirrorJSONToYDoc } from 'y-prosemirror';
 import { tutureSchema, includeCommit } from '@tuture/core';
-import { getCollectionDb, getDocPersistence } from '@tuture/local-server';
+import {
+  getCollectionDb,
+  getDocPersistence,
+  getYDoc,
+  LeveldbPersistence,
+} from '@tuture/local-server';
 
 import { initNodes } from '../utils/index.js';
 import logger from '../utils/logger.js';
 
 const d = debug('tuture:cli:reload');
 
-type ReloadOptions = {};
+type ReloadOptions = {
+  // if true, reload will be done for doc in local server memory
+  online: boolean;
+};
 
-async function doReload(options: ReloadOptions) {
+let persistence: LeveldbPersistence | null;
+
+export async function doReload(options: ReloadOptions) {
   d('cwd: %s', process.cwd());
   d('options: %o', options);
 
@@ -37,16 +47,21 @@ async function doReload(options: ReloadOptions) {
     elements.map((element) => element.toJSON()),
   );
 
+  if (!options.online) {
+    persistence = getDocPersistence();
+  }
+
   const previousCommits = new Set<string>();
 
-  const persistence = getDocPersistence();
-  const db = await getCollectionDb();
+  const db = getCollectionDb();
   const { articles } = db.data!;
   d('articles: %o', articles);
 
   await Promise.all(
     articles.map(async (article, index) => {
-      const ydoc = await persistence.getYDoc(article.id);
+      const ydoc = options.online
+        ? getYDoc(article.id)
+        : await persistence.getYDoc(article.id);
       const fragment = ydoc.getXmlFragment('prosemirror');
       d('fragment for article %s: %o', article.id, fragment.toJSON());
 
@@ -106,8 +121,10 @@ async function doReload(options: ReloadOptions) {
         });
       }
 
-      const newUpdates = Y.encodeStateAsUpdate(ydoc);
-      persistence.storeUpdate(article.id, newUpdates);
+      if (!options.online) {
+        const newUpdates = Y.encodeStateAsUpdate(ydoc);
+        persistence.storeUpdate(article.id, newUpdates);
+      }
     }),
   );
 
@@ -120,6 +137,7 @@ export function makeReloadCommand() {
   const reload = new Command('reload');
   reload
     .description('update workspace with latest git history')
+    .option('--online', 'reload for doc in local server memory')
     .action(async () => {
       await doReload(reload.opts<ReloadOptions>());
     });

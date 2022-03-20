@@ -4,7 +4,7 @@ import getPort from 'get-port';
 import { Command } from 'commander';
 import { makeServer } from '@tuture/local-server';
 
-// import reload from './reload';
+import { doReload } from './reload.js';
 import logger from '../utils/logger.js';
 import { shouldReloadSteps } from '../utils/git.js';
 
@@ -12,9 +12,7 @@ async function fireTutureServer() {
   const port = await getPort();
   const server = makeServer({
     baseUrl: '/api',
-    // onGitHistoryChange: () => {
-    //   reload.run([]);
-    // },
+    onGitHistoryChange: () => doReload({ online: true }),
   });
 
   server.listen(port, () => {
