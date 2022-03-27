@@ -1,8 +1,6 @@
 import path from 'path';
 import simplegit from 'simple-git/promise.js';
 
-import logger from './logger.js';
-
 // Interface for running git commands.
 // https://github.com/steveukx/git-js
 export const git = simplegit().silent(true);

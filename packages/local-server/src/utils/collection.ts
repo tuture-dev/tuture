@@ -1,29 +1,24 @@
 import debug from 'debug';
 import fs from 'fs-extra';
 import path from 'path';
-import {
-  INode,
-  Collection,
-  SCHEMA_VERSION,
-  convertV1ToV2,
-  StepDoc,
-} from '@tuture/core';
-import { Low, JSONFile } from 'lowdb';
+import { INode, Collection, SCHEMA_VERSION } from '@tuture/core';
+import { LowSync, JSONFileSync } from 'lowdb';
 
 import { getCollectionsRoot } from './path.js';
 import { getInventoryItemByPath } from './inventory.js';
 
 const d = debug('tuture:local-server:collection');
 
-const dbMap = new Map<string, Low<Collection>>();
+const dbMap = new Map<string, LowSync<Collection>>();
 
 process.on('exit', async () => {
-  console.log('Saving db data to disk...');
   dbMap.forEach(async (db) => await db.write());
 });
 
-async function getCollectionIdFromCwd() {
-  const item = await getInventoryItemByPath(process.cwd());
+function getCollectionIdFromCwd() {
+  const cwd = process.cwd();
+  d('getCollectionIdFromCwd for cwd: %s', cwd);
+  const item = getInventoryItemByPath(cwd);
   if (!item) {
     throw new Error(
       'collection not ready, please run `tuture init` to initialize',
@@ -32,21 +27,22 @@ async function getCollectionIdFromCwd() {
   return item.id;
 }
 
-async function getCollectionPath(collectionId?: string) {
-  collectionId = collectionId || (await getCollectionIdFromCwd());
+function getCollectionPath(collectionId?: string) {
+  d('getCollectionPath for collection id: %s', collectionId);
+  collectionId = collectionId || getCollectionIdFromCwd();
   return path.join(getCollectionsRoot(), `${collectionId}.json`);
 }
 
-export async function getCollectionDb(collectionId?: string) {
-  collectionId = collectionId || (await getCollectionIdFromCwd());
+export function getCollectionDb(collectionId?: string) {
   d('getCollectionDb for collection id: %s', collectionId);
+  collectionId = collectionId || getCollectionIdFromCwd();
   let db = dbMap.get(collectionId);
   if (!db) {
-    await fs.ensureDir(getCollectionsRoot());
-    const collectionPath = await getCollectionPath(collectionId);
+    fs.ensureDirSync(getCollectionsRoot());
+    const collectionPath = getCollectionPath(collectionId);
     d('getCollectionDb from %s', collectionPath);
-    db = new Low<Collection>(new JSONFile(collectionPath));
-    await db.read();
+    db = new LowSync<Collection>(new JSONFileSync(collectionPath));
+    db.read();
     dbMap.set(collectionId, db);
     d('updated dbMap: %o', dbMap);
   }
@@ -56,8 +52,8 @@ export async function getCollectionDb(collectionId?: string) {
 /**
  * Load collection.
  */
-export async function loadCollection(collectionId?: string) {
-  const db = await getCollectionDb(collectionId);
+export function loadCollection(collectionId?: string) {
+  const db = getCollectionDb(collectionId);
 
   // if (collection.version !== 'v1' && collection.version !== SCHEMA_VERSION) {
   //   throw new Error(
@@ -79,13 +75,13 @@ export async function loadCollection(collectionId?: string) {
 /**
  * Save the entire collection.
  */
-export async function saveCollection(collection: Collection) {
-  const db = await getCollectionDb(collection.id);
+export function saveCollection(collection: Collection) {
+  const db = getCollectionDb(collection.id);
   db.data = collection;
-  await db.write();
+  db.write();
   d('save collection %s', collection.id);
 }
 
 export async function deleteCollection(collectionId: string) {
-  await fs.remove(await getCollectionPath(collectionId));
+  await fs.remove(getCollectionPath(collectionId));
 }

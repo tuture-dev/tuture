@@ -5,12 +5,12 @@ import { getCollectionDb } from '../utils/index.js';
 
 const router = Router();
 
-router.get('/', async (req, res) => {
-  const db = await getCollectionDb(req.params.collectionId);
+router.get('/', (req, res) => {
+  const db = getCollectionDb(req.params.collectionId);
   res.json(db.data!.articles);
 });
 
-router.post('/create', async (req, res) => {
+router.post('/create', (req, res) => {
   const newArticle: Article = {
     id: randHex(32),
     name: '',
@@ -22,15 +22,15 @@ router.post('/create', async (req, res) => {
     steps: [],
     ...req.body,
   };
-  const db = await getCollectionDb(req.params.collectionId);
+  const db = getCollectionDb(req.params.collectionId);
   db.data!.articles.push(newArticle);
-  await db.write();
+  db.write();
   return res.status(201).json(newArticle);
 });
 
-router.delete('/:articleId', async (req, res) => {
+router.delete('/:articleId', (req, res) => {
   const { articleId } = req.params;
-  const db = await getCollectionDb(req.params.collectionId);
+  const db = getCollectionDb(req.params.collectionId);
   const deleteIndex = db.data!.articles.findIndex(
     (article) => article.id === articleId,
   );
@@ -38,7 +38,7 @@ router.delete('/:articleId', async (req, res) => {
     return res.sendStatus(404);
   }
   db.data!.articles.splice(deleteIndex, 1);
-  await db.write();
+  db.write();
   res.sendStatus(204);
 });
 

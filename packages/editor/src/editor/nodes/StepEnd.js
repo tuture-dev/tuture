@@ -15,6 +15,7 @@ export default class StepEnd extends Node {
       editable: false,
       attrs: {
         commit: { default: '' },
+        outdated: { default: false },
       },
       toDOM: () => ['div', { class: 'step-end' }, 0],
     };
