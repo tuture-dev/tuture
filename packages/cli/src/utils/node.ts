@@ -11,14 +11,13 @@ import {
   getHiddenLines,
   Collection,
   Article,
-  StepAttrs,
   isStepTitle,
 } from '@tuture/core';
 import { readFileAtCommit } from '@tuture/local-server';
 
 const d = debug('tuture:cli:node');
 
-export function newStepTitle(attrs: StepAttrs, content: IText[]): IHeading {
+export function newStepTitle(commit: string, content: IText[]): IHeading {
   return {
     type: 'heading',
     content,
@@ -27,7 +26,7 @@ export function newStepTitle(attrs: StepAttrs, content: IText[]): IHeading {
       id: randHex(8),
       level: 2,
       fixed: true,
-      step: attrs,
+      commit,
     },
   };
 }
@@ -51,6 +50,7 @@ export async function newEmptyFile(
   const file = diffFile.to!;
   const diffBlock: IDiffBlock = {
     type: 'diff_block',
+    content: [],
     attrs: {
       commit,
       hidden,
@@ -68,7 +68,7 @@ export async function newEmptyFile(
     file: diffFile.to!,
   };
   return [
-    { type: 'file_start', attrs: delimiterAttrs },
+    { type: 'file_start', attrs: delimiterAttrs, content: [] },
     newEmptyExplain({
       level: 'file',
       pos: 'pre',
@@ -82,14 +82,8 @@ export async function newEmptyFile(
       commit,
       file,
     }),
-    { type: 'file_end', attrs: delimiterAttrs },
+    { type: 'file_end', attrs: delimiterAttrs, content: [] },
   ];
-}
-
-export function readCommitsFromNodes(nodes: INode[]): string[] {
-  return nodes
-    .filter((node) => isStepTitle(node))
-    .map((node) => node.attrs!.step.commit);
 }
 
 export function readArticleMeta(

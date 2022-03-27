@@ -1,5 +1,5 @@
 import mm from 'micromatch';
-import { INode, randHex } from '@tuture/core';
+import { INode, randHex, isCommitEqual } from '@tuture/core';
 import { createGitHandler, readDiff } from '@tuture/local-server';
 
 import { newEmptyExplain, newStepTitle, newEmptyFile } from './node.js';
@@ -39,8 +39,8 @@ export async function initNodes(ignoredFiles?: string[]): Promise<INode[]> {
         }),
       );
       return [
-        { type: 'step_start', attrs: delimiterAttrs },
-        newStepTitle(stepAttrs, [{ type: 'text', text: message }]),
+        { type: 'step_start', attrs: delimiterAttrs, content: [] },
+        newStepTitle(hash, [{ type: 'text', text: message }]),
         newEmptyExplain({
           level: 'step',
           pos: 'pre',
@@ -52,7 +52,7 @@ export async function initNodes(ignoredFiles?: string[]): Promise<INode[]> {
           pos: 'post',
           commit: hash,
         }),
-        { type: 'step_end', attrs: delimiterAttrs },
+        { type: 'step_end', attrs: delimiterAttrs, content: [] },
       ];
     },
   );

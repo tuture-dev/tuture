@@ -16,6 +16,7 @@ export default class FileEnd extends Node {
       attrs: {
         commit: { default: '' },
         file: { default: '' },
+        outdated: { default: false },
       },
       toDOM: () => ['div', { class: 'file-end' }, 0],
     };

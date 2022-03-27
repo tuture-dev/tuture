@@ -3,6 +3,7 @@
 import { Command } from 'commander';
 import { makeInitCommand } from './commands/init.js';
 import { makeUpCommand } from './commands/up.js';
+import { makeReloadCommand } from './commands/reload.js';
 import { makeDestroyCommand } from './commands/destroy.js';
 
 const program = new Command('tuture');
@@ -12,5 +13,6 @@ program
   .description('Command line interface for Tuture')
   .addCommand(makeInitCommand())
   .addCommand(makeUpCommand())
+  .addCommand(makeReloadCommand())
   .addCommand(makeDestroyCommand())
   .parse(process.argv);
