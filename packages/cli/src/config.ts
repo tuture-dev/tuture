@@ -1,15 +1,8 @@
 import * as path from 'path';
-import { TUTURE_ROOT, TUTURE_ASSETS_ROOT } from '@tuture/core';
 
 export default {
-  // Directory to store assets temporarily.
-  assetsRoot: path.join(TUTURE_ROOT, TUTURE_ASSETS_ROOT),
-
   // Time interval to synchronize all assets.
   assetsSyncInterval: 10000,
-
-  // Path to build outputs.
-  buildPath: path.join(TUTURE_ROOT, 'build'),
 
   // Port to use for tuture-server.
   port: 3013,

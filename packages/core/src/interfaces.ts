@@ -1,4 +1,4 @@
-import { DiffFile } from './diff';
+import { DiffFile } from './diff.js';
 
 export interface IRawDiff {
   commit: string;
@@ -34,6 +34,8 @@ export interface IDiffBlock {
   attrs: {
     file: string;
     commit: string;
+    code: string;
+    originalCode: string;
     hiddenLines?: [number, number][];
   } & BasicAttrs;
 }
@@ -41,7 +43,6 @@ export interface IDiffBlock {
 export interface StepAttrs {
   id: string;
   name: string;
-  articleId: string;
   commit: string;
   order: number;
   outdated?: boolean;
@@ -94,13 +95,10 @@ export interface StepMeta {
   commit: string;
 }
 
-export interface Article extends IMeta {
-  steps: StepMeta[];
-}
+export interface Article extends IMeta {}
 
 export interface Collection extends IMeta {
   articles: Article[];
-  unassignedSteps: StepMeta[];
   version?: string;
   remotes?: IRemote[];
 }

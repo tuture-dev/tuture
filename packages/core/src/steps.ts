@@ -1,7 +1,7 @@
 import omit from 'lodash.omit';
 import { Node } from 'tuture-slate';
 
-import { Step, File, DiffBlock, Explain } from './legacy/interfaces.v1';
+import { Step, File, DiffBlock, Explain } from './legacy/interfaces.v1.js';
 
 export const STEP_START = 'step_start';
 export const STEP_END = 'step_end';

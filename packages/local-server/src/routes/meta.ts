@@ -1,8 +1,8 @@
-import { Router } from 'express';
 import pick from 'lodash.pick';
+import { Router } from 'express';
 import { Collection } from '@tuture/core';
 
-import TaskQueue from '../utils/task-queue';
+import { getCollectionDb } from '../utils/index.js';
 
 function getCollectionMeta(collection: Collection) {
   return pick(collection, [
@@ -16,18 +16,18 @@ function getCollectionMeta(collection: Collection) {
   ]);
 }
 
-export function createMetaRouter(queue: TaskQueue) {
-  const router = Router();
+const router = Router();
 
-  router.get('/', (_, res) => {
-    const collection = queue.readCollection();
-    res.json(getCollectionMeta(collection));
-  });
+router.get('/', async (_, res) => {
+  const db = await getCollectionDb();
+  res.json(getCollectionMeta(db.data!));
+});
 
-  router.put('/', (req, res) => {
-    queue.addTask((c) => ({ ...c, ...req.body }), 0);
-    res.sendStatus(200);
-  });
+router.put('/', async (req, res) => {
+  const db = await getCollectionDb(req.params.collectionId);
+  db.data = { ...db.data, ...req.body };
+  await db.write();
+  res.sendStatus(200);
+});
 
-  return router;
-}
+export default router;

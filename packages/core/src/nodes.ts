@@ -5,9 +5,9 @@ import {
   IDiffBlock,
   StepAttrs,
   ExplainAttrs,
-} from './interfaces';
-import { randHex } from './utils';
-import { DiffFile, getHiddenLines } from './diff';
+} from './interfaces.js';
+import { randHex } from './utils.js';
+import { DiffFile, getHiddenLines } from './diff.js';
 
 export function newStepTitle(content: INode[], attrs: StepAttrs): IHeading {
   return {
@@ -35,35 +35,4 @@ export function newEmptyExplain(explainAttrs: ExplainAttrs): IExplain {
       ...explainAttrs,
     },
   };
-}
-
-export function newEmptyFile(
-  commit: string,
-  file: DiffFile,
-  hidden: boolean,
-): INode[] {
-  const diffBlock: IDiffBlock = {
-    type: 'diff_block',
-    attrs: {
-      commit,
-      hidden,
-      file: file.to!,
-      hiddenLines: getHiddenLines(file),
-    },
-  };
-  return [
-    newEmptyExplain({
-      level: 'file',
-      pos: 'pre',
-      commit,
-      file: file.to!,
-    }),
-    diffBlock,
-    newEmptyExplain({
-      level: 'file',
-      pos: 'post',
-      commit,
-      file: file.to!,
-    }),
-  ];
 }

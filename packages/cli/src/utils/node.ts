@@ -1,3 +1,4 @@
+import debug from 'debug';
 import {
   IText,
   INode,
@@ -13,6 +14,9 @@ import {
   StepAttrs,
   isStepTitle,
 } from '@tuture/core';
+import { readFileAtCommit } from '@tuture/local-server';
+
+const d = debug('tuture:cli:node');
 
 export function newStepTitle(attrs: StepAttrs, content: IText[]): IHeading {
   return {
@@ -39,23 +43,29 @@ export function newEmptyExplain(explainAttrs: ExplainAttrs): IExplain {
   };
 }
 
-export function newEmptyFile(
+export async function newEmptyFile(
   commit: string,
-  file: DiffFile,
+  diffFile: DiffFile,
   hidden: boolean,
-): INode[] {
+): Promise<INode[]> {
+  const file = diffFile.to!;
   const diffBlock: IDiffBlock = {
     type: 'diff_block',
     attrs: {
       commit,
       hidden,
-      file: file.to!,
-      hiddenLines: getHiddenLines(file),
+      file,
+      code: diffFile.deleted ? '' : await readFileAtCommit(commit, file),
+      originalCode: diffFile.new
+        ? ''
+        : await readFileAtCommit(`${commit}~1`, file),
+      hiddenLines: getHiddenLines(diffFile),
     },
   };
+  d('diffBlock: %o', diffBlock);
   const delimiterAttrs = {
     commit,
-    file: file.to!,
+    file: diffFile.to!,
   };
   return [
     { type: 'file_start', attrs: delimiterAttrs },
@@ -63,14 +73,14 @@ export function newEmptyFile(
       level: 'file',
       pos: 'pre',
       commit,
-      file: file.to!,
+      file,
     }),
     diffBlock,
     newEmptyExplain({
       level: 'file',
       pos: 'post',
       commit,
-      file: file.to!,
+      file,
     }),
     { type: 'file_end', attrs: delimiterAttrs },
   ];
