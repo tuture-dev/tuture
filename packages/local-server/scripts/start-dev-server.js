@@ -13,10 +13,14 @@ async function prepareTempDir(prefix) {
 
 async function prepareTutureDir() {
   const tmpRoot = await prepareTempDir('tuture-root-');
+  // const tmpRoot =
+  //   '/var/folders/rs/79fgl_4s7f700n5q859v5v_r0000gn/T/tuture-root-JycScT';
   console.log('tmpRoot:', tmpRoot);
   process.env.TUTURE_PATH = tmpRoot;
 
   const tmpCollection = await prepareTempDir('tuture-collection-');
+  // const tmpCollection =
+  //   '/var/folders/rs/79fgl_4s7f700n5q859v5v_r0000gn/T/tuture-collection-hGlAvn';
   console.log('tmpCollection:', tmpCollection);
   process.chdir(tmpCollection);
 

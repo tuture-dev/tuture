@@ -19,7 +19,7 @@ export default class RealtimeExtension extends Extension {
     const ydoc = new Y.Doc();
     const docId = this.options?.docId;
     const provider = new WebsocketProvider(
-      `ws://${window.location.hostname}:8000`,
+      `ws://${window.location.host}`,
       docId,
       ydoc,
     );

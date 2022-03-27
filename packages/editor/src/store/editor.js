@@ -5,7 +5,6 @@ export const namespaced = true;
 export const state = () => ({
   nowArticleId: '',
   doc: { type: 'doc', content: [] },
-  docLoading: false,
 });
 
 export const mutations = {
@@ -14,9 +13,6 @@ export const mutations = {
   },
   setDoc(state, doc) {
     state.doc = doc;
-  },
-  setDocLoading(state, loading) {
-    state.docLoading = loading;
   },
 };
 
@@ -48,10 +44,5 @@ export const actions = {
     if (nowArticleId !== state.nowArticleId) {
       commit('setNowArticleId', nowArticleId);
     }
-
-    // commit('setDocLoading', true);
-    // const resp = await fetch(`/api/articles/${state.nowArticleId}`);
-    // commit('setDoc', await resp.json());
-    // commit('setDocLoading', false);
   },
 };

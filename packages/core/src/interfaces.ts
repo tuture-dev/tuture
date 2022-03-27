@@ -31,6 +31,7 @@ export interface INode {
 
 export interface IDiffBlock {
   type: 'diff_block';
+  content?: INode[] | IText[];
   attrs: {
     file: string;
     commit: string;
@@ -40,21 +41,13 @@ export interface IDiffBlock {
   } & BasicAttrs;
 }
 
-export interface StepAttrs {
-  id: string;
-  name: string;
-  commit: string;
-  order: number;
-  outdated?: boolean;
-}
-
 export interface IHeading {
   type: 'heading';
   content: INode[];
   attrs: {
     id: string;
     level: number;
-    step?: StepAttrs;
+    commit?: string;
   } & BasicAttrs;
 }
 
@@ -111,10 +104,4 @@ export interface TutureConfig {
 export interface Doc {
   type: 'doc';
   content: INode[];
-}
-
-export interface StepDoc {
-  type: 'doc';
-  content: INode[];
-  attrs: StepAttrs;
 }

@@ -24,7 +24,7 @@ export default class Heading extends Node {
         // 严格模式不可删除此框
         fixed: { default: false },
         // 有这个字段代表此为一个 step 的 stepTitle 也是 step 的开始
-        step: { default: { commit: '' } },
+        commit: { default: null },
       },
       content: 'inline*',
       group: 'block',

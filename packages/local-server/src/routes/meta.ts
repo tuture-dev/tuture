@@ -18,15 +18,15 @@ function getCollectionMeta(collection: Collection) {
 
 const router = Router();
 
-router.get('/', async (_, res) => {
-  const db = await getCollectionDb();
+router.get('/', (_, res) => {
+  const db = getCollectionDb();
   res.json(getCollectionMeta(db.data!));
 });
 
-router.put('/', async (req, res) => {
-  const db = await getCollectionDb(req.params.collectionId);
+router.put('/', (req, res) => {
+  const db = getCollectionDb(req.params.collectionId);
   db.data = { ...db.data, ...req.body };
-  await db.write();
+  db.write();
   res.sendStatus(200);
 });
 
