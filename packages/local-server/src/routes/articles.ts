@@ -10,7 +10,7 @@ router.get('/', (req, res) => {
   res.json(db.data!.articles);
 });
 
-router.post('/create', (req, res) => {
+router.post('/create', async (req, res) => {
   const newArticle: Article = {
     id: randHex(32),
     name: '',
