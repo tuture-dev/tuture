@@ -98,7 +98,7 @@ export default defineComponent({
     },
     onToggleToc() {
       const { id } = this.$route.params;
-      this.$router.push({ path: `/toc/${id}` });
+      this.$router.push({ path: `/toc` });
     },
   },
 });
