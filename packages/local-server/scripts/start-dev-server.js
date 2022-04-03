@@ -61,7 +61,7 @@ async function startDevServer() {
   });
 
   app.listen(PORT, () => {
-    console.log(`API server is running on http://localhost:${PORT}!`);
+    console.log(`API server is running on http://localhost:${PORT} !`);
   });
 }
 
