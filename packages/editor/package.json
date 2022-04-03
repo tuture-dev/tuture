@@ -6,6 +6,7 @@
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "preview": "serve ./dist/",
+    "start:editor": "vue-cli-service serve",
     "start": "concurrently -r \"yarn start:api\" \"vue-cli-service serve\"",
     "start:api": "cd ../local-server && yarn start"
   },

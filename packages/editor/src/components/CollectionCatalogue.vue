@@ -97,7 +97,8 @@ export default defineComponent({
       this.setChildDrawerType(drawerType);
     },
     onToggleToc() {
-      this.$router.push({ path: `/articles/${this.nowArticleId}/toc` });
+      const { id } = this.$route.params;
+      this.$router.push({ path: `/toc/${id}` });
     },
   },
 });
