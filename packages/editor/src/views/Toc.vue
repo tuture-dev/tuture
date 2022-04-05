@@ -1,37 +1,14 @@
 <template>
   <div class="groups">
-    <div class="group">
-      <Container group-name="1" :get-child-payload="getChildPayload1" @drop="onDrop('items1', $event)">
-        <Draggable v-for="item in items1" :key="item.id">
+    <div class="group" v-for="(article, index) in articles" :key="article.id">
+      <Container
+        group-name="1"
+        :get-child-payload="getChildPayload(index)"
+        @drop="onDrop(index, $event)"
+      >
+        <Draggable v-for="step in article.steps" :key="step.id">
           <div class="draggable-item">
-            {{item.data}}
-          </div>
-        </Draggable>
-      </Container>
-    </div>
-    <div class="group">
-      <Container group-name="1" :get-child-payload="getChildPayload2" @drop="onDrop('items2', $event)">
-        <Draggable v-for="item in items2" :key="item.id">
-          <div class="draggable-item">
-            {{item.data}}
-          </div>
-        </Draggable>
-      </Container>
-    </div>
-    <div class="group">
-      <Container group-name="1" :get-child-payload="getChildPayload3" @drop="onDrop('items3', $event)">
-        <Draggable v-for="item in items3" :key="item.id">
-          <div class="draggable-item">
-            {{item.data}}
-          </div>
-        </Draggable>
-      </Container>
-    </div>
-    <div class="group">
-      <Container group-name="1" :get-child-payload="getChildPayload4" @drop="onDrop('items4', $event)">
-        <Draggable v-for="item in items4" :key="item.id">
-          <div class="draggable-item">
-            {{item.data}}
+            {{ step.name }}
           </div>
         </Draggable>
       </Container>
@@ -42,105 +19,117 @@
 <script>
 import { defineComponent } from 'vue-demi';
 import { mapActions, mapState } from 'vuex';
-import { Container, Draggable, smoothDnD } from 'vue-smooth-dnd'
-import { applyDrag, generateItems } from '../utils/helper'
+import { Container, Draggable, smoothDnD } from 'vue-smooth-dnd';
+import { applyDrag, generateItems } from '../utils/helpers';
 
 import StepAllocation from '@/components/toc/StepAllocation.vue';
 
 export default defineComponent({
+  name: 'Groups',
   components: {
-    // StepAllocation,
+    StepAllocation,
     Container,
     Draggable,
   },
   computed: {
-    ...mapState('toc', [
-      'tocVisible',
-      'tocLoading',
-      'tocSaving',
-      'tocData'
-    ]),
+    ...mapState('toc', ['tocVisible', 'tocLoading', 'tocSaving', 'tocData']),
   },
   // computed: {
-    // items() {
-    //   if (Object.keys(tocData).length === 0) return [];
+  // items() {
+  //   if (Object.keys(tocData).length === 0) return [];
 
-    //   let resItems = tocData.articles;
-    //   tocData.articles.map(article => {
-    //     article.items = tocData.articleCommitMap[article.id]
+  //   let resItems = tocData.articles;
+  //   tocData.articles.map(article => {
+  //     article.items = tocData.articleCommitMap[article.id]
 
-    //     article.items = article.items.map(step => {
-    //       step.items = tocData.commitFileMap[step.commit];
+  //     article.items = article.items.map(step => {
+  //       step.items = tocData.commitFileMap[step.commit];
 
-    //       return {
-    //         ...step,
-    //         type: 'container',
-    //       }
-    //     })
+  //       return {
+  //         ...step,
+  //         type: 'container',
+  //       }
+  //     })
 
-    //     return {
-    //       ...article,
-    //       type: 'container'
-    //     }
-    //   })
-    // }
+  //     return {
+  //       ...article,
+  //       type: 'container'
+  //     }
+  //   })
+  // }
   // },
   mounted() {
     const { id } = this.$route.params;
-    this.fetchToc({
-      collectionId: id,
-    });
+    // this.fetchToc({
+    //   collectionId: id,
+    // });
   },
-  data () {
+  data() {
     return {
-      items1: generateItems(15, i => ({
-        id: '1' + i,
-        data: `Draggable 1 - ${i}`
-      })),
-      items2: generateItems(15, i => ({
-        id: '2' + i,
-        data: `Draggable 2 - ${i}`
-      })),
-      items3: generateItems(15, i => ({
-        id: '3' + i,
-        data: `Draggable 3 - ${i}`
-      })),
-      items4: generateItems(15, i => ({
-        id: '4' + i,
-        data: `Draggable 3 - ${i}`
-      }))
-    }
+      articles: [
+        {
+          id: 'article 1',
+          name: 'article 1',
+          type: 'container',
+          steps: generateItems(10, (i) => ({
+            id: '1' + i,
+            name: 'Draggable 1 ' + i,
+            type: 'draggable',
+          })),
+        },
+        {
+          id: 'article 2',
+          name: 'article 2',
+          type: 'container',
+          steps: generateItems(10, (i) => ({
+            id: '2' + i,
+            name: `Draggable 2 - ${i}`,
+            type: 'draggable',
+          })),
+        },
+        {
+          id: 'article 3',
+          name: 'article 3',
+          type: 'container',
+          steps: generateItems(10, (i) => ({
+            id: '3' + i,
+            name: `Draggable 3 - ${i}`,
+            type: 'draggable',
+          })),
+        },
+      ],
+    };
   },
   methods: {
     ...mapActions('toc', ['fetchToc']),
-    onDrop (collection, dropResult) {
-      this[collection] = applyDrag(this[collection], dropResult)
+    onDrop(index, dropResult) {
+      console.log('dropResult', dropResult, index);
+
+      this.articles[index].steps = applyDrag(
+        this.articles[index].steps,
+        dropResult,
+      );
     },
-    getChildPayload1 (index) {
-      return this.items1[index]
+    getChildPayload(index) {
+      console.log('index', index);
+      return (stepIndex) => {
+        console.log('this.articles[index]', this.articles, stepIndex);
+        return this.articles[index].steps[stepIndex];
+      };
     },
-    getChildPayload2 (index) {
-      return this.items2[index]
-    },
-    getChildPayload3 (index) {
-      return this.items3[index]
-    },
-    getChildPayload4 (index) {
-      return this.items4[index]
-    }
-  }
+  },
 });
 </script>
 
 <style lang="css" scoped>
-  .groups {
-    display: flex;
-    justify-content: stretch;
-    margin-top: 50px;
-    margin-right: 50px;
-  }
-  .group {
-    margin-left: 50px;
-    flex: 1;
-  }
+.groups {
+  display: flex;
+  justify-content: stretch;
+  margin-top: 50px;
+  margin-right: 50px;
+}
+.group {
+  margin-left: 50px;
+  flex: 1;
+}
 </style>
