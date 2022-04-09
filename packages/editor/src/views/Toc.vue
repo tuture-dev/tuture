@@ -95,11 +95,11 @@ export default defineComponent({
   },
   watch: {
     articleModifySteps: debounce(function(newVal) {
-      const { id } = this.$route.params;
+      const { collectionId } = this.$route.query;
 
       // 更新服务端关于步骤编排
       this.fetchStepRearrange({
-        collectionId: id,
+        collectionId,
         articleModifySteps: newVal,
       });
 
@@ -123,11 +123,11 @@ export default defineComponent({
     },
   },
   mounted() {
-    const { id } = this.$route.params;
+    const { collectionId } = this.$route.query;
 
     // 只获取此 collectionId 下所有的文章，及其 steps
     this.fetchTocArticleSteps({
-      collectionId: id,
+      collectionId,
     });
   },
   data() {
@@ -225,12 +225,12 @@ export default defineComponent({
     handleOpenFileArrangeModal(articleId, stepId) {
       this.nowArticleId = articleId;
       this.nowStepId = stepId;
-      const { id } = this.$route.params;
+      const { collectionId } = this.$route.query;
 
       // 获取此 step 下的所有 file
       // TODO: 这里后续有个 loading 的过程
       this.fetchTocStepFiles({
-        collectionId: id,
+        collectionId,
         articleId,
         stepId,
       });

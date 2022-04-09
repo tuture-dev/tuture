@@ -39,8 +39,10 @@ export const actions = {
     commit('setTocLoading', true);
 
     try {
-      const resp = await fetch(`/api/toc/articles?collectionId=${collectionId}`);
+      const resp = await fetch(`/api/toc/articleSteps?collectionId=${collectionId}`);
       const data = await resp.json();
+
+      debugger;
 
       commit('setTocSucceed', true)
       commit('setTocArticleSteps', data)
@@ -54,7 +56,7 @@ export const actions = {
     commit('setTocLoading', true);
 
     try {
-      const resp = await fetch(`/api/toc/steps?collectionId=${collectionId}&articleId=${articleId}&stepId=${stepId}`);
+      const resp = await fetch(`/api/toc/stepsFiles?collectionId=${collectionId}&articleId=${articleId}&stepId=${stepId}`);
       const data = await resp.json();
 
       commit('setTocSucceed', true)

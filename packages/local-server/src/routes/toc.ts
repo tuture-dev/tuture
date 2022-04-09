@@ -21,7 +21,10 @@ type IArticle = {
 
 type ICommit = {
   id: string;
-  name: string;
+  name?: string;
+  articleId?: string;
+  commit?: string;
+  level?: string;
 };
 
 type IFile = {
@@ -39,18 +42,18 @@ type ICommitFileMap = {
 
 const router = Router();
 
-router.get('/', async (req, res) => {
+router.get('/articleSteps', async (req, res) => {
+  const { collectionId } = req.params;
+
   let persistence = getDocPersistence();
-  const db = getCollectionDb(req.params.collectionId);
+  const db = getCollectionDb(collectionId);
   const { articles = [] } = db.data!;
 
   let resObj = {
     // 所有的文章
     articles: [] as IArticle[],
     articleCommitMap: {} as IArticleCommitMap,
-    commitFileMap: {} as ICommitFileMap,
   };
-  let testRes = [] as any;
 
   articles.forEach((article) =>
     resObj.articles.push({
@@ -58,6 +61,84 @@ router.get('/', async (req, res) => {
       name: article.name,
     }),
   );
+
+  await Promise.all(
+    articles.map(async (article, index) => {
+      const ydoc = await persistence.getYDoc(article.id);
+      const fragment = ydoc.getXmlFragment('prosemirror');
+
+      let oneArticleCommit = {} as ICommit;
+
+      ydoc.transact(() => {
+        fragment.toArray().forEach((element) => {
+          if (element instanceof Y.XmlText || element instanceof Y.XmlHook) {
+            return;
+          }
+
+          console.log('element', element.nodeName);
+
+          switch (element.nodeName) {
+            case 'step_start': {
+              const commit = element.getAttribute('commit');
+              oneArticleCommit['commit'] = commit;
+              oneArticleCommit['articleId'] = article.id;
+
+              break;
+            }
+
+            case 'heading': {
+              const name = element.firstChild?.toJSON();
+              const id = element.getAttribute('id');
+              const level = element.getAttribute('level');
+
+              oneArticleCommit['id'] = id;
+              oneArticleCommit['level'] = level;
+              oneArticleCommit['name'] = name;
+
+              break;
+            }
+
+            case 'step_end': {
+              if (
+                resObj.articleCommitMap[article.id] &&
+                Array.isArray(resObj.articleCommitMap[article.id])
+              ) {
+                resObj.articleCommitMap[article.id].push(oneArticleCommit);
+              } else {
+                resObj.articleCommitMap[article.id] = [];
+                resObj.articleCommitMap[article.id].push(oneArticleCommit);
+              }
+
+              // 一次 Commit 遍历结束，置空此对象
+              oneArticleCommit = {} as ICommit;
+
+              break;
+            }
+
+            default: {
+              // 其他节点不进行处理
+            }
+          }
+        });
+      });
+    }),
+  );
+
+  res.json({ res: resObj });
+});
+
+router.get('/stepsFiles', async (req, res) => {
+  const { collectionId, articleId, stepId } = req.params;
+
+  let persistence = getDocPersistence();
+  const db = getCollectionDb(collectionId);
+  const { articles = [] } = db.data!;
+
+  let resObj = {
+    // 所有的文章
+    articleCommitMap: {} as IArticleCommitMap,
+    commitFileMap: {} as ICommitFileMap,
+  };
 
   await Promise.all(
     articles.map(async (article, index) => {
@@ -149,33 +230,13 @@ router.get('/', async (req, res) => {
     }),
   );
 
-  // for (let article of articles) {
-  //   const articleItem: TocArticleItem = {
-  //     ...article,
-  //     type: 'article',
-  //   };
-  //   articleStepList.push(articleItem);
+  // 目前默认有
+  const filteredCommit = resObj.articleCommitMap[articleId].filter(
+    (item) => item.commit === stepId,
+  )[0];
 
-  //   for (let step of article.steps) {
-  //     const stepDoc = loadStepSync(step.id);
-  //     const stepItem: TocStepItem = {
-  //       type: 'step',
-  //       ...stepDoc.attrs,
-  //     };
-  //     articleStepList.push(stepItem);
-  //   }
-  // }
-
-  // for (let step of unassignedSteps) {
-  //   const stepDoc = loadStepSync(step.id);
-  //   const stepItem: TocStepItem = {
-  //     type: 'step',
-  //     ...stepDoc.attrs,
-  //   };
-  //   unassignedStepList.push(stepItem);
-  // }
-
-  res.json({ res: resObj });
+  // 返回最终的结果
+  res.json({ res: { ...filteredCommit, files: resObj.commitFileMap[stepId] } });
 });
 
 // 直接通过修改 ydoc 的方式，然后实现 ydoc 同步 Prosemirror
