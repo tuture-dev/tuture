@@ -4,6 +4,8 @@ export const state = () => ({
   tocVisible: false,
   tocLoading: false,
   tocSaving: false,
+  tocSucceed: false,
+  tocError: false,
   tocData: {},
 });
 
@@ -19,6 +21,12 @@ export const mutations = {
   },
   setTocData(state, data) {
     state.tocData = data;
+  },
+  setTocSucceed(state, data) {
+    state.tocSucceed = data;
+  },
+  setError(state, data) {
+    state.tocError = data;
   }
 };
 
@@ -45,5 +53,47 @@ export const actions = {
     });
     commit('setTocSaving', false);
     commit('setTocVisible', false);
+  },
+  async fetchStepRearrange({ commit }, { articleModifySteps }) {
+    commit('setTocLoading', true);
+
+    try {
+      // 这里是在服务端通过修改 ydoc 的方式，然后通过 WebSocket 自动同步到本端或者其他客户端
+      await fetch('fetchStepRearrange', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          articleModifySteps,
+        })
+      })
+
+      commit('setTocSucceed', true)
+    } catch (err) {
+      console.log('err', err);
+      commit('setTocError', true)
+    }
+  },
+  async fetchFileRearrange({ commit }, payload) {
+    commit('setTocLoading', true);
+
+    try {
+      // 这里是在服务端通过修改 ydoc 的方式，然后通过 WebSocket 自动同步到本端或者其他客户端
+      await fetch('fetchFileRearrange', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ...payload,
+        })
+      })
+
+      commit('setTocSucceed', true)
+    } catch (err) {
+      console.log('err', err);
+      commit('setTocError', true)
+    }
   },
 };

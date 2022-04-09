@@ -11,7 +11,7 @@
           <Draggable v-for="step in article.steps" :key="step.id">
             <div
               class="draggable-item"
-              @click="handleOpenFileArrangeModal(step.id)"
+              @click="handleOpenFileArrangeModal(article.id, step.id)"
             >
               {{ step.name }}
             </div>
@@ -37,19 +37,30 @@
 import { defineComponent } from 'vue-demi';
 import { mapActions, mapState } from 'vuex';
 import { Container, Draggable, smoothDnD } from 'vue-smooth-dnd';
+import { debounce } from 'lodash';
+
 import { applyDrag, generateItems } from '../utils/helpers';
 
-import StepAllocation from '@/components/toc/StepAllocation.vue';
+const REARRANGE_STATUS = {
+  STEP_REARRANGE: '步骤编排',
+  FILE_REARRANGE: '文件编排',
+};
 
 export default defineComponent({
   name: 'Groups',
   components: {
-    StepAllocation,
     Container,
     Draggable,
   },
   computed: {
-    ...mapState('toc', ['tocVisible', 'tocLoading', 'tocSaving', 'tocData']),
+    // TODO: 后续在处理这些状态的更新
+    ...mapState('toc', [
+      'tocVisible',
+      'tocLoading',
+      'tocSucceed',
+      'tocError',
+      'tocData',
+    ]),
     nowStepFiles() {
       if (this.nowStepId && this.steps[this.nowStepId]) {
         return this.steps[this.nowStepId].files || [];
@@ -82,6 +93,30 @@ export default defineComponent({
   //   })
   // }
   // },
+  watch: {
+    articleModifySteps: debounce(function(newVal) {
+      // 更新服务端关于步骤编排
+      this.fetchStepRearrange(newVal);
+
+      this.nowFetchStatus = REARRANGE_STATUS.STEP_REARRANGE;
+    }, 1000),
+    fileModifySteps: debounce(function(newVal) {
+      // 更新服务端关于文件的编排
+      this.fetchFileRearrange({
+        articleId: this.nowArticleId,
+        stepId: this.nowStepId,
+        fileModifySteps: newVal,
+      });
+
+      this.nowFetchStatus = REARRANGE_STATUS.FILE_REARRANGE;
+    }, 1000),
+    tocSucceed(newVal) {
+      if (newVal) this.$message.success(`${this.nowFetchStatus} 保存成功！`);
+    },
+    tocError(newVal) {
+      if (newVal) this.$message.error(`${this.nowFetchStatus} 保存失败！`);
+    },
+  },
   mounted() {
     const { id } = this.$route.params;
     // this.fetchToc({
@@ -92,6 +127,10 @@ export default defineComponent({
     return {
       visible: false,
       nowStepId: null,
+      nowArticleId: null,
+      nowFetchStatus: null,
+      articleModifySteps: [],
+      fileModifySteps: [],
       // 在实现上还是文集拆分成多篇文章，每篇文章有多个 steps
       // 至于每个 step 里面的文件顺序调整，这里考虑是打开一个 modal，然后跳转 file 的位置
       // 那么 API 的设计要调整，每次进入到文章编排时
@@ -140,16 +179,24 @@ export default defineComponent({
     };
   },
   methods: {
-    ...mapActions('toc', ['fetchToc']),
+    ...mapActions('toc', [
+      'fetchToc',
+      'fetchStepRearrange',
+      'fetchFileRearrange',
+    ]),
     // 这里设置一个缓冲，在 N 秒内收到的 Drop 请求合并成一次请求
     // 相当于是前端做一次变更，服务端做一次变更
     onDrop(index, dropResult) {
       console.log('dropResult', dropResult, index);
 
+      // 首先前端更新
       this.articles[index].steps = applyDrag(
         this.articles[index].steps,
         dropResult,
       );
+
+      // 然后服务端更新，这里走一个 debounce 做 batch update，具体体现在 watch.articleModifySteps
+      this.articleModifySteps.push(dropResult);
     },
     getChildPayload(index) {
       console.log('index', index);
@@ -167,15 +214,19 @@ export default defineComponent({
         steps: [],
       });
     },
-    handleOpenFileArrangeModal(stepId) {
-      debugger;
+    handleOpenFileArrangeModal(articleId, stepId) {
+      this.nowArticleId = articleId;
       this.nowStepId = stepId;
       this.visible = true;
     },
     onFileDrop(dropResult) {
       const step = this.steps[this.nowStepId];
 
+      // 首先前端更新
       step.files = applyDrag(step.files, dropResult);
+
+      // 然后服务端更新，这里走一个 debounce 做 batch update，具体体现在 watch.fileModifySteps
+      this.fileModifySteps.push(dropResult);
     },
   },
 });
