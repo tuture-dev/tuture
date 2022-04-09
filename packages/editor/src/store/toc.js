@@ -6,7 +6,8 @@ export const state = () => ({
   tocSaving: false,
   tocSucceed: false,
   tocError: false,
-  tocData: {},
+  tocArticleSteps: {},
+  tocStepFiles: {},
 });
 
 export const mutations = {
@@ -19,8 +20,11 @@ export const mutations = {
   setTocSaving(state, saving) {
     state.tocSaving = saving;
   },
-  setTocData(state, data) {
-    state.tocData = data;
+  setTocArticleSteps(state, data) {
+    state.tocArticleSteps = data;
+  },
+  setTocStepFiles(state, data) {
+    state.tocStepFiles = data;
   },
   setTocSucceed(state, data) {
     state.tocSucceed = data;
@@ -31,12 +35,34 @@ export const mutations = {
 };
 
 export const actions = {
-  async fetchToc({ commit }, { collectionId }) {
+  async fetchTocArticleSteps({ commit }, { collectionId }) {
     commit('setTocLoading', true);
-    // const resp = await fetch(`/api/toc/${collectionId}`);
-    // const { unassignedStepList, articleStepList } = await resp.json();
-    const res = { "articles": [{ "id": "7c96a2d538c91", "name": "My Awesome Tutorial" }], "articleCommitMap": { "7c96a2d538c91": [{ "commit": "3dbe38f203a621c4a0ba7ff10c223fc90f004f9a", "articleId": "7c96a2d538c91", "id": "786f8709", "level": 2, "name": "first commit" }, { "commit": "b4b56b084bd2341107370e0fe7907c3810ef713f", "articleId": "7c96a2d538c91", "id": "e7623c55", "level": 2, "name": "second commit" }] }, "commitFileMap": { "3dbe38f203a621c4a0ba7ff10c223fc90f004f9a": [{ "file": "a.js" }], "b4b56b084bd2341107370e0fe7907c3810ef713f": [{ "file": "a.js" }] } }
-    commit('setTocData', res);
+
+    try {
+      const resp = await fetch(`/api/toc/articles?collectionId=${collectionId}`);
+      const data = await resp.json();
+
+      commit('setTocSucceed', true)
+      commit('setTocArticleSteps', data)
+    } catch (err) {
+      commit('setTocError', true);
+    }
+
+    commit('setTocLoading', false);
+  },
+  async fetchTocStepFiles({ commit }, { collectionId, articleId, stepId }) {
+    commit('setTocLoading', true);
+
+    try {
+      const resp = await fetch(`/api/toc/steps?collectionId=${collectionId}&articleId=${articleId}&stepId=${stepId}`);
+      const data = await resp.json();
+
+      commit('setTocSucceed', true)
+      commit('setTocStepFiles', data)
+    } catch (err) {
+      commit('setTocError', true);
+    }
+
     commit('setTocLoading', false);
   },
   async saveToc({ state, commit }) {

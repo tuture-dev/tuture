@@ -69,34 +69,39 @@ export default defineComponent({
       return [];
     },
   },
-  // computed: {
-  // items() {
-  //   if (Object.keys(tocData).length === 0) return [];
+  computed: {
+    items() {
+      if (Object.keys(tocData).length === 0) return [];
 
-  //   let resItems = tocData.articles;
-  //   tocData.articles.map(article => {
-  //     article.items = tocData.articleCommitMap[article.id]
+      let resItems = tocData.articles;
+      tocData.articles.map((article) => {
+        article.items = tocData.articleCommitMap[article.id];
 
-  //     article.items = article.items.map(step => {
-  //       step.items = tocData.commitFileMap[step.commit];
+        article.items = article.items.map((step) => {
+          step.items = tocData.commitFileMap[step.commit];
 
-  //       return {
-  //         ...step,
-  //         type: 'container',
-  //       }
-  //     })
+          return {
+            ...step,
+            type: 'container',
+          };
+        });
 
-  //     return {
-  //       ...article,
-  //       type: 'container'
-  //     }
-  //   })
-  // }
-  // },
+        return {
+          ...article,
+          type: 'container',
+        };
+      });
+    },
+  },
   watch: {
     articleModifySteps: debounce(function(newVal) {
+      const { id } = this.$route.params;
+
       // 更新服务端关于步骤编排
-      this.fetchStepRearrange(newVal);
+      this.fetchStepRearrange({
+        collectionId: id,
+        articleModifySteps: newVal,
+      });
 
       this.nowFetchStatus = REARRANGE_STATUS.STEP_REARRANGE;
     }, 1000),
@@ -119,9 +124,11 @@ export default defineComponent({
   },
   mounted() {
     const { id } = this.$route.params;
-    // this.fetchToc({
-    //   collectionId: id,
-    // });
+
+    // 只获取此 collectionId 下所有的文章，及其 steps
+    this.fetchTocArticleSteps({
+      collectionId: id,
+    });
   },
   data() {
     return {
@@ -180,7 +187,8 @@ export default defineComponent({
   },
   methods: {
     ...mapActions('toc', [
-      'fetchToc',
+      'fetchTocArticleSteps',
+      'fetchTocStepFiles',
       'fetchStepRearrange',
       'fetchFileRearrange',
     ]),
@@ -217,6 +225,15 @@ export default defineComponent({
     handleOpenFileArrangeModal(articleId, stepId) {
       this.nowArticleId = articleId;
       this.nowStepId = stepId;
+      const { id } = this.$route.params;
+
+      // 获取此 step 下的所有 file
+      // TODO: 这里后续有个 loading 的过程
+      this.fetchTocStepFiles({
+        collectionId: id,
+        articleId,
+        stepId,
+      });
       this.visible = true;
     },
     onFileDrop(dropResult) {
