@@ -7097,20 +7097,25 @@ diff-sequences@^24.9.0:
   resolved "https://registry.nlark.com/diff-sequences/download/diff-sequences-24.9.0.tgz#5715d6244e2aa65f48bba0bc972db0b0b11e95b5"
   integrity sha1-VxXWJE4qpl9Iu6C8ly2wsLEelbU=
 
-diff2html@^3.4.5:
-  version "3.4.15"
-  resolved "https://registry.yarnpkg.com/diff2html/-/diff2html-3.4.15.tgz#9cba93d7a8d05104963a0e36e2e4aaca6505ce05"
-  integrity sha512-DNzGoknNE1lIPJWkIYCszIe8PxXHrHl939WQX+Rzr8Q5l3ex8VyJjZCGKwzfMN6jiSyli7hNHyoApnz6prfZ3Q==
+diff2html@^3.3.1:
+  version "3.4.16"
+  resolved "https://registry.yarnpkg.com/diff2html/-/diff2html-3.4.16.tgz#3d27e88594fa0e1ab954cc11e90895f9fa7b002d"
+  integrity sha512-KfkvEoZTJertjoGPYFLn8n0yRdvzJcHvFJpJwbIxUlHU9x6qqhRZEM+TlgtU09jdLqRZAQyWFoxPiP6HeT2IYA==
   dependencies:
     diff "5.0.0"
     hogan.js "3.0.2"
   optionalDependencies:
     highlight.js "11.2.0"
 
-diff@5.0.0, diff@^5.0.0:
+diff@5.0.0:
   version "5.0.0"
   resolved "https://registry.yarnpkg.com/diff/-/diff-5.0.0.tgz#7ed6ad76d859d030787ec35855f5b1daf31d852b"
   integrity sha512-/VTCrvm5Z0JGty/BWHljh+BAiw3IK+2j87NGMu8Nwc/f48WoDAC395uomO9ZD117ZOBaHmkX1oyLvkVM/aIT3w==
+
+diff@^3.5.0:
+  version "3.5.0"
+  resolved "https://registry.yarnpkg.com/diff/-/diff-3.5.0.tgz#800c0dd1e0a8bfbc95835c202ad220fe317e5a12"
+  integrity sha512-A46qtFgd+g7pDZinpnwiRJtxbC1hpgf0uzP3iG89scHk0AUC7A1TGxf5OiiOUv/JMZR8GOt8hL900hV0bOy5xA==
 
 diff@^4.0.1:
   version "4.0.2"
@@ -9407,10 +9412,15 @@ highlight.js@11.2.0:
   resolved "https://registry.yarnpkg.com/highlight.js/-/highlight.js-11.2.0.tgz#a7e3b8c1fdc4f0538b93b2dc2ddd53a40c6ab0f0"
   integrity sha512-JOySjtOEcyG8s4MLR2MNbLUyaXqUunmSnL2kdV/KuGJOmHZuAR5xC54Ko7goAXBWNhf09Vy3B+U7vR62UZ/0iw==
 
-highlight.js@^10.5.0, highlight.js@^10.7.1, highlight.js@~10.7.0:
+highlight.js@^10.7.1, highlight.js@~10.7.0:
   version "10.7.3"
   resolved "https://registry.npmmirror.com/highlight.js/download/highlight.js-10.7.3.tgz#697272e3991356e40c3cac566a74eef681756531"
   integrity sha1-aXJy45kTVuQMPKxWanTu9oF1ZTE=
+
+highlight.js@^9.18.5:
+  version "9.18.5"
+  resolved "https://registry.yarnpkg.com/highlight.js/-/highlight.js-9.18.5.tgz#d18a359867f378c138d6819edfc2a8acd5f29825"
+  integrity sha512-a5bFyofd/BHCX52/8i8uJkjr9DYwXIPnM/plwI6W7ezItLGqzt7X2G2nXuYSfsIJdkwwj/g9DG1LkcGJI/dDoA==
 
 hmac-drbg@^1.0.1:
   version "1.0.1"
@@ -10548,6 +10558,11 @@ isarray@1.0.0, isarray@^1.0.0, isarray@~1.0.0:
   version "1.0.0"
   resolved "https://registry.nlark.com/isarray/download/isarray-1.0.0.tgz#bb935d48582cba168c06834957a54a3e07124f11"
   integrity sha1-u5NdSFgsuhaMBoNJV6VKPgcSTxE=
+
+isbinaryfile@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/isbinaryfile/-/isbinaryfile-5.0.0.tgz#034b7e54989dab8986598cbcea41f66663c65234"
+  integrity sha512-UDdnyGvMajJUWCkib7Cei/dvyJrrvo4FIrsvSFWdPpXSUorzXrDJ0S+X5Q4ZlasfPjca4yqCNNsjbCeiy8FFeg==
 
 isexe@^2.0.0:
   version "2.0.0"
@@ -14579,17 +14594,10 @@ prosemirror-markdown@1.5.1:
     markdown-it "^10.0.0"
     prosemirror-model "^1.0.0"
 
-prosemirror-model@1.14.3, prosemirror-model@^1.0.0, prosemirror-model@^1.1.0, prosemirror-model@^1.13.1, prosemirror-model@^1.14.3, prosemirror-model@^1.8.1:
+prosemirror-model@1.14.3, prosemirror-model@^1.0.0, prosemirror-model@^1.1.0, prosemirror-model@^1.13.1, prosemirror-model@^1.14.3, prosemirror-model@^1.2.0, prosemirror-model@^1.8.1:
   version "1.14.3"
   resolved "https://registry.nlark.com/prosemirror-model/download/prosemirror-model-1.14.3.tgz#a9c250d3c4023ddf10ecb41a0a7a130e9741d37e"
   integrity sha1-qcJQ08QCPd8Q7LQaCnoTDpdB034=
-  dependencies:
-    orderedmap "^1.1.0"
-
-prosemirror-model@^1.2.0:
-  version "1.16.1"
-  resolved "http://bnpm.byted.org/prosemirror-model/-/prosemirror-model-1.16.1.tgz#fb388270bc9609b66298d6a7e15d0cc1d6c61253"
-  integrity sha512-r1/w0HDU40TtkXp0DyKBnFPYwd8FSlUSJmGCGFv4DeynfeSlyQF2FD0RQbVEMOe6P3PpUSXM6LZBV7W/YNZ4mA==
   dependencies:
     orderedmap "^1.1.0"
 
@@ -17868,16 +17876,6 @@ uuid@^3.0.0, uuid@^3.0.1, uuid@^3.3.2, uuid@^3.4.0:
   resolved "https://registry.nlark.com/uuid/download/uuid-3.4.0.tgz#b23e4358afa8a202fe7a100af1f5f883f02007ee"
   integrity sha1-sj5DWK+oogL+ehAK8fX4g/AgB+4=
 
-v-code-diff@^0.3.8:
-  version "0.3.8"
-  resolved "https://registry.yarnpkg.com/v-code-diff/-/v-code-diff-0.3.8.tgz#8d8c584ca54585f6d4f6043cfdcc888510504dd2"
-  integrity sha512-rE1RvZt40lFXqtoUPeOnE3ygxLzgjCddG+/4afsUw463v6jQcGqy8gsbt/8AkLr+ieAzWhlmRXEbTfvktrWjGw==
-  dependencies:
-    diff "^5.0.0"
-    diff2html "^3.4.5"
-    highlight.js "^10.5.0"
-    vue-demi latest
-
 v8-compile-cache@^2.0.3, v8-compile-cache@^2.3.0:
   version "2.3.0"
   resolved "https://registry.nlark.com/v8-compile-cache/download/v8-compile-cache-2.3.0.tgz#2de19618c66dc247dcfb6f99338035d8245a2cee"
@@ -18044,6 +18042,16 @@ vue-cli-plugin-vite@~1.0.0-rc.3:
     vite-plugin-vue-cli "1.0.0"
     vite-plugin-vue2 "1.5.1"
 
+vue-code-diff@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/vue-code-diff/-/vue-code-diff-1.2.0.tgz#e38013307bab9296cc3512b2e7c9afed7890ae4a"
+  integrity sha512-kgSCl1Cr3I0u0z5DyJFbqQ1Hk7s9uBl7bfGwIn1X8f1xGmWdu4eRqfeOLTS0ut06VfGslaprXdaSvgn7YGDh0Q==
+  dependencies:
+    diff "^3.5.0"
+    diff2html "^3.3.1"
+    highlight.js "^9.18.5"
+    vue "^2.6.12"
+
 vue-demi@*:
   version "0.11.4"
   resolved "https://registry.nlark.com/vue-demi/download/vue-demi-0.11.4.tgz#6101992fe4724cf5634018a16e953f3052e94e2a"
@@ -18053,11 +18061,6 @@ vue-demi@^0.7.4:
   version "0.7.5"
   resolved "https://registry.nlark.com/vue-demi/download/vue-demi-0.7.5.tgz#88dee7492fc99a0f911ff03fc02c658fa2a79af8"
   integrity sha1-iN7nSS/Jmg+RH/A/wCxlj6Knmvg=
-
-vue-demi@latest:
-  version "0.12.1"
-  resolved "https://registry.yarnpkg.com/vue-demi/-/vue-demi-0.12.1.tgz#f7e18efbecffd11ab069d1472d7a06e319b4174c"
-  integrity sha512-QL3ny+wX8c6Xm1/EZylbgzdoDolye+VpCXRhI2hug9dJTP3OUJ3lmiKN3CsVV3mOJKwFi0nsstbgob0vG7aoIw==
 
 vue-eslint-parser@^7.0.0:
   version "7.11.0"
@@ -18128,7 +18131,7 @@ vue-template-es2015-compiler@^1.9.0, vue-template-es2015-compiler@^1.9.1:
   resolved "https://registry.nlark.com/vue-template-es2015-compiler/download/vue-template-es2015-compiler-1.9.1.tgz#1ee3bc9a16ecbf5118be334bb15f9c46f82f5825"
   integrity sha1-HuO8mhbsv1EYvjNLsV+cRvgvWCU=
 
-vue@^2.6.11:
+vue@^2.6.11, vue@^2.6.12:
   version "2.6.14"
   resolved "https://registry.npmmirror.com/vue/download/vue-2.6.14.tgz?cache=0&sync_timestamp=1633712767060&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2Fvue%2Fdownload%2Fvue-2.6.14.tgz#e51aa5250250d569a3fbad3a8a5a687d6036e235"
   integrity sha1-5RqlJQJQ1Wmj+606ilpofWA24jU=

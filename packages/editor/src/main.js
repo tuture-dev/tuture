@@ -56,7 +56,6 @@ import {
   faArrowRight,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import CodeDiff from 'v-code-diff';
 
 import App from './App.vue';
 import router from './router';
@@ -119,8 +118,6 @@ Vue.use(Select);
 Vue.use(Switch);
 Vue.use(Popover);
 Vue.use(Popconfirm);
-
-Vue.use(CodeDiff);
 
 Vue.prototype.$message = message;
 

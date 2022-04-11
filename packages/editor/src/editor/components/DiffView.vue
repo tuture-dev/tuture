@@ -14,8 +14,9 @@
       class="whitespace-normal"
       :old-string="originalCode"
       :new-string="code"
-      :file-name="filename"
-      :output-format="outputFormat"
+      :context="10"
+      :fileName="filename"
+      :outputFormat="outputFormat"
     />
     <a-modal :visible="false">
       <MonacoEditor
@@ -33,13 +34,15 @@
 
 <script setup>
 import { defineComponent } from 'vue-demi';
+import CodeDiff from 'vue-code-diff';
+
 // import { CodeDiff } from 'v-code-diff';
 import MonacoEditor from './MonacoEditor.vue';
 
 export default defineComponent({
   props: ['node', 'updateAttrs', 'view', 'editor'],
   components: {
-    // CodeDiff,
+    CodeDiff,
     MonacoEditor,
   },
   data() {
