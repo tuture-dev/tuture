@@ -3,7 +3,7 @@
   "description": "Migration utility for legacy Tuture tutorials",
   "version": "0.0.1",
   "bin": {
-    "tuture-migrator": "./lib/index.js"
+    "tuture-migrate": "./dist/index.js"
   },
   "type": "module",
   "main": "dist/index.js",

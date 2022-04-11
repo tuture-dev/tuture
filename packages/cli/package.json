@@ -3,7 +3,7 @@
   "description": "Command line interface for Tuture",
   "version": "0.1.0",
   "bin": {
-    "tuture": "./lib/index.js"
+    "tuture": "./dist/index.js"
   },
   "type": "module",
   "main": "dist/index.js",
