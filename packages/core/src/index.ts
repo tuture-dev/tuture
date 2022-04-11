@@ -1,5 +1,4 @@
 export * from './interfaces.js';
-export * from './compat.js';
 export * from './utils.js';
 export * from './diff.js';
 export * from './version.js';

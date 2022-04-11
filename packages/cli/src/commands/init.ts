@@ -66,7 +66,7 @@ async function doInit(options: InitOptions) {
   d('cwd: %s', process.cwd());
   d('options: %o', options);
 
-  const item = await getInventoryItemByPath(process.cwd());
+  const item = getInventoryItemByPath(process.cwd());
   d('inventory item: %o', item);
   if (item) {
     logger.log('success', 'Tuture tutorial has already been initialized!');
@@ -120,8 +120,8 @@ async function doInit(options: InitOptions) {
   collection.version = SCHEMA_VERSION;
   d('init collection: %O', collection);
 
-  await saveToInventory(process.cwd(), collection);
-  await saveCollection(collection);
+  saveToInventory(process.cwd(), collection);
+  saveCollection(collection);
 
   logger.log('success', 'Tuture tutorial has been initialized!');
 }

@@ -72,6 +72,36 @@ export const tutureSchema = new Schema({
       },
     },
 
+    ordered_list: {
+      attrs: {
+        order: {
+          default: 1,
+        },
+      },
+      content: 'list_item+',
+      group: 'block',
+      parseDOM: [{ tag: 'ol' }],
+      toDOM: (node) =>
+        node.attrs.order === 1
+          ? ['ol', 0]
+          : ['ol', { start: node.attrs.order }, 0],
+    },
+
+    bullet_list: {
+      content: 'list_item+',
+      group: 'block',
+      parseDOM: [{ tag: 'ul' }],
+      toDOM: () => ['ul', 0],
+    },
+
+    list_item: {
+      content: 'paragraph block*',
+      defining: true,
+      draggable: false,
+      parseDOM: [{ tag: 'li' }],
+      toDOM: () => ['li', 0],
+    },
+
     explain: {
       content: 'block+',
       group: 'block',
