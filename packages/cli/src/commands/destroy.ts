@@ -1,6 +1,11 @@
 import { Command } from 'commander';
 import inquirer from 'inquirer';
 import debug from 'debug';
+import {
+  loadCollection,
+  deleteDocs,
+  deleteCollection,
+} from '@tuture/local-server';
 
 import logger from '../utils/logger.js';
 
@@ -34,6 +39,13 @@ async function doDestroy(options: DestroyOptions) {
       return;
     }
   }
+
+  const collection = loadCollection();
+  const articleIds = collection.articles.map((article) => article.id);
+  d('delete article ids: %o', articleIds);
+  await deleteDocs(articleIds);
+
+  await deleteCollection(collection.id);
 
   logger.log('success', 'Tutorial has been destroyed!');
 }

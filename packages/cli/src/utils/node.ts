@@ -1,4 +1,5 @@
 import debug from 'debug';
+import { isBinaryFile } from 'isbinaryfile';
 import {
   IText,
   INode,
@@ -11,7 +12,6 @@ import {
   getHiddenLines,
   Collection,
   Article,
-  isStepTitle,
 } from '@tuture/core';
 import { readFileAtCommit } from '@tuture/local-server';
 
@@ -47,6 +47,7 @@ export async function newEmptyFile(
   diffFile: DiffFile,
   hidden: boolean,
 ): Promise<INode[]> {
+  // TODO: handle delete case (the file no longer exists!)
   const file = diffFile.to!;
   const diffBlock: IDiffBlock = {
     type: 'diff_block',
@@ -62,6 +63,27 @@ export async function newEmptyFile(
       hiddenLines: getHiddenLines(diffFile),
     },
   };
+
+  if (await isBinaryFile(file)) {
+    // Binary files are hidden by default.
+    diffBlock.attrs.hidden = true;
+  } else {
+    const code = diffFile.deleted
+      ? ''
+      : (await readFileAtCommit(commit, file)) || '';
+    const originalCode = diffFile.new
+      ? ''
+      : (await readFileAtCommit(`${commit}~1`, file)) || '';
+
+    // Skip files with too lengthy diff
+    // TODO: Add it to the config
+    if (code.length <= 10000 || originalCode.length <= 10000) {
+      // If not binary, try reading diff.
+      diffBlock.attrs.code = code;
+      diffBlock.attrs.originalCode = originalCode;
+    }
+  }
+
   d('diffBlock: %o', diffBlock);
   const delimiterAttrs = {
     commit,

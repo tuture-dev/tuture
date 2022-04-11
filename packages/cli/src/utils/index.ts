@@ -20,42 +20,34 @@ export async function initNodes(ignoredFiles?: string[]): Promise<INode[]> {
     // filter out commits whose commit message starts with 'tuture:'
     .filter(({ message }) => !message.startsWith('tuture:'));
 
-  const nodeProms: Promise<INode[]>[] = logs.map(
-    async ({ message, hash }, index) => {
-      const files = await readDiff(hash);
-      const delimiterAttrs = { commit: hash };
-      const stepAttrs = {
-        id: randHex(32),
-        name: message,
+  const nodeProms: Promise<INode[]>[] = logs.map(async ({ message, hash }) => {
+    const files = await readDiff(hash);
+    const delimiterAttrs = { commit: hash };
+    const fileNodes = await Promise.all(
+      files.map(async (diffFile) => {
+        const hidden = ignoredFiles?.some((pattern) =>
+          mm.isMatch(diffFile.to!, pattern),
+        );
+        return await newEmptyFile(hash, diffFile, Boolean(hidden));
+      }),
+    );
+    return [
+      { type: 'step_start', attrs: delimiterAttrs, content: [] },
+      newStepTitle(hash, [{ type: 'text', text: message }]),
+      newEmptyExplain({
+        level: 'step',
+        pos: 'pre',
         commit: hash,
-        order: index,
-      };
-      const fileNodes = await Promise.all(
-        files.map(async (diffFile) => {
-          const hidden = ignoredFiles?.some((pattern) =>
-            mm.isMatch(diffFile.to!, pattern),
-          );
-          return await newEmptyFile(hash, diffFile, Boolean(hidden));
-        }),
-      );
-      return [
-        { type: 'step_start', attrs: delimiterAttrs, content: [] },
-        newStepTitle(hash, [{ type: 'text', text: message }]),
-        newEmptyExplain({
-          level: 'step',
-          pos: 'pre',
-          commit: hash,
-        }),
-        ...fileNodes.flat(),
-        newEmptyExplain({
-          level: 'step',
-          pos: 'post',
-          commit: hash,
-        }),
-        { type: 'step_end', attrs: delimiterAttrs, content: [] },
-      ];
-    },
-  );
+      }),
+      ...fileNodes.flat(),
+      newEmptyExplain({
+        level: 'step',
+        pos: 'post',
+        commit: hash,
+      }),
+      { type: 'step_end', attrs: delimiterAttrs, content: [] },
+    ];
+  });
 
   const nodes = await Promise.all(nodeProms);
   return nodes.flat();

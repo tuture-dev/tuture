@@ -12,7 +12,6 @@ import {
   Collection,
   IMeta,
   isCommitEqual,
-  ArticleNodes,
   tutureSchema,
   markdownSerializer,
 } from '@tuture/core';
@@ -297,10 +296,7 @@ function articleTmpl(meta: IMeta, steps: any[]) {
     .replace(/\n{3,}/g, '\n\n');
 }
 
-function generateTutorials(
-  collection: Collection,
-  articleNodes: ArticleNodes[],
-) {
+function generateTutorials(collection: Collection) {
   const {
     name,
     articles,

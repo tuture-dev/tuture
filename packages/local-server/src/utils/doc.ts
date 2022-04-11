@@ -25,8 +25,10 @@ export async function saveDoc(doc: any) {
   await ldb.destroy();
 }
 
-export async function deleteDoc(docId: string) {
+export async function deleteDocs(docIds: string[]) {
   const ldb = getDocPersistence();
-  await ldb.clearDocument(docId);
+  await Promise.all(
+    docIds.map(async (docId) => await ldb.clearDocument(docId)),
+  );
   await ldb.destroy();
 }

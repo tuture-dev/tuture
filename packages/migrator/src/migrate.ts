@@ -1,12 +1,27 @@
+import debug from 'debug';
+import fs from 'fs-extra';
+import path from 'path';
+import pick from 'lodash.pick';
+import { isBinaryFile } from 'isbinaryfile';
 import { Element, Node } from 'editure';
+import { Collection, IText, INode, IMark } from '@tuture/core';
 import {
-  Collection as CollectionV2,
-  IText,
-  INode,
-  IMark,
-  Article,
-} from './interfaces';
-import { Collection, File, Explain, StepTitle, getStepTitle } from './legacy';
+  Collection as CollectionV1,
+  Step,
+  File,
+  Explain,
+  StepTitle,
+} from '@tuture/core/dist/legacy';
+import {
+  readDiff,
+  readFileAtCommit,
+  saveDoc,
+  saveCollection,
+  saveToInventory,
+  getInventoryItemByPath,
+} from '@tuture/local-server';
+
+const d = debug('tuture:migrator');
 
 function convertInline(node: Node): IText | INode | null {
   if (node.type === 'image') {
@@ -85,6 +100,16 @@ function convertBlock(node: Element): INode {
           {
             type: 'text',
             text: node.children.map((line) => line.children[0].text).join('\n'),
+          },
+        ],
+      };
+    case 'image':
+      return {
+        type: 'paragraph',
+        content: [
+          {
+            type: 'image',
+            attrs: { src: node.url },
           },
         ],
       };
@@ -168,7 +193,11 @@ function convertFile(file: File): INode[] {
     throw new Error(`number of children err, file: ${JSON.stringify(file)}`);
   }
   const [prex, diff, postex] = file.children;
-  const commitFile = { commit: diff.commit, file: file.file };
+  const commitFile = {
+    commit: diff.commit,
+    file: file.file,
+    display: file.display,
+  };
   return [
     {
       type: 'file_start',
@@ -206,76 +235,128 @@ function convertFile(file: File): INode[] {
   ];
 }
 
-export type ArticleNodes = {
-  articleId: string;
-  nodes: INode[];
+function convertStep(step: Step): INode[] {
+  return [
+    { type: 'step_start', attrs: { commit: step.commit } },
+    ...step.children.flatMap((node, index) => {
+      if (index === 0) {
+        const title = node as StepTitle;
+        return {
+          type: 'heading',
+          content: convertInlineNodes(title.children),
+          attrs: {
+            id: title.id,
+            level: 2,
+            fixed: true,
+            commit: title.commit,
+          },
+        };
+      } else if (index === 1 || index === step.children.length - 1) {
+        return {
+          type: 'explain',
+          attrs: {
+            fixed: true,
+            level: 'step',
+            pos: index === 1 ? 'pre' : 'post',
+            commit: step.commit,
+          },
+          content: (node as Explain).children.map((block) =>
+            convertBlock(block as Element),
+          ),
+        };
+      } else {
+        return convertFile(node as File);
+      }
+    }),
+    { type: 'step_end', attrs: { commit: step.commit } },
+  ];
+}
+
+export type MigrateOptions = {
+  dryRun: boolean;
 };
 
-// export function convertV1ToV2(
-//   collection: Collection,
-// ): [CollectionV2, StepDocs] {
-//   const stepDocs: StepDocs = {};
-//   const collectionV2 = collection as any;
-//   collectionV2.unassignedSteps = [];
-//   // collectionV2.articles.forEach((article: Article) => {
-//   //   article.steps = [];
-//   // });
+export async function migrate(tutorialPath: string, options: MigrateOptions) {
+  process.chdir(tutorialPath);
+  d('cwd: %s', process.cwd());
 
-//   for (let i = 0; i < collection.steps.length; i++) {
-//     const stepV1 = collection.steps[i];
-//     const stepMeta = {
-//       id: stepV1.id,
-//       commit: stepV1.commit,
-//     };
-//     if (stepV1.articleId) {
-//       for (let article of collectionV2.articles) {
-//         if (article.id === stepV1.articleId) {
-//           article.steps.push(stepMeta);
-//         }
-//       }
-//     } else {
-//       collectionV2.unassignedSteps.push(stepMeta);
-//     }
+  const item = getInventoryItemByPath(process.cwd());
+  d('inventory item: %o', item);
+  if (item) {
+    console.log('Tutorial has already been migrated!');
+    return;
+  }
 
-//     const stepAttrs = {
-//       id: stepV1.id,
-//       name: getStepTitle(stepV1),
-//       articleId: stepV1.articleId || '',
-//       commit: stepV1.commit,
-//       order: i,
-//     };
-//     stepDocs[stepV1.id] = {
-//       type: 'doc',
-//       attrs: stepAttrs,
-//       content: [
-//         { type: 'step_start', attrs: { commit: stepV1.commit } },
-//         ...stepV1.children.flatMap((node, index) => {
-//           if (index === 0) {
-//             const title = node as StepTitle;
-//             return newStepTitle(convertInlineNodes(title.children), stepAttrs);
-//           } else if (index === 1 || index === stepV1.children.length - 1) {
-//             return {
-//               type: 'explain',
-//               attrs: {
-//                 fixed: true,
-//                 level: 'step',
-//                 pos: index === 1 ? 'pre' : 'post',
-//                 commit: stepV1.commit,
-//               },
-//               content: (node as Explain).children.map((block) =>
-//                 convertBlock(block as Element),
-//               ),
-//             };
-//           } else {
-//             return convertFile(node as File);
-//           }
-//         }),
-//         { type: 'step_end', attrs: { commit: stepV1.commit } },
-//       ],
-//     };
-//   }
+  const oldCollectionPath = path.join('.tuture', 'collection.json');
+  const oldCollection: CollectionV1 = fs.readJSONSync(oldCollectionPath);
+  console.log(`legacy collection read from ${oldCollectionPath}`);
 
-//   delete collectionV2.steps;
+  const articleProms = oldCollection.articles.map(async (article) => {
+    const steps = oldCollection.steps.filter(
+      (step) => step.articleId === article.id,
+    );
+    if (steps.length === 0) {
+      return;
+    }
+    let nodes = steps.flatMap((step) => convertStep(step));
+    nodes = await Promise.all(
+      nodes.map(async (node) => {
+        if (node.type !== 'diff_block') {
+          return node;
+        }
+        const { commit, file } = node.attrs!;
+        if (await isBinaryFile(file)) {
+          return node;
+        }
 
-//   return [collectionV2 as CollectionV2, stepDocs];
-// }
+        const diffFile = (await readDiff(commit)).filter(
+          (df) => df.to! === file,
+        )[0];
+        const code = diffFile.deleted
+          ? ''
+          : (await readFileAtCommit(commit, file)) || '';
+        const originalCode = diffFile.new
+          ? ''
+          : (await readFileAtCommit(`${commit}~1`, file)) || '';
+
+        // Skip files with too lengthy diff
+        if (code.length > 10000 || originalCode.length > 10000) {
+          return node;
+        }
+
+        return {
+          type: 'diff_block',
+          attrs: { ...node.attrs, code, originalCode },
+        };
+      }),
+    );
+    const doc = {
+      type: 'doc',
+      content: nodes,
+      attrs: { id: article.id },
+    };
+    if (options.dryRun) {
+      console.log('saving doc:', JSON.stringify(doc, null, 2));
+    } else {
+      await saveDoc(doc);
+    }
+  });
+  await Promise.all(articleProms);
+
+  const newCollection: Collection = pick(oldCollection, [
+    'name',
+    'id',
+    'created',
+    'articles',
+    'version',
+  ]);
+  newCollection.version = 'v2';
+
+  if (options.dryRun) {
+    console.log('new collection:', JSON.stringify(newCollection, null, 2));
+  } else {
+    saveToInventory(process.cwd(), newCollection);
+    saveCollection(newCollection);
+    console.log('saved collection to inventory.');
+  }
+}
