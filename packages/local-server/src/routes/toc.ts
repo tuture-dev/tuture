@@ -231,7 +231,7 @@ router.get('/stepsFiles', async (req, res) => {
   );
 
   // 目前默认有
-  const filteredCommit = resObj.articleCommitMap[articleId].filter(
+  const filteredCommit = (resObj.articleCommitMap[articleId] || []).filter(
     (item) => item.commit === stepId,
   )[0];
 

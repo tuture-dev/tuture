@@ -8,10 +8,10 @@
           :get-child-payload="getChildPayload(index)"
           @drop="onDrop(index, $event)"
         >
-          <Draggable v-for="step in article.steps" :key="step.id">
+          <Draggable v-for="step in article.steps" :key="step.commit">
             <div
               class="draggable-item"
-              @click="handleOpenFileArrangeModal(article.id, step.id)"
+              @click="handleOpenFileArrangeModal(article.id, step.commit)"
             >
               {{ step.name }}
             </div>
@@ -35,7 +35,7 @@
 
 <script>
 import { defineComponent } from 'vue-demi';
-import { mapActions, mapState } from 'vuex';
+import { mapActions, mapState, mapMutations } from 'vuex';
 import { Container, Draggable, smoothDnD } from 'vue-smooth-dnd';
 import { debounce } from 'lodash';
 
@@ -60,6 +60,8 @@ export default defineComponent({
       'tocSucceed',
       'tocError',
       'tocData',
+      'tocArticleSteps',
+      'tocStepFiles',
     ]),
     nowStepFiles() {
       if (this.nowStepId && this.steps[this.nowStepId]) {
@@ -68,29 +70,11 @@ export default defineComponent({
 
       return [];
     },
-  },
-  computed: {
-    items() {
-      if (Object.keys(tocData).length === 0) return [];
-
-      let resItems = tocData.articles;
-      tocData.articles.map((article) => {
-        article.items = tocData.articleCommitMap[article.id];
-
-        article.items = article.items.map((step) => {
-          step.items = tocData.commitFileMap[step.commit];
-
-          return {
-            ...step,
-            type: 'container',
-          };
-        });
-
-        return {
-          ...article,
-          type: 'container',
-        };
-      });
+    articles() {
+      return this.tocArticleSteps;
+    },
+    steps() {
+      return this.tocStepFiles;
     },
   },
   watch: {
@@ -141,48 +125,48 @@ export default defineComponent({
       // 在实现上还是文集拆分成多篇文章，每篇文章有多个 steps
       // 至于每个 step 里面的文件顺序调整，这里考虑是打开一个 modal，然后跳转 file 的位置
       // 那么 API 的设计要调整，每次进入到文章编排时
-      articles: [
-        {
-          id: 'article 1',
-          name: 'article 1',
-          type: 'container',
-          steps: generateItems(10, (i) => ({
-            id: '1' + i,
-            name: 'Draggable 1 ' + i,
-            type: 'draggable',
-          })),
-        },
-        {
-          id: 'article 2',
-          name: 'article 2',
-          type: 'container',
-          steps: generateItems(10, (i) => ({
-            id: '2' + i,
-            name: `Draggable 2 - ${i}`,
-            type: 'draggable',
-          })),
-        },
-        {
-          id: 'article 3',
-          name: 'article 3',
-          type: 'container',
-          steps: generateItems(10, (i) => ({
-            id: '3' + i,
-            name: `Draggable 3 - ${i}`,
-            type: 'draggable',
-          })),
-        },
-      ],
-      steps: {
-        '10': {
-          name: 'step 1',
-          files: generateItems(20, (i) => ({
-            id: '1' + i,
-            file: 'file 1 ' + i,
-            type: 'draggable',
-          })),
-        },
-      },
+      // articles: [
+      //   {
+      //     id: 'article 1',
+      //     name: 'article 1',
+      //     type: 'container',
+      //     steps: generateItems(10, (i) => ({
+      //       id: '1' + i,
+      //       name: 'Draggable 1 ' + i,
+      //       type: 'draggable',
+      //     })),
+      //   },
+      //   {
+      //     id: 'article 2',
+      //     name: 'article 2',
+      //     type: 'container',
+      //     steps: generateItems(10, (i) => ({
+      //       id: '2' + i,
+      //       name: `Draggable 2 - ${i}`,
+      //       type: 'draggable',
+      //     })),
+      //   },
+      //   {
+      //     id: 'article 3',
+      //     name: 'article 3',
+      //     type: 'container',
+      //     steps: generateItems(10, (i) => ({
+      //       id: '3' + i,
+      //       name: `Draggable 3 - ${i}`,
+      //       type: 'draggable',
+      //     })),
+      //   },
+      // ],
+      // steps: {
+      //   '10': {
+      //     name: 'step 1',
+      //     files: generateItems(20, (i) => ({
+      //       id: '1' + i,
+      //       file: 'file 1 ' + i,
+      //       type: 'draggable',
+      //     })),
+      //   },
+      // },
     };
   },
   methods: {
@@ -192,6 +176,7 @@ export default defineComponent({
       'fetchStepRearrange',
       'fetchFileRearrange',
     ]),
+    ...mapMutations('toc', ['setTocArticleSteps']),
     // 这里设置一个缓冲，在 N 秒内收到的 Drop 请求合并成一次请求
     // 相当于是前端做一次变更，服务端做一次变更
     onDrop(index, dropResult) {
@@ -214,13 +199,18 @@ export default defineComponent({
       };
     },
     addNewPage() {
-      const index = this.articles.length;
-      this.articles.push({
-        id: `article ${index + 1}`,
-        name: `article ${index + 1}`,
-        type: 'container',
-        steps: [],
-      });
+      const index = this.tocArticleSteps.length;
+      const newTocArticleSteps = [
+        ...this.tocArticleSteps,
+        {
+          id: `article ${index + 1}`,
+          name: `article ${index + 1}`,
+          type: 'container',
+          steps: [],
+        },
+      ];
+
+      this.setTocArticleSteps(newTocArticleSteps);
     },
     handleOpenFileArrangeModal(articleId, stepId) {
       this.nowArticleId = articleId;

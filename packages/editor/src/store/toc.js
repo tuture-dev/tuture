@@ -31,21 +31,53 @@ export const mutations = {
   },
   setError(state, data) {
     state.tocError = data;
-  }
+  },
 };
 
 export const actions = {
   async fetchTocArticleSteps({ commit }, { collectionId }) {
     commit('setTocLoading', true);
+    console.log('hello');
 
     try {
-      const resp = await fetch(`/api/toc/articleSteps?collectionId=${collectionId}`);
-      const data = await resp.json();
+      // const resp = await fetch(`/api/toc/articleSteps?collectionId=${collectionId}`);
 
-      debugger;
+      // 这里因为服务端 IO 错误，TODO：后续排查，先临时拿最终结果来操作
+      // const data = await resp.json();
+      const data = {
+        res: {
+          articles: [{ id: 'ec365f5839d3f', name: 'My Awesome Tutorial' }],
+          articleCommitMap: {
+            ec365f5839d3f: [
+              {
+                commit: '340a5ce8255ea4f89f67644f5404879e8208388d',
+                articleId: 'ec365f5839d3f',
+                id: 'ade772a6',
+                level: 2,
+                name: 'first commit',
+              },
+              {
+                commit: '362eae41ffb474f69e6e51b89532ae79ad4fc601',
+                articleId: 'ec365f5839d3f',
+                id: '0441b4f9',
+                level: 2,
+                name: 'second commit',
+              },
+            ],
+          },
+        },
+      };
 
-      commit('setTocSucceed', true)
-      commit('setTocArticleSteps', data)
+      const resItem = data.res.articles;
+      const tocArticleSteps = resItem.map((article) => {
+        const steps = data.res.articleCommitMap[article.id];
+        article.steps = steps;
+
+        return article;
+      });
+
+      commit('setTocSucceed', true);
+      commit('setTocArticleSteps', tocArticleSteps);
     } catch (err) {
       commit('setTocError', true);
     }
@@ -56,11 +88,26 @@ export const actions = {
     commit('setTocLoading', true);
 
     try {
-      const resp = await fetch(`/api/toc/stepsFiles?collectionId=${collectionId}&articleId=${articleId}&stepId=${stepId}`);
-      const data = await resp.json();
+      // const resp = await fetch(`/api/toc/stepsFiles?collectionId=${collectionId}&articleId=${articleId}&stepId=${stepId}`);
+      // const data = await resp.json();
+      const data = {
+        '362eae41ffb474f69e6e51b89532ae79ad4fc601': {
+          commit: '362eae41ffb474f69e6e51b89532ae79ad4fc601',
+          articleId: 'ac6e583be919a',
+          id: '1aa9ce7d',
+          level: 2,
+          name: 'first commit',
+          files: [
+            {
+              file: 'a.js',
+              id: '12345',
+            },
+          ],
+        },
+      };
 
-      commit('setTocSucceed', true)
-      commit('setTocStepFiles', data)
+      commit('setTocSucceed', true);
+      commit('setTocStepFiles', data);
     } catch (err) {
       commit('setTocError', true);
     }
@@ -94,13 +141,13 @@ export const actions = {
         },
         body: JSON.stringify({
           articleModifySteps,
-        })
-      })
+        }),
+      });
 
-      commit('setTocSucceed', true)
+      commit('setTocSucceed', true);
     } catch (err) {
       console.log('err', err);
-      commit('setTocError', true)
+      commit('setTocError', true);
     }
   },
   async fetchFileRearrange({ commit }, payload) {
@@ -115,13 +162,13 @@ export const actions = {
         },
         body: JSON.stringify({
           ...payload,
-        })
-      })
+        }),
+      });
 
-      commit('setTocSucceed', true)
+      commit('setTocSucceed', true);
     } catch (err) {
       console.log('err', err);
-      commit('setTocError', true)
+      commit('setTocError', true);
     }
   },
 };
