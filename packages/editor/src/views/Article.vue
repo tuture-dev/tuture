@@ -1,6 +1,5 @@
 <template>
   <a-row class="h-full">
-    <StepAllocation></StepAllocation>
     <a-affix>
       <Drawer></Drawer>
     </a-affix>

@@ -57,7 +57,7 @@ export function makeServer(options?: ServerOptions): http.Server {
   app.use('/', express.static(EDITOR_PATH));
 
   app.get('*', (_, res) => {
-    res.redirect('/');
+    res.send('404 Not Found');
   });
 
   const server = http.createServer(app);

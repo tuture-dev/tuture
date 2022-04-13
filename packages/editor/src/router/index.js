@@ -3,6 +3,7 @@ import VueRouter from 'vue-router';
 
 import Home from '../views/Home.vue';
 import Article from '../views/Article.vue';
+import Toc from '../views/Toc.vue';
 
 Vue.use(VueRouter);
 
@@ -13,6 +14,11 @@ const routes = [
     component: Home,
   },
   {
+    path: '/toc',
+    name: 'Toc',
+    component: Toc,
+  },
+  {
     path: '/articles/:id',
     name: 'Article',
     component: Article,
@@ -20,7 +26,6 @@ const routes = [
 ];
 
 const router = new VueRouter({
-  mode: 'history',
   base: process.env.BASE_URL,
   routes,
 });
